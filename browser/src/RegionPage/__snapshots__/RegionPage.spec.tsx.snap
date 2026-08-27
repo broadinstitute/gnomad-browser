@@ -45,19 +45,35 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a mitochon
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="exac"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "exac",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -94,50 +110,92 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a mitochon
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="exac"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "exac",
+        ]
       }
-    />
-    <MitochondrialVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="exac"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="exac"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "exac",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="exac"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "exac",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="exac"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -187,19 +245,35 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a non-mito
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="exac"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "exac",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -236,42 +310,84 @@ exports[`RegionPage with "exac" dataset has no unexpected changes for a non-mito
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="exac"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "exac",
+        ]
       }
-    />
-    <ConnectedVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="exac"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="exac"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "exac",
+        ]
       }
-    />
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="exac"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "exac",
+        ]
+      }
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="exac"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -321,19 +437,35 @@ exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_cnv_r4"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_cnv_r4",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -370,50 +502,92 @@ exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_cnv_r4"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_cnv_r4",
+        ]
       }
-    />
-    <CopyNumberVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_cnv_r4"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_cnv_r4"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_cnv_r4",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_cnv_r4"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_cnv_r4",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <CopyNumberVariantsInRegion
+        datasetId="gnomad_cnv_r4"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -463,19 +637,35 @@ exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_cnv_r4"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_cnv_r4",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -512,53 +702,95 @@ exports[`RegionPage with "gnomad_cnv_r4" dataset has no unexpected changes for a
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_cnv_r4"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={false}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_cnv_r4",
+        ]
       }
-    />
-    <CopyNumberVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_cnv_r4"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={false}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_cnv_r4"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_cnv_r4",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_cnv_r4"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_cnv_r4",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <CopyNumberVariantsInRegion
+        datasetId="gnomad_cnv_r4"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -608,19 +840,35 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a m
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r2_1",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -657,50 +905,92 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a m
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1",
+        ]
       }
-    />
-    <MitochondrialVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r2_1"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r2_1"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -750,19 +1040,35 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a n
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r2_1",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -799,42 +1105,84 @@ exports[`RegionPage with "gnomad_r2_1" dataset has no unexpected changes for a n
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1",
+        ]
       }
-    />
-    <ConnectedVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r2_1"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1",
+        ]
       }
-    />
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1",
+        ]
+      }
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r2_1"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -884,19 +1232,35 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1_controls"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r2_1_controls",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -933,50 +1297,92 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_controls"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_controls",
+        ]
       }
-    />
-    <MitochondrialVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r2_1_controls"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_controls"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_controls",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1_controls"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_controls",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r2_1_controls"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -1026,19 +1432,35 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1_controls"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r2_1_controls",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -1075,42 +1497,84 @@ exports[`RegionPage with "gnomad_r2_1_controls" dataset has no unexpected change
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_controls"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_controls",
+        ]
       }
-    />
-    <ConnectedVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r2_1_controls"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_controls"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_controls",
+        ]
       }
-    />
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1_controls"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_controls",
+        ]
+      }
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r2_1_controls"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -1160,19 +1624,35 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1_non_cancer"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r2_1_non_cancer",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -1209,50 +1689,92 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_cancer"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_cancer",
+        ]
       }
-    />
-    <MitochondrialVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r2_1_non_cancer"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_cancer"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_cancer",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1_non_cancer"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_cancer",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r2_1_non_cancer"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -1302,19 +1824,35 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1_non_cancer"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r2_1_non_cancer",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -1351,42 +1889,84 @@ exports[`RegionPage with "gnomad_r2_1_non_cancer" dataset has no unexpected chan
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_cancer"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_cancer",
+        ]
       }
-    />
-    <ConnectedVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r2_1_non_cancer"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_cancer"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_cancer",
+        ]
       }
-    />
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1_non_cancer"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_cancer",
+        ]
+      }
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r2_1_non_cancer"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -1436,19 +2016,35 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1_non_neuro"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r2_1_non_neuro",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -1485,50 +2081,92 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_neuro"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_neuro",
+        ]
       }
-    />
-    <MitochondrialVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r2_1_non_neuro"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_neuro"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_neuro",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1_non_neuro"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_neuro",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r2_1_non_neuro"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -1578,19 +2216,35 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1_non_neuro"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r2_1_non_neuro",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -1627,42 +2281,84 @@ exports[`RegionPage with "gnomad_r2_1_non_neuro" dataset has no unexpected chang
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_neuro"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_neuro",
+        ]
       }
-    />
-    <ConnectedVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r2_1_non_neuro"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_neuro"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_neuro",
+        ]
       }
-    />
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1_non_neuro"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_neuro",
+        ]
+      }
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r2_1_non_neuro"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -1712,19 +2408,35 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1_non_topmed"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r2_1_non_topmed",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -1761,50 +2473,92 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_topmed"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_topmed",
+        ]
       }
-    />
-    <MitochondrialVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r2_1_non_topmed"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_topmed"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_topmed",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1_non_topmed"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r2_1_non_topmed",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r2_1_non_topmed"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -1854,19 +2608,35 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r2_1_non_topmed"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r2_1_non_topmed",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -1903,42 +2673,84 @@ exports[`RegionPage with "gnomad_r2_1_non_topmed" dataset has no unexpected chan
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_topmed"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_topmed",
+        ]
       }
-    />
-    <ConnectedVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r2_1_non_topmed"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r2_1_non_topmed"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_topmed",
+        ]
       }
-    />
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r2_1_non_topmed"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r2_1_non_topmed",
+        ]
+      }
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r2_1_non_topmed"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -1988,19 +2800,35 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a mit
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r3",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -2037,58 +2865,112 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a mit
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r3"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <MitochondrialVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r3"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -2138,19 +3020,35 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a non
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r3",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -2187,50 +3085,104 @@ exports[`RegionPage with "gnomad_r3" dataset has no unexpected changes for a non
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r3"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <ConnectedVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r3"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -2280,19 +3232,35 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_controls_and_biobanks"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r3_controls_and_biobanks",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -2329,58 +3297,112 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_controls_and_biobanks"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_controls_and_biobanks",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r3_controls_and_biobanks"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_controls_and_biobanks"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_controls_and_biobanks",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_controls_and_biobanks"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_controls_and_biobanks",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <MitochondrialVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_controls_and_biobanks"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_controls_and_biobanks",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r3_controls_and_biobanks"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -2430,19 +3452,35 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_controls_and_biobanks"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r3_controls_and_biobanks",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -2479,50 +3517,104 @@ exports[`RegionPage with "gnomad_r3_controls_and_biobanks" dataset has no unexpe
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_controls_and_biobanks"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_controls_and_biobanks",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r3_controls_and_biobanks"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_controls_and_biobanks"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_controls_and_biobanks",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_controls_and_biobanks"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_controls_and_biobanks",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <ConnectedVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_controls_and_biobanks"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_controls_and_biobanks",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r3_controls_and_biobanks"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -2572,19 +3664,35 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_non_cancer"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r3_non_cancer",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -2621,58 +3729,112 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_cancer"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_cancer",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r3_non_cancer"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_cancer"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_cancer",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_cancer"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_cancer",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <MitochondrialVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_cancer"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_cancer",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r3_non_cancer"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -2722,19 +3884,35 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_non_cancer"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r3_non_cancer",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -2771,50 +3949,104 @@ exports[`RegionPage with "gnomad_r3_non_cancer" dataset has no unexpected change
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_cancer"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_cancer",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r3_non_cancer"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_cancer"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_cancer",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_cancer"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_cancer",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <ConnectedVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_cancer"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_cancer",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r3_non_cancer"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -2864,19 +4096,35 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_non_neuro"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r3_non_neuro",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -2913,58 +4161,112 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_neuro"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_neuro",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r3_non_neuro"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_neuro"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_neuro",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_neuro"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_neuro",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <MitochondrialVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_neuro"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_neuro",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r3_non_neuro"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -3014,19 +4316,35 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_non_neuro"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r3_non_neuro",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -3063,50 +4381,104 @@ exports[`RegionPage with "gnomad_r3_non_neuro" dataset has no unexpected changes
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_neuro"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_neuro",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r3_non_neuro"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_neuro"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_neuro",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_neuro"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_neuro",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <ConnectedVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_neuro"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_neuro",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r3_non_neuro"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -3156,19 +4528,35 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_non_topmed"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r3_non_topmed",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -3205,58 +4593,112 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_topmed"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_topmed",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r3_non_topmed"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_topmed"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_topmed",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_topmed"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_topmed",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <MitochondrialVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_topmed"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_topmed",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r3_non_topmed"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -3306,19 +4748,35 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_non_topmed"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r3_non_topmed",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -3355,50 +4813,104 @@ exports[`RegionPage with "gnomad_r3_non_topmed" dataset has no unexpected change
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_topmed"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_topmed",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r3_non_topmed"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_topmed"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_topmed",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_topmed"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_topmed",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <ConnectedVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_topmed"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_topmed",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r3_non_topmed"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -3448,19 +4960,35 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_non_v2"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r3_non_v2",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -3497,58 +5025,112 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_v2"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_v2",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r3_non_v2"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_v2"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_v2",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_v2"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_v2",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <MitochondrialVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_v2"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r3_non_v2",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r3_non_v2"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -3598,19 +5180,35 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r3_non_v2"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r3_non_v2",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -3647,50 +5245,104 @@ exports[`RegionPage with "gnomad_r3_non_v2" dataset has no unexpected changes fo
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_v2"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_v2",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r3_non_v2"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_v2"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_v2",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r3_non_v2"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_v2",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <ConnectedVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r3_non_v2"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r3_non_v2",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r3_non_v2"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -3740,19 +5392,35 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r4"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r4",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -3789,58 +5457,112 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a mit
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r4"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r4",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r4"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r4"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r4",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r4"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r4",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <MitochondrialVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r4"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r4",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r4"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -3890,19 +5612,35 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r4"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r4",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -3939,50 +5677,104 @@ exports[`RegionPage with "gnomad_r4" dataset has no unexpected changes for a non
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r4"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r4",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r4"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r4"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r4",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r4"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r4",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <ConnectedVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r4"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r4",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r4"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -4032,19 +5824,35 @@ exports[`RegionPage with "gnomad_r4_non_ukb" dataset has no unexpected changes f
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r4_non_ukb"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_r4_non_ukb",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -4081,58 +5889,112 @@ exports[`RegionPage with "gnomad_r4_non_ukb" dataset has no unexpected changes f
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r4_non_ukb"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r4_non_ukb",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_r4_non_ukb"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r4_non_ukb"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r4_non_ukb",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r4_non_ukb"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r4_non_ukb",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <MitochondrialVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r4_non_ukb"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_r4_non_ukb",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <MitochondrialVariantsInRegion
+        datasetId="gnomad_r4_non_ukb"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -4182,19 +6044,35 @@ exports[`RegionPage with "gnomad_r4_non_ukb" dataset has no unexpected changes f
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_r4_non_ukb"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_r4_non_ukb",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -4231,50 +6109,104 @@ exports[`RegionPage with "gnomad_r4_non_ukb" dataset has no unexpected changes f
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r4_non_ukb"
-      includeExomeCoverage={true}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r4_non_ukb",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_r4_non_ukb"
+        includeExomeCoverage={true}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r4_non_ukb"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r4_non_ukb",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_r4_non_ukb"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r4_non_ukb",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <ConnectedVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_r4_non_ukb"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_r4_non_ukb",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <ConnectedVariantsInRegion
+        datasetId="gnomad_r4_non_ukb"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -4324,19 +6256,35 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_sv_r2_1"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_sv_r2_1",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -4373,50 +6321,92 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1",
+        ]
       }
-    />
-    <StructuralVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_sv_r2_1"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r2_1"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <StructuralVariantsInRegion
+        datasetId="gnomad_sv_r2_1"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -4466,19 +6456,35 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_sv_r2_1"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_sv_r2_1",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -4515,53 +6521,95 @@ exports[`RegionPage with "gnomad_sv_r2_1" dataset has no unexpected changes for 
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1",
+        ]
       }
-    />
-    <StructuralVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_sv_r2_1"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r2_1"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <StructuralVariantsInRegion
+        datasetId="gnomad_sv_r2_1"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -4611,19 +6659,35 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_sv_r2_1_controls"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_sv_r2_1_controls",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -4660,50 +6724,92 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1_controls"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1_controls",
+        ]
       }
-    />
-    <StructuralVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_sv_r2_1_controls"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1_controls"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1_controls",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r2_1_controls"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1_controls",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <StructuralVariantsInRegion
+        datasetId="gnomad_sv_r2_1_controls"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -4753,19 +6859,35 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_sv_r2_1_controls"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_sv_r2_1_controls",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -4802,53 +6924,95 @@ exports[`RegionPage with "gnomad_sv_r2_1_controls" dataset has no unexpected cha
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1_controls"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1_controls",
+        ]
       }
-    />
-    <StructuralVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_sv_r2_1_controls"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1_controls"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1_controls",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r2_1_controls"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1_controls",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <StructuralVariantsInRegion
+        datasetId="gnomad_sv_r2_1_controls"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -4898,19 +7062,35 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_sv_r2_1_non_neuro"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_sv_r2_1_non_neuro",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -4947,50 +7127,92 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1_non_neuro"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1_non_neuro",
+        ]
       }
-    />
-    <StructuralVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_sv_r2_1_non_neuro"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1_non_neuro"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1_non_neuro",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r2_1_non_neuro"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r2_1_non_neuro",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <StructuralVariantsInRegion
+        datasetId="gnomad_sv_r2_1_non_neuro"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -5040,19 +7262,35 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh37",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_sv_r2_1_non_neuro"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_sv_r2_1_non_neuro",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh37",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -5089,53 +7327,95 @@ exports[`RegionPage with "gnomad_sv_r2_1_non_neuro" dataset has no unexpected ch
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1_non_neuro"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1_non_neuro",
+        ]
       }
-    />
-    <StructuralVariantsInRegion
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_sv_r2_1_non_neuro"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r2_1_non_neuro"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1_non_neuro",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh37",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r2_1_non_neuro"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r2_1_non_neuro",
+        ]
       }
-    />
+      sectionName="Variants"
+    >
+      <StructuralVariantsInRegion
+        datasetId="gnomad_sv_r2_1_non_neuro"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+        zoomRegion={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh37",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -5185,19 +7465,35 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "M",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_sv_r4"
+          entityDescription="region M:345-456"
+          resetKeys={
+            [
+              "M",
+              345,
+              456,
+              "gnomad_sv_r4",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "M",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -5234,58 +7530,112 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
     rightPanelWidth={80}
     width={994}
   >
-    <MitochondrialRegionCoverageTrack
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r4"
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r4",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <MitochondrialRegionCoverageTrack
+        datasetId="gnomad_sv_r4"
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r4"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r4",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r4"
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r4",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <StructuralVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r4"
-      region={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region M:345-456"
+      resetKeys={
+        [
+          "M",
+          345,
+          456,
+          "gnomad_sv_r4",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "M",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <StructuralVariantsInRegion
+        datasetId="gnomad_sv_r4"
+        region={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "M",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
@@ -5335,19 +7685,35 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
     </GnomadPageHeading>
     <RegionPage__RegionInfoColumnWrapper>
       <div>
-        <RegionInfo
-          region={
-            {
-              "chrom": "12",
-              "genes": [],
-              "non_coding_constraints": [],
-              "reference_genome": "GRCh38",
-              "short_tandem_repeats": [],
-              "start": 345,
-              "stop": 456,
-            }
+        <withRouter(SectionErrorBoundary)
+          datasetId="gnomad_sv_r4"
+          entityDescription="region 12:345-456"
+          resetKeys={
+            [
+              "12",
+              345,
+              456,
+              "gnomad_sv_r4",
+            ]
           }
-        />
+          sectionName="Region information"
+        >
+          <React.Fragment>
+            <RegionInfo
+              region={
+                {
+                  "chrom": "12",
+                  "genes": [],
+                  "non_coding_constraints": [],
+                  "reference_genome": "GRCh38",
+                  "short_tandem_repeats": [],
+                  "start": 345,
+                  "stop": 456,
+                }
+              }
+            />
+          </React.Fragment>
+        </withRouter(SectionErrorBoundary)>
       </div>
       <RegionPage__RegionControlsWrapper>
         <withRouter()
@@ -5384,61 +7750,115 @@ exports[`RegionPage with "gnomad_sv_r4" dataset has no unexpected changes for a 
     rightPanelWidth={80}
     width={994}
   >
-    <RegionCoverageTrack
-      chrom="12"
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r4"
-      includeExomeCoverage={false}
-      includeGenomeCoverage={true}
-      start={345}
-      stop={456}
-    />
-    <GenesInRegionTrack
-      genes={[]}
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r4",
+        ]
       }
-    />
-    <React.Fragment>
+      sectionName="Region coverage"
+    >
+      <RegionCoverageTrack
+        chrom="12"
+        datasetId="gnomad_sv_r4"
+        includeExomeCoverage={false}
+        includeGenomeCoverage={true}
+        start={345}
+        stop={456}
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r4"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r4",
+        ]
+      }
+      sectionName="Genes in region"
+    >
+      <GenesInRegionTrack
+        genes={[]}
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
+      datasetId="gnomad_sv_r4"
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r4",
+        ]
+      }
+      sectionName="Regional genomic constraint"
+    >
       <RegionalGenomicConstraintTrack
         height={45}
         regions={[]}
         start={345}
         stop={456}
       />
-    </React.Fragment>
-    <StructuralVariantsInRegion
+    </withRouter(SectionErrorBoundary)>
+    <withRouter(SectionErrorBoundary)
       datasetId="gnomad_sv_r4"
-      region={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
-        }
+      entityDescription="region 12:345-456"
+      resetKeys={
+        [
+          "12",
+          345,
+          456,
+          "gnomad_sv_r4",
+        ]
       }
-      zoomRegion={
-        {
-          "chrom": "12",
-          "genes": [],
-          "non_coding_constraints": [],
-          "reference_genome": "GRCh38",
-          "short_tandem_repeats": [],
-          "start": 345,
-          "stop": 456,
+      sectionName="Variants"
+    >
+      <StructuralVariantsInRegion
+        datasetId="gnomad_sv_r4"
+        region={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
         }
-      }
-    />
+        zoomRegion={
+          {
+            "chrom": "12",
+            "genes": [],
+            "non_coding_constraints": [],
+            "reference_genome": "GRCh38",
+            "short_tandem_repeats": [],
+            "start": 345,
+            "stop": 456,
+          }
+        }
+      />
+    </withRouter(SectionErrorBoundary)>
   </GnomadRegionViewer>
 </TrackPage>
 `;
