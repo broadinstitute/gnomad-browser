@@ -230,9 +230,11 @@ describe('ClinvarVariants', () => {
   const renderClinvarVariants = ({
     clinvarVariants,
     pageType = 'gene',
+    zoomRegion = null,
   }: {
-    clinvarVariants: ClinvarVariant[]
+    clinvarVariants: ClinvarVariant[] | null | undefined
     pageType?: PageType
+    zoomRegion?: { start: number; stop: number } | null
   }) =>
     render(
       <BrowserRouter>
@@ -243,6 +245,7 @@ describe('ClinvarVariants', () => {
             referenceGenome="GRCh38"
             transcripts={mockTranscripts}
             pageType={pageType}
+            zoomRegion={zoomRegion}
           />
         </RegionViewerContext.Provider>
       </BrowserRouter>
@@ -265,6 +268,46 @@ describe('ClinvarVariants', () => {
 
       expect(screen.getByText(`No ClinVar variants found in this ${pageType}.`)).not.toBeNull()
       expect(asFragment()).toMatchSnapshot()
+    }
+  )
+
+  test.each([
+    ['null', null],
+    ['undefined', undefined],
+  ] as [string, ClinvarVariant[] | null | undefined][])(
+    'reports that the data could not be loaded, rather than that none were found, when the list is %s',
+    (_label, clinvarVariants) => {
+      const { asFragment } = renderClinvarVariants({ clinvarVariants })
+
+      expect(screen.getByRole('heading', { name: 'ClinVar variants' })).not.toBeNull()
+      expect(screen.getByText(/ClinVar variants could not be loaded/)).not.toBeNull()
+      expect(screen.queryByText(/No ClinVar variants found/)).toBeNull()
+      expect(asFragment()).toMatchSnapshot()
+    }
+  )
+
+  test.each([
+    ['null', null],
+    ['undefined', undefined],
+    ['empty', []],
+  ] as [string, ClinvarVariant[] | null | undefined][])(
+    'renders without throwing when the list is %s',
+    (_label, clinvarVariants) => {
+      expect(() => renderClinvarVariants({ clinvarVariants })).not.toThrow()
+    }
+  )
+
+  test.each([
+    ['null', null],
+    ['undefined', undefined],
+  ] as [string, ClinvarVariant[] | null | undefined][])(
+    'renders without throwing when a zoom region is set and the list is %s',
+    (_label, clinvarVariants) => {
+      expect(() =>
+        renderClinvarVariants({ clinvarVariants, zoomRegion: { start: 100, stop: 200 } })
+      ).not.toThrow()
+
+      expect(screen.getByText(/ClinVar variants could not be loaded/)).not.toBeNull()
     }
   )
 })
