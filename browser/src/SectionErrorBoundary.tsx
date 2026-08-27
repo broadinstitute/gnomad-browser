@@ -82,4 +82,22 @@ class SectionErrorBoundary extends React.Component<Props, State> {
   }
 }
 
-export default withRouter<Props, typeof SectionErrorBoundary>(SectionErrorBoundary)
+const RoutedSectionErrorBoundary = withRouter<Props, typeof SectionErrorBoundary>(
+  SectionErrorBoundary
+)
+
+export const useSectionErrorBoundary =
+  (entityDescription: string, datasetId: DatasetId, baseResetKeys: unknown[]) =>
+  (sectionName: string, children: ReactNode, extraResetKeys: unknown[] = []) =>
+    (
+      <RoutedSectionErrorBoundary
+        sectionName={sectionName}
+        datasetId={datasetId}
+        entityDescription={entityDescription}
+        resetKeys={[...baseResetKeys, ...extraResetKeys]}
+      >
+        {children}
+      </RoutedSectionErrorBoundary>
+    )
+
+export default RoutedSectionErrorBoundary

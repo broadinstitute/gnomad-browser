@@ -17,6 +17,7 @@ import GeneFlags from '../GenePage/GeneFlags'
 import GnomadPageHeading from '../GnomadPageHeading'
 import InfoButton from '../help/InfoButton'
 import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
+import { useSectionErrorBoundary } from '../SectionErrorBoundary'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -131,6 +132,12 @@ const TranscriptPage = ({ datasetId, transcript }: Props) => {
 
   const [zoomRegion, setZoomRegion] = useState(null)
 
+  const wrapWithSectionErrorBoundary = useSectionErrorBoundary(
+    `transcript ${transcript.transcript_id}.${transcript.transcript_version}`,
+    datasetId,
+    [transcript.transcript_id, datasetId]
+  )
+
   return (
     <TrackPage>
       <TrackPageSection>
@@ -151,12 +158,20 @@ const TranscriptPage = ({ datasetId, transcript }: Props) => {
         </GnomadPageHeading>
         <TranscriptInfoColumnWrapper>
           <div style={{ maxWidth: '50%' }}>
-            <TranscriptInfo transcript={transcript} />
-            <GeneFlags gene={transcript.gene} />
+            {wrapWithSectionErrorBoundary(
+              'Transcript information',
+              <>
+                <TranscriptInfo transcript={transcript} />
+                <GeneFlags gene={transcript.gene} />
+              </>
+            )}
           </div>
           <div>
             <h2>Constraint {transcript.chrom !== 'M' && <InfoButton topic="constraint" />}</h2>
-            <ConstraintTable datasetId={datasetId} geneOrTranscript={transcript} />
+            {wrapWithSectionErrorBoundary(
+              'Constraint',
+              <ConstraintTable datasetId={datasetId} geneOrTranscript={transcript} />
+            )}
           </div>
         </TranscriptInfoColumnWrapper>
       </TrackPageSection>
@@ -179,18 +194,22 @@ const TranscriptPage = ({ datasetId, transcript }: Props) => {
         zoomRegion={zoomRegion}
         onChangeZoomRegion={setZoomRegion}
       >
-        {transcript.chrom === 'M' ? (
-          <MitochondrialTranscriptCoverageTrack
-            datasetId={datasetId}
-            transcriptId={transcript.transcript_id}
-          />
-        ) : (
-          <TranscriptCoverageTrack
-            datasetId={datasetId}
-            transcriptId={transcript.transcript_id}
-            includeExomeCoverage={transcriptsHaveExomeCoverage(datasetId)}
-          />
-        )}
+        {transcript.chrom === 'M'
+          ? wrapWithSectionErrorBoundary(
+              'Transcript coverage',
+              <MitochondrialTranscriptCoverageTrack
+                datasetId={datasetId}
+                transcriptId={transcript.transcript_id}
+              />
+            )
+          : wrapWithSectionErrorBoundary(
+              'Transcript coverage',
+              <TranscriptCoverageTrack
+                datasetId={datasetId}
+                transcriptId={transcript.transcript_id}
+                includeExomeCoverage={transcriptsHaveExomeCoverage(datasetId)}
+              />
+            )}
 
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (isSmallScreen ? 0 : 80)}>
@@ -251,25 +270,32 @@ const TranscriptPage = ({ datasetId, transcript }: Props) => {
           </Legend>
         </ControlPanel>
 
-        <div style={{ margin: '1em 0' }}>
-          <TranscriptTrack transcript={transcript} showUTRs={includeUTRs} />
-        </div>
-
-        {transcript.chrom === 'M' ? (
-          <MitochondrialVariantsInTranscript
-            datasetId={datasetId}
-            transcript={transcript}
-            zoomRegion={zoomRegion}
-          />
-        ) : (
-          <VariantsInTranscript
-            datasetId={datasetId}
-            // @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; includeUTRs: boolean; t... Remove this comment to see the full error message
-            includeUTRs={includeUTRs}
-            transcript={transcript}
-            zoomRegion={zoomRegion}
-          />
+        {wrapWithSectionErrorBoundary(
+          'Transcript track',
+          <div style={{ margin: '1em 0' }}>
+            <TranscriptTrack transcript={transcript} showUTRs={includeUTRs} />
+          </div>
         )}
+
+        {transcript.chrom === 'M'
+          ? wrapWithSectionErrorBoundary(
+              'Variants',
+              <MitochondrialVariantsInTranscript
+                datasetId={datasetId}
+                transcript={transcript}
+                zoomRegion={zoomRegion}
+              />
+            )
+          : wrapWithSectionErrorBoundary(
+              'Variants',
+              <VariantsInTranscript
+                datasetId={datasetId}
+                // @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; includeUTRs: boolean; t... Remove this comment to see the full error message
+                includeUTRs={includeUTRs}
+                transcript={transcript}
+                zoomRegion={zoomRegion}
+              />
+            )}
       </RegionViewer>
     </TrackPage>
   )
