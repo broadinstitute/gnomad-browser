@@ -6,10 +6,11 @@ import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 
 type OwnVariantsInRegionProps = {
   clinvarReleaseDate: string
-  clinvarVariants?: any[]
+  clinvarVariants?: ClinvarVariant[] | null
   datasetId: DatasetId
   region: {
     chrom: string

@@ -9,6 +9,7 @@ import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Gene } from './GenePage'
 
 type TranscriptsModalProps = {
@@ -48,7 +49,7 @@ const TranscriptsModal = ({ gene, onRequestClose }: TranscriptsModalProps) => (
 
 type OwnVariantsInGeneProps = {
   clinvarReleaseDate: string
-  clinvarVariants?: any[]
+  clinvarVariants?: ClinvarVariant[] | null
   datasetId: DatasetId
   gene: {
     gene_id: string
