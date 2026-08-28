@@ -1,3 +1,7 @@
 type BrowserMetadata {
-  clinvar_release_date: String!
+  """
+  Null when this deployment has no ClinVar data source available (e.g. no
+  Elasticsearch connection), rather than a fabricated or stale date.
+  """
+  clinvar_release_date: String
 }
