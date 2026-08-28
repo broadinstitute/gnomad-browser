@@ -97,7 +97,7 @@ export type ClinvarVariant = {
   clinvar_variation_id: string
   gold_stars: number
   last_evaluated: string | null
-  release_date: string
+  release_date: string | null
   review_status: string
   submissions: ClinvarSubmission[]
   gnomad: null | {

@@ -229,10 +229,12 @@ describe('Clinvar Variants Track', () => {
 describe('ClinvarVariants', () => {
   const renderClinvarVariants = ({
     clinvarVariants,
+    clinvarReleaseDate = '2023-03-01',
     pageType = 'gene',
     zoomRegion = null,
   }: {
     clinvarVariants: ClinvarVariant[] | null | undefined
+    clinvarReleaseDate?: string | null
     pageType?: PageType
     zoomRegion?: { start: number; stop: number } | null
   }) =>
@@ -241,7 +243,7 @@ describe('ClinvarVariants', () => {
         <RegionViewerContext.Provider value={childPropsWithNonEmptyRegions}>
           <ClinvarVariants
             clinvarVariants={clinvarVariants}
-            clinvarReleaseDate="2023-03-01"
+            clinvarReleaseDate={clinvarReleaseDate}
             referenceGenome="GRCh38"
             transcripts={mockTranscripts}
             pageType={pageType}
@@ -258,6 +260,18 @@ describe('ClinvarVariants', () => {
 
     expect(screen.getByRole('heading', { name: 'ClinVar variants' })).not.toBeNull()
     expect(screen.getByText(/Data displayed here is from ClinVar/)).not.toBeNull()
+    expect(asFragment()).toMatchSnapshot()
+  })
+
+  test('reports that the release date is unavailable, rather than throwing, when it is null', () => {
+    const { asFragment } = renderClinvarVariants({
+      clinvarVariants: mockClinvarVariantsOfEachCategory,
+      clinvarReleaseDate: null,
+    })
+
+    expect(screen.getByRole('heading', { name: 'ClinVar variants' })).not.toBeNull()
+    expect(screen.getByText('ClinVar release date is unavailable.')).not.toBeNull()
+    expect(screen.queryByText(/Data displayed here is from ClinVar's/)).toBeNull()
     expect(asFragment()).toMatchSnapshot()
   })
 

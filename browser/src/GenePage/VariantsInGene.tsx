@@ -48,7 +48,7 @@ const TranscriptsModal = ({ gene, onRequestClose }: TranscriptsModalProps) => (
 )
 
 type OwnVariantsInGeneProps = {
-  clinvarReleaseDate: string
+  clinvarReleaseDate: string | null
   clinvarVariants?: ClinvarVariant[] | null
   datasetId: DatasetId
   gene: {

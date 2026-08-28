@@ -9,7 +9,7 @@ import Variants from '../VariantList/Variants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 
 type OwnVariantsInRegionProps = {
-  clinvarReleaseDate: string
+  clinvarReleaseDate: string | null
   clinvarVariants?: ClinvarVariant[] | null
   datasetId: DatasetId
   region: {

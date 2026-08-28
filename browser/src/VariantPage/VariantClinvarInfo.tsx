@@ -4,7 +4,7 @@ import { ExternalLink, Modal, TextButton } from '@gnomad/ui'
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import SubmissionsList from '../SubmissionsList'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import { formatClinvarDate, clinvarReleaseDateSentence } from '../ClinvarVariantsTrack/clinvarDates'
 import { ClinvarVariant } from './VariantPage'
 
 type VariantClinvarInfoProps = {
@@ -78,8 +78,7 @@ const VariantClinvarInfo = ({ clinvar }: VariantClinvarInfoProps) => {
         >
           ClinVar website
         </ExternalLink>
-        . Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvar.release_date)}{' '}
-        release.
+        . {clinvarReleaseDateSentence(clinvar.release_date)}
       </p>
 
       {isSubmissionsModalOpen && (

@@ -1,4 +1,4 @@
-import { omit, throttle } from 'lodash'
+import { omit } from 'lodash'
 
 import { withCache } from '../cache'
 import logger from '../logger'
@@ -36,7 +36,40 @@ const _fetchClinvarReleaseDate = async (esClient: any) => {
   return releaseDates[0]
 }
 
-export const fetchClinvarReleaseDate = throttle(_fetchClinvarReleaseDate, 300000)
+// `lodash.throttle`/`lodash.memoize` would cache a rejected promise for the
+// full TTL, replaying a transient failure long after the source recovers, so
+// only a resolved value is cached here.
+let cachedReleaseDate: { value: string | undefined; expiresAt: number } | null = null
+let pendingReleaseDate: Promise<string | undefined> | null = null
+
+const memoizedFetchClinvarReleaseDate = (esClient: any): Promise<string | undefined> => {
+  if (cachedReleaseDate && cachedReleaseDate.expiresAt > Date.now()) {
+    return Promise.resolve(cachedReleaseDate.value)
+  }
+
+  if (!pendingReleaseDate) {
+    pendingReleaseDate = _fetchClinvarReleaseDate(esClient)
+      .then((value) => {
+        cachedReleaseDate = { value, expiresAt: Date.now() + 300000 }
+        return value
+      })
+      .finally(() => {
+        pendingReleaseDate = null
+      })
+  }
+
+  return pendingReleaseDate
+}
+
+export const fetchClinvarReleaseDate = async (esClient: any): Promise<string | null> => {
+  try {
+    const releaseDate = await memoizedFetchClinvarReleaseDate(esClient)
+    return releaseDate ?? null
+  } catch (error) {
+    logger.warn({ message: 'Unable to determine ClinVar release date', error })
+    return null
+  }
+}
 
 // ================================================================================================
 // Count query

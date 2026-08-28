@@ -8804,3 +8804,3365 @@ exports[`ClinvarVariants reports that the data could not be loaded, rather than 
   </p>
 </DocumentFragment>
 `;
+
+exports[`ClinvarVariants reports that the release date is unavailable, rather than throwing, when it is null 1`] = `
+<DocumentFragment>
+  .c0 {
+  padding: 0 80px 0 115px;
+}
+
+@media (max-width:1200px) {
+
+}
+
+@media (max-width:900px) {
+  .c0 {
+    padding: 0;
+  }
+}
+
+@media (max-width:600px) {
+
+}
+
+@media (max-width:600px) {
+
+}
+
+<div
+    class="c0"
+  >
+    <h2>
+      ClinVar variants
+    </h2>
+  </div>
+  .c19 {
+  box-sizing: border-box;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border-color: #6c757d;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 0.5em;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1.25;
+  outline: none;
+  user-select: none;
+}
+
+.c19:active,
+.c19:hover {
+  background-color: #cbd3da;
+}
+
+.c19:disabled {
+  background-color: rgba(248,249,250,0.5);
+  cursor: not-allowed;
+}
+
+.c19:focus {
+  box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
+}
+
+.c19 svg {
+  position: relative;
+  top: 0.11em;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.c24 {
+  user-select: none;
+}
+
+.c25 {
+  margin-right: 0.5em;
+}
+
+.c28 {
+  color: #1173bb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.c28:visited,
+.c28:active {
+  color: #1173bb;
+}
+
+.c28:focus,
+.c28:hover {
+  text-decoration: underline;
+}
+
+.c11 {
+  box-sizing: border-box;
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-right: 0.75em;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+  line-height: 18px;
+  outline: none;
+}
+
+.c11:active,
+.c11:hover {
+  border-color: #b7b7b7;
+}
+
+.c11:focus {
+  box-shadow: 0 0 0 0.2em rgba(221,221,221,0.5);
+}
+
+.c11 ::-moz-focus-inner {
+  border: 0;
+}
+
+.c9 {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 14px;
+  height: 14px;
+  padding: 1px;
+  border-width: 1px;
+  margin: 0 0.7em;
+  border-color: #000;
+  border-radius: 3px;
+  border-style: solid;
+  font-size: 10px;
+}
+
+.c9 >img {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 10px;
+  height: 10px;
+}
+
+.c7 {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c7 :focus+.c8 {
+  border-color: #428bca;
+  box-shadow: 0 0 0 0.2em #428bca;
+}
+
+.c5 {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  overflow: hidden;
+  border-color: #E6573D;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c5:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c5:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c12 {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  overflow: hidden;
+  border-color: #FAB470;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c12:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c12:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c14 {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  overflow: hidden;
+  border-color: #5E6F9E;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c14:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c14:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c16 {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  overflow: hidden;
+  border-color: #bababa;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.c16:first-child {
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.c16:nth-last-child(2) {
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+.c6 {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  background: linear-gradient(to right, rgba(230,87,61,0.5), rgba(230,87,61,0.5) 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  user-select: none;
+}
+
+.c13 {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  background: linear-gradient(to right, rgba(250,180,112,0.5), rgba(250,180,112,0.5) 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  user-select: none;
+}
+
+.c15 {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  background: linear-gradient(to right, rgba(94,111,158,0.5), rgba(94,111,158,0.5) 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  user-select: none;
+}
+
+.c17 {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  background: linear-gradient(to right, rgba(186,186,186,0.5), rgba(186,186,186,0.5) 2em, rgba(0, 0, 0, 0) 2em, rgba(0, 0, 0, 0));
+  background-repeat: no-repeat;
+  font-size: 14px;
+  user-select: none;
+}
+
+.c10 {
+  padding: 0.375em 0.75em;
+  line-height: 1.15em;
+}
+
+.c20 {
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border-radius: 5px;
+  margin: 0 0.5em;
+}
+
+.c3 {
+  display: inline-flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.c21 {
+  display: inline-flex;
+  align-self: center;
+  outline: none;
+  padding: 0 3px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.c21 img {
+  position: relative;
+  top: 0.13em;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+}
+
+.c21:focus img {
+  box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
+}
+
+.c0 {
+  padding: 0 80px 0 115px;
+}
+
+.c1 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 1em;
+}
+
+.c2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+.c22 {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.c22 input[type='checkbox'] {
+  position: relative;
+  top: 2px;
+}
+
+.c22 label {
+  margin-left: 1em;
+}
+
+.c22 label:first-child {
+  margin-left: 0;
+}
+
+.c23 {
+  margin-right: 1ch;
+}
+
+.c26 {
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border-radius: 5px;
+  line-height: 18px;
+}
+
+.c27 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width:1200px) {
+  .c3 .c4 {
+    border-radius: 0.5em;
+    margin: 0 0.5em 0.5em 0;
+  }
+
+  .c3 .c18 {
+    margin: 0 0.5em 0.5em;
+  }
+}
+
+@media (max-width:900px) {
+  .c0 {
+    padding: 0;
+  }
+}
+
+@media (max-width:600px) {
+  .c2 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width:600px) {
+  .c22 {
+    margin-bottom: 0.5em;
+  }
+}
+
+<div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2"
+      >
+        <div>
+          <div
+            breakpoint="1200"
+            class="c3"
+            id="clinvar-track-included-categories"
+          >
+            <span
+              bordercolor="#E6573D"
+              class="c4 c5"
+            >
+              <label
+                backgroundcolor="rgba(230,87,61,0.5)"
+                class="c6"
+                for="clinvar-track-included-categories-pathogenic"
+              >
+                <input
+                  checked=""
+                  class="c7"
+                  id="clinvar-track-included-categories-pathogenic"
+                  type="checkbox"
+                />
+                <span
+                  aria-hidden="true"
+                  class="c8 c9"
+                >
+                  <img
+                    alt=""
+                    src="test-file-stub"
+                  />
+                </span>
+                <span
+                  class="c10"
+                >
+                  Pathogenic / likely pathogenic
+                </span>
+              </label>
+              <button
+                class="c11"
+              >
+                only
+              </button>
+            </span>
+            <span
+              bordercolor="#FAB470"
+              class="c4 c12"
+            >
+              <label
+                backgroundcolor="rgba(250,180,112,0.5)"
+                class="c13"
+                for="clinvar-track-included-categories-uncertain"
+              >
+                <input
+                  checked=""
+                  class="c7"
+                  id="clinvar-track-included-categories-uncertain"
+                  type="checkbox"
+                />
+                <span
+                  aria-hidden="true"
+                  class="c8 c9"
+                >
+                  <img
+                    alt=""
+                    src="test-file-stub"
+                  />
+                </span>
+                <span
+                  class="c10"
+                >
+                  Uncertain significance / conflicting
+                </span>
+              </label>
+              <button
+                class="c11"
+              >
+                only
+              </button>
+            </span>
+            <span
+              bordercolor="#5E6F9E"
+              class="c4 c14"
+            >
+              <label
+                backgroundcolor="rgba(94,111,158,0.5)"
+                class="c15"
+                for="clinvar-track-included-categories-benign"
+              >
+                <input
+                  checked=""
+                  class="c7"
+                  id="clinvar-track-included-categories-benign"
+                  type="checkbox"
+                />
+                <span
+                  aria-hidden="true"
+                  class="c8 c9"
+                >
+                  <img
+                    alt=""
+                    src="test-file-stub"
+                  />
+                </span>
+                <span
+                  class="c10"
+                >
+                  Benign / likely benign
+                </span>
+              </label>
+              <button
+                class="c11"
+              >
+                only
+              </button>
+            </span>
+            <span
+              bordercolor="#bababa"
+              class="c4 c16"
+            >
+              <label
+                backgroundcolor="rgba(186,186,186,0.5)"
+                class="c17"
+                for="clinvar-track-included-categories-other"
+              >
+                <input
+                  checked=""
+                  class="c7"
+                  id="clinvar-track-included-categories-other"
+                  type="checkbox"
+                />
+                <span
+                  aria-hidden="true"
+                  class="c8 c9"
+                >
+                  <img
+                    alt=""
+                    src="test-file-stub"
+                  />
+                </span>
+                <span
+                  class="c10"
+                >
+                  Other
+                </span>
+              </label>
+              <button
+                class="c11"
+              >
+                only
+              </button>
+            </span>
+            <button
+              backgroundcolor="#f8f9fa"
+              bordercolor="#6c757d"
+              class="c18 c19 c20"
+              type="button"
+            >
+              all
+            </button>
+          </div>
+           
+          <button
+            class="c21"
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style="border: 0px; height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;"
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="c2"
+      >
+        <div
+          class="c22"
+        >
+          <div
+            class="c23"
+          >
+            <label
+              class="c24"
+              for="clinvar-track-include-lof"
+            >
+              <input
+                checked=""
+                class="c25"
+                id="clinvar-track-include-lof"
+                type="checkbox"
+              />
+              pLoF
+            </label>
+             
+            <button
+              backgroundcolor="#f8f9fa"
+              bordercolor="#6c757d"
+              class="c19 c26"
+              type="button"
+            >
+              only
+            </button>
+          </div>
+          <div
+            class="c23"
+          >
+            <label
+              class="c24"
+              for="clinvar-track-include-missense"
+            >
+              <input
+                checked=""
+                class="c25"
+                id="clinvar-track-include-missense"
+                type="checkbox"
+              />
+              Missense / Inframe indel
+            </label>
+             
+            <button
+              backgroundcolor="#f8f9fa"
+              bordercolor="#6c757d"
+              class="c19 c26"
+              type="button"
+            >
+              only
+            </button>
+          </div>
+          <div
+            class="c23"
+          >
+            <label
+              class="c24"
+              for="clinvar-track-include-synonymous"
+            >
+              <input
+                checked=""
+                class="c25"
+                id="clinvar-track-include-synonymous"
+                type="checkbox"
+              />
+              Synonymous
+            </label>
+             
+            <button
+              backgroundcolor="#f8f9fa"
+              bordercolor="#6c757d"
+              class="c19 c26"
+              type="button"
+            >
+              only
+            </button>
+          </div>
+          <div
+            class="c23"
+          >
+            <label
+              class="c24"
+              for="clinvar-track-include-other"
+            >
+              <input
+                checked=""
+                class="c25"
+                id="clinvar-track-include-other"
+                type="checkbox"
+              />
+              Other
+            </label>
+             
+            <button
+              backgroundcolor="#f8f9fa"
+              bordercolor="#6c757d"
+              class="c19 c26"
+              type="button"
+            >
+              only
+            </button>
+          </div>
+          <button
+            backgroundcolor="#f8f9fa"
+            bordercolor="#6c757d"
+            class="c19 c26"
+            style="margin-left: 0.5em;"
+            type="button"
+          >
+            all
+          </button>
+        </div>
+        <button
+          backgroundcolor="#f8f9fa"
+          bordercolor="#6c757d"
+          class="c19"
+          style="flex-shrink: 0;"
+          type="button"
+        >
+          Expand to all variants
+        </button>
+      </div>
+      <div
+        class="c27"
+      >
+        <label
+          class="c24"
+          for="clinvar-track-in-gnomad"
+        >
+          <input
+            class="c25"
+            id="clinvar-track-in-gnomad"
+            type="checkbox"
+          />
+          Only show ClinVar variants that are in gnomAD
+        </label>
+        <label
+          for="star-filtering"
+        >
+          Filter by 
+          <a
+            class="c28"
+            href="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            review status
+          </a>
+          :  
+          <select
+            id="clinvar-star-filter"
+          >
+            <option
+              value="0"
+            >
+               0-4 Stars 
+            </option>
+            <option
+              value="1"
+            >
+               &gt;=1 Stars 
+            </option>
+            <option
+              value="2"
+            >
+               &gt;=2 Stars 
+            </option>
+            <option
+              value="3"
+            >
+               &gt;=3 Stars 
+            </option>
+            <option
+              value="4"
+            >
+               4 Stars 
+            </option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div>
+  .c0 {
+  display: flex;
+  flex-direction: column;
+}
+
+.c1 {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.c2 {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+
+.c4 {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+}
+
+.c5 {
+  pointer-events: visible;
+  fill: none;
+}
+
+.c5:hover {
+  fill: rgba(0,0,0,0.05);
+}
+
+.c3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-right: 20px;
+}
+
+@media (max-width:1200px) {
+
+}
+
+@media (max-width:900px) {
+
+}
+
+@media (max-width:600px) {
+
+}
+
+@media (max-width:600px) {
+
+}
+
+<div
+    class="c0"
+  >
+    <div
+      class="c1"
+    >
+      <div
+        class="c2"
+        style="width: 4px;"
+      >
+        <div
+          class="c3"
+        >
+          ClinVar variants (7)
+        </div>
+      </div>
+      <div
+        class="c4"
+        style="width: 500px;"
+      >
+        <svg
+          height="50"
+          style="overflow: visible;"
+          width="500"
+        >
+          <g>
+            <text
+              dy="0.3em"
+              text-anchor="end"
+              x="-7"
+              y="0"
+            >
+              1
+            </text>
+            <line
+              stroke="#000"
+              stroke-width="1"
+              x1="-5"
+              x2="0"
+              y1="0"
+              y2="0"
+            />
+            <text
+              dy="0.3em"
+              text-anchor="end"
+              x="-7"
+              y="50"
+            >
+              0
+            </text>
+            <line
+              stroke="#000"
+              stroke-width="1"
+              x1="-5"
+              x2="0"
+              y1="50"
+              y2="50"
+            />
+            <line
+              stroke="#000"
+              stroke-width="1"
+              x1="0"
+              x2="0"
+              y1="0"
+              y2="50"
+            />
+          </g>
+          <g>
+            <g
+              transform="translate(1,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(9.064516129032258,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(17.129032258064516,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(25.193548387096776,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(33.25806451612903,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(41.32258064516129,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(49.38709677419355,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(57.45161290322581,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="50"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(65.51612903225806,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(73.58064516129032,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(81.64516129032258,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(89.70967741935483,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(97.7741935483871,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(105.83870967741936,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(113.90322580645162,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="50"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(121.96774193548387,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(130.03225806451613,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(138.09677419354838,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(146.16129032258064,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(154.2258064516129,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(162.29032258064515,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(170.3548387096774,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(178.41935483870967,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="50"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(186.48387096774192,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(194.5483870967742,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(202.61290322580646,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(210.67741935483872,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(218.74193548387098,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(226.80645161290323,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(234.8709677419355,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="50"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(242.93548387096774,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(251,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(259.06451612903226,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(267.1290322580645,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(275.19354838709677,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(283.258064516129,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(291.3225806451613,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(299.38709677419354,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="50"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(307.4516129032258,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(315.51612903225805,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(323.5806451612903,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(331.64516129032256,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(339.7096774193548,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(347.7741935483871,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(355.83870967741933,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="50"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(363.9032258064516,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(371.96774193548384,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(380.0322580645161,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(388.0967741935484,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(396.16129032258067,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(404.2258064516129,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(412.2903225806452,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="50"
+                width="6.064516129032258"
+                x="1"
+                y="0"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(420.35483870967744,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(428.4193548387097,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(436.48387096774195,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(444.5483870967742,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(452.61290322580646,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(460.6774193548387,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(468.741935483871,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(476.80645161290323,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(484.8709677419355,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+            <g
+              transform="translate(492.93548387096774,0)"
+            >
+              <rect
+                fill="#E6573D"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#FAB470"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#5E6F9E"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                fill="#bababa"
+                height="0"
+                width="6.064516129032258"
+                x="1"
+                y="50"
+              />
+              <rect
+                class="c5"
+                height="50"
+                width="8.064516129032258"
+                x="0"
+                y="0"
+              />
+            </g>
+          </g>
+          <line
+            stroke="#000"
+            x1="0"
+            x2="500"
+            y1="50"
+            y2="50"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+  .c0 {
+  padding: 0 80px 0 115px;
+}
+
+@media (max-width:1200px) {
+
+}
+
+@media (max-width:900px) {
+  .c0 {
+    padding: 0;
+  }
+}
+
+@media (max-width:600px) {
+
+}
+
+@media (max-width:600px) {
+
+}
+
+<p
+    class="c0"
+  >
+    ClinVar release date is unavailable.
+  </p>
+</DocumentFragment>
+`;
