@@ -68,9 +68,11 @@ export type Region = {
   start: number
   stop: number
   genes: any[]
-  short_tandem_repeats?: {
-    id: string
-  }[]
+  short_tandem_repeats:
+    | {
+        id: string
+      }[]
+    | null
   non_coding_constraints: NonCodingConstraint[] | null
 }
 
@@ -159,6 +161,12 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
                   </p>
                 )}
               </>
+            )}
+            {region.short_tandem_repeats === null && (
+              <p>
+                <Badge level="warning">Warning</Badge> Unable to determine whether tandem repeat
+                data is available for this region.
+              </p>
             )}
           </div>
           <RegionControlsWrapper>

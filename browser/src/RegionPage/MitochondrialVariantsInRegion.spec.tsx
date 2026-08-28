@@ -62,6 +62,7 @@ const region: Region = {
   start: 123,
   stop: 456,
   genes: [],
+  short_tandem_repeats: null,
   non_coding_constraints: null,
 }
 
