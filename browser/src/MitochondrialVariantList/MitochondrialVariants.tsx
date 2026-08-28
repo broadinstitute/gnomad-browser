@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import { clinvarReleaseDateClause } from '../ClinvarVariantsTrack/clinvarDates'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
@@ -49,7 +49,7 @@ const sortMitochondrialVariants = (variants: any, { sortKey, sortOrder }: any) =
 }
 
 type MitochondrialVariantsProps = {
-  clinvarReleaseDate: string
+  clinvarReleaseDate: string | null
   context: any
   exportFileName: string
   // @ts-expect-error TS(2749) FIXME: 'StructrualVariantPropType' refers to a value, but... Remove this comment to see the full error message
@@ -77,9 +77,9 @@ const MitochondrialVariants = ({
     if ((columnsForContext as any).clinical_significance) {
       ;(
         columnsForContext as any
-      ).clinical_significance.description = `ClinVar germline classification, formerly called clinical significance. Based on ClinVar's ${formatClinvarDate(
+      ).clinical_significance.description = `ClinVar germline classification, formerly called clinical significance. ${clinvarReleaseDateClause(
         clinvarReleaseDate
-      )} release`
+      )}`
     }
 
     return (

@@ -3,7 +3,7 @@ import React from 'react'
 import { ExternalLink, List, ListItem } from '@gnomad/ui'
 
 import AttributeList, { AttributeListItem } from './AttributeList'
-import formatClinvarDate from './ClinvarVariantsTrack/formatClinvarDate'
+import { formatClinvarDate } from './ClinvarVariantsTrack/clinvarDates'
 
 type SubmissionsListProps = {
   submissions: {

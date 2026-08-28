@@ -5,7 +5,7 @@ import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
 import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import { clinvarReleaseDateClause } from '../ClinvarVariantsTrack/clinvarDates'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
@@ -45,7 +45,7 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
 
 type OwnVariantsProps = {
   children?: any
-  clinvarReleaseDate: string
+  clinvarReleaseDate: string | null
   context: Gene
   datasetId: DatasetId
   exportFileName?: string
@@ -103,9 +103,9 @@ const Variants = ({
     if ((columnsForContext as any).clinical_significance) {
       ;(
         columnsForContext as any
-      ).clinical_significance.description = `ClinVar germline classification, formerly called clinical significance. Based on ClinVar's ${formatClinvarDate(
+      ).clinical_significance.description = `ClinVar germline classification, formerly called clinical significance. ${clinvarReleaseDateClause(
         clinvarReleaseDate
-      )} release`
+      )}`
     }
 
     return (

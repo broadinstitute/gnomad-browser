@@ -7,7 +7,7 @@ import SubmissionsList from '../SubmissionsList'
 import Link from '../Link'
 import Query from '../Query'
 
-import formatClinvarDate from './formatClinvarDate'
+import { formatClinvarDate, clinvarReleaseDateSentence } from './clinvarDates'
 
 type ClinvarVariantDetailsGnomadDataProps = {
   clinvarVariant: {
@@ -83,7 +83,7 @@ type ClinvarVariantDetailsProps = {
     }[]
     variant_id: string
   }
-  clinvarReleaseDate: string
+  clinvarReleaseDate: string | null
 }
 
 const ClinvarVariantDetails = ({
@@ -151,9 +151,7 @@ const ClinvarVariantDetails = ({
 
       <SubmissionsList submissions={clinvarVariant.submissions} />
 
-      <p>
-        Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
-      </p>
+      <p>{clinvarReleaseDateSentence(clinvarReleaseDate)}</p>
 
       {clinvarVariant.in_gnomad && (
         <>

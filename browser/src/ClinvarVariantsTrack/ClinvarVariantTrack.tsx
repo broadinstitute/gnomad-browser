@@ -22,7 +22,7 @@ import {
 import ClinvarAllVariantsPlot from './ClinvarAllVariantsPlot'
 import ClinvarBinnedVariantsPlot from './ClinvarBinnedVariantsPlot'
 import ClinvarVariantDetails from './ClinvarVariantDetails'
-import formatClinvarDate from './formatClinvarDate'
+import { clinvarReleaseDateSentence } from './clinvarDates'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import { ReferenceGenome } from '../../../dataset-metadata/metadata'
@@ -296,7 +296,7 @@ export const ClinvarVariantTrack = React.memo(UnmemoizedClinvarVariantTrack)
 
 type ClinvarVariantsProps = {
   clinvarVariants: ClinvarVariant[] | null | undefined
-  clinvarReleaseDate: string
+  clinvarReleaseDate: string | null
   referenceGenome: ReferenceGenome
   transcripts: Transcript[]
   zoomRegion?: { start: number; stop: number } | null
@@ -339,9 +339,7 @@ const ClinvarVariants = ({
         transcripts={transcripts}
         variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
       />
-      <TrackPageSection as="p">
-        Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
-      </TrackPageSection>
+      <TrackPageSection as="p">{clinvarReleaseDateSentence(clinvarReleaseDate)}</TrackPageSection>
     </>
   )
 
