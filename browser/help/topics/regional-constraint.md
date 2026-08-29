@@ -3,7 +3,45 @@ id: regional-constraint
 title: 'Regional constraint'
 ---
 
-Important: The regional missense constraint track is currently only available / displayed when selecting the gnomAD v2.1.1 dataset. In addition, there are three distinct views:
+This track shows regional (sub-genic) missense constraint scores for genes, calculated from the gnomAD v4.1.1 dataset.
+
+The impact of a missense variant depends on both the specific amino acid substitution it causes and its position within the gene. By highlighting regions that are intolerant to missense variation, this track is designed to aid in missense variant interpretation and classification. The missense observed/expected (`o/e`) percentile information available in the track can be used to help interpret how constrained a particular region is against missense variation. For example, a missense o/e percentile of 5 means that coding base pairs within that region are in the top 5% most highly missense constrained coding base pairs across all analyzed genes.
+
+Note that smaller missense `o/e` percentile values indicate smaller missense `o/e` values and greater constraint against missense variation.
+
+All regional missense constraint data and scores from its derivative missense variant deleteriousness predictor, MPC, are available in our [downloadable files](https://gnomad.broadinstitute.org/data#v4-regional-missense-constraint)
+
+### Methods
+
+#### Transcripts included in this analysis
+
+We used the MANE Select (v0.95) or canonical transcripts of protein-coding genes as defined by GENCODE v39. For high quality transcripts, we excluded transcripts that had outlier variant counts: zero expected or too many observed pLoF, missense, or synonymous variants; or too few observed synonymous variants. This totaled 17,841 transcripts, 96% from MANE Select and 4% canonical. While the 1,534 transcripts with outlier counts are included in the [downloadable files](https://gnomad.broadinstitute.org/data#v4-regional-missense-constraint), we caution that scores may be less accurate in these sequences.
+
+Note that regional missense constraint for 1,125 outlier transcripts missing expected variation (zero expected variation, zero expected synonymous variants, zero expected missense variants, or zero expected loss-of-function variants) are not displayed on the gnomAD browser.
+
+### Coverage
+
+[Coverage](https://gnomad.broadinstitute.org/help/how-was-coverage-calculated) for gnomAD v4.1.1 was calculated using information from [sample genomic VCF (gVCF)](https://gatk.broadinstitute.org/hc/en-us/articles/360035531812-GVCF-Genomic-Variant-Call-Format) data rather than from read data. As a result, coverage information for gnomAD v4.1.1 is not as granular due to the reference block structure within gVCFs. To remedy this, we used [allele number](https://gnomad.broadinstitute.org/news/2024-04-gnomad-v4-1/#allele-numbers-across-all-possible-sites) percent (%AN) to proxy coverage for all analyses to improve our ability to capture constraint in lower-coverage sites. Sites with %AN < 20 (0.68% of all possible missense sites with %AN > 0) were excluded from analysis.
+
+Note that all low coverage (median %AN < 90) sub-genic regions are displayed on the gene pages using a gray color to indicate lower confidence in these regions.
+
+#### Observed and expected rare missense variants
+
+The proportion of observed and expected rare missense variants were calculated following the same methods described in calculating [gene-level constraint](https://gnomad.broadinstitute.org/help/constraint). Missense observed/expected (`o/e`)percentiles were calculated across all coding base pair sites in the 17,841 high-quality transcripts by assigning each site the `o/e` value of the region containing it.
+
+Note that all regions with missense observed/expected values not significantly different from 1 (p-value > 0.001) are colored in gray to indicate lower confidence of missense intolerance.
+
+#### Identification of missense constrained regions
+
+We searched for regions within transcripts that were differentially intolerant of missense variation within the v4.1.1 dataset. We used likelihood ratio tests to identify transcripts that had two or more regions with significantly different levels of missense constraint (as measured by depletion of observed rare missense variation compared to expected). Missense constraint values closer to zero indicate increased intolerance against missense variation.
+
+More details can be found in [Wang _et al._ bioRxiv 2026](https://www.biorxiv.org/content/10.1101/2024.04.11.588920v3), or the open-source [GitHub repository](https://github.com/broadinstitute/regional_missense_constraint/tree/main).
+
+<details>
+
+<summary>Expand to see details for past versions</summary>
+
+Important: There are three distinct views for the regional missense constraint track on the gnomAD v2.1.1 dataset:
 
 - Regional constraint information for genes that exhibit evidence of regional missense constraint (RMC)
 - Transcript-wide missense information for genes that were searched for but did not exhibit any evidence of RMC
@@ -38,3 +76,5 @@ We used a depth corrected probability of mutation for each gene to predict the e
 ### Identification of missense constrained regions
 
 We used likelihood ratio tests to identify regions within transcripts that were differentially intolerant of missense variation. Briefly, we searched for breaks between base pairs that would split a transcript into two or more regions with significantly different levels of missense constraint. We used a likelihood ratio test to determine if splitting a transcript into multiple regions was significantly better at modeling the gene's observed pattern of missense variation than the null model that assumes no regional variability in missense constraint. For these analyses, we assumed that observed counts should follow a Poisson distribution around the product of the expected counts and the model-specific observed / expected proportion. More details of this analysis are included in [Samocha et al bioRxiv 2017](https://www.biorxiv.org/content/early/2017/06/12/148353).
+
+</details>
