@@ -920,6 +920,37 @@ const purityDecimals = (domainMinimum: number, domainMaximum: number) => {
   return 2
 }
 
+// The 24 px button's focus outline reaches 18 px from its center. Keep that full keyboard
+// target (and the largest 26 px AC mark) inside the axes at every data-domain boundary.
+export const PURITY_POINT_CLEARANCE = 18
+export const PURITY_MAX_JITTER = 32
+export const PURITY_HORIZONTAL_INSET = PURITY_POINT_CLEARANCE + PURITY_MAX_JITTER
+
+export const purityScalePosition = (
+  value: number,
+  minimum: number,
+  maximum: number,
+  inset: number
+) => {
+  const ratio = minimum === maximum ? 0.5 : (value - minimum) / (maximum - minimum)
+  return {
+    percent: ratio * 100,
+    pixelOffset: (1 - 2 * ratio) * inset,
+  }
+}
+
+export const purityOverlapOffset = (index: number, count: number) => {
+  if (count <= 1) return 0
+  const span = Math.min((count - 1) * 24, PURITY_MAX_JITTER * 2)
+  return (index / (count - 1) - 0.5) * span
+}
+
+const purityPositionCss = ({ percent, pixelOffset }: ReturnType<typeof purityScalePosition>) => {
+  if (pixelOffset === 0) return `${percent}%`
+  const operator = pixelOffset > 0 ? '+' : '-'
+  return `calc(${percent}% ${operator} ${Math.abs(pixelOffset)}px)`
+}
+
 const PurityScatter = ({
   points,
   selectedAllele,
@@ -957,6 +988,8 @@ const PurityScatter = ({
         role="group"
         aria-label={`${points.length} exact alleles plotted by total allele length change and motif purity`}
         data-purity-domain={`${domainMinimum.toFixed(6)}:${domainMaximum.toFixed(6)}`}
+        data-horizontal-inset={PURITY_HORIZONTAL_INSET}
+        data-vertical-inset={PURITY_POINT_CLEARANCE}
         style={{
           position: 'relative',
           height: scatterHeight,
@@ -966,7 +999,9 @@ const PurityScatter = ({
         }}
       >
         {purityTicks.map((tick) => {
-          const bottom = 6 + ((tick - domainMinimum) / domainSpan) * 88
+          const bottom = purityPositionCss(
+            purityScalePosition(tick, domainMinimum, domainMaximum, PURITY_POINT_CLEARANCE)
+          )
           return (
             <React.Fragment key={tick}>
               <span
@@ -974,7 +1009,7 @@ const PurityScatter = ({
                 style={{
                   position: 'absolute',
                   right: 0,
-                  bottom: `${bottom}%`,
+                  bottom,
                   left: 0,
                   borderTop: '1px solid #e2e6e8',
                 }}
@@ -984,7 +1019,7 @@ const PurityScatter = ({
                 style={{
                   position: 'absolute',
                   right: 'calc(100% + 6px)',
-                  bottom: `${bottom}%`,
+                  bottom,
                   transform: 'translateY(50%)',
                   color: '#566168',
                   fontSize: 10,
@@ -997,9 +1032,17 @@ const PurityScatter = ({
           )
         })}
         {points.map((point) => {
-          const left =
-            minDelta === maxDelta ? 50 : 6 + ((point.delta - minDelta) / (maxDelta - minDelta)) * 88
-          const bottom = 6 + ((point.motif_purity - domainMinimum) / domainSpan) * 88
+          const left = purityPositionCss(
+            purityScalePosition(point.delta, minDelta, maxDelta, PURITY_HORIZONTAL_INSET)
+          )
+          const bottom = purityPositionCss(
+            purityScalePosition(
+              point.motif_purity,
+              domainMinimum,
+              domainMaximum,
+              PURITY_POINT_CLEARANCE
+            )
+          )
           const size = purityPointDiameter(
             point.called_alleles,
             minimumCalledAlleles,
@@ -1009,7 +1052,7 @@ const PurityScatter = ({
           const overlapIndex = overlapIndexes.get(overlapKey) || 0
           overlapIndexes.set(overlapKey, overlapIndex + 1)
           const overlapCount = overlapCounts.get(overlapKey) || 1
-          const overlapOffset = (overlapIndex - (overlapCount - 1) / 2) * 24
+          const overlapOffset = purityOverlapOffset(overlapIndex, overlapCount)
           return (
             <PurityPointButton
               key={point.allele_id}
@@ -1028,10 +1071,11 @@ const PurityScatter = ({
               data-allele-id={point.allele_id}
               data-called-alleles={point.called_alleles}
               data-point-diameter={size}
+              data-overlap-offset={overlapOffset}
               onClick={() => onActivatePoint(point)}
               style={{
-                left: `${left}%`,
-                bottom: `${bottom}%`,
+                left,
+                bottom,
                 transform: `translate(calc(-50% + ${overlapOffset}px), 50%)`,
               }}
             >
@@ -1052,10 +1096,10 @@ const PurityScatter = ({
           </span>
         ) : (
           <>
-            <span style={{ position: 'absolute', left: '6%', bottom: -28 }}>
+            <span style={{ position: 'absolute', left: PURITY_HORIZONTAL_INSET, bottom: -28 }}>
               {signed(minDelta)} bp
             </span>
-            <span style={{ position: 'absolute', right: '6%', bottom: -28 }}>
+            <span style={{ position: 'absolute', right: PURITY_HORIZONTAL_INSET, bottom: -28 }}>
               {signed(maxDelta)} bp
             </span>
           </>

@@ -11,7 +11,13 @@ import {
   histogramHeightPercent,
   LongReadTrComponentTrack,
   motifColor,
+  PURITY_HORIZONTAL_INSET,
+  PURITY_MAX_JITTER,
+  PURITY_POINT_CLEARANCE,
   purityDomain,
+  purityOverlapOffset,
+  purityPointDiameter,
+  purityScalePosition,
   reconciledFilterOptions,
   stackColorFor,
   WholeRecordAlleleLandscape,
@@ -427,9 +433,9 @@ describe('long-read TR visualization fidelity', () => {
       ...alleleLandscape,
       purity_available: true,
       purity_unavailable_reason: null,
-      purity_points: alleles.map((allele) => ({
+      purity_points: alleles.map((allele, index) => ({
         allele_id: allele.variant_id,
-        delta: allele.length as number,
+        delta: (index === 1 ? alleles[0].length : allele.length) as number,
         motif_purity: 1,
         called_alleles: allele.freq.all.ac,
       })),
@@ -455,6 +461,10 @@ describe('long-read TR visualization fidelity', () => {
       name: /Filter exact alleles to ALT/,
     })
     expect(points).toHaveLength(3)
+    expect(
+      points.slice(0, 2).map((candidate) => candidate.getAttribute('data-overlap-offset'))
+    ).toEqual(['-12', '12'])
+    expect(screen.getByText('Overlapping points are slightly separated.')).not.toBeNull()
     const point = within(scatter).getByRole('button', {
       name: /Filter exact alleles to ALT 3, \+12 bp, purity 1.0000/,
     })
@@ -464,7 +474,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(window.getComputedStyle(point.firstElementChild as Element).backgroundColor).toBe(
       'rgb(156, 39, 176)'
     )
-    expect(point.getAttribute('style')).toContain('bottom: 94%')
+    expect(point.getAttribute('style')).toContain('bottom: calc(100% - 18px)')
     const sameDeltaBar = screen.getByRole('button', { name: /\+12 bp, 5 called allele copies/ })
     fireEvent.click(sameDeltaBar)
     expect(sameDeltaBar.getAttribute('aria-pressed')).toBe('true')
@@ -478,6 +488,40 @@ describe('long-read TR visualization fidelity', () => {
     )
     fireEvent.click(point)
     expect(screen.getByRole('heading', { name: '3 of 3 exact alleles' })).not.toBeNull()
+  })
+
+  test('keeps boundary AC marks and bounded coincidence jitter inside narrow plots', () => {
+    const narrowWidth = 120
+    const shortHeight = 190
+    const toPixels = (position: ReturnType<typeof purityScalePosition>, extent: number) =>
+      (position.percent / 100) * extent + position.pixelOffset
+    const minimumX = toPixels(
+      purityScalePosition(-33, -33, 3577, PURITY_HORIZONTAL_INSET),
+      narrowWidth
+    )
+    const maximumX = toPixels(
+      purityScalePosition(3577, -33, 3577, PURITY_HORIZONTAL_INSET),
+      narrowWidth
+    )
+    const minimumPurity = toPixels(
+      purityScalePosition(0.97, 0.97, 1, PURITY_POINT_CLEARANCE),
+      shortHeight
+    )
+    const maximumPurity = toPixels(
+      purityScalePosition(1, 0.97, 1, PURITY_POINT_CLEARANCE),
+      shortHeight
+    )
+    const jitterOffsets = Array.from({ length: 6 }, (_, index) => purityOverlapOffset(index, 6))
+
+    expect(minimumX + jitterOffsets[0]).toBe(PURITY_POINT_CLEARANCE)
+    expect(maximumX + jitterOffsets[5]).toBe(narrowWidth - PURITY_POINT_CLEARANCE)
+    expect(minimumPurity).toBe(PURITY_POINT_CLEARANCE)
+    expect(maximumPurity).toBe(shortHeight - PURITY_POINT_CLEARANCE)
+    expect(new Set(jitterOffsets).size).toBe(6)
+    expect(Math.max(...jitterOffsets.map(Math.abs))).toBe(PURITY_MAX_JITTER)
+    const largestAcRadius = purityPointDiameter(100, 1, 100) / 2
+    expect(largestAcRadius).toBe(13)
+    expect(largestAcRadius).toBeLessThan(PURITY_POINT_CLEARANCE)
   })
 
   test('aggregates stratum rows into reconciled unique exact pairs', () => {
