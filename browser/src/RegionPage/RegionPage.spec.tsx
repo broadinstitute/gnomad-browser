@@ -38,4 +38,20 @@ forAllDatasets('RegionPage with "%s" dataset', (datasetId) => {
     renderer.render(<RegionPage datasetId={datasetId} region={region} />)
     expect(renderer.getRenderOutput()).toMatchSnapshot()
   })
+
+  test('warns that tandem repeat data is unavailable when the field is null', () => {
+    const region = {
+      reference_genome: referenceGenome(datasetId),
+      chrom: '12',
+      start: 345,
+      stop: 456,
+      genes: [],
+      short_tandem_repeats: null,
+      non_coding_constraints: [],
+    }
+
+    const renderer = createRenderer()
+    renderer.render(<RegionPage datasetId={datasetId} region={region} />)
+    expect(renderer.getRenderOutput()).toMatchSnapshot()
+  })
 })

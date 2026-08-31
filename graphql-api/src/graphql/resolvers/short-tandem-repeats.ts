@@ -1,4 +1,5 @@
 import { UserVisibleError } from '../../errors'
+import logger from '../../logger'
 import {
   fetchAllShortTandemRepeats,
   fetchShortTandemRepeatById,
@@ -20,12 +21,34 @@ const resolveShortTandemRepeat = async (_obj: any, args: any, ctx: any) => {
   return shortTandemRepeat
 }
 
-const resolveShortTandemRepeatsInGene = (obj: any, args: any, ctx: any) => {
-  return fetchShortTandemRepeatsByGene(ctx.esClient, args.dataset, obj.gene_id)
+const resolveShortTandemRepeatsInGene = async (obj: any, args: any, ctx: any) => {
+  try {
+    return await fetchShortTandemRepeatsByGene(ctx.esClient, args.dataset, obj.gene_id)
+  } catch (error) {
+    if (error instanceof UserVisibleError) {
+      throw error
+    }
+    logger.warn({
+      message: `Unable to fetch short tandem repeats for gene "${obj.gene_id}"`,
+      error,
+    })
+    return null
+  }
 }
 
-const resolveShortTandemRepeatsInRegion = (obj: any, args: any, ctx: any) => {
-  return fetchShortTandemRepeatsByRegion(ctx.esClient, args.dataset, obj)
+const resolveShortTandemRepeatsInRegion = async (obj: any, args: any, ctx: any) => {
+  try {
+    return await fetchShortTandemRepeatsByRegion(ctx.esClient, args.dataset, obj)
+  } catch (error) {
+    if (error instanceof UserVisibleError) {
+      throw error
+    }
+    logger.warn({
+      message: `Unable to fetch short tandem repeats for region "${obj.chrom}-${obj.start}-${obj.stop}"`,
+      error,
+    })
+    return null
+  }
 }
 
 const resolvers = {

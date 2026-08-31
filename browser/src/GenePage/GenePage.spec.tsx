@@ -310,3 +310,66 @@ describe('gene page for a mitochondrial gene', () => {
     expect(tree).toMatchSnapshot()
   })
 })
+
+describe('gene page tandem repeat banner', () => {
+  beforeEach(() =>
+    setMockApiResponses({
+      VariantsInGene: () => ({
+        gene: geneFactory.build(),
+        meta: { clinvar_release_date: '2022-10-31' },
+      }),
+      GeneCoverage: () => ({
+        gene: {
+          coverage: {},
+        },
+      }),
+      CopyNumberVariantsInGene: () => ({
+        gene: { copy_number_variants: [] },
+      }),
+    })
+  )
+
+  test('warns that tandem repeat data is unavailable when the field is null', () => {
+    const gene = geneFactory.build({ short_tandem_repeats: null })
+    render(
+      <MemoryRouter>
+        <GenePage datasetId="gnomad_r4" gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
+    )
+    expect(
+      screen.queryByText(
+        'Unable to determine whether tandem repeat data is available for this gene.'
+      )
+    ).not.toBeNull()
+  })
+
+  test('shows no banner when the gene has no tandem repeat loci', () => {
+    const gene = geneFactory.build({ short_tandem_repeats: [] })
+    render(
+      <MemoryRouter>
+        <GenePage datasetId="gnomad_r4" gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
+    )
+    expect(
+      screen.queryByText(
+        'Unable to determine whether tandem repeat data is available for this gene.'
+      )
+    ).toBeNull()
+    expect(screen.queryByText('tandem repeat locus')).toBeNull()
+  })
+
+  test('links to the tandem repeat locus when the gene has one', () => {
+    const gene = geneFactory.build({ short_tandem_repeats: [{ id: 'FMR1' }] })
+    render(
+      <MemoryRouter>
+        <GenePage datasetId="gnomad_r4" gene={gene} geneId={gene.gene_id} />
+      </MemoryRouter>
+    )
+    expect(
+      screen.queryByText(
+        'Unable to determine whether tandem repeat data is available for this gene.'
+      )
+    ).toBeNull()
+    expect(screen.queryByText('tandem repeat locus')).not.toBeNull()
+  })
+})

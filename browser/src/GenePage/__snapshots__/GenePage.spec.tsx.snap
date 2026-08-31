@@ -649,6 +649,15 @@ exports[`GenePage with CNV dataset "gnomad_cnv_r4" has no unexpected changes 1`]
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -2187,6 +2196,15 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1" has no unexpected changes 1`]
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -3712,6 +3730,15 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_controls" has no unexpected ch
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -5237,6 +5264,15 @@ exports[`GenePage with SV dataset "gnomad_sv_r2_1_non_neuro" has no unexpected c
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -6762,6 +6798,15 @@ exports[`GenePage with SV dataset "gnomad_sv_r4" has no unexpected changes 1`] =
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -8287,6 +8332,15 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -9848,6 +9902,15 @@ exports[`GenePage with non-SV dataset "gnomad_cnv_r4" has no unexpected changes 
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -11386,6 +11449,15 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -13042,6 +13114,15 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -14698,6 +14779,15 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -16354,6 +16444,15 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -18010,6 +18109,15 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -19666,6 +19774,15 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -21227,6 +21344,15 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -22788,6 +22914,15 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -24349,6 +24484,15 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -25910,6 +26054,15 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -27471,6 +27624,15 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -29032,6 +29194,15 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -30593,6 +30764,15 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"
@@ -31960,6 +32140,15 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
             </dd>
           </div>
         </dl>
+        <p>
+          <span
+            className="Badge__BadgeWrapper-sc-j4izdp-1 iRTsMe"
+            level="warning"
+          >
+            Warning
+          </span>
+           Unable to determine whether tandem repeat data is available for this gene.
+        </p>
       </div>
       <div
         className="GenePage__ConstraintOrCooccurrenceColumn-sc-rcxzgc-3 jkKjua"

@@ -83,7 +83,7 @@ type Gene {
   cnv_track_callable_coverage(dataset: CopyNumberVariantDatasetId!): [CNVTrackCallableCoverageBin!]
     @cost(value: 5)
 
-  short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 5)
+  short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!] @cost(value: 5)
   heterozygous_variant_cooccurrence_counts: [HeterozygousVariantCooccurrenceCounts!]!
     @cost(value: 5)
   homozygous_variant_cooccurrence_counts: [HomozygousVariantCooccurrenceCounts!]! @cost(value: 5)
