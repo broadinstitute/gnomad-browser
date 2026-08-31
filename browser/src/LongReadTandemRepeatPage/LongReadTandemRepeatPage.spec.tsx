@@ -33,6 +33,10 @@ jest.mock('../VariantPage/ExactTrAltMotifStructure', () => ({ altAllele }: any) 
   </div>
 ))
 
+jest.mock('./LocalHaplotypeBackgroundsSection', () => () => (
+  <section aria-label="Experimental local haplotype backgrounds" />
+))
+
 jest.mock('../DocumentTitle', () => () => null)
 jest.mock('../ShortTandemRepeatPage/ShortTandemRepeatAlleleSizeDistributionPlot', () => () => (
   <div data-testid="allele-repeat-count-plot" />
@@ -458,11 +462,31 @@ beforeEach(() => {
   navigation.onSelectAllele.mockClear()
   scrollIntoView.mockClear()
   windowScrollTo.mockClear()
+  delete (global as any).__EXPERIMENTAL_FEATURES_ENABLED__
   delete (global as any).__TR_QUERY_STATE__
   delete (global as any).__TR_QUERY_PROPS__
+  window.history.replaceState(null, '', '/')
 })
 
 describe('canonical long-read tandem-repeat locus page', () => {
+  test('hides local haplotype backgrounds unless their experimental feature is enabled', () => {
+    renderPage()
+
+    expect(screen.queryByLabelText('Experimental local haplotype backgrounds')).toBeNull()
+  })
+
+  test('allows selective URL opt-in to local haplotype backgrounds', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/?experimental_features=tr_haplotype_backgrounds'
+    )
+
+    renderPage()
+
+    expect(screen.getByLabelText('Experimental local haplotype backgrounds')).not.toBeNull()
+  })
+
   test('renders grounded source attributes and ordered overlapping components', () => {
     renderPage()
     expect(

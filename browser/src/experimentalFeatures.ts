@@ -8,6 +8,7 @@ export type ExperimentalFeature =
   | 'expanded_variants'
   | 'methylation_context'
   | 'compound_het_annotations'
+  | 'tr_haplotype_backgrounds'
 
 const currentLocationSearch = () => (typeof window === 'undefined' ? '' : window.location.search)
 

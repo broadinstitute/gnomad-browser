@@ -6,6 +6,7 @@ import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocus
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
+import { isExperimentalFeatureEnabled } from '../experimentalFeatures'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   LongReadTrComponentTrack,
@@ -212,6 +213,9 @@ const LongReadTandemRepeatPage = ({
       ? `Unavailable: ${unavailableReason(locus.delta_unavailable_reason)}`
       : `${signed(locus.delta_min)} to ${signed(locus.delta_max)} bp`
   const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
+  const localHaplotypeBackgroundsEnabled = isExperimentalFeatureEnabled(
+    'tr_haplotype_backgrounds'
+  )
   const unavailableData: { label: string; reason: string }[] = []
   if (!repeatPlotsAvailable) {
     unavailableData.push({
@@ -364,7 +368,9 @@ const LongReadTandemRepeatPage = ({
         selectedAlleleDetail={selectedAlleleDetail}
       />
 
-      <LocalHaplotypeBackgroundsSection locus={locus} selectedAlleleId={selectedAllele} />
+      {localHaplotypeBackgroundsEnabled && (
+        <LocalHaplotypeBackgroundsSection locus={locus} selectedAlleleId={selectedAllele} />
+      )}
 
       {(locus.alleles.page_info.has_next_page ||
         locus.total_alleles > locus.alleles.nodes.length) && (
