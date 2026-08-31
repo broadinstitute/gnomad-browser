@@ -157,6 +157,9 @@ const makeLocus = (count = 72) => {
     delta_min: -24,
     delta_max: 48,
     delta_unavailable_reason: null,
+    represented_allele_length_min: 140,
+    represented_allele_length_max: 212,
+    represented_allele_length_unavailable_reason: null,
     called_allele_count: 584,
     called_sample_count: 292,
     unique_carrier_count: 278,
@@ -431,6 +434,7 @@ const renderPage = ({
       <LongReadTandemRepeatPage
         datasetId="gnomad_r4_lr"
         locus={locus}
+        requestedCohort={locus?.lr_cohort || 'hgsvc_hprc'}
         selectedAllele={selectedAllele}
         onCohortChange={onCohortChange}
         onInvalidSelection={onInvalidSelection}
@@ -476,11 +480,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
   })
 
   test('allows selective URL opt-in to local haplotype backgrounds', () => {
-    window.history.replaceState(
-      null,
-      '',
-      '/?experimental_features=tr_haplotype_backgrounds'
-    )
+    window.history.replaceState(null, '', '/?experimental_features=tr_haplotype_backgrounds')
 
     renderPage()
 
@@ -490,12 +490,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('renders grounded source attributes and ordered overlapping components', () => {
     renderPage()
     expect(
-      screen.getByRole('heading', { name: 'Tandem repeat at chr4:3,074,877–3,075,040' })
+      screen.getByRole('heading', { name: 'HTT CAG / CAA / CCG / CCT / GCC tandem repeat' })
     ).not.toBeNull()
+    expect(screen.getByText('chr4:3,074,877–3,075,040 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
-    expect(screen.getByText('GRCh38 / hg38')).not.toBeNull()
-    expect(screen.getByText('72 exact alleles')).not.toBeNull()
-    expect(screen.getByText('−24 to +48 bp')).not.toBeNull()
+    expect(screen.queryByText('GRCh38 / hg38')).toBeNull()
+    expect(screen.getByText('72 exact ALT sequences')).not.toBeNull()
+    expect(screen.getByText('140–212 bp (−24 to +48 bp)')).not.toBeNull()
+    expect(screen.getByText('HTT — exon')).not.toBeNull()
+    expect(screen.getByRole('link', { name: 'TRExplorer' })).not.toBeNull()
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
     expect(
       screen.getByRole('img', {
@@ -510,6 +513,20 @@ describe('canonical long-read tandem-repeat locus page', () => {
       )
     ).not.toBeNull()
     expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
+  })
+
+  test('uses motif identity rather than an interval as the anonymous-locus title', () => {
+    const locus = makeSimpleLocus()
+    ;(locus as any).short_read_context = {
+      ...locus.short_read_context,
+      status: 'NONE',
+      catalog_record: null,
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.getByRole('heading', { name: 'CAG tandem repeat' })).not.toBeNull()
+    expect(screen.getByText('chr4:3,074,877–3,074,933 (GRCh38)')).not.toBeNull()
+    expect(screen.queryByText('HTT — exon')).toBeNull()
   })
 
   test('gives every canonical page help dialog the task-first structure', () => {
@@ -579,6 +596,28 @@ describe('canonical long-read tandem-repeat locus page', () => {
       screen.getByRole('button', { name: /−6 bp, 134 called allele copies.*2 exact alleles/ })
     ).not.toBeNull()
     expect(screen.getByRole('button', { name: /\+48 bp, 5 called allele copies/ })).not.toBeNull()
+  })
+
+  test('deprioritizes a single reference component in a closed disclosure', () => {
+    renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
+
+    const disclosure = screen.getByText(/LR reference component: CAG · chr4:/).closest('details')
+    expect(disclosure).not.toBeNull()
+    expect(disclosure?.hasAttribute('open')).toBe(false)
+    expect(screen.getByText('Repeat motif')).not.toBeNull()
+  })
+
+  test('renders an explicit non-error state when a locus is absent from one cohort', () => {
+    const onCohortChange = jest.fn()
+    renderPage({ locus: null, selectedAllele: undefined, onCohortChange })
+
+    expect(screen.getByRole('heading', { name: 'Tandem-repeat locus unavailable' })).not.toBeNull()
+    expect(screen.getByRole('status').textContent).toContain(
+      'This exact canonical locus is not available in the HGSVC / HPRC data. Data from another cohort were not substituted.'
+    )
+    fireEvent.change(screen.getByLabelText('Long-read cohort'), { target: { value: 'aou' } })
+    expect(onCohortChange).toHaveBeenCalledWith('aou')
+    expect(screen.queryByRole('alert')).toBeNull()
   })
 
   test('uses one spacious responsive 2 × 2 grid for the four actually admitted simple plots', () => {
@@ -1056,6 +1095,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const rendered = render(page)
 
     expect((global as any).__TR_QUERY_PROPS__.retainPreviousData).toBe(true)
+    expect((global as any).__TR_QUERY_PROPS__.rejectGraphQLErrors).toBe(true)
     expect((global as any).__TR_QUERY_PROPS__.requestKey).toBe(`hgsvc_hprc:${staleLocus.id}`)
     expect(screen.getByRole('heading', { name: `${exactId} exact allele details` })).not.toBeNull()
     expect(screen.getByRole('heading', { name: '72 of 72 exact alleles' })).not.toBeNull()
@@ -1156,6 +1196,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(LONG_READ_TR_ALLELE_INDEX_LIMIT).toBe(600)
     expect(longReadTandemRepeatLocusQuery).toContain('first: $first')
     expect(longReadTandemRepeatLocusQuery).toContain('whole_record_allele_landscape')
+    expect(longReadTandemRepeatLocusQuery).toContain('represented_allele_length_min')
     expect(longReadTandemRepeatLocusQuery).toContain('whole_record_genotype_landscape')
     expect(longReadTandemRepeatLocusQuery).toContain('selected_allele_unavailable_reason')
     expect(longReadTandemRepeatLocusQuery).toContain('selected_allele {')

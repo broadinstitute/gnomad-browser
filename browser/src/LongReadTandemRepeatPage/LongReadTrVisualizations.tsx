@@ -142,8 +142,12 @@ const signed = (value: number) => {
   return '0'
 }
 const UNAVAILABLE_REASON_COPY: Record<string, string> = {
+  ADMITTED_HISTOGRAM_COULD_NOT_BE_VALIDATED:
+    'the cohort-specific repeat-count source could not be validated',
   ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED: 'the allele sequences are too large to preview safely',
   BOUND_EXCEEDED: 'the result is too large to display safely',
+  EXACT_ALLELE_SEQUENCE_ANCHOR_NOT_RECONCILABLE:
+    'the complete REF and ALT sequences do not share one validated VCF anchor',
   EXACT_ALT_LIMIT_EXCEEDED:
     'the locus has more alternate alleles than this view can display safely',
   NO_METADATA: 'the source does not include the required metadata',

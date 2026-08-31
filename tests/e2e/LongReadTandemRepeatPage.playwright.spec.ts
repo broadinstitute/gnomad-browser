@@ -4,6 +4,7 @@ const COMPOUND_LOCUS =
   '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
 const SIMPLE_THREE_ALT_LOCUS = '1-143278475-143278486-T'
 const SPARSE_LOCUS = '1-121606499-121606508-AG+1-121606517-121606536-A'
+const ARX_1_LOCUS = 'X-25013649-25013697-NGC'
 type Cohort = 'hgsvc_hprc' | 'aou'
 
 const datasetQuery = (cohort: Cohort) => `dataset=gnomad_r4_lr&lr_cohort=${cohort}`
@@ -276,6 +277,33 @@ const verifyLegacyRedirect = async (page: Page, locusId: string, alleleId: strin
 }
 
 test.describe('Long-read tandem-repeat locus exact navigation', () => {
+  test('ARX_1 switches from All of Us to HGSVC/HPRC without an ancillary error', async ({
+    page,
+  }) => {
+    test.setTimeout(60_000)
+    await openLocus(page, ARX_1_LOCUS, 73, 'aou')
+    await expect(page.getByRole('heading', { name: 'ARX_1 (ARX) NGC tandem repeat' })).toBeVisible()
+    await expect(page.getByText('39–73 bp (−9 to +25 bp)')).toBeVisible()
+    await expect(page.getByText('ARX — coding: polyalanine')).toBeVisible()
+
+    const responsePromise = waitForLocusResponse(page)
+    await page.getByLabel('Long-read cohort').selectOption('hgsvc_hprc')
+    const response = await responsePromise
+    const payload = await response.json()
+    expect(response.status()).toBe(200)
+    expect(payload.errors).toBeUndefined()
+    expect(payload.data.long_read_tandem_repeat_locus.id).toBe(ARX_1_LOCUS)
+    await expect(page.getByRole('heading', { name: '2 of 2 exact alleles' })).toBeVisible()
+    await expect(page.getByText('Unable to load tandem-repeat locus')).toHaveCount(0)
+
+    const componentDisclosure = page.locator('details').filter({
+      hasText: 'LR reference component: NGC',
+    })
+    await expect(componentDisclosure).not.toHaveAttribute('open', '')
+    await page.setViewportSize({ width: 390, height: 844 })
+    await expect(page.getByRole('heading', { name: 'ARX_1 (ARX) NGC tandem repeat' })).toBeVisible()
+  })
+
   test('three-ALT simple locus renders complete matching motif previews and exact sequence', async ({
     page,
   }, testInfo) => {

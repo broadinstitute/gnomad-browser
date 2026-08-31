@@ -434,6 +434,9 @@ type LongReadTandemRepeatLocus {
   delta_min: Int
   delta_max: Int
   delta_unavailable_reason: String
+  represented_allele_length_min: Int
+  represented_allele_length_max: Int
+  represented_allele_length_unavailable_reason: String
   called_allele_count: Int
   called_sample_count: Int
   unique_carrier_count: Int

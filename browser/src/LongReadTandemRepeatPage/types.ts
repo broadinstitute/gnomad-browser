@@ -199,6 +199,9 @@ export type LongReadTrLocus = {
   delta_min: number | null
   delta_max: number | null
   delta_unavailable_reason: string | null
+  represented_allele_length_min: number | null
+  represented_allele_length_max: number | null
+  represented_allele_length_unavailable_reason: string | null
   called_allele_count: number | null
   called_sample_count: number | null
   unique_carrier_count: number | null

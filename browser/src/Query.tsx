@@ -210,6 +210,7 @@ type OwnQueryProps = {
   operationName: string | null
   query: string
   requestKey?: any
+  rejectGraphQLErrors?: boolean
   retainPreviousData?: boolean
   success?: (...args: any[]) => any
   url: string
@@ -228,6 +229,7 @@ const Query = ({
   operationName,
   query,
   requestKey,
+  rejectGraphQLErrors,
   retainPreviousData,
   success,
   url,
@@ -272,6 +274,12 @@ const Query = ({
           return renderError(errorMessage)
         }
 
+        if (rejectGraphQLErrors && graphQLErrors?.length) {
+          return renderError(
+            Array.from(new Set(graphQLErrors.map((e: any) => e.message))).join(', ')
+          )
+        }
+
         if (!data || !success(data)) {
           return renderError(
             graphQLErrors && graphQLErrors.length
@@ -300,6 +308,7 @@ Query.defaultProps = {
   variables: {},
   operationName: null,
   requestKey: undefined,
+  rejectGraphQLErrors: false,
   retainPreviousData: false,
 }
 

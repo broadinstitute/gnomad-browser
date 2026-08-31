@@ -26,6 +26,7 @@ import ShortTandemRepeatGenotypeDistributionPlot, {
 import ShortTandemRepeatGenotypeDistributionBinDetails from './ShortTandemRepeatGenotypeDistributionBinDetails'
 import ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect from './ShortTandemRepeatGenotypeDistributionRepeatUnitsSelect'
 import ShortTandemRepeatReads from './ShortTandemRepeatReads'
+import { strchiveLocusUrl, stripyLocusUrl, trExplorerGeneUrl } from './externalResourceUrls'
 import {
   getSelectedAlleleSizeDistribution,
   getSelectedGenotypeDistribution,
@@ -171,9 +172,7 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
           {strchive_id && (
             <>
               <ListItem>
-                <ExternalLink href={`https://strchive.org/loci/${strchive_id}`}>
-                  STRchive
-                </ExternalLink>
+                <ExternalLink href={strchiveLocusUrl(strchive_id)}>STRchive</ExternalLink>
               </ListItem>
             </>
           )}
@@ -182,9 +181,7 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
           {stripy_id && (
             <>
               <ListItem>
-                <ExternalLink href={`https://stripy.org/database/${stripy_id}`}>
-                  STRipy
-                </ExternalLink>
+                <ExternalLink href={stripyLocusUrl(stripy_id)}>STRipy</ExternalLink>
               </ListItem>
             </>
           )}
@@ -193,11 +190,7 @@ const ExternalResources = ({ shortTandemRepeat }: { shortTandemRepeat: ShortTand
           {gene && (
             <>
               <ListItem>
-                <ExternalLink
-                  href={`https://trexplorer.broadinstitute.org/#sc=isPathogenic&sd=DESC&showRs=1&searchQuery=${gene.symbol}&showColumns=0i1i2i3i4i7i21i17`}
-                >
-                  TRExplorer
-                </ExternalLink>
+                <ExternalLink href={trExplorerGeneUrl(gene.symbol)}>TRExplorer</ExternalLink>
               </ListItem>
             </>
           )}

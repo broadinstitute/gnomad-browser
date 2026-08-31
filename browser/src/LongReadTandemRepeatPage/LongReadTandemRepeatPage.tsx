@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
-import { PageHeading, Select } from '@gnomad/ui'
+import { ExternalLink, PageHeading, Select } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
+import DocumentTitle from '../DocumentTitle'
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import { isExperimentalFeatureEnabled } from '../experimentalFeatures'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
@@ -20,6 +21,11 @@ import {
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
 import ShortReadReferenceCohortSection from './ShortReadReferenceCohortSection'
 import LocalHaplotypeBackgroundsSection from './LocalHaplotypeBackgroundsSection'
+import {
+  strchiveLocusUrl,
+  stripyLocusUrl,
+  trExplorerGeneUrl,
+} from '../ShortTandemRepeatPage/externalResourceUrls'
 import { AlleleNavigation, LongReadTrLocus } from './types'
 
 const Header = styled.header`
@@ -58,8 +64,32 @@ const CohortControl = styled.label`
   font-weight: bold;
 `
 
+const CoordinateContext = styled.div`
+  color: #596a75;
+  font-size: 1.05em;
+`
+
 const SourceAttributes = styled.div`
   margin-top: 1em;
+`
+
+const InlineResources = styled.span`
+  a:not(:last-child) {
+    margin-right: 1em;
+  }
+`
+
+const SimpleComponentDetails = styled.details`
+  padding: 0.5em 0.75em;
+  border: 1px solid #d8dee2;
+  margin-top: 1.25em;
+  border-radius: 4px;
+  color: #3e4b54;
+
+  > summary {
+    cursor: pointer;
+    font-weight: bold;
+  }
 `
 
 const RepeatMotifBadges = styled.span`
@@ -129,6 +159,46 @@ const UnavailableDataHelp = () => (
 const cohortName = (cohort: LongReadCohort) =>
   cohort === 'hgsvc_hprc' ? 'HGSVC / HPRC' : 'All of Us'
 
+const CohortSelector = ({
+  cohort,
+  onCohortChange,
+}: {
+  cohort: LongReadCohort
+  onCohortChange: (cohort: LongReadCohort) => void
+}) => (
+  <CohortControl htmlFor="lr-tr-cohort">
+    Long-read cohort
+    <Select
+      id="lr-tr-cohort"
+      aria-label="Long-read cohort"
+      value={cohort}
+      onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+        onCohortChange(event.target.value as LongReadCohort)
+      }
+    >
+      <option value="hgsvc_hprc">HGSVC / HPRC</option>
+      <option value="aou">All of Us</option>
+    </Select>
+  </CohortControl>
+)
+
+export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
+  const record =
+    locus.short_read_context?.status === 'EXACT_UNIQUE'
+      ? locus.short_read_context.catalog_record
+      : null
+  const motifs = [
+    ...new Set(locus.motifs.length ? locus.motifs : locus.components.map((c) => c.motif)),
+  ]
+  const motifLabel = motifs.length ? motifs.join(' / ') : null
+  if (record) {
+    const gene = record.gene?.symbol
+    const identity = gene && gene !== record.id ? `${record.id} (${gene})` : record.id
+    return `${identity}${motifLabel ? ` ${motifLabel}` : ''} tandem repeat`
+  }
+  return motifLabel ? `${motifLabel} tandem repeat` : 'Tandem-repeat locus'
+}
+
 const badgeTextColor = (background: string) => {
   const channels = background
     .slice(1)
@@ -144,6 +214,7 @@ const badgeTextColor = (background: string) => {
 const LongReadTandemRepeatPage = ({
   datasetId: _datasetId,
   locus,
+  requestedCohort,
   selectedAllele,
   onCohortChange,
   onInvalidSelection,
@@ -151,6 +222,7 @@ const LongReadTandemRepeatPage = ({
 }: {
   datasetId: DatasetId
   locus: LongReadTrLocus | null
+  requestedCohort: LongReadCohort
   selectedAllele?: string
   onCohortChange: (cohort: LongReadCohort) => void
   onInvalidSelection: () => void
@@ -194,7 +266,21 @@ const LongReadTandemRepeatPage = ({
     [locus?.alleles.nodes]
   )
 
-  if (!locus) return <p role="alert">No tandem-repeat locus found in this cohort.</p>
+  if (!locus) {
+    return (
+      <>
+        <DocumentTitle title="Tandem-repeat locus unavailable" />
+        <Header>
+          <PageHeading>Tandem-repeat locus unavailable</PageHeading>
+          <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
+        </Header>
+        <p role="status">
+          This exact canonical locus is not available in the {cohortName(requestedCohort)} data.
+          Data from another cohort were not substituted.
+        </p>
+      </>
+    )
+  }
 
   const envelope = trLocusDisplayEnvelope({
     components: locus.components,
@@ -208,14 +294,24 @@ const LongReadTandemRepeatPage = ({
     locus.short_read_context.exact_reference_component_outline_authorized
       ? locus.short_read_context.matched_component_index
       : null
-  const deltaRange =
-    locus.delta_min == null || locus.delta_max == null
-      ? `Unavailable: ${unavailableReason(locus.delta_unavailable_reason)}`
-      : `${signed(locus.delta_min)} to ${signed(locus.delta_max)} bp`
+  const title = longReadTrLocusTitle(locus)
+  const approvedCatalogRecord =
+    locus.short_read_context?.status === 'EXACT_UNIQUE'
+      ? locus.short_read_context.catalog_record
+      : null
+  const alleleLengthRange =
+    locus.represented_allele_length_min == null ||
+    locus.represented_allele_length_max == null ||
+    locus.delta_min == null ||
+    locus.delta_max == null
+      ? `Unavailable: ${unavailableReason(
+          locus.represented_allele_length_unavailable_reason || locus.delta_unavailable_reason
+        )}`
+      : `${locus.represented_allele_length_min.toLocaleString()}–${locus.represented_allele_length_max.toLocaleString()} bp (${signed(
+          locus.delta_min
+        )} to ${signed(locus.delta_max)} bp)`
   const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
-  const localHaplotypeBackgroundsEnabled = isExperimentalFeatureEnabled(
-    'tr_haplotype_backgrounds'
-  )
+  const localHaplotypeBackgroundsEnabled = isExperimentalFeatureEnabled('tr_haplotype_backgrounds')
   const unavailableData: { label: string; reason: string }[] = []
   if (!repeatPlotsAvailable) {
     unavailableData.push({
@@ -260,6 +356,7 @@ const LongReadTandemRepeatPage = ({
 
   return (
     <>
+      <DocumentTitle title={title} />
       {selectedAllele && locus.selected_allele_valid === false && (
         <p role="alert">
           Requested exact allele is not in this locus or cohort and was removed from the URL. Other
@@ -269,35 +366,26 @@ const LongReadTandemRepeatPage = ({
 
       <Header>
         <HeadingWithHelp>
-          <PageHeading>
-            Tandem repeat at chr{envelope.chrom}:{envelope.start1.toLocaleString()}–
-            {envelope.end1.toLocaleString()}
-          </PageHeading>
-          <LocusOverviewHelp />
+          <div>
+            <HeadingWithHelp>
+              <PageHeading>{title}</PageHeading>
+              <LocusOverviewHelp />
+            </HeadingWithHelp>
+            <CoordinateContext>
+              chr{envelope.chrom}:{envelope.start1.toLocaleString()}–
+              {envelope.end1.toLocaleString()} (GRCh38)
+            </CoordinateContext>
+          </div>
         </HeadingWithHelp>
-        <CohortControl htmlFor="lr-tr-cohort">
-          Long-read cohort
-          <Select
-            id="lr-tr-cohort"
-            aria-label="Long-read cohort"
-            value={locus.lr_cohort}
-            onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-              onCohortChange(event.target.value as LongReadCohort)
-            }
-          >
-            <option value="hgsvc_hprc">HGSVC / HPRC</option>
-            <option value="aou">All of Us</option>
-          </Select>
-        </CohortControl>
+        <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
       </Header>
 
       <SourceAttributes>
         <AttributeList>
-          <AttributeListItem label="Genome build">GRCh38 / hg38</AttributeListItem>
           <AttributeListItem label="Region size">
             {locus.region.size.toLocaleString()} bp
           </AttributeListItem>
-          <AttributeListItem label="Repeat motifs">
+          <AttributeListItem label={vocabulary.length === 1 ? 'Repeat motif' : 'Repeat motifs'}>
             {vocabulary.length ? (
               <RepeatMotifBadges aria-label={`Repeat motifs: ${vocabulary.join(', ')}`}>
                 {vocabulary.map((motif) => {
@@ -318,28 +406,75 @@ const LongReadTandemRepeatPage = ({
               'Unavailable'
             )}
           </AttributeListItem>
-          <AttributeListItem label="Cohort">
-            {cohortName(locus.lr_cohort)}
-            {locus.called_sample_count != null &&
-              ` — ${locus.called_sample_count.toLocaleString()} individuals`}
-            {locus.called_allele_count != null &&
-              `; ${locus.called_allele_count.toLocaleString()} called allele copies`}
+          {approvedCatalogRecord?.gene?.symbol && approvedCatalogRecord.gene.region && (
+            <AttributeListItem label="Gene context">
+              {approvedCatalogRecord.gene.symbol} — {approvedCatalogRecord.gene.region}
+            </AttributeListItem>
+          )}
+          <AttributeListItem
+            label="Allele copies with a genotype call"
+            tooltip="The frequency denominator: chromosome copies with a genotype call at this locus. An allele copy is not a person; a person may contribute more than one copy depending on chromosome and ploidy."
+          >
+            {locus.called_allele_count == null
+              ? 'Unavailable'
+              : `${locus.called_allele_count.toLocaleString()} allele copies`}
           </AttributeListItem>
-          <AttributeListItem label="Observed alleles">
+          <AttributeListItem
+            label="Observed exact ALT sequences"
+            tooltip="Each exact allele is one distinct source ALT sequence identity. Use this count to decide which reported sequence to inspect; it does not group biologically similar sequences."
+          >
             {locus.exact_alt_count_complete
-              ? `${locus.exact_alt_count.toLocaleString()} exact alleles`
+              ? `${locus.exact_alt_count.toLocaleString()} exact ALT sequences`
               : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
           </AttributeListItem>
-          <AttributeListItem label="Total allele length change (ALT − REF, bp)">
-            {deltaRange}
+          <AttributeListItem
+            label="Allele length range (ALT − REF)"
+            tooltip="Absolute lengths include the complete REF and represented ALT sequences. Parentheses show each ALT's signed base-pair change from its complete REF. The range is unavailable if the exact sequence index is incomplete or exceeds its response bound."
+          >
+            {alleleLengthRange}
           </AttributeListItem>
+          {approvedCatalogRecord && (
+            <AttributeListItem label="External resources">
+              <InlineResources>
+                {approvedCatalogRecord.strchive_id && (
+                  <ExternalLink href={strchiveLocusUrl(approvedCatalogRecord.strchive_id)}>
+                    STRchive
+                  </ExternalLink>
+                )}
+                {approvedCatalogRecord.stripy_id && (
+                  <ExternalLink href={stripyLocusUrl(approvedCatalogRecord.stripy_id)}>
+                    STRipy
+                  </ExternalLink>
+                )}
+                {approvedCatalogRecord.gene?.symbol && (
+                  <ExternalLink href={trExplorerGeneUrl(approvedCatalogRecord.gene.symbol)}>
+                    TRExplorer
+                  </ExternalLink>
+                )}
+              </InlineResources>
+            </AttributeListItem>
+          )}
         </AttributeList>
       </SourceAttributes>
 
-      <LongReadTrComponentTrack
-        locus={locus}
-        exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
-      />
+      {locus.components.length === 1 ? (
+        <SimpleComponentDetails>
+          <summary>
+            LR reference component: {locus.components[0].motif} · chr
+            {locus.components[0].chrom}:{(locus.components[0].start0 + 1).toLocaleString()}–
+            {locus.components[0].end0.toLocaleString()}
+          </summary>
+          <LongReadTrComponentTrack
+            locus={locus}
+            exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
+          />
+        </SimpleComponentDetails>
+      ) : (
+        <LongReadTrComponentTrack
+          locus={locus}
+          exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
+        />
+      )}
 
       <ShortReadKnownLocusContext context={locus.short_read_context} />
 

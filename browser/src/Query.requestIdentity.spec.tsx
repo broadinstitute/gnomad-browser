@@ -190,6 +190,30 @@ describe('BaseQuery request identity', () => {
     }
   )
 
+  test('optionally rejects GraphQL errors even when a nullable field is present', async () => {
+    ;(global as any).fetch = jest.fn().mockResolvedValue({
+      json: async () => ({
+        data: { value: null },
+        errors: [{ message: 'Cohort-specific ancillary failure' }],
+      }),
+    })
+
+    render(
+      <Query
+        operationName="NullableField"
+        query="query NullableField { value }"
+        rejectGraphQLErrors
+        success={(data: any) => Object.prototype.hasOwnProperty.call(data, 'value')}
+      >
+        {() => <p>Unavailable without error</p>}
+      </Query>
+    )
+
+    const alert = await screen.findByText('Cohort-specific ancillary failure')
+    expect(alert.textContent).toBe('Cohort-specific ancillary failure')
+    expect(screen.queryByText('Unavailable without error')).toBeNull()
+  })
+
   test('successful retained revalidation restores focus to the replacement control', async () => {
     const first = deferredResponse()
     const second = deferredResponse()

@@ -59,8 +59,8 @@ const compactAlleles = (altCount: number, an: number) =>
     return {
       source_variant_id: sourceVariantId,
       alt_index: offset + 1,
-      ref_allele: 'ACAGCAG',
-      alt: `A${'CAG'.repeat(offset + 1)}`,
+      ref_allele: `A${'C'.repeat(164)}`,
+      alt: `A${'C'.repeat(164 + alleleLength)}`,
       allele_length: alleleLength,
       ac,
       an,
@@ -98,8 +98,8 @@ const summary = (altCount: number, an: number) => {
 const selectedAlt72 = {
   source_variant_id: sourceVariantId,
   alt_index: 72,
-  ref_allele: 'C'.repeat(164),
-  alt: 'C'.repeat(212),
+  ref_allele: `A${'C'.repeat(164)}`,
+  alt: `A${'C'.repeat(212)}`,
   allele_length: 48,
   ac: 264,
   an: 584,
@@ -190,6 +190,9 @@ describe('long-read TR locus query contract', () => {
       exact_alt_count_complete: true,
       delta_min: -24,
       delta_max: 48,
+      represented_allele_length_min: 140,
+      represented_allele_length_max: 212,
+      represented_allele_length_unavailable_reason: null,
       called_allele_count: 584,
       called_sample_count: 292,
       unique_carrier_count: 291,
@@ -231,7 +234,7 @@ describe('long-read TR locus query contract', () => {
       variant_id: `${sourceVariantId}~72`,
       source_variant_id: sourceVariantId,
       alt_index: 72,
-      alt: 'C'.repeat(212),
+      alt: `A${'C'.repeat(212)}`,
       length: 48,
       motif_purity: 0.97,
       motif_purity_source: 'source_ap_allele',
@@ -239,13 +242,16 @@ describe('long-read TR locus query contract', () => {
       source_run_id: 'run-hgsvc_hprc',
     })
     expect(locus.alleles.nodes).toHaveLength(72)
-    expect(locus.alleles.nodes[0]).toMatchObject({ ref: 'ACAGCAG', alt: 'ACAG' })
+    expect(locus.alleles.nodes[0]).toMatchObject({
+      ref: `A${'C'.repeat(164)}`,
+      alt: `A${'C'.repeat(140)}`,
+    })
     const aggregateJson = JSON.stringify({
       index: locus.alleles,
       alleles: locus.whole_record_allele_landscape,
       genotypes: locus.whole_record_genotype_landscape,
     })
-    expect(aggregateJson).toContain('ACAG')
+    expect(aggregateJson).toContain(`A${'C'.repeat(140)}`)
     expect(aggregateJson).not.toContain('sample_id')
   })
 
@@ -294,6 +300,9 @@ describe('long-read TR locus query contract', () => {
     expect(locus).toMatchObject({
       sequences_available: false,
       sequences_unavailable_reason: 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED',
+      represented_allele_length_min: null,
+      represented_allele_length_max: null,
+      represented_allele_length_unavailable_reason: 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED',
       selected_allele_valid: true,
       selected_allele: null,
       selected_allele_unavailable_reason: 'SELECTED_ALLELE_DETAIL_BYTE_BOUND_EXCEEDED',
@@ -390,6 +399,9 @@ describe('long-read TR locus query contract', () => {
     expect(locus).toMatchObject({
       sequences_available: false,
       sequences_unavailable_reason: 'EXACT_ALLELE_SEQUENCE_NOT_AVAILABLE',
+      represented_allele_length_min: null,
+      represented_allele_length_max: null,
+      represented_allele_length_unavailable_reason: 'EXACT_ALLELE_SEQUENCE_NOT_AVAILABLE',
       alleles: { nodes: [expect.objectContaining({ ref: null, alt: null })] },
     })
   })

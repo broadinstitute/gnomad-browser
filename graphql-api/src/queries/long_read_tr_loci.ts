@@ -838,7 +838,29 @@ const fetchLongReadTrLocusUncached = async ({
     }
   }
 
-  const deltaValues = completeAlleles.map((allele) => allele.allele_length!)
+  // VCF REF/ALT strings include one shared anchoring base outside the TR interval.
+  // Derive represented lengths from the complete strings only when that anchor is
+  // explicit and consistent; this also preserves a valid zero-length represented ALT.
+  const representedSequenceAnchorsValid =
+    exactSequenceIndexWithinBound &&
+    completeAlleles.every(
+      (allele) =>
+        allele.ref_allele!.length >= 1 &&
+        allele.alt!.length >= 1 &&
+        allele.ref_allele![0] === allele.alt![0]
+    )
+  const representedAlleleLengths = representedSequenceAnchorsValid
+    ? completeAlleles.flatMap((allele) => [allele.ref_allele!.length - 1, allele.alt!.length - 1])
+    : []
+  const representedAlleleDeltas = representedSequenceAnchorsValid
+    ? completeAlleles.map((allele) => allele.alt!.length - allele.ref_allele!.length)
+    : []
+  let representedAlleleLengthUnavailableReason = completenessReason
+  if (!representedAlleleLengthUnavailableReason && !representedSequenceAnchorsValid) {
+    representedAlleleLengthUnavailableReason = exactSequenceIndexWithinBound
+      ? 'EXACT_ALLELE_SEQUENCE_ANCHOR_NOT_RECONCILABLE'
+      : exactSequenceIndexUnavailableReason
+  }
   const alignedSourceComponentCountsAvailable =
     locus.components.length === 1 &&
     summaries.every((summary) => {
@@ -882,9 +904,16 @@ const fetchLongReadTrLocusUncached = async ({
     exact_alt_count: totalAlleles,
     exact_alt_count_complete: !completenessReason,
     exact_alt_count_unavailable_reason: completenessReason,
-    delta_min: deltaValues.length ? Math.min(...deltaValues) : null,
-    delta_max: deltaValues.length ? Math.max(...deltaValues) : null,
-    delta_unavailable_reason: completenessReason,
+    delta_min: representedAlleleDeltas.length ? Math.min(...representedAlleleDeltas) : null,
+    delta_max: representedAlleleDeltas.length ? Math.max(...representedAlleleDeltas) : null,
+    delta_unavailable_reason: representedAlleleLengthUnavailableReason,
+    represented_allele_length_min: representedAlleleLengths.length
+      ? Math.min(...representedAlleleLengths)
+      : null,
+    represented_allele_length_max: representedAlleleLengths.length
+      ? Math.max(...representedAlleleLengths)
+      : null,
+    represented_allele_length_unavailable_reason: representedAlleleLengthUnavailableReason,
     called_allele_count: sourceRecords.length === 1 ? sourceRecords[0].an : null,
     called_sample_count:
       wholeRecordGenotypeLandscape.status === 'AVAILABLE'

@@ -57,7 +57,34 @@ export default {
     short_read_context: (locus: any, _args: any, ctx: any) => shortReadContext(locus, ctx),
     short_read_matches: (locus: any, _args: any, ctx: any) =>
       legacyMatchesFromContext(shortReadContext(locus, ctx)),
-    repeat_count_plots: (locus: any) =>
-      fetchLongReadTrRepeatCountPlots(locus, getY1AncillaryRoute(locus.lr_cohort, 'str_histogram')),
+    repeat_count_plots: async (locus: any) => {
+      try {
+        return await fetchLongReadTrRepeatCountPlots(
+          locus,
+          getY1AncillaryRoute(locus.lr_cohort, 'str_histogram')
+        )
+      } catch {
+        // Optional ancillary rows must fail closed without turning an otherwise valid
+        // canonical locus into a GraphQL error. In particular, a stale or malformed
+        // histogram identity is unavailable; it is never rebound to another source.
+        return {
+          status: 'UNAVAILABLE_ANCILLARY',
+          reason_code: 'ADMITTED_HISTOGRAM_COULD_NOT_BE_VALIDATED',
+          identity: null,
+          unit: null,
+          repeat_unit: null,
+          overall: null,
+          callability: [],
+          allele_size_distribution: [],
+          genotype_distribution: [],
+          max_repunits: null,
+          interaction: {
+            interaction_status: 'UNAVAILABLE_PLOTS',
+            reason:
+              'Contributor interaction is unavailable because the repeat-count plots are unavailable.',
+          },
+        }
+      }
+    },
   },
 }

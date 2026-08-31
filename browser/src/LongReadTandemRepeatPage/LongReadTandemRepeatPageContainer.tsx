@@ -2,7 +2,7 @@ import React, { useCallback, useLayoutEffect, useRef } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
-import { parseTrLocusId, trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
+import { parseTrLocusId } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import { Page, PageHeading } from '@gnomad/ui'
 
 import DocumentTitle from '../DocumentTitle'
@@ -32,7 +32,9 @@ query ${operationName}(
   ) {
     id source_trid reference_genome chrom motifs structure lr_cohort source_release source_run_id
     total_alleles exact_alt_count exact_alt_count_complete exact_alt_count_unavailable_reason
-    delta_min delta_max delta_unavailable_reason called_allele_count called_sample_count
+    delta_min delta_max delta_unavailable_reason
+    represented_allele_length_min represented_allele_length_max represented_allele_length_unavailable_reason
+    called_allele_count called_sample_count
     unique_carrier_count sequences_available sequences_unavailable_reason selected_allele_valid
     selected_allele_unavailable_reason
     component_measurement_available component_measurement_unavailable_reason
@@ -177,7 +179,6 @@ const LongReadTandemRepeatPageContainer = ({
 
   if (parsed.canonicalId !== locusId) return null
 
-  const envelope = trLocusDisplayEnvelope(parsed)
   const locationWithParams = (params: URLSearchParams) =>
     `${location.pathname}${params.toString() ? `?${params.toString()}` : ''}`
   const hrefForAllele = (alleleId: string) =>
@@ -215,11 +216,6 @@ const LongReadTandemRepeatPageContainer = ({
 
   return (
     <LongReadTrPage>
-      <DocumentTitle
-        title={`Tandem repeat at chr${
-          envelope.chrom
-        }:${envelope.start1.toLocaleString()}–${envelope.end1.toLocaleString()} (GRCh38)`}
-      />
       <Query
         operationName={operationName}
         query={longReadTandemRepeatLocusQuery}
@@ -232,14 +228,19 @@ const LongReadTandemRepeatPageContainer = ({
         }}
         loadingMessage="Loading tandem-repeat locus"
         errorMessage="Unable to load tandem-repeat locus"
+        rejectGraphQLErrors
         retainPreviousData
-        success={(data: any) => data.long_read_tandem_repeat_locus}
+        success={(data: any) =>
+          Boolean(data) &&
+          Object.prototype.hasOwnProperty.call(data, 'long_read_tandem_repeat_locus')
+        }
       >
         {({ data }: any) => {
           return (
             <LongReadTandemRepeatPage
               datasetId={datasetId}
               locus={data.long_read_tandem_repeat_locus}
+              requestedCohort={lrCohort}
               selectedAllele={selectedAllele}
               onCohortChange={changeCohort}
               onInvalidSelection={removeInvalidSelection}
