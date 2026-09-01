@@ -174,7 +174,7 @@ const selectExactAllele = async (
   await expect(
     page.getByRole('heading', { name: `${selected.variant_id} exact ALT details` })
   ).toBeVisible()
-  await expect(exactLink).toHaveAttribute('aria-current', 'true')
+  await expect(exactLink).toHaveAttribute('aria-current', 'page')
   await expect(page.locator('[data-revalidating="true"]')).toHaveCount(0)
   const selectedScrollTop = await indexScroller.evaluate((element) => element.scrollTop)
   expect(Math.abs(selectedScrollTop - clickedScrollTop)).toBeLessThanOrEqual(1)
@@ -406,17 +406,14 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     )
     await page.setViewportSize({ width: 1280, height: 720 })
 
-    const referenceColor = await page
-      .getByRole('img', { name: /ordered LR reference components/ })
-      .locator('rect')
-      .first()
-      .getAttribute('fill')
-    const previewColor = await indexTable
-      .getByRole('img', { name: 'ALT 1 motif structure preview' })
-      .locator('rect')
-      .first()
-      .getAttribute('fill')
-    expect(previewColor).toBe(referenceColor)
+    await expect(page.getByRole('img', { name: /ordered LR reference components/ })).toHaveCount(0)
+    const previewColors = await indexTable
+      .getByRole('img', { name: /ALT \d+ motif structure preview/ })
+      .evaluateAll((previews) =>
+        previews.map((preview) => preview.querySelector('rect')?.getAttribute('fill'))
+      )
+    expect(previewColors).toHaveLength(3)
+    expect(new Set(previewColors).size).toBe(1)
 
     const selected = await selectExactAllele(page, SIMPLE_THREE_ALT_LOCUS, 1, 3)
     expect(selected).toBe('chr1-143278475-TRV-11~1')
@@ -531,8 +528,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       .getByText('LR source representation and provenance — 6 ordered components')
       .locator('..')
     await expect(sourceDisclosure).not.toHaveAttribute('open', '')
-    await sourceDisclosure.locator('summary').focus()
-    await sourceDisclosure.locator('summary').press('Enter')
+    await sourceDisclosure.locator(':scope > summary').focus()
+    await sourceDisclosure.locator(':scope > summary').press('Enter')
     await expect(sourceDisclosure).toHaveAttribute('open', '')
     await expect(
       sourceDisclosure.getByRole('img', { name: /6 ordered LR reference components/ })
