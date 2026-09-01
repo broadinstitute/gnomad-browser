@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 const MarkdownContentWrapper = styled.div`
+  --code-background-color: #eef0f3;
+
   font-size: 16px;
 
   h1,
@@ -45,19 +47,18 @@ const MarkdownContentWrapper = styled.div`
     padding: 0.15em 0.35em;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 0.3em;
-    background: #eef0f3;
+    background: var(--code-background-color);
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
     font-size: 0.9em;
   }
 
   pre {
     overflow-x: auto;
-    max-width: 100%;
     padding: 1em;
     border: 1px solid rgba(0, 0, 0, 0.1);
     margin: 1.25em 0;
     border-radius: 0.4em;
-    background: #eef0f3;
+    background: var(--code-background-color);
     line-height: 1.5;
   }
 
