@@ -41,11 +41,13 @@ describe('long-read STR allele-size distribution', () => {
         variantId="lr-theme-alleles"
         alleleSizeDistribution={alleleCohorts}
         maxRepunits={12}
+        yAxisLabel="Called allele copies"
       />
     )
     expect(
       lrAlleles.container.querySelector(`rect[fill="${LONG_READ_PRIMARY_PLOT_COLOR}"]`)
     ).not.toBeNull()
+    expect(screen.getByText('Called allele copies')).not.toBeNull()
     lrAlleles.unmount()
 
     const srAlleles = render(
@@ -58,6 +60,7 @@ describe('long-read STR allele-size distribution', () => {
       />
     )
     expect(srAlleles.container.querySelector('rect[fill="#73ab3d"]')).not.toBeNull()
+    expect(screen.getAllByText('Alleles').length).toBeGreaterThan(0)
     srAlleles.unmount()
 
     const lrGenotypes = render(

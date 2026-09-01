@@ -71,13 +71,13 @@ describe('local haplotype section availability', () => {
     expect((global as any).fetch).not.toHaveBeenCalled()
   })
 
-  test('prompts for an exact allele without requesting haplotype data', () => {
+  test('prompts for an exact ALT sequence without requesting haplotype data', () => {
     renderSection({
       lr_cohort: 'hgsvc_hprc',
       selected_allele: null,
       alleles: { nodes: [], page_info: { has_next_page: false } },
     })
-    expect(screen.getByText(/Select an exact allele/)).not.toBeNull()
+    expect(screen.getByText(/Select an exact ALT sequence/)).not.toBeNull()
     expect((global as any).fetch).not.toHaveBeenCalled()
   })
 })

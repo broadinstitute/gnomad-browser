@@ -141,6 +141,19 @@ const signed = (value: number) => {
   if (value < 0) return `−${Math.abs(value)}`
   return '0'
 }
+
+const counted = (count: number, singular: string, plural: string) =>
+  `${count.toLocaleString()} ${count === 1 ? singular : plural}`
+
+const calledAlleleCopies = (count: number, nonReference = false) =>
+  counted(
+    count,
+    `called ${nonReference ? 'non-reference ' : ''}allele copy`,
+    `called ${nonReference ? 'non-reference ' : ''}allele copies`
+  )
+
+const exactAltSequences = (count: number) =>
+  counted(count, 'exact ALT sequence', 'exact ALT sequences')
 const UNAVAILABLE_REASON_COPY: Record<string, string> = {
   ADMITTED_HISTOGRAM_COULD_NOT_BE_VALIDATED:
     'the cohort-specific repeat-count source could not be validated',
@@ -162,77 +175,72 @@ const unavailableReason = (reason: string | null | undefined) =>
 const AllelicLandscapeHelp = () => (
   <HaplotypeHelpButton title="About the allelic landscape">
     <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> Purple plots summarize long-read allele copies and complete
-      diploid genotypes at this locus. The exact allele index below keeps each reported ALT identity
-      separate.
+      These plots summarize long-read observations at this locus and connect them to the exact-ALT
+      index below. Choosing a plot mark filters the index; it does not select an ALT or change the
+      URL. Choose <strong>Select</strong> in the index to update allele details.
     </p>
-    <div>
-      <strong>How to use it.</strong>
-      <h4>Allele repeat-count distribution</h4>
-      <p>
-        For admitted simple loci, bars group called chromosome copies by repeat count. Use the
-        controls inside this card. The bars remain static because exact contributors are not
-        available; they do not filter the exact allele index.
-      </p>
-      <h4>Genotype repeat-count distribution</h4>
-      <p>
-        For admitted simple loci, squares group people by shorter and longer repeat counts. Use the
-        controls inside this card. The squares remain static because exact allele pairs are not
-        available; they do not filter the exact allele index.
-      </p>
-      <h4>Total allele length change (ALT − REF, bp)</h4>
-      <p>
-        Bars group called non-reference allele copies by Total allele length change (ALT − REF, bp).
-        Activate a bar to filter the exact allele index to its supplied contributors; activate it
-        again or choose <strong>Show all exact alleles</strong> to clear the filter.
-      </p>
-      <h4>Length change × motif purity</h4>
-      <p>
-        Each point is one exact allele; point area represents its allele count. Activate a point to
-        filter the index to that identity without selecting it.
-      </p>
-      <h4>Genotype length distribution</h4>
-      <p>
-        Squares group people by the longer and shorter allele&apos;s total length change. Activate a
-        populated square to filter the index to the supplied non-reference exact alleles, then
-        expand the exact-pair detail below the plot.
-      </p>
-      <p>
-        Ancestry and sex controls apply to the total-length plots. Color and scale controls apply
-        only to total-length allele plots. Selecting an exact allele in the index is the only action
-        that changes the URL and selected detail.
-      </p>
-    </div>
+    <h4>Repeat-count distributions (simple loci only)</h4>
+    <p>
+      Bars show called allele copies; squares show people by shorter and longer repeat count. Use
+      the ancestry, sex, color, and scale controls within each card. These marks are read-only when
+      the source does not identify the contributing exact ALT sequences or allele pairs.
+    </p>
+    <h4>Total allele length change (ALT − REF, bp)</h4>
+    <p>
+      Bar height shows called non-reference allele copies; the number above each bar shows exact ALT
+      sequences in that bin. Choose a bar to filter the index; choose it again or{' '}
+      <strong>Show all exact ALT sequences</strong> to clear.
+    </p>
+    <h4>Length change × motif purity</h4>
+    <p>
+      Each point is one exact ALT sequence; point area shows allele count. Choose a point to filter
+      to that identity without selecting it. Purity is source-reported; the colored motif preview is
+      a separate browser decomposition and may differ.
+    </p>
+    <h4>Genotype length distribution</h4>
+    <p>
+      Each populated square summarizes people with complete called genotypes containing both plotted
+      alleles, grouped by the shorter and longer allele&apos;s total length change. Choose a square
+      to filter the index, then expand its exact-pair summary.
+    </p>
+    <p>
+      Shared ancestry and sex controls affect the total-length plots. Color and y-scale controls
+      affect only the total-length histogram. Repeat-count controls are card-local. Only index row
+      selection changes the URL and selected detail.
+    </p>
     <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> Plot position, color, outline, and catalog ranges do
-      not classify an LR allele, genotype, component, person, or total allele length change.
+      Plot position, color, outlines, and catalog ranges do not classify an LR allele, genotype,
+      component, person, or total allele length change.
     </p>
   </HaplotypeHelpButton>
 )
 
 const ExactAlleleIndexHelp = () => (
-  <HaplotypeHelpButton title="About the exact allele index">
+  <HaplotypeHelpButton title="About the exact-ALT index">
     <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> One row per exact allele identity, with motif preview, Total
-      allele length change (ALT − REF, bp), motif purity, allele count, and allele frequency.
+      <strong>What this shows.</strong> One row per exact ALT sequence, with motif preview, total
+      allele length change (ALT − REF, bp), source-reported motif purity, allele count, and allele
+      frequency. The colored motif preview is a separate browser decomposition and may differ from
+      source purity.
     </p>
     <p>
       <strong>How to use it.</strong> Sort with a column heading. Plot marks can temporarily filter
-      these rows; <strong>Show all exact alleles</strong> clears that filter. Choose{' '}
+      these rows; <strong>Show all exact ALT sequences</strong> clears that filter. Choose{' '}
       <strong>Select</strong> to update the allele detail and URL without reloading the page.
     </p>
     <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> A row is one exact reported allele identity, not a
+      <strong>What it does not show.</strong> A row is one exact reported ALT sequence, not a
       clinical classification or a person.
     </p>
   </HaplotypeHelpButton>
 )
 
 const SelectedAlleleHelp = () => (
-  <HaplotypeHelpButton title="About exact allele details">
+  <HaplotypeHelpButton title="About exact ALT details">
     <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> The selected exact allele&apos;s complete highlighted ALT
-      sequence, length change, motif purity, repeat count when available, and aggregate frequency.
+      <strong>What this shows.</strong> The selected exact ALT&apos;s complete highlighted sequence,
+      length change, source-reported motif purity, repeat count when available, and aggregate
+      frequency.
     </p>
     <p>
       <strong>How to use it.</strong> Select and copy the highlighted sequence, and expand the REF,
@@ -373,7 +381,7 @@ export const LongReadTrComponentTrack = ({
           </p>
           <p style={{ marginBottom: 0 }}>
             <strong>What it does not show.</strong> Motif fills and outlines do not classify an LR
-            component, exact allele, genotype, person, or total allele length change.
+            component, exact ALT sequence, genotype, person, or total allele length change.
           </p>
         </HaplotypeHelpButton>
       </HeadingWithHelp>
@@ -990,7 +998,9 @@ const PurityScatter = ({
     <>
       <div
         role="group"
-        aria-label={`${points.length} exact alleles plotted by total allele length change and motif purity`}
+        aria-label={`${exactAltSequences(
+          points.length
+        )} plotted by total allele length change and source-reported motif purity`}
         data-purity-domain={`${domainMinimum.toFixed(6)}:${domainMaximum.toFixed(6)}`}
         data-horizontal-inset={PURITY_HORIZONTAL_INSET}
         data-vertical-inset={PURITY_POINT_CLEARANCE}
@@ -1067,11 +1077,11 @@ const PurityScatter = ({
               title={`${alleleLabel(point.allele_id)}: ${signed(
                 point.delta
               )} bp, purity ${point.motif_purity.toFixed(4)}, AC ${point.called_alleles}`}
-              aria-label={`Filter exact alleles to ${alleleLabel(point.allele_id)}, ${signed(
+              aria-label={`Filter the exact-ALT index to ${alleleLabel(point.allele_id)}; ${signed(
                 point.delta
-              )} bp, purity ${point.motif_purity.toFixed(4)}, ${
-                point.called_alleles
-              } called copies`}
+              )} bp; source-reported motif purity ${point.motif_purity.toFixed(
+                4
+              )}; ${calledAlleleCopies(point.called_alleles)}`}
               data-allele-id={point.allele_id}
               data-called-alleles={point.called_alleles}
               data-point-diameter={size}
@@ -1123,7 +1133,7 @@ const PurityScatter = ({
         </span>
       </div>
       <div
-        aria-label={`Point size represents exact allele AC from ${minimumCalledAlleles} to ${maximumCalledAlleles}`}
+        aria-label={`Point size represents exact ALT sequence AC from ${minimumCalledAlleles} to ${maximumCalledAlleles}`}
         style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#566168', fontSize: 11 }}
       >
         <strong>Allele count (AC)</strong>
@@ -1195,7 +1205,7 @@ const RepeatCountPlotCards = ({
         data-testid="allele-repeat-count-card"
         data-interaction-status={repeatCountPlots.interaction.interaction_status}
         role="group"
-        aria-label="Static allele repeat-count plot and controls; does not filter the exact allele index"
+        aria-label="Static allele repeat-count plot and controls; does not filter the exact-ALT index"
       >
         <LongReadAlleleSizeDistributionSection
           variantId={variantId}
@@ -1207,6 +1217,7 @@ const RepeatCountPlotCards = ({
           compact
           focusObservedDomain
           showHelp={false}
+          yAxisLabel="Called allele copies"
         />
       </PlotCard>
       <PlotCard
@@ -1214,7 +1225,7 @@ const RepeatCountPlotCards = ({
         data-testid="genotype-repeat-count-card"
         data-interaction-status={repeatCountPlots.interaction.interaction_status}
         role="group"
-        aria-label="Static genotype repeat-count plot and controls; does not filter the exact allele index"
+        aria-label="Static genotype repeat-count plot and controls; does not filter the exact-ALT index"
       >
         <LongReadGenotypeDistributionSection
           variantId={variantId}
@@ -1600,8 +1611,7 @@ export const WholeRecordAlleleLandscape = ({
         </p>
       )}
       <p aria-live="polite">
-        <strong>{totalInView.toLocaleString()} called non-reference allele copies</strong> in the
-        current filters.
+        <strong>{calledAlleleCopies(totalInView, true)}</strong> in the current filters.
       </p>
       {selectedColorBy && (
         <p aria-label="Stack color legend">
@@ -1693,14 +1703,16 @@ export const WholeRecordAlleleLandscape = ({
                         data-bar-width={histogramLayout.barWidth}
                         $selected={bin.delta === selectedBin?.delta}
                         aria-pressed={bin.delta === selectedBin?.delta}
-                        aria-label={`${signed(
-                          bin.delta
-                        )} bp, ${count} called allele copies in this view, ${
+                        aria-label={`${signed(bin.delta)} bp; ${calledAlleleCopies(
+                          count,
+                          true
+                        )} in this view; ${exactAltSequences(
                           bin.exact_alt_count
-                        } exact alleles globally; filter the exact allele index to this bar`}
-                        title={`${signed(bin.delta)} bp · ${count.toLocaleString()} copies · ${
-                          bin.exact_alt_count
-                        } exact alleles`}
+                        )}; filter the exact-ALT index to this length-change bin`}
+                        title={`${signed(bin.delta)} bp · ${calledAlleleCopies(
+                          count,
+                          true
+                        )} · ${exactAltSequences(bin.exact_alt_count)}`}
                         onClick={() => filterIndexToDelta(bin.delta)}
                       >
                         {selectedColorBy && count > 0 && (
@@ -1717,7 +1729,7 @@ export const WholeRecordAlleleLandscape = ({
                             ))}
                           </BarSegments>
                         )}
-                        <BarExactCount title={`${bin.exact_alt_count} exact alleles`}>
+                        <BarExactCount title={exactAltSequences(bin.exact_alt_count)}>
                           {bin.exact_alt_count}
                         </BarExactCount>
                       </BarButton>
@@ -1750,7 +1762,7 @@ export const WholeRecordAlleleLandscape = ({
             </HistogramScroller>
           </HistogramChart>
           <div style={{ color: '#566168', fontSize: 11, textAlign: 'center' }}>
-            Numbers above bars show exact alleles in each length-change bin.
+            Bar height: called non-reference allele copies. Number above: exact ALT sequences.
           </div>
         </PlotCard>
         <PlotCard data-plot-card="motif-purity">
@@ -1799,18 +1811,32 @@ export const WholeRecordAlleleLandscape = ({
 }
 
 const HeatmapFigure = styled.figure`
-  overflow-x: auto;
+  overflow-x: hidden;
   max-width: 100%;
   margin: 0;
+  outline-offset: 2px;
+
+  &:focus-visible {
+    outline: 3px solid #111;
+  }
+
+  @media (max-width: 700px) {
+    overflow-x: auto;
+  }
 `
 
 const HeatmapSvg = styled.svg`
   display: block;
-  width: 520px;
-  min-width: 520px;
+  width: 100%;
+  min-width: 0;
   height: auto;
   min-height: 300px;
   margin: 0 auto;
+
+  @media (max-width: 700px) {
+    width: 520px;
+    min-width: 520px;
+  }
 
   [role='button']:focus-visible {
     outline: none;
@@ -1969,18 +1995,17 @@ export const WholeRecordGenotypeLandscape = ({
       <PlotCard data-plot-card="total-length-genotype" data-testid="genotype-length-card">
         <h3>Genotype length distribution</h3>
         <p aria-live="polite">
-          <strong>{totalPeople.toLocaleString()} people</strong> with complete diploid genotypes in
-          this view.
+          <strong>
+            {counted(totalPeople, 'person', 'people')} with complete called genotypes containing
+            both plotted alleles
+          </strong>{' '}
+          in this view.
         </p>
         <p style={{ color: '#566168', fontSize: 11 }}>
-          Select a square to filter the exact allele table. Reference (0 bp) remains distinct from
-          an exact allele with 0 bp length change.
+          Select a square to filter the exact-ALT index. Reference (0 bp) remains distinct from an
+          exact ALT sequence with 0 bp length change.
         </p>
-        <HeatmapFigure
-          role="region"
-          aria-label="Scrollable genotype length distribution"
-          tabIndex={0}
-        >
+        <HeatmapFigure role="region" aria-label="Genotype length distribution plot" tabIndex={0}>
           <HeatmapSvg
             viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
             role="group"
@@ -2052,9 +2077,9 @@ export const WholeRecordGenotypeLandscape = ({
                           aria-pressed={selected}
                           aria-label={`${signed(longer)} bp longer, ${signed(
                             shorter
-                          )} bp shorter: ${
-                            cell.selectedPeople
-                          } people; filter the exact allele index to this square`}
+                          )} bp shorter: ${cell.selectedPeople} ${
+                            cell.selectedPeople === 1 ? 'person' : 'people'
+                          }; filter the exact-ALT index to this square`}
                           data-testid="genotype-length-cell-target"
                           x={xFor(longer) + band / 2 - 17}
                           y={yFor(shorter) + band / 2 - 17}
@@ -2073,7 +2098,8 @@ export const WholeRecordGenotypeLandscape = ({
                           }}
                         >
                           <title>
-                            {signed(longer)} bp × {signed(shorter)} bp: {cell.selectedPeople} people
+                            {signed(longer)} bp × {signed(shorter)} bp:{' '}
+                            {counted(cell.selectedPeople, 'person', 'people')}
                           </title>
                         </rect>
                       )}
@@ -2163,7 +2189,7 @@ export const WholeRecordGenotypeLandscape = ({
               </strong>{' '}
               — {selectedCell.selectedPeople.toLocaleString()}{' '}
               {selectedCell.selectedPeople === 1 ? 'person' : 'people'} across{' '}
-              {selectedCell.selectedPairs.length.toLocaleString()} exact allele{' '}
+              {selectedCell.selectedPairs.length.toLocaleString()} exact ALT{' '}
               {selectedCell.selectedPairs.length === 1 ? 'pair' : 'pairs'}
             </summary>
             <ScrollTable role="region" aria-label="Exact genotype pairs table" tabIndex={0}>
@@ -2206,7 +2232,7 @@ export const WholeRecordGenotypeLandscape = ({
             </ScrollTable>
           </details>
         ) : (
-          <p>No complete diploid genotypes match these filters.</p>
+          <p>No complete called genotypes with both plotted alleles match these filters.</p>
         )}
       </GenotypePairDetail>
     </>
@@ -2236,8 +2262,7 @@ const SelectedAllelePane = styled.div`
 `
 
 const EmptySelectedAllele = styled.p`
-  min-height: 120px;
-  padding: 1em;
+  padding: 0.65em 0.8em;
   border: 1px solid #d8dee2;
   border-radius: 4px;
   margin: 0;
@@ -2649,13 +2674,15 @@ export const ExactAlleleIndex = ({
     hasMissingIndexSequence && !sequencesAvailable
       ? `Motif previews are unavailable because ${unavailableReason(sequencesUnavailableReason)}.`
       : null
-  let heading = `${totalExactAlts.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact alleles`
+  let heading = exactAltSequences(totalExactAlts)
   if (filterDescription) {
-    heading = `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact alleles in ${filterDescription}`
+    heading = `${alleles.length.toLocaleString()} of ${exactAltSequences(
+      totalExactAlts
+    )} — ${filterDescription}`
   } else if (filteredDelta != null) {
-    heading = `${alleles.length.toLocaleString()} of ${totalExactAlts.toLocaleString()} exact alleles at ${signed(
-      filteredDelta
-    )} bp`
+    heading = `${alleles.length.toLocaleString()} of ${exactAltSequences(
+      totalExactAlts
+    )} at ${signed(filteredDelta)} bp`
   }
   return (
     <IndexSection aria-labelledby="lr-tr-index-heading">
@@ -2668,15 +2695,15 @@ export const ExactAlleleIndex = ({
         </HeadingWithHelp>
         {(filteredDelta != null || filterDescription) && (
           <ClearIndexFilter type="button" onClick={onClearFilter}>
-            Show all exact alleles
+            Show all exact ALT sequences
           </ClearIndexFilter>
         )}
       </IndexTitle>
       {previewUnavailableMessage && <p role="status">{previewUnavailableMessage}</p>}
       <AlleleBrowserGrid data-testid="lr-tr-exact-allele-browser">
-        <IndexPane role="table" aria-label="Exact allele index" aria-rowcount={alleles.length + 1}>
+        <IndexPane role="table" aria-label="Exact-ALT index" aria-rowcount={alleles.length + 1}>
           <IndexHeader role="row" aria-rowindex={1}>
-            {sortHeader('alt', 'Exact allele')}
+            {sortHeader('alt', 'Exact ALT')}
             <span className="lr-tr-index-preview" role="columnheader">
               Motif preview
             </span>
@@ -2703,8 +2730,8 @@ export const ExactAlleleIndex = ({
           {selectedAlleleDetail || (
             <EmptySelectedAllele>
               {selectedAllele
-                ? 'Details for the selected allele are unavailable.'
-                : 'Select an exact allele to view its sequence and details.'}
+                ? 'Details for the selected ALT are unavailable.'
+                : 'No exact ALT selected. Choose Select in a row to view its sequence and details.'}
             </EmptySelectedAllele>
           )}
         </SelectedAllelePane>
@@ -2766,7 +2793,7 @@ export const SelectedExactAlleleDetail = React.forwardRef<
   >
     <HeadingWithHelp>
       <h3 id="lr-tr-selected-detail-heading">
-        <code>{allele.variant_id}</code> exact allele details
+        <code>{allele.variant_id}</code> exact ALT details
       </h3>
       <SelectedAlleleHelp />
     </HeadingWithHelp>
@@ -2794,7 +2821,7 @@ export const SelectedExactAlleleDetail = React.forwardRef<
           <Sequence>{allele.ref}</Sequence>
         </details>
       </div>
-      <ScrollTable role="region" aria-label="Selected exact allele summary table" tabIndex={0}>
+      <ScrollTable role="region" aria-label="Selected exact ALT summary table" tabIndex={0}>
         <table>
           <tbody>
             <tr>

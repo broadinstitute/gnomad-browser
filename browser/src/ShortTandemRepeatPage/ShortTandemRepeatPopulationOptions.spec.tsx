@@ -1,4 +1,5 @@
 import React from 'react'
+import 'jest-styled-components'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { jest } from '@jest/globals'
 
@@ -22,6 +23,14 @@ describe('ShortTandemRepeatPopulationOptions LR display adapter', () => {
     )
 
     const select = screen.getByLabelText(/Genetic ancestry group/)
+    const label = select.closest('label')!
+    const wrapper = label.parentElement!
+    expect(wrapper).toHaveStyleRule('max-width', '100%')
+    expect(wrapper).toHaveStyleRule('width', '100%', { media: '(max-width:600px)' })
+    expect(label).toHaveStyleRule('max-width', '100%')
+    expect(label).toHaveStyleRule('white-space', 'normal', { media: '(max-width:600px)' })
+    expect(label).toHaveStyleRule('max-width', '100%', { modifier: 'select' })
+    expect(label).toHaveStyleRule('min-width', '0', { modifier: 'select' })
     const options = screen.getAllByRole('option', { name: 'Remaining individuals' })
     expect(options.map((option) => option.getAttribute('value'))).toEqual(['oth', 'rmi'])
 

@@ -154,6 +154,7 @@ type Props = {
   ranges?: Range[]
   populationDisplayConfig?: PopulationDisplayConfig
   baseColor?: string
+  yAxisLabel?: string
   onSelectBin?: (bin: AlleleSizeBin) => void
   isBinSelected?: (bin: AlleleSizeBin) => boolean
   size: { width: number }
@@ -255,6 +256,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     ranges = [],
     populationDisplayConfig,
     baseColor = defaultColor,
+    yAxisLabel = 'Alleles',
     onSelectBin,
     isBinSelected,
   }: Props) => {
@@ -421,7 +423,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
             top={height - margin.bottom}
           />
           <AxisLeft
-            label="Alleles"
+            label={yAxisLabel}
             labelOffset={40}
             labelProps={labelProps}
             left={margin.left}

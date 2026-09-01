@@ -8,20 +8,46 @@ import { PopulationId, GNOMAD_POPULATION_NAMES } from '@gnomad/dataset-metadata/
 import { Sex } from './ShortTandemRepeatPage'
 
 const Wrapper = styled.div`
-  @media (max-width: 600px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
 
-    label:first-child {
-      margin-bottom: 1em;
-    }
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.75em;
   }
 `
 
 const Label = styled.label`
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
   padding-right: 1em;
   white-space: nowrap;
+
+  select {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  @media (max-width: 600px) {
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 0;
+    gap: 0.5em;
+    white-space: normal;
+
+    select {
+      flex: 0 1 auto;
+    }
+  }
 `
 
 type Props = {

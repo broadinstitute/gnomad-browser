@@ -124,12 +124,13 @@ const LocusOverviewHelp = () => (
   <HaplotypeHelpButton title="About this tandem-repeat locus">
     <p style={{ marginTop: 0 }}>
       <strong>What this shows.</strong> The canonical long-read locus, its ordered LR reference
-      components, observed exact alleles, aggregate plots, and any exact short-read catalog context.
+      components, observed exact ALT sequences, aggregate plots, and any exact short-read catalog
+      context.
     </p>
     <p>
       <strong>How to use it.</strong> Choose a long-read cohort, review the component track and
-      assay-specific plots, then filter or select an exact allele in the Allelic landscape. Expand
-      data source details only when technical provenance is needed.
+      assay-specific plots, then filter or select an exact ALT sequence in the Allelic landscape.
+      Expand data source details only when technical provenance is needed.
     </p>
     <p style={{ marginBottom: 0 }}>
       <strong>What it does not show.</strong> Short-read catalog labels and ranges do not classify
@@ -347,8 +348,8 @@ const LongReadTandemRepeatPage = ({
   } else if (selectedAllele && locus.selected_allele_valid !== false) {
     selectedAlleleDetail = (
       <p role="status">
-        Exact allele details unavailable:{' '}
-        {unavailableReason(locus.selected_allele_unavailable_reason)}.
+        Exact ALT details unavailable: {unavailableReason(locus.selected_allele_unavailable_reason)}
+        .
       </p>
     )
   }
@@ -358,7 +359,7 @@ const LongReadTandemRepeatPage = ({
       <DocumentTitle title={title} />
       {selectedAllele && locus.selected_allele_valid === false && (
         <p role="alert">
-          Requested exact allele is not in this locus or cohort and was removed from the URL. Other
+          Requested exact ALT is not in this locus or cohort and was removed from the URL. Other
           settings are unchanged.
         </p>
       )}
@@ -420,10 +421,12 @@ const LongReadTandemRepeatPage = ({
           </AttributeListItem>
           <AttributeListItem
             label="Observed exact ALT sequences"
-            tooltip="Each exact allele is one distinct source ALT sequence identity. Use this count to decide which reported sequence to inspect; it does not group biologically similar sequences."
+            tooltip="Each exact ALT sequence is one distinct source identity. Use this count to decide which reported sequence to inspect; it does not group biologically similar sequences."
           >
             {locus.exact_alt_count_complete
-              ? `${locus.exact_alt_count.toLocaleString()} exact ALT sequences`
+              ? `${locus.exact_alt_count.toLocaleString()} exact ALT ${
+                  locus.exact_alt_count === 1 ? 'sequence' : 'sequences'
+                }`
               : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
           </AttributeListItem>
           <AttributeListItem
@@ -507,7 +510,7 @@ const LongReadTandemRepeatPage = ({
       {(locus.alleles.page_info.has_next_page ||
         locus.total_alleles > locus.alleles.nodes.length) && (
         <p role="alert">
-          This locus has more exact alleles than the page can display safely. Showing{' '}
+          This locus has more exact ALT sequences than the page can display safely. Showing{' '}
           {locus.alleles.nodes.length.toLocaleString()} of {locus.total_alleles.toLocaleString()};
           distributions are hidden rather than calculated from incomplete data.
         </p>

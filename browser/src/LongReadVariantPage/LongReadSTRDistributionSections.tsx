@@ -106,8 +106,12 @@ const CalledDenominators = ({
     <p aria-live="polite">
       <strong>
         {kind === 'alleles'
-          ? `${counts.calledAlleles.toLocaleString()} called chromosome copies in this view.`
-          : `${counts.calledDiploidGenotypes.toLocaleString()} individuals with complete diploid genotypes in this view.`}
+          ? `${counts.calledAlleles.toLocaleString()} called allele ${
+              counts.calledAlleles === 1 ? 'copy' : 'copies'
+            } in this view.`
+          : `${counts.calledDiploidGenotypes.toLocaleString()} ${
+              counts.calledDiploidGenotypes === 1 ? 'person' : 'people'
+            } with complete called genotypes containing both plotted alleles in this view.`}
       </strong>{' '}
       Counts include called observations only. No-call denominator unavailable for this admitted
       histogram.
@@ -144,6 +148,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   calledCountDistributions,
   focusObservedDomain = false,
   showHelp = true,
+  yAxisLabel,
 }: {
   variantId: string
   alleleSizeDistribution: AlleleSizeDistributionCohort[]
@@ -155,6 +160,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   calledCountDistributions?: CalledCountDistributions
   focusObservedDomain?: boolean
   showHelp?: boolean
+  yAxisLabel?: string
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -204,6 +210,7 @@ export const LongReadAlleleSizeDistributionSection = ({
           scaleType={selectedScaleType}
           populationDisplayConfig={longReadPopulationDisplayConfig}
           baseColor={LONG_READ_PRIMARY_PLOT_COLOR}
+          yAxisLabel={yAxisLabel}
         />
       </div>
       <ControlSection
@@ -315,9 +322,9 @@ export const LongReadGenotypeDistributionSection = ({
       </Heading>
       {explainGenotypes && (
         <p>
-          Each square is a shorter/longer allele pair. Its count is the number of individuals with
-          that diploid genotype; darker squares represent more individuals. Hover a square for its
-          exact repeat pair and count.
+          Each square is a shorter/longer allele pair. Its count is the number of people with a
+          complete called genotype containing both plotted alleles; darker squares represent more
+          people. Hover a square for its exact repeat pair and count.
         </p>
       )}
       <div
