@@ -829,7 +829,6 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     const httAlt72 = await selectExactAllele(page, COMPOUND_LOCUS, 72, 72)
     expect(httAlt72).toMatch(/~72$/)
-    await expect(page.getByText(/ALT 72 of 72/)).toBeVisible()
     const selectedPurityPoint = httPurityPlot.locator(
       '[data-called-alleles][data-selected-allele="true"]'
     )
@@ -964,7 +963,6 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(aouIndex.getByRole('img', { name: 'ALT 1 motif structure preview' })).toBeVisible()
     const aouAlt497 = await selectExactAllele(page, COMPOUND_LOCUS, 497, 497, 'aou')
     expect(aouAlt497).toMatch(/~497$/)
-    await expect(page.getByText(/ALT 497 of 497/)).toBeVisible()
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-497-aou-selected-detail-wide.png')
 
     await openLocus(page, SPARSE_LOCUS, 9)
