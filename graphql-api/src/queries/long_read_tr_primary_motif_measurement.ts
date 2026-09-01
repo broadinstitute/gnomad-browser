@@ -1,8 +1,12 @@
+import { createHash } from 'node:crypto'
+
 import { y1ClickhouseClient } from '../clickhouse'
 
 export const PRIMARY_MOTIF_METRIC = 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1'
 export const PRIMARY_MOTIF_UNIT = 'EXACT_PRIMARY_MOTIF_UNITS'
 export const PRIMARY_MOTIF_SCOPE = 'WHOLE_REPRESENTED_ALLELE'
+export const PRIMARY_MOTIF_COMPLETE_BOUNDS_STATUS = 'complete_no_truncation'
+export const PRIMARY_MOTIF_COMPLETE_LOCUS_STATUS = 'complete'
 export const AOU_GENOTYPE_REASON = 'AGGREGATE_ONLY_SOURCE_NO_GT_PAIRING'
 
 // These response limits are deliberately tighter than the producer's persisted limits.
@@ -17,7 +21,18 @@ const PRODUCT_TABLES = [
   'lr_y1_primary_motif_loci',
   'lr_y1_primary_motif_allele_bins',
   'lr_y1_primary_motif_genotype_pairs',
+  'lr_y1_primary_motif_genotype_margins',
 ] as const
+
+export type PrimaryMotifProductPreflightResult = {
+  status: 'DISABLED' | 'NOT_RUN' | 'AVAILABLE' | 'UNAVAILABLE'
+  reason_code: 'OPTIONAL_PRODUCT_PREFLIGHT_FAILED' | null
+}
+
+let preflightResult: PrimaryMotifProductPreflightResult =
+  process.env.LR_Y1_PRIMARY_MOTIF_ENABLED === 'true'
+    ? { status: 'NOT_RUN', reason_code: null }
+    : { status: 'DISABLED', reason_code: null }
 
 export type PrimaryMotifUnavailableReason =
   | 'PUBLIC_PRODUCT_NOT_APPROVED'
@@ -77,6 +92,8 @@ export type PrimaryMotifMeasurement = {
   }
 }
 
+type ProductComponent = { start0: number; end0: number; motif: string }
+
 type ProductIdentity = {
   cohort: 'hgsvc_hprc' | 'aou'
   chrom: string
@@ -86,8 +103,15 @@ type ProductIdentity = {
   primaryTaskId: string
   primaryAttemptId: string
   canonicalLocusId: string
+  components: ProductComponent[]
+  componentDigest: string
+  primaryComponentIndex: number
   motif: string
+  selectionBasis: string
   biologicalRole: string | null
+  catalogId: string
+  catalogDigest: string | null
+  registryDigest: string | null
   sourceAltCount: number
 }
 
@@ -140,6 +164,17 @@ const nullableString = (value: unknown) =>
 
 const responseBytes = (value: unknown) => Buffer.byteLength(JSON.stringify(value), 'utf8')
 
+const componentDigest = (components: ProductComponent[]) =>
+  createHash('sha256')
+    .update('Y1_PRIMARY_MOTIF_COMPONENTS_V1\0')
+    .update(JSON.stringify(components))
+    .digest('hex')
+
+const exactArray = (observed: unknown, expected: unknown[]) =>
+  Array.isArray(observed) &&
+  observed.length === expected.length &&
+  observed.every((value, index) => value === expected[index])
+
 export const containedPrimaryMotifFailureReason = (
   error: unknown
 ): PrimaryMotifUnavailableReason => {
@@ -182,11 +217,53 @@ export const unavailablePrimaryMotifMeasurement = (
 })
 
 const exactIdentity = (locus: any, primaryRepeat: any): ProductIdentity | null => {
-  if (primaryRepeat?.status !== 'AVAILABLE' || typeof primaryRepeat.motif !== 'string') return null
+  if (
+    primaryRepeat?.status !== 'AVAILABLE' ||
+    typeof primaryRepeat.motif !== 'string' ||
+    !Number.isInteger(primaryRepeat.component_index) ||
+    typeof primaryRepeat.selection_basis !== 'string' ||
+    !Array.isArray(locus.components) ||
+    !locus.components.length
+  ) {
+    return null
+  }
   if (!Array.isArray(locus.source_records) || locus.source_records.length !== 1) return null
+  const locusChrom = String(locus.chrom).replace(/^chr/i, '').toUpperCase()
+  if (
+    locus.components.some(
+      (component: any) => String(component.chrom).replace(/^chr/i, '').toUpperCase() !== locusChrom
+    )
+  ) {
+    return null
+  }
+  const components = locus.components.map((component: any) => ({
+    start0: nonnegativeInteger(component.start0, 'component start'),
+    end0: nonnegativeInteger(component.end0, 'component end'),
+    motif: requiredString(component.motif, 'component motif'),
+  }))
+  const componentIndex = primaryRepeat.component_index
+  const selectedComponent = components[componentIndex]
+  const resolvedComponent = primaryRepeat.component
+  if (
+    componentIndex < 0 ||
+    componentIndex >= components.length ||
+    !selectedComponent ||
+    !resolvedComponent ||
+    String(resolvedComponent.chrom).replace(/^chr/i, '').toUpperCase() !== locusChrom ||
+    Number(resolvedComponent.start0) !== selectedComponent.start0 ||
+    Number(resolvedComponent.end0) !== selectedComponent.end0 ||
+    resolvedComponent.motif !== selectedComponent.motif ||
+    primaryRepeat.motif !== selectedComponent.motif
+  ) {
+    return null
+  }
   const source = locus.source_records[0]
   const sourceAltCount = Number(source.alt_count)
   if (!Number.isInteger(sourceAltCount) || sourceAltCount < 1) return null
+  const catalogDigest = nullableString(primaryRepeat.catalog_digest)
+  const registryDigest = nullableString(primaryRepeat.registry_digest)
+  if (catalogDigest) sha256(catalogDigest, 'catalog digest')
+  if (registryDigest) sha256(registryDigest, 'identity registry digest')
   return {
     cohort: locus.lr_cohort,
     chrom: `chr${String(locus.chrom).replace(/^chr/i, '')}`,
@@ -196,8 +273,15 @@ const exactIdentity = (locus: any, primaryRepeat: any): ProductIdentity | null =
     primaryTaskId: requiredString(source.task_id, 'primary task'),
     primaryAttemptId: requiredString(source.attempt_id, 'primary attempt'),
     canonicalLocusId: requiredString(locus.id, 'canonical locus'),
+    components,
+    componentDigest: componentDigest(components),
+    primaryComponentIndex: primaryRepeat.component_index,
     motif: primaryRepeat.motif,
+    selectionBasis: primaryRepeat.selection_basis,
     biologicalRole: nullableString(primaryRepeat.biological_role),
+    catalogId: nullableString(primaryRepeat.catalog_id) || '',
+    catalogDigest,
+    registryDigest,
     sourceAltCount,
   }
 }
@@ -222,7 +306,7 @@ const selectAcceptedRun = async (identity: ProductIdentity, queryRows: QueryRows
         algorithm_sha256, anchor_rule, max_producer_bins,
         max_genotype_pairs_per_stratum, max_genotype_cells_per_stratum,
         max_serialized_aggregate_bytes, bounds_status, serialized_bytes,
-        receipt_sha256
+        genotype_margin_rows, genotype_margin_content_sha256, receipt_sha256
       FROM lr_y1_primary_motif_runs FINAL
       WHERE release = 'y1' AND cohort = {cohort:String}
         AND reference_genome = 'GRCh38' AND chrom = {chrom:String}
@@ -266,7 +350,7 @@ const selectAcceptedRun = async (identity: ProductIdentity, queryRows: QueryRows
     advertisedPairs > 5000 ||
     advertisedCells > 5000 ||
     advertisedBytes > 1024 * 1024 ||
-    run.bounds_status !== 'WITHIN_BOUNDS'
+    run.bounds_status !== PRIMARY_MOTIF_COMPLETE_BOUNDS_STATUS
   ) {
     invariant('accepted product run advertises unsupported or failed bounds')
   }
@@ -278,24 +362,29 @@ const selectAcceptedRun = async (identity: ProductIdentity, queryRows: QueryRows
     algorithm_sha256: sha256(run.algorithm_sha256, 'algorithm digest'),
     anchor_rule: requiredString(run.anchor_rule, 'anchor rule'),
     serialized_bytes: nonnegativeInteger(run.serialized_bytes, 'run serialized bytes'),
+    genotype_margin_rows: nonnegativeInteger(run.genotype_margin_rows, 'run genotype margin rows'),
+    genotype_margin_content_sha256:
+      run.genotype_margin_content_sha256 == null
+        ? null
+        : sha256(run.genotype_margin_content_sha256, 'run genotype margin content digest'),
+    receipt_sha256: sha256(run.receipt_sha256, 'accepted run receipt digest'),
   }
 }
 
-const selectLocusReceipt = async (
-  identity: ProductIdentity,
-  productRunId: string,
-  queryRows: QueryRows
-) => {
+const selectLocusReceipt = async (identity: ProductIdentity, run: any, queryRows: QueryRows) => {
+  const productRunId = run.product_run_id
   const rows = await queryRows(
     `
       SELECT product_run_id, primary_run_id, primary_task_id, primary_attempt_id,
-        source_variant_id, canonical_locus_id, primary_motif, registry_digest,
+        source_variant_id, canonical_locus_id, component_starts0, component_ends0,
+        component_motifs, component_digest, primary_component_index, primary_motif,
+        selection_basis, biological_role, catalog_id, catalog_digest, registry_digest,
         registry_approval_state, metric, algorithm_version, algorithm_sha256,
         anchor_rule, alts_checked, bin_count, overall_an, overall_alt_ac,
         overall_ref_copies, genotype_status, genotype_reason_code,
         called_diploid_people, partial_diploid_people, no_call_people,
         non_diploid_people, genotype_observed_an, genotype_pair_count,
-        genotype_cell_count, bounds_status, status, reason_code,
+        genotype_cell_count, genotype_margin_count, bounds_status, status, reason_code,
         source_record_sha256, allele_receipt_sha256, genotype_receipt_sha256,
         serialized_bytes
       FROM lr_y1_primary_motif_loci
@@ -321,17 +410,46 @@ const selectLocusReceipt = async (
     ['primary_attempt_id', row.primary_attempt_id, identity.primaryAttemptId],
     ['source_variant_id', row.source_variant_id, identity.sourceVariantId],
     ['canonical_locus_id', row.canonical_locus_id, identity.canonicalLocusId],
+    ['component_digest', row.component_digest, identity.componentDigest],
+    [
+      'primary_component_index',
+      Number(row.primary_component_index),
+      identity.primaryComponentIndex,
+    ],
     ['primary_motif', row.primary_motif, identity.motif],
+    ['selection_basis', row.selection_basis, identity.selectionBasis],
+    ['biological_role', nullableString(row.biological_role), identity.biologicalRole],
+    ['catalog_id', row.catalog_id, identity.catalogId],
+    ['catalog_digest', nullableString(row.catalog_digest), identity.catalogDigest],
+    ['registry_digest', row.registry_digest, run.registry_digest],
+    ['metric', row.metric, run.metric],
+    ['algorithm_version', row.algorithm_version, run.algorithm_version],
+    ['algorithm_sha256', row.algorithm_sha256, run.algorithm_sha256],
+    ['anchor_rule', row.anchor_rule, run.anchor_rule],
   ]
-  if (exactPairs.some(([, observed, expected]) => observed !== expected)) {
+  if (
+    exactPairs.some(([, observed, expected]) => observed !== expected) ||
+    !exactArray(
+      row.component_starts0,
+      identity.components.map((component) => component.start0)
+    ) ||
+    !exactArray(
+      row.component_ends0,
+      identity.components.map((component) => component.end0)
+    ) ||
+    !exactArray(
+      row.component_motifs,
+      identity.components.map((component) => component.motif)
+    ) ||
+    (identity.registryDigest != null && row.registry_digest !== identity.registryDigest)
+  ) {
     invariant('locus receipt is stale or cross-bound')
   }
   if (
     row.registry_approval_state !== 'REVIEWED' ||
     row.metric !== PRIMARY_MOTIF_METRIC ||
-    row.bounds_status !== 'WITHIN_BOUNDS' ||
-    row.status !== 'AVAILABLE' ||
-    row.reason_code != null
+    row.bounds_status !== PRIMARY_MOTIF_COMPLETE_BOUNDS_STATUS ||
+    row.status !== PRIMARY_MOTIF_COMPLETE_LOCUS_STATUS
   ) {
     invariant('locus receipt is not complete, reviewed, available, and within bounds')
   }
@@ -351,6 +469,7 @@ const selectLocusReceipt = async (
     noCallPeople: nonnegativeInteger(row.no_call_people, 'no-call people'),
     nonDiploidPeople: nonnegativeInteger(row.non_diploid_people, 'non-diploid people'),
     genotypeCellCount: nonnegativeInteger(row.genotype_cell_count, 'genotype cell count'),
+    genotypeMarginCount: nonnegativeInteger(row.genotype_margin_count, 'genotype margin count'),
     serializedBytes: nonnegativeInteger(row.serialized_bytes, 'locus serialized bytes'),
     sourceRecordSha256: sha256(row.source_record_sha256, 'source-record digest'),
     alleleReceiptSha256: sha256(row.allele_receipt_sha256, 'allele receipt digest'),
@@ -428,7 +547,9 @@ const selectGenotypeCells = async (
 ) => {
   const rows = await queryRows(
     `
-      SELECT shorter_exact_units, longer_exact_units, sum(people) AS people
+      SELECT shorter_exact_units, longer_exact_units, sum(people) AS people,
+        uniqExact(pair_receipt_sha256) AS receipt_count,
+        any(pair_receipt_sha256) AS pair_receipt_sha256
       FROM lr_y1_primary_motif_genotype_pairs
       WHERE product_run_id = {productRunId:String}
         AND release = 'y1' AND cohort = {cohort:String}
@@ -449,17 +570,102 @@ const selectGenotypeCells = async (
     invariant('genotype cells are empty or exceed the response bound')
   }
   const seen = new Set<string>()
-  return rows.map((row) => {
+  const receipts = new Set<string>()
+  const cells = rows.map((row) => {
     const shorter = nonnegativeInteger(row.shorter_exact_units, 'shorter exact units')
     const longer = nonnegativeInteger(row.longer_exact_units, 'longer exact units')
     const people = nonnegativeInteger(row.people, 'genotype cell people')
     const key = `${shorter}/${longer}`
-    if (shorter > longer || people === 0 || seen.has(key)) {
-      invariant('genotype cell is unordered, empty, or duplicate')
+    if (
+      shorter > longer ||
+      people === 0 ||
+      seen.has(key) ||
+      nonnegativeInteger(row.receipt_count, 'pair receipt count') !== 1
+    ) {
+      invariant('genotype cell is unordered, empty, duplicate, or receipt-inconsistent')
     }
     seen.add(key)
+    receipts.add(sha256(row.pair_receipt_sha256, 'genotype pair receipt digest'))
     return { shorter_exact_units: shorter, longer_exact_units: longer, people }
   })
+  if (receipts.size !== 1) invariant('genotype pairs do not share one all-stratum receipt')
+  return { cells, receiptSha256: [...receipts][0] }
+}
+
+const selectGenotypeMargins = async (
+  identity: ProductIdentity,
+  productRunId: string,
+  registryDigest: string,
+  expectedTotalRows: number,
+  queryRows: QueryRows
+) => {
+  const params = {
+    ...identityParams(identity),
+    productRunId,
+    registryDigest,
+    metric: PRIMARY_MOTIF_METRIC,
+  }
+  const countRows = await queryRows(
+    `
+      SELECT count() AS margin_count
+      FROM lr_y1_primary_motif_genotype_margins
+      WHERE product_run_id = {productRunId:String}
+        AND release = 'y1' AND cohort = {cohort:String}
+        AND reference_genome = 'GRCh38' AND chrom = {chrom:String}
+        AND primary_run_id = {primaryRunId:String}
+        AND source_variant_id = {sourceVariantId:String}
+        AND canonical_locus_id = {canonicalLocusId:String}
+        AND registry_digest = {registryDigest:String}
+        AND metric = {metric:String}
+    `,
+    params
+  )
+  if (
+    countRows.length !== 1 ||
+    nonnegativeInteger(countRows[0].margin_count, 'physical genotype margin count') !==
+      expectedTotalRows
+  ) {
+    invariant('genotype margin table does not match the locus receipt count')
+  }
+  const rows = await queryRows(
+    `
+      SELECT allele_index, expected_copies, paired_copies,
+        excluded_from_pairs_copies, margin_receipt_sha256
+      FROM lr_y1_primary_motif_genotype_margins
+      WHERE product_run_id = {productRunId:String}
+        AND release = 'y1' AND cohort = {cohort:String}
+        AND reference_genome = 'GRCh38' AND chrom = {chrom:String}
+        AND primary_run_id = {primaryRunId:String}
+        AND source_variant_id = {sourceVariantId:String}
+        AND canonical_locus_id = {canonicalLocusId:String}
+        AND registry_digest = {registryDigest:String}
+        AND metric = {metric:String} AND division = 'all'
+        AND isNull(ancestry) AND isNull(sex)
+      ORDER BY allele_index
+      LIMIT ${identity.sourceAltCount + 2}
+    `,
+    params
+  )
+  if (rows.length !== identity.sourceAltCount + 1) {
+    invariant('all-stratum genotype margins are incomplete for REF and every specific ALT')
+  }
+  const receipts = new Set<string>()
+  const margins = rows.map((row, expectedIndex) => {
+    const alleleIndex = nonnegativeInteger(row.allele_index, 'margin allele index')
+    const expectedCopies = nonnegativeInteger(row.expected_copies, 'margin expected copies')
+    const pairedCopies = nonnegativeInteger(row.paired_copies, 'margin paired copies')
+    const excludedCopies = nonnegativeInteger(
+      row.excluded_from_pairs_copies,
+      'margin excluded copies'
+    )
+    if (alleleIndex !== expectedIndex || pairedCopies + excludedCopies !== expectedCopies) {
+      invariant('genotype margin index or copy reconciliation is incomplete')
+    }
+    receipts.add(sha256(row.margin_receipt_sha256, 'genotype margin receipt digest'))
+    return { alleleIndex, expectedCopies, pairedCopies, excludedCopies }
+  })
+  if (receipts.size !== 1) invariant('genotype margins do not share one all-stratum receipt')
+  return { margins, receiptSha256: [...receipts][0] }
 }
 
 export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
@@ -483,6 +689,9 @@ export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
   if (!identity) {
     return unavailablePrimaryMotifMeasurement('PRODUCT_IDENTITY_MISMATCH', motif, biologicalRole)
   }
+  if (!options.queryRows && preflightResult.status !== 'AVAILABLE') {
+    return unavailablePrimaryMotifMeasurement('PRODUCT_INCOMPLETE', motif, biologicalRole)
+  }
   const queryRows = options.queryRows || defaultQueryRows
   const run = await selectAcceptedRun(identity, queryRows)
   if (!run) {
@@ -492,9 +701,14 @@ export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
       identity.biologicalRole
     )
   }
-  const receipt = await selectLocusReceipt(identity, run.product_run_id, queryRows)
-  if (receipt.registry_digest !== run.registry_digest) {
-    invariant('run and locus registry digests differ')
+  const receipt = await selectLocusReceipt(identity, run, queryRows)
+  if (
+    receipt.registry_digest !== run.registry_digest ||
+    (identity.cohort === 'aou'
+      ? receipt.reason_code !== AOU_GENOTYPE_REASON
+      : receipt.reason_code != null)
+  ) {
+    invariant('run and locus registry digests or completion reasons differ')
   }
   const bins = await selectAlleleBins(identity, run.product_run_id, run.registry_digest, queryRows)
   if (bins.length !== receipt.binCount) invariant('returned bin count differs from locus receipt')
@@ -522,7 +736,9 @@ export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
       receipt.genotype_reason_code !== AOU_GENOTYPE_REASON ||
       receipt.calledDiploidPeople !== 0 ||
       receipt.genotypeCellCount !== 0 ||
-      receipt.genotypeReceiptSha256 != null
+      receipt.genotypeMarginCount !== 0 ||
+      run.genotype_margin_rows !== 0 ||
+      run.genotype_margin_content_sha256 != null
     ) {
       invariant('AoU genotype status is not typed aggregate-only unavailable')
     }
@@ -549,24 +765,47 @@ export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
       cells: [],
     }
   } else {
-    const cells = await selectGenotypeCells(
+    if (
+      receipt.genotypeMarginCount === 0 ||
+      run.genotype_margin_rows < receipt.genotypeMarginCount ||
+      !run.genotype_margin_content_sha256
+    ) {
+      invariant('accepted product lacks its genotype margin table receipt')
+    }
+    const pairResult = await selectGenotypeCells(
       identity,
       run.product_run_id,
       run.registry_digest,
       queryRows
     )
+    const marginResult = await selectGenotypeMargins(
+      identity,
+      run.product_run_id,
+      run.registry_digest,
+      receipt.genotypeMarginCount,
+      queryRows
+    )
+    const refMargin = marginResult.margins[0]
+    const altMargins = marginResult.margins.slice(1)
     if (
-      cells.length !== receipt.genotypeCellCount ||
-      cells.reduce((sum, cell) => sum + cell.people, 0) !== receipt.calledDiploidPeople
+      pairResult.receiptSha256 !== marginResult.receiptSha256 ||
+      pairResult.cells.length !== receipt.genotypeCellCount ||
+      pairResult.cells.reduce((sum, cell) => sum + cell.people, 0) !==
+        receipt.calledDiploidPeople ||
+      refMargin.expectedCopies !== receipt.overallRefCopies ||
+      altMargins.reduce((sum, margin) => sum + margin.expectedCopies, 0) !== receipt.overallAltAc ||
+      marginResult.margins.reduce((sum, margin) => sum + margin.expectedCopies, 0) !==
+        receipt.overallAn ||
+      marginResult.margins.some((margin) => margin.excludedCopies !== 0)
     ) {
-      invariant('genotype cells do not exactly reconcile to the locus receipt')
+      invariant('genotype cells and complete REF/specific-ALT margins do not reconcile')
     }
     genotype = {
       status: 'AVAILABLE',
       reason_code: null,
       called_diploid_people: receipt.calledDiploidPeople,
       no_call_people: receipt.noCallPeople,
-      cells,
+      cells: pairResult.cells,
     }
   }
 
@@ -614,64 +853,88 @@ export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
   return response
 }
 
-let preflightStatus: 'DISABLED' | 'NOT_RUN' | 'AVAILABLE' =
-  process.env.LR_Y1_PRIMARY_MOTIF_ENABLED === 'true' ? 'NOT_RUN' : 'DISABLED'
-
-export const primaryMotifProductPreflightStatus = () => preflightStatus
+export const primaryMotifProductPreflightStatus = () => preflightResult.status
+export const primaryMotifProductPreflightResult = () => ({ ...preflightResult })
 
 export const preflightLongReadPrimaryMotifProduct = async (
   options: { enabled?: boolean; queryRows?: QueryRows } = {}
-) => {
+): Promise<PrimaryMotifProductPreflightResult> => {
   const enabled = options.enabled ?? process.env.LR_Y1_PRIMARY_MOTIF_ENABLED === 'true'
   if (!enabled) {
-    preflightStatus = 'DISABLED'
-    return
+    preflightResult = { status: 'DISABLED', reason_code: null }
+    return primaryMotifProductPreflightResult()
   }
-  const queryRows = options.queryRows || defaultQueryRows
-  const tableRows = await queryRows(
-    `
-      SELECT name
-      FROM system.tables
-      WHERE database = currentDatabase() AND name IN {tables:Array(String)}
-      ORDER BY name
-      LIMIT 5
-    `,
-    { tables: [...PRODUCT_TABLES] }
-  )
-  const observed = new Set(tableRows.map((row) => row.name))
-  if (
-    PRODUCT_TABLES.some((table) => !observed.has(table)) ||
-    observed.size !== PRODUCT_TABLES.length
-  ) {
-    invariant('configured product database is missing an aggregate serving table')
-  }
-  const accepted = await queryRows(
-    `
-      SELECT product_run_id, cohort, chrom, primary_database, primary_run_id,
-        registry_digest, registry_approval_state, metric, bounds_status
-      FROM lr_y1_primary_motif_runs FINAL
-      WHERE release = 'y1' AND reference_genome = 'GRCh38'
-        AND state = 'accepted_frozen'
-      ORDER BY cohort, chrom, primary_run_id, product_run_id
-      LIMIT 49
-    `
-  )
-  if (!accepted.length || accepted.length > 48) {
-    invariant('configured product has zero or too many accepted runs')
-  }
-  const identities = new Set<string>()
-  accepted.forEach((row) => {
-    const key = `${row.cohort}\u0000${row.chrom}\u0000${row.primary_database}\u0000${row.primary_run_id}`
+  try {
+    const queryRows = options.queryRows || defaultQueryRows
+    const tableRows = await queryRows(
+      `
+        SELECT name
+        FROM system.tables
+        WHERE database = currentDatabase() AND name IN {tables:Array(String)}
+        ORDER BY name
+        LIMIT 5
+      `,
+      { tables: [...PRODUCT_TABLES] }
+    )
+    const observed = new Set(tableRows.map((row) => row.name))
     if (
-      identities.has(key) ||
-      row.registry_approval_state !== 'REVIEWED' ||
-      row.metric !== PRIMARY_MOTIF_METRIC ||
-      row.bounds_status !== 'WITHIN_BOUNDS'
+      PRODUCT_TABLES.some((table) => !observed.has(table)) ||
+      observed.size !== PRODUCT_TABLES.length
     ) {
-      invariant('accepted product run set is duplicate, unreviewed, or outside bounds')
+      invariant('configured product database is missing an aggregate serving table')
     }
-    identities.add(key)
-    sha256(row.registry_digest, 'preflight registry digest')
-  })
-  preflightStatus = 'AVAILABLE'
+    const accepted = await queryRows(
+      `
+        SELECT product_run_id, cohort, chrom, primary_database, primary_run_id,
+          registry_digest, registry_approval_state, metric, algorithm_version,
+          algorithm_sha256, anchor_rule, bounds_status, genotype_margin_rows,
+          genotype_margin_content_sha256, receipt_sha256
+        FROM lr_y1_primary_motif_runs FINAL
+        WHERE release = 'y1' AND reference_genome = 'GRCh38'
+          AND state = 'accepted_frozen'
+        ORDER BY cohort, chrom, primary_run_id, product_run_id
+        LIMIT 49
+      `
+    )
+    if (!accepted.length || accepted.length > 48) {
+      invariant('configured product has zero or too many accepted runs')
+    }
+    const identities = new Set<string>()
+    accepted.forEach((row) => {
+      const key = `${row.cohort}\u0000${row.chrom}\u0000${row.primary_database}\u0000${row.primary_run_id}`
+      const marginRows = nonnegativeInteger(
+        row.genotype_margin_rows,
+        'preflight genotype margin rows'
+      )
+      const marginDigest = nullableString(row.genotype_margin_content_sha256)
+      if (
+        identities.has(key) ||
+        !['hgsvc_hprc', 'aou'].includes(row.cohort) ||
+        row.registry_approval_state !== 'REVIEWED' ||
+        row.metric !== PRIMARY_MOTIF_METRIC ||
+        row.bounds_status !== PRIMARY_MOTIF_COMPLETE_BOUNDS_STATUS ||
+        (row.cohort === 'hgsvc_hprc' && (marginRows === 0 || !marginDigest)) ||
+        (row.cohort === 'aou' && (marginRows !== 0 || marginDigest != null))
+      ) {
+        invariant(
+          'accepted product run set is duplicate, unreviewed, incomplete, or outside bounds'
+        )
+      }
+      identities.add(key)
+      requiredString(row.algorithm_version, 'preflight algorithm version')
+      requiredString(row.anchor_rule, 'preflight anchor rule')
+      sha256(row.registry_digest, 'preflight registry digest')
+      sha256(row.algorithm_sha256, 'preflight algorithm digest')
+      sha256(row.receipt_sha256, 'preflight accepted run receipt digest')
+      if (marginDigest) sha256(marginDigest, 'preflight genotype margin content digest')
+    })
+    preflightResult = { status: 'AVAILABLE', reason_code: null }
+  } catch (_error) {
+    // This product is optional. Preserve the canonical GraphQL API and fail the capability closed.
+    preflightResult = {
+      status: 'UNAVAILABLE',
+      reason_code: 'OPTIONAL_PRODUCT_PREFLIGHT_FAILED',
+    }
+  }
+  return primaryMotifProductPreflightResult()
 }

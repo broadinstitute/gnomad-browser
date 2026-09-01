@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto'
+
 import {
   AOU_GENOTYPE_REASON,
   containedPrimaryMotifFailureReason,
@@ -43,6 +45,12 @@ const fixture = ({
     RFC1: ['chr4', 'chr4-39348424-TRV-55', 'AAAAG'],
   } as const
   const [chrom, id, motif] = identities[catalog]
+  const component = { start0: 100, end0: 100 + motif.length * 10, motif }
+  const componentDigest = createHash('sha256')
+    .update('Y1_PRIMARY_MOTIF_COMPONENTS_V1\0')
+    .update(JSON.stringify([component]))
+    .digest('hex')
+  const catalogDigest = digest('9')
   const sourceRun = `primary-${cohort}-${chrom}`
   const productRun = `primary-motif-${cohort}-${catalog}`
   const registryDigest = digest('a')
@@ -69,11 +77,28 @@ const fixture = ({
       stratum_ref_copies: referenceCopies,
     },
   ]
+  const genotypeStratumReceipt = digest('7')
   const cells = Array.from({ length: cellCount }, (_, index) => ({
     shorter_exact_units: 10 + index,
     longer_exact_units: 12 + index,
     people: index === 0 ? resolvedCalledPeople : 0,
+    receipt_count: 1,
+    pair_receipt_sha256: genotypeStratumReceipt,
   })).filter((cell) => cell.people > 0)
+  const margins = genotypeAvailable
+    ? Array.from({ length: resolvedAltCount + 1 }, (_, alleleIndex) => {
+        let expectedCopies = 0
+        if (alleleIndex === 0) expectedCopies = referenceCopies
+        else if (alleleIndex <= alternateCopies) expectedCopies = 1
+        return {
+          allele_index: alleleIndex,
+          expected_copies: expectedCopies,
+          paired_copies: expectedCopies,
+          excluded_from_pairs_copies: 0,
+          margin_receipt_sha256: genotypeStratumReceipt,
+        }
+      })
+    : []
   const run = {
     product_run_id: productRun,
     state: 'accepted_frozen',
@@ -82,15 +107,17 @@ const fixture = ({
     registry_digest: registryDigest,
     registry_approval_state: 'REVIEWED',
     metric: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1',
-    algorithm_version: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1',
+    algorithm_version: 'Y1_PRIMARY_MOTIF_PRODUCER_V1',
     algorithm_sha256: digest('b'),
     anchor_rule: 'TRID_ENVELOPE_LEFT_PADDING_BASE_V1',
     max_producer_bins: 65_536,
     max_genotype_pairs_per_stratum: 5000,
     max_genotype_cells_per_stratum: 5000,
     max_serialized_aggregate_bytes: 1024 * 1024,
-    bounds_status: 'WITHIN_BOUNDS',
+    bounds_status: 'complete_no_truncation',
     serialized_bytes: 1000,
+    genotype_margin_rows: margins.length,
+    genotype_margin_content_sha256: genotypeAvailable ? digest('8') : null,
     receipt_sha256: digest('c'),
   }
   const locusReceipt = {
@@ -100,7 +127,16 @@ const fixture = ({
     primary_attempt_id: 'attempt-1',
     source_variant_id: id,
     canonical_locus_id: id,
+    component_starts0: [component.start0],
+    component_ends0: [component.end0],
+    component_motifs: [component.motif],
+    component_digest: componentDigest,
+    primary_component_index: 0,
     primary_motif: motif,
+    selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT',
+    biological_role: catalog === 'RFC1' ? 'benign reference motif' : null,
+    catalog_id: catalog,
+    catalog_digest: catalogDigest,
     registry_digest: registryDigest,
     registry_approval_state: 'REVIEWED',
     metric: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1',
@@ -121,12 +157,13 @@ const fixture = ({
     genotype_observed_an: genotypeAvailable ? resolvedAn : null,
     genotype_pair_count: genotypeAvailable ? cells.length : 0,
     genotype_cell_count: genotypeAvailable ? cells.length : 0,
-    bounds_status: 'WITHIN_BOUNDS',
-    status: 'AVAILABLE',
-    reason_code: null,
+    genotype_margin_count: margins.length,
+    bounds_status: 'complete_no_truncation',
+    status: 'complete',
+    reason_code: genotypeAvailable ? null : AOU_GENOTYPE_REASON,
     source_record_sha256: digest('d'),
     allele_receipt_sha256: digest('e'),
-    genotype_receipt_sha256: genotypeAvailable ? digest('f') : null,
+    genotype_receipt_sha256: digest('f'),
     serialized_bytes: 1000,
   }
   const locus = {
@@ -135,6 +172,7 @@ const fixture = ({
     lr_cohort: cohort,
     primary_database: run.primary_database,
     source_run_id: sourceRun,
+    components: [{ chrom, ...component }],
     source_records: [
       {
         source_variant_id: id,
@@ -147,7 +185,13 @@ const fixture = ({
   const primaryRepeat = {
     status: 'AVAILABLE',
     motif,
+    component_index: 0,
+    component: { chrom, ...component },
+    selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT',
     biological_role: catalog === 'RFC1' ? 'benign reference motif' : null,
+    catalog_id: catalog,
+    catalog_digest: catalogDigest,
+    registry_digest: null,
   }
   const queries: string[] = []
   const queryRows = jest.fn(async (query: string) => {
@@ -156,6 +200,10 @@ const fixture = ({
     if (query.includes('FROM lr_y1_primary_motif_loci')) return [locusReceipt]
     if (query.includes('FROM lr_y1_primary_motif_allele_bins')) return bins
     if (query.includes('FROM lr_y1_primary_motif_genotype_pairs')) return cells
+    if (query.includes('FROM lr_y1_primary_motif_genotype_margins') && query.includes('count()')) {
+      return [{ margin_count: margins.length }]
+    }
+    if (query.includes('FROM lr_y1_primary_motif_genotype_margins')) return margins
     throw new Error(`Unexpected query: ${query}`)
   })
   return {
@@ -165,6 +213,7 @@ const fixture = ({
     locusReceipt,
     bins,
     cells,
+    margins,
     queryRows,
     queries,
     an: resolvedAn,
@@ -290,6 +339,69 @@ describe('exact primary-motif product query', () => {
     ).rejects.toThrow('exceed the response bound')
   })
 
+  test('rejects repeated-equal-motif component substitution before product lookup', async () => {
+    const source = fixture()
+    source.locus.components.push({
+      ...source.locus.components[0],
+      start0: source.locus.components[0].end0 + 10,
+      end0: source.locus.components[0].end0 + 40,
+    })
+    source.primaryRepeat.component = source.locus.components[1]
+
+    await expect(
+      fetchLongReadTrPrimaryMotifMeasurementUncached(source.locus, source.primaryRepeat, {
+        enabled: true,
+        queryRows: source.queryRows,
+      })
+    ).resolves.toMatchObject({
+      status: 'UNAVAILABLE',
+      reason_code: 'PRODUCT_IDENTITY_MISMATCH',
+    })
+    expect(source.queryRows).not.toHaveBeenCalled()
+  })
+
+  test.each([
+    ['selection_basis', 'LR_SOLE_COMPONENT'],
+    ['catalog_digest', digest('6')],
+    ['algorithm_sha256', digest('5')],
+    ['anchor_rule', 'STALE_ANCHOR_RULE'],
+  ])('rejects stale locus %s identity before reading bins', async (field, value) => {
+    const source = fixture()
+    ;(source.locusReceipt as any)[field] = value
+    await expect(
+      fetchLongReadTrPrimaryMotifMeasurementUncached(source.locus, source.primaryRepeat, {
+        enabled: true,
+        queryRows: source.queryRows,
+      })
+    ).rejects.toThrow('stale or cross-bound')
+    expect(source.queries.some((query) => query.includes('allele_bins'))).toBe(false)
+  })
+
+  test('requires complete REF and every specific-ALT margin before genotype availability', async () => {
+    const source = fixture()
+    source.margins[1].expected_copies += 1
+    source.margins[1].paired_copies += 1
+    await expect(
+      fetchLongReadTrPrimaryMotifMeasurementUncached(source.locus, source.primaryRepeat, {
+        enabled: true,
+        queryRows: source.queryRows,
+      })
+    ).rejects.toThrow('complete REF/specific-ALT margins')
+  })
+
+  test('requires genotype pair and margin rows to share the cryptographic stratum receipt', async () => {
+    const source = fixture()
+    for (let index = 0; index < source.margins.length; index += 1) {
+      source.margins[index].margin_receipt_sha256 = digest('4')
+    }
+    await expect(
+      fetchLongReadTrPrimaryMotifMeasurementUncached(source.locus, source.primaryRepeat, {
+        enabled: true,
+        queryRows: source.queryRows,
+      })
+    ).rejects.toThrow('complete REF/specific-ALT margins')
+  })
+
   test.each([
     ['stale run identity', 'PRODUCT_IDENTITY_MISMATCH'],
     ['response bound exceeded', 'PRODUCT_BOUND_EXCEEDED'],
@@ -320,6 +432,7 @@ describe('exact primary-motif product query', () => {
       'lr_y1_primary_motif_loci',
       'lr_y1_primary_motif_allele_bins',
       'lr_y1_primary_motif_genotype_pairs',
+      'lr_y1_primary_motif_genotype_margins',
     ].map((name) => ({ name }))
     const queryRows = jest
       .fn()
@@ -333,7 +446,44 @@ describe('exact primary-motif product query', () => {
       ])
     await expect(
       preflightLongReadPrimaryMotifProduct({ enabled: true, queryRows })
-    ).resolves.toBeUndefined()
+    ).resolves.toEqual({ status: 'AVAILABLE', reason_code: null })
     expect(primaryMotifProductPreflightStatus()).toBe('AVAILABLE')
+  })
+
+  test('requires the fifth genotype-margin table in optional-product inventory', async () => {
+    const source = fixture()
+    const fourTables = [
+      'lr_y1_primary_motif_runs',
+      'lr_y1_primary_motif_loci',
+      'lr_y1_primary_motif_allele_bins',
+      'lr_y1_primary_motif_genotype_pairs',
+    ].map((name) => ({ name }))
+    const result = await preflightLongReadPrimaryMotifProduct({
+      enabled: true,
+      queryRows: jest.fn().mockResolvedValueOnce(fourTables).mockResolvedValueOnce([source.run]),
+    })
+    expect(result).toEqual({
+      status: 'UNAVAILABLE',
+      reason_code: 'OPTIONAL_PRODUCT_PREFLIGHT_FAILED',
+    })
+  })
+
+  test('contains optional-product preflight failure as typed unavailable', async () => {
+    const result = await preflightLongReadPrimaryMotifProduct({
+      enabled: true,
+      queryRows: jest.fn().mockRejectedValue(new Error('optional ClickHouse product absent')),
+    })
+    expect(result).toEqual({
+      status: 'UNAVAILABLE',
+      reason_code: 'OPTIONAL_PRODUCT_PREFLIGHT_FAILED',
+    })
+    expect(primaryMotifProductPreflightStatus()).toBe('UNAVAILABLE')
+
+    const source = fixture()
+    await expect(
+      fetchLongReadTrPrimaryMotifMeasurementUncached(source.locus, source.primaryRepeat, {
+        enabled: true,
+      })
+    ).resolves.toMatchObject({ status: 'UNAVAILABLE', reason_code: 'PRODUCT_INCOMPLETE' })
   })
 })

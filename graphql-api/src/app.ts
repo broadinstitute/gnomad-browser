@@ -256,7 +256,12 @@ const start = async () => {
   // absence is represented as an unavailable capability rather than zero rows.
   await preflightY1AcceptedSources()
   await preflightY1Ancillaries()
-  await preflightLongReadPrimaryMotifProduct()
+  const primaryMotifPreflight = await preflightLongReadPrimaryMotifProduct()
+  if (primaryMotifPreflight.status === 'UNAVAILABLE') {
+    logger.warn(
+      `Optional LR primary-motif product unavailable: ${primaryMotifPreflight.reason_code}`
+    )
+  }
   app.listen(config.PORT)
 }
 

@@ -49,7 +49,7 @@ const measurement = (
     source_record_sha256: 'c'.repeat(64),
     allele_receipt_sha256: 'd'.repeat(64),
     genotype_receipt_sha256: 'e'.repeat(64),
-    bounds_status: 'WITHIN_BOUNDS',
+    bounds_status: 'complete_no_truncation',
     serialized_bytes: 1000,
     returned_bins: 3,
     returned_cells: 3,

@@ -552,6 +552,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByRole('heading', { name: 'CAG tandem repeat' })).not.toBeNull()
     expect(screen.getByText('chr4:3,074,877–3,074,933 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('HTT — exon')).toBeNull()
+    expect(
+      screen.queryByText('Exact short-read catalog reference match (identity only)')
+    ).toBeNull()
+    expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
+    expect(
+      screen
+        .getByRole('img', { name: /1 ordered LR reference component/ })
+        .getAttribute('aria-label')
+    ).not.toMatch(/exact short-read catalog reference match/i)
   })
 
   test('preserves ATXN1 stored TGC orientation and RFC1 benign reference identity', () => {
@@ -957,6 +966,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('heading', { name: /Short-read reference cohort/ })).toBeNull()
     expect(screen.queryByText(/Short-read known-locus ranges are reference context/)).toBeNull()
     expect(screen.queryByText(/Outlined component/)).toBeNull()
+    expect(
+      screen.queryByText('Exact short-read catalog reference match (identity only)')
+    ).toBeNull()
+    expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
   })
 
   test('filters the primary index to every same-length identity and clears back to all', () => {
@@ -1235,7 +1248,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
   })
 
-  test('container retains the displayed locus and selection until new exact detail arrives', () => {
+  test('container makes retained data inert during exact-ALT revalidation', () => {
     const staleLocus = makeLocus()
     const nextAlleleId = `${sourceVariantId}~1`
     const freshLocus = makeLocus()
@@ -1274,13 +1287,19 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect((global as any).__TR_QUERY_PROPS__.retainPreviousData).toBe(true)
     expect((global as any).__TR_QUERY_PROPS__.rejectGraphQLErrors).toBe(true)
     expect((global as any).__TR_QUERY_PROPS__.requestKey).toBe(`hgsvc_hprc:${staleLocus.id}`)
+    expect(screen.getByRole('status').textContent).toMatch(
+      /retain their loaded cohort and allele identity and are temporarily inert/i
+    )
     expect(screen.getByRole('heading', { name: `${exactId} exact ALT details` })).not.toBeNull()
     expect(screen.getByRole('heading', { name: '72 exact ALT sequences' })).not.toBeNull()
+    const retainedFrame = screen.getByRole('status').nextElementSibling as HTMLElement
+    expect(retainedFrame.hasAttribute('inert')).toBe(true)
+    expect(retainedFrame.getAttribute('aria-busy')).toBe('true')
     expect(
-      within(screen.getByRole('table', { name: 'Exact-ALT index' }))
-        .getByRole('link', { name: 'Selected ALT 1' })
-        .getAttribute('aria-current')
-    ).toBe('page')
+      within(retainedFrame).queryByRole('heading', {
+        name: `${nextAlleleId} exact ALT details`,
+      })
+    ).toBeNull()
     ;(global as any).__TR_QUERY_STATE__ = {
       data: { long_read_tandem_repeat_locus: freshLocus },
       requestVariables: { allele: nextAlleleId },
@@ -1293,6 +1312,40 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     expect(screen.getByTestId('lr-tr-selected-detail')).not.toBe(document.activeElement)
     expect(scrollIntoView).not.toHaveBeenCalled()
+  })
+
+  test('container does not relabel retained HGSVC data as the requested AoU cohort', () => {
+    const staleLocus = makeLocus()
+    const history = createMemoryHistory({
+      initialEntries: [`/tandem-repeat/${staleLocus.id}?dataset=gnomad_r4_lr&lr_cohort=aou`],
+    })
+    ;(global as any).__TR_QUERY_STATE__ = {
+      data: { long_read_tandem_repeat_locus: staleLocus },
+      requestVariables: { lrCohort: 'hgsvc_hprc', allele: null },
+      stale: true,
+    }
+    render(
+      <Router history={history}>
+        <ThemeProvider
+          theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+        >
+          <LongReadTandemRepeatPageContainer
+            datasetId="gnomad_r4_lr"
+            locusId={staleLocus.id}
+            lrCohort="aou"
+          />
+        </ThemeProvider>
+      </Router>
+    )
+
+    const status = screen.getByRole('status')
+    expect(status.textContent).toMatch(/retain their loaded cohort and allele identity/i)
+    const retainedFrame = status.nextElementSibling as HTMLElement
+    expect(retainedFrame.hasAttribute('inert')).toBe(true)
+    expect(
+      (within(retainedFrame).getByLabelText('Long-read cohort') as HTMLSelectElement).value
+    ).toBe('hgsvc_hprc')
+    expect(screen.getByRole('heading', { name: 'HTT CAG tandem repeat' })).not.toBeNull()
   })
 
   test('container pushes exact selection while preserving unrelated parameters', () => {

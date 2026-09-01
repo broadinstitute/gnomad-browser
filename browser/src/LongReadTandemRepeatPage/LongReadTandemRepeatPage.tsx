@@ -170,6 +170,16 @@ const primaryRepeatBasisLabel = (basis: LongReadTrLocus['primary_repeat']['selec
   return 'reviewed registry / LR'
 }
 
+const exactComponent = (left: any, right: any) =>
+  Boolean(
+    left &&
+      right &&
+      String(left.chrom).replace(/^chr/i, '') === String(right.chrom).replace(/^chr/i, '') &&
+      left.start0 === right.start0 &&
+      left.end0 === right.end0 &&
+      left.motif === right.motif
+  )
+
 const primaryRepeatAuthorizationLabel = (
   basis: LongReadTrLocus['primary_repeat']['selection_basis']
 ) => {
@@ -239,6 +249,7 @@ const LongReadTandemRepeatPage = ({
   locus,
   requestedCohort,
   selectedAllele,
+  revalidating = false,
   onCohortChange,
   onInvalidSelection,
   navigation,
@@ -247,6 +258,7 @@ const LongReadTandemRepeatPage = ({
   locus: LongReadTrLocus | null
   requestedCohort: LongReadCohort
   selectedAllele?: string
+  revalidating?: boolean
   onCohortChange: (cohort: LongReadCohort) => void
   onInvalidSelection: () => void
   navigation: AlleleNavigation
@@ -260,6 +272,7 @@ const LongReadTandemRepeatPage = ({
 
   useEffect(() => {
     if (
+      !revalidating &&
       selectedAllele &&
       locus?.selected_allele_valid === false &&
       invalidHandled.current !== selectedAllele
@@ -267,9 +280,13 @@ const LongReadTandemRepeatPage = ({
       invalidHandled.current = selectedAllele
       onInvalidSelection()
     }
-  }, [locus?.selected_allele_valid, onInvalidSelection, selectedAllele])
+  }, [locus?.selected_allele_valid, onInvalidSelection, revalidating, selectedAllele])
 
   useEffect(() => {
+    if (revalidating) {
+      revealInitialSelection.current = false
+      return
+    }
     if (
       !revealInitialSelection.current ||
       !selectedAllele ||
@@ -282,7 +299,7 @@ const LongReadTandemRepeatPage = ({
     if (locus.selected_allele?.variant_id !== selectedAllele || !detail.current) return
     detail.current.focus()
     detail.current.scrollIntoView?.({ block: 'start' })
-  }, [locus?.selected_allele, locus?.selected_allele_valid, selectedAllele])
+  }, [locus?.selected_allele, locus?.selected_allele_valid, revalidating, selectedAllele])
 
   const alleleById = useMemo(
     () => new Map((locus?.alleles.nodes || []).map((allele) => [allele.variant_id, allele])),
@@ -312,8 +329,21 @@ const LongReadTandemRepeatPage = ({
   })
   const orderedMotifs = locus.components.map((component) => component.motif)
   const vocabulary = [...new Set(locus.motifs.length ? locus.motifs : orderedMotifs)]
+  const exactContext = locus.short_read_context
+  const primaryComponentIndex = locus.primary_repeat.component_index
   const authorizedExactReferenceComponentIndex =
-    locus.primary_repeat.status === 'AVAILABLE' ? locus.primary_repeat.component_index : null
+    locus.primary_repeat.status === 'AVAILABLE' &&
+    locus.primary_repeat.selection_basis === 'EXACT_MAIN_CATALOG_COMPONENT' &&
+    primaryComponentIndex != null &&
+    exactContext?.status === 'EXACT_UNIQUE' &&
+    exactContext.exact_reference_component_outline_authorized === true &&
+    exactContext.matched_component_index === primaryComponentIndex &&
+    exactContext.catalog_record?.id === locus.primary_repeat.catalog_id &&
+    exactContext.catalog_digest === locus.primary_repeat.catalog_digest &&
+    exactComponent(locus.components[primaryComponentIndex], locus.primary_repeat.component) &&
+    exactComponent(exactContext.matched_component, locus.primary_repeat.component)
+      ? primaryComponentIndex
+      : null
   const title = longReadTrLocusTitle(locus)
   const approvedCatalogRecord =
     locus.primary_repeat.status === 'AVAILABLE' &&

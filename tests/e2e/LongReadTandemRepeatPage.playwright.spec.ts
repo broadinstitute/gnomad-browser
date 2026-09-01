@@ -139,7 +139,13 @@ const selectExactAllele = async (
     await exactLink.dispatchEvent('mouseup', { button: 0 })
     await exactLink.dispatchEvent('click', { button: 0 })
   }
-  await expect(exactLink).toHaveAttribute('aria-current', 'true')
+  await expect(exactLink).not.toHaveAttribute('aria-current', 'true')
+  await expect(
+    page.getByRole('status').filter({
+      hasText: 'retain their loaded cohort and allele identity and are temporarily inert',
+    })
+  ).toBeVisible()
+  await expect(page.locator('[data-revalidating="true"]')).toHaveAttribute('inert', '')
   const clickedScrollTop = await indexScroller.evaluate((element) => element.scrollTop)
   if (requestedScrollTop > 0) expect(clickedScrollTop).toBeGreaterThan(0)
   expect(Math.abs(clickedScrollTop - beforeSelection.listScrollTop)).toBeLessThanOrEqual(1)
@@ -168,6 +174,8 @@ const selectExactAllele = async (
   await expect(
     page.getByRole('heading', { name: `${selected.variant_id} exact ALT details` })
   ).toBeVisible()
+  await expect(exactLink).toHaveAttribute('aria-current', 'true')
+  await expect(page.locator('[data-revalidating="true"]')).toHaveCount(0)
   const selectedScrollTop = await indexScroller.evaluate((element) => element.scrollTop)
   expect(Math.abs(selectedScrollTop - clickedScrollTop)).toBeLessThanOrEqual(1)
   expect(await page.evaluate(() => (window as any).__lrTrDocumentMarker)).toBe(documentMarker)

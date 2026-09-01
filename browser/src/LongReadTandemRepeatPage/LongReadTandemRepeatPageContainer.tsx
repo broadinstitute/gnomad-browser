@@ -255,17 +255,37 @@ const LongReadTandemRepeatPageContainer = ({
           Object.prototype.hasOwnProperty.call(data, 'long_read_tandem_repeat_locus')
         }
       >
-        {({ data }: any) => {
+        {({ data, requestVariables, stale }: any) => {
+          const loadedLocus = data.long_read_tandem_repeat_locus
+          const loadedCohort = stale
+            ? requestVariables?.lrCohort || loadedLocus?.lr_cohort
+            : lrCohort
+          const loadedAllele = stale ? requestVariables?.allele || undefined : selectedAllele
           return (
-            <LongReadTandemRepeatPage
-              datasetId={datasetId}
-              locus={data.long_read_tandem_repeat_locus}
-              requestedCohort={lrCohort}
-              selectedAllele={selectedAllele}
-              onCohortChange={changeCohort}
-              onInvalidSelection={removeInvalidSelection}
-              navigation={{ hrefForAllele, onSelectAllele: selectAllele }}
-            />
+            <>
+              {stale && (
+                <p role="status">
+                  Loading the requested tandem-repeat cohort and exact allele. Previously loaded
+                  data retain their loaded cohort and allele identity and are temporarily inert.
+                </p>
+              )}
+              <div
+                {...(stale ? ({ inert: '' } as any) : {})}
+                aria-busy={stale || undefined}
+                data-revalidating={stale || undefined}
+              >
+                <LongReadTandemRepeatPage
+                  datasetId={datasetId}
+                  locus={loadedLocus}
+                  requestedCohort={loadedCohort}
+                  selectedAllele={loadedAllele}
+                  revalidating={stale}
+                  onCohortChange={changeCohort}
+                  onInvalidSelection={removeInvalidSelection}
+                  navigation={{ hrefForAllele, onSelectAllele: selectAllele }}
+                />
+              </div>
+            </>
           )
         }}
       </Query>
