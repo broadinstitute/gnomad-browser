@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "fixture_name": "ben-round-two-tr-phase-0",
+  "recorded_at": "2026-09-01T00:00:00Z",
+  "privacy": "Aggregate/public locus and source-ALT observations only. No sample IDs, carrier rows, raw genotypes, or person-level linkage.",
+  "baseline": {
+    "browser_api_source_sha": "29fc595d970e88992e06061ec56594ba8da5a41f",
+    "backend_source_sha": "4d38525fba925b0956b94e484bc03a600a75c5d1",
+    "starting_branch": "gnomad-lr",
+    "starting_status": "clean"
+  },
+  "held_candidate": {
+    "tag": "fg-29fc595d-20260901t191003z",
+    "api_revision": "gnomad-lr-api-00026-gej",
+    "browser_revision": "gnomad-lr-browser-00020-top",
+    "api_traffic_percent": 0,
+    "browser_traffic_percent": 0,
+    "disposition": "SUPERSEDED_ZERO_TRAFFIC_EVIDENCE",
+    "rollback_target": false,
+    "note": "Retain as evidence until replacement verification; the rollback target remains the exact pre-cutover public pair."
+  },
+  "identity_rules": {
+    "assembly": "GRCh38",
+    "component_coordinate_system": "zero-based half-open",
+    "component_separator": "+",
+    "motif_equality": "exact stored string and orientation",
+    "cohort_scoped_alt_identity": [
+      "assembly",
+      "cohort",
+      "source_run_id",
+      "canonical_locus_id",
+      "source_variant_id",
+      "alt_index"
+    ]
+  },
+  "cases": [
+    {
+      "id": "anonymous-simple",
+      "evidence": "existing public E2E",
+      "canonical_locus_id": "1-143278475-143278486-T",
+      "source_variant_id": "chr1-143278475-TRV-11",
+      "expected": {
+        "ordered_component_count": 1,
+        "distinct_stored_motif_count": 1,
+        "component_envelope_start0": 143278475,
+        "component_envelope_end0": 143278486,
+        "component_envelope_length_bp": 11
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_alt_identity_count": 3
+        }
+      }
+    },
+    {
+      "id": "arx-1",
+      "evidence": "public candidate audit and E2E",
+      "canonical_locus_id": "X-25013649-25013697-NGC",
+      "expected": {
+        "ordered_component_count": 1,
+        "distinct_stored_motif_count": 1,
+        "component_envelope_start0": 25013649,
+        "component_envelope_end0": 25013697,
+        "component_envelope_length_bp": 48
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_alt_identity_count": 2,
+          "length_bin_count": 2
+        },
+        "aou": {
+          "source_alt_identity_count": 73,
+          "length_bin_count": 15
+        }
+      }
+    },
+    {
+      "id": "atxn1",
+      "evidence": "public candidate audit, crosswalk, and E2E",
+      "canonical_locus_id": "6-16327633-16327723-TGC",
+      "expected": {
+        "ordered_component_count": 1,
+        "distinct_stored_motif_count": 1,
+        "component_envelope_start0": 16327633,
+        "component_envelope_end0": 16327723,
+        "component_envelope_length_bp": 90,
+        "stored_primary_motif": "TGC"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_alt_identity_count": 76,
+          "length_bin_count": 19
+        },
+        "aou": {
+          "source_alt_identity_count": 233,
+          "length_bin_count": 45
+        }
+      }
+    },
+    {
+      "id": "rfc1",
+      "evidence": "public candidate audit, crosswalk, and E2E",
+      "canonical_locus_id": "4-39348424-39348479-AAAAG",
+      "expected": {
+        "ordered_component_count": 1,
+        "distinct_stored_motif_count": 1,
+        "component_envelope_start0": 39348424,
+        "component_envelope_end0": 39348479,
+        "component_envelope_length_bp": 55,
+        "stored_primary_motif": "AAAAG",
+        "catalog_role": "benign reference motif"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_alt_identity_count": 200,
+          "represented_alt_min_length_bp": 30,
+          "represented_alt_max_length_bp": 3661,
+          "delta_min_bp": -25,
+          "delta_max_bp": 3606
+        },
+        "aou": {
+          "source_alt_identity_count": 682,
+          "bounded_sequence_product_status": "UNAVAILABLE_OVER_600_ALTS"
+        }
+      }
+    },
+    {
+      "id": "htt",
+      "evidence": "public candidate audit, crosswalk, and E2E",
+      "canonical_locus_id": "4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG",
+      "source_variant_id": "chr4-3074876-TRV-164",
+      "expected": {
+        "ordered_component_count": 6,
+        "distinct_stored_motif_count": 5,
+        "component_envelope_start0": 3074876,
+        "component_envelope_end0": 3075040,
+        "component_envelope_length_bp": 164,
+        "lane_count": 2,
+        "stored_primary_motif": "CAG",
+        "duplicate_coordinate_distinct_motif": "CCG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_alt_identity_count": 72,
+          "length_bin_count": 22
+        },
+        "aou": {
+          "source_alt_identity_count": 497,
+          "length_bin_count": 61
+        }
+      }
+    },
+    {
+      "id": "sparse-compound",
+      "evidence": "existing route/resolver tests and public E2E",
+      "canonical_locus_id": "1-121606499-121606508-AG+1-121606517-121606536-A",
+      "source_variant_id": "chr1-121606499-TRV-37",
+      "expected": {
+        "ordered_component_count": 2,
+        "distinct_stored_motif_count": 2,
+        "component_envelope_start0": 121606499,
+        "component_envelope_end0": 121606536,
+        "component_envelope_length_bp": 37,
+        "component_length_sum_bp": 28,
+        "positive_gap_bp": 9
+      }
+    },
+    {
+      "id": "chr16-interruption",
+      "evidence": "public candidate aggregate GraphQL response",
+      "canonical_locus_id": "16-85400249-85400281-TG+16-85400285-85400298-TG+16-85400313-85400323-TG+16-85400333-85400342-TG",
+      "source_variant_id": "chr16-85400249-TRV-93",
+      "selected_alt_index": 6,
+      "expected": {
+        "ordered_component_count": 4,
+        "distinct_stored_motif_count": 1,
+        "component_envelope_start0": 85400249,
+        "component_envelope_end0": 85400342,
+        "component_envelope_length_bp": 93,
+        "inter_component_bp": 29,
+        "stored_motif": "TG"
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_run_id": "y1-full-prototype-hgsvc-hprc-chr16-20260728-r1",
+          "source_alt_identity_count": 14,
+          "complete_ref": "TTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTAATTGTGTGTGTGTGTTTCTGTGTATGATTTTGTGTGTGTGATTATATGTCTGTGTGTGT",
+          "complete_alt": "TTCTGTGTGTGTGTGTGTGTGTGTGTGTGTGTAATTGTGTGTGTTTCTGTGTATGATTTTGTGTGTGTGATTATATGTCTGTGTGTGT",
+          "complete_ref_length_bp": 94,
+          "complete_alt_length_bp": 88,
+          "represented_ref_length_bp": 93,
+          "represented_alt_length_bp": 87,
+          "length_delta_bp": -6,
+          "source_repeat_count": 32,
+          "source_motif_purity": 0.758621,
+          "decomposition_status": "UNAVAILABLE_COMPOUND_LOCUS",
+          "aggregate_frequency": {
+            "ac": 1,
+            "an": 584,
+            "af": 0.001712
+          }
+        },
+        "aou": {
+          "source_run_id": "y1-full-prototype-aou-chr16-20260728-r1",
+          "source_alt_identity_count": 185,
+          "complete_ref": "TTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTGTAATTGTGTGTGTGTGTTTCTGTGTATGATTTTGTGTGTGTGATTATATGTCTGTGTGTGT",
+          "complete_alt": "TTCTGTGTGTGTGTGTGTGTGTGTGTAATTGTGTGTGTGTGTTTCTGTGTATGATTTTGTGTGTGTGATTATATGTCTGTGTGTGT",
+          "complete_ref_length_bp": 94,
+          "complete_alt_length_bp": 86,
+          "represented_ref_length_bp": 93,
+          "represented_alt_length_bp": 85,
+          "length_delta_bp": -8,
+          "source_repeat_count": 40,
+          "source_motif_purity": 0.811765,
+          "decomposition_status": "UNAVAILABLE_COMPOUND_LOCUS",
+          "aggregate_frequency": {
+            "ac": 8,
+            "an": 2000,
+            "af": 0.004
+          }
+        }
+      }
+    },
+    {
+      "id": "ruvbl1-24-component",
+      "evidence": "public candidate aggregate GraphQL audit",
+      "canonical_locus_id": "3-128150483-128150498-TA+3-128150569-128150579-AT+3-128150587-128150597-AT+3-128150614-128150622-AT+3-128150666-128150720-ATATATTCTATATATATTCTATATATT+3-128150674-128150683-TA+3-128150701-128150710-TA+3-128150728-128150737-TA+3-128150755-128150809-TATATATTCTATATATTATATATTCTA+3-128150780-128150789-TA+3-128150782-128150846-TATATATTCTATATAT+3-128150839-128150848-TA+3-128150850-128150871-TATATAT+3-128150864-128150877-TA+3-128150879-128150890-TA+3-128150892-128150902-TA+3-128150918-128150928-TA+3-128150943-128150952-TA+3-128150961-128150983-TATATAT+3-128150984-128150993-TA+3-128150993-128151002-TA+3-128150997-128151012-TATAT+3-128151014-128151024-TA+3-128151050-128151059-TA",
+      "source_variant_id": "chr3-128150483-TRV-576",
+      "expected": {
+        "ordered_component_count": 24,
+        "distinct_stored_motif_count": 7,
+        "component_envelope_start0": 128150483,
+        "component_envelope_end0": 128151059,
+        "component_envelope_length_bp": 576
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_alt_identity_count": 91,
+          "called_allele_count": 584,
+          "non_reference_ac_sum": 315,
+          "represented_alt_min_length_bp": 160,
+          "represented_alt_max_length_bp": 677,
+          "delta_min_bp": -416,
+          "delta_max_bp": 101
+        }
+      }
+    },
+    {
+      "id": "second-24-component",
+      "evidence": "public candidate aggregate GraphQL audit",
+      "canonical_locus_id": "3-106435545-106435554-AG+3-106435555-106435568-AG+3-106435565-106435579-AGAA+3-106435582-106435591-GA+3-106435588-106435608-GAGG+3-106435609-106435612-AAG+3-106435616-106435663-GAAG+3-106435675-106435691-AGAA+3-106435701-106435715-GAGG+3-106435712-106435730-GGAA+3-106435757-106435775-AGAAAG+3-106435817-106435831-AGAA+3-106435834-106435849-GGAG+3-106435846-106435861-GGAA+3-106435889-106435902-AAGG+3-106435900-106435910-GA+3-106435932-106435945-AAGA+3-106435948-106435961-AGGG+3-106436061-106436070-AG+3-106436067-106436079-AGAA+3-106436079-106436091-AAAG+3-106436094-106436107-GGAG+3-106436110-106436124-GAAG+3-106436167-106436185-AAGG",
+      "source_variant_id": "chr3-106435545-TRV-640",
+      "expected": {
+        "ordered_component_count": 24,
+        "distinct_stored_motif_count": 13,
+        "component_envelope_start0": 106435545,
+        "component_envelope_end0": 106436185,
+        "component_envelope_length_bp": 640
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_alt_identity_count": 92,
+          "called_allele_count": 584,
+          "non_reference_ac_sum": 494,
+          "represented_alt_min_length_bp": 612,
+          "represented_alt_max_length_bp": 669,
+          "delta_min_bp": -28,
+          "delta_max_bp": 29
+        }
+      }
+    },
+    {
+      "id": "extreme-103-component",
+      "evidence": "public candidate serving-data audit",
+      "canonical_locus_id": "3-178758002-178758020-AT+3-178758027-178758041-AT+3-178758045-178758059-AT+3-178758069-178758082-AT+3-178758091-178758104-AT+3-178758115-178758125-AT+3-178758139-178758157-AT+3-178758165-178758181-AT+3-178758165-178758255-ATATATATATATATATCCAAGGGGAT+3-178758189-178758207-AT+3-178758215-178758233-AT+3-178758241-178758255-AT+3-178758265-178758281-AT+3-178758291-178758305-AT+3-178758315-178758333-AT+3-178758345-178758371-AT+3-178758387-178758417-AT+3-178758427-178758442-AT+3-178758441-178758450-AC+3-178758457-178758466-AT+3-178758467-178758477-AT+3-178758493-178758511-AT+3-178758526-178758551-TA+3-178758527-178758595-ATATATATATATATATATATATATCCAAGAGGAG+3-178758561-178758585-AT+3-178758595-178758605-AT+3-178758615-178758631-AT+3-178758630-178758640-TC+3-178758647-178758659-AT+3-178758673-178758689-AT+3-178758688-178758699-TC+3-178758709-178758727-AT+3-178758739-178758757-AT+3-178758768-178758804-AT+3-178758815-178758833-AT+3-178758844-178758860-AT+3-178758861-178758949-TCTCCAAGAGGGATATATATATATATATA+3-178758873-178758891-AT+3-178758902-178758920-AT+3-178758931-178758951-AT+3-178758962-178758998-AT+3-178759009-178759031-AT+3-178759042-178759078-AT+3-178759064-178759155-ATATATATATATATCTCCAAGAGGG+3-178759089-178759103-AT+3-178759114-178759128-AT+3-178759139-178759153-AT+3-178759172-178759184-AT+3-178759199-178759212-AT+3-178759238-178759250-AT+3-178759296-178759306-AT+3-178759296-178759393-ATATATATATCTCCAAGAGGATATATAT+3-178759316-178759334-AT+3-178759344-178759362-AT+3-178759372-178759390-AT+3-178759402-178759422-AT+3-178759434-178759458-AT+3-178759468-178759488-AT+3-178759498-178759510-AT+3-178759522-178759531-AT+3-178759552-178759562-AT+3-178759572-178759632-GAGGATATATATACATATATCTCTCTCCAA+3-178759576-178759585-AT+3-178759606-178759615-AT+3-178759636-178759652-AT+3-178759663-178759679-AT+3-178759687-178759696-AT+3-178759699-178759709-AT+3-178759717-178759726-AT+3-178759729-178759739-AT+3-178759754-178759767-TA+3-178759754-178759857-TATATATATATATCCAAGAGGATATATCTA+3-178759812-178759827-TA+3-178759812-178759921-TATATATATATATATCCAAGAGGATATATCTA+3-178759842-178759859-TA+3-178759874-178759891-TA+3-178759906-178759921-TA+3-178759929-178759935-AT+3-178759936-178759951-TA+3-178759959-178759981-AT+3-178759989-178760009-AT+3-178760024-178760045-TA+3-178760060-178760076-TA+3-178760077-178760228-CCAAGAGGATATATCTATATATATATATATAT+3-178760092-178760109-TA+3-178760124-178760141-TA+3-178760156-178760173-TA+3-178760188-178760205-TA+3-178760199-178760325-ATATATCCAAGAGGATATATCTATATATAG+3-178760220-178760228-TA+3-178760250-178760258-TA+3-178760280-178760288-TA+3-178760319-178760328-AT+3-178760349-178760359-AT+3-178760349-178760476-ATATATATATCCATATCCAAGATATATATATT+3-178760370-178760380-AT+3-178760380-178760391-TA+3-178760402-178760412-AT+3-178760412-178760423-TA+3-178760434-178760444-AT+3-178760444-178760455-TA+3-178760466-178760478-AT+3-178760478-178760488-TA",
+      "canonical_locus_id_sha256": "7e1703e8ba34daf3a4104386848a7a0ed80387cffc885f4020ee58e9861d22de",
+      "source_variant_id": "chr3-178757307-TRV-3206",
+      "expected": {
+        "ordered_component_count": 103,
+        "distinct_stored_motif_count": 15,
+        "component_envelope_start0": 178758002,
+        "component_envelope_end0": 178760488,
+        "component_envelope_length_bp": 2486,
+        "source_record_span_bp": 3206,
+        "lane_count": 3,
+        "overlap_count": 22,
+        "adjacency_count": 4,
+        "positive_gap_count": 76
+      },
+      "cohorts": {
+        "hgsvc_hprc": {
+          "source_alt_identity_count": 569,
+          "length_bin_count": 378,
+          "called_allele_count": 584
+        },
+        "aou": {
+          "source_alt_identity_count": 1994,
+          "called_allele_count": 2044,
+          "bounded_sequence_product_status": "UNAVAILABLE_OVER_600_ALTS"
+        }
+      }
+    },
+    {
+      "id": "synthetic-180-component",
+      "evidence": "deterministic Phase 0 scale contract; not a biological/source classification",
+      "canonical_locus_id": "22-100000-100010-A+22-100020-100031-AC+22-100040-100052-CAG+22-100060-100073-TGC+22-100080-100094-AAAAG+22-100100-100110-A+22-100120-100131-AC+22-100140-100152-CAG+22-100160-100173-TGC+22-100180-100194-AAAAG+22-100200-100210-A+22-100220-100231-AC+22-100240-100252-CAG+22-100260-100273-TGC+22-100280-100294-AAAAG+22-100300-100310-A+22-100320-100331-AC+22-100340-100352-CAG+22-100360-100373-TGC+22-100380-100394-AAAAG+22-100400-100410-A+22-100420-100431-AC+22-100440-100452-CAG+22-100460-100473-TGC+22-100480-100494-AAAAG+22-100500-100510-A+22-100520-100531-AC+22-100540-100552-CAG+22-100560-100573-TGC+22-100580-100594-AAAAG+22-100600-100610-A+22-100620-100631-AC+22-100640-100652-CAG+22-100660-100673-TGC+22-100680-100694-AAAAG+22-100700-100710-A+22-100720-100731-AC+22-100740-100752-CAG+22-100760-100773-TGC+22-100780-100794-AAAAG+22-100800-100810-A+22-100820-100831-AC+22-100840-100852-CAG+22-100860-100873-TGC+22-100880-100894-AAAAG+22-100900-100910-A+22-100920-100931-AC+22-100940-100952-CAG+22-100960-100973-TGC+22-100980-100994-AAAAG+22-101000-101010-A+22-101020-101031-AC+22-101040-101052-CAG+22-101060-101073-TGC+22-101080-101094-AAAAG+22-101100-101110-A+22-101120-101131-AC+22-101140-101152-CAG+22-101160-101173-TGC+22-101180-101194-AAAAG+22-101200-101210-A+22-101220-101231-AC+22-101240-101252-CAG+22-101260-101273-TGC+22-101280-101294-AAAAG+22-101300-101310-A+22-101320-101331-AC+22-101340-101352-CAG+22-101360-101373-TGC+22-101380-101394-AAAAG+22-101400-101410-A+22-101420-101431-AC+22-101440-101452-CAG+22-101460-101473-TGC+22-101480-101494-AAAAG+22-101500-101510-A+22-101520-101531-AC+22-101540-101552-CAG+22-101560-101573-TGC+22-101580-101594-AAAAG+22-101600-101610-A+22-101620-101631-AC+22-101640-101652-CAG+22-101660-101673-TGC+22-101680-101694-AAAAG+22-101700-101710-A+22-101720-101731-AC+22-101740-101752-CAG+22-101760-101773-TGC+22-101780-101794-AAAAG+22-101800-101810-A+22-101820-101831-AC+22-101840-101852-CAG+22-101860-101873-TGC+22-101880-101894-AAAAG+22-101900-101910-A+22-101920-101931-AC+22-101940-101952-CAG+22-101960-101973-TGC+22-101980-101994-AAAAG+22-102000-102010-A+22-102020-102031-AC+22-102040-102052-CAG+22-102060-102073-TGC+22-102080-102094-AAAAG+22-102100-102110-A+22-102120-102131-AC+22-102140-102152-CAG+22-102160-102173-TGC+22-102180-102194-AAAAG+22-102200-102210-A+22-102220-102231-AC+22-102240-102252-CAG+22-102260-102273-TGC+22-102280-102294-AAAAG+22-102300-102310-A+22-102320-102331-AC+22-102340-102352-CAG+22-102360-102373-TGC+22-102380-102394-AAAAG+22-102400-102410-A+22-102420-102431-AC+22-102440-102452-CAG+22-102460-102473-TGC+22-102480-102494-AAAAG+22-102500-102510-A+22-102520-102531-AC+22-102540-102552-CAG+22-102560-102573-TGC+22-102580-102594-AAAAG+22-102600-102610-A+22-102620-102631-AC+22-102640-102652-CAG+22-102660-102673-TGC+22-102680-102694-AAAAG+22-102700-102710-A+22-102720-102731-AC+22-102740-102752-CAG+22-102760-102773-TGC+22-102780-102794-AAAAG+22-102800-102810-A+22-102820-102831-AC+22-102840-102852-CAG+22-102860-102873-TGC+22-102880-102894-AAAAG+22-102900-102910-A+22-102920-102931-AC+22-102940-102952-CAG+22-102960-102973-TGC+22-102980-102994-AAAAG+22-103000-103010-A+22-103020-103031-AC+22-103040-103052-CAG+22-103060-103073-TGC+22-103080-103094-AAAAG+22-103100-103110-A+22-103120-103131-AC+22-103140-103152-CAG+22-103160-103173-TGC+22-103180-103194-AAAAG+22-103200-103210-A+22-103220-103231-AC+22-103240-103252-CAG+22-103260-103273-TGC+22-103280-103294-AAAAG+22-103300-103310-A+22-103320-103331-AC+22-103340-103352-CAG+22-103360-103373-TGC+22-103380-103394-AAAAG+22-103400-103410-A+22-103420-103431-AC+22-103440-103452-CAG+22-103460-103473-TGC+22-103480-103494-AAAAG+22-103500-103510-A+22-103520-103531-AC+22-103540-103552-CAG+22-103560-103573-TGC+22-103580-103594-AAAAG",
+      "canonical_locus_id_sha256": "aa6757f68a53d566afe2e81e021ed69d33df42c567c88acc3703b0482bb20626",
+      "generation_rule": {
+        "chrom": "22",
+        "start0": 100000,
+        "step_bp": 20,
+        "length_bp_cycle": [10, 11, 12, 13, 14],
+        "motif_cycle": ["A", "AC", "CAG", "TGC", "AAAAG"]
+      },
+      "expected": {
+        "ordered_component_count": 180,
+        "distinct_stored_motif_count": 5,
+        "component_envelope_start0": 100000,
+        "component_envelope_end0": 103594,
+        "component_envelope_length_bp": 3594
+      }
+    }
+  ],
+  "future_contract_scaffolds": [
+    {
+      "id": "duplicate-alt-bytes",
+      "scope": {
+        "assembly": "GRCh38",
+        "cohort": "hgsvc_hprc",
+        "source_run_id": "synthetic-phase0",
+        "canonical_locus_id": "1-100-104-AC"
+      },
+      "source_alt_identities": [
+        {
+          "source_variant_id": "record-a",
+          "alt_index": 1,
+          "alt": "AACAC"
+        },
+        {
+          "source_variant_id": "record-b",
+          "alt_index": 2,
+          "alt": "AACAC"
+        }
+      ],
+      "expected": {
+        "source_alt_identity_count": 2,
+        "unique_alt_sequence_count": 1,
+        "all_source_alts_sequence_complete": true
+      }
+    },
+    {
+      "id": "represented-length-disagreement",
+      "complete_ref": "AACAC",
+      "complete_alt": "AACACAC",
+      "anchor_rule": "remove one validated shared padding base",
+      "stored_length_delta_bp": 1,
+      "expected": {
+        "sequence_derived_delta_bp": 2,
+        "delta_mode_status": "AVAILABLE_WITH_SOURCE_PROVENANCE",
+        "absolute_mode_status": "UNAVAILABLE_RECONCILIATION_MISMATCH"
+      }
+    }
+  ]
+}
