@@ -17,6 +17,18 @@ const LongReadTrPage = styled(Page)`
   max-width: 1440px;
 `
 
+const RevalidationStatus = styled.p`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+`
+
 export const longReadTandemRepeatLocusQuery = `
 query ${operationName}(
   $id: String!
@@ -264,10 +276,10 @@ const LongReadTandemRepeatPageContainer = ({
           return (
             <>
               {stale && (
-                <p role="status">
+                <RevalidationStatus role="status">
                   Loading the requested tandem-repeat cohort and exact allele. Previously loaded
                   data retain their loaded cohort and allele identity and are temporarily inert.
-                </p>
+                </RevalidationStatus>
               )}
               <div
                 {...(stale ? ({ inert: '' } as any) : {})}

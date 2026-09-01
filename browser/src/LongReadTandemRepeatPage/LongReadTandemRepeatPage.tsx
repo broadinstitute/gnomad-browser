@@ -93,6 +93,9 @@ const PrimaryIdentity = styled.div`
 `
 
 const SourceRepresentationDetails = styled.details`
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
   padding: 0.65em 0.8em;
   border: 1px solid #d8dee2;
   margin-top: 2.4em;
@@ -102,6 +105,11 @@ const SourceRepresentationDetails = styled.details`
   > summary {
     cursor: pointer;
     font-weight: bold;
+  }
+
+  code {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 `
 

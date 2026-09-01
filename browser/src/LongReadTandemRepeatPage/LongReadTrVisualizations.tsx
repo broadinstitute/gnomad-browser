@@ -37,10 +37,14 @@ import {
 } from './types'
 
 const Panel = styled.section`
+  min-width: 0;
+  max-width: 100%;
   margin-top: 2.4em;
 `
 
 const HorizontalPlotScroller = styled.div`
+  min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
   outline-offset: 2px;
 
