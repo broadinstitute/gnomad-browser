@@ -19,7 +19,6 @@ import {
   unavailableReason,
 } from './LongReadTrVisualizations'
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
-import ShortReadReferenceCohortSection from './ShortReadReferenceCohortSection'
 import LocalHaplotypeBackgroundsSection from './LocalHaplotypeBackgroundsSection'
 import {
   strchiveLocusUrl,
@@ -476,9 +475,7 @@ const LongReadTandemRepeatPage = ({
         />
       )}
 
-      <ShortReadKnownLocusContext context={locus.short_read_context} />
-
-      <ShortReadReferenceCohortSection
+      <ShortReadKnownLocusContext
         locusId={locus.id}
         lrCohort={locus.lr_cohort}
         context={locus.short_read_context}

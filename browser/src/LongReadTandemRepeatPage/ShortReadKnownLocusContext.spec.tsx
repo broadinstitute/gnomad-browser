@@ -19,6 +19,11 @@ jest.mock('../Haplotypes/HelpButton', () => ({ title }: any) => (
 ))
 jest.mock('@gnomad/ui', () => ({
   BaseTable: ({ children, ...props }: any) => <table {...props}>{children}</table>,
+  Button: ({ children, ...props }: any) => (
+    <button type="button" {...props}>
+      {children}
+    </button>
+  ),
   ExternalLink: ({ children, href }: any) => <a href={href}>{children}</a>,
 }))
 
@@ -71,9 +76,18 @@ const exactContext: LongReadTrShortReadContext = {
   lr_cohort: 'hgsvc_hprc',
 }
 
+const renderContext = (context: LongReadTrShortReadContext | null = exactContext) =>
+  render(
+    <ShortReadKnownLocusContext
+      locusId="4-3074876-3074933-CAG"
+      lrCohort="hgsvc_hprc"
+      context={context}
+    />
+  )
+
 describe('ShortReadKnownLocusContext', () => {
-  test('renders copied catalog context and the mandatory non-classification disclaimer', () => {
-    render(<ShortReadKnownLocusContext context={exactContext} />)
+  test('renders one composite short-read section with catalog context and a nested lazy subsection', () => {
+    renderContext()
 
     const panel = screen
       .getByRole('heading', { name: /Short-read known-locus context/ })
@@ -106,6 +120,33 @@ describe('ShortReadKnownLocusContext', () => {
         .getByRole('link', { name: /HTT.*short-read details/ })
         .getAttribute('href')
     ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
+    expect(within(panel).getAllByRole('heading', { level: 2 })).toHaveLength(1)
+    expect(within(panel).getAllByRole('link', { name: /short-read details/ })).toHaveLength(1)
+    expect(
+      within(panel).getByRole('heading', { level: 3, name: 'Reference-cohort distributions' })
+    ).not.toBeNull()
+    expect(
+      within(panel)
+        .getByRole('button', { name: 'Load short-read distributions' })
+        .getAttribute('aria-controls')
+    ).toBe('short-read-reference-distributions-content')
+    expect(within(panel).queryByRole('heading', { name: /Short-read reference cohort/ })).toBeNull()
+    expect(within(panel).getAllByRole('button', { name: /About short-read/ })).toHaveLength(1)
+  })
+
+  test('keeps an exact outer section when immediate and distribution prerequisites are incomplete', () => {
+    renderContext({
+      ...exactContext,
+      catalog_record: null,
+      matched_component_index: null,
+      matched_component: null,
+    })
+
+    expect(screen.getByRole('heading', { name: /Short-read known-locus context/ })).not.toBeNull()
+    expect(screen.getByText(/Known-locus details are unavailable/)).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Reference-cohort distributions' })).not.toBeNull()
+    expect(screen.getByText(/reference-cohort distributions are unavailable/)).not.toBeNull()
+    expect(screen.queryByRole('button', { name: 'Load short-read distributions' })).toBeNull()
   })
 
   test.each([
@@ -116,11 +157,10 @@ describe('ShortReadKnownLocusContext', () => {
     'CATALOG_UNAVAILABLE',
     'UNAVAILABLE',
   ])('renders no panel for %s', (status) => {
-    const { container } = render(
-      <ShortReadKnownLocusContext
-        context={{ ...exactContext, status: status as LongReadTrShortReadContext['status'] }}
-      />
-    )
+    const { container } = renderContext({
+      ...exactContext,
+      status: status as LongReadTrShortReadContext['status'],
+    })
     expect(container.childElementCount).toBe(0)
   })
 })

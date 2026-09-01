@@ -112,9 +112,25 @@ const RangeContext = styled.div`
   }
 `
 
-const UnavailableCard = ({ kind, reasonCode }: { kind: string; reasonCode: string | null }) => (
+export type ShortReadPlotHeadingLevel = 2 | 3 | 4 | 5 | 6
+
+const PlotHeading = ({
+  level,
+  children,
+}: React.PropsWithChildren<{ level: ShortReadPlotHeadingLevel }>) =>
+  React.createElement(`h${level}`, null, children)
+
+const UnavailableCard = ({
+  kind,
+  reasonCode,
+  headingLevel,
+}: {
+  kind: string
+  reasonCode: string | null
+  headingLevel: ShortReadPlotHeadingLevel
+}) => (
   <PlotCard data-distribution-status="unavailable" data-reason-code={reasonCode || undefined}>
-    <h3>{kind}</h3>
+    <PlotHeading level={headingLevel}>{kind}</PlotHeading>
     <p role="status">
       This short-read {kind.toLowerCase()} is unavailable for the exact matched repeat unit. No
       values were inferred or substituted.
@@ -170,12 +186,14 @@ const ShortReadStrDistributionPanel = ({
   diseases,
   allele,
   genotype,
+  plotHeadingLevel = 3,
 }: {
   id: string
   motif: string
   diseases: ShortReadDiseaseRange[]
   allele: ShortReadDistributionPart<V3AlleleSizeDistributionCohort>
   genotype: ShortReadDistributionPart<GenotypeDistributionCohort>
+  plotHeadingLevel?: ShortReadPlotHeadingLevel
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -336,7 +354,9 @@ const ShortReadStrDistributionPanel = ({
       <PlotGrid data-testid="short-read-distribution-grid">
         {alleleAvailable ? (
           <PlotCard data-distribution-status="available">
-            <h3>Short-read allele repeat-count distribution — {motif}</h3>
+            <PlotHeading level={plotHeadingLevel}>
+              Short-read allele repeat-count distribution — {motif}
+            </PlotHeading>
             <AllelePlotFrame>
               <ShortTandemRepeatAlleleSizeDistributionPlot
                 maxRepeats={maxAlleleRepeats}
@@ -367,14 +387,15 @@ const ShortReadStrDistributionPanel = ({
           <UnavailableCard
             kind="Allele-copy distribution"
             reasonCode={allele.reason_code || 'EXACT_MOTIF_ROWS_UNAVAILABLE'}
+            headingLevel={plotHeadingLevel}
           />
         )}
 
         {genotypeAvailable ? (
           <PlotCard data-distribution-status="available">
-            <h3>
+            <PlotHeading level={plotHeadingLevel}>
               Short-read genotype repeat-count distribution — {motif}/{motif}
-            </h3>
+            </PlotHeading>
             <GenotypePlotFrame>
               <ShortTandemRepeatGenotypeDistributionPlot
                 axisLabels={[`longer ${motif} allele`, `shorter ${motif} allele`]}
@@ -391,6 +412,7 @@ const ShortReadStrDistributionPanel = ({
           <UnavailableCard
             kind="Genotype distribution"
             reasonCode={genotype.reason_code || 'EXACT_MOTIF_PAIR_ROWS_UNAVAILABLE'}
+            headingLevel={plotHeadingLevel}
           />
         )}
       </PlotGrid>

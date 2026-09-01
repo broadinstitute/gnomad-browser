@@ -3,7 +3,6 @@ import styled from 'styled-components'
 
 import { Button } from '@gnomad/ui'
 
-import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import Query from '../Query'
 import ShortReadStrDistributionPanel, {
   ShortReadDistributionPart,
@@ -43,23 +42,21 @@ query ${operationName}($id: String!, $lrCohort: LongReadCohort!) {
 `
 
 const Section = styled.section`
+  min-width: 0;
   padding: clamp(1em, 2vw, 1.5em);
-  border: 2px solid #73ab3d;
-  border-radius: 8px;
-  margin: 2em 0;
+  border-top: 1px solid #bdd7a8;
+  margin-top: 1.5em;
+  border-radius: 0 0 6px 6px;
   background: #f4faef;
-`
 
-const SectionHeading = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35em;
-
-  h2 {
-    margin: 0;
+  h3 {
+    margin-top: 0;
     color: #315d20;
   }
+`
+
+const LazyContent = styled.div`
+  min-width: 0;
 `
 
 type DistributionResponse = {
@@ -80,42 +77,14 @@ type DistributionResponse = {
   genotype: ShortReadDistributionPart<GenotypeDistributionCohort>
 }
 
-const ShortReadReferenceHelp = () => (
-  <HaplotypeHelpButton title="About the short-read reference cohort">
-    <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> Green aggregate repeat-count distributions for the exact
-      matched repeat unit in the short-read reference cohort.
-    </p>
-    <div>
-      <strong>How to use it.</strong>
-      <h4>Short-read allele repeat-count distribution</h4>
-      <p>
-        Bars count short-read allele copies. Use the independent ancestry, sex, color, scale, and
-        catalog-range controls for this green plot.
-      </p>
-      <h4>Short-read genotype repeat-count distribution</h4>
-      <p>
-        Squares count people by their shorter and longer repeat counts. Use the independent
-        short-read ancestry, sex, and catalog-range controls.
-      </p>
-      <p>
-        Choose <strong>Load short-read distributions</strong> to request these plots.
-      </p>
-    </div>
-    <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> This separate assay and cohort is not combined with
-      the long-read Allelic landscape (shown in purple). Its marks and ranges do not filter, select,
-      or classify LR observations.
-    </p>
-  </HaplotypeHelpButton>
-)
-
 const Unavailable = ({ reasonCode }: { reasonCode: string | null }) => (
   <p role="status" data-reason-code={reasonCode || undefined}>
     Short-read reference-cohort distributions are unavailable for this exact context. No
     distribution was inferred or substituted.
   </p>
 )
+
+const contentId = 'short-read-reference-distributions-content'
 
 const ShortReadReferenceCohortSection = ({
   locusId,
@@ -135,89 +104,83 @@ const ShortReadReferenceCohortSection = ({
   const expectedComponentIndex = context.matched_component_index
   const expectedComponent = context.matched_component
   const expectedMainRegion = context.catalog_record?.main_reference_region
-  if (
-    !shortId ||
-    !motif ||
-    expectedComponentIndex == null ||
-    !expectedComponent ||
-    !expectedMainRegion
-  ) {
-    return (
-      <Section aria-labelledby="short-read-reference-cohort-heading">
-        <SectionHeading>
-          <h2 id="short-read-reference-cohort-heading">Short-read reference cohort unavailable</h2>
-          <ShortReadReferenceHelp />
-        </SectionHeading>
-        <Unavailable reasonCode="EXACT_CONTEXT_INCOMPLETE" />
-      </Section>
-    )
-  }
+  const exactContextComplete = Boolean(
+    shortId && motif && expectedComponentIndex != null && expectedComponent && expectedMainRegion
+  )
 
   return (
     <Section
-      aria-labelledby="short-read-reference-cohort-heading"
+      aria-labelledby="short-read-reference-distributions-heading"
       data-assay="short-read"
       data-theme="short-read-green"
     >
-      <SectionHeading>
-        <h2 id="short-read-reference-cohort-heading">
-          Short-read reference cohort — {shortId} {motif}
-        </h2>
-        <ShortReadReferenceHelp />
-      </SectionHeading>
-      <p>Green short-read repeat-count plots for this exact matched reference repeat unit.</p>
+      <h3 id="short-read-reference-distributions-heading">Reference-cohort distributions</h3>
+      {exactContextComplete ? (
+        <p>
+          Green short-read repeat-count plots for the exact matched <strong>{shortId}</strong>{' '}
+          <code>{motif}</code> reference repeat unit. These data load separately from the long-read
+          data.
+        </p>
+      ) : (
+        <Unavailable reasonCode="EXACT_CONTEXT_INCOMPLETE" />
+      )}
 
-      {!requested ? (
-        <Button type="button" onClick={() => setRequested(true)}>
+      {exactContextComplete && !requested && (
+        <Button type="button" aria-controls={contentId} onClick={() => setRequested(true)}>
           Load short-read distributions
         </Button>
-      ) : (
-        <Query
-          operationName={operationName}
-          query={longReadTrShortReadDistributionsQuery}
-          requestKey={`${lrCohort}:${locusId}`}
-          variables={{ id: locusId, lrCohort }}
-          loadingMessage="Loading short-read reference-cohort distributions"
-          errorMessage="Unable to load short-read reference-cohort distributions"
-          success={(data: any) => data.long_read_tandem_repeat_short_read_distributions}
-        >
-          {({ data }: any) => {
-            const distributions =
-              data.long_read_tandem_repeat_short_read_distributions as DistributionResponse
-            const exactIdentity =
-              distributions.status === 'AVAILABLE' &&
-              distributions.short_id === shortId &&
-              distributions.reference_repeat_unit === motif &&
-              distributions.matched_component_index === expectedComponentIndex &&
-              distributions.matched_component != null &&
-              distributions.matched_component.chrom === expectedComponent.chrom &&
-              distributions.matched_component.start0 === expectedComponent.start0 &&
-              distributions.matched_component.end0 === expectedComponent.end0 &&
-              distributions.matched_component.motif === expectedComponent.motif &&
-              distributions.main_reference_region != null &&
-              distributions.main_reference_region.reference_genome ===
-                expectedMainRegion.reference_genome &&
-              distributions.main_reference_region.chrom === expectedMainRegion.chrom &&
-              distributions.main_reference_region.start === expectedMainRegion.start &&
-              distributions.main_reference_region.stop === expectedMainRegion.stop
-
-            if (!exactIdentity) {
-              return <Unavailable reasonCode={distributions.reason_code || 'IDENTITY_MISMATCH'} />
-            }
-
-            return (
-              <ShortReadStrDistributionPanel
-                key={`${shortId}:${distributions.distribution_digest}`}
-                id={shortId}
-                motif={motif}
-                diseases={context.catalog_record!.associated_diseases}
-                allele={distributions.allele}
-                genotype={distributions.genotype}
-              />
-            )
-          }}
-        </Query>
       )}
+
+      <LazyContent id={contentId}>
+        {exactContextComplete && requested && (
+          <Query
+            operationName={operationName}
+            query={longReadTrShortReadDistributionsQuery}
+            requestKey={`${lrCohort}:${locusId}`}
+            variables={{ id: locusId, lrCohort }}
+            loadingMessage="Loading short-read reference-cohort distributions"
+            errorMessage="Unable to load short-read reference-cohort distributions"
+            success={(data: any) => data.long_read_tandem_repeat_short_read_distributions}
+          >
+            {({ data }: any) => {
+              const distributions =
+                data.long_read_tandem_repeat_short_read_distributions as DistributionResponse
+              const exactIdentity =
+                distributions.status === 'AVAILABLE' &&
+                distributions.short_id === shortId &&
+                distributions.reference_repeat_unit === motif &&
+                distributions.matched_component_index === expectedComponentIndex &&
+                distributions.matched_component != null &&
+                distributions.matched_component.chrom === expectedComponent!.chrom &&
+                distributions.matched_component.start0 === expectedComponent!.start0 &&
+                distributions.matched_component.end0 === expectedComponent!.end0 &&
+                distributions.matched_component.motif === expectedComponent!.motif &&
+                distributions.main_reference_region != null &&
+                distributions.main_reference_region.reference_genome ===
+                  expectedMainRegion!.reference_genome &&
+                distributions.main_reference_region.chrom === expectedMainRegion!.chrom &&
+                distributions.main_reference_region.start === expectedMainRegion!.start &&
+                distributions.main_reference_region.stop === expectedMainRegion!.stop
+
+              if (!exactIdentity) {
+                return <Unavailable reasonCode={distributions.reason_code || 'IDENTITY_MISMATCH'} />
+              }
+
+              return (
+                <ShortReadStrDistributionPanel
+                  key={`${shortId}:${distributions.distribution_digest}`}
+                  id={shortId!}
+                  motif={motif!}
+                  diseases={context.catalog_record!.associated_diseases}
+                  allele={distributions.allele}
+                  genotype={distributions.genotype}
+                  plotHeadingLevel={4}
+                />
+              )
+            }}
+          </Query>
+        )}
+      </LazyContent>
     </Section>
   )
 }

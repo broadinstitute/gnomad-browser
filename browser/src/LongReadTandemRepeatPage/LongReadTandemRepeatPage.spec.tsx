@@ -535,7 +535,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
       'About this tandem-repeat locus',
       'About LR reference components',
       'About short-read known-locus context',
-      'About the short-read reference cohort',
       'About the allelic landscape',
       'About the exact allele index',
       'About exact allele details',
@@ -739,32 +738,32 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(panel).getAllByText(/CAG/).length).toBeGreaterThan(0)
     expect(within(panel).getByText(/Short-read reference context only/)).not.toBeNull()
     expect(within(panel).getByText(/do not classify any LR allele/)).not.toBeNull()
-    const shortCohort = screen
-      .getByRole('heading', { name: 'Short-read reference cohort — HTT CAG' })
+    const shortCohort = within(panel)
+      .getByRole('heading', { level: 3, name: 'Reference-cohort distributions' })
       .closest('section') as HTMLElement
     const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')!
-    expect(panel.compareDocumentPosition(shortCohort)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(shortCohort.compareDocumentPosition(landscape)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(panel.contains(shortCohort)).toBe(true)
+    expect(panel.compareDocumentPosition(landscape)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(
       within(shortCohort).getByRole('button', { name: 'Load short-read distributions' })
     ).not.toBeNull()
     expect(within(shortCohort).getByText(/Green short-read repeat-count plots/)).not.toBeNull()
+    expect(within(panel).getAllByRole('heading', { level: 2 })).toHaveLength(1)
+    expect(within(panel).getAllByRole('link', { name: /short-read details/ })).toHaveLength(1)
+    expect(screen.queryByRole('heading', { name: /Short-read reference cohort/ })).toBeNull()
+    expect(
+      screen.queryByRole('button', { name: 'About the short-read reference cohort' })
+    ).toBeNull()
     fireEvent.click(
-      within(shortCohort).getByRole('button', {
-        name: 'About the short-read reference cohort',
-      })
+      within(panel).getByRole('button', { name: 'About short-read known-locus context' })
     )
     const shortHelp = screen.getByRole('dialog', {
-      name: 'About the short-read reference cohort',
+      name: 'About short-read known-locus context',
     })
+    expect(within(shortHelp).getByText(/exact short-read catalog match/)).not.toBeNull()
+    expect(within(shortHelp).getByText(/Load short-read distributions/)).not.toBeNull()
     expect(
-      within(shortHelp).getByText('Short-read allele repeat-count distribution')
-    ).not.toBeNull()
-    expect(
-      within(shortHelp).getByText('Short-read genotype repeat-count distribution')
-    ).not.toBeNull()
-    expect(
-      within(shortHelp).getByText(/do not filter, select, or classify LR observations/)
+      within(shortHelp).getByText(/do not classify, filter, or select LR observations/)
     ).not.toBeNull()
     expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
     const highlightedComponent = screen

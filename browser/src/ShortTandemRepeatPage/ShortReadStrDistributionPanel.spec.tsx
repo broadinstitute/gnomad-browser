@@ -119,6 +119,40 @@ const renderPanel = (props: Record<string, any> = {}) =>
   )
 
 describe('ShortReadStrDistributionPanel', () => {
+  test('preserves H3 plot headings by default for classic short-read surfaces', () => {
+    renderPanel()
+
+    expect(
+      screen.getByRole('heading', {
+        level: 3,
+        name: 'Short-read allele repeat-count distribution — CAG',
+      })
+    ).not.toBeNull()
+    expect(
+      screen.getByRole('heading', {
+        level: 3,
+        name: 'Short-read genotype repeat-count distribution — CAG/CAG',
+      })
+    ).not.toBeNull()
+  })
+
+  test('supports H4 plot and unavailable-card headings when nested under an H3 subsection', () => {
+    renderPanel({
+      plotHeadingLevel: 4,
+      allele: { status: 'UNAVAILABLE', reason_code: 'ALLELE_EMPTY', distributions: [] },
+    })
+
+    expect(
+      screen.getByRole('heading', { level: 4, name: 'Allele-copy distribution' })
+    ).not.toBeNull()
+    expect(
+      screen.getByRole('heading', {
+        level: 4,
+        name: 'Short-read genotype repeat-count distribution — CAG/CAG',
+      })
+    ).not.toBeNull()
+  })
+
   test('shares short-only ancestry and sex filters, shows totals, and retains quality/color/scale controls', () => {
     renderPanel()
 

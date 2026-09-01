@@ -4,14 +4,18 @@ import styled from 'styled-components'
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import Link from '../Link'
+import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import ShortTandemRepeatAssociatedDiseasesTable from '../ShortTandemRepeatPage/ShortTandemRepeatAssociatedDiseasesTable'
+import ShortReadReferenceCohortSection from './ShortReadReferenceCohortSection'
 import { LongReadTrShortReadContext } from './types'
 
 const ContextPanel = styled.section`
-  padding: 1em;
+  min-width: 0;
+  padding: clamp(1em, 2vw, 1.5em);
   border: 1px solid #aebbc4;
+  border-top: 4px solid #73ab3d;
   margin-top: 2.4em;
-  border-radius: 4px;
+  border-radius: 8px;
   background: #fbfcfd;
 `
 
@@ -69,6 +73,8 @@ const Disclaimer = styled.p`
 `
 
 type Props = {
+  locusId: string
+  lrCohort: LongReadCohort
   context: LongReadTrShortReadContext | null
 }
 
@@ -112,14 +118,18 @@ const CatalogMotifTable = ({
   </TableScroller>
 )
 
-const ShortReadKnownLocusContext = ({ context }: Props) => {
+const KnownLocusDetails = ({ context }: { context: LongReadTrShortReadContext }) => {
   if (
-    context?.status !== 'EXACT_UNIQUE' ||
     !context.catalog_record ||
     context.matched_component_index == null ||
     !context.matched_component
   ) {
-    return null
+    return (
+      <p role="status">
+        Known-locus details are unavailable for this exact context and were not inferred or
+        substituted.
+      </p>
+    )
   }
 
   const record = context.catalog_record
@@ -134,29 +144,7 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
     : 'No catalog label'
 
   return (
-    <ContextPanel aria-labelledby="lr-tr-short-read-context-heading">
-      <HeadingRow>
-        <h2 id="lr-tr-short-read-context-heading">
-          Short-read known-locus context
-          <ExactBadge>Exact reference-component match</ExactBadge>
-        </h2>
-        <HaplotypeHelpButton title="About short-read known-locus context">
-          <p style={{ marginTop: 0 }}>
-            <strong>What this shows.</strong> Data copied from the short-read catalog record whose
-            GRCh38 reference region and stored repeat unit exactly match one LR reference component.
-          </p>
-          <p>
-            <strong>How to use it.</strong> Follow the known-locus link for short-read details, then
-            read the matched component, disease records, repeat-count ranges, and motif labels here.
-            Expand the disclosures for all catalog motifs and technical provenance.
-          </p>
-          <p style={{ marginBottom: 0 }}>
-            <strong>What it does not show.</strong> This coordinate-and-motif identity is not a
-            clinical interpretation of LR observations.
-          </p>
-        </HaplotypeHelpButton>
-      </HeadingRow>
-
+    <>
       <AttributeList>
         <AttributeListItem label="Known STR locus">
           <Link
@@ -253,6 +241,43 @@ const ShortReadKnownLocusContext = ({ context }: Props) => {
           )}
         </dl>
       </details>
+    </>
+  )
+}
+
+const ShortReadKnownLocusContext = ({ locusId, lrCohort, context }: Props) => {
+  if (context?.status !== 'EXACT_UNIQUE') return null
+
+  return (
+    <ContextPanel aria-labelledby="lr-tr-short-read-context-heading">
+      <HeadingRow>
+        <h2 id="lr-tr-short-read-context-heading">
+          Short-read known-locus context
+          <ExactBadge>Exact reference-component match</ExactBadge>
+        </h2>
+        <HaplotypeHelpButton title="About short-read known-locus context">
+          <p style={{ marginTop: 0 }}>
+            <strong>What this shows.</strong> The exact short-read catalog match and, on request,
+            green aggregate short-read repeat-count distributions for that exact reference region
+            and stored repeat unit.
+          </p>
+          <p>
+            <strong>How to use it.</strong> Review the known locus, matched LR reference component,
+            disease records, ranges, and motif labels. Follow the short-read details link for the
+            canonical short-read page. Choose <strong>Load short-read distributions</strong>, then
+            use the short-read-only ancestry, sex, color, scale, and catalog-range controls.
+          </p>
+          <p style={{ marginBottom: 0 }}>
+            <strong>What it does not show.</strong> Coordinate-and-motif identity is not a clinical
+            interpretation. Catalog labels, ranges, and short-read cohort counts do not classify,
+            filter, or select LR observations and are not combined with the purple LR axes, totals,
+            controls, or filters.
+          </p>
+        </HaplotypeHelpButton>
+      </HeadingRow>
+
+      <KnownLocusDetails context={context} />
+      <ShortReadReferenceCohortSection locusId={locusId} lrCohort={lrCohort} context={context} />
     </ContextPanel>
   )
 }
