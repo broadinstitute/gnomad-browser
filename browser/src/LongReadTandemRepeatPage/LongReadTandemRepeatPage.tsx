@@ -78,10 +78,23 @@ const InlineResources = styled.span`
   }
 `
 
-const SimpleComponentDetails = styled.details`
-  padding: 0.5em 0.75em;
+const PrimaryIdentity = styled.div`
+  padding: 0.65em 0.8em;
+  border-left: 4px solid #6f3c8f;
+  margin-top: 0.75em;
+  background: #f7f2fa;
+  color: #3e2850;
+
+  code {
+    font-size: 1.08em;
+    font-weight: bold;
+  }
+`
+
+const SourceRepresentationDetails = styled.details`
+  padding: 0.65em 0.8em;
   border: 1px solid #d8dee2;
-  margin-top: 1.25em;
+  margin-top: 2.4em;
   border-radius: 4px;
   color: #3e4b54;
 
@@ -109,15 +122,6 @@ const RepeatMotifBadge = styled.span`
 
 const UnavailableList = styled.ul`
   margin-bottom: 0;
-`
-
-const ProvenanceDetails = styled.details`
-  margin-top: 2.4em;
-
-  summary {
-    cursor: pointer;
-    font-weight: bold;
-  }
 `
 
 const LocusOverviewHelp = () => (
@@ -159,6 +163,12 @@ const UnavailableDataHelp = () => (
 const cohortName = (cohort: LongReadCohort) =>
   cohort === 'hgsvc_hprc' ? 'HGSVC / HPRC' : 'All of Us'
 
+const primaryRepeatBasisLabel = (basis: LongReadTrLocus['primary_repeat']['selection_basis']) => {
+  if (basis === 'EXACT_MAIN_CATALOG_COMPONENT') return 'exact catalog / LR'
+  if (basis === 'LR_SOLE_COMPONENT') return 'sole LR'
+  return 'reviewed registry / LR'
+}
+
 const CohortSelector = ({
   cohort,
   onCohortChange,
@@ -183,20 +193,20 @@ const CohortSelector = ({
 )
 
 export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
+  if (locus.primary_repeat?.status !== 'AVAILABLE' || !locus.primary_repeat.motif) {
+    return 'Tandem-repeat locus'
+  }
   const record =
-    locus.short_read_context?.status === 'EXACT_UNIQUE'
+    locus.short_read_context?.status === 'EXACT_UNIQUE' &&
+    locus.short_read_context.catalog_record?.id === locus.primary_repeat.catalog_id
       ? locus.short_read_context.catalog_record
       : null
-  const motifs = [
-    ...new Set(locus.motifs.length ? locus.motifs : locus.components.map((c) => c.motif)),
-  ]
-  const motifLabel = motifs.length ? motifs.join(' / ') : null
   if (record) {
     const gene = record.gene?.symbol
     const identity = gene && gene !== record.id ? `${record.id} (${gene})` : record.id
-    return `${identity}${motifLabel ? ` ${motifLabel}` : ''} tandem repeat`
+    return `${identity} ${locus.primary_repeat.motif} tandem repeat`
   }
-  return motifLabel ? `${motifLabel} tandem repeat` : 'Tandem-repeat locus'
+  return `${locus.primary_repeat.motif} tandem repeat`
 }
 
 const badgeTextColor = (background: string) => {
@@ -290,13 +300,12 @@ const LongReadTandemRepeatPage = ({
   const orderedMotifs = locus.components.map((component) => component.motif)
   const vocabulary = [...new Set(locus.motifs.length ? locus.motifs : orderedMotifs)]
   const authorizedExactReferenceComponentIndex =
-    locus.short_read_context?.status === 'EXACT_UNIQUE' &&
-    locus.short_read_context.exact_reference_component_outline_authorized
-      ? locus.short_read_context.matched_component_index
-      : null
+    locus.primary_repeat.status === 'AVAILABLE' ? locus.primary_repeat.component_index : null
   const title = longReadTrLocusTitle(locus)
   const approvedCatalogRecord =
-    locus.short_read_context?.status === 'EXACT_UNIQUE'
+    locus.primary_repeat.status === 'AVAILABLE' &&
+    locus.short_read_context?.status === 'EXACT_UNIQUE' &&
+    locus.short_read_context.catalog_record?.id === locus.primary_repeat.catalog_id
       ? locus.short_read_context.catalog_record
       : null
   const alleleLengthRange =
@@ -375,6 +384,25 @@ const LongReadTandemRepeatPage = ({
               chr{envelope.chrom}:{envelope.start1.toLocaleString()}–
               {envelope.end1.toLocaleString()} (GRCh38)
             </CoordinateContext>
+            {locus.primary_repeat.status === 'AVAILABLE' && locus.primary_repeat.motif ? (
+              <PrimaryIdentity aria-label={`Primary repeat ${locus.primary_repeat.motif}`}>
+                <strong>Primary repeat</strong> <code>{locus.primary_repeat.motif}</code> ·{' '}
+                {primaryRepeatBasisLabel(locus.primary_repeat.selection_basis)} component{' '}
+                {(locus.primary_repeat.component_index || 0) + 1}
+                {locus.primary_repeat.biological_role && (
+                  <> · {locus.primary_repeat.biological_role}</>
+                )}
+              </PrimaryIdentity>
+            ) : (
+              <PrimaryIdentity role="status">
+                <strong>Primary repeat unavailable.</strong> No motif or component was inferred or
+                substituted
+                {locus.primary_repeat.reason_code
+                  ? ` (${unavailableReason(locus.primary_repeat.reason_code)})`
+                  : ''}
+                .
+              </PrimaryIdentity>
+            )}
           </div>
         </HeadingWithHelp>
         <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
@@ -385,25 +413,22 @@ const LongReadTandemRepeatPage = ({
           <AttributeListItem label="Region size">
             {locus.region.size.toLocaleString()} bp
           </AttributeListItem>
-          <AttributeListItem label={vocabulary.length === 1 ? 'Repeat motif' : 'Repeat motifs'}>
-            {vocabulary.length ? (
-              <RepeatMotifBadges aria-label={`Repeat motifs: ${vocabulary.join(', ')}`}>
-                {vocabulary.map((motif) => {
-                  const color = motifColor(motif, locus.motifs)
-                  return (
-                    <RepeatMotifBadge
-                      key={motif}
-                      data-motif-badge={motif}
-                      data-motif-color={color}
-                      style={{ backgroundColor: color, color: badgeTextColor(color) }}
-                    >
-                      {motif}
-                    </RepeatMotifBadge>
-                  )
-                })}
+          <AttributeListItem label="Primary repeat identity">
+            {locus.primary_repeat.status === 'AVAILABLE' && locus.primary_repeat.motif ? (
+              <RepeatMotifBadges aria-label={`Primary repeat: ${locus.primary_repeat.motif}`}>
+                <RepeatMotifBadge
+                  data-motif-badge={locus.primary_repeat.motif}
+                  data-motif-color={motifColor(locus.primary_repeat.motif, locus.motifs)}
+                  style={{
+                    backgroundColor: motifColor(locus.primary_repeat.motif, locus.motifs),
+                    color: badgeTextColor(motifColor(locus.primary_repeat.motif, locus.motifs)),
+                  }}
+                >
+                  {locus.primary_repeat.motif}
+                </RepeatMotifBadge>
               </RepeatMotifBadges>
             ) : (
-              'Unavailable'
+              'Unavailable — source components remain in the disclosure below'
             )}
           </AttributeListItem>
           {approvedCatalogRecord?.gene?.symbol && approvedCatalogRecord.gene.region && (
@@ -459,25 +484,6 @@ const LongReadTandemRepeatPage = ({
         </AttributeList>
       </SourceAttributes>
 
-      {locus.components.length === 1 ? (
-        <SimpleComponentDetails>
-          <summary>
-            LR reference component: {locus.components[0].motif} · chr
-            {locus.components[0].chrom}:{(locus.components[0].start0 + 1).toLocaleString()}–
-            {locus.components[0].end0.toLocaleString()}
-          </summary>
-          <LongReadTrComponentTrack
-            locus={locus}
-            exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
-          />
-        </SimpleComponentDetails>
-      ) : (
-        <LongReadTrComponentTrack
-          locus={locus}
-          exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
-        />
-      )}
-
       <ShortReadKnownLocusContext
         locusId={locus.id}
         lrCohort={locus.lr_cohort}
@@ -532,8 +538,38 @@ const LongReadTandemRepeatPage = ({
         </Panel>
       )}
 
-      <ProvenanceDetails>
-        <summary>Data source details</summary>
+      <SourceRepresentationDetails open={locus.primary_repeat.status !== 'AVAILABLE'}>
+        <summary>
+          LR source representation and provenance — {locus.components.length} ordered{' '}
+          {locus.components.length === 1 ? 'component' : 'components'}
+        </summary>
+        <AttributeList>
+          <AttributeListItem label={vocabulary.length === 1 ? 'Repeat motif' : 'Repeat motifs'}>
+            {vocabulary.length ? (
+              <RepeatMotifBadges aria-label={`Repeat motifs: ${vocabulary.join(', ')}`}>
+                {vocabulary.map((motif) => {
+                  const color = motifColor(motif, locus.motifs)
+                  return (
+                    <RepeatMotifBadge
+                      key={motif}
+                      data-motif-badge={motif}
+                      data-motif-color={color}
+                      style={{ backgroundColor: color, color: badgeTextColor(color) }}
+                    >
+                      {motif}
+                    </RepeatMotifBadge>
+                  )
+                })}
+              </RepeatMotifBadges>
+            ) : (
+              'Unavailable'
+            )}
+          </AttributeListItem>
+        </AttributeList>
+        <LongReadTrComponentTrack
+          locus={locus}
+          exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
+        />
         <AttributeList>
           <AttributeListItem label="Tandem-repeat identifier">
             <code>{locus.source_trid}</code>
@@ -542,7 +578,9 @@ const LongReadTandemRepeatPage = ({
             {locus.source_records.map((record, index) => (
               <React.Fragment key={record.source_variant_id}>
                 {index > 0 && ', '}
-                <code>{record.source_variant_id}</code> (record {record.record_index};{' '}
+                <code>{record.source_variant_id}</code> (record {record.record_index}; task{' '}
+                <code>{record.task_id || 'unavailable'}</code>; attempt{' '}
+                <code>{record.attempt_id || 'unavailable'}</code>;{' '}
                 {record.alt_count.toLocaleString()} alternate alleles)
               </React.Fragment>
             ))}
@@ -550,8 +588,18 @@ const LongReadTandemRepeatPage = ({
           <AttributeListItem label="Release / processing run">
             {locus.source_release} / <code>{locus.source_run_id}</code>
           </AttributeListItem>
+          {locus.primary_repeat.catalog_digest && (
+            <AttributeListItem label="Primary-repeat catalog digest">
+              <code>{locus.primary_repeat.catalog_digest}</code>
+            </AttributeListItem>
+          )}
+          {locus.primary_repeat.registry_digest && (
+            <AttributeListItem label="Primary-repeat registry digest">
+              <code>{locus.primary_repeat.registry_digest}</code>
+            </AttributeListItem>
+          )}
         </AttributeList>
-      </ProvenanceDetails>
+      </SourceRepresentationDetails>
     </>
   )
 }

@@ -189,6 +189,18 @@ const makeLocus = (count = 72) => {
     component_measurement_available: false,
     component_measurement_unavailable_reason:
       'Compound loci lack an admitted mapping from whole-record sequence to LR reference components',
+    primary_repeat: {
+      status: 'AVAILABLE' as const,
+      reason_code: null,
+      motif: 'CAG',
+      component_index: 0,
+      component: components[0],
+      selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT' as const,
+      biological_role: 'coding polyglutamine repeat',
+      catalog_id: 'HTT',
+      catalog_digest: 'catalog-test-digest',
+      registry_digest: 'registry-test-digest',
+    },
     components,
     source_records: [
       {
@@ -377,6 +389,10 @@ const makeSimpleLocus = () => ({
   component_measurement_available: true,
   component_measurement_unavailable_reason: null,
   components: [{ chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' }],
+  primary_repeat: {
+    ...makeLocus().primary_repeat,
+    component: { chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' },
+  },
   motifs: ['CAG'],
   repeat_count_plots: {
     status: 'AVAILABLE_EXACT',
@@ -489,9 +505,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('renders grounded source attributes and ordered overlapping components', () => {
     renderPage()
-    expect(
-      screen.getByRole('heading', { name: 'HTT CAG / CAA / CCG / CCT / GCC tandem repeat' })
-    ).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'HTT CAG tandem repeat' })).not.toBeNull()
+    expect(screen.getByLabelText('Primary repeat CAG').textContent).toContain(
+      'exact catalog / LR component 1'
+    )
+    expect(screen.getByLabelText('Primary repeat CAG').textContent).toContain(
+      'coding polyglutamine repeat'
+    )
     expect(screen.getByText('chr4:3,074,877–3,075,040 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
     expect(screen.queryByText('GRCh38 / hg38')).toBeNull()
@@ -522,11 +542,133 @@ describe('canonical long-read tandem-repeat locus page', () => {
       status: 'NONE',
       catalog_record: null,
     }
+    ;(locus as any).primary_repeat = {
+      ...locus.primary_repeat,
+      selection_basis: 'LR_SOLE_COMPONENT',
+      biological_role: null,
+      catalog_id: null,
+      catalog_digest: null,
+      registry_digest: null,
+    }
     renderPage({ locus, selectedAllele: undefined })
 
     expect(screen.getByRole('heading', { name: 'CAG tandem repeat' })).not.toBeNull()
     expect(screen.getByText('chr4:3,074,877–3,074,933 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('HTT — exon')).toBeNull()
+  })
+
+  test('preserves ATXN1 stored TGC orientation and RFC1 benign reference identity', () => {
+    const atxn1 = makeSimpleLocus()
+    const atxn1Component = { chrom: '6', start0: 16327633, end0: 16327723, motif: 'TGC' }
+    Object.assign(atxn1, {
+      id: '6-16327633-16327723-TGC',
+      source_trid: '6-16327633-16327723-TGC',
+      chrom: '6',
+      region: { chrom: '6', start0: 16327633, end0: 16327723, size: 90 },
+      motifs: ['TGC'],
+      components: [atxn1Component],
+      primary_repeat: {
+        ...atxn1.primary_repeat,
+        motif: 'TGC',
+        component: atxn1Component,
+        biological_role: 'exact stored orientation',
+        catalog_id: 'ATXN1',
+      },
+      short_read_context: {
+        ...atxn1.short_read_context,
+        catalog_record: {
+          ...atxn1.short_read_context.catalog_record,
+          id: 'ATXN1',
+          gene: { ensembl_id: 'ENSG00000124788', symbol: 'ATXN1', region: 'coding' },
+          main_reference_region: {
+            reference_genome: 'GRCh38',
+            chrom: '6',
+            start: 16327633,
+            stop: 16327723,
+          },
+          reference_repeat_unit: 'TGC',
+          repeat_units: [{ repeat_unit: 'TGC', classification: 'pathogenic' }],
+        },
+        matched_component: atxn1Component,
+      },
+    })
+    const rendered = renderPage({ locus: atxn1, selectedAllele: undefined })
+    expect(screen.getByRole('heading', { name: 'ATXN1 TGC tandem repeat' })).not.toBeNull()
+    expect(screen.getByLabelText('Primary repeat TGC').textContent).toContain(
+      'exact stored orientation'
+    )
+    expect(screen.queryByRole('heading', { name: /ATXN1 CAG/ })).toBeNull()
+
+    rendered.unmount()
+    const rfc1 = makeSimpleLocus()
+    const rfc1Component = { chrom: '4', start0: 39348424, end0: 39348479, motif: 'AAAAG' }
+    Object.assign(rfc1, {
+      id: '4-39348424-39348479-AAAAG',
+      source_trid: '4-39348424-39348479-AAAAG',
+      region: { chrom: '4', start0: 39348424, end0: 39348479, size: 55 },
+      motifs: ['AAAAG'],
+      components: [rfc1Component],
+      primary_repeat: {
+        ...rfc1.primary_repeat,
+        motif: 'AAAAG',
+        component: rfc1Component,
+        biological_role: 'benign reference motif',
+        catalog_id: 'RFC1',
+      },
+      short_read_context: {
+        ...rfc1.short_read_context,
+        catalog_record: {
+          ...rfc1.short_read_context.catalog_record,
+          id: 'RFC1',
+          gene: { ensembl_id: 'ENSG00000133119', symbol: 'RFC1', region: 'intronic' },
+          main_reference_region: {
+            reference_genome: 'GRCh38',
+            chrom: '4',
+            start: 39348424,
+            stop: 39348479,
+          },
+          reference_repeat_unit: 'AAAAG',
+          repeat_units: [
+            { repeat_unit: 'AAAAG', classification: 'benign' },
+            { repeat_unit: 'AAGGG', classification: 'pathogenic' },
+          ],
+        },
+        matched_component: rfc1Component,
+        matched_reference_repeat_unit_classifications: ['benign'],
+      },
+    })
+    renderPage({ locus: rfc1, selectedAllele: undefined })
+    expect(screen.getByRole('heading', { name: 'RFC1 AAAAG tandem repeat' })).not.toBeNull()
+    expect(screen.getByLabelText('Primary repeat AAAAG').textContent).toContain(
+      'benign reference motif'
+    )
+    expect(screen.getAllByText('AAGGG', { selector: 'code' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByText('pathogenic').length).toBeGreaterThan(0)
+  })
+
+  test('uses a neutral fallback and opens source truth when primary identity is unavailable', () => {
+    const locus = makeLocus()
+    ;(locus as any).primary_repeat = {
+      status: 'UNAVAILABLE',
+      reason_code: 'REGISTRY_DIGEST_MISMATCH',
+      motif: null,
+      component_index: null,
+      component: null,
+      selection_basis: null,
+      biological_role: null,
+      catalog_id: null,
+      catalog_digest: null,
+      registry_digest: null,
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.getByRole('heading', { name: 'Tandem-repeat locus' })).not.toBeNull()
+    expect(screen.getByRole('status').textContent).toContain('No motif or component was inferred')
+    const disclosure = screen
+      .getByText('LR source representation and provenance — 6 ordered components')
+      .closest('details')
+    expect(disclosure?.hasAttribute('open')).toBe(true)
+    expect(screen.queryByRole('heading', { name: /Long-read exact CAG units/ })).toBeNull()
   })
 
   test('gives every canonical page help dialog the task-first structure', () => {
@@ -615,13 +757,19 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
   })
 
-  test('deprioritizes a single reference component in a closed disclosure', () => {
+  test('keeps source components and exact provenance in one closed disclosure', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
-    const disclosure = screen.getByText(/LR reference component: CAG · chr4:/).closest('details')
+    const disclosure = screen
+      .getByText('LR source representation and provenance — 1 ordered component')
+      .closest('details')
     expect(disclosure).not.toBeNull()
     expect(disclosure?.hasAttribute('open')).toBe(false)
-    expect(screen.getByText('Repeat motif')).not.toBeNull()
+    expect(within(disclosure as HTMLElement).getByText('Repeat motif')).not.toBeNull()
+    expect(within(disclosure as HTMLElement).getByText('task', { selector: 'code' })).not.toBeNull()
+    expect(
+      within(disclosure as HTMLElement).getByText('attempt', { selector: 'code' })
+    ).not.toBeNull()
   })
 
   test('renders an explicit non-error state when a locus is absent from one cohort', () => {
@@ -1043,13 +1191,18 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(onCohortChange).toHaveBeenCalledWith('aou')
   })
 
-  test('keeps source provenance compact and accessible', () => {
+  test('keeps compound source provenance compact and accessible', () => {
     renderPage()
-    const provenance = screen.getByText('Data source details').closest('details')
+    const provenance = screen
+      .getByText('LR source representation and provenance — 6 ordered components')
+      .closest('details')
     expect(provenance).not.toBeNull()
     expect(provenance?.hasAttribute('open')).toBe(false)
     expect(
       within(provenance as HTMLElement).getByText('run-hgsvc', { selector: 'code' })
+    ).not.toBeNull()
+    expect(
+      within(provenance as HTMLElement).getByText('registry-test-digest', { selector: 'code' })
     ).not.toBeNull()
   })
 
@@ -1225,6 +1378,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(longReadTandemRepeatLocusQuery).toContain('source_records {')
     expect(longReadTandemRepeatLocusQuery).toContain('repeat_count_plots')
     expect(longReadTandemRepeatLocusQuery).toContain('interaction { interaction_status reason }')
+    expect(longReadTandemRepeatLocusQuery).toContain('primary_repeat {')
+    expect(longReadTandemRepeatLocusQuery).toContain('catalog_id catalog_digest registry_digest')
     expect(longReadTandemRepeatLocusQuery).toContain('short_read_context {')
     expect(longReadTandemRepeatLocusQuery).toContain('exact_reference_component_outline_authorized')
     expect(longReadTandemRepeatLocusQuery).toContain(

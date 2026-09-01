@@ -38,6 +38,11 @@ query ${operationName}(
     unique_carrier_count sequences_available sequences_unavailable_reason selected_allele_valid
     selected_allele_unavailable_reason
     component_measurement_available component_measurement_unavailable_reason
+    primary_repeat {
+      status reason_code motif component_index selection_basis biological_role
+      catalog_id catalog_digest registry_digest
+      component { chrom start0 end0 motif }
+    }
     region { chrom start0 end0 size }
     components { chrom start0 end0 motif }
     source_records {

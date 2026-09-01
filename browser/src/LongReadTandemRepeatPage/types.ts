@@ -181,6 +181,35 @@ export type LongReadTrShortReadContext = {
   lr_cohort: LongReadCohort | null
 }
 
+export type LongReadTrPrimaryRepeat = {
+  status: 'AVAILABLE' | 'UNAVAILABLE'
+  reason_code:
+    | 'IDENTITY_CONTEXT_UNAVAILABLE'
+    | 'WRONG_ASSEMBLY'
+    | 'INVALID_STORED_MOTIF'
+    | 'MAIN_REGION_NOT_EXACT_COMPONENT'
+    | 'STORED_MOTIF_NOT_EXACT_COMPONENT'
+    | 'NON_BIJECTIVE_COMPONENT'
+    | 'CATALOG_DIGEST_MISMATCH'
+    | 'REGISTRY_DIGEST_MISMATCH'
+    | 'REGISTRY_NOT_REVIEWED'
+    | 'REGISTRY_IDENTITY_MISMATCH'
+    | 'COMPOUND_PRIMARY_REPEAT_UNREVIEWED'
+    | null
+  motif: string | null
+  component_index: number | null
+  component: TrLocusComponent | null
+  selection_basis:
+    | 'EXACT_MAIN_CATALOG_COMPONENT'
+    | 'LR_SOLE_COMPONENT'
+    | 'REVIEWED_PRIMARY_REPEAT_REGISTRY'
+    | null
+  biological_role: string | null
+  catalog_id: string | null
+  catalog_digest: string | null
+  registry_digest: string | null
+}
+
 export type LongReadTrLocus = {
   id: string
   source_trid: string
@@ -212,6 +241,7 @@ export type LongReadTrLocus = {
   selected_allele: LongReadTrSelectedAllele | null
   component_measurement_available: boolean
   component_measurement_unavailable_reason: string | null
+  primary_repeat: LongReadTrPrimaryRepeat
   components: TrLocusComponent[]
   source_records: {
     record_index: number

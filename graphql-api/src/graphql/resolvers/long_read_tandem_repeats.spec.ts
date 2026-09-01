@@ -8,6 +8,9 @@ jest.mock('../../queries/long_read_tr_loci', () => ({
   MAX_TR_LOCUS_PAGE_SIZE: 600,
 }))
 jest.mock('../../queries/long_read_y1_provenance', () => ({ getY1SourceSnapshot: jest.fn() }))
+jest.mock('../../queries/long_read_tr_primary_repeat', () => ({
+  resolveLongReadTrPrimaryRepeat: jest.fn(),
+}))
 jest.mock('../../queries/long_read_tr_short_read_distributions', () => ({
   resolveLongReadTrShortReadDistributions: jest.fn(),
 }))
@@ -23,18 +26,26 @@ import { fetchLongReadTrRepeatCountPlots } from '../../queries/long_read_tr_hist
 // eslint-disable-next-line import/first
 import { fetchLongReadTrLocus } from '../../queries/long_read_tr_loci'
 // eslint-disable-next-line import/first
+import { resolveLongReadTrPrimaryRepeat } from '../../queries/long_read_tr_primary_repeat'
+// eslint-disable-next-line import/first
+import { resolveLongReadTrShortReadContext } from '../../queries/long_read_tr_reference'
+// eslint-disable-next-line import/first
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
 // eslint-disable-next-line import/first
 import resolvers from './long_read_tandem_repeats'
 
 const fetchPlots = fetchLongReadTrRepeatCountPlots as any
 const fetchLocus = fetchLongReadTrLocus as any
+const resolvePrimaryRepeat = resolveLongReadTrPrimaryRepeat as any
+const resolveContext = resolveLongReadTrShortReadContext as any
 const getSource = getY1SourceSnapshot as any
 
 describe('long-read tandem-repeat resolvers', () => {
   beforeEach(() => {
     fetchPlots.mockReset()
     fetchLocus.mockReset()
+    resolvePrimaryRepeat.mockReset()
+    resolveContext.mockReset()
     getSource.mockReset()
   })
 
@@ -53,6 +64,19 @@ describe('long-read tandem-repeat resolvers', () => {
       )
     ).resolves.toBeNull()
     expect(fetchLocus).toHaveBeenCalledTimes(source ? 1 : 0)
+  })
+
+  test('resolves primary identity from the same receipt-validated short-read context', async () => {
+    const locus = { id: 'exact-locus' }
+    const context = { status: 'EXACT_UNIQUE', catalog_digest: 'digest' }
+    const identity = { status: 'AVAILABLE', motif: 'TGC' }
+    resolveContext.mockResolvedValueOnce(context)
+    resolvePrimaryRepeat.mockReturnValueOnce(identity)
+
+    await expect(
+      resolvers.LongReadTandemRepeatLocus.primary_repeat(locus, null, { esClient: {} })
+    ).resolves.toBe(identity)
+    expect(resolvePrimaryRepeat).toHaveBeenCalledWith(locus, context)
   })
 
   test('turns a cohort-specific malformed ancillary histogram into an explicit unavailable state', async () => {

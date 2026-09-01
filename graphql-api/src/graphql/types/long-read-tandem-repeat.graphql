@@ -12,6 +12,44 @@ type LongReadTrLocusRegion {
   size: Int!
 }
 
+enum LongReadTrPrimaryRepeatStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum LongReadTrPrimaryRepeatReason {
+  IDENTITY_CONTEXT_UNAVAILABLE
+  WRONG_ASSEMBLY
+  INVALID_STORED_MOTIF
+  MAIN_REGION_NOT_EXACT_COMPONENT
+  STORED_MOTIF_NOT_EXACT_COMPONENT
+  NON_BIJECTIVE_COMPONENT
+  CATALOG_DIGEST_MISMATCH
+  REGISTRY_DIGEST_MISMATCH
+  REGISTRY_NOT_REVIEWED
+  REGISTRY_IDENTITY_MISMATCH
+  COMPOUND_PRIMARY_REPEAT_UNREVIEWED
+}
+
+enum LongReadTrPrimaryRepeatSelectionBasis {
+  EXACT_MAIN_CATALOG_COMPONENT
+  LR_SOLE_COMPONENT
+  REVIEWED_PRIMARY_REPEAT_REGISTRY
+}
+
+type LongReadTrPrimaryRepeat {
+  status: LongReadTrPrimaryRepeatStatus!
+  reason_code: LongReadTrPrimaryRepeatReason
+  motif: String
+  component_index: Int
+  component: LongReadTrLocusComponent
+  selection_basis: LongReadTrPrimaryRepeatSelectionBasis
+  biological_role: String
+  catalog_id: String
+  catalog_digest: String
+  registry_digest: String
+}
+
 type LongReadTrSourceRecord {
   record_index: Int!
   source_variant_id: String!
@@ -451,6 +489,7 @@ type LongReadTandemRepeatLocus {
   whole_record_genotype_landscape: LongReadTrWholeRecordGenotypeLandscape!
   component_measurement_available: Boolean!
   component_measurement_unavailable_reason: String
+  primary_repeat: LongReadTrPrimaryRepeat!
   short_read_context: LongReadTrShortReadContext!
   # Deprecated compatibility field; resolved from the same exact, validated context.
   short_read_matches: [LongReadTrCatalogMatch!]!

@@ -5,6 +5,8 @@ const COMPOUND_LOCUS =
 const SIMPLE_THREE_ALT_LOCUS = '1-143278475-143278486-T'
 const SPARSE_LOCUS = '1-121606499-121606508-AG+1-121606517-121606536-A'
 const ARX_1_LOCUS = 'X-25013649-25013697-NGC'
+const ATXN1_LOCUS = '6-16327633-16327723-TGC'
+const RFC1_LOCUS = '4-39348424-39348479-AAAAG'
 type Cohort = 'hgsvc_hprc' | 'aou'
 
 const datasetQuery = (cohort: Cohort) => `dataset=gnomad_r4_lr&lr_cohort=${cohort}`
@@ -316,7 +318,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(page.getByText('Unable to load tandem-repeat locus')).toHaveCount(0)
 
     const componentDisclosure = page.locator('details').filter({
-      hasText: 'LR reference component: NGC',
+      hasText: 'LR source representation and provenance — 1 ordered component',
     })
     await expect(componentDisclosure).not.toHaveAttribute('open', '')
     await page.setViewportSize({ width: 390, height: 844 })
@@ -416,6 +418,68 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'simple-three-alt-motif-previews.png')
   })
 
+  test('HTT, ATXN1, and RFC1 expose reviewed primary identity without changing measurements', async ({
+    page,
+  }) => {
+    test.setTimeout(120_000)
+    const cases = [
+      {
+        locus: COMPOUND_LOCUS,
+        title: 'HTT CAG tandem repeat',
+        motif: 'CAG',
+        role: 'coding polyglutamine repeat',
+        components: 6,
+      },
+      {
+        locus: ATXN1_LOCUS,
+        title: 'ATXN1 TGC tandem repeat',
+        motif: 'TGC',
+        role: 'exact stored orientation',
+        components: 1,
+      },
+      {
+        locus: RFC1_LOCUS,
+        title: 'RFC1 AAAAG tandem repeat',
+        motif: 'AAAAG',
+        role: 'benign reference motif',
+        components: 1,
+      },
+    ]
+
+    const verifyIdentity = async (item: (typeof cases)[number]) => {
+      const responsePromise = waitForLocusResponse(page)
+      await page.goto(`/tandem-repeat/${item.locus}?${datasetQuery('hgsvc_hprc')}`)
+      const response = await responsePromise
+      const payload = await response.json()
+      expect(response.status()).toBe(200)
+      expect(payload.errors).toBeUndefined()
+      expect(payload.data.long_read_tandem_repeat_locus.primary_repeat).toMatchObject({
+        status: 'AVAILABLE',
+        reason_code: null,
+        motif: item.motif,
+        component_index: 0,
+        selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT',
+        biological_role: item.role,
+      })
+      await expect(page.getByRole('heading', { name: item.title })).toBeVisible()
+      await expect(page.getByLabel(`Primary repeat ${item.motif}`)).toContainText(item.role)
+      await expect(
+        page.getByText(
+          `LR source representation and provenance — ${item.components} ordered ${
+            item.components === 1 ? 'component' : 'components'
+          }`
+        )
+      ).toBeVisible()
+      await expect(page.getByRole('heading', { name: /Long-read exact .* units/ })).toHaveCount(0)
+    }
+
+    await verifyIdentity(cases[0])
+    await verifyIdentity(cases[1])
+    await verifyIdentity(cases[2])
+    await expect(page.getByText('AAGGG', { exact: true }).first()).toBeVisible()
+    await expect(page.getByText('pathogenic', { exact: true }).first()).toBeVisible()
+  })
+
   test('canonical selection, history, and legacy redirects stay in place for HTT', async ({
     page,
   }) => {
@@ -448,6 +512,26 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     test.setTimeout(120_000)
 
     const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
+    await expect(page.getByRole('heading', { name: 'HTT CAG tandem repeat' })).toBeVisible()
+    await expect(page.getByLabel('Primary repeat CAG')).toContainText(
+      'exact catalog / LR component 1'
+    )
+    const sourceDisclosure = page
+      .getByText('LR source representation and provenance — 6 ordered components')
+      .locator('..')
+    await expect(sourceDisclosure).not.toHaveAttribute('open', '')
+    await sourceDisclosure.locator('summary').focus()
+    await sourceDisclosure.locator('summary').press('Enter')
+    await expect(sourceDisclosure).toHaveAttribute('open', '')
+    await expect(
+      sourceDisclosure.getByRole('img', { name: /6 ordered LR reference components/ })
+    ).toBeVisible()
+    await page.setViewportSize({ width: 390, height: 844 })
+    await expectNarrowControlsContained(page)
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+    ).toBe(true)
+    await page.setViewportSize({ width: 1280, height: 720 })
     const emptyDetail = page.getByText(
       'No exact ALT selected. Choose Select in a row to view its sequence and details.'
     )

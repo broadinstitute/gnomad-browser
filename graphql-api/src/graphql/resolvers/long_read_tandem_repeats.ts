@@ -2,6 +2,7 @@ import { parseTrLocusId } from '../../../../dataset-metadata/longReadTrLocusId'
 import { UserVisibleError } from '../../errors'
 import { fetchLongReadTrRepeatCountPlots } from '../../queries/long_read_tr_histograms'
 import { fetchLongReadTrLocus, MAX_TR_LOCUS_PAGE_SIZE } from '../../queries/long_read_tr_loci'
+import { resolveLongReadTrPrimaryRepeat } from '../../queries/long_read_tr_primary_repeat'
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
 import { resolveLongReadTrShortReadDistributions } from '../../queries/long_read_tr_short_read_distributions'
 import {
@@ -54,6 +55,8 @@ export default {
       resolveLongReadTrShortReadDistributions(args, ctx.esClient, getY1SourceSnapshot),
   },
   LongReadTandemRepeatLocus: {
+    primary_repeat: async (locus: any, _args: any, ctx: any) =>
+      resolveLongReadTrPrimaryRepeat(locus, await shortReadContext(locus, ctx)),
     short_read_context: (locus: any, _args: any, ctx: any) => shortReadContext(locus, ctx),
     short_read_matches: (locus: any, _args: any, ctx: any) =>
       legacyMatchesFromContext(shortReadContext(locus, ctx)),

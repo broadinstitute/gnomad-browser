@@ -23,6 +23,11 @@ const longReadTrLocusQuery = `
       delta_min delta_max delta_unavailable_reason called_allele_count called_sample_count
       sequences_available sequences_unavailable_reason
       component_measurement_available component_measurement_unavailable_reason
+      primary_repeat {
+        status reason_code motif component_index selection_basis biological_role
+        catalog_id catalog_digest registry_digest
+        component { chrom start0 end0 motif }
+      }
       region { chrom start0 end0 size }
       components { chrom start0 end0 motif }
       source_records {
@@ -250,6 +255,22 @@ describe('assembled LR identity GraphQL contract', () => {
     const detailsType = types.find((type: any) => type.name === 'LongReadVariantDetails')
     expect(detailsType.fields.map((field: any) => field.name)).toEqual(
       expect.arrayContaining(['source_variant_id', 'alt_index', 'alt_count'])
+    )
+
+    const primaryRepeatType = types.find((type: any) => type.name === 'LongReadTrPrimaryRepeat')
+    expect(primaryRepeatType.fields.map((field: any) => field.name)).toEqual(
+      expect.arrayContaining([
+        'status',
+        'reason_code',
+        'motif',
+        'component_index',
+        'component',
+        'selection_basis',
+        'biological_role',
+        'catalog_id',
+        'catalog_digest',
+        'registry_digest',
+      ])
     )
 
     const contextType = types.find((type: any) => type.name === 'LongReadTrShortReadContext')
