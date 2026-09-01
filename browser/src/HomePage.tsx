@@ -103,11 +103,6 @@ export default () => (
         </Link>
       </ListItem>
       <ListItem>
-        <Link preserveSelectedDataset={false} to="/long-read-tandem-repeat-reference">
-          Known STR loci in long-read data
-        </Link>
-      </ListItem>
-      <ListItem>
         <Link preserveSelectedDataset={false} to="/long-read-literature-examples">
           Long-read literature workflows
         </Link>
