@@ -418,7 +418,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'simple-three-alt-motif-previews.png')
   })
 
-  test('HTT, ATXN1, and RFC1 expose reviewed primary identity without changing measurements', async ({
+  test('HTT, ATXN1, and RFC1 expose exact catalog identity without changing measurements', async ({
     page,
   }) => {
     test.setTimeout(120_000)
@@ -427,14 +427,14 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         locus: COMPOUND_LOCUS,
         title: 'HTT CAG tandem repeat',
         motif: 'CAG',
-        role: 'coding polyglutamine repeat',
+        role: null,
         components: 6,
       },
       {
         locus: ATXN1_LOCUS,
         title: 'ATXN1 TGC tandem repeat',
         motif: 'TGC',
-        role: 'exact stored orientation',
+        role: null,
         components: 1,
       },
       {
@@ -460,9 +460,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         component_index: 0,
         selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT',
         biological_role: item.role,
+        registry_digest: null,
       })
       await expect(page.getByRole('heading', { name: item.title })).toBeVisible()
-      await expect(page.getByLabel(`Primary repeat ${item.motif}`)).toContainText(item.role)
+      if (item.role) {
+        await expect(page.getByLabel(`Primary repeat ${item.motif}`)).toContainText(item.role)
+      }
       await expect(
         page.getByText(
           `LR source representation and provenance — ${item.components} ordered ${

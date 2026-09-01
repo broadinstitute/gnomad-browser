@@ -1,26 +1,46 @@
 import {
-  longReadTrPrimaryRepeatRegistryForTests,
+  PrimaryRepeatRegistry,
   primaryRepeatRegistryDigest,
   primaryRepeatRegistryState,
   resolveLongReadTrPrimaryRepeat,
 } from './long_read_tr_primary_repeat'
 
-const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value))
-const reviewedRegistry = () => clone(longReadTrPrimaryRepeatRegistryForTests)
-const entryLocus = (catalogId: string) => {
-  const entry = reviewedRegistry().entries.find((item) => item.catalog_id === catalogId)!
-  return {
-    id: entry.canonical_locus_id,
-    reference_genome: 'GRCh38',
-    components: entry.ordered_components,
-  }
+const catalogDigest = '638cb10c4d834af1fced0f73af28f4bd7d7ef018ce50aa218b612ca24bb03a43'
+const fixtures = {
+  HTT: {
+    id: '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG',
+    components: [
+      { chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' },
+      { chrom: '4', start0: 3074927, end0: 3074936, motif: 'CAA' },
+      { chrom: '4', start0: 3074939, end0: 3074966, motif: 'CCG' },
+      { chrom: '4', start0: 3074966, end0: 3074972, motif: 'CCT' },
+      { chrom: '4', start0: 3074983, end0: 3074994, motif: 'GCC' },
+      { chrom: '4', start0: 3075029, end0: 3075040, motif: 'CCG' },
+    ],
+    classifications: ['pathogenic'],
+  },
+  ATXN1: {
+    id: '6-16327633-16327723-TGC',
+    components: [{ chrom: '6', start0: 16327633, end0: 16327723, motif: 'TGC' }],
+    classifications: ['pathogenic'],
+  },
+  RFC1: {
+    id: '4-39348424-39348479-AAAAG',
+    components: [{ chrom: '4', start0: 39348424, end0: 39348479, motif: 'AAAAG' }],
+    classifications: ['benign'],
+  },
 }
-const exactContext = (catalogId: string, locus = entryLocus(catalogId)) => {
-  const entry = reviewedRegistry().entries.find((item) => item.catalog_id === catalogId)!
-  const component = locus.components[entry.component_index]
+
+const entryLocus = (catalogId: keyof typeof fixtures) => ({
+  id: fixtures[catalogId].id,
+  reference_genome: 'GRCh38',
+  components: fixtures[catalogId].components,
+})
+const exactContext = (catalogId: keyof typeof fixtures, locus = entryLocus(catalogId)) => {
+  const component = locus.components[0]
   return {
     status: 'EXACT_UNIQUE',
-    catalog_digest: reviewedRegistry().catalog_digest,
+    catalog_digest: catalogDigest,
     catalog_record: {
       id: catalogId,
       main_reference_region: {
@@ -31,32 +51,79 @@ const exactContext = (catalogId: string, locus = entryLocus(catalogId)) => {
       },
       reference_repeat_unit: component.motif,
     },
-    matched_component_index: entry.component_index,
+    matched_component_index: 0,
     matched_component: component,
+    matched_reference_repeat_unit_classifications: fixtures[catalogId].classifications,
   }
 }
 
-describe('reviewed primary-repeat identity', () => {
+const compoundLocus = () => {
+  const components = [
+    { chrom: '8', start0: 100, end0: 112, motif: 'GAA' },
+    { chrom: '8', start0: 112, end0: 118, motif: 'GAG' },
+  ]
+  return { id: '8-100-112-GAA+8-112-118-GAG', reference_genome: 'GRCh38', components }
+}
+
+const registryFor = (
+  locus: ReturnType<typeof compoundLocus>,
+  approvalState: string
+): PrimaryRepeatRegistry => {
+  const value: PrimaryRepeatRegistry = {
+    schema_version: 1,
+    contract: 'GNOMAD_LR_PRIMARY_REPEAT_IDENTITY_V1',
+    reference_genome: 'GRCh38',
+    approval_state: approvalState,
+    entries: [
+      {
+        registry_entry_id: 'future-test-override',
+        canonical_locus_id: locus.id,
+        catalog_id: null,
+        ordered_components: locus.components,
+        component_index: 1,
+        motif: 'GAG',
+        selection_basis: 'REVIEWED_PRIMARY_REPEAT_REGISTRY',
+        biological_role: null,
+        approval_state: approvalState,
+      },
+    ],
+    content_sha256: '',
+  }
+  value.content_sha256 = primaryRepeatRegistryDigest(value)
+  return value
+}
+
+describe('primary-repeat identity', () => {
   test.each([
-    ['HTT', 'CAG', 0, 'coding polyglutamine repeat'],
-    ['ATXN1', 'TGC', 0, 'exact stored orientation'],
-    ['RFC1', 'AAAAG', 0, 'benign reference motif'],
-  ])('selects the exact stored main component for %s', (catalogId, motif, index, role) => {
-    const locus = entryLocus(catalogId)
-    expect(resolveLongReadTrPrimaryRepeat(locus, exactContext(catalogId, locus))).toEqual(
-      expect.objectContaining({
-        status: 'AVAILABLE',
-        reason_code: null,
-        motif,
-        component_index: index,
-        component: locus.components[index],
-        selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT',
-        biological_role: role,
-        catalog_id: catalogId,
-        catalog_digest: reviewedRegistry().catalog_digest,
-        registry_digest: reviewedRegistry().content_sha256,
-      })
-    )
+    ['HTT', 'CAG', null],
+    ['ATXN1', 'TGC', null],
+    ['RFC1', 'AAAAG', 'benign reference motif'],
+  ] as const)(
+    'authorizes %s from the exact short-read catalog identity only',
+    (catalogId, motif, role) => {
+      const locus = entryLocus(catalogId)
+      expect(resolveLongReadTrPrimaryRepeat(locus, exactContext(catalogId, locus))).toEqual(
+        expect.objectContaining({
+          status: 'AVAILABLE',
+          reason_code: null,
+          motif,
+          component_index: 0,
+          component: locus.components[0],
+          selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT',
+          biological_role: role,
+          catalog_id: catalogId,
+          catalog_digest: catalogDigest,
+          registry_digest: null,
+        })
+      )
+    }
+  )
+
+  test('derives the RFC1 benign role only from exact catalog classification data', () => {
+    const locus = entryLocus('RFC1')
+    const context = exactContext('RFC1', locus)
+    context.matched_reference_repeat_unit_classifications = []
+    expect(resolveLongReadTrPrimaryRepeat(locus, context).biological_role).toBeNull()
   })
 
   test('admits only the sole exact source component for an anonymous locus', () => {
@@ -78,36 +145,42 @@ describe('reviewed primary-repeat identity', () => {
     )
   })
 
-  test('admits a compound override only from a reviewed, digest-valid exact registry tuple', () => {
-    const components = [
-      { chrom: '8', start0: 100, end0: 112, motif: 'GAA' },
-      { chrom: '8', start0: 112, end0: 118, motif: 'GAG' },
-    ]
-    const locus = { id: '8-100-112-GAA+8-112-118-GAG', reference_genome: 'GRCh38', components }
-    const value: any = reviewedRegistry()
-    value.entries.push({
-      registry_entry_id: 'reviewed-test-override',
-      canonical_locus_id: locus.id,
-      catalog_id: null,
-      ordered_components: components,
-      component_index: 1,
-      motif: 'GAG',
-      selection_basis: 'REVIEWED_PRIMARY_REPEAT_REGISTRY',
-      biological_role: 'reviewed test role',
-      approval_state: 'REVIEWED',
-      approval_receipt: 'test-review-receipt',
-    })
-    value.content_sha256 = primaryRepeatRegistryDigest(value)
+  test('a missing current registry cannot authorize compound identity', () => {
+    expect(resolveLongReadTrPrimaryRepeat(compoundLocus(), { status: 'NONE' })).toEqual(
+      expect.objectContaining({
+        status: 'UNAVAILABLE',
+        reason_code: 'COMPOUND_PRIMARY_REPEAT_UNREVIEWED',
+        motif: null,
+      })
+    )
+  })
 
+  test('an unreviewed future registry cannot authorize compound identity', () => {
+    const locus = compoundLocus()
+    const candidate = registryFor(locus, 'CANDIDATE_PENDING_SCIENCE')
     expect(
-      resolveLongReadTrPrimaryRepeat(locus, { status: 'NONE' }, primaryRepeatRegistryState(value))
+      resolveLongReadTrPrimaryRepeat(
+        locus,
+        { status: 'NONE' },
+        primaryRepeatRegistryState(candidate)
+      )
+    ).toEqual(
+      expect.objectContaining({ status: 'UNAVAILABLE', reason_code: 'REGISTRY_NOT_REVIEWED' })
+    )
+  })
+
+  test('keeps a digest-valid reviewed registry as a future, explicitly injected basis', () => {
+    const locus = compoundLocus()
+    const future = registryFor(locus, 'REVIEWED')
+    expect(
+      resolveLongReadTrPrimaryRepeat(locus, { status: 'NONE' }, primaryRepeatRegistryState(future))
     ).toEqual(
       expect.objectContaining({
         status: 'AVAILABLE',
         motif: 'GAG',
         component_index: 1,
         selection_basis: 'REVIEWED_PRIMARY_REPEAT_REGISTRY',
-        registry_digest: value.content_sha256,
+        registry_digest: future.content_sha256,
       })
     )
   })
@@ -115,29 +188,29 @@ describe('reviewed primary-repeat identity', () => {
   test.each([
     [
       'shifted main region',
-      (locus: any, context: any) => {
+      (context: any) => {
         context.catalog_record.main_reference_region.start += 1
       },
       'MAIN_REGION_NOT_EXACT_COMPONENT',
     ],
     [
       'wrong motif orientation',
-      (_locus: any, context: any) => {
+      (context: any) => {
         context.catalog_record.reference_repeat_unit = 'CAG'
       },
       'STORED_MOTIF_NOT_EXACT_COMPONENT',
     ],
     [
-      'stale catalog digest',
-      (_locus: any, context: any) => {
-        context.catalog_digest = '0'.repeat(64)
+      'invalid catalog digest',
+      (context: any) => {
+        context.catalog_digest = 'not-a-digest'
       },
       'CATALOG_DIGEST_MISMATCH',
     ],
   ])('fails closed for %s', (_case, mutate, reason) => {
     const locus = entryLocus('ATXN1')
     const context = exactContext('ATXN1', locus)
-    mutate(locus, context)
+    mutate(context)
     expect(resolveLongReadTrPrimaryRepeat(locus, context)).toEqual(
       expect.objectContaining({ status: 'UNAVAILABLE', reason_code: reason, motif: null })
     )
@@ -151,8 +224,7 @@ describe('reviewed primary-repeat identity', () => {
       components: [component, { ...component }],
     }
     const context = {
-      status: 'EXACT_UNIQUE',
-      catalog_digest: reviewedRegistry().catalog_digest,
+      ...exactContext('HTT'),
       catalog_record: {
         id: 'DUPLICATE',
         main_reference_region: {
@@ -168,57 +240,6 @@ describe('reviewed primary-repeat identity', () => {
     }
     expect(resolveLongReadTrPrimaryRepeat(locus, context)).toEqual(
       expect.objectContaining({ status: 'UNAVAILABLE', reason_code: 'NON_BIJECTIVE_COMPONENT' })
-    )
-  })
-
-  test('fails closed on a stale registry receipt and never accepts the backend candidate state', () => {
-    const locus = entryLocus('HTT')
-    const stale = reviewedRegistry()
-    stale.content_sha256 = '0'.repeat(64)
-    expect(
-      resolveLongReadTrPrimaryRepeat(
-        locus,
-        exactContext('HTT', locus),
-        primaryRepeatRegistryState(stale)
-      )
-    ).toEqual(
-      expect.objectContaining({ status: 'UNAVAILABLE', reason_code: 'REGISTRY_DIGEST_MISMATCH' })
-    )
-
-    const candidate: any = reviewedRegistry()
-    candidate.approval_state = 'CANDIDATE_PENDING_SCIENCE'
-    candidate.entries = candidate.entries.map((entry: any) => ({
-      ...entry,
-      approval_state: 'CANDIDATE_PENDING_SCIENCE',
-      approval_receipt: null,
-    }))
-    candidate.content_sha256 = primaryRepeatRegistryDigest(candidate)
-    expect(
-      resolveLongReadTrPrimaryRepeat(
-        locus,
-        exactContext('HTT', locus),
-        primaryRepeatRegistryState(candidate)
-      )
-    ).toEqual(
-      expect.objectContaining({ status: 'UNAVAILABLE', reason_code: 'REGISTRY_NOT_REVIEWED' })
-    )
-  })
-
-  test('does not use first motif, longest component, or familiar motif for unreviewed compounds', () => {
-    const locus = {
-      id: '1-1-100-CAG+1-100-106-TGC',
-      reference_genome: 'GRCh38',
-      components: [
-        { chrom: '1', start0: 1, end0: 100, motif: 'CAG' },
-        { chrom: '1', start0: 100, end0: 106, motif: 'TGC' },
-      ],
-    }
-    expect(resolveLongReadTrPrimaryRepeat(locus, { status: 'NONE' })).toEqual(
-      expect.objectContaining({
-        status: 'UNAVAILABLE',
-        reason_code: 'COMPOUND_PRIMARY_REPEAT_UNREVIEWED',
-        motif: null,
-      })
     )
   })
 })

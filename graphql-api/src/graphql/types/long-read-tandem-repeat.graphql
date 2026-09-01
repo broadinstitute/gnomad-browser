@@ -34,6 +34,7 @@ enum LongReadTrPrimaryRepeatReason {
 enum LongReadTrPrimaryRepeatSelectionBasis {
   EXACT_MAIN_CATALOG_COMPONENT
   LR_SOLE_COMPONENT
+  # Reserved for a future reviewed override registry. No current entries are available.
   REVIEWED_PRIMARY_REPEAT_REGISTRY
 }
 
@@ -44,9 +45,12 @@ type LongReadTrPrimaryRepeat {
   component_index: Int
   component: LongReadTrLocusComponent
   selection_basis: LongReadTrPrimaryRepeatSelectionBasis
+  # Optional source-backed role; no coding role is inferred from motif or gene identity.
   biological_role: String
   catalog_id: String
+  # Present only for exact catalog authorization; null for sole-component and registry bases.
   catalog_digest: String
+  # Present only for a future reviewed registry authorization; null for all current identities.
   registry_digest: String
 }
 

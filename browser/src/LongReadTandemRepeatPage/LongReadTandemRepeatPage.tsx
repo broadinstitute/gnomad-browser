@@ -169,6 +169,18 @@ const primaryRepeatBasisLabel = (basis: LongReadTrLocus['primary_repeat']['selec
   return 'reviewed registry / LR'
 }
 
+const primaryRepeatAuthorizationLabel = (
+  basis: LongReadTrLocus['primary_repeat']['selection_basis']
+) => {
+  if (basis === 'EXACT_MAIN_CATALOG_COMPONENT') {
+    return 'Exact short-read catalog main region and stored motif; no override registry used'
+  }
+  if (basis === 'LR_SOLE_COMPONENT') {
+    return 'Sole ordered LR source component; no catalog or registry digest required'
+  }
+  return 'Future reviewed primary-repeat registry entry'
+}
+
 const CohortSelector = ({
   cohort,
   onCohortChange,
@@ -588,16 +600,22 @@ const LongReadTandemRepeatPage = ({
           <AttributeListItem label="Release / processing run">
             {locus.source_release} / <code>{locus.source_run_id}</code>
           </AttributeListItem>
+          {locus.primary_repeat.status === 'AVAILABLE' && (
+            <AttributeListItem label="Primary-repeat authorization">
+              {primaryRepeatAuthorizationLabel(locus.primary_repeat.selection_basis)}
+            </AttributeListItem>
+          )}
           {locus.primary_repeat.catalog_digest && (
-            <AttributeListItem label="Primary-repeat catalog digest">
+            <AttributeListItem label="Exact short-read catalog digest">
               <code>{locus.primary_repeat.catalog_digest}</code>
             </AttributeListItem>
           )}
-          {locus.primary_repeat.registry_digest && (
-            <AttributeListItem label="Primary-repeat registry digest">
-              <code>{locus.primary_repeat.registry_digest}</code>
-            </AttributeListItem>
-          )}
+          {locus.primary_repeat.selection_basis === 'REVIEWED_PRIMARY_REPEAT_REGISTRY' &&
+            locus.primary_repeat.registry_digest && (
+              <AttributeListItem label="Reviewed primary-repeat registry digest">
+                <code>{locus.primary_repeat.registry_digest}</code>
+              </AttributeListItem>
+            )}
         </AttributeList>
       </SourceRepresentationDetails>
     </>

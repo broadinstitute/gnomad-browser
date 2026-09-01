@@ -46,6 +46,13 @@ const resolveLongReadTandemRepeatLocus = async (_obj: any, args: any, _ctx: any)
 const shortReadContext = (locus: any, ctx: any) =>
   resolveLongReadTrShortReadContext(locus, ctx.esClient, getY1SourceSnapshot)
 
+const primaryRepeat = async (locus: any, ctx: any) => {
+  // The validated short-read context is the current catalog authority. No override registry is
+  // loaded or passed by the resolver; the registry basis remains unavailable by default.
+  const context = await shortReadContext(locus, ctx)
+  return resolveLongReadTrPrimaryRepeat(locus, context)
+}
+
 export default {
   Query: {
     long_read_tandem_repeat_locus: resolveLongReadTandemRepeatLocus,
@@ -55,8 +62,7 @@ export default {
       resolveLongReadTrShortReadDistributions(args, ctx.esClient, getY1SourceSnapshot),
   },
   LongReadTandemRepeatLocus: {
-    primary_repeat: async (locus: any, _args: any, ctx: any) =>
-      resolveLongReadTrPrimaryRepeat(locus, await shortReadContext(locus, ctx)),
+    primary_repeat: (locus: any, _args: any, ctx: any) => primaryRepeat(locus, ctx),
     short_read_context: (locus: any, _args: any, ctx: any) => shortReadContext(locus, ctx),
     short_read_matches: (locus: any, _args: any, ctx: any) =>
       legacyMatchesFromContext(shortReadContext(locus, ctx)),

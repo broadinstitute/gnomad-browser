@@ -1,6 +1,4 @@
 import { createHash } from 'node:crypto'
-import { readFileSync } from 'node:fs'
-import path from 'node:path'
 
 export type PrimaryRepeatSelectionBasis =
   | 'EXACT_MAIN_CATALOG_COMPONENT'
@@ -28,18 +26,15 @@ type RegistryEntry = {
   ordered_components: Component[]
   component_index: number
   motif: string
-  selection_basis: PrimaryRepeatSelectionBasis
+  selection_basis: 'REVIEWED_PRIMARY_REPEAT_REGISTRY'
   biological_role: string | null
   approval_state: string
-  approval_receipt: string | null
 }
 export type PrimaryRepeatRegistry = {
   schema_version: number
   contract: string
   reference_genome: string
   approval_state: string
-  approval_receipt: string
-  catalog_digest: string
   entries: RegistryEntry[]
   content_sha256: string
 }
@@ -62,9 +57,6 @@ export type PrimaryRepeatIdentity = {
   catalog_digest: string | null
   registry_digest: string | null
 }
-
-const registryPath = path.join(__dirname, '../../config/long-read-tr-primary-repeat-registry.json')
-const registry = JSON.parse(readFileSync(registryPath, 'utf8')) as PrimaryRepeatRegistry
 
 const canonicalJson = (value: any): string => {
   if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`
@@ -94,13 +86,21 @@ export const primaryRepeatRegistryState = (
     value.contract === 'GNOMAD_LR_PRIMARY_REPEAT_IDENTITY_V1' &&
     value.reference_genome === 'GRCh38' &&
     value.approval_state === 'REVIEWED' &&
-    Boolean(value.approval_receipt) &&
-    value.entries.every(
-      (entry) => entry.approval_state === 'REVIEWED' && Boolean(entry.approval_receipt)
-    ),
+    value.entries.length > 0 &&
+    value.entries.every((entry) => entry.approval_state === 'REVIEWED'),
 })
 
-const loadedRegistryState = primaryRepeatRegistryState(registry)
+// No reviewed override registry currently exists. Keep the future registry basis wired to an
+// explicit unavailable state so a compound identity can never become available by source order.
+const unavailableRegistryState = primaryRepeatRegistryState({
+  schema_version: 1,
+  contract: 'GNOMAD_LR_PRIMARY_REPEAT_IDENTITY_V1',
+  reference_genome: 'GRCh38',
+  approval_state: 'UNAVAILABLE',
+  entries: [],
+  content_sha256: '',
+})
+
 const normalizedChrom = (value: unknown) => String(value).replace(/^chr/i, '').toUpperCase()
 const exactComponent = (left: Component | null | undefined, right: Component | null | undefined) =>
   Boolean(
@@ -159,89 +159,109 @@ const available = ({
   registry_digest: registryDigest,
 })
 
+const exactCatalogBiologicalRole = (context: any) => {
+  const classifications = context?.matched_reference_repeat_unit_classifications
+  if (
+    Array.isArray(classifications) &&
+    classifications.length === 1 &&
+    String(classifications[0]).toLowerCase() === 'benign'
+  ) {
+    return 'benign reference motif'
+  }
+  return null
+}
+
+const resolveExactCatalogComponent = (locus: any, context: any): PrimaryRepeatIdentity => {
+  const record = context.catalog_record
+  if (!record) return unavailable('IDENTITY_CONTEXT_UNAVAILABLE')
+  if (!/^[0-9a-f]{64}$/.test(context.catalog_digest || '')) {
+    return unavailable('CATALOG_DIGEST_MISMATCH')
+  }
+  if (record.main_reference_region?.reference_genome !== 'GRCh38') {
+    return unavailable('WRONG_ASSEMBLY')
+  }
+  if (!exactUppercaseMotif(record.reference_repeat_unit)) {
+    return unavailable('INVALID_STORED_MOTIF')
+  }
+
+  const regionIndices = locus.components.flatMap((component: Component, index: number) =>
+    normalizedChrom(record.main_reference_region?.chrom) === normalizedChrom(component.chrom) &&
+    Number(record.main_reference_region?.start) === component.start0 &&
+    Number(record.main_reference_region?.stop) === component.end0
+      ? [index]
+      : []
+  )
+  if (!regionIndices.length) return unavailable('MAIN_REGION_NOT_EXACT_COMPONENT')
+  if (regionIndices.length !== 1) return unavailable('NON_BIJECTIVE_COMPONENT')
+
+  const componentIndex = regionIndices[0]
+  const component = locus.components[componentIndex]
+  if (record.reference_repeat_unit !== component.motif) {
+    return unavailable('STORED_MOTIF_NOT_EXACT_COMPONENT')
+  }
+  if (
+    context.matched_component_index !== componentIndex ||
+    !exactComponent(context.matched_component, component)
+  ) {
+    return unavailable('NON_BIJECTIVE_COMPONENT')
+  }
+
+  return available({
+    component,
+    componentIndex,
+    basis: 'EXACT_MAIN_CATALOG_COMPONENT',
+    role: exactCatalogBiologicalRole(context),
+    catalogId: record.id,
+    catalogDigest: context.catalog_digest,
+    registryDigest: null,
+  })
+}
+
 const matchingRegistryEntries = (state: PrimaryRepeatRegistryState, locus: any) =>
   state.registry.entries.filter((entry) => entry.canonical_locus_id === locus.id)
 
-const validateRegistryForLocus = (state: PrimaryRepeatRegistryState, locus: any) => {
+const resolveFutureRegistryComponent = (
+  locus: any,
+  state: PrimaryRepeatRegistryState
+): PrimaryRepeatIdentity => {
+  const entries = matchingRegistryEntries(state, locus)
+  if (!entries.length) return unavailable('COMPOUND_PRIMARY_REPEAT_UNREVIEWED')
   if (!state.digest_valid) return unavailable('REGISTRY_DIGEST_MISMATCH')
   if (!state.reviewed) return unavailable('REGISTRY_NOT_REVIEWED')
-  const entries = matchingRegistryEntries(state, locus)
-  if (entries.length > 1) return unavailable('REGISTRY_IDENTITY_MISMATCH')
+  if (entries.length !== 1) return unavailable('REGISTRY_IDENTITY_MISMATCH')
+
+  const entry = entries[0]
   if (
-    entries.length === 1 &&
-    (!exactOrderedComponents(entries[0].ordered_components, locus.components) ||
-      !Number.isInteger(entries[0].component_index) ||
-      entries[0].component_index < 0 ||
-      entries[0].component_index >= locus.components.length ||
-      entries[0].motif !== locus.components[entries[0].component_index].motif)
+    entry.selection_basis !== 'REVIEWED_PRIMARY_REPEAT_REGISTRY' ||
+    !exactOrderedComponents(entry.ordered_components, locus.components) ||
+    !Number.isInteger(entry.component_index) ||
+    entry.component_index < 0 ||
+    entry.component_index >= locus.components.length ||
+    entry.motif !== locus.components[entry.component_index].motif
   ) {
     return unavailable('REGISTRY_IDENTITY_MISMATCH')
   }
-  return null
+
+  const component = locus.components[entry.component_index]
+  if (!exactUppercaseMotif(component.motif)) return unavailable('INVALID_STORED_MOTIF')
+  return available({
+    component,
+    componentIndex: entry.component_index,
+    basis: 'REVIEWED_PRIMARY_REPEAT_REGISTRY',
+    role: entry.biological_role,
+    catalogId: entry.catalog_id,
+    catalogDigest: null,
+    registryDigest: state.registry.content_sha256,
+  })
 }
 
 export const resolveLongReadTrPrimaryRepeat = (
   locus: any,
   context: any,
-  state: PrimaryRepeatRegistryState = loadedRegistryState
+  state: PrimaryRepeatRegistryState = unavailableRegistryState
 ): PrimaryRepeatIdentity => {
   if (locus.reference_genome !== 'GRCh38') return unavailable('WRONG_ASSEMBLY')
-  const registryError = validateRegistryForLocus(state, locus)
-  if (registryError) return registryError
-
-  if (context?.status === 'EXACT_UNIQUE') {
-    const record = context.catalog_record
-    if (!record) return unavailable('IDENTITY_CONTEXT_UNAVAILABLE')
-    if (context.catalog_digest !== state.registry.catalog_digest) {
-      return unavailable('CATALOG_DIGEST_MISMATCH')
-    }
-    if (record.main_reference_region?.reference_genome !== 'GRCh38') {
-      return unavailable('WRONG_ASSEMBLY')
-    }
-    if (!exactUppercaseMotif(record.reference_repeat_unit)) {
-      return unavailable('INVALID_STORED_MOTIF')
-    }
-    const regionIndices = locus.components.flatMap((component: Component, index: number) =>
-      normalizedChrom(record.main_reference_region?.chrom) === normalizedChrom(component.chrom) &&
-      Number(record.main_reference_region?.start) === component.start0 &&
-      Number(record.main_reference_region?.stop) === component.end0
-        ? [index]
-        : []
-    )
-    if (!regionIndices.length) return unavailable('MAIN_REGION_NOT_EXACT_COMPONENT')
-    if (regionIndices.length !== 1) return unavailable('NON_BIJECTIVE_COMPONENT')
-    const componentIndex = regionIndices[0]
-    const component = locus.components[componentIndex]
-    if (record.reference_repeat_unit !== component.motif) {
-      return unavailable('STORED_MOTIF_NOT_EXACT_COMPONENT')
-    }
-    if (
-      context.matched_component_index !== componentIndex ||
-      !exactComponent(context.matched_component, component)
-    ) {
-      return unavailable('NON_BIJECTIVE_COMPONENT')
-    }
-
-    const matchingEntry = matchingRegistryEntries(state, locus)[0] || null
-    if (
-      matchingEntry &&
-      (matchingEntry.selection_basis !== 'EXACT_MAIN_CATALOG_COMPONENT' ||
-        matchingEntry.catalog_id !== record.id ||
-        matchingEntry.component_index !== componentIndex ||
-        matchingEntry.motif !== component.motif)
-    ) {
-      return unavailable('REGISTRY_IDENTITY_MISMATCH')
-    }
-    return available({
-      component,
-      componentIndex,
-      basis: 'EXACT_MAIN_CATALOG_COMPONENT',
-      role: matchingEntry?.biological_role || null,
-      catalogId: record.id,
-      catalogDigest: context.catalog_digest,
-      registryDigest: matchingEntry ? state.registry.content_sha256 : null,
-    })
-  }
+  if (context?.status === 'EXACT_UNIQUE') return resolveExactCatalogComponent(locus, context)
 
   // An ambiguous, unavailable, or stale known-locus context is not anonymous and must not
   // silently fall back to source order. Only an explicit NONE result admits the anonymous path.
@@ -261,21 +281,5 @@ export const resolveLongReadTrPrimaryRepeat = (
     })
   }
 
-  const matchingEntry = matchingRegistryEntries(state, locus)[0] || null
-  if (!matchingEntry || matchingEntry.selection_basis !== 'REVIEWED_PRIMARY_REPEAT_REGISTRY') {
-    return unavailable('COMPOUND_PRIMARY_REPEAT_UNREVIEWED')
-  }
-  const component = locus.components[matchingEntry.component_index]
-  if (!exactUppercaseMotif(component.motif)) return unavailable('INVALID_STORED_MOTIF')
-  return available({
-    component,
-    componentIndex: matchingEntry.component_index,
-    basis: 'REVIEWED_PRIMARY_REPEAT_REGISTRY',
-    role: matchingEntry.biological_role,
-    catalogId: matchingEntry.catalog_id,
-    catalogDigest: null,
-    registryDigest: state.registry.content_sha256,
-  })
+  return resolveFutureRegistryComponent(locus, state)
 }
-
-export const longReadTrPrimaryRepeatRegistryForTests = registry

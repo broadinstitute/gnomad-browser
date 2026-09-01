@@ -196,10 +196,10 @@ const makeLocus = (count = 72) => {
       component_index: 0,
       component: components[0],
       selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT' as const,
-      biological_role: 'coding polyglutamine repeat',
+      biological_role: null,
       catalog_id: 'HTT',
       catalog_digest: 'catalog-test-digest',
-      registry_digest: 'registry-test-digest',
+      registry_digest: null,
     },
     components,
     source_records: [
@@ -506,11 +506,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('renders grounded source attributes and ordered overlapping components', () => {
     renderPage()
     expect(screen.getByRole('heading', { name: 'HTT CAG tandem repeat' })).not.toBeNull()
-    expect(screen.getByLabelText('Primary repeat CAG').textContent).toContain(
-      'exact catalog / LR component 1'
-    )
-    expect(screen.getByLabelText('Primary repeat CAG').textContent).toContain(
-      'coding polyglutamine repeat'
+    expect(screen.getByLabelText('Primary repeat CAG').textContent).toBe(
+      'Primary repeat CAG · exact catalog / LR component 1'
     )
     expect(screen.getByText('chr4:3,074,877–3,075,040 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
@@ -571,7 +568,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
         ...atxn1.primary_repeat,
         motif: 'TGC',
         component: atxn1Component,
-        biological_role: 'exact stored orientation',
+        biological_role: null,
         catalog_id: 'ATXN1',
       },
       short_read_context: {
@@ -594,8 +591,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     const rendered = renderPage({ locus: atxn1, selectedAllele: undefined })
     expect(screen.getByRole('heading', { name: 'ATXN1 TGC tandem repeat' })).not.toBeNull()
-    expect(screen.getByLabelText('Primary repeat TGC').textContent).toContain(
-      'exact stored orientation'
+    expect(screen.getByLabelText('Primary repeat TGC').textContent).toBe(
+      'Primary repeat TGC · exact catalog / LR component 1'
     )
     expect(screen.queryByRole('heading', { name: /ATXN1 CAG/ })).toBeNull()
 
@@ -1202,8 +1199,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
       within(provenance as HTMLElement).getByText('run-hgsvc', { selector: 'code' })
     ).not.toBeNull()
     expect(
-      within(provenance as HTMLElement).getByText('registry-test-digest', { selector: 'code' })
+      within(provenance as HTMLElement).getByText('catalog-test-digest', { selector: 'code' })
     ).not.toBeNull()
+    expect(
+      within(provenance as HTMLElement).getByText(
+        'Exact short-read catalog main region and stored motif; no override registry used'
+      )
+    ).not.toBeNull()
+    expect(within(provenance as HTMLElement).queryByText(/registry digest/i)).toBeNull()
   })
 
   test('renders API-driven unavailable states without an empty plot', () => {
