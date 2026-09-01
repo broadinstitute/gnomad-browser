@@ -19,8 +19,7 @@ const chromosomeOrder = (chrom: string) => {
 export const isExact = (result: LongReadTrReferenceCohortResult) =>
   result.status === 'EXACT_UNIQUE' && result.candidates.length === 1
 
-export const isMultiple = (result: LongReadTrReferenceCohortResult) =>
-  result.status === 'MULTIPLE' || result.candidates.length > 1
+export const isMultiple = (result: LongReadTrReferenceCohortResult) => result.status === 'AMBIGUOUS'
 
 export const isUnavailableOrAmbiguous = (result: LongReadTrReferenceCohortResult) =>
   result.status.includes('UNAVAILABLE') || result.status.includes('AMBIGUOUS')
@@ -31,9 +30,13 @@ const matchesStatus = (row: LongReadTrReferenceRow, match: ReferenceFilters['mat
   if (match === 'all') return true
   if (match === 'either') return hgsvcExact || aouExact
   if (match === 'both') return hgsvcExact && aouExact
-  if (match === 'hgsvc_hprc_only') return hgsvcExact && row.aou.status === 'NONE'
-  if (match === 'aou_only') return aouExact && row.hgsvc_hprc.status === 'NONE'
-  if (match === 'none') return row.hgsvc_hprc.status === 'NONE' && row.aou.status === 'NONE'
+  if (match === 'hgsvc_hprc_only') return hgsvcExact && !aouExact
+  if (match === 'aou_only') return aouExact && !hgsvcExact
+  const isDurableNonmatch = (result: LongReadTrReferenceCohortResult) =>
+    ['COORDINATE_MISMATCH', 'ORIENTATION_DIAGNOSTIC', 'MOTIF_MISMATCH', 'SOURCE_ABSENT'].includes(
+      result.status
+    )
+  if (match === 'none') return isDurableNonmatch(row.hgsvc_hprc) && isDurableNonmatch(row.aou)
   if (match === 'multiple') return isMultiple(row.hgsvc_hprc) || isMultiple(row.aou)
   return isUnavailableOrAmbiguous(row.hgsvc_hprc) || isUnavailableOrAmbiguous(row.aou)
 }
@@ -54,6 +57,8 @@ const searchableText = (row: LongReadTrReferenceRow) =>
     ]),
     ...row.hgsvc_hprc.candidates.map((candidate) => candidate.canonical_id),
     ...row.aou.candidates.map((candidate) => candidate.canonical_id),
+    ...row.hgsvc_hprc.diagnostic_candidates.map((candidate) => candidate.canonical_id),
+    ...row.aou.diagnostic_candidates.map((candidate) => candidate.canonical_id),
   ]
     .filter((value) => value !== null && value !== undefined)
     .join(' ')
@@ -62,9 +67,16 @@ const searchableText = (row: LongReadTrReferenceRow) =>
 const statusRank = (result: LongReadTrReferenceCohortResult) => {
   if (isExact(result)) return 0
   if (isMultiple(result)) return 1
-  if (result.status === 'NONE') return 2
-  if (result.status.includes('AMBIGUOUS')) return 3
-  return 4
+  const rank: Record<LongReadTrReferenceCohortResult['status'], number> = {
+    EXACT_UNIQUE: 0,
+    AMBIGUOUS: 1,
+    COORDINATE_MISMATCH: 2,
+    ORIENTATION_DIAGNOSTIC: 3,
+    MOTIF_MISMATCH: 4,
+    SOURCE_ABSENT: 5,
+    UNAVAILABLE: 6,
+  }
+  return rank[result.status]
 }
 
 const compareRows = (

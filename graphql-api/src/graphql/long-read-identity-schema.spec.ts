@@ -114,7 +114,14 @@ const longReadTrReferenceQuery = `
       page_info { has_next_page end_cursor }
       provenance {
         dataset source compact_sha256 row_count catalog_available catalog_unavailable_reason
-        reference_genome coordinate_system motif_identity
+        reference_genome coordinate_system motif_identity snapshot_contract_id
+        snapshot_contract_label snapshot_contract_scope snapshot_approval_state
+        current_trexplorer_admitted admitted_component_index_complete
+        admitted_component_index_database admitted_component_index_release
+        admitted_component_index_source_count admitted_component_index_source_record_count
+        admitted_component_index_canonical_locus_count admitted_component_index_ordered_component_count
+        admitted_component_index_inventory_sha256 diagnostic_max_candidates_per_status
+        diagnostic_max_source_records_per_candidate
       }
       nodes {
         id gene_symbol reference_region { reference_genome chrom start stop }
@@ -124,9 +131,27 @@ const longReadTrReferenceQuery = `
           reference_repeat_unit associated_diseases { name omim_id }
         }
         hgsvc_hprc {
-          status reason_code source_database source_run_id canonical_ids candidates { canonical_id }
+          status reason_code proof_text source_database source_run_id canonical_ids
+          candidates {
+            canonical_id matched_component_index matched_component { chrom start0 end0 motif }
+            matched_reference_region_index source_record_count source_record_membership_sha256
+          }
+          diagnostic_candidates {
+            canonical_id ordered_component_index ordered_component { chrom start0 end0 motif }
+            motif_relation source_record_count source_record_membership_sha256
+            source_records { cohort chrom run_id source_record_id position }
+            source_records_truncated
+          }
+          diagnostic_candidate_identity_count diagnostic_candidates_truncated
+          diagnostic_candidate_identity_sha256
         }
-        aou { status reason_code source_database source_run_id canonical_ids candidates { canonical_id } }
+        aou {
+          status reason_code proof_text source_database source_run_id canonical_ids
+          candidates { canonical_id source_record_count source_record_membership_sha256 }
+          diagnostic_candidates { canonical_id motif_relation }
+          diagnostic_candidate_identity_count diagnostic_candidates_truncated
+          diagnostic_candidate_identity_sha256
+        }
       }
     }
   }

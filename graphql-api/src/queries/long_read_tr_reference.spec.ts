@@ -56,9 +56,8 @@ describe('bounded long-read TR reference crosswalk', () => {
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, getSource)
     expect(result.total_count).toBe(longReadTrReferenceArtifactForTests.catalog_contract.row_count)
     for (const cohort of ['hgsvc_hprc', 'aou'] as const) {
-      const expected = longReadTrReferenceArtifactForTests.catalog_contract.expected_status_counts[
-        cohort
-      ]
+      const expected =
+        longReadTrReferenceArtifactForTests.catalog_contract.expected_status_counts[cohort]
       expect(
         Object.fromEntries(
           Object.keys(expected).map((status) => [
@@ -77,10 +76,88 @@ describe('bounded long-read TR reference crosswalk', () => {
     expect(
       (result.nodes.find((node: any) => node.id === 'ATXN1') as any).aou.canonical_ids
     ).toEqual(['6-16327633-16327723-TGC'])
+    for (const node of result.nodes as any[]) {
+      for (const cohort of ['hgsvc_hprc', 'aou'] as const) {
+        const cell = node[cohort]
+        expect(cell.proof_text).toEqual(expect.any(String))
+        expect(cell.diagnostic_candidates.length).toBeLessThanOrEqual(
+          result.provenance.diagnostic_max_candidates_per_status
+        )
+        expect(cell.diagnostic_candidate_identity_count).toBeGreaterThanOrEqual(
+          cell.diagnostic_candidates.length
+        )
+        expect(cell.diagnostic_candidate_identity_sha256).toMatch(/^[0-9a-f]{64}$/)
+        if (cell.status === 'EXACT_UNIQUE') {
+          expect(cell.candidates).toHaveLength(1)
+          expect(cell.diagnostic_candidates).toEqual([])
+        } else {
+          expect(cell.candidates).toEqual([])
+        }
+        for (const candidate of cell.diagnostic_candidates) {
+          expect(candidate.source_records.length).toBeLessThanOrEqual(
+            result.provenance.diagnostic_max_source_records_per_candidate
+          )
+          expect(candidate.source_records.length).toBeLessThanOrEqual(candidate.source_record_count)
+        }
+      }
+    }
+    expect(result.provenance).toEqual(
+      expect.objectContaining({
+        snapshot_contract_id: 'gnomad-short-tr-snapshot-2026-08-24',
+        current_trexplorer_admitted: false,
+        admitted_component_index_complete: true,
+        admitted_component_index_source_count: 48,
+      })
+    )
     expect(fetchAll).toHaveBeenCalledTimes(1)
     expect(fetchById).not.toHaveBeenCalled()
     // One source-snapshot lookup per cohort/chromosome, never per row or candidate.
     expect(getSource.mock.calls.length).toBeLessThanOrEqual(48)
+  })
+
+  test('keeps AR compound diagnostics separate from exact ARX_1 and ARX_2 authorization', async () => {
+    const result = await buildLongReadTrReferenceConnection({ first: 100 }, {}, sourceFor)
+    const byId = (id: string) => result.nodes.find((node: any) => node.id === id) as any
+    for (const cohort of ['hgsvc_hprc', 'aou'] as const) {
+      expect(byId('AR')[cohort]).toEqual(
+        expect.objectContaining({
+          status: 'COORDINATE_MISMATCH',
+          reason_code: 'OVERLAPPING_COMPONENT_WITH_DIFFERENT_BOUNDS',
+          candidates: [],
+          diagnostic_candidate_identity_count: 1,
+        })
+      )
+      expect(byId('AR')[cohort].diagnostic_candidates[0]).toEqual(
+        expect.objectContaining({
+          canonical_id: 'X-67545306-67545318-TGC+X-67545400-67545419-GCA',
+          ordered_component_index: 0,
+          motif_relation: 'REVERSE_COMPLEMENT_ROTATION',
+        })
+      )
+      expect(byId('ARX_1')[cohort].candidates[0].canonical_id).toBe('X-25013649-25013697-NGC')
+      expect(byId('ARX_2')[cohort].candidates[0].canonical_id).toBe('X-25013529-25013565-NGC')
+      expect(byId('ARX_1')[cohort].diagnostic_candidates).toEqual([])
+      expect(byId('ARX_2')[cohort].diagnostic_candidates).toEqual([])
+    }
+  })
+
+  test('exposes orientation diagnostics without converting rotation or reverse complement to exact', async () => {
+    const result = await buildLongReadTrReferenceConnection({ first: 100 }, {}, sourceFor)
+    const diagnosticCells = result.nodes.flatMap((node: any) =>
+      ['hgsvc_hprc', 'aou'].map((cohort) => ({ id: node.id, cell: node[cohort] }))
+    )
+    const orientation = diagnosticCells.filter(
+      ({ cell }: any) => cell.status === 'ORIENTATION_DIAGNOSTIC'
+    )
+    expect(orientation).toHaveLength(6)
+    expect(orientation.every(({ cell }: any) => cell.candidates.length === 0)).toBe(true)
+    expect(
+      new Set(
+        orientation.flatMap(({ cell }: any) =>
+          cell.diagnostic_candidates.map((candidate: any) => candidate.motif_relation)
+        )
+      )
+    ).toEqual(new Set(['CYCLIC_ROTATION', 'REVERSE_COMPLEMENT_ROTATION']))
   })
 
   test('supports exact ATXN1/HTT search, filtering, stable paging, and cursor validation', async () => {
@@ -356,7 +433,11 @@ describe('bounded long-read TR reference crosswalk', () => {
     )
   })
 
-  test('fails the exact-reference outline closed when the authorized component tuple differs', async () => {
+  test.each([
+    ['shifted bounds', (component: any) => ({ ...component, start0: component.start0 + 1 })],
+    ['cyclic rotation', (component: any) => ({ ...component, motif: 'GCT' })],
+    ['reverse complement', (component: any) => ({ ...component, motif: 'GCA' })],
+  ])('fails the exact-reference outline closed for %s', async (_label, mutate) => {
     const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
       (row: any) => row.short.id === 'ATXN1'
     ) as any
@@ -364,8 +445,9 @@ describe('bounded long-read TR reference crosswalk', () => {
     const parsed = parseTrLocusId(candidate.canonical_id)!
     const locus = {
       id: candidate.canonical_id,
+      reference_genome: 'GRCh38',
       chrom: candidate.matched_component.chrom,
-      components: [{ ...parsed.components[0], motif: 'WRONG' }],
+      components: [mutate(parsed.components[0])],
       lr_cohort: 'hgsvc_hprc',
     }
     const context = await resolveLongReadTrShortReadContext(locus, {}, sourceFor)
@@ -379,6 +461,29 @@ describe('bounded long-read TR reference crosswalk', () => {
       })
     )
     expect(context.catalog_record).toBeUndefined()
+    expect(fetchById).not.toHaveBeenCalled()
+  })
+
+  test('rejects an explicit wrong assembly before exact authorization', async () => {
+    const context = await resolveLongReadTrShortReadContext(
+      {
+        id: '6-16327633-16327723-TGC',
+        reference_genome: 'GRCh37',
+        chrom: '6',
+        components: [{ chrom: '6', start0: 16327633, end0: 16327723, motif: 'TGC' }],
+        lr_cohort: 'hgsvc_hprc',
+      },
+      {},
+      sourceFor
+    )
+    expect(context).toEqual(
+      expect.objectContaining({
+        status: 'NONE',
+        reason_code: 'WRONG_ASSEMBLY',
+        exact_reference_component_outline_authorized: false,
+        candidates: [],
+      })
+    )
     expect(fetchById).not.toHaveBeenCalled()
   })
 

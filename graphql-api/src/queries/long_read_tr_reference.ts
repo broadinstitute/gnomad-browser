@@ -27,6 +27,25 @@ type Candidate = {
   matched_component_index: number
   matched_component: Component
   matched_reference_region_index: number
+  source_record_count: number
+  source_record_membership_sha256: string
+}
+type DiagnosticSourceRecord = {
+  cohort: 'hgsvc_hprc' | 'aou'
+  chrom: string
+  run_id: string
+  source_record_id: string
+  position: number
+}
+type DiagnosticCandidate = {
+  canonical_id: string
+  ordered_component_index: number
+  ordered_component: Component
+  motif_relation: string
+  source_record_count: number
+  source_record_membership_sha256: string
+  source_records: DiagnosticSourceRecord[]
+  source_records_truncated: boolean
 }
 type CohortResult = {
   status: ReferenceStatus
@@ -36,7 +55,7 @@ type CohortResult = {
   source_release: string
   source_run_id: string
   candidates: Candidate[]
-  diagnostic_candidates: any[]
+  diagnostic_candidates: DiagnosticCandidate[]
   diagnostic_candidate_identity_count: number
   diagnostic_candidates_truncated: boolean
   diagnostic_candidate_identity_sha256: string
@@ -200,8 +219,7 @@ export const compactCatalogSha256 = (rows: any[]) =>
     .update(JSON.stringify(normalizeShortCatalogRows(rows)))
     .digest('hex')
 
-const sha256Json = (value: any) =>
-  createHash('sha256').update(JSON.stringify(value)).digest('hex')
+const sha256Json = (value: any) => createHash('sha256').update(JSON.stringify(value)).digest('hex')
 const durableStatuses: ReferenceStatus[] = [
   'EXACT_UNIQUE',
   'AMBIGUOUS',
@@ -252,8 +270,7 @@ if (
   JSON.stringify(artifact.reconciliation?.status_counts) !== JSON.stringify(computedStatusCounts) ||
   artifact.reconciliation?.status_counts_sha256 !== sha256Json(computedStatusCounts) ||
   artifact.reconciliation?.catalog_rows !== artifact.rows.length ||
-  JSON.stringify(artifact.reconciliation?.exclusive_statuses) !==
-    JSON.stringify(durableStatuses) ||
+  JSON.stringify(artifact.reconciliation?.exclusive_statuses) !== JSON.stringify(durableStatuses) ||
   componentReceipt?.complete !== true ||
   componentReceipt?.source_count !== 48 ||
   !Array.isArray(componentReceipt?.sources) ||
@@ -293,8 +310,32 @@ if (
           (result.status === 'EXACT_UNIQUE' &&
             (result.candidates.length !== 1 || result.diagnostic_candidates.length !== 0)) ||
           (result.status !== 'EXACT_UNIQUE' && result.candidates.length !== 0) ||
-          result.diagnostic_candidates.length >
-            componentReceipt.limits.max_candidates_per_status
+          result.candidates.some(
+            (candidate) =>
+              !Number.isInteger(candidate.matched_component_index) ||
+              candidate.matched_component_index < 0 ||
+              !Number.isInteger(candidate.matched_reference_region_index) ||
+              candidate.matched_reference_region_index < 0 ||
+              !Number.isInteger(candidate.source_record_count) ||
+              candidate.source_record_count < 1 ||
+              !/^[0-9a-f]{64}$/.test(candidate.source_record_membership_sha256 || '')
+          ) ||
+          result.diagnostic_candidates.length > componentReceipt.limits.max_candidates_per_status ||
+          !Number.isInteger(result.diagnostic_candidate_identity_count) ||
+          result.diagnostic_candidate_identity_count < result.diagnostic_candidates.length ||
+          result.diagnostic_candidates_truncated !==
+            result.diagnostic_candidate_identity_count > result.diagnostic_candidates.length ||
+          result.diagnostic_candidates.some(
+            (candidate) =>
+              !Number.isInteger(candidate.ordered_component_index) ||
+              candidate.ordered_component_index < 0 ||
+              !Number.isInteger(candidate.source_record_count) ||
+              candidate.source_record_count < 1 ||
+              !/^[0-9a-f]{64}$/.test(candidate.source_record_membership_sha256 || '') ||
+              candidate.source_records.length >
+                componentReceipt.limits.max_source_records_per_candidate ||
+              candidate.source_records.length > candidate.source_record_count
+          )
         )
       })
   )
@@ -448,9 +489,7 @@ const matchesStatusFilter = (row: ArtifactRow, filter?: string | null) => {
   if (filter === 'NONE') return durableNonmatch(hgsvc) && durableNonmatch(aou)
   if (filter === 'MULTIPLE') return hgsvc === 'AMBIGUOUS' || aou === 'AMBIGUOUS'
   if (filter === 'UNAVAILABLE_OR_AMBIGUOUS')
-    return [hgsvc, aou].some(
-      (status) => status === 'UNAVAILABLE' || status === 'AMBIGUOUS'
-    )
+    return [hgsvc, aou].some((status) => status === 'UNAVAILABLE' || status === 'AMBIGUOUS')
   return false
 }
 
@@ -632,6 +671,22 @@ export const buildLongReadTrReferenceConnection = async (
       motif_identity: artifact.provenance.motif_identity,
       catalog_available: catalogState.available,
       catalog_unavailable_reason: catalogState.reason,
+      snapshot_contract_id: artifact.catalog_contract.contract_id,
+      snapshot_contract_label: artifact.catalog_contract.contract_label,
+      snapshot_contract_scope: artifact.catalog_contract.contract_scope,
+      snapshot_approval_state: artifact.catalog_contract.approval.state,
+      current_trexplorer_admitted: artifact.catalog_contract.current_trexplorer.admitted,
+      admitted_component_index_complete: componentReceipt.complete,
+      admitted_component_index_database: componentReceipt.database,
+      admitted_component_index_release: componentReceipt.release,
+      admitted_component_index_source_count: componentReceipt.source_count,
+      admitted_component_index_source_record_count: componentReceipt.source_record_count,
+      admitted_component_index_canonical_locus_count: componentReceipt.canonical_locus_count,
+      admitted_component_index_ordered_component_count: componentReceipt.ordered_component_count,
+      admitted_component_index_inventory_sha256: componentReceipt.inventory_sha256,
+      diagnostic_max_candidates_per_status: componentReceipt.limits.max_candidates_per_status,
+      diagnostic_max_source_records_per_candidate:
+        componentReceipt.limits.max_source_records_per_candidate,
     },
   }
 }
@@ -659,6 +714,9 @@ export const resolveLongReadTrShortReadContext = (
     }
     if (!catalogState.available) {
       return { ...base, status: 'CATALOG_UNAVAILABLE', reason_code: catalogState.reason }
+    }
+    if (locus.reference_genome && locus.reference_genome !== 'GRCh38') {
+      return { ...base, status: 'NONE', reason_code: 'WRONG_ASSEMBLY' }
     }
 
     const cohort = locus.lr_cohort as 'hgsvc_hprc' | 'aou'

@@ -3,17 +3,88 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { LongReadTandemRepeatReferencePage, query } from './LongReadTandemRepeatReferencePage'
-import { LongReadTrReferenceRow } from './types'
+import {
+  LongReadTrReferenceProvenance,
+  LongReadTrReferenceRow,
+  LongReadTrReferenceStatus,
+} from './types'
 
-const result = (status: any, canonicalIds?: string[], reason_code?: string) => ({
-  status,
-  candidates: (canonicalIds || []).map((canonical_id) => ({ canonical_id })),
-  reason_code,
-})
+const EMPTY_SHA = '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945'
+const arCompound = 'X-67545306-67545318-TGC+X-67545400-67545419-GCA'
+const arx1 = 'X-25013649-25013697-NGC'
+const arx2 = 'X-25013529-25013565-NGC'
 
-const exactAtxn1 = '6-16327633-16327723-TGC'
-const compoundHtt =
-  '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
+const componentFromId = (canonicalId: string) => {
+  const [chrom, start0, end0, ...motif] = canonicalId.split('+')[0].split('-')
+  return { chrom, start0: Number(start0), end0: Number(end0), motif: motif.join('-') }
+}
+
+const result = (
+  status: LongReadTrReferenceStatus,
+  options: {
+    canonicalId?: string
+    reasonCode?: string
+    diagnosticId?: string
+    motifRelation?: string
+  } = {}
+): LongReadTrReferenceRow['hgsvc_hprc'] => {
+  const { canonicalId, reasonCode = null, diagnosticId, motifRelation = 'EXACT' } = options
+  const exactComponent = canonicalId ? componentFromId(canonicalId) : null
+  const diagnosticComponent = diagnosticId ? componentFromId(diagnosticId) : null
+  let proofText = 'One exact ordered component identity is present in the complete admitted index.'
+  if (status === 'SOURCE_ABSENT') {
+    proofText = 'No exact or overlapping component is present in the complete admitted index.'
+  } else if (diagnosticId) {
+    proofText = '1 diagnostic ordered component identity is present in the complete admitted index.'
+  }
+  return {
+    status,
+    reason_code: reasonCode,
+    proof_text: proofText,
+    source_database: 'gnomad_lr_y1_full_genome',
+    source_release: 'y1',
+    source_run_id: 'receipt-bound-run',
+    candidates:
+      canonicalId && exactComponent
+        ? [
+            {
+              canonical_id: canonicalId,
+              matched_component_index: 0,
+              matched_component: exactComponent,
+              matched_reference_region_index: 0,
+              source_record_count: 1,
+              source_record_membership_sha256: EMPTY_SHA,
+            },
+          ]
+        : [],
+    diagnostic_candidates:
+      diagnosticId && diagnosticComponent
+        ? [
+            {
+              canonical_id: diagnosticId,
+              ordered_component_index: 0,
+              ordered_component: diagnosticComponent,
+              motif_relation: motifRelation,
+              source_record_count: 1,
+              source_record_membership_sha256: EMPTY_SHA,
+              source_records: [
+                {
+                  cohort: 'hgsvc_hprc',
+                  chrom: `chr${diagnosticComponent.chrom}`,
+                  run_id: 'receipt-bound-run',
+                  source_record_id: 'diagnostic-source-record',
+                  position: diagnosticComponent.start0,
+                },
+              ],
+              source_records_truncated: false,
+            },
+          ]
+        : [],
+    diagnostic_candidate_identity_count: diagnosticId ? 1 : 0,
+    diagnostic_candidates_truncated: false,
+    diagnostic_candidate_identity_sha256: EMPTY_SHA,
+  }
+}
 
 const row = (
   id: string,
@@ -22,163 +93,197 @@ const row = (
   stop: number,
   motif: string,
   hgsvc_hprc: LongReadTrReferenceRow['hgsvc_hprc'],
-  aou: LongReadTrReferenceRow['aou'],
-  diseases: LongReadTrReferenceRow['short_record']['associated_diseases'] = []
+  aou: LongReadTrReferenceRow['aou'] = hgsvc_hprc
 ): LongReadTrReferenceRow => ({
   short_record: {
     id,
     gene: { symbol: id },
     main_reference_region: { reference_genome: 'GRCh38', chrom, start, stop },
     reference_repeat_unit: motif,
-    associated_diseases: diseases,
+    associated_diseases: [{ name: `${id} condition`, symbol: `${id}D`, omim_id: '123456' }],
   },
   hgsvc_hprc,
   aou,
 })
 
-const rows: LongReadTrReferenceRow[] = [
+const rows = [
   row(
-    'ATXN1',
-    '6',
-    16327633,
-    16327723,
-    'TGC',
-    result('EXACT_UNIQUE', [exactAtxn1]),
-    result('EXACT_UNIQUE', [exactAtxn1]),
-    [{ name: 'Spinocerebellar ataxia 1', symbol: 'SCA1', omim_id: '164400' }]
-  ),
-  row(
-    'HTT',
-    '4',
-    3074876,
-    3074933,
-    'CAG',
-    result('EXACT_UNIQUE', [compoundHtt]),
-    result('EXACT_UNIQUE', [compoundHtt]),
-    [{ name: 'Huntington disease', symbol: 'HD', omim_id: '143100' }]
-  ),
-  row(
-    'FMR1',
+    'AR',
     'X',
-    147911990,
-    147912053,
-    'CGG',
-    result('NONE', [], 'NO_EXACT_COMPONENT'),
-    result('NONE', [], 'OVERLAP_ONLY'),
-    [{ name: 'Fragile X syndrome', symbol: 'FXS', omim_id: '300624' }]
+    67545316,
+    67545385,
+    'GCA',
+    result('COORDINATE_MISMATCH', {
+      reasonCode: 'OVERLAPPING_COMPONENT_WITH_DIFFERENT_BOUNDS',
+      diagnosticId: arCompound,
+      motifRelation: 'REVERSE_COMPLEMENT_ROTATION',
+    })
+  ),
+  row('ARX_1', 'X', 25013649, 25013697, 'NGC', result('EXACT_UNIQUE', { canonicalId: arx1 })),
+  row('ARX_2', 'X', 25013529, 25013565, 'NGC', result('EXACT_UNIQUE', { canonicalId: arx2 })),
+  row(
+    'BEAN1',
+    '16',
+    66490398,
+    66490453,
+    'AAAAT',
+    result('ORIENTATION_DIAGNOSTIC', {
+      reasonCode: 'EQUAL_BOUNDS_ROTATION_OR_REVERSE_COMPLEMENT',
+      diagnosticId: '16-66490398-66490453-TAAAA',
+      motifRelation: 'CYCLIC_ROTATION',
+    })
   ),
   row(
-    'MULTI',
-    '1',
-    99,
-    120,
-    'AAA',
-    result('MULTIPLE', ['1-99-120-AAA', '1-90-130-A+1-99-120-AAA'], 'MULTIPLE_CONTAINING_LR_LOCI'),
-    result('AMBIGUOUS_COMPONENT', [], 'SHORT_RECORD_MATCHES_MULTIPLE_COMPONENTS')
-  ),
-  row(
-    'OFFLINE',
+    'ABSENT',
     '2',
-    299,
+    100,
+    120,
+    'CAG',
+    result('SOURCE_ABSENT', {
+      reasonCode: 'NO_EXACT_OR_OVERLAPPING_ADMITTED_COMPONENT',
+    })
+  ),
+  row(
+    'AMBIGUOUS',
+    '3',
+    200,
+    220,
+    'GAA',
+    result('AMBIGUOUS', { reasonCode: 'MULTIPLE_EXACT_ORDERED_COMPONENT_IDENTITIES' })
+  ),
+  row(
+    'STALE',
+    '4',
+    300,
     320,
-    'TTT',
-    result('UNAVAILABLE', [], 'STALE_SOURCE'),
-    result('AMBIGUOUS_CATALOG', [], 'DUPLICATE_CATALOG_EXACT_KEY')
+    'CGG',
+    result('UNAVAILABLE', { reasonCode: 'SOURCE_PROVENANCE_MISMATCH' })
   ),
 ]
+
+const provenance: LongReadTrReferenceProvenance = {
+  dataset: 'gnomad_r4',
+  source: 'Frozen gnomAD short-read tandem-repeat catalog snapshot',
+  endpoint: 'https://gnomad.broadinstitute.org/api',
+  queried_at: '2026-08-24',
+  row_count: 78,
+  compact_sha256: EMPTY_SHA,
+  hard_ceiling: 500,
+  reference_genome: 'GRCh38',
+  coordinate_system: '0-based half-open',
+  motif_identity: 'exact uppercase stored string',
+  catalog_available: true,
+  catalog_unavailable_reason: null,
+  snapshot_contract_id: 'gnomad-short-tr-snapshot-2026-08-24',
+  snapshot_contract_label:
+    'gnomAD short-read tandem-repeat catalog snapshot captured from the browser catalog on 2026-08-24',
+  snapshot_contract_scope:
+    'Frozen gnomAD short-read snapshot only; this is not a claim of all current disease-associated loci or current TRExplorer membership.',
+  snapshot_approval_state: 'PENDING_SCIENCE_OWNER',
+  current_trexplorer_admitted: false,
+  admitted_component_index_complete: true,
+  admitted_component_index_database: 'gnomad_lr_y1_full_genome',
+  admitted_component_index_release: 'y1',
+  admitted_component_index_source_count: 48,
+  admitted_component_index_source_record_count: 7046218,
+  admitted_component_index_canonical_locus_count: 7046218,
+  admitted_component_index_ordered_component_count: 7683258,
+  admitted_component_index_inventory_sha256: EMPTY_SHA,
+  diagnostic_max_candidates_per_status: 12,
+  diagnostic_max_source_records_per_candidate: 8,
+}
 
 const renderPage = (pageRows = rows) =>
   render(
     <MemoryRouter>
-      <LongReadTandemRepeatReferencePage rows={pageRows} />
+      <LongReadTandemRepeatReferencePage rows={pageRows} provenance={provenance} />
     </MemoryRouter>
   )
 
 describe('LongReadTandemRepeatReferencePage', () => {
-  test('uses one bounded reference query and refuses silent server truncation', () => {
+  test('requests every bounded proof, diagnostic, source, and snapshot provenance field once', () => {
     expect(query.match(/long_read_tandem_repeat_reference/g)).toHaveLength(1)
     expect(query).toContain('first: 100')
+    expect(query).toContain('proof_text')
+    expect(query).toContain('diagnostic_candidates {')
+    expect(query).toContain('source_records { cohort chrom run_id source_record_id position }')
+    expect(query).toContain('diagnostic_candidate_identity_sha256')
+    expect(query).toContain('snapshot_contract_scope')
+    expect(query).toContain('admitted_component_index_inventory_sha256')
     expect(query).toContain('page_info { has_next_page }')
   })
 
-  test('renders fixed short links, complete canonical LR links, coordinates, and all statuses', () => {
+  test('keeps AR compound diagnostics separate from exact ARX_1 and ARX_2 routes', () => {
     renderPage()
 
-    expect(
-      screen.getByRole('heading', { name: 'Short-read STR ↔ long-read locus reference' })
-    ).not.toBeNull()
-    expect(screen.getByText(/do not classify long-read alleles/)).not.toBeNull()
-    expect(screen.getByRole('status').textContent).toMatch(/^5 matching loci/)
-
-    const atxn1 = within(screen.getByRole('row', { name: /ATXN1/ }))
-    expect(atxn1.getByRole('link', { name: 'ATXN1' }).getAttribute('href')).toBe(
-      '/short-tandem-repeat/ATXN1?dataset=gnomad_r4'
+    const ar = within(screen.getByRole('row', { name: /^AR / }))
+    expect(ar.getAllByText('No exact component — coordinate/representation mismatch')).toHaveLength(
+      2
     )
-    expect(atxn1.getByText('chr6:16,327,634–16,327,723')).not.toBeNull()
-    const atxn1LocusLink = atxn1.getByRole('link', {
-      name: 'Open HGSVC/HPRC long-read locus 1',
+    expect(ar.queryByLabelText('HGSVC/HPRC candidate loci')).toBeNull()
+    expect(ar.queryByLabelText('All of Us candidate loci')).toBeNull()
+    const diagnosticLinks = ar.getAllByRole('link', { name: /diagnostic long-read locus/ })
+    expect(diagnosticLinks).toHaveLength(2)
+    expect(diagnosticLinks[0].textContent).toBe('Open diagnostic LR locus')
+    expect(diagnosticLinks[0].getAttribute('href')).toContain(
+      `/tandem-repeat/${arCompound}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
+    )
+    expect(
+      ar.getAllByText('Diagnostic only — not an exact or clinical/reference match')
+    ).toHaveLength(2)
+    expect(
+      ar.getAllByText(/Disease ranges and motif classifications are not transferred/)
+    ).toHaveLength(2)
+    ;(
+      [
+        ['ARX_1', arx1],
+        ['ARX_2', arx2],
+      ] as const
+    ).forEach(([id, canonicalId]) => {
+      const exact = within(screen.getByRole('row', { name: new RegExp(`^${id} `) }))
+      expect(exact.getAllByText('Exact admitted LR reference component')).toHaveLength(2)
+      expect(
+        exact.getAllByRole('link', { name: /Open .* long-read locus/ })[0].getAttribute('href')
+      ).toContain(`/tandem-repeat/${canonicalId}`)
+      expect(exact.queryByText(/Diagnostic only/)).toBeNull()
     })
-    expect(atxn1LocusLink.textContent).toBe('Open LR locus')
-    expect(atxn1LocusLink.getAttribute('title')).toBeNull()
-    expect(atxn1LocusLink.getAttribute('href')).toBe(
-      `/tandem-repeat/${exactAtxn1}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
-    )
-    expect(atxn1.getAllByText('chr6:16,327,633–16,327,723 · TGC')).toHaveLength(2)
-    expect(atxn1.getByText('(6, 16327633, 16327723, TGC)')).not.toBeNull()
+  })
 
-    const httRow = within(screen.getByRole('row', { name: /HTT/ }))
-    const httLinks = httRow.getAllByRole('link', { name: /Open .* long-read locus/ })
-    expect(httLinks).toHaveLength(2)
-    expect(httLinks[1].getAttribute('href')).toContain(`dataset=gnomad_r4_lr&lr_cohort=aou`)
-    expect(httRow.getAllByText('6-component locus')).toHaveLength(2)
+  test('distinguishes absence, orientation, ambiguity, and stale provenance with bounded proof', () => {
+    renderPage()
 
-    expect(screen.getAllByText('No exact match')).toHaveLength(2)
-    expect(screen.getByText('2 possible loci')).not.toBeNull()
-    expect(screen.getByText('Unavailable')).not.toBeNull()
-    expect(screen.getAllByText('Ambiguous')).toHaveLength(2)
+    expect(screen.getAllByText('No exact admitted LR reference component')).toHaveLength(2)
+    expect(screen.getAllByText('No exact component — orientation diagnostic')).toHaveLength(2)
+    expect(screen.getAllByText('Exact identity is ambiguous')).toHaveLength(2)
     expect(
-      screen.getByTestId('long-read-tr-reference-table-scroller').getAttribute('tabindex')
-    ).toBe('0')
+      screen.getAllByText('Exact identity unavailable — provenance not validated')
+    ).toHaveLength(2)
+    expect(screen.getAllByText('Absent from the complete admitted component index')).toHaveLength(2)
+    expect(screen.getAllByText('Reference provenance is stale')).toHaveLength(2)
+    expect(screen.getAllByText(/Bounded proof:/).length).toBeGreaterThan(0)
+
+    const stale = within(screen.getByRole('row', { name: /^STALE / }))
+    fireEvent.click(stale.getAllByText('Match details')[0])
+    expect(stale.getAllByText('SOURCE_PROVENANCE_MISMATCH')).toHaveLength(2)
+    expect(stale.getAllByText(/Receipt-bound source snapshot/)).toHaveLength(2)
   })
 
-  test('translates diagnostics while retaining machine codes in secondary details', () => {
-    renderPage([
-      row(
-        'DIAGNOSTIC1',
-        '3',
-        100,
-        120,
-        'CAG',
-        result('NONE', [], 'NO_EXACT_COMPONENT'),
-        result('NONE', [], 'OVERLAP_ONLY')
-      ),
-      row(
-        'DIAGNOSTIC2',
-        '4',
-        200,
-        220,
-        'GAA',
-        result('NONE', [], 'REGION_EQUAL_MOTIF_MISMATCH'),
-        result('UNAVAILABLE', [], 'FUTURE_SOURCE_STATE')
-      ),
-    ])
+  test('qualifies the frozen gnomAD snapshot and complete admitted-source receipt', () => {
+    renderPage()
+    fireEvent.click(screen.getByText('Catalog and admitted LR source provenance'))
 
-    expect(screen.getByText('No matching component')).not.toBeNull()
-    expect(screen.getByText('Overlapping locus only')).not.toBeNull()
-    expect(screen.getByText('Repeat unit differs')).not.toBeNull()
-    expect(screen.getByText('Future source state')).not.toBeNull()
-    expect(screen.queryByTitle('Reason code: REGION_EQUAL_MOTIF_MISMATCH')).toBeNull()
-
-    const mismatch = within(screen.getByRole('row', { name: /DIAGNOSTIC2/ }))
-    fireEvent.click(mismatch.getAllByText('Match details')[0])
-    expect(mismatch.getByText('REGION_EQUAL_MOTIF_MISMATCH')).not.toBeNull()
+    expect(screen.getByText(/This is a frozen gnomAD browser snapshot/)).not.toBeNull()
+    expect(screen.getByText(/not the current TRExplorer catalog/)).not.toBeNull()
+    expect(screen.getByText(/7,046,218 source records/)).not.toBeNull()
+    expect(screen.getByText(/7,683,258 ordered components/)).not.toBeNull()
+    expect(screen.getByText(/Diagnostics are bounded to 12 component identities/)).not.toBeNull()
   })
 
-  test('filters searchable provenance fields and distinct match categories, resetting the page', () => {
+  test('paginates and filters every durable nonmatch without selecting diagnostics as exact', () => {
     const pagedRows = Array.from({ length: 55 }, (_, index) => ({
-      ...rows[0],
+      ...rows[4],
       short_record: {
-        ...rows[0].short_record,
+        ...rows[4].short_record,
         id: `LOCUS${String(index + 1).padStart(2, '0')}`,
         gene: { symbol: `GENE${index + 1}` },
       },
@@ -188,41 +293,14 @@ describe('LongReadTandemRepeatReferencePage', () => {
     expect(screen.getAllByTestId('long-read-tr-reference-row')).toHaveLength(50)
     fireEvent.click(screen.getByRole('button', { name: 'Next' }))
     expect(screen.getByText('Page 2 of 2')).not.toBeNull()
-
     fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
       target: { value: 'GENE55' },
     })
     expect(screen.getByText('Page 1 of 1')).not.toBeNull()
     expect(screen.getByRole('status').textContent).toMatch(/^1 matching loci/)
-    expect(screen.getByRole('row', { name: /LOCUS55/ })).not.toBeNull()
 
-    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
-      target: { value: 'no such locus' },
-    })
-    expect(screen.getByText('No known STR loci match these filters.')).not.toBeNull()
-  })
-
-  test('supports chromosome, status, and natural genomic/motif sorts without selecting a candidate', () => {
-    renderPage()
-
-    fireEvent.change(screen.getByLabelText('Match status'), { target: { value: 'multiple' } })
+    fireEvent.change(screen.getByLabelText('Match status'), { target: { value: 'none' } })
     expect(screen.getAllByTestId('long-read-tr-reference-row')).toHaveLength(1)
-    expect(screen.getByRole('row', { name: /MULTI/ })).not.toBeNull()
-    expect(screen.getAllByLabelText('HGSVC/HPRC candidate loci')).toHaveLength(1)
-    expect(screen.getAllByLabelText('HGSVC/HPRC candidate loci')[0].children).toHaveLength(2)
-    expect(
-      within(screen.getByRole('row', { name: /MULTI/ })).getAllByRole('link', {
-        name: /Open HGSVC\/HPRC long-read locus/,
-      })
-    ).toHaveLength(2)
-
-    fireEvent.change(screen.getByLabelText('Match status'), {
-      target: { value: 'unavailable_ambiguous' },
-    })
-    expect(screen.getAllByTestId('long-read-tr-reference-row')).toHaveLength(2)
-
-    fireEvent.change(screen.getByLabelText('Chromosome'), { target: { value: '2' } })
-    expect(screen.getAllByTestId('long-read-tr-reference-row')).toHaveLength(1)
-    expect(screen.getByRole('row', { name: /OFFLINE/ })).not.toBeNull()
+    expect(screen.queryByRole('link', { name: /diagnostic long-read locus/ })).toBeNull()
   })
 })

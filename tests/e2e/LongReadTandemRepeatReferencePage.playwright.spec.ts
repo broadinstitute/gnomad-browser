@@ -7,11 +7,59 @@ const htt =
 const result = (status: string, ids: string[] = [], reason_code: string | null = null) => ({
   status,
   reason_code,
+  proof_text:
+    status === 'SOURCE_ABSENT'
+      ? 'No exact or overlapping component is present in the complete admitted index.'
+      : 'One exact ordered component identity is present in the complete admitted index.',
   source_database: 'gnomad_lr_y1_full_genome',
-  source_release: 'prototype',
+  source_release: 'y1',
   source_run_id: 'browser-routed-run',
-  candidates: ids.map((canonical_id) => ({ canonical_id })),
+  candidates: ids.map((canonical_id) => ({
+    canonical_id,
+    matched_component_index: 0,
+    matched_component: { chrom: canonical_id.split('-')[0], start0: 1, end0: 2, motif: 'A' },
+    matched_reference_region_index: 0,
+    source_record_count: 1,
+    source_record_membership_sha256:
+      '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945',
+  })),
+  diagnostic_candidates: [],
+  diagnostic_candidate_identity_count: 0,
+  diagnostic_candidates_truncated: false,
+  diagnostic_candidate_identity_sha256:
+    '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945',
 })
+
+const provenance = {
+  dataset: 'gnomad_r4',
+  source: 'Frozen gnomAD short-read tandem-repeat catalog snapshot',
+  endpoint: 'https://gnomad.broadinstitute.org/api',
+  queried_at: '2026-08-24',
+  row_count: 78,
+  compact_sha256: '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945',
+  hard_ceiling: 500,
+  reference_genome: 'GRCh38',
+  coordinate_system: '0-based half-open',
+  motif_identity: 'exact uppercase stored string',
+  catalog_available: true,
+  catalog_unavailable_reason: null,
+  snapshot_contract_id: 'gnomad-short-tr-snapshot-2026-08-24',
+  snapshot_contract_label: 'Frozen gnomAD short-read tandem-repeat catalog snapshot',
+  snapshot_contract_scope: 'Frozen gnomAD snapshot only; not current TRExplorer membership.',
+  snapshot_approval_state: 'PENDING_SCIENCE_OWNER',
+  current_trexplorer_admitted: false,
+  admitted_component_index_complete: true,
+  admitted_component_index_database: 'gnomad_lr_y1_full_genome',
+  admitted_component_index_release: 'y1',
+  admitted_component_index_source_count: 48,
+  admitted_component_index_source_record_count: 7046218,
+  admitted_component_index_canonical_locus_count: 7046218,
+  admitted_component_index_ordered_component_count: 7683258,
+  admitted_component_index_inventory_sha256:
+    '4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945',
+  diagnostic_max_candidates_per_status: 12,
+  diagnostic_max_source_records_per_candidate: 8,
+}
 
 const row = (
   id: string,
@@ -58,8 +106,8 @@ const nodes = [
     147911990,
     147912053,
     'CGG',
-    result('NONE', [], 'NO_EXACT_COMPONENT'),
-    result('NONE', [], 'OVERLAP_ONLY')
+    result('SOURCE_ABSENT', [], 'NO_EXACT_OR_OVERLAPPING_ADMITTED_COMPONENT'),
+    result('SOURCE_ABSENT', [], 'NO_EXACT_OR_OVERLAPPING_ADMITTED_COMPONENT')
   ),
   row(
     'MULTI',
@@ -67,8 +115,8 @@ const nodes = [
     99,
     120,
     'AAA',
-    result('MULTIPLE', ['1-99-120-AAA', '1-90-130-A+1-99-120-AAA'], 'MULTIPLE_CONTAINING_LR_LOCI'),
-    result('AMBIGUOUS_COMPONENT', [], 'SHORT_RECORD_MATCHES_MULTIPLE_COMPONENTS')
+    result('AMBIGUOUS', [], 'MULTIPLE_EXACT_ORDERED_COMPONENT_IDENTITIES'),
+    result('AMBIGUOUS', [], 'MULTIPLE_EXACT_ORDERED_COMPONENT_IDENTITIES')
   ),
   row(
     'OFFLINE',
@@ -77,7 +125,7 @@ const nodes = [
     320,
     'TTT',
     result('UNAVAILABLE', [], 'SOURCE_UNAVAILABLE'),
-    result('AMBIGUOUS_CATALOG', [], 'DUPLICATE_CATALOG_EXACT_KEY')
+    result('UNAVAILABLE', [], 'SOURCE_PROVENANCE_MISMATCH')
   ),
   ...Array.from({ length: 73 }, (_, index) =>
     row(
@@ -107,6 +155,7 @@ const installReferenceResponse = async (page: any) => {
           long_read_tandem_repeat_reference: {
             nodes,
             total_count: nodes.length,
+            provenance,
             page_info: { has_next_page: false, end_cursor: null },
           },
         },
@@ -143,10 +192,9 @@ test.describe('short-read STR to long-read reference index', () => {
       '/short-tandem-repeat/ATXN1?dataset=gnomad_r4'
     )
     const atxn1Locus = atxn1Row.getByRole('link', {
-      name: `Open HGSVC/HPRC LR locus: ${atxn1}`,
+      name: 'Open HGSVC/HPRC long-read locus 1',
     })
     await expect(atxn1Locus).toHaveText('Open LR locus')
-    await expect(atxn1Locus).toHaveAttribute('title', atxn1)
     await expect(atxn1Locus).toHaveAttribute(
       'href',
       `/tandem-repeat/${atxn1}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
@@ -161,7 +209,7 @@ test.describe('short-read STR to long-read reference index', () => {
     expect(requests).toHaveLength(1)
   })
 
-  test('distinguishes none, multiple, unavailable, and ambiguous without picking a candidate', async ({
+  test('distinguishes source absence, ambiguity, and unavailable provenance without selecting a candidate', async ({
     page,
   }) => {
     await installReferenceResponse(page)
@@ -169,33 +217,25 @@ test.describe('short-read STR to long-read reference index', () => {
 
     await page.getByLabel('Match status').selectOption('multiple')
     await expect(page.getByTestId('long-read-tr-reference-row')).toHaveCount(1)
-    const multiple = page.getByRole('row', { name: /MULTI/ })
-    await expect(multiple.getByText('2 possible loci')).toBeVisible()
-    await expect(
-      multiple.getByLabel('HGSVC/HPRC candidate loci').getByRole('link', {
-        name: /Open HGSVC\/HPRC LR locus:/,
-      })
-    ).toHaveCount(2)
-    await expect(multiple.getByText('Ambiguous')).toBeVisible()
-    await expect(multiple.getByText('Matches multiple components')).toBeVisible()
+    const ambiguous = page.getByRole('row', { name: /MULTI/ })
+    await expect(ambiguous.getByText('Exact identity is ambiguous')).toHaveCount(2)
+    await expect(ambiguous.getByLabel('HGSVC/HPRC candidate loci')).toHaveCount(0)
 
     await page.getByLabel('Match status').selectOption('unavailable_ambiguous')
-    await expect(page.getByTitle('Machine status: UNAVAILABLE')).toHaveText('Unavailable')
-    await expect(page.getByTitle('Machine status: AMBIGUOUS_COMPONENT')).toHaveText('Ambiguous')
-    await expect(page.getByTitle('Machine status: AMBIGUOUS_CATALOG')).toHaveText('Ambiguous')
+    await expect(page.getByTestId('long-read-tr-reference-row')).toHaveCount(2)
+    await expect(
+      page.getByText('Exact identity unavailable — provenance not validated')
+    ).toHaveCount(2)
 
     await page.getByLabel('Match status').selectOption('none')
     const noMatch = page.getByRole('row', { name: /FMR1/ })
     await expect(noMatch).toBeVisible()
-    await expect(noMatch.getByTitle('Machine status: NONE')).toHaveCount(2)
-    await expect(noMatch.getByTitle('Machine status: NONE')).toHaveText([
-      'No exact match',
-      'No exact match',
-    ])
-    await expect(noMatch.getByText('No matching component')).toBeVisible()
-    await expect(noMatch.getByText('Overlapping locus only')).toBeVisible()
+    await expect(noMatch.getByText('No exact admitted LR reference component')).toHaveCount(2)
+    await expect(
+      noMatch.getByText('Absent from the complete admitted component index')
+    ).toHaveCount(2)
     await noMatch.getByText('Match details').first().click()
-    await expect(noMatch.getByText('NO_EXACT_COMPONENT')).toBeVisible()
+    await expect(noMatch.getByText('NO_EXACT_OR_OVERLAPPING_ADMITTED_COMPONENT')).toHaveCount(2)
   })
 
   test('supports search, sort, direct reload, and a keyboard-scrollable table at 390px', async ({
@@ -213,7 +253,7 @@ test.describe('short-read STR to long-read reference index', () => {
     const httRow = page.getByRole('row', { name: /HTT/ })
     await expect(httRow).toBeVisible()
     await expect(httRow.getByText('6-component locus')).toHaveCount(2)
-    await expect(httRow.getByRole('link', { name: /Open All of Us LR locus:/ })).toHaveText(
+    await expect(httRow.getByRole('link', { name: 'Open All of Us long-read locus 1' })).toHaveText(
       'Open LR locus'
     )
     await page.getByLabel('Sort').selectOption('genomic')

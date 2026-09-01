@@ -175,6 +175,29 @@ type LongReadTrShortReadCandidate {
   matched_component_index: Int!
   matched_component: LongReadTrLocusComponent!
   matched_reference_region_index: Int!
+  source_record_count: Int!
+  source_record_membership_sha256: String!
+}
+
+type LongReadTrReferenceDiagnosticSourceRecord {
+  cohort: LongReadCohort!
+  chrom: String!
+  run_id: String!
+  source_record_id: String!
+  position: Int!
+}
+
+# A bounded nearby/related component for diagnosis only. It never authorizes
+# catalog identity, a clinical range, or an exact-reference route.
+type LongReadTrReferenceDiagnosticCandidate {
+  canonical_id: String!
+  ordered_component_index: Int!
+  ordered_component: LongReadTrLocusComponent!
+  motif_relation: String!
+  source_record_count: Int!
+  source_record_membership_sha256: String!
+  source_records: [LongReadTrReferenceDiagnosticSourceRecord!]!
+  source_records_truncated: Boolean!
 }
 
 type LongReadTrShortReadContext {
@@ -213,11 +236,18 @@ type LongReadTrReferenceShortRecord {
 type LongReadTrReferenceCohortResult {
   status: LongReadTrReferenceStatus!
   reason_code: String
+  proof_text: String!
   source_database: String!
   source_release: String!
   source_run_id: String!
   canonical_ids: [String!]!
+  # Exact authorization candidates. Empty for every non-EXACT_UNIQUE status.
   candidates: [LongReadTrShortReadCandidate!]!
+  # Bounded diagnosis only; never an exact or clinical/reference match.
+  diagnostic_candidates: [LongReadTrReferenceDiagnosticCandidate!]!
+  diagnostic_candidate_identity_count: Int!
+  diagnostic_candidates_truncated: Boolean!
+  diagnostic_candidate_identity_sha256: String!
 }
 
 type LongReadTrReferenceNode {
@@ -251,6 +281,21 @@ type LongReadTrReferenceProvenance {
   motif_identity: String!
   catalog_available: Boolean!
   catalog_unavailable_reason: String
+  snapshot_contract_id: String!
+  snapshot_contract_label: String!
+  snapshot_contract_scope: String!
+  snapshot_approval_state: String!
+  current_trexplorer_admitted: Boolean!
+  admitted_component_index_complete: Boolean!
+  admitted_component_index_database: String!
+  admitted_component_index_release: String!
+  admitted_component_index_source_count: Int!
+  admitted_component_index_source_record_count: Int!
+  admitted_component_index_canonical_locus_count: Int!
+  admitted_component_index_ordered_component_count: Int!
+  admitted_component_index_inventory_sha256: String!
+  diagnostic_max_candidates_per_status: Int!
+  diagnostic_max_source_records_per_candidate: Int!
 }
 
 type LongReadTrReferenceConnection {

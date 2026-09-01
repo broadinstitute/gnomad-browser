@@ -17,7 +17,12 @@ import {
   isExact,
   isMultiple,
 } from './referencePageHelpers'
-import { LongReadTrReferenceCohortResult, LongReadTrReferenceRow, ReferenceFilters } from './types'
+import {
+  LongReadTrReferenceCohortResult,
+  LongReadTrReferenceProvenance,
+  LongReadTrReferenceRow,
+  ReferenceFilters,
+} from './types'
 
 const HeadingWithHelp = styled.div`
   display: flex;
@@ -59,6 +64,7 @@ const Filters = styled.div`
   label {
     display: flex;
     flex-direction: column;
+    min-width: 0;
     gap: 0.25em;
     font-weight: 600;
   }
@@ -66,6 +72,8 @@ const Filters = styled.div`
   input,
   select {
     box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
     min-height: 44px;
     padding: 0.45em;
     font: inherit;
@@ -83,6 +91,33 @@ const Filters = styled.div`
 
 const ResultsSummary = styled.p`
   font-weight: 600;
+`
+
+const ProvenanceDetails = styled.details`
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 920px;
+  overflow-wrap: anywhere;
+  padding: 0.65em 0.8em;
+  border: 1px solid #ccd5dc;
+  border-radius: 4px;
+  background: #f8fafb;
+  color: #3f4a53;
+  line-height: 1.45;
+
+  summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0.65em 0 0;
+  }
+
+  code {
+    overflow-wrap: anywhere;
+  }
 `
 
 const TableScroller = styled.div`
@@ -267,17 +302,21 @@ const shortTandemRepeatUrl = (id: string) =>
 const cohortLabel = { hgsvc_hprc: 'HGSVC/HPRC', aou: 'All of Us' } as const
 
 const diagnosticCopy: Record<string, { label: string; help: string }> = {
-  NO_EXACT_COMPONENT: {
-    label: 'No matching component',
-    help: 'No LR component has both these coordinates and repeat unit.',
+  NO_EXACT_OR_OVERLAPPING_ADMITTED_COMPONENT: {
+    label: 'Absent from the complete admitted component index',
+    help: 'No exact or overlapping LR reference component is present in this admitted source snapshot.',
   },
-  OVERLAP_ONLY: {
-    label: 'Overlapping locus only',
-    help: 'A locus overlaps this region, but no component matches exactly.',
+  OVERLAPPING_COMPONENT_WITH_DIFFERENT_BOUNDS: {
+    label: 'Coordinate/representation mismatch',
+    help: 'A diagnostic LR component overlaps this interval but has different boundaries.',
   },
-  REGION_EQUAL_MOTIF_MISMATCH: {
-    label: 'Repeat unit differs',
-    help: 'Coordinates match an LR component, but its repeat unit differs.',
+  EQUAL_BOUNDS_ROTATION_OR_REVERSE_COMPLEMENT: {
+    label: 'Orientation diagnostic',
+    help: 'The bounds are equal, but the stored motif is only rotation/reverse-complement related.',
+  },
+  EQUAL_BOUNDS_OTHER_MOTIF: {
+    label: 'Repeat-unit representation mismatch',
+    help: 'The bounds are equal, but the stored LR repeat unit is not an exact motif identity.',
   },
   MULTIPLE_CONTAINING_LR_LOCI: {
     label: 'More than one containing locus',
@@ -308,12 +347,20 @@ const diagnosticCopy: Record<string, { label: string; help: string }> = {
     help: 'Multiple catalog records share this reference identity.',
   },
   SOURCE_UNAVAILABLE: {
-    label: 'Reference source unavailable',
-    help: 'This cohort reference source could not be queried.',
+    label: 'Reference provenance unavailable',
+    help: 'This cohort source snapshot could not be validated, so absence is not asserted.',
   },
-  STALE_SOURCE: {
-    label: 'Reference source is out of date',
-    help: 'This result cannot be confirmed against the current source.',
+  SOURCE_PROVENANCE_MISMATCH: {
+    label: 'Reference provenance is stale',
+    help: 'The serving source does not match the receipt-bound source snapshot, so absence is not asserted.',
+  },
+  CATALOG_UNAVAILABLE: {
+    label: 'Catalog provenance unavailable',
+    help: 'The frozen catalog snapshot could not be validated, so absence is not asserted.',
+  },
+  CATALOG_DIGEST_MISMATCH: {
+    label: 'Catalog provenance is stale',
+    help: 'The serving catalog does not match the frozen snapshot digest, so absence is not asserted.',
   },
 }
 
@@ -348,21 +395,25 @@ const CohortResult = ({
   let label: string
   if (isExact(result)) {
     kind = 'exact'
-    label = 'Exact match'
+    label = 'Exact admitted LR reference component'
   } else if (isMultiple(result)) {
     kind = 'multiple'
-    label = `${result.candidates.length} possible ${
-      result.candidates.length === 1 ? 'locus' : 'loci'
-    }`
-  } else if (result.status === 'NONE') {
+    label = 'Exact identity is ambiguous'
+  } else if (result.status === 'SOURCE_ABSENT') {
     kind = 'none'
-    label = 'No exact match'
-  } else if (result.status.includes('UNAVAILABLE')) {
-    kind = 'unavailable'
-    label = 'Unavailable'
+    label = 'No exact admitted LR reference component'
+  } else if (result.status === 'COORDINATE_MISMATCH') {
+    kind = 'none'
+    label = 'No exact component — coordinate/representation mismatch'
+  } else if (result.status === 'ORIENTATION_DIAGNOSTIC') {
+    kind = 'none'
+    label = 'No exact component — orientation diagnostic'
+  } else if (result.status === 'MOTIF_MISMATCH') {
+    kind = 'none'
+    label = 'No exact component — repeat-unit mismatch'
   } else {
-    kind = 'ambiguous'
-    label = 'Ambiguous'
+    kind = 'unavailable'
+    label = 'Exact identity unavailable — provenance not validated'
   }
 
   const diagnostic = result.reason_code
@@ -377,7 +428,10 @@ const CohortResult = ({
     result.source_run_id ? `Run: ${result.source_run_id}` : null,
   ].filter(Boolean)
   const hasDetails =
-    Boolean(result.reason_code) || result.candidates.length > 0 || sourceParts.length > 0
+    Boolean(result.reason_code) ||
+    result.candidates.length > 0 ||
+    result.diagnostic_candidates.length > 0 ||
+    sourceParts.length > 0
 
   return (
     <CohortCell>
@@ -398,10 +452,43 @@ const CohortResult = ({
           ))}
         </CandidateList>
       )}
+      {result.diagnostic_candidates.length > 0 && (
+        <CandidateList aria-label={`${cohortLabel[cohort]} diagnostic LR loci`}>
+          {result.diagnostic_candidates.map((candidate, index) => (
+            <li key={`${candidate.canonical_id}-${candidate.ordered_component_index}`}>
+              <strong>Diagnostic only — not an exact or clinical/reference match</strong>
+              <div>
+                <Link
+                  aria-label={`Open ${cohortLabel[cohort]} diagnostic long-read locus ${index + 1}`}
+                  preserveSelectedDataset={false}
+                  to={trLocusUrl(candidate.canonical_id, cohort)}
+                >
+                  Open diagnostic LR locus
+                </Link>
+              </div>
+              <LocusIdentity>{locusIdentity(candidate.canonical_id)}</LocusIdentity>
+              <LocusIdentity>
+                Component {candidate.ordered_component_index + 1}: chr
+                {candidate.ordered_component.chrom}:
+                {(candidate.ordered_component.start0 + 1).toLocaleString('en-US')}–
+                {candidate.ordered_component.end0.toLocaleString('en-US')} ·{' '}
+                {candidate.ordered_component.motif} ·{' '}
+                {fallbackDiagnosticLabel(candidate.motif_relation)}
+              </LocusIdentity>
+            </li>
+          ))}
+        </CandidateList>
+      )}
       {diagnostic && (
         <Diagnostic>
           <strong>{diagnostic.label}</strong>
           <span>{diagnostic.help}</span>
+          <span>Bounded proof: {result.proof_text}</span>
+          {result.diagnostic_candidates.length > 0 && (
+            <span>
+              Disease ranges and motif classifications are not transferred to diagnostic LR loci.
+            </span>
+          )}
         </Diagnostic>
       )}
       {hasDetails && (
@@ -412,19 +499,51 @@ const CohortResult = ({
               Reason code: <code>{result.reason_code}</code>
             </div>
           )}
+          <div>Bounded proof: {result.proof_text}</div>
           {result.candidates.map((candidate) => (
             <div key={`canonical-id-${candidate.canonical_id}`}>
-              Canonical ID: <code>{candidate.canonical_id}</code>
+              Exact canonical ID: <code>{candidate.canonical_id}</code>
             </div>
           ))}
-          {sourceParts.length > 0 && <div>{sourceParts.join(' · ')}</div>}
+          {result.diagnostic_candidates.map((candidate) => (
+            <div
+              key={`diagnostic-id-${candidate.canonical_id}-${candidate.ordered_component_index}`}
+            >
+              Diagnostic canonical ID: <code>{candidate.canonical_id}</code> · component{' '}
+              {candidate.ordered_component_index} · source records {candidate.source_records.length}
+              /{candidate.source_record_count}
+              {candidate.source_records_truncated ? ' (bounded list truncated)' : ''}
+              {candidate.source_records.map((sourceRecord) => (
+                <div key={`${candidate.canonical_id}-${sourceRecord.source_record_id}`}>
+                  Diagnostic source record: <code>{sourceRecord.source_record_id}</code> ·{' '}
+                  <code>{sourceRecord.chrom}</code> position {sourceRecord.position} · run{' '}
+                  <code>{sourceRecord.run_id}</code>
+                </div>
+              ))}
+            </div>
+          ))}
+          <div>
+            Diagnostic identities returned: {result.diagnostic_candidates.length}/
+            {result.diagnostic_candidate_identity_count}
+            {result.diagnostic_candidates_truncated ? ' (bounded list truncated)' : ''} · proof
+            digest: <code>{result.diagnostic_candidate_identity_sha256}</code>
+          </div>
+          {sourceParts.length > 0 && (
+            <div>Receipt-bound source snapshot · {sourceParts.join(' · ')}</div>
+          )}
         </AuditDetails>
       )}
     </CohortCell>
   )
 }
 
-export const LongReadTandemRepeatReferencePage = ({ rows }: { rows: LongReadTrReferenceRow[] }) => {
+export const LongReadTandemRepeatReferencePage = ({
+  rows,
+  provenance,
+}: {
+  rows: LongReadTrReferenceRow[]
+  provenance: LongReadTrReferenceProvenance
+}) => {
   const [filters, setFilters] = useState<ReferenceFilters>(defaultReferenceFilters)
   const [page, setPage] = useState(1)
   const chromosomes = useMemo(() => availableChromosomes(rows), [rows])
@@ -455,8 +574,50 @@ export const LongReadTandemRepeatReferencePage = ({ rows }: { rows: LongReadTrRe
       <Boundary>
         These links identify the same reference component by exact coordinates and motif. They do
         not classify long-read alleles, total allele length changes (ALT − REF, bp), genotypes, or
-        individuals.
+        individuals. Nearby or related diagnostic LR loci do not inherit the catalog disease ranges
+        or motif classifications.
       </Boundary>
+      <ProvenanceDetails>
+        <summary>Catalog and admitted LR source provenance</summary>
+        <p>
+          <strong>{provenance.snapshot_contract_label}</strong>.{' '}
+          {provenance.snapshot_contract_scope}
+        </p>
+        <p>
+          This is a frozen gnomAD browser snapshot, not the current TRExplorer catalog. Current
+          TRExplorer admitted:{' '}
+          <strong>{provenance.current_trexplorer_admitted ? 'yes' : 'no'}</strong>. Snapshot
+          contract: <code>{provenance.snapshot_contract_id}</code> · approval state:{' '}
+          <code>{provenance.snapshot_approval_state}</code>.
+        </p>
+        <p>
+          Catalog captured {provenance.queried_at}: {provenance.row_count.toLocaleString('en-US')}{' '}
+          rows · digest <code>{provenance.compact_sha256}</code> · runtime validation{' '}
+          <strong>{provenance.catalog_available ? 'available' : 'unavailable'}</strong>
+          {provenance.catalog_unavailable_reason
+            ? ` (${provenance.catalog_unavailable_reason})`
+            : ''}
+          .
+        </p>
+        <p>
+          Complete admitted LR component index: {provenance.admitted_component_index_source_count}{' '}
+          cohort/chromosome source snapshots ·{' '}
+          {provenance.admitted_component_index_source_record_count.toLocaleString('en-US')} source
+          records ·{' '}
+          {provenance.admitted_component_index_canonical_locus_count.toLocaleString('en-US')}{' '}
+          canonical loci ·{' '}
+          {provenance.admitted_component_index_ordered_component_count.toLocaleString('en-US')}{' '}
+          ordered components. Database <code>{provenance.admitted_component_index_database}</code> ·
+          release <code>{provenance.admitted_component_index_release}</code> · inventory digest{' '}
+          <code>{provenance.admitted_component_index_inventory_sha256}</code>.
+        </p>
+        <p>
+          Diagnostics are bounded to {provenance.diagnostic_max_candidates_per_status} component
+          identities per status and {provenance.diagnostic_max_source_records_per_candidate} source
+          records per identity. Each cohort cell discloses its receipt-bound database, release, and
+          run.
+        </p>
+      </ProvenanceDetails>
 
       <Filters aria-label="Reference index filters">
         <label>
@@ -495,7 +656,7 @@ export const LongReadTandemRepeatReferencePage = ({ rows }: { rows: LongReadTrRe
             <option value="both">Exact in both cohorts</option>
             <option value="hgsvc_hprc_only">HGSVC/HPRC only</option>
             <option value="aou_only">All of Us only</option>
-            <option value="none">No exact match in either</option>
+            <option value="none">No exact admitted LR reference component in either</option>
             <option value="multiple">Multiple containing loci</option>
             <option value="unavailable_ambiguous">Unavailable or ambiguous</option>
           </select>
@@ -635,13 +796,48 @@ query ${operationName} {
         associated_diseases { name symbol omim_id }
       }
       hgsvc_hprc {
-        status reason_code source_database source_release source_run_id
-        candidates { canonical_id }
+        status reason_code proof_text source_database source_release source_run_id
+        candidates {
+          canonical_id matched_component_index matched_reference_region_index
+          matched_component { chrom start0 end0 motif }
+          source_record_count source_record_membership_sha256
+        }
+        diagnostic_candidates {
+          canonical_id ordered_component_index motif_relation source_record_count
+          source_record_membership_sha256 source_records_truncated
+          ordered_component { chrom start0 end0 motif }
+          source_records { cohort chrom run_id source_record_id position }
+        }
+        diagnostic_candidate_identity_count diagnostic_candidates_truncated
+        diagnostic_candidate_identity_sha256
       }
       aou {
-        status reason_code source_database source_release source_run_id
-        candidates { canonical_id }
+        status reason_code proof_text source_database source_release source_run_id
+        candidates {
+          canonical_id matched_component_index matched_reference_region_index
+          matched_component { chrom start0 end0 motif }
+          source_record_count source_record_membership_sha256
+        }
+        diagnostic_candidates {
+          canonical_id ordered_component_index motif_relation source_record_count
+          source_record_membership_sha256 source_records_truncated
+          ordered_component { chrom start0 end0 motif }
+          source_records { cohort chrom run_id source_record_id position }
+        }
+        diagnostic_candidate_identity_count diagnostic_candidates_truncated
+        diagnostic_candidate_identity_sha256
       }
+    }
+    provenance {
+      dataset source endpoint queried_at row_count compact_sha256 hard_ceiling
+      reference_genome coordinate_system motif_identity catalog_available catalog_unavailable_reason
+      snapshot_contract_id snapshot_contract_label snapshot_contract_scope snapshot_approval_state
+      current_trexplorer_admitted admitted_component_index_complete
+      admitted_component_index_database admitted_component_index_release
+      admitted_component_index_source_count admitted_component_index_source_record_count
+      admitted_component_index_canonical_locus_count admitted_component_index_ordered_component_count
+      admitted_component_index_inventory_sha256 diagnostic_max_candidates_per_status
+      diagnostic_max_source_records_per_candidate
     }
     page_info { has_next_page }
   }
@@ -673,7 +869,12 @@ const LongReadTandemRepeatReferencePageContainer = () => (
           </Page>
         )
       }
-      return <LongReadTandemRepeatReferencePage rows={connection.nodes} />
+      return (
+        <LongReadTandemRepeatReferencePage
+          rows={connection.nodes}
+          provenance={connection.provenance}
+        />
+      )
     }}
   </Query>
 )
