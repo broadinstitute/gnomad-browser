@@ -827,8 +827,8 @@ describe('long-read TR visualization fidelity', () => {
       name: /\+12 bp longer, −6 bp shorter: 12 people; filter the exact-ALT index/,
     })
     expect(cell.getAttribute('fill')).toBe('transparent')
-    expect(cell.getAttribute('width')).toBe('34')
-    expect(cell.getAttribute('height')).toBe('34')
+    expect(cell.getAttribute('width')).toBe('48')
+    expect(cell.getAttribute('height')).toBe('48')
     expect(heatmap.querySelector(`rect[fill="${LONG_READ_PRIMARY_PLOT_COLOR}"]`)).not.toBeNull()
     expect(within(heatmap).getByText('Longer allele: ALT − REF (bp)')).not.toBeNull()
     expect(within(heatmap).getByText('Shorter allele: ALT − REF (bp)')).not.toBeNull()

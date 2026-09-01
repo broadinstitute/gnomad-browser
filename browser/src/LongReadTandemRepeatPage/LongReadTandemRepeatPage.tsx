@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 import { ExternalLink, PageHeading, Select } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
@@ -274,6 +274,7 @@ const LongReadTandemRepeatPage = ({
   const detail = useRef<HTMLElement | null>(null)
   const invalidHandled = useRef<string | null>(null)
   const revealInitialSelection = useRef(Boolean(selectedAllele))
+  const restoreSelectedLinkFocus = useRef(false)
   const setDetail = useCallback((node: HTMLElement | null) => {
     detail.current = node
   }, [])
@@ -289,6 +290,22 @@ const LongReadTandemRepeatPage = ({
       onInvalidSelection()
     }
   }, [locus?.selected_allele_valid, onInvalidSelection, revalidating, selectedAllele])
+
+  useLayoutEffect(() => {
+    if (revalidating) {
+      restoreSelectedLinkFocus.current = true
+      return
+    }
+    if (!restoreSelectedLinkFocus.current) return
+
+    restoreSelectedLinkFocus.current = false
+    if (!selectedAllele) return
+    document
+      .querySelector<HTMLElement>(
+        '[data-testid="lr-tr-exact-allele-browser"] a[aria-current="page"]'
+      )
+      ?.focus()
+  }, [locus?.selected_allele?.variant_id, revalidating, selectedAllele])
 
   useEffect(() => {
     if (revalidating) {

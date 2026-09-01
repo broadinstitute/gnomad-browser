@@ -2085,10 +2085,10 @@ export const WholeRecordGenotypeLandscape = ({
                             cell.selectedPeople === 1 ? 'person' : 'people'
                           }; filter the exact-ALT index to this square`}
                           data-testid="genotype-length-cell-target"
-                          x={xFor(longer) + band / 2 - 17}
-                          y={yFor(shorter) + band / 2 - 17}
-                          width={34}
-                          height={34}
+                          x={xFor(longer) + band / 2 - 24}
+                          y={yFor(shorter) + band / 2 - 24}
+                          width={48}
+                          height={48}
                           rx={2}
                           fill="transparent"
                           stroke="transparent"
