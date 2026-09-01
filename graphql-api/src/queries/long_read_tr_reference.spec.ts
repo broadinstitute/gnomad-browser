@@ -50,15 +50,24 @@ describe('bounded long-read TR reference crosswalk', () => {
     fetchById.mockReset()
   })
 
-  test('reconciles all 78 rows to 51 HGSVC/HPRC and 58 AoU exact matches without N+1', async () => {
+  test('reconciles every receipt-bound row and status category without N+1', async () => {
     const esClient = {}
     const getSource = jest.fn(sourceFor)
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, getSource)
-    expect(result.total_count).toBe(78)
-    expect(
-      result.nodes.filter((node: any) => node.hgsvc_hprc.status === 'EXACT_UNIQUE')
-    ).toHaveLength(51)
-    expect(result.nodes.filter((node: any) => node.aou.status === 'EXACT_UNIQUE')).toHaveLength(58)
+    expect(result.total_count).toBe(longReadTrReferenceArtifactForTests.catalog_contract.row_count)
+    for (const cohort of ['hgsvc_hprc', 'aou'] as const) {
+      const expected = longReadTrReferenceArtifactForTests.catalog_contract.expected_status_counts[
+        cohort
+      ]
+      expect(
+        Object.fromEntries(
+          Object.keys(expected).map((status) => [
+            status,
+            result.nodes.filter((node: any) => node[cohort].status === status).length,
+          ])
+        )
+      ).toEqual(expected)
+    }
     expect(result.nodes[0]).toEqual(
       expect.objectContaining({
         id: expect.any(String),
@@ -116,14 +125,14 @@ describe('bounded long-read TR reference crosswalk', () => {
     ).rejects.toThrow('first must be between 1 and 100')
   })
 
-  test('fails one stale source closed without hiding the other cohort or the 78 rows', async () => {
+  test('fails one stale source closed without hiding the other cohort or receipt-bound rows', async () => {
     const esClient = {}
     const staleAoU = async (cohort: 'hgsvc_hprc' | 'aou', chrom: string) => {
       const source = await sourceFor(cohort, chrom)
       return cohort === 'aou' && source ? { ...source, run_id: 'stale-run' } : source
     }
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, staleAoU)
-    expect(result.total_count).toBe(78)
+    expect(result.total_count).toBe(longReadTrReferenceArtifactForTests.catalog_contract.row_count)
     const atxn1 = result.nodes.find((node: any) => node.id === 'ATXN1') as any
     expect(atxn1.hgsvc_hprc.status).toBe('EXACT_UNIQUE')
     expect(atxn1.aou).toEqual(
@@ -138,10 +147,13 @@ describe('bounded long-read TR reference crosswalk', () => {
       return sourceFor(cohort, chrom)
     }
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, throwingAoU)
-    expect(result.total_count).toBe(78)
+    expect(result.total_count).toBe(longReadTrReferenceArtifactForTests.catalog_contract.row_count)
     expect(
       result.nodes.filter((node: any) => node.hgsvc_hprc.status === 'EXACT_UNIQUE')
-    ).toHaveLength(51)
+    ).toHaveLength(
+      longReadTrReferenceArtifactForTests.catalog_contract.expected_status_counts.hgsvc_hprc
+        .EXACT_UNIQUE
+    )
     const atxn1 = result.nodes.find((node: any) => node.id === 'ATXN1') as any
     expect(atxn1.hgsvc_hprc.status).toBe('EXACT_UNIQUE')
     expect(atxn1.aou).toEqual(
@@ -262,12 +274,12 @@ describe('bounded long-read TR reference crosswalk', () => {
     }
   )
 
-  test.each([
-    ['hgsvc_hprc', 51],
-    ['aou', 58],
-  ] as const)(
-    'authorizes one neutral exact-reference outline for all %s cohort matches (expected %i)',
-    async (cohort, expectedCount) => {
+  test.each(['hgsvc_hprc', 'aou'] as const)(
+    'authorizes one neutral exact-reference outline for every receipt-bound %s match',
+    async (cohort) => {
+      const expectedCount =
+        longReadTrReferenceArtifactForTests.catalog_contract.expected_status_counts[cohort]
+          .EXACT_UNIQUE
       const exactRows = longReadTrReferenceArtifactForTests.rows.filter(
         (row: any) => row.cohorts[cohort].status === 'EXACT_UNIQUE'
       ) as any[]
@@ -359,7 +371,7 @@ describe('bounded long-read TR reference crosswalk', () => {
     const context = await resolveLongReadTrShortReadContext(locus, {}, sourceFor)
     expect(context).toEqual(
       expect.objectContaining({
-        status: 'AMBIGUOUS_COMPONENT',
+        status: 'AMBIGUOUS',
         reason_code: 'LR_LOCUS_COMPONENT_MISMATCH',
         exact_reference_component_outline_authorized: false,
         matched_reference_repeat_unit_classifications: [],
@@ -389,11 +401,7 @@ describe('bounded long-read TR reference crosswalk', () => {
     expect(context).toEqual(expect.objectContaining({ status: 'UNAVAILABLE', reason_code: reason }))
   })
 
-  test.each([
-    ['MULTIPLE', 'MULTIPLE_CONTAINING_LR_LOCI'],
-    ['AMBIGUOUS_CATALOG', 'DUPLICATE_CATALOG_EXACT_KEY'],
-    ['AMBIGUOUS_COMPONENT', 'DUPLICATE_ORDERED_COMPONENT'],
-  ])(
+  test.each([['AMBIGUOUS', 'MULTIPLE_EXACT_ORDERED_COMPONENT_IDENTITIES']])(
     'preserves %s detail status and all candidates without clinical context',
     async (status, reason) => {
       const artifactRow = longReadTrReferenceArtifactForTests.rows.find(

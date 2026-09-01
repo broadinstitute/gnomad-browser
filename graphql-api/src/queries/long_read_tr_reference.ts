@@ -14,10 +14,11 @@ const artifactPath = path.join(__dirname, '../../config/long-read-tr-reference-c
 
 export type ReferenceStatus =
   | 'EXACT_UNIQUE'
-  | 'NONE'
-  | 'MULTIPLE'
-  | 'AMBIGUOUS_CATALOG'
-  | 'AMBIGUOUS_COMPONENT'
+  | 'AMBIGUOUS'
+  | 'COORDINATE_MISMATCH'
+  | 'ORIENTATION_DIAGNOSTIC'
+  | 'MOTIF_MISMATCH'
+  | 'SOURCE_ABSENT'
   | 'UNAVAILABLE'
 
 type Component = { chrom: string; start0: number; end0: number; motif: string }
@@ -30,14 +31,23 @@ type Candidate = {
 type CohortResult = {
   status: ReferenceStatus
   reason_code: string | null
+  proof_text: string
   source_database: string
   source_release: string
   source_run_id: string
   candidates: Candidate[]
+  diagnostic_candidates: any[]
+  diagnostic_candidate_identity_count: number
+  diagnostic_candidates_truncated: boolean
+  diagnostic_candidate_identity_sha256: string
 }
 type ValidatedCohortResult = CohortResult & { canonical_ids: string[] }
 
 type ArtifactRow = {
+  row_key: string
+  source_memberships: string[]
+  identifiers: any
+  tuple_set_sha256: string
   short: any
   distribution_receipt: {
     sha256: string
@@ -67,6 +77,8 @@ type CrosswalkArtifact = {
     compact_sha256: string
     hard_ceiling: number
   }
+  catalog_contract: any
+  component_index_receipt: any
   distribution: any
   provenance: any
   reconciliation: any
@@ -75,18 +87,6 @@ type CrosswalkArtifact = {
 }
 
 const artifact = JSON.parse(readFileSync(artifactPath, 'utf8')) as CrosswalkArtifact
-if (
-  artifact.schema_version !== 3 ||
-  artifact.catalog.dataset !== 'gnomad_r4' ||
-  artifact.catalog.row_count !== artifact.rows.length ||
-  artifact.rows.length !== 78 ||
-  artifact.catalog.hard_ceiling > 500 ||
-  artifact.distribution?.limits?.max_serialized_bytes !== 2 * 1024 * 1024 ||
-  artifact.distribution?.limits?.max_total_bins !== 20000 ||
-  artifact.rows.some((row) => !/^[0-9a-f]{64}$/.test(row.distribution_receipt?.sha256 || ''))
-) {
-  throw new Error('Invalid long-read TR reference crosswalk artifact')
-}
 
 const normalizedChrom = (value: unknown) => String(value).replace(/^chr/i, '').toUpperCase()
 const exactRegion = (region: any, component: Component) =>
@@ -200,6 +200,108 @@ export const compactCatalogSha256 = (rows: any[]) =>
     .update(JSON.stringify(normalizeShortCatalogRows(rows)))
     .digest('hex')
 
+const sha256Json = (value: any) =>
+  createHash('sha256').update(JSON.stringify(value)).digest('hex')
+const durableStatuses: ReferenceStatus[] = [
+  'EXACT_UNIQUE',
+  'AMBIGUOUS',
+  'COORDINATE_MISMATCH',
+  'ORIENTATION_DIAGNOSTIC',
+  'MOTIF_MISMATCH',
+  'SOURCE_ABSENT',
+  'UNAVAILABLE',
+]
+const catalogRowKey = (row: any) =>
+  `gnomad-short-snapshot:${row.id}:${sha256Json({
+    id: row.id,
+    region: row.main_reference_region,
+    motif: row.reference_repeat_unit,
+  }).slice(0, 16)}`
+const normalizedArtifactRows = normalizeShortCatalogRows(artifact.rows.map((row) => row.short))
+const artifactRowKeys = artifact.rows.map((row) => row.row_key).sort()
+const tupleSetReceipt = artifact.rows
+  .map((row) => ({ row_key: row.row_key, tuple_set_sha256: row.tuple_set_sha256 }))
+  .sort((left, right) => left.row_key.localeCompare(right.row_key))
+const computedStatusCounts = Object.fromEntries(
+  (['hgsvc_hprc', 'aou'] as const).map((cohort) => [
+    cohort,
+    Object.fromEntries(
+      durableStatuses.map((status) => [
+        status,
+        artifact.rows.filter((row) => row.cohorts[cohort].status === status).length,
+      ])
+    ),
+  ])
+)
+const componentReceipt = artifact.component_index_receipt
+if (
+  artifact.schema_version !== 4 ||
+  artifact.catalog.dataset !== 'gnomad_r4' ||
+  artifact.catalog.row_count !== artifact.rows.length ||
+  artifact.catalog.row_count < 1 ||
+  artifact.catalog.hard_ceiling > 500 ||
+  artifact.catalog.compact_sha256 !== sha256Json(normalizedArtifactRows) ||
+  artifact.catalog_contract?.contract_id !== 'gnomad-short-tr-snapshot-2026-08-24' ||
+  artifact.catalog_contract?.approval?.public_catalog_change_authorized !== false ||
+  artifact.catalog_contract?.current_trexplorer?.admitted !== false ||
+  artifact.catalog_contract?.row_count !== artifact.rows.length ||
+  artifact.catalog_contract?.row_keys_sha256 !== sha256Json(artifactRowKeys) ||
+  artifact.catalog_contract?.full_tuple_set_sha256 !== sha256Json(tupleSetReceipt) ||
+  JSON.stringify(artifact.catalog_contract?.expected_status_counts) !==
+    JSON.stringify(computedStatusCounts) ||
+  JSON.stringify(artifact.reconciliation?.status_counts) !== JSON.stringify(computedStatusCounts) ||
+  artifact.reconciliation?.status_counts_sha256 !== sha256Json(computedStatusCounts) ||
+  artifact.reconciliation?.catalog_rows !== artifact.rows.length ||
+  JSON.stringify(artifact.reconciliation?.exclusive_statuses) !==
+    JSON.stringify(durableStatuses) ||
+  componentReceipt?.complete !== true ||
+  componentReceipt?.source_count !== 48 ||
+  !Array.isArray(componentReceipt?.sources) ||
+  componentReceipt.sources.length !== componentReceipt.source_count ||
+  componentReceipt.source_bundle_sha256 !== sha256Json(componentReceipt.sources) ||
+  componentReceipt.catalog_compact_sha256 !== artifact.catalog.compact_sha256 ||
+  componentReceipt.catalog_row_keys_sha256 !== sha256Json(artifactRowKeys) ||
+  !/^[0-9a-f]{64}$/.test(componentReceipt.inventory_sha256 || '') ||
+  !Number.isInteger(componentReceipt.source_record_count) ||
+  componentReceipt.source_record_count <= 0 ||
+  !Number.isInteger(componentReceipt.ordered_component_count) ||
+  componentReceipt.ordered_component_count < componentReceipt.source_record_count ||
+  componentReceipt.completion_marker_sha256 !==
+    sha256Json({
+      expected_source_records: componentReceipt.source_record_count,
+      expected_ordered_components: componentReceipt.ordered_component_count,
+    }) ||
+  artifact.distribution?.limits?.max_serialized_bytes !== 2 * 1024 * 1024 ||
+  artifact.distribution?.limits?.max_total_bins !== 20000 ||
+  new Set(artifactRowKeys).size !== artifact.rows.length ||
+  artifact.rows.some(
+    (row) =>
+      row.row_key !== catalogRowKey(row.short) ||
+      JSON.stringify(row.source_memberships) !== JSON.stringify(['GNOMAD_SHORT_SNAPSHOT']) ||
+      row.tuple_set_sha256 !==
+        sha256Json({
+          reference_regions: row.short.reference_regions,
+          reference_repeat_unit: row.short.reference_repeat_unit,
+          repeat_units: row.short.repeat_units,
+        }) ||
+      !/^[0-9a-f]{64}$/.test(row.distribution_receipt?.sha256 || '') ||
+      (['hgsvc_hprc', 'aou'] as const).some((cohort) => {
+        const result = row.cohorts[cohort]
+        return (
+          !durableStatuses.includes(result.status) ||
+          !/^[0-9a-f]{64}$/.test(result.diagnostic_candidate_identity_sha256 || '') ||
+          (result.status === 'EXACT_UNIQUE' &&
+            (result.candidates.length !== 1 || result.diagnostic_candidates.length !== 0)) ||
+          (result.status !== 'EXACT_UNIQUE' && result.candidates.length !== 0) ||
+          result.diagnostic_candidates.length >
+            componentReceipt.limits.max_candidates_per_status
+        )
+      })
+  )
+) {
+  throw new Error('Invalid receipt-bound long-read TR reference crosswalk artifact')
+}
+
 type CatalogState = { available: boolean; reason: string | null; rows: any[] }
 const catalogCache = new WeakMap<object, { expires: number; promise: Promise<CatalogState> }>()
 
@@ -247,6 +349,27 @@ for (const source of artifact.sources || []) {
 if (expectedSources.size !== 48) {
   throw new Error('Invalid long-read TR reference source identity bundle')
 }
+const componentSources = new Map<string, any>()
+for (const source of componentReceipt.sources) {
+  const key = sourceKey(source.cohort, source.chrom)
+  if (componentSources.has(key)) throw new Error(`Duplicate component-index source ${key}`)
+  componentSources.set(key, source)
+}
+if (
+  componentSources.size !== expectedSources.size ||
+  [...expectedSources].some(([key, source]) => {
+    const componentSource = componentSources.get(key)
+    return (
+      !componentSource ||
+      componentSource.run_id !== source.source_run_id ||
+      componentSource.source_record_count <= 0 ||
+      componentSource.canonical_locus_count <= 0 ||
+      componentSource.ordered_component_count < componentSource.source_record_count
+    )
+  })
+) {
+  throw new Error('Crosswalk source identities do not match the complete component-index receipt')
+}
 
 const sourceMatches = (
   result: Pick<CohortResult, 'source_database' | 'source_release' | 'source_run_id'>,
@@ -270,7 +393,12 @@ const unavailableResult = (result: CohortResult, reason_code: string) => ({
   ...result,
   status: 'UNAVAILABLE' as ReferenceStatus,
   reason_code,
+  proof_text: 'Catalog/source/index provenance could not be validated; absence is not asserted.',
   candidates: [],
+  diagnostic_candidates: [],
+  diagnostic_candidate_identity_count: 0,
+  diagnostic_candidates_truncated: false,
+  diagnostic_candidate_identity_sha256: sha256Json([]),
 })
 
 const chromRank = (chrom: string) => {
@@ -313,10 +441,16 @@ const matchesStatusFilter = (row: ArtifactRow, filter?: string | null) => {
   if (filter === 'BOTH') return hgsvc === 'EXACT_UNIQUE' && aou === 'EXACT_UNIQUE'
   if (filter === 'HGSVC_HPRC_ONLY') return hgsvc === 'EXACT_UNIQUE' && aou !== 'EXACT_UNIQUE'
   if (filter === 'AOU_ONLY') return aou === 'EXACT_UNIQUE' && hgsvc !== 'EXACT_UNIQUE'
-  if (filter === 'NONE') return hgsvc === 'NONE' && aou === 'NONE'
-  if (filter === 'MULTIPLE') return hgsvc === 'MULTIPLE' || aou === 'MULTIPLE'
+  const durableNonmatch = (status: ReferenceStatus) =>
+    ['COORDINATE_MISMATCH', 'ORIENTATION_DIAGNOSTIC', 'MOTIF_MISMATCH', 'SOURCE_ABSENT'].includes(
+      status
+    )
+  if (filter === 'NONE') return durableNonmatch(hgsvc) && durableNonmatch(aou)
+  if (filter === 'MULTIPLE') return hgsvc === 'AMBIGUOUS' || aou === 'AMBIGUOUS'
   if (filter === 'UNAVAILABLE_OR_AMBIGUOUS')
-    return [hgsvc, aou].some((status) => status === 'UNAVAILABLE' || status.startsWith('AMBIGUOUS'))
+    return [hgsvc, aou].some(
+      (status) => status === 'UNAVAILABLE' || status === 'AMBIGUOUS'
+    )
   return false
 }
 
@@ -355,11 +489,12 @@ export const decodeReferenceCursor = (value: string | null | undefined, fingerpr
 
 const referenceStatusRank: Record<ReferenceStatus, number> = {
   EXACT_UNIQUE: 0,
-  MULTIPLE: 1,
-  NONE: 2,
-  AMBIGUOUS_CATALOG: 3,
-  AMBIGUOUS_COMPONENT: 4,
-  UNAVAILABLE: 5,
+  AMBIGUOUS: 1,
+  COORDINATE_MISMATCH: 2,
+  ORIENTATION_DIAGNOSTIC: 3,
+  MOTIF_MISMATCH: 4,
+  SOURCE_ABSENT: 5,
+  UNAVAILABLE: 6,
 }
 
 const compareCohortResult = (left: CohortResult, right: CohortResult) =>
@@ -559,16 +694,13 @@ export const resolveLongReadTrShortReadContext = (
         candidates,
       }
     }
-    const nonExactStatus = (['MULTIPLE', 'AMBIGUOUS_CATALOG', 'AMBIGUOUS_COMPONENT'] as const).find(
-      (status) => containing.some(({ result }) => result.status === status)
-    )
-    if (nonExactStatus) {
+    if (containing.some(({ result }) => result.status === 'AMBIGUOUS')) {
       const reasons = [
         ...new Set(containing.map(({ result }) => result.reason_code).filter(Boolean)),
       ]
       return {
         ...base,
-        status: nonExactStatus,
+        status: 'AMBIGUOUS',
         reason_code: reasons.length === 1 ? reasons[0] : 'NON_BIJECTIVE_EXACT_IDENTITY',
         candidates,
       }
@@ -584,7 +716,7 @@ export const resolveLongReadTrShortReadContext = (
     if (valid.length !== 1 || containing.length !== 1 || candidates.length !== 1) {
       return {
         ...base,
-        status: 'AMBIGUOUS_COMPONENT',
+        status: 'AMBIGUOUS',
         reason_code: 'NON_BIJECTIVE_EXACT_IDENTITY',
         candidates,
       }
@@ -599,7 +731,7 @@ export const resolveLongReadTrShortReadContext = (
     ) {
       return {
         ...base,
-        status: 'AMBIGUOUS_COMPONENT',
+        status: 'AMBIGUOUS',
         reason_code: 'LR_LOCUS_COMPONENT_MISMATCH',
         candidates: [candidate],
       }
@@ -641,7 +773,7 @@ export const resolveLongReadTrShortReadContext = (
     if (exactIndices.length !== 1) {
       return {
         ...base,
-        status: 'AMBIGUOUS_COMPONENT',
+        status: 'AMBIGUOUS',
         reason_code: 'CATALOG_DETAIL_REFERENCE_REGION_MISMATCH',
         candidates: [candidate],
       }

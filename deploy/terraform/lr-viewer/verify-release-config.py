@@ -38,6 +38,11 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def compact_sha256(value: object) -> str:
+    payload = json.dumps(value, separators=(",", ":"), ensure_ascii=False).encode()
+    return hashlib.sha256(payload).hexdigest()
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise SystemExit(f"release config check failed: {message}")
@@ -86,6 +91,61 @@ def main() -> None:
     require_exact_joined_route(api_env)
 
     crosswalk = json.loads((CONFIG_DIR / "long-read-tr-reference-crosswalk.json").read_text())
+    require(crosswalk.get("schema_version") == 4, "STR crosswalk is not receipt-bound schema v4")
+    rows = crosswalk.get("rows", [])
+    catalog = crosswalk.get("catalog", {})
+    contract = crosswalk.get("catalog_contract", {})
+    require(catalog.get("row_count") == len(rows) and len(rows) > 0, "catalog row receipt is incomplete")
+    require(compact_sha256([row["short"] for row in rows]) == catalog.get("compact_sha256"), "catalog compact digest mismatch")
+    require(contract.get("contract_id") == "gnomad-short-tr-snapshot-2026-08-24", "unexpected public catalog contract")
+    require(contract.get("row_count") == len(rows), "catalog contract count mismatch")
+    require(contract.get("source_memberships") == ["GNOMAD_SHORT_SNAPSHOT"], "catalog source membership drifted")
+    require(contract.get("approval", {}).get("state") == "PENDING_SCIENCE_OWNER", "science approval state is not honest")
+    require(contract.get("approval", {}).get("public_catalog_change_authorized") is False, "unapproved catalog change is authorized")
+    require(contract.get("current_trexplorer", {}).get("admitted") is False, "current TRExplorer was admitted without approval")
+    row_keys = sorted(row.get("row_key") for row in rows)
+    require(len(set(row_keys)) == len(rows), "catalog row keys are not unique")
+    require(compact_sha256(row_keys) == contract.get("row_keys_sha256"), "catalog row-key digest mismatch")
+    # The artifact rows are already in the producer's canonical JS locale order. Keep that
+    # receipt order here rather than replacing it with Python's different underscore collation.
+    tuple_receipt = [
+        {"row_key": row["row_key"], "tuple_set_sha256": row["tuple_set_sha256"]}
+        for row in rows
+    ]
+    require(compact_sha256(tuple_receipt) == contract.get("full_tuple_set_sha256"), "catalog tuple digest mismatch")
+    statuses = crosswalk.get("reconciliation", {}).get("exclusive_statuses", [])
+    computed_counts = {
+        cohort: {
+            status: sum(row["cohorts"][cohort]["status"] == status for row in rows)
+            for status in statuses
+        }
+        for cohort in ("hgsvc_hprc", "aou")
+    }
+    require(computed_counts == contract.get("expected_status_counts"), "catalog status-category receipt mismatch")
+    require(computed_counts == crosswalk.get("reconciliation", {}).get("status_counts"), "reconciliation status counts drifted")
+    require(compact_sha256(computed_counts) == crosswalk.get("reconciliation", {}).get("status_counts_sha256"), "status-count digest mismatch")
+    require(all(sum(counts.values()) == len(rows) for counts in computed_counts.values()), "statuses are not exclusive and complete")
+    component = crosswalk.get("component_index_receipt", {})
+    require(component.get("complete") is True and component.get("source_count") == 48, "component index is incomplete")
+    require(len(component.get("sources", [])) == component.get("source_count"), "component source bundle is incomplete")
+    require(compact_sha256(component.get("sources")) == component.get("source_bundle_sha256"), "component source digest mismatch")
+    require(component.get("source_record_count", 0) > 0, "component source records are empty")
+    require(component.get("ordered_component_count", 0) >= component.get("source_record_count", 0), "ordered component count is invalid")
+    require(
+        component.get("completion_marker_sha256") == compact_sha256({
+            "expected_source_records": component.get("source_record_count"),
+            "expected_ordered_components": component.get("ordered_component_count"),
+        }),
+        "component terminal completion marker is invalid",
+    )
+    require(all(source.get("source_record_count", 0) > 0 for source in component.get("sources", [])), "one component source is empty")
+    ar = next(row for row in rows if row["short"]["id"] == "AR")
+    require(all(result["status"] == "COORDINATE_MISMATCH" and not result["candidates"] for result in ar["cohorts"].values()), "AR diagnostic authorized an exact candidate")
+    require(all(result["diagnostic_candidates"][0]["canonical_id"] == "X-67545306-67545318-TGC+X-67545400-67545419-GCA" for result in ar["cohorts"].values()), "AR compound diagnostic identity drifted")
+    for short_id in ("ARX_1", "ARX_2"):
+        row = next(item for item in rows if item["short"]["id"] == short_id)
+        require(all(result["status"] == "EXACT_UNIQUE" for result in row["cohorts"].values()), f"{short_id} exact identity drifted")
+
     expected_database = api_env["LR_Y1_CLICKHOUSE_DATABASE"]
     require(
         crosswalk.get("provenance", {}).get("presentation_database") == expected_database,

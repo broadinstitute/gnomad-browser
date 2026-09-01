@@ -13,24 +13,31 @@ jest.mock('../elasticsearch', () => ({ catchNotFound: (error: unknown) => error 
 const fixture = require('./__fixtures__/long-read-tr-follow-up-phase0.json')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const crosswalk = require('../../config/long-read-tr-reference-crosswalk.json')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const routingManifest = require('../../config/full-genome-routing-artifact-manifest.json')
 
 const sha256 = (value: string | Buffer) => crypto.createHash('sha256').update(value).digest('hex')
 const caseById = (id: string) => fixture.cases.find((item: any) => item.id === id)
 
 describe('long-read TR follow-up Phase 0 fixture freeze', () => {
-  test('pins the clean implementation baseline and complete 78/51/58 reconciliation', () => {
-    expect(fixture.baseline).toEqual({
-      head: '2b23cad116c4fe7e2bda3558db4c43b61f08b1cb',
-      branch: 'gnomad-lr',
-      initial_status: 'clean',
-    })
-    expect(fixture.reconciliation).toEqual({
-      catalog_rows: 78,
-      exact_unique: { hgsvc_hprc: 51, aou: 58 },
-      absent_exact: { hgsvc_hprc: 27, aou: 20 },
-    })
-    expect(crosswalk.reconciliation).toEqual(fixture.reconciliation)
-    expect(crosswalk.rows).toHaveLength(78)
+  test('binds the current catalog and all exclusive categories to release receipts', () => {
+    expect(crosswalk.schema_version).toBe(4)
+    expect(crosswalk.rows).toHaveLength(crosswalk.catalog_contract.row_count)
+    expect(crosswalk.reconciliation.catalog_rows).toBe(crosswalk.catalog_contract.row_count)
+    expect(crosswalk.reconciliation.status_counts).toEqual(
+      crosswalk.catalog_contract.expected_status_counts
+    )
+    for (const cohort of ['hgsvc_hprc', 'aou']) {
+      expect(
+        Object.values(crosswalk.reconciliation.status_counts[cohort]).reduce(
+          (total: number, count: any) => total + Number(count),
+          0
+        )
+      ).toBe(crosswalk.catalog_contract.row_count)
+    }
+    expect(crosswalk.component_index_receipt).toEqual(
+      expect.objectContaining({ complete: true, source_count: crosswalk.sources.length })
+    )
   })
 
   test('binds representative fixtures to the reviewed compact crosswalk bytes', () => {
@@ -38,7 +45,11 @@ describe('long-read TR follow-up Phase 0 fixture freeze', () => {
       __dirname,
       '../../config/long-read-tr-reference-crosswalk.json'
     )
-    expect(sha256(fs.readFileSync(crosswalkPath))).toBe(fixture.inputs.crosswalk_sha256)
+    const manifestEntry = routingManifest.artifacts.find(
+      (item: any) => item.path === 'graphql-api/config/long-read-tr-reference-crosswalk.json'
+    )
+    expect(sha256(fs.readFileSync(crosswalkPath))).toBe(manifestEntry.sha256)
+    expect(fs.statSync(crosswalkPath).size).toBe(manifestEntry.bytes)
     expect(crosswalk.catalog.compact_sha256).toBe(fixture.inputs.catalog_compact_sha256)
 
     const currentRows = new Map(crosswalk.rows.map((row: any) => [row.short.id, row]))
@@ -58,7 +69,8 @@ describe('long-read TR follow-up Phase 0 fixture freeze', () => {
       expect(currentRows.get(item.id)).toEqual(
         expect.objectContaining({
           short: item.short,
-          cohorts: item.cohorts,
+          row_key: expect.stringMatching(/^gnomad-short-snapshot:/),
+          source_memberships: ['GNOMAD_SHORT_SNAPSHOT'],
           distribution_receipt: expect.objectContaining({ sha256: expect.any(String) }),
         })
       )
@@ -93,8 +105,12 @@ describe('long-read TR follow-up Phase 0 fixture freeze', () => {
       reason_code: 'NO_EXACT_COMPONENT',
       candidates: [],
     })
-    expect(item.cohorts.hgsvc_hprc.status).toBe('NONE')
-    expect(item.cohorts.aou.status).toBe('NONE')
+    const current: any = crosswalk.rows.find((row: any) => row.short.id === id)
+    const expectedStatus = id === 'AR' ? 'COORDINATE_MISMATCH' : 'ORIENTATION_DIAGNOSTIC'
+    expect(current.cohorts.hgsvc_hprc.status).toBe(expectedStatus)
+    expect(current.cohorts.aou.status).toBe(expectedStatus)
+    expect(current.cohorts.aou.candidates).toEqual([])
+    expect(current.cohorts.aou.diagnostic_candidates.length).toBeGreaterThan(0)
   })
 
   test('freezes the scientific edge distinctions used by later phases', () => {
@@ -126,13 +142,15 @@ describe('long-read TR follow-up Phase 0 fixture freeze', () => {
     ])
     expect(caseById('COMP').short.associated_diseases).toHaveLength(2)
     expect(caseById('NOTCH2NLC').short.associated_diseases).toHaveLength(2)
-    expect(caseById('COMP').cohorts.hgsvc_hprc.status).toBe('NONE')
-    expect(caseById('COMP').cohorts.aou.status).toBe('EXACT_UNIQUE')
-    expect(caseById('NOTCH2NLC').cohorts.hgsvc_hprc.status).toBe('NONE')
-    expect(caseById('NOTCH2NLC').cohorts.aou.status).toBe('EXACT_UNIQUE')
-    expect(caseById('BEAN1').cohorts.aou.reason_code).toBe('REGION_EQUAL_MOTIF_MISMATCH')
-    expect(caseById('YEATS2').cohorts.aou.reason_code).toBe('REGION_EQUAL_MOTIF_MISMATCH')
-    expect(caseById('AR').cohorts.aou.reason_code).toBe('OVERLAP_ONLY')
+    const currentById = (id: string) =>
+      crosswalk.rows.find((row: any) => row.short.id === id)
+    expect(currentById('COMP').cohorts.hgsvc_hprc.status).toBe('SOURCE_ABSENT')
+    expect(currentById('COMP').cohorts.aou.status).toBe('EXACT_UNIQUE')
+    expect(currentById('NOTCH2NLC').cohorts.hgsvc_hprc.status).toBe('SOURCE_ABSENT')
+    expect(currentById('NOTCH2NLC').cohorts.aou.status).toBe('EXACT_UNIQUE')
+    expect(currentById('BEAN1').cohorts.aou.status).toBe('ORIENTATION_DIAGNOSTIC')
+    expect(currentById('YEATS2').cohorts.aou.status).toBe('ORIENTATION_DIAGNOSTIC')
+    expect(currentById('AR').cohorts.aou.status).toBe('COORDINATE_MISMATCH')
   })
 
   test.each([
@@ -166,8 +184,8 @@ describe('long-read TR follow-up Phase 0 fixture freeze', () => {
       'gnomad_v3_short_tandem_repeats-2026-07-29--20-42'
     )
     expect(fixture.inputs.distribution_index_uuid).toBe('-I0qNVPKSF-xUsIMbCZbqQ')
-    expect(inventory.row_count).toBe(78)
-    expect(inventory.rows).toHaveLength(78)
+    expect(inventory.row_count).toBe(inventory.rows.length)
+    expect(inventory.rows).toHaveLength(crosswalk.catalog_contract.row_count)
     expect(sha256(JSON.stringify(inventory.rows))).toBe(inventory.rows_sha256)
     expect(inventory.rows.map((row: any) => row.id)).toEqual(
       crosswalk.rows.map((row: any) => row.short.id).sort()
