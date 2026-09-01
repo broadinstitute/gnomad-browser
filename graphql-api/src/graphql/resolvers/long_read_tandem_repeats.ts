@@ -3,6 +3,11 @@ import { UserVisibleError } from '../../errors'
 import { fetchLongReadTrRepeatCountPlots } from '../../queries/long_read_tr_histograms'
 import { fetchLongReadTrLocus, MAX_TR_LOCUS_PAGE_SIZE } from '../../queries/long_read_tr_loci'
 import { resolveLongReadTrPrimaryRepeat } from '../../queries/long_read_tr_primary_repeat'
+import {
+  containedPrimaryMotifFailureReason,
+  fetchLongReadTrPrimaryMotifMeasurementUncached,
+  unavailablePrimaryMotifMeasurement,
+} from '../../queries/long_read_tr_primary_motif_measurement'
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
 import { resolveLongReadTrShortReadDistributions } from '../../queries/long_read_tr_short_read_distributions'
 import {
@@ -63,6 +68,22 @@ export default {
   },
   LongReadTandemRepeatLocus: {
     primary_repeat: (locus: any, _args: any, ctx: any) => primaryRepeat(locus, ctx),
+    primary_motif_measurement: async (locus: any, _args: any, ctx: any) => {
+      let identity: any = null
+      try {
+        identity = await primaryRepeat(locus, ctx)
+        return await fetchLongReadTrPrimaryMotifMeasurementUncached(locus, identity)
+      } catch (error) {
+        // This product is optional. A stale, oversized, malformed, or inaccessible
+        // product table must never turn the canonical locus or its Phase 4–6 views
+        // into a GraphQL error, and it must never fall back to another cohort/run.
+        return unavailablePrimaryMotifMeasurement(
+          containedPrimaryMotifFailureReason(error),
+          typeof identity?.motif === 'string' ? identity.motif : null,
+          typeof identity?.biological_role === 'string' ? identity.biological_role : null
+        )
+      }
+    },
     short_read_context: (locus: any, _args: any, ctx: any) => shortReadContext(locus, ctx),
     short_read_matches: (locus: any, _args: any, ctx: any) =>
       legacyMatchesFromContext(shortReadContext(locus, ctx)),

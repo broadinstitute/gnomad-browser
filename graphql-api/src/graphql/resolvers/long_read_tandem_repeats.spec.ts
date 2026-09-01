@@ -11,6 +11,16 @@ jest.mock('../../queries/long_read_y1_provenance', () => ({ getY1SourceSnapshot:
 jest.mock('../../queries/long_read_tr_primary_repeat', () => ({
   resolveLongReadTrPrimaryRepeat: jest.fn(),
 }))
+jest.mock('../../queries/long_read_tr_primary_motif_measurement', () => ({
+  containedPrimaryMotifFailureReason: jest.fn(() => 'PRODUCT_IDENTITY_MISMATCH'),
+  fetchLongReadTrPrimaryMotifMeasurementUncached: jest.fn(),
+  unavailablePrimaryMotifMeasurement: jest.fn((reason_code, motif, biological_role) => ({
+    status: 'UNAVAILABLE',
+    reason_code,
+    motif,
+    biological_role,
+  })),
+}))
 jest.mock('../../queries/long_read_tr_short_read_distributions', () => ({
   resolveLongReadTrShortReadDistributions: jest.fn(),
 }))
@@ -28,6 +38,8 @@ import { fetchLongReadTrLocus } from '../../queries/long_read_tr_loci'
 // eslint-disable-next-line import/first
 import { resolveLongReadTrPrimaryRepeat } from '../../queries/long_read_tr_primary_repeat'
 // eslint-disable-next-line import/first
+import { fetchLongReadTrPrimaryMotifMeasurementUncached } from '../../queries/long_read_tr_primary_motif_measurement'
+// eslint-disable-next-line import/first
 import { resolveLongReadTrShortReadContext } from '../../queries/long_read_tr_reference'
 // eslint-disable-next-line import/first
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
@@ -37,6 +49,7 @@ import resolvers from './long_read_tandem_repeats'
 const fetchPlots = fetchLongReadTrRepeatCountPlots as any
 const fetchLocus = fetchLongReadTrLocus as any
 const resolvePrimaryRepeat = resolveLongReadTrPrimaryRepeat as any
+const fetchPrimaryMotif = fetchLongReadTrPrimaryMotifMeasurementUncached as any
 const resolveContext = resolveLongReadTrShortReadContext as any
 const getSource = getY1SourceSnapshot as any
 
@@ -45,6 +58,7 @@ describe('long-read tandem-repeat resolvers', () => {
     fetchPlots.mockReset()
     fetchLocus.mockReset()
     resolvePrimaryRepeat.mockReset()
+    fetchPrimaryMotif.mockReset()
     resolveContext.mockReset()
     getSource.mockReset()
   })
@@ -77,6 +91,41 @@ describe('long-read tandem-repeat resolvers', () => {
       resolvers.LongReadTandemRepeatLocus.primary_repeat(locus, null, { esClient: {} })
     ).resolves.toBe(identity)
     expect(resolvePrimaryRepeat).toHaveBeenCalledWith(locus, context)
+  })
+
+  test('contains an optional stale or oversized primary-motif product failure locally', async () => {
+    const locus = { id: 'exact-locus', lr_cohort: 'hgsvc_hprc' }
+    const identity = {
+      status: 'AVAILABLE',
+      motif: 'CAG',
+      biological_role: 'coding polyglutamine repeat',
+    }
+    resolveContext.mockResolvedValueOnce({ status: 'EXACT_UNIQUE' })
+    resolvePrimaryRepeat.mockReturnValueOnce(identity)
+    fetchPrimaryMotif.mockRejectedValueOnce(new Error('PRIMARY_MOTIF_PRODUCT_INVARIANT: stale'))
+
+    await expect(
+      resolvers.LongReadTandemRepeatLocus.primary_motif_measurement(locus, null, { esClient: {} })
+    ).resolves.toEqual({
+      status: 'UNAVAILABLE',
+      reason_code: 'PRODUCT_IDENTITY_MISMATCH',
+      motif: 'CAG',
+      biological_role: 'coding polyglutamine repeat',
+    })
+  })
+
+  test('preserves a validated primary-motif product independently of other fields', async () => {
+    const locus = { id: 'exact-locus', lr_cohort: 'hgsvc_hprc' }
+    const identity = { status: 'AVAILABLE', motif: 'TGC' }
+    const product = { status: 'AVAILABLE', motif: 'TGC', bins: [{}] }
+    resolveContext.mockResolvedValueOnce({ status: 'EXACT_UNIQUE' })
+    resolvePrimaryRepeat.mockReturnValueOnce(identity)
+    fetchPrimaryMotif.mockResolvedValueOnce(product)
+
+    await expect(
+      resolvers.LongReadTandemRepeatLocus.primary_motif_measurement(locus, null, { esClient: {} })
+    ).resolves.toBe(product)
+    expect(fetchPrimaryMotif).toHaveBeenCalledWith(locus, identity)
   })
 
   test('turns a cohort-specific malformed ancillary histogram into an explicit unavailable state', async () => {

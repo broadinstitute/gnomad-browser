@@ -503,6 +503,103 @@ type LongReadTrWholeRecordGenotypeLandscape {
   cells: [LongReadTrGenotypeCell!]
 }
 
+enum LongReadTrPrimaryMotifMeasurementStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum LongReadTrPrimaryMotifMeasurementReason {
+  PUBLIC_PRODUCT_NOT_APPROVED
+  PRIMARY_REPEAT_IDENTITY_UNAVAILABLE
+  SOURCE_RECORD_COUNT_NOT_ONE
+  NO_ACCEPTED_PRODUCT_RUN
+  PRODUCT_IDENTITY_MISMATCH
+  PRODUCT_INCOMPLETE
+  PRODUCT_BOUND_EXCEEDED
+  PRODUCT_QUERY_FAILED
+}
+
+enum LongReadTrPrimaryMotifGenotypeStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum LongReadTrPrimaryMotifGenotypeReason {
+  AGGREGATE_ONLY_SOURCE_NO_GT_PAIRING
+  SOURCE_COMPLETE_GENOTYPES_UNAVAILABLE
+  PRODUCT_INCOMPLETE
+  PRODUCT_BOUND_EXCEEDED
+}
+
+enum LongReadTrPrimaryMotifMeasurementUnit {
+  EXACT_PRIMARY_MOTIF_UNITS
+}
+
+enum LongReadTrPrimaryMotifMeasurementScope {
+  WHOLE_REPRESENTED_ALLELE
+}
+
+type LongReadTrPrimaryMotifAlleleBin {
+  exact_units: Int!
+  allele_copies: Int!
+}
+
+# Anonymous source-complete diploid cells. No sample ID, raw GT, or exact ALT
+# contributor identity is part of this public product.
+type LongReadTrPrimaryMotifGenotypeCell {
+  shorter_exact_units: Int!
+  longer_exact_units: Int!
+  people: Int!
+}
+
+type LongReadTrPrimaryMotifGenotypeMeasurement {
+  status: LongReadTrPrimaryMotifGenotypeStatus!
+  reason_code: LongReadTrPrimaryMotifGenotypeReason
+  called_diploid_people: Int
+  no_call_people: Int
+  cells: [LongReadTrPrimaryMotifGenotypeCell!]!
+}
+
+type LongReadTrPrimaryMotifProvenance {
+  product_run_id: String!
+  primary_database: String!
+  primary_run_id: String!
+  primary_task_id: String!
+  primary_attempt_id: String!
+  source_variant_id: String!
+  registry_digest: String!
+  registry_approval_state: String!
+  algorithm_version: String!
+  algorithm_sha256: String!
+  anchor_rule: String!
+  source_record_sha256: String!
+  allele_receipt_sha256: String!
+  genotype_receipt_sha256: String
+  bounds_status: String!
+  serialized_bytes: Int!
+  returned_bins: Int!
+  returned_cells: Int!
+}
+
+# A separate exact primary-motif product. This is not LPS, source MC, a
+# short-read distribution, or whole-record ALT-minus-REF length.
+type LongReadTrPrimaryMotifMeasurement {
+  status: LongReadTrPrimaryMotifMeasurementStatus!
+  reason_code: LongReadTrPrimaryMotifMeasurementReason
+  motif: String
+  biological_role: String
+  metric: String!
+  unit: LongReadTrPrimaryMotifMeasurementUnit!
+  scope: LongReadTrPrimaryMotifMeasurementScope!
+  called_alleles: Int
+  reference_alleles: Int
+  alternate_alleles: Int
+  alternate_identities_checked: Int
+  bins: [LongReadTrPrimaryMotifAlleleBin!]!
+  genotype: LongReadTrPrimaryMotifGenotypeMeasurement!
+  provenance: LongReadTrPrimaryMotifProvenance
+}
+
 type LongReadTandemRepeatLocus {
   id: String!
   source_trid: String!
@@ -541,6 +638,7 @@ type LongReadTandemRepeatLocus {
   component_measurement_available: Boolean!
   component_measurement_unavailable_reason: String
   primary_repeat: LongReadTrPrimaryRepeat!
+  primary_motif_measurement: LongReadTrPrimaryMotifMeasurement!
   short_read_context: LongReadTrShortReadContext!
   # Deprecated compatibility field; resolved from the same exact, validated context.
   short_read_matches: [LongReadTrCatalogMatch!]!

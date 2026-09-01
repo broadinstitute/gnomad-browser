@@ -28,6 +28,21 @@ const longReadTrLocusQuery = `
         catalog_id catalog_digest registry_digest
         component { chrom start0 end0 motif }
       }
+      primary_motif_measurement {
+        status reason_code motif biological_role metric unit scope called_alleles
+        reference_alleles alternate_alleles alternate_identities_checked
+        bins { exact_units allele_copies }
+        genotype {
+          status reason_code called_diploid_people no_call_people
+          cells { shorter_exact_units longer_exact_units people }
+        }
+        provenance {
+          product_run_id primary_database primary_run_id primary_task_id primary_attempt_id
+          source_variant_id registry_digest registry_approval_state algorithm_version
+          algorithm_sha256 anchor_rule source_record_sha256 allele_receipt_sha256
+          genotype_receipt_sha256 bounds_status serialized_bytes returned_bins returned_cells
+        }
+      }
       region { chrom start0 end0 size }
       components { chrom start0 end0 motif }
       source_records {

@@ -210,6 +210,66 @@ export type LongReadTrPrimaryRepeat = {
   registry_digest: string | null
 }
 
+export type PrimaryMotifMeasurementData = {
+  status: 'AVAILABLE' | 'UNAVAILABLE'
+  reason_code:
+    | 'PUBLIC_PRODUCT_NOT_APPROVED'
+    | 'PRIMARY_REPEAT_IDENTITY_UNAVAILABLE'
+    | 'SOURCE_RECORD_COUNT_NOT_ONE'
+    | 'NO_ACCEPTED_PRODUCT_RUN'
+    | 'PRODUCT_IDENTITY_MISMATCH'
+    | 'PRODUCT_INCOMPLETE'
+    | 'PRODUCT_BOUND_EXCEEDED'
+    | 'PRODUCT_QUERY_FAILED'
+    | null
+  motif: string | null
+  biological_role: string | null
+  metric: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1'
+  unit: 'EXACT_PRIMARY_MOTIF_UNITS'
+  scope: 'WHOLE_REPRESENTED_ALLELE'
+  called_alleles: number | null
+  reference_alleles: number | null
+  alternate_alleles: number | null
+  alternate_identities_checked: number | null
+  bins: { exact_units: number; allele_copies: number }[]
+  genotype: {
+    status: 'AVAILABLE' | 'UNAVAILABLE'
+    reason_code:
+      | 'AGGREGATE_ONLY_SOURCE_NO_GT_PAIRING'
+      | 'SOURCE_COMPLETE_GENOTYPES_UNAVAILABLE'
+      | 'PRODUCT_INCOMPLETE'
+      | 'PRODUCT_BOUND_EXCEEDED'
+      | null
+    called_diploid_people: number | null
+    no_call_people: number | null
+    cells: {
+      shorter_exact_units: number
+      longer_exact_units: number
+      people: number
+    }[]
+  }
+  provenance: {
+    product_run_id: string
+    primary_database: string
+    primary_run_id: string
+    primary_task_id: string
+    primary_attempt_id: string
+    source_variant_id: string
+    registry_digest: string
+    registry_approval_state: string
+    algorithm_version: string
+    algorithm_sha256: string
+    anchor_rule: string
+    source_record_sha256: string
+    allele_receipt_sha256: string
+    genotype_receipt_sha256: string | null
+    bounds_status: string
+    serialized_bytes: number
+    returned_bins: number
+    returned_cells: number
+  } | null
+}
+
 export type LongReadTrLocus = {
   id: string
   source_trid: string
@@ -242,6 +302,7 @@ export type LongReadTrLocus = {
   component_measurement_available: boolean
   component_measurement_unavailable_reason: string | null
   primary_repeat: LongReadTrPrimaryRepeat
+  primary_motif_measurement: PrimaryMotifMeasurementData
   components: TrLocusComponent[]
   source_records: {
     record_index: number

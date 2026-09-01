@@ -24,6 +24,7 @@ import {
   preflightY1AcceptedSources,
 } from './queries/long_read_y1_provenance'
 import { preflightY1Ancillaries } from './graphql/resolvers/ancillary-availability'
+import { preflightLongReadPrimaryMotifProduct } from './queries/long_read_tr_primary_motif_measurement'
 
 import { loadWhitelist } from './whitelist'
 
@@ -255,6 +256,7 @@ const start = async () => {
   // absence is represented as an unavailable capability rather than zero rows.
   await preflightY1AcceptedSources()
   await preflightY1Ancillaries()
+  await preflightLongReadPrimaryMotifProduct()
   app.listen(config.PORT)
 }
 

@@ -19,6 +19,7 @@ import {
   unavailableReason,
 } from './LongReadTrVisualizations'
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
+import PrimaryMotifMeasurementSection from './PrimaryMotifMeasurementSection'
 import LocalHaplotypeBackgroundsSection from './LocalHaplotypeBackgroundsSection'
 import {
   strchiveLocusUrl,
@@ -332,6 +333,30 @@ const LongReadTandemRepeatPage = ({
           locus.delta_min
         )} to ${signed(locus.delta_max)} bp)`
   const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
+  // Compatibility for retained Phase 4–6 story fixtures. Live GraphQL always supplies
+  // this non-null typed product field; an omitted fixture must remain fail-closed.
+  const primaryMotifMeasurement = locus.primary_motif_measurement || {
+    status: 'UNAVAILABLE' as const,
+    reason_code: 'PUBLIC_PRODUCT_NOT_APPROVED' as const,
+    motif: null,
+    biological_role: null,
+    metric: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1' as const,
+    unit: 'EXACT_PRIMARY_MOTIF_UNITS' as const,
+    scope: 'WHOLE_REPRESENTED_ALLELE' as const,
+    called_alleles: null,
+    reference_alleles: null,
+    alternate_alleles: null,
+    alternate_identities_checked: null,
+    bins: [],
+    genotype: {
+      status: 'UNAVAILABLE' as const,
+      reason_code: 'PRODUCT_INCOMPLETE' as const,
+      called_diploid_people: null,
+      no_call_people: null,
+      cells: [],
+    },
+    provenance: null,
+  }
   const localHaplotypeBackgroundsEnabled = isExperimentalFeatureEnabled('tr_haplotype_backgrounds')
   const unavailableData: { label: string; reason: string }[] = []
   if (!repeatPlotsAvailable) {
@@ -341,6 +366,15 @@ const LongReadTandemRepeatPage = ({
         locus.components.length > 1
           ? 'compound loci do not have one unambiguous component repeat count'
           : unavailableReason(locus.repeat_count_plots.reason_code),
+    })
+  }
+  if (primaryMotifMeasurement.status !== 'AVAILABLE') {
+    unavailableData.push({
+      label: 'Whole-record exact primary-motif measurement',
+      reason:
+        primaryMotifMeasurement.reason_code === 'PUBLIC_PRODUCT_NOT_APPROVED'
+          ? 'the candidate primary-motif registry and product are not approved for public display'
+          : unavailableReason(primaryMotifMeasurement.reason_code),
     })
   }
   let selectedAlleleDetail: React.ReactNode
@@ -501,6 +535,8 @@ const LongReadTandemRepeatPage = ({
         lrCohort={locus.lr_cohort}
         context={locus.short_read_context}
       />
+
+      <PrimaryMotifMeasurementSection measurement={primaryMotifMeasurement} />
 
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}
