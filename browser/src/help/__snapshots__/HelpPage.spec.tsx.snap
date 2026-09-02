@@ -256,6 +256,7 @@ exports[`Help Page has no unexpected changes 1`] = `
 }
 
 .c19 {
+  --code-background-color: #eef0f3;
   font-size: 16px;
 }
 
@@ -276,7 +277,7 @@ exports[`Help Page has no unexpected changes 1`] = `
 .c19 p {
   margin-top: 15px;
   margin-bottom: 15px;
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
 .c19 a {
@@ -295,6 +296,33 @@ exports[`Help Page has no unexpected changes 1`] = `
   line-height: 1.4;
 }
 
+.c19 code {
+  padding: 0.15em 0.35em;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 0.3em;
+  background: var(--code-background-color);
+  font-family: 'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+  font-size: 0.9em;
+}
+
+.c19 pre {
+  overflow-x: auto;
+  padding: 1em;
+  border: 1px solid rgba(0,0,0,0.1);
+  margin: 1.25em 0;
+  border-radius: 0.4em;
+  background: var(--code-background-color);
+  line-height: 1.5;
+}
+
+.c19 pre code {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font-size: 0.875em;
+}
+
 .c19 ol,
 .c19 ul {
   padding-left: 20px;
@@ -303,6 +331,7 @@ exports[`Help Page has no unexpected changes 1`] = `
 
 .c19 li {
   margin-bottom: 0.5em;
+  line-height: 1.6;
 }
 
 .c19 table {
@@ -314,6 +343,7 @@ exports[`Help Page has no unexpected changes 1`] = `
   padding: 0.5em 10px 0.5em 0;
   border-bottom: 1px solid #ccc;
   font-weight: normal;
+  line-height: 1.6;
   text-align: left;
 }
 
@@ -323,6 +353,7 @@ exports[`Help Page has no unexpected changes 1`] = `
   background-position: center right;
   background-repeat: no-repeat;
   font-weight: bold;
+  line-height: 1.6;
 }
 
 .c14 {
