@@ -256,6 +256,7 @@ export const exportVariantsToCsv = (
       label: 'Long-read display allele ID',
       getValue: (variant: VariantTableVariant) => {
         if (!variant.long_read) return ''
+        if (variant.long_read_tr_locus_id) return variant.long_read_tr_label || ''
         const alleles =
           variant.long_read_alleles ||
           (variant.long_read_details ? [variant.long_read_details] : [])
@@ -505,6 +506,7 @@ export type VariantTableVariant = {
   alt_index?: number | null
   alt_count?: number | null
   long_read_tr_locus_id?: string | null
+  long_read_tr_label?: string | null
   long_read_tr_source_variant_id?: string | null
   long_read_tr_alt_count?: number | null
   chrom?: string

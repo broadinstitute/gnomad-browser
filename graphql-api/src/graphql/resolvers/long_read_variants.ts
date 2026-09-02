@@ -6,6 +6,10 @@ import {
   fetchVariantsByGene,
   fetchVariantsByRegion,
 } from '../../queries/long_read_variants'
+import {
+  buildLongReadTrComponentContract,
+  buildLongReadTrPresentation,
+} from '../../queries/long_read_tr_presentation'
 
 const addHgvs = (hit: any) => ({
   ...hit,
@@ -61,6 +65,11 @@ const resolveVariantsInRegion = async (obj: any, args: any, _ctx: any) => {
   return hits.map(addHgvs)
 }
 
+const trLocusComponents = (variant: any) =>
+  Array.isArray(variant.tr_locus_components) && variant.tr_locus_components.length > 0
+    ? variant.tr_locus_components
+    : null
+
 const resolvers = {
   Query: {
     long_read_variant: resolveVariant,
@@ -70,6 +79,23 @@ const resolvers = {
   },
   Region: {
     long_read_variants: resolveVariantsInRegion,
+  },
+  LongReadVariant: {
+    tr_locus_presentation: (variant: any) => {
+      if (variant.tr_locus_presentation) return variant.tr_locus_presentation
+      const components = trLocusComponents(variant)
+      return components ? buildLongReadTrPresentation(components.length) : null
+    },
+    tr_locus_bounds: (variant: any) => {
+      if (variant.tr_locus_bounds) return variant.tr_locus_bounds
+      const components = trLocusComponents(variant)
+      return components ? buildLongReadTrComponentContract(components).bounds : null
+    },
+    tr_locus_component_summary: (variant: any) => {
+      if (variant.tr_locus_component_summary) return variant.tr_locus_component_summary
+      const components = trLocusComponents(variant)
+      return components ? buildLongReadTrComponentContract(components).component_summary : null
+    },
   },
 }
 

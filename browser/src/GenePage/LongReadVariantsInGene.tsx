@@ -24,6 +24,16 @@ const query = `
     region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
       long_read_variants(dataset: $datasetId, lr_cohort: $lrCohort) {
         variant_id source_variant_id alt_index alt_count lr_cohort chrom pos end length ref alt allele_type filters motifs tr_locus_id tr_structure rsids
+        tr_locus_presentation {
+          source_representation_kind presentation_layout presentation_reason
+          classification_source classification_release classification_digest reviewed_override_digest
+        }
+        tr_locus_bounds {
+          component_envelope_start0 component_envelope_end0 component_envelope_length_bp component_envelope_basis
+          variation_cluster_start0 variation_cluster_end0 variation_cluster_length_bp variation_cluster_status
+          bounds_source bounds_release bounds_digest
+        }
+        tr_locus_component_summary { ordered_component_count distinct_stored_motif_count }
         main_reference_region { chrom start stop }
         sv_consequences major_consequence cadd_phred phylop
         freq {

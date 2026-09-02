@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef, forwardRef, useImperativeHandle } from 'react'
 import styled from 'styled-components'
 import { Badge, Button } from '@gnomad/ui'
+import { parseTrLocusId, trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
 import {
-  parseTrLocusId,
-  trLocusDisplayEnvelope,
-  trLocusUrl,
-} from '@gnomad/dataset-metadata/longReadTrLocusId'
+  getTrLocusRowDisplay,
+  TrLocusBoundsContract,
+  TrLocusComponentSummaryContract,
+  TrLocusPresentationContract,
+  TrLocusRowDisplay,
+} from '@gnomad/dataset-metadata/longReadTrLocusPresentation'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm, VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import CategoryFilterControl from '../CategoryFilterControl'
 import { SUPERPOPULATION_COLORS } from './colors'
@@ -40,6 +43,9 @@ type DerivedVariant = LRVariant & {
   source_variant_id?: string
   tr_locus_id?: string | null
   tr_id?: string | null
+  tr_locus_presentation?: TrLocusPresentationContract | null
+  tr_locus_bounds?: TrLocusBoundsContract | null
+  tr_locus_component_summary?: TrLocusComponentSummaryContract | null
   lr_cohort?: 'hgsvc_hprc' | 'aou'
   group_count: number
   carrier_count: number
@@ -221,6 +227,13 @@ const StyledTable = styled.table`
   td.numeric {
     text-align: right;
   }
+
+  td.tr-locus-identity {
+    min-width: min(22rem, 75vw);
+    max-width: 42rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
 `
 
 const TypeDot = styled.span<{ $color: string }>`
@@ -231,6 +244,33 @@ const TypeDot = styled.span<{ $color: string }>`
   background: ${(p) => p.$color};
   margin-right: 4px;
   vertical-align: middle;
+`
+
+const TrLocusIdentity = styled.span`
+  display: grid;
+  min-width: 0;
+  max-width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75ch;
+  white-space: normal;
+  overflow-wrap: anywhere;
+`
+
+const TrLocusCopy = styled.span`
+  display: block;
+  min-width: 0;
+  max-height: 1.2em;
+  overflow: auto;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  scrollbar-width: thin;
+`
+
+const TrLocusMetadata = styled.span`
+  color: #555;
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
 `
 
 const PredictorDot = styled.span<{ $color: string }>`
@@ -323,13 +363,25 @@ const getHaplotypeTrLocusKey = (v: any): string => {
 const getTrLocusId = (v: any): string | null =>
   parseTrLocusId(v.tr_locus_id || v.tr_id || '')?.canonicalId || null
 
-const getTrLocusDisplayLabel = (v: DerivedVariant): string => {
+const getTrLocusDisplay = (v: DerivedVariant): TrLocusRowDisplay | null => {
   const locus = parseTrLocusId(v.tr_locus_id || v.tr_id || '')
-  if (!locus) return formatLongReadVariantId(v.source_variant_id || v.variant_id)
-  const envelope = trLocusDisplayEnvelope(locus)
-  return `${envelope.chrom}:${envelope.start1.toLocaleString()}–${envelope.end1.toLocaleString()} · ${locus.components
-    .map((component) => component.motif)
-    .join(' + ')}`
+  if (!locus) return null
+  return getTrLocusRowDisplay({
+    locus,
+    presentation: v.tr_locus_presentation,
+    bounds: v.tr_locus_bounds,
+    componentSummary: v.tr_locus_component_summary,
+    reviewedPrimaryLabel: v.gnomad_str,
+  })
+}
+
+const getTrLocusDisplayLabel = (v: DerivedVariant): string =>
+  getTrLocusDisplay(v)?.label || formatLongReadVariantId(v.source_variant_id || v.variant_id)
+
+const exactSharedTrValue = <T,>(values: Array<T | null | undefined>): T | null => {
+  if (!values.length || values.some((value) => value == null)) return null
+  const serialized = new Set(values.map((value) => JSON.stringify(value)))
+  return serialized.size === 1 ? values[0]! : null
 }
 
 const getHaplotypeVariantKey = (v: any): string =>
@@ -519,6 +571,7 @@ const TableRow = React.memo(function TableRow({
   const identity = formatLongReadAlleleDisplay(v)
   const unavailable = 'Exact-allele data is unavailable for a tandem-repeat locus row.'
   const locusId = getTrLocusId(v)
+  const locusDisplay = v.is_tr ? getTrLocusDisplay(v) : null
 
   return (
     <tr
@@ -532,19 +585,42 @@ const TableRow = React.memo(function TableRow({
       }}
       onClick={() => onRowClick?.(v.pos)}
     >
-      <td style={{ fontFamily: 'monospace', fontSize: '12px' }}>
-        <Link
-          to={
-            v.is_tr && locusId
-              ? trLocusUrl(locusId, v.lr_cohort || lrCohort)
-              : longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)
-          }
-          preserveSelectedDataset={false}
-          onClick={(e: React.MouseEvent) => e.stopPropagation()}
-          title={v.is_tr ? `Canonical tandem-repeat locus ${locusId}` : identity.accessibleLabel}
-        >
-          {v.is_tr ? getTrLocusDisplayLabel(v) : identity.compactLabel}
-        </Link>
+      <td
+        className={v.is_tr ? 'tr-locus-identity' : undefined}
+        style={{ fontFamily: 'monospace', fontSize: '12px' }}
+      >
+        {v.is_tr && locusId && locusDisplay ? (
+          <TrLocusIdentity>
+            <TrLocusCopy
+              aria-label="Scrollable locus label, interval, and component summary"
+              role="region"
+              tabIndex={0}
+            >
+              <span>{locusDisplay.label}</span>{' '}
+              <TrLocusMetadata>
+                {locusDisplay.intervalLabel} · {locusDisplay.summaryLabel}
+              </TrLocusMetadata>
+            </TrLocusCopy>
+            <Link
+              to={trLocusUrl(locusId, v.lr_cohort || lrCohort)}
+              preserveSelectedDataset={false}
+              onClick={(e: React.MouseEvent) => e.stopPropagation()}
+              title={locusDisplay.detailsAccessibleLabel}
+              aria-label={locusDisplay.detailsAccessibleLabel}
+            >
+              Details
+            </Link>
+          </TrLocusIdentity>
+        ) : (
+          <Link
+            to={longReadVariantUrl(v.variant_id, v.lr_cohort || lrCohort)}
+            preserveSelectedDataset={false}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            title={identity.accessibleLabel}
+          >
+            {identity.compactLabel}
+          </Link>
+        )}
         {!v.is_tr && identity.alleleLabel && (
           <span style={{ marginLeft: 4 }} title={identity.label}>
             <Badge level="info">{identity.alleleLabel.replace('Allele ', 'ALT ')}</Badge>
@@ -791,8 +867,11 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         dbsnp_id: null,
         tr_id: locusId,
         tr_locus_id: locusId,
+        tr_locus_presentation: v.tr_locus_presentation ?? null,
+        tr_locus_bounds: v.tr_locus_bounds ?? null,
+        tr_locus_component_summary: v.tr_locus_component_summary ?? null,
         tr_motifs: isTr ? parseTrLocusId(locusId || '')?.components.map((component) => component.motif).join(',') || null : null,
-        gnomad_str: null,
+        gnomad_str: v.gnomad_str ?? null,
         allele_methylation: null,
         motif_counts: null,
         allele_purity: null,
@@ -957,6 +1036,9 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         dbsnp_id: isTrv ? null : v.dbsnp_id ?? null,
         tr_id: locusId,
         tr_locus_id: locusId,
+        tr_locus_presentation: v.tr_locus_presentation ?? null,
+        tr_locus_bounds: v.tr_locus_bounds ?? null,
+        tr_locus_component_summary: v.tr_locus_component_summary ?? null,
         tr_motifs: v.tr_motifs ?? null,
         gnomad_str: v.gnomad_str ?? null,
         allele_methylation: v.allele_methylation ?? null,
@@ -982,7 +1064,44 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     return result
   }, [mode, haplotypeGroups, lrCohort])
 
-  const variants = mode === 'summary' ? summaryDerivedVariants : haplotypeDerivedVariants
+  const trContractsByLocus = useMemo(() => {
+    const rowsByLocus = new Map<string, any[]>()
+    summaryVariants.forEach((variant) => {
+      const locusId = getTrLocusId(variant)
+      if (locusId) rowsByLocus.set(locusId, [...(rowsByLocus.get(locusId) || []), variant])
+    })
+    return new Map(
+      Array.from(rowsByLocus.entries()).map(([locusId, variantsAtLocus]) => [
+        locusId,
+        {
+          tr_locus_presentation: exactSharedTrValue(
+            variantsAtLocus.map((variant) => variant.tr_locus_presentation)
+          ),
+          tr_locus_bounds: exactSharedTrValue(
+            variantsAtLocus.map((variant) => variant.tr_locus_bounds)
+          ),
+          tr_locus_component_summary: exactSharedTrValue(
+            variantsAtLocus.map((variant) => variant.tr_locus_component_summary)
+          ),
+          gnomad_str: exactSharedTrValue(
+            variantsAtLocus.map((variant) => variant.gnomad_str)
+          ),
+        },
+      ])
+    )
+  }, [summaryVariants])
+
+  // REST haplotype payloads intentionally stay compact. Join the already-loaded
+  // GraphQL row contracts after the expensive grouping derivation, so viewport
+  // changes do not force that derivation to run again.
+  const variants = useMemo(() => {
+    if (mode === 'summary') return summaryDerivedVariants
+    return haplotypeDerivedVariants.map((variant) => {
+      const locusId = getTrLocusId(variant)
+      const contracts = locusId ? trContractsByLocus.get(locusId) : null
+      return contracts ? { ...variant, ...contracts } : variant
+    })
+  }, [mode, summaryDerivedVariants, haplotypeDerivedVariants, trContractsByLocus])
 
   const totalGroups = haplotypeGroups.groups.length
   const totalClusters = haplotypeGroups.clusters?.length ?? 0

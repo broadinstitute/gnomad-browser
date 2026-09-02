@@ -60,7 +60,10 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       long_read_tr_source_variant_id: null,
       long_read_tr_source_variant_ids: [httSource],
       long_read_tr_alt_count: 72,
-      long_read_tr_label: '4:3,074,877–3,075,040 · CAG + CAA + CCG + CCT + GCC + CCG · HTT',
+      long_read_tr_label:
+        'Multi-component TR locus · 6 components / 5 motifs · 4:3,074,877–3,075,040',
+      long_read_tr_interval_label: 'GRCh38 component envelope 4:[3,074,876, 3,075,040) · 164 bp',
+      long_read_tr_component_summary_label: '6 components / 5 distinct stored motifs',
       long_read_tr_delta_min: -24,
       long_read_tr_delta_max: 48,
       long_read_tr_delta_label: '-24..+48 bp',
@@ -75,15 +78,19 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
     const { container } = render(
       <>{idColumn.render(rows[0], 'variant_id', { highlightWords: [] })}</>
     )
-    const link = screen.getByRole('link', { name: /4:3,074,877–3,075,040.*72 exact ALT alleles/ })
+    const link = screen.getByRole('link', {
+      name: /Details for Multi-component TR locus.*component envelope/,
+    })
     expect(link.getAttribute('href')).toBe(
       `/tandem-repeat/${httLocus}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
     expect(container.querySelectorAll('a')).toHaveLength(1)
     expect(container.querySelector('div, br')).toBeNull()
     expect(container.textContent).toBe(
-      '4:3,074,877–3,075,040 · CAG + CAA + CCG + CCT + GCC + CCG · HTTΔbp -24..+48 bpTR'
+      'Multi-component TR locus · 6 components / 5 motifs · 4:3,074,877–3,075,040 GRCh38 component envelope 4:[3,074,876, 3,075,040) · 164 bp · 6 components / 5 distinct stored motifsDetailsΔbp -24..+48 bpTR'
     )
+    expect(link.getAttribute('aria-label')).not.toContain(httLocus)
+    expect(link.getAttribute('title')).not.toContain(httLocus)
 
     const geneColumns: any = getColumnsForContext(
       { gene_id: 'ENSG00000197386', mane_select_transcript: { ensembl_id: 'ENST00000355072' } },
@@ -92,7 +99,6 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
     const hgvs = render(<>{geneColumns.hgvs.render(rows[0], 'hgvs', { highlightWords: [] })}</>)
     expect(hgvs.container.textContent).toBe('—')
     expect(hgvs.container.textContent).not.toContain('†')
-
     ;['ac', 'an', 'af', 'consequence', 'rsid'].forEach((key) => {
       const column = variantTableColumns.find((candidate) => candidate.key === key)!
       const rendered = render(<>{column.render(rows[0], key, { highlightWords: [] })}</>)
@@ -115,13 +121,56 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
         }),
       ]
     )[0]
-    expect(row.long_read_tr_label).toBe('4:3,208,720–3,208,734 · A')
+    expect(row.long_read_tr_label).toBe('A tandem repeat · 4:3,208,720–3,208,734')
 
     render(<>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>)
     expect(screen.getByRole('link').getAttribute('href')).toBe(
       `/tandem-repeat/${locus}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
   })
+
+  test.each([24, 103, 180])(
+    'keeps a %i-component row and accessible action bounded without motif concatenation',
+    (componentCount) => {
+      const motifs = ['A', 'C', 'G', 'T', 'AC', 'GT', 'CAG']
+      const locus = Array.from({ length: componentCount }, (_, index) => {
+        const start0 = 1000 + index * 3
+        return `3-${start0}-${start0 + 2}-${motifs[index % motifs.length]}`
+      }).join('+')
+      const row: any = mergeLongReadVariants(
+        [],
+        [
+          trAllele({
+            variant_id: `chr3-1000-TRV-${componentCount}~1`,
+            source_variant_id: `chr3-1000-TRV-${componentCount}`,
+            tr_locus_id: locus,
+            chrom: '3',
+            pos: 1000,
+          }),
+        ]
+      )[0]
+
+      const { container } = render(
+        <>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>
+      )
+      expect(container.textContent).toContain(
+        `Multi-component TR locus · ${componentCount} components / 7 motifs`
+      )
+      expect(container.textContent).not.toContain('A + C + G')
+      const details = screen.getByRole('link', {
+        name: new RegExp(`Details for Multi-component TR locus · ${componentCount} components`),
+      })
+      expect(details.textContent).toBe('Details')
+      expect(details.getAttribute('aria-label')).not.toContain(locus)
+      expect(getComputedStyle(details.parentElement!).maxWidth).toBe('100%')
+      expect(getComputedStyle(details.parentElement!).overflowWrap).toBe('anywhere')
+      const summaryScroller = screen.getByRole('region', {
+        name: 'Scrollable locus label, interval, and component summary',
+      })
+      expect(summaryScroller.getAttribute('tabindex')).toBe('0')
+      expect(getComputedStyle(summaryScroller).overflow).toBe('auto')
+    }
+  )
 
   test('keeps distinct same-position authoritative loci and component layouts separate', () => {
     const rows: any[] = mergeLongReadVariants(
@@ -161,10 +210,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       { geneSymbol: 'HTT' }
     )
     expect(rows).toHaveLength(1)
-    expect(rows[0].long_read_tr_source_variant_ids).toEqual([
-      httSource,
-      'chr4-3074877-TRV-164',
-    ])
+    expect(rows[0].long_read_tr_source_variant_ids).toEqual([httSource, 'chr4-3074877-TRV-164'])
     expect(rows[0].long_read_tr_source_alt_count).toBe(2)
   })
 
@@ -260,7 +306,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       expect.arrayContaining([
         httLocus,
         httSource,
-        '4:3,074,877–3,075,040 · CAG + CAA + CCG + CCT + GCC + CCG · HTT',
+        'Multi-component TR locus · 6 components / 5 motifs · 4:3,074,877–3,075,040',
         `${httSource}~2`,
       ])
     )
@@ -294,6 +340,9 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       const csv = blob.mock.calls[0][0][0]
       expect(csv).toContain('Long-read TR locus ID')
       expect(csv).toContain('Long-read TR locus loaded ALT count')
+      expect(csv).toContain(
+        'Multi-component TR locus · 6 components / 5 motifs · 4:3,074,877–3,075,040'
+      )
       expect(csv).toContain(httLocus)
       expect(csv).toContain(`${httSource}~1;${httSource}~2`)
       expect(csv).toContain('Long-read TR locus source record ID')

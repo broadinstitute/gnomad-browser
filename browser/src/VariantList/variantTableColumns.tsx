@@ -1,5 +1,6 @@
 import React from 'react'
 import Highlighter from 'react-highlight-words'
+import styled from 'styled-components'
 
 import { Badge, ExternalLink, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
@@ -20,6 +21,38 @@ import { DatasetId, isLongRead } from '@gnomad/dataset-metadata/metadata'
 import { longReadVariantUrl } from '../LongReadVariantPage/longReadCohort'
 import { formatLongReadAlleleDisplay } from '../LongReadVariantPage/formatLongReadVariantId'
 import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
+
+const TrLocusIdentity = styled.span`
+  display: grid;
+  min-width: 0;
+  max-width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 0.75ch;
+  white-space: normal;
+  overflow-wrap: anywhere;
+`
+
+const TrLocusCopy = styled.span`
+  display: block;
+  min-width: 0;
+  max-height: 2.4em;
+  overflow: auto;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  scrollbar-width: thin;
+`
+
+const TrLocusLabel = styled.span`
+  min-width: 0;
+  overflow-wrap: anywhere;
+`
+
+const TrLocusMetadata = styled.span`
+  color: #555;
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+`
 
 const categoryColors = {
   lof: '#DD2C00',
@@ -435,28 +468,45 @@ const variantTableColumns: VariantTableColumn[] = [
       if (row.is_long_read_tr_locus) {
         return (
           <Cell title={row.long_read_tr_tooltip}>
-            <Link
-              target="_blank"
-              to={trLocusUrl(row.long_read_tr_locus_id, row.lr_cohort)}
-              preserveSelectedDataset={false}
-              title={row.long_read_tr_tooltip}
-              aria-label={row.long_read_tr_tooltip}
-            >
-              <Highlighter
-                autoEscape
-                searchWords={highlightWords}
-                textToHighlight={row.long_read_tr_label}
-              />
-            </Link>
-            <span
-              style={{ marginLeft: '0.75ch', whiteSpace: 'nowrap' }}
-              title={row.long_read_tr_delta_unavailable_reason || 'Complete total allele length change (ALT − REF, bp) range'}
-            >
-              Δbp {row.long_read_tr_delta_label}
-            </span>
-            <span style={{ marginLeft: '0.5ch', whiteSpace: 'nowrap' }}>
-              <Badge level="info">TR</Badge>
-            </span>
+            <TrLocusIdentity>
+              <TrLocusCopy
+                aria-label="Scrollable locus label, interval, and component summary"
+                role="region"
+                tabIndex={0}
+              >
+                <TrLocusLabel>
+                  <Highlighter
+                    autoEscape
+                    searchWords={highlightWords}
+                    textToHighlight={row.long_read_tr_label}
+                  />
+                </TrLocusLabel>{' '}
+                <TrLocusMetadata>
+                  {row.long_read_tr_interval_label} · {row.long_read_tr_component_summary_label}
+                </TrLocusMetadata>
+              </TrLocusCopy>
+              <Link
+                target="_blank"
+                to={trLocusUrl(row.long_read_tr_locus_id, row.lr_cohort)}
+                preserveSelectedDataset={false}
+                title={row.long_read_tr_details_accessible_label}
+                aria-label={row.long_read_tr_details_accessible_label}
+              >
+                Details
+              </Link>
+              <span
+                style={{ whiteSpace: 'nowrap' }}
+                title={
+                  row.long_read_tr_delta_unavailable_reason ||
+                  'Complete total allele length change (ALT − REF, bp) range'
+                }
+              >
+                Δbp {row.long_read_tr_delta_label}
+              </span>
+              <span style={{ whiteSpace: 'nowrap' }}>
+                <Badge level="info">TR</Badge>
+              </span>
+            </TrLocusIdentity>
           </Cell>
         )
       }

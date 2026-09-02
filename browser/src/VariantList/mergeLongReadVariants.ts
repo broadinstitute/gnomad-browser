@@ -7,6 +7,12 @@ import {
   trLocusDisplayEnvelope,
   TrLocusId,
 } from '@gnomad/dataset-metadata/longReadTrLocusId'
+import {
+  getTrLocusRowDisplay,
+  TrLocusBoundsContract,
+  TrLocusComponentSummaryContract,
+  TrLocusPresentationContract,
+} from '@gnomad/dataset-metadata/longReadTrLocusPresentation'
 
 export type LongReadPopulationFrequency = {
   id: string
@@ -77,6 +83,9 @@ export type RawLongReadVariant = {
   filters?: string[] | null
   motifs?: string[] | null
   tr_locus_id?: string | null
+  tr_locus_presentation?: TrLocusPresentationContract | null
+  tr_locus_bounds?: TrLocusBoundsContract | null
+  tr_locus_component_summary?: TrLocusComponentSummaryContract | null
   tr_structure?: string | null
   rsids?: string[] | null
   freq?: {
@@ -255,7 +264,8 @@ const completeTrDeltaBounds = (variants: RawLongReadVariant[]): TrDeltaBounds =>
     return {
       min: null,
       max: null,
-      unavailableReason: 'A complete finite total allele length change (ALT − REF, bp) is unavailable.',
+      unavailableReason:
+        'A complete finite total allele length change (ALT − REF, bp) is unavailable.',
     }
   }
   if (!deltas.length) {
@@ -273,16 +283,26 @@ const exactSharedLabel = (values: Array<string | null | undefined>) => {
   return labels.length === 1 ? labels[0] : null
 }
 
-const trLocusLabel = (group: TrLocusGroup, options: LongReadMergeOptions): string => {
-  const envelope = trLocusDisplayEnvelope(group.locus)
-  const motifs = group.locus.components.map((component) => component.motif).join(' + ')
-  const context =
-    exactSharedLabel(group.variants.map((variant) => variant.gnomad_str)) ||
-    options.geneSymbol?.trim()
-  return `${envelope.chrom}:${envelope.start1.toLocaleString()}–${envelope.end1.toLocaleString()} · ${motifs}${
-    context ? ` · ${context}` : ''
-  }`
+const exactSharedContract = <T>(values: Array<T | null | undefined>): T | null => {
+  if (!values.length || values.some((value) => value == null)) return null
+  const serialized = new Set(values.map((value) => JSON.stringify(value)))
+  return serialized.size === 1 ? values[0]! : null
 }
+
+const trLocusDisplay = (group: TrLocusGroup) =>
+  getTrLocusRowDisplay({
+    locus: group.locus,
+    presentation: exactSharedContract(
+      group.variants.map((variant) => variant.tr_locus_presentation)
+    ),
+    bounds: exactSharedContract(group.variants.map((variant) => variant.tr_locus_bounds)),
+    componentSummary: exactSharedContract(
+      group.variants.map((variant) => variant.tr_locus_component_summary)
+    ),
+    reviewedPrimaryLabel: exactSharedLabel(
+      group.variants.map((variant) => variant.gnomad_str)
+    ),
+  })
 
 const formatSignedDelta = (value: number) => (value > 0 ? `+${value}` : String(value))
 
@@ -336,7 +356,7 @@ function mapTranscriptConsequence(lr: RawLongReadVariant) {
 export const mergeLongReadVariants = <T extends { variant_id: string }>(
   srVariants: T[],
   lrVariants: RawLongReadVariant[],
-  options: LongReadMergeOptions = {}
+  _options: LongReadMergeOptions = {}
 ): (T & {
   long_read?: LongReadSequencingTypeData | null
   long_read_details?: LongReadVariantDetails | null
@@ -401,7 +421,7 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
       const filters = Array.from(
         new Set(group.variants.flatMap((variant) => variant.filters || []))
       )
-      const label = trLocusLabel(group, options)
+      const display = trLocusDisplay(group)
       const loadedAltCount = group.variants.length
       const sourceVariantIds = Array.from(
         new Set(group.variants.map((variant) => variant.source_variant_id!))
@@ -476,17 +496,21 @@ export const mergeLongReadVariants = <T extends { variant_id: string }>(
         long_read_tr_source_variant_ids: sourceVariantIds,
         long_read_tr_alt_count: loadedAltCount,
         long_read_tr_source_alt_count: sourceAltCount || null,
-        long_read_tr_label: label,
+        long_read_tr_label: display.label,
+        long_read_tr_interval_label: display.intervalLabel,
+        long_read_tr_component_summary_label: display.summaryLabel,
+        long_read_tr_details_accessible_label: display.detailsAccessibleLabel,
+        long_read_tr_presentation_kind: display.kind,
         long_read_tr_delta_min: deltaBounds.min,
         long_read_tr_delta_max: deltaBounds.max,
         long_read_tr_delta_label: deltaLabel,
         long_read_tr_delta_unavailable_reason: deltaBounds.unavailableReason,
-        long_read_tr_tooltip: `${label}; total allele length change ${deltaLabel}; ${
-          loadedAltCount
-        } exact ALT allele${loadedAltCount === 1 ? '' : 's'} across ${
-          sourceVariantIds.length
-        } source record${sourceVariantIds.length === 1 ? '' : 's'}; locus ID ${
-          group.locus.canonicalId
+        long_read_tr_tooltip: `${display.label}; ${display.intervalLabel}; ${
+          display.summaryLabel
+        }; total allele length change ${deltaLabel}; ${loadedAltCount} exact ALT allele${
+          loadedAltCount === 1 ? '' : 's'
+        } across ${sourceVariantIds.length} source record${
+          sourceVariantIds.length === 1 ? '' : 's'
         }`,
         long_read_tr_aggregation_valid: deltaBounds.unavailableReason === null,
       })

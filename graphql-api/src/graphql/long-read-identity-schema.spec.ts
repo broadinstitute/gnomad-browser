@@ -584,6 +584,15 @@ describe('assembled LR identity GraphQL contract', () => {
       expect.arrayContaining(['source_variant_id', 'alt_index', 'alt_count'])
     )
 
+    const variantType = types.find((type: any) => type.name === 'LongReadVariant')
+    expect(variantType.fields.map((field: any) => field.name)).toEqual(
+      expect.arrayContaining([
+        'tr_locus_presentation',
+        'tr_locus_bounds',
+        'tr_locus_component_summary',
+      ])
+    )
+
     const locusType = types.find((type: any) => type.name === 'LongReadTandemRepeatLocus')
     expect(locusType.fields.map((field: any) => field.name)).toEqual(
       expect.arrayContaining([

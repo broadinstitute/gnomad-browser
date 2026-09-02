@@ -42,7 +42,7 @@ describe('haplotype compact-payload consequences', () => {
     }
     const variants = rehydrateVariants(payload)
 
-    render(
+    const { container } = render(
       <HaplotypeVariantTable
         mode="haplotype"
         haplotypeGroups={
@@ -76,7 +76,7 @@ describe('haplotype compact-payload consequences', () => {
     const consequenceColumn = screen
       .getAllByRole('columnheader')
       .findIndex((header) => header.textContent === 'Consequence')
-    const trRow = screen.getByText('22-400-TRV-2').closest('tr')!
+    const trRow = container.querySelector('tr[data-position="400"]')!
     expect(consequenceColumn).toBeGreaterThan(-1)
     expect(trRow.querySelectorAll('td')[consequenceColumn].textContent).toBe('—')
   })

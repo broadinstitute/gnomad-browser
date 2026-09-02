@@ -135,6 +135,11 @@ type LongReadVariant {
   motifs: [String!]
   tr_locus_id: String
   tr_locus_components: [LongReadTrLocusComponent!]
+  # Row-safe projection of the canonical locus contract. This lets gene and region
+  # rows use the same receipt-gated language and exact bounds as the locus page.
+  tr_locus_presentation: LongReadTrPresentation
+  tr_locus_bounds: LongReadTrBounds
+  tr_locus_component_summary: LongReadTrComponentSummary
   tr_structure: String
   allele_size_distribution: [LongReadAlleleSizeDistribution!]
   genotype_distribution: [LongReadGenotypeDistribution!]
