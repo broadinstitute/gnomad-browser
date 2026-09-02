@@ -434,6 +434,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         motif: 'CAG',
         role: null,
         components: 6,
+        disease: /Huntington/i,
+        omim: '143100',
+        inheritance: /Autosomal dominant/i,
+        ranges: /Normal ≤ 26.*Intermediate 27 - 35.*Pathogenic ≥ 36/,
       },
       {
         locus: ATXN1_LOCUS,
@@ -441,6 +445,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         motif: 'TGC',
         role: null,
         components: 1,
+        disease: /Spinocerebellar ataxia 1/i,
+        omim: '164400',
+        inheritance: /Autosomal dominant/i,
+        ranges: /Normal ≤ 35.*Intermediate 36 - 38.*Pathogenic ≥ 39/,
       },
       {
         locus: RFC1_LOCUS,
@@ -448,6 +456,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         motif: 'AAAAG',
         role: 'benign reference motif',
         components: 1,
+        disease: /CANVAS|Cerebellar ataxia/i,
+        omim: '614575',
+        inheritance: /Autosomal recessive/i,
+        ranges: /Normal ≤ 11.*Pathogenic ≥ 400/,
       },
     ]
 
@@ -478,14 +490,53 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
           }`
         )
       ).toBeVisible()
+      const diseaseSection = page
+        .getByRole('heading', { name: /Known disease-associated TR locus/ })
+        .locator('..')
+        .locator('..')
+      await expect(diseaseSection.getByText('Exact catalog match')).toBeVisible()
+      await expect(
+        diseaseSection.getByRole('link', {
+          name: new RegExp(
+            `^${item.title.split(' ')[0]} — view known disease-associated TR locus$`
+          ),
+        })
+      ).toHaveAttribute('href', new RegExp(`/short-tandem-repeat/${item.title.split(' ')[0]}`))
+      await expect(diseaseSection.getByRole('rowheader', { name: item.disease })).toBeVisible()
+      await expect(diseaseSection.getByRole('link', { name: item.omim })).toBeVisible()
+      await expect(diseaseSection.getByText(item.inheritance)).toBeVisible()
+      await expect(diseaseSection.getByText(item.ranges)).toBeVisible()
+      await expect(diseaseSection.getByText(/does not classify any LR allele/)).toBeVisible()
+      await expect(
+        diseaseSection.getByRole('heading', {
+          level: 3,
+          name: 'Short-read reference-cohort distributions',
+        })
+      ).toBeVisible()
+      await expect(diseaseSection.getByText(/Matched LR reference component/)).toHaveCount(0)
+      await expect(diseaseSection.getByText(/Catalog reference repeat unit/)).toHaveCount(0)
+      await expect(diseaseSection.getByText(/All catalog motifs/)).toHaveCount(0)
       await expect(page.getByRole('heading', { name: /Long-read exact .* units/ })).toHaveCount(0)
     }
 
     await verifyIdentity(cases[0])
     await verifyIdentity(cases[1])
     await verifyIdentity(cases[2])
-    await expect(page.getByText('AAGGG', { exact: true }).first()).toBeVisible()
-    await expect(page.getByText('pathogenic', { exact: true }).first()).toBeVisible()
+    await expect(page.getByText('AAGGG', { exact: true })).toHaveCount(0)
+
+    const verifyNarrowDiseaseContext = async (width: number) => {
+      await page.setViewportSize({ width, height: 844 })
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+      ).toBe(true)
+      const diseaseScroller = page.getByRole('region', {
+        name: 'Known disease-associated TR locus disease table',
+      })
+      await diseaseScroller.focus()
+      await expect(diseaseScroller).toBeFocused()
+    }
+    await verifyNarrowDiseaseContext(320)
+    await verifyNarrowDiseaseContext(390)
   })
 
   test('canonical selection, history, and legacy redirects stay in place for HTT', async ({

@@ -11,16 +11,20 @@ type Props =
       shortTandemRepeat: Pick<ShortTandemRepeat, 'associated_diseases'>
       associatedDiseases?: never
       showSymbols?: boolean
+      showNotes?: boolean
+      repeatRangesHeading?: string
     }
   | {
       shortTandemRepeat?: never
       associatedDiseases: ShortTandemRepeatAssociatedDisease[]
       showSymbols?: boolean
+      showNotes?: boolean
+      repeatRangesHeading?: string
     }
 
 const ShortTandemRepeatAssociatedDiseasesTable = (props: Props) => {
   const associatedDiseases = props.associatedDiseases || props.shortTandemRepeat.associated_diseases
-  const hasNotes = associatedDiseases.some((disease) => disease.notes)
+  const hasNotes = props.showNotes !== false && associatedDiseases.some((disease) => disease.notes)
   return (
     <BaseTable style={{ minWidth: '100%' }}>
       <thead>
@@ -28,7 +32,7 @@ const ShortTandemRepeatAssociatedDiseasesTable = (props: Props) => {
           <th scope="col">Disease</th>
           <th scope="col">OMIM</th>
           <th scope="col">Inheritance</th>
-          <th scope="col">Ranges of repeats</th>
+          <th scope="col">{props.repeatRangesHeading || 'Ranges of repeats'}</th>
           {hasNotes && <th scope="col">Notes</th>}
         </tr>
       </thead>

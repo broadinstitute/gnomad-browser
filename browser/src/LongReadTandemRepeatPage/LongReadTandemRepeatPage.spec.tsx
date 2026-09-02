@@ -258,16 +258,11 @@ const makeLocus = (count = 72) => {
           },
         ],
         reference_repeat_unit: 'CAG',
-        repeat_units: [
-          { repeat_unit: 'CAG', classification: 'pathogenic' },
-          { repeat_unit: 'CAA', classification: 'reference' },
-        ],
       },
       matched_component_index: 0,
       matched_component: components[0],
       matched_reference_region_index: 0,
       exact_reference_component_outline_authorized: true,
-      matched_reference_repeat_unit_classifications: ['pathogenic'],
       lr_database: 'gnomad_lr_y1_full_genome',
       lr_release: 'y1',
       lr_run_id: 'run-hgsvc',
@@ -586,6 +581,20 @@ describe('canonical long-read tandem-repeat locus page', () => {
           ...atxn1.short_read_context.catalog_record,
           id: 'ATXN1',
           gene: { ensembl_id: 'ENSG00000124788', symbol: 'ATXN1', region: 'coding' },
+          associated_diseases: [
+            {
+              name: 'Spinocerebellar ataxia 1',
+              symbol: 'SCA1',
+              omim_id: '164400',
+              inheritance_mode: 'Autosomal dominant',
+              repeat_size_classifications: [
+                { classification: 'Normal', min: null, max: 35 },
+                { classification: 'Intermediate', min: 36, max: 38 },
+                { classification: 'Pathogenic', min: 39, max: null },
+              ],
+              notes: 'ATXN1 catalog note.',
+            },
+          ],
           main_reference_region: {
             reference_genome: 'GRCh38',
             chrom: '6',
@@ -593,7 +602,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
             stop: 16327723,
           },
           reference_repeat_unit: 'TGC',
-          repeat_units: [{ repeat_unit: 'TGC', classification: 'pathogenic' }],
         },
         matched_component: atxn1Component,
       },
@@ -604,6 +612,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
       'Primary repeat TGC · exact catalog / LR component 1'
     )
     expect(screen.queryByRole('heading', { name: /ATXN1 CAG/ })).toBeNull()
+    const atxn1Disease = screen.getByRole('rowheader', { name: 'Spinocerebellar ataxia 1' })
+    expect(atxn1Disease.closest('tr')?.textContent).toContain('164400')
+    expect(atxn1Disease.closest('tr')?.textContent).toContain(
+      'Normal ≤ 35, Intermediate 36 - 38, Pathogenic ≥ 39'
+    )
+    expect(screen.queryByText('ATXN1 catalog note.')).toBeNull()
 
     rendered.unmount()
     const rfc1 = makeSimpleLocus()
@@ -627,6 +641,19 @@ describe('canonical long-read tandem-repeat locus page', () => {
           ...rfc1.short_read_context.catalog_record,
           id: 'RFC1',
           gene: { ensembl_id: 'ENSG00000133119', symbol: 'RFC1', region: 'intronic' },
+          associated_diseases: [
+            {
+              name: 'Cerebellar ataxia, neuropathy, vestibular areflexia syndrome',
+              symbol: 'CANVAS',
+              omim_id: '614575',
+              inheritance_mode: 'Autosomal recessive',
+              repeat_size_classifications: [
+                { classification: 'Normal', min: null, max: 11 },
+                { classification: 'Pathogenic', min: 400, max: null },
+              ],
+              notes: 'RFC1 catalog note.',
+            },
+          ],
           main_reference_region: {
             reference_genome: 'GRCh38',
             chrom: '4',
@@ -634,13 +661,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
             stop: 39348479,
           },
           reference_repeat_unit: 'AAAAG',
-          repeat_units: [
-            { repeat_unit: 'AAAAG', classification: 'benign' },
-            { repeat_unit: 'AAGGG', classification: 'pathogenic' },
-          ],
         },
         matched_component: rfc1Component,
-        matched_reference_repeat_unit_classifications: ['benign'],
       },
     })
     renderPage({ locus: rfc1, selectedAllele: undefined })
@@ -648,8 +670,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByLabelText('Primary repeat AAAAG').textContent).toContain(
       'benign reference motif'
     )
-    expect(screen.getAllByText('AAGGG', { selector: 'code' }).length).toBeGreaterThan(0)
-    expect(screen.getAllByText('pathogenic').length).toBeGreaterThan(0)
+    const rfc1Disease = screen.getByRole('rowheader', {
+      name: 'Cerebellar ataxia, neuropathy, vestibular areflexia syndrome',
+    })
+    expect(rfc1Disease.closest('tr')?.textContent).toContain('614575')
+    expect(rfc1Disease.closest('tr')?.textContent).toContain('Normal ≤ 11, Pathogenic ≥ 400')
+    expect(screen.queryByText('RFC1 catalog note.')).toBeNull()
+    expect(screen.queryByText('AAGGG', { exact: true })).toBeNull()
+    expect(screen.queryByText('pathogenic', { exact: true })).toBeNull()
   })
 
   test('uses a neutral fallback and opens source truth when primary identity is unavailable', () => {
@@ -682,7 +710,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const helpTitles = [
       'About this tandem-repeat locus',
       'About LR reference components',
-      'About short-read known-locus context',
+      'About known disease-associated TR locus',
       'About the allelic landscape',
       'About the exact-ALT index',
       'About exact ALT details',
@@ -891,52 +919,54 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(componentScroller.getAttribute('tabindex')).toBe('0')
   })
 
-  test('renders complete non-classifying short-read context with a fixed dataset link', () => {
+  test('renders complete non-classifying disease context with a fixed dataset link', () => {
     renderPage()
-    const panel = screen
-      .getByRole('heading', { name: /Short-read known-locus context/ })
+    const section = screen
+      .getByRole('heading', { name: /Known disease-associated TR locus/ })
       .closest('section') as HTMLElement
     expect(
-      within(panel).getByRole('link', { name: 'HTT (HTT) short-read details' }).getAttribute('href')
+      within(section)
+        .getByRole('link', { name: 'HTT — view known disease-associated TR locus' })
+        .getAttribute('href')
     ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
-    expect(within(panel).getByText('Huntington disease (HD)')).not.toBeNull()
-    expect(within(panel).getByText('143100')).not.toBeNull()
-    expect(within(panel).getByText('Autosomal dominant')).not.toBeNull()
+    expect(within(section).getByRole('rowheader', { name: 'Huntington disease' })).not.toBeNull()
+    expect(within(section).getByRole('link', { name: '143100' })).not.toBeNull()
+    expect(within(section).getByText('Autosomal dominant')).not.toBeNull()
     expect(
-      within(panel).getByText(/Normal ≤ 26, Intermediate 27 - 35, Pathogenic ≥ 36/)
+      within(section).getByText(/Normal ≤ 26, Intermediate 27 - 35, Pathogenic ≥ 36/)
     ).not.toBeNull()
-    expect(within(panel).getByText('Catalog note copied verbatim.')).not.toBeNull()
-    expect(within(panel).getAllByText(/CAG/).length).toBeGreaterThan(0)
-    expect(within(panel).getByText(/Short-read reference context only/)).not.toBeNull()
-    expect(within(panel).getByText(/do not classify any LR allele/)).not.toBeNull()
-    const shortCohort = within(panel)
-      .getByRole('heading', { level: 3, name: 'Reference-cohort distributions' })
+    expect(within(section).queryByText('Catalog note copied verbatim.')).toBeNull()
+    expect(within(section).queryByText(/Matched LR reference component/)).toBeNull()
+    expect(within(section).queryByText(/Catalog reference repeat unit/)).toBeNull()
+    expect(within(section).queryByText(/Catalog repeat units/)).toBeNull()
+    expect(within(section).queryByText(/All catalog motifs/)).toBeNull()
+    expect(
+      within(section).getByText(/Catalog disease names and repeat-count ranges are locus reference/)
+    ).not.toBeNull()
+    expect(within(section).getByText(/does not classify any LR allele/)).not.toBeNull()
+    const shortCohort = within(section)
+      .getByRole('heading', { level: 3, name: 'Short-read reference-cohort distributions' })
       .closest('section') as HTMLElement
     const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')!
-    expect(panel.contains(shortCohort)).toBe(true)
-    expect(panel.compareDocumentPosition(landscape)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(section.contains(shortCohort)).toBe(true)
+    expect(section.compareDocumentPosition(landscape)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(
       within(shortCohort).getByRole('button', { name: 'Load short-read distributions' })
     ).not.toBeNull()
     expect(within(shortCohort).getByText(/Green short-read repeat-count plots/)).not.toBeNull()
-    expect(within(panel).getAllByRole('heading', { level: 2 })).toHaveLength(1)
-    expect(within(panel).getAllByRole('link', { name: /short-read details/ })).toHaveLength(1)
-    expect(screen.queryByRole('heading', { name: /Short-read reference cohort/ })).toBeNull()
-    expect(
-      screen.queryByRole('button', { name: 'About the short-read reference cohort' })
-    ).toBeNull()
+    expect(within(section).getAllByRole('heading', { level: 2 })).toHaveLength(1)
+    expect(within(section).getAllByRole('link')).toHaveLength(2)
     fireEvent.click(
-      within(panel).getByRole('button', { name: 'About short-read known-locus context' })
+      within(section).getByRole('button', { name: 'About known disease-associated TR locus' })
     )
-    const shortHelp = screen.getByRole('dialog', {
-      name: 'About short-read known-locus context',
+    const help = screen.getByRole('dialog', {
+      name: 'About known disease-associated TR locus',
     })
-    expect(within(shortHelp).getByText(/exact short-read catalog match/)).not.toBeNull()
-    expect(within(shortHelp).getByText(/Load short-read distributions/)).not.toBeNull()
+    expect(within(help).getByText(/exact coordinate-and-stored-motif identity/)).not.toBeNull()
+    expect(within(help).getByText(/Load short-read distributions/)).not.toBeNull()
     expect(
-      within(shortHelp).getByText(/do not classify, filter, or select LR observations/)
+      within(help).getByText(/do not classify, filter, or select any LR allele/)
     ).not.toBeNull()
-    expect(screen.queryByText(/Outlined component 1:/)).toBeNull()
     const highlightedComponent = screen
       .getByRole('img', { name: /component 1 has a neutral dotted outline/ })
       .querySelector('[data-exact-reference-component-match="true"]')
@@ -959,11 +989,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
       matched_component_index: null,
       matched_component: null,
       exact_reference_component_outline_authorized: false,
-      matched_reference_repeat_unit_classifications: [],
     } as any
     renderPage({ locus })
-    expect(screen.queryByRole('heading', { name: /Short-read known-locus context/ })).toBeNull()
-    expect(screen.queryByRole('heading', { name: /Short-read reference cohort/ })).toBeNull()
+    expect(screen.queryByRole('heading', { name: /Known disease-associated TR locus/ })).toBeNull()
+    expect(
+      screen.queryByRole('heading', { name: /Short-read reference-cohort distributions/ })
+    ).toBeNull()
     expect(screen.queryByText(/Short-read known-locus ranges are reference context/)).toBeNull()
     expect(screen.queryByText(/Outlined component/)).toBeNull()
     expect(
@@ -1438,7 +1469,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(longReadTandemRepeatLocusQuery).toContain('catalog_id catalog_digest registry_digest')
     expect(longReadTandemRepeatLocusQuery).toContain('short_read_context {')
     expect(longReadTandemRepeatLocusQuery).toContain('exact_reference_component_outline_authorized')
-    expect(longReadTandemRepeatLocusQuery).toContain(
+    expect(longReadTandemRepeatLocusQuery).not.toContain('repeat_units {')
+    expect(longReadTandemRepeatLocusQuery).not.toContain(
       'matched_reference_repeat_unit_classifications'
     )
     expect(longReadTandemRepeatLocusQuery).not.toContain('pathogenic_component_highlight')

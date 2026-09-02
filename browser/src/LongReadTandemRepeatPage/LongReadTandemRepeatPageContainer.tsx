@@ -90,13 +90,11 @@ query ${operationName}(
         main_reference_region { reference_genome chrom start stop }
         reference_regions { reference_genome chrom start stop }
         reference_repeat_unit
-        repeat_units { repeat_unit classification }
       }
       matched_component_index
       matched_component { chrom start0 end0 motif }
       matched_reference_region_index
       exact_reference_component_outline_authorized
-      matched_reference_repeat_unit_classifications
       lr_database lr_release lr_run_id lr_cohort
     }
     whole_record_allele_landscape {

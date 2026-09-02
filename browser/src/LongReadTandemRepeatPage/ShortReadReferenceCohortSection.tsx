@@ -43,14 +43,9 @@ query ${operationName}($id: String!, $lrCohort: LongReadCohort!) {
 
 const Section = styled.section`
   min-width: 0;
-  padding: clamp(1em, 2vw, 1.5em);
-  border-top: 1px solid #bdd7a8;
   margin-top: 1.5em;
-  border-radius: 0 0 6px 6px;
-  background: #f4faef;
 
   h3 {
-    margin-top: 0;
     color: #315d20;
   }
 `
@@ -114,7 +109,9 @@ const ShortReadReferenceCohortSection = ({
       data-assay="short-read"
       data-theme="short-read-green"
     >
-      <h3 id="short-read-reference-distributions-heading">Reference-cohort distributions</h3>
+      <h3 id="short-read-reference-distributions-heading">
+        Short-read reference-cohort distributions
+      </h3>
       {exactContextComplete ? (
         <p>
           Green short-read repeat-count plots for the exact matched <strong>{shortId}</strong>{' '}
@@ -125,9 +122,17 @@ const ShortReadReferenceCohortSection = ({
         <Unavailable reasonCode="EXACT_CONTEXT_INCOMPLETE" />
       )}
 
-      {exactContextComplete && !requested && (
-        <Button type="button" aria-controls={contentId} onClick={() => setRequested(true)}>
-          Load short-read distributions
+      {exactContextComplete && (
+        <Button
+          type="button"
+          aria-controls={contentId}
+          aria-disabled={requested}
+          aria-expanded={requested}
+          onClick={() => {
+            if (!requested) setRequested(true)
+          }}
+        >
+          {requested ? 'Short-read distributions requested' : 'Load short-read distributions'}
         </Button>
       )}
 

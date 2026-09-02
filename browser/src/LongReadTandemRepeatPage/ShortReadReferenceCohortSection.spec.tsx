@@ -14,7 +14,11 @@ jest.mock('@gnomad/ui', () => ({
 }))
 
 jest.mock('../Query', () => ({ children, variables, ...props }: any) => {
+  ;(global as any).__SHORT_DISTRIBUTION_QUERY_COUNT__ += 1
   ;(global as any).__SHORT_DISTRIBUTION_QUERY_PROPS__ = { ...props, variables }
+  if ((global as any).__SHORT_DISTRIBUTION_QUERY_ERROR__) {
+    return <p role="alert">{props.errorMessage}</p>
+  }
   return children({
     data: {
       long_read_tandem_repeat_short_read_distributions: (global as any)
@@ -83,6 +87,8 @@ const renderSection = (context: any = exactContext) =>
 
 describe('ShortReadReferenceCohortSection', () => {
   beforeEach(() => {
+    ;(global as any).__SHORT_DISTRIBUTION_QUERY_COUNT__ = 0
+    ;(global as any).__SHORT_DISTRIBUTION_QUERY_ERROR__ = false
     ;(global as any).__SHORT_DISTRIBUTION_QUERY_PROPS__ = undefined
     ;(global as any).__SHORT_DISTRIBUTION_QUERY_DATA__ = available
   })
@@ -91,13 +97,21 @@ describe('ShortReadReferenceCohortSection', () => {
     renderSection()
 
     expect(
-      screen.getByRole('heading', { level: 3, name: 'Reference-cohort distributions' })
+      screen.getByRole('heading', {
+        level: 3,
+        name: 'Short-read reference-cohort distributions',
+      })
     ).not.toBeNull()
+    const section = screen
+      .getByRole('heading', { name: 'Short-read reference-cohort distributions' })
+      .closest('section') as HTMLElement
+    expect(section).not.toBeNull()
     expect(screen.queryByRole('heading', { name: /Short-read reference cohort/ })).toBeNull()
     expect(
       screen.queryByRole('button', { name: 'About the short-read reference cohort' })
     ).toBeNull()
     expect((global as any).__SHORT_DISTRIBUTION_QUERY_PROPS__).toBeUndefined()
+    expect((global as any).__SHORT_DISTRIBUTION_QUERY_COUNT__).toBe(0)
     expect(screen.queryByTestId('controlled-short-read-panel')).toBeNull()
 
     const load = screen.getByRole('button', { name: 'Load short-read distributions' })
@@ -118,6 +132,12 @@ describe('ShortReadReferenceCohortSection', () => {
       screen.getByTestId('controlled-short-read-panel').getAttribute('data-heading-level')
     ).toBe('4')
     expect(screen.getByRole('heading', { level: 4, name: 'Mock short-read plot' })).not.toBeNull()
+    expect((global as any).__SHORT_DISTRIBUTION_QUERY_COUNT__).toBe(1)
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: 'Short-read distributions requested' })
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Short-read distributions requested' }))
+    expect((global as any).__SHORT_DISTRIBUTION_QUERY_COUNT__).toBe(1)
   })
 
   test.each([
@@ -131,16 +151,43 @@ describe('ShortReadReferenceCohortSection', () => {
   ])('fails closed when the lazy response changes the exact %s', (_field, patch) => {
     ;(global as any).__SHORT_DISTRIBUTION_QUERY_DATA__ = { ...available, ...patch }
     renderSection()
-    fireEvent.click(screen.getByRole('button', { name: 'Load short-read distributions' }))
+    const load = screen.getByRole('button', { name: 'Load short-read distributions' })
+    load.focus()
+    fireEvent.click(load)
 
     expect(screen.queryByTestId('controlled-short-read-panel')).toBeNull()
     expect(screen.getByRole('status').textContent).toMatch(/unavailable for this exact context/)
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: 'Short-read distributions requested' })
+    )
+    expect((global as any).__SHORT_DISTRIBUTION_QUERY_COUNT__).toBe(1)
+  })
+
+  test('keeps a lazy request failure local without losing activation focus', () => {
+    ;(global as any).__SHORT_DISTRIBUTION_QUERY_ERROR__ = true
+    renderSection()
+    const load = screen.getByRole('button', { name: 'Load short-read distributions' })
+    load.focus()
+    fireEvent.click(load)
+
+    expect(screen.getByRole('alert').textContent).toBe(
+      'Unable to load short-read reference-cohort distributions'
+    )
+    expect(
+      screen.getByRole('heading', { name: 'Short-read reference-cohort distributions' })
+    ).not.toBeNull()
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: 'Short-read distributions requested' })
+    )
+    expect((global as any).__SHORT_DISTRIBUTION_QUERY_COUNT__).toBe(1)
   })
 
   test('keeps incomplete exact context local and does not issue a request', () => {
     renderSection({ ...exactContext, catalog_record: null })
 
-    expect(screen.getByRole('heading', { name: 'Reference-cohort distributions' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: 'Short-read reference-cohort distributions' })
+    ).not.toBeNull()
     expect(screen.getByRole('status').getAttribute('data-reason-code')).toBe(
       'EXACT_CONTEXT_INCOMPLETE'
     )
@@ -152,7 +199,9 @@ describe('ShortReadReferenceCohortSection', () => {
     'does not admit a short-read cohort section for %s context',
     (status) => {
       renderSection({ status, catalog_record: null })
-      expect(screen.queryByRole('heading', { name: 'Reference-cohort distributions' })).toBeNull()
+      expect(
+        screen.queryByRole('heading', { name: 'Short-read reference-cohort distributions' })
+      ).toBeNull()
       expect((global as any).__SHORT_DISTRIBUTION_QUERY_PROPS__).toBeUndefined()
     }
   )

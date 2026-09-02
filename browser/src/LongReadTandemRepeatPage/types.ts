@@ -153,7 +153,6 @@ export type ShortReadCatalogRecord = {
     stop: number
   }[]
   reference_repeat_unit: string
-  repeat_units: { repeat_unit: string; classification: string }[]
 }
 
 export type LongReadTrShortReadContext = {
@@ -174,7 +173,6 @@ export type LongReadTrShortReadContext = {
   matched_component: TrLocusComponent | null
   matched_reference_region_index: number | null
   exact_reference_component_outline_authorized: boolean
-  matched_reference_repeat_unit_classifications: string[]
   lr_database: string | null
   lr_release: string | null
   lr_run_id: string | null
