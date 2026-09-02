@@ -3,7 +3,11 @@ import crypto from 'node:crypto'
 import { parseTrLocusId, TrLocusId } from '../../../dataset-metadata/longReadTrLocusId'
 import { y1ClickhouseClient } from '../clickhouse'
 import { withCache } from '../cache'
-import type { Y1SourceSnapshot } from './long_read_y1_provenance'
+import {
+  type Y1AcceptedTaskAttempt,
+  type Y1SourceSnapshot,
+  y1AcceptedTaskAttemptDigest,
+} from './long_read_y1_provenance'
 import { browserVariantId, LongReadCohort } from './long_read_y1_variants'
 
 // The exact-ALT index is intentionally bounded. Scientific aggregates fail closed
@@ -52,8 +56,8 @@ type CompactAllele = {
 type SourceRecordContract = {
   source_variant_id: string
   alt_count: number
-  task_id?: string | null
-  attempt_id?: string | null
+  task_id: string
+  attempt_id: string
 }
 
 export const encodeTrAlleleCursor = (cursor: Omit<Cursor, 'version'>) =>
@@ -138,6 +142,60 @@ const selectedDetailWithinBound = (value: unknown) =>
 const compactAlleleKey = (sourceVariantId: string, altIndex: number) =>
   `${sourceVariantId}\u0000${altIndex}`
 
+const taskAttemptKey = (taskId: string, attemptId: string) => `${taskId}\u0000${attemptId}`
+
+const acceptedAttemptSet = (attempts: readonly Y1AcceptedTaskAttempt[]) =>
+  new Set(attempts.map(({ task_id, attempt_id }) => taskAttemptKey(task_id, attempt_id)))
+
+const acceptedAttemptQuery = `
+  AND has(
+    arrayZip({acceptedTaskIds:Array(String)}, {acceptedAttemptIds:Array(String)}),
+    tuple(task_id, attempt_id)
+  )`
+
+const acceptedAttemptParams = (source: Y1SourceSnapshot) => ({
+  acceptedTaskIds: source.accepted_task_attempts.map(({ task_id }) => task_id),
+  acceptedAttemptIds: source.accepted_task_attempts.map(({ attempt_id }) => attempt_id),
+})
+
+const sourceRecordAttemptQuery = `
+  AND has(
+    arrayZip(
+      {sourceRecordIds:Array(String)},
+      {sourceRecordTaskIds:Array(String)},
+      {sourceRecordAttemptIds:Array(String)}
+    ),
+    tuple(source_variant_id, task_id, attempt_id)
+  )`
+
+const sourceRecordAttemptParams = (sourceRecords: SourceRecordContract[]) => ({
+  sourceRecordIds: sourceRecords.map(({ source_variant_id }) => source_variant_id),
+  sourceRecordTaskIds: sourceRecords.map(({ task_id }) => task_id),
+  sourceRecordAttemptIds: sourceRecords.map(({ attempt_id }) => attempt_id),
+})
+
+const requireAcceptedAttemptAuthority = (source: Y1SourceSnapshot) => {
+  const accepted = acceptedAttemptSet(source.accepted_task_attempts)
+  if (
+    !source.run_id ||
+    !source.accepted_task_attempts.length ||
+    accepted.size !== source.accepted_task_attempts.length ||
+    source.accepted_task_attempts.some(({ task_id, attempt_id }) => !task_id || !attempt_id) ||
+    source.accepted_task_attempt_digest !==
+      y1AcceptedTaskAttemptDigest(source.run_id, source.accepted_task_attempts)
+  ) {
+    throw new Error('TR_LOCUS_ACCEPTED_ATTEMPT_AUTHORITY_INVALID')
+  }
+  return accepted
+}
+
+const rowHasAcceptedAttempt = (row: any, accepted: ReadonlySet<string>) =>
+  typeof row.task_id === 'string' &&
+  row.task_id.length > 0 &&
+  typeof row.attempt_id === 'string' &&
+  row.attempt_id.length > 0 &&
+  accepted.has(taskAttemptKey(row.task_id, row.attempt_id))
+
 const parseCompactAllele = (row: any): CompactAllele | null => {
   const altIndex = integer(row.alt_index)
   if (
@@ -162,7 +220,18 @@ const parseCompactAllele = (row: any): CompactAllele | null => {
   }
 }
 
-const validateAlleleIdentities = (rows: CompactAllele[], sourceRecords: SourceRecordContract[]) => {
+const validateAlleleIdentities = (
+  rows: CompactAllele[],
+  sourceRecords: SourceRecordContract[],
+  acceptedTaskAttempts: readonly Y1AcceptedTaskAttempt[]
+) => {
+  const accepted = acceptedAttemptSet(acceptedTaskAttempts)
+  if (
+    !accepted.size ||
+    sourceRecords.some((record) => !accepted.has(taskAttemptKey(record.task_id, record.attempt_id)))
+  ) {
+    return 'SOURCE_RECEIPT_MISMATCH'
+  }
   const expectedTotal = sourceRecords.reduce((sum, record) => sum + record.alt_count, 0)
   if (expectedTotal < 1) return 'MISSING_OR_DUPLICATE_ALT_INDEX'
   if (expectedTotal > MAX_TR_LOCUS_PAGE_SIZE) return 'ALT_COUNT_EXCEEDS_600'
@@ -180,18 +249,20 @@ const validateAlleleIdentities = (rows: CompactAllele[], sourceRecords: SourceRe
     const key = compactAlleleKey(row.source_variant_id, row.alt_index)
     if (!seen.delete(key)) return 'MISSING_OR_DUPLICATE_ALT_INDEX'
     const record = sourceRecordById.get(row.source_variant_id)!
-    if (
-      (record.task_id != null && row.task_id !== record.task_id) ||
-      (record.attempt_id != null && row.attempt_id !== record.attempt_id)
-    ) {
+    if (!rowHasAcceptedAttempt(row, accepted)) return 'SOURCE_RECEIPT_MISMATCH'
+    if (row.task_id !== record.task_id || row.attempt_id !== record.attempt_id) {
       return 'SOURCE_RECORD_PROVENANCE_MISMATCH'
     }
   }
   return seen.size ? 'MISSING_OR_DUPLICATE_ALT_INDEX' : null
 }
 
-const validateCompleteAlleles = (rows: CompactAllele[], sourceRecords: SourceRecordContract[]) => {
-  const identityReason = validateAlleleIdentities(rows, sourceRecords)
+const validateCompleteAlleles = (
+  rows: CompactAllele[],
+  sourceRecords: SourceRecordContract[],
+  acceptedTaskAttempts: readonly Y1AcceptedTaskAttempt[]
+) => {
+  const identityReason = validateAlleleIdentities(rows, sourceRecords, acceptedTaskAttempts)
   if (identityReason) return identityReason
   for (const row of rows) {
     if (row.allele_length == null) return 'NONFINITE_WHOLE_RECORD_DELTA'
@@ -299,14 +370,16 @@ export const countUniqueExactAltBytes = (
 export const buildSequenceCardinality = ({
   alleles,
   sourceRecords,
+  acceptedTaskAttempts,
   digestBytes = (bytes: Buffer) => crypto.createHash('sha256').update(bytes).digest('hex'),
 }: {
   alleles: CompactAllele[]
   sourceRecords: SourceRecordContract[]
+  acceptedTaskAttempts: readonly Y1AcceptedTaskAttempt[]
   digestBytes?: (bytes: Buffer) => string
 }) => {
   const sourceAltIdentityCount = sourceRecords.reduce((sum, record) => sum + record.alt_count, 0)
-  const identityReason = validateAlleleIdentities(alleles, sourceRecords)
+  const identityReason = validateAlleleIdentities(alleles, sourceRecords, acceptedTaskAttempts)
   if (identityReason) {
     return {
       source_alt_identity_count: sourceAltIdentityCount,
@@ -345,15 +418,17 @@ export const buildSequenceCardinality = ({
 export const buildRepresentedLengthContract = ({
   alleles,
   sourceRecords,
+  acceptedTaskAttempts,
   sourceRunId,
   approvedAnchorRule,
 }: {
   alleles: CompactAllele[]
   sourceRecords: SourceRecordContract[]
+  acceptedTaskAttempts: readonly Y1AcceptedTaskAttempt[]
   sourceRunId: string
   approvedAnchorRule: ApprovedRepresentedLengthAnchorRule | null
 }) => {
-  const identityReason = validateAlleleIdentities(alleles, sourceRecords)
+  const identityReason = validateAlleleIdentities(alleles, sourceRecords, acceptedTaskAttempts)
   const admittedLengthProvenances = identityReason
     ? []
     : alleles.map((allele) => LENGTH_PROVENANCE_VALUES.get(allele.length_provenance || ''))
@@ -484,12 +559,8 @@ const metadataAncestryId = (key: string) => `metadata:${key}`
 const sourceGroupLabel = (key: string, product: 'frequency' | 'metadata') =>
   isSourceUnknown(key) ? `Unknown (source ${product})` : `${key} (${product})`
 
-const canonicalSexId = (key: unknown) => {
-  if (key === 'XX' || key === 'female') return 'XX'
-  if (key === 'XY' || key === 'male') return 'XY'
-  if (typeof key === 'string' && isSourceUnknown(key)) return 'SOURCE_UNKNOWN'
-  return null
-}
+const frequencySexId = (key: string) => `frequency-sex:${key}`
+const metadataSexId = (key: string) => `metadata-sex:${key}`
 
 const validatedFrequencySlice = (
   alleles: CompactAllele[],
@@ -589,7 +660,8 @@ export const buildCanonicalAlleleStratifiedView = ({
   if (ancestryFilterId && (!ancestryKey || !ancestryKeys.has(ancestryKey))) {
     return unavailableView('UNSUPPORTED_FILTER_GROUP')
   }
-  const sexKey = sexFilterId === 'XX' || sexFilterId === 'XY' ? sexFilterId : null
+  const sexMatch = sexFilterId && /^frequency-sex:(.+)$/.exec(sexFilterId)
+  const sexKey = sexMatch ? sexMatch[1] : null
   if (sexFilterId && (!sexKey || !sexKeys.has(sexKey))) {
     return unavailableView('UNSUPPORTED_FILTER_GROUP')
   }
@@ -623,7 +695,12 @@ export const buildCanonicalAlleleStratifiedView = ({
     for (const key of keys) {
       const slice = validatedFrequencySlice(alleles, frequencyRows, ancestryKey, key)
       if ('reason' in slice) return unavailableView(slice.reason!)
-      segments.set(key, { id: key, label: key, kind: 'SOURCE_GROUP', slice })
+      segments.set(frequencySexId(key), {
+        id: frequencySexId(key),
+        label: sourceGroupLabel(key, 'frequency'),
+        kind: isSourceUnknown(key) ? 'SOURCE_UNKNOWN' : 'SOURCE_GROUP',
+        slice,
+      })
     }
   }
 
@@ -796,7 +873,7 @@ export const buildLongReadTrFilterContract = ({
     const ancestry = exactMetadataValue(row, 'source_ancestry_key', 'ancestry_group')
     const sex = exactMetadataValue(row, 'source_sex_key', 'sex')
     if (typeof ancestry === 'string' && ancestry) metadataAncestries.add(ancestry)
-    if (typeof sex === 'string' && sex && canonicalSexId(sex)) metadataSexKeys.add(sex)
+    if (typeof sex === 'string' && sex) metadataSexKeys.add(sex)
   }
   const ancestryGroups = [
     ...[...frequencyAncestries].sort().map((key) => ({
@@ -826,35 +903,30 @@ export const buildLongReadTrFilterContract = ({
         : 'GENOTYPE_ONLY',
     })),
   ]
-  const sexIds = new Set(
-    [
-      ...[...frequencySexes].map(canonicalSexId),
-      ...[...metadataSexKeys].map(canonicalSexId),
-    ].filter(Boolean) as string[]
-  )
-  const sexGroups = [...sexIds].sort().map((id) => {
-    const frequencyKeys = [...frequencySexes]
-      .filter((key) => canonicalSexId(key) === id)
-      .flatMap((key) => [...(sexFrequencyKeys.get(key) || [])])
-      .sort()
-    const metadataKeys = [...metadataSexKeys].filter((key) => canonicalSexId(key) === id).sort()
-    const frequencyAvailable = frequencyProductAvailable && frequencyKeys.length > 0
-    const genotypeAvailable = genotypeProductAvailable && metadataKeys.length > 0
-    let unavailableReason: string | null = 'GENOTYPE_ONLY'
-    if (frequencyAvailable && genotypeAvailable) unavailableReason = null
-    else if (frequencyAvailable) unavailableReason = 'FREQUENCY_ONLY'
-    return {
-      id,
-      label: id === 'SOURCE_UNKNOWN' ? 'Unknown (source)' : id,
-      kind: id === 'SOURCE_UNKNOWN' ? 'SOURCE_UNKNOWN' : 'SOURCE_GROUP',
-      source_frequency_keys: frequencyKeys,
-      source_metadata_keys: metadataKeys,
-      available_in_frequency: frequencyAvailable,
-      available_in_genotype: genotypeAvailable,
-      shared_available: frequencyAvailable && (!genotypeProductAvailable || genotypeAvailable),
-      unavailable_reason: unavailableReason,
-    }
-  })
+  const sexGroups = [
+    ...[...frequencySexes].sort().map((key) => ({
+      id: frequencySexId(key),
+      label: sourceGroupLabel(key, 'frequency'),
+      kind: isSourceUnknown(key) ? 'SOURCE_UNKNOWN' : 'SOURCE_GROUP',
+      source_frequency_keys: [...(sexFrequencyKeys.get(key) || [])].sort(),
+      source_metadata_keys: [],
+      available_in_frequency: frequencyProductAvailable,
+      available_in_genotype: false,
+      shared_available: false,
+      unavailable_reason: metadataSexKeys.size ? 'SEX_MAPPING_NOT_APPROVED' : 'FREQUENCY_ONLY',
+    })),
+    ...[...metadataSexKeys].sort().map((key) => ({
+      id: metadataSexId(key),
+      label: sourceGroupLabel(key, 'metadata'),
+      kind: isSourceUnknown(key) ? 'SOURCE_UNKNOWN' : 'SOURCE_GROUP',
+      source_frequency_keys: [],
+      source_metadata_keys: [key],
+      available_in_frequency: false,
+      available_in_genotype: genotypeProductAvailable,
+      shared_available: false,
+      unavailable_reason: frequencySexes.size ? 'SEX_MAPPING_NOT_APPROVED' : 'GENOTYPE_ONLY',
+    })),
+  ]
   const alleleColorDimensions = [
     ...(frequencyProductAvailable && frequencyAncestries.size ? ['ANCESTRY'] : []),
     ...(frequencyProductAvailable && frequencySexes.size ? ['SEX'] : []),
@@ -863,19 +935,10 @@ export const buildLongReadTrFilterContract = ({
     ...(genotypeProductAvailable && metadataAncestries.size ? ['ANCESTRY'] : []),
     ...(genotypeProductAvailable && metadataSexKeys.size ? ['SEX'] : []),
   ]
-  const frequencySexIds = new Set(
-    [...frequencySexes].map(canonicalSexId).filter(Boolean) as string[]
-  )
-  const metadataSexIds = new Set(
-    [...metadataSexKeys].map(canonicalSexId).filter(Boolean) as string[]
-  )
-  const sexVocabularyReconciles =
-    !genotypeProductAvailable ||
-    (frequencySexIds.size === metadataSexIds.size &&
-      [...frequencySexIds].every((id) => metadataSexIds.has(id)))
-  const availableColorDimensions = alleleColorDimensions.filter(
-    (dimension) => !genotypeProductAvailable || (dimension === 'SEX' && sexVocabularyReconciles)
-  )
+  // No frequency/metadata equivalence is approved for either ancestry or sex.
+  // Product-local dimensions remain available under exact source-scoped IDs, but
+  // the shared capability is closed whenever both products are present.
+  const availableColorDimensions = genotypeProductAvailable ? [] : alleleColorDimensions
   const redundancy = certifySoleAncestryControlRedundant(
     alleles,
     frequencyRows,
@@ -888,6 +951,7 @@ export const buildLongReadTrFilterContract = ({
     source_run_id: sourceRunId,
     metadata_source_run_id: metadataRunId,
     ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+    sex_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
     ancestry_groups: ancestryGroups.map((group) => [
       group.id,
       group.source_frequency_keys,
@@ -903,14 +967,18 @@ export const buildLongReadTrFilterContract = ({
     .createHash('sha256')
     .update(JSON.stringify(vocabularyBody))
     .digest('hex')
+  let contractReason = 'NO_COMPATIBLE_SHARED_OBSERVATIONS'
+  if (frequencyAncestries.size && metadataAncestries.size) {
+    contractReason = 'ANCESTRY_MAPPING_NOT_APPROVED'
+  } else if (frequencySexes.size && metadataSexKeys.size) {
+    contractReason = 'SEX_MAPPING_NOT_APPROVED'
+  }
   const response = {
     status:
       alleleColorDimensions.length || genotypeColorDimensions.length ? 'PARTIAL' : 'UNAVAILABLE',
-    reason:
-      frequencyAncestries.size && metadataAncestries.size
-        ? 'ANCESTRY_MAPPING_NOT_APPROVED'
-        : 'NO_COMPATIBLE_SHARED_OBSERVATIONS',
+    reason: contractReason,
     ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+    sex_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
     ancestry_groups: ancestryGroups,
     sex_groups: sexGroups,
     ancestry_control_redundant: redundancy.redundant,
@@ -951,6 +1019,7 @@ export const buildWholeRecordAlleleLandscape = ({
   frequencyRows,
   sourceRecordCount,
   frequencyRowsTruncated = false,
+  frequencyRowsUnavailableReason = null,
   purityByAllele,
   ancestryFilterId = null,
   sexFilterId = null,
@@ -960,6 +1029,7 @@ export const buildWholeRecordAlleleLandscape = ({
   frequencyRows: any[]
   sourceRecordCount: number
   frequencyRowsTruncated?: boolean
+  frequencyRowsUnavailableReason?: string | null
   purityByAllele: Map<string, number | null>
   ancestryFilterId?: string | null
   sexFilterId?: string | null
@@ -1087,12 +1157,17 @@ export const buildWholeRecordAlleleLandscape = ({
   })
 
   const stratifiedAvailable =
-    !frequencyRowsTruncated && !malformedStratifiedFrequencies && frequencyRows.length > 0
-  let stratifiedUnavailableReason = null
-  if (frequencyRowsTruncated) stratifiedUnavailableReason = 'FREQUENCY_ROW_BOUND_EXCEEDED'
-  else if (malformedStratifiedFrequencies)
+    !frequencyRowsUnavailableReason &&
+    !frequencyRowsTruncated &&
+    !malformedStratifiedFrequencies &&
+    frequencyRows.length > 0
+  let stratifiedUnavailableReason = frequencyRowsUnavailableReason
+  if (!stratifiedUnavailableReason && frequencyRowsTruncated)
+    stratifiedUnavailableReason = 'FREQUENCY_ROW_BOUND_EXCEEDED'
+  else if (!stratifiedUnavailableReason && malformedStratifiedFrequencies)
     stratifiedUnavailableReason = 'MALFORMED_STRATIFIED_FREQUENCIES'
-  else if (!stratifiedAvailable) stratifiedUnavailableReason = 'NO_STRATIFIED_FREQUENCIES'
+  else if (!stratifiedUnavailableReason && !stratifiedAvailable)
+    stratifiedUnavailableReason = 'NO_STRATIFIED_FREQUENCIES'
   const stratifiedView = buildCanonicalAlleleStratifiedView({
     alleles,
     frequencyRows,
@@ -1127,12 +1202,8 @@ export const buildWholeRecordAlleleLandscape = ({
     : unavailable('AGGREGATE_RESPONSE_BYTE_BOUND_EXCEEDED')
 }
 
-const normalizedSex = (value: unknown) => {
-  if (value === 'female' || value === 'XX') return 'XX'
-  if (value === 'male' || value === 'XY') return 'XY'
-  if (typeof value === 'string' && isSourceUnknown(value)) return 'unknown'
-  return null
-}
+const exactSourceSex = (value: unknown) =>
+  typeof value === 'string' && value.length > 0 ? value : null
 
 const exactMetadataValue = (row: any, exactKey: string, fallbackKey: string) =>
   Object.prototype.hasOwnProperty.call(row, exactKey) ? row[exactKey] : row[fallbackKey]
@@ -1160,6 +1231,9 @@ export const buildCanonicalGenotypeStratifiedView = ({
   if (ancestryFilterId?.startsWith('frequency:')) {
     return unavailableView('ANCESTRY_MAPPING_NOT_APPROVED')
   }
+  if (sexFilterId?.startsWith('frequency-sex:')) {
+    return unavailableView('SEX_MAPPING_NOT_APPROVED')
+  }
   const ancestryMatch = ancestryFilterId && /^metadata:(.+)$/.exec(ancestryFilterId)
   const ancestryKey = ancestryMatch ? ancestryMatch[1] : null
   const ancestryKeys = new Set(
@@ -1168,9 +1242,8 @@ export const buildCanonicalGenotypeStratifiedView = ({
   if (ancestryFilterId && (!ancestryKey || !ancestryKeys.has(ancestryKey))) {
     return unavailableView('UNSUPPORTED_FILTER_GROUP')
   }
-  let requestedSex: string | null = null
-  if (sexFilterId === 'SOURCE_UNKNOWN') requestedSex = 'unknown'
-  else if (sexFilterId === 'XX' || sexFilterId === 'XY') requestedSex = sexFilterId
+  const sexMatch = sexFilterId && /^metadata-sex:(.+)$/.exec(sexFilterId)
+  const requestedSex = sexMatch ? sexMatch[1] : null
   const sexKeys = new Set(cells.flatMap((cell) => cell.pairs.map((pair: any) => pair.sex)))
   if (sexFilterId && (!requestedSex || !sexKeys.has(requestedSex))) {
     return unavailableView('UNSUPPORTED_FILTER_GROUP')
@@ -1254,11 +1327,11 @@ export const buildWholeRecordGenotypeLandscape = ({
     }
     const ancestryValue = exactMetadataValue(row, 'source_ancestry_key', 'ancestry_group')
     const sexValue = exactMetadataValue(row, 'source_sex_key', 'sex')
-    if (typeof ancestryValue !== 'string' || !ancestryValue || normalizedSex(sexValue) == null) {
+    if (typeof ancestryValue !== 'string' || !ancestryValue || exactSourceSex(sexValue) == null) {
       return unavailable('MALFORMED_OR_UNSUPPORTED_METADATA_STRATUM')
     }
     const ancestryGroup = ancestryValue
-    const sex = normalizedSex(sexValue)!
+    const sex = exactSourceSex(sexValue)!
     ancestryGroups.add(ancestryGroup)
     sexes.add(sex)
     const exactPair: { id: string; delta: number }[] = pair.map((index: number | null) =>
@@ -1284,7 +1357,7 @@ export const buildWholeRecordGenotypeLandscape = ({
       ancestry_group: ancestryGroup,
       ancestry_group_id: metadataAncestryId(ancestryGroup),
       sex,
-      sex_group_id: sex === 'unknown' ? 'SOURCE_UNKNOWN' : sex,
+      sex_group_id: metadataSexId(sex),
       people,
       phased_people: phasedPeople,
       unphased_people: people - phasedPeople,
@@ -1392,6 +1465,7 @@ const fetchLongReadTrLocusUncached = async ({
   if (!Number.isInteger(first) || first < 1 || first > MAX_TR_LOCUS_PAGE_SIZE)
     throw new Error('INVALID_TR_LOCUS_PAGE_SIZE')
   if (`chr${locus.components[0].chrom}` !== source.chrom) return null
+  const acceptedAttempts = requireAcceptedAttemptAuthority(source)
 
   const summaryRows = await queryRows(
     `
@@ -1401,6 +1475,7 @@ const fetchLongReadTrLocusUncached = async ({
       WHERE run_id = {runId:String} AND release = 'y1'
         AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
         AND chrom = {chrom:String} AND allele_type = 'trv'
+        ${acceptedAttemptQuery}
         AND JSONExtractString(source_info_json, 'TRID') = {sourceTrid:String}
       ORDER BY position, source_variant_id
       LIMIT {limit:UInt16}
@@ -1411,10 +1486,14 @@ const fetchLongReadTrLocusUncached = async ({
       chrom: source.chrom,
       sourceTrid: locus.sourceTrid,
       limit: MAX_TR_LOCUS_PAGE_SIZE + 1,
+      ...acceptedAttemptParams(source),
     }
   )
   if (!summaryRows.length) return null
   if (summaryRows.length > MAX_TR_LOCUS_PAGE_SIZE) throw new Error('TR_LOCUS_INVARIANT')
+  if (summaryRows.some((row) => !rowHasAcceptedAttempt(row, acceptedAttempts))) {
+    throw new Error('TR_LOCUS_SOURCE_RECEIPT_MISMATCH')
+  }
 
   const summaries = summaryRows.map((row) => {
     const info = sourceInfo(row)
@@ -1422,6 +1501,9 @@ const fetchLongReadTrLocusUncached = async ({
     if (!parsed || !exactComponentsEqual(parsed, locus)) throw new Error('TR_LOCUS_INVARIANT')
     const altCount = integer(row.alt_count) || 0
     if (!altCount) throw new Error('TR_LOCUS_INVARIANT')
+    if (typeof row.source_variant_id !== 'string' || !row.source_variant_id) {
+      throw new Error('TR_LOCUS_INVARIANT')
+    }
     return { row, info, parsed, alt_count: altCount, source_variant_id: row.source_variant_id }
   })
   const sourceIds = summaries.map((summary) => summary.source_variant_id)
@@ -1435,6 +1517,7 @@ const fetchLongReadTrLocusUncached = async ({
       WHERE run_id = {runId:String} AND release = 'y1'
         AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
         AND chrom = {chrom:String} AND source_variant_id IN {sourceIds:Array(String)}
+        ${sourceRecordAttemptQuery}
       ORDER BY indexOf({sourceIds:Array(String)}, source_variant_id), alt_index
       LIMIT {limit:UInt16}
     `,
@@ -1444,6 +1527,14 @@ const fetchLongReadTrLocusUncached = async ({
       chrom: source.chrom,
       sourceIds,
       limit: MAX_TR_LOCUS_PAGE_SIZE + 1,
+      ...sourceRecordAttemptParams(
+        summaries.map(({ row, source_variant_id, alt_count }) => ({
+          source_variant_id,
+          alt_count,
+          task_id: String(row.task_id),
+          attempt_id: String(row.attempt_id),
+        }))
+      ),
     }
   )
   const compactAlleles = rawAlleleRows.map(parseCompactAllele).filter(Boolean) as CompactAllele[]
@@ -1453,8 +1544,8 @@ const fetchLongReadTrLocusUncached = async ({
     return {
       record_index: recordIndex + 1,
       source_variant_id: row.source_variant_id,
-      task_id: row.task_id,
-      attempt_id: row.attempt_id,
+      task_id: String(row.task_id),
+      attempt_id: String(row.attempt_id),
       position: Number(row.position),
       alt_count: altCount,
       non_reference_ac: ac.reduce((sum: number, value: number) => sum + value, 0),
@@ -1464,11 +1555,16 @@ const fetchLongReadTrLocusUncached = async ({
       region: info.REGION || null,
     }
   })
-  const completenessReason = validateCompleteAlleles(compactAlleles, sourceRecords)
+  const completenessReason = validateCompleteAlleles(
+    compactAlleles,
+    sourceRecords,
+    source.accepted_task_attempts
+  )
   const completeAlleles = completenessReason ? [] : compactAlleles
   const sequenceCardinality = buildSequenceCardinality({
     alleles: compactAlleles,
     sourceRecords,
+    acceptedTaskAttempts: source.accepted_task_attempts,
   })
   // G-LENGTH remains pending. The builder supports receipt-gated admission, but this
   // resolver intentionally supplies no rule until an immutable owner-approved artifact
@@ -1476,6 +1572,7 @@ const fetchLongReadTrLocusUncached = async ({
   const representedLength = buildRepresentedLengthContract({
     alleles: compactAlleles,
     sourceRecords,
+    acceptedTaskAttempts: source.accepted_task_attempts,
     sourceRunId: source.run_id,
     approvedAnchorRule: null,
   })
@@ -1499,11 +1596,12 @@ const fetchLongReadTrLocusUncached = async ({
   const rawFrequencyRows = completeAlleles.length
     ? await queryRows(
         `
-          SELECT source_variant_id, alt_index, division, ac, an, af
+          SELECT task_id, attempt_id, source_variant_id, alt_index, division, ac, an, af
           FROM lr_y1_frequencies
           WHERE run_id = {runId:String} AND release = 'y1'
             AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
             AND chrom = {chrom:String} AND source_variant_id IN {sourceIds:Array(String)}
+            ${sourceRecordAttemptQuery}
             AND values_available = 1
           ORDER BY source_variant_id, alt_index, division
           LIMIT {limit:UInt32}
@@ -1514,13 +1612,27 @@ const fetchLongReadTrLocusUncached = async ({
           chrom: source.chrom,
           sourceIds,
           limit: MAX_TR_LOCUS_FREQUENCY_ROWS + 1,
+          ...sourceRecordAttemptParams(sourceRecords),
         }
       )
     : []
+  const sourceRecordById = new Map(
+    sourceRecords.map((record) => [record.source_variant_id, record])
+  )
+  const frequencyReceiptMismatch = rawFrequencyRows.some((row) => {
+    const record = sourceRecordById.get(row.source_variant_id)
+    return (
+      !record ||
+      row.task_id !== record.task_id ||
+      row.attempt_id !== record.attempt_id ||
+      !rowHasAcceptedAttempt(row, acceptedAttempts)
+    )
+  })
   const frequencyRowsTruncated = rawFrequencyRows.length > MAX_TR_LOCUS_FREQUENCY_ROWS
-  const frequencyRows = frequencyRowsTruncated
-    ? []
-    : rawFrequencyRows.filter((row) => row.division !== 'all')
+  const frequencyRows =
+    frequencyRowsTruncated || frequencyReceiptMismatch
+      ? []
+      : rawFrequencyRows.filter((row) => row.division !== 'all')
   const frequencies = new Map<string, any[]>()
   for (const row of frequencyRows) {
     const key = compactAlleleKey(row.source_variant_id, Number(row.alt_index))
@@ -1547,6 +1659,7 @@ const fetchLongReadTrLocusUncached = async ({
         frequencyRows,
         sourceRecordCount: sourceRecords.length,
         frequencyRowsTruncated,
+        frequencyRowsUnavailableReason: frequencyReceiptMismatch ? 'SOURCE_RECEIPT_MISMATCH' : null,
         purityByAllele,
         ancestryFilterId,
         sexFilterId,
@@ -1562,8 +1675,15 @@ const fetchLongReadTrLocusUncached = async ({
         WHERE run_id = {runId:String} AND release = 'y1'
           AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
           AND chrom = {chrom:String} AND source_variant_id IN {sourceIds:Array(String)}
+          ${sourceRecordAttemptQuery}
       `,
-      { runId: source.run_id, cohort, chrom: source.chrom, sourceIds }
+      {
+        runId: source.run_id,
+        cohort,
+        chrom: source.chrom,
+        sourceIds,
+        ...sourceRecordAttemptParams(sourceRecords),
+      }
     )
     uniqueCarrierCount = Number(carrierRows[0]?.unique_carrier_count || 0)
   }
@@ -1587,6 +1707,7 @@ const fetchLongReadTrLocusUncached = async ({
           WHERE run_id = {runId:String} AND release = 'y1'
             AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
             AND chrom = {chrom:String} AND source_variant_id = {sourceVariantId:String}
+            AND task_id = {sourceTaskId:String} AND attempt_id = {sourceAttemptId:String}
           GROUP BY sample_id
         )
         SELECT ifNull(nullIf(m.superpopulation, ''), 'unknown') AS ancestry_group,
@@ -1612,6 +1733,8 @@ const fetchLongReadTrLocusUncached = async ({
           cohort,
           chrom: source.chrom,
           sourceVariantId: sourceRecords[0].source_variant_id,
+          sourceTaskId: sourceRecords[0].task_id,
+          sourceAttemptId: sourceRecords[0].attempt_id,
           limit: MAX_TR_LOCUS_GENOTYPE_GROUPS + 1,
         }
       )
@@ -1680,15 +1803,17 @@ const fetchLongReadTrLocusUncached = async ({
     selectedAlleleUnavailableReason = completenessReason
   } else if (selectedAllele && selectedAlleleValid) {
     const match = /^(.*)~([1-9][0-9]*)$/.exec(selectedAllele)!
+    const selectedSourceRecord = sourceRecordById.get(match[1])!
     const selectedRows = await queryRows(
       `
-        SELECT source_variant_id, alt_index, ref_allele, alt, allele_length, ac, an, af,
-          rsids, filters, cadd_phred, phylop, major_consequence,
+        SELECT task_id, attempt_id, source_variant_id, alt_index, ref_allele, alt,
+          allele_length, ac, an, af, rsids, filters, cadd_phred, phylop, major_consequence,
           short_read_match_id, short_read_match_type, short_read_match_source
         FROM lr_y1_alleles
         WHERE run_id = {runId:String} AND release = 'y1'
           AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
           AND chrom = {chrom:String} AND source_variant_id = {sourceVariantId:String}
+          AND task_id = {sourceTaskId:String} AND attempt_id = {sourceAttemptId:String}
           AND alt_index = {altIndex:UInt16}
         LIMIT 2
       `,
@@ -1697,12 +1822,22 @@ const fetchLongReadTrLocusUncached = async ({
         cohort,
         chrom: source.chrom,
         sourceVariantId: match[1],
+        sourceTaskId: selectedSourceRecord.task_id,
+        sourceAttemptId: selectedSourceRecord.attempt_id,
         altIndex: Number(match[2]),
       }
     )
     if (selectedRows.length !== 1) throw new Error('TR_LOCUS_INVARIANT')
     const row = selectedRows[0]
-    const summary = summaries[sourceOrder.get(row.source_variant_id)!]
+    if (
+      row.source_variant_id !== selectedSourceRecord.source_variant_id ||
+      row.task_id !== selectedSourceRecord.task_id ||
+      row.attempt_id !== selectedSourceRecord.attempt_id ||
+      !rowHasAcceptedAttempt(row, acceptedAttempts)
+    ) {
+      selectedAlleleUnavailableReason = 'SOURCE_RECEIPT_MISMATCH'
+    }
+    const summary = summaries[sourceOrder.get(selectedSourceRecord.source_variant_id)!]
     const mc = parseSourceArray(summary.info.MC_allele)
     const ap = parseSourceArray(summary.info.AP_allele)
     const altIndex = Number(row.alt_index)
@@ -1744,7 +1879,9 @@ const fetchLongReadTrLocusUncached = async ({
       source_release: source.release,
       source_run_id: source.run_id,
     }
-    if (selectedDetailWithinBound(candidateDetail)) {
+    if (selectedAlleleUnavailableReason) {
+      selectedAlleleDetail = null
+    } else if (selectedDetailWithinBound(candidateDetail)) {
       selectedAlleleDetail = candidateDetail
     } else {
       // Never include sequence content in an error or log message. The compact selected
@@ -1753,7 +1890,11 @@ const fetchLongReadTrLocusUncached = async ({
     }
   }
 
-  const deltaIdentityReason = validateAlleleIdentities(compactAlleles, sourceRecords)
+  const deltaIdentityReason = validateAlleleIdentities(
+    compactAlleles,
+    sourceRecords,
+    source.accepted_task_attempts
+  )
   let sourceDeltaUnavailableReason = deltaIdentityReason
   if (
     !sourceDeltaUnavailableReason &&
@@ -1822,6 +1963,7 @@ const fetchLongReadTrLocusUncached = async ({
     lr_cohort: cohort,
     source_release: source.release,
     source_run_id: source.run_id,
+    accepted_task_attempt_digest: source.accepted_task_attempt_digest,
     primary_database: source.database,
     source_records: sourceRecords,
     presentation: buildLongReadTrPresentation(locus.components.length),
@@ -1895,6 +2037,7 @@ export const longReadTrLocusCacheKey = ({
   colorBy?: 'ANCESTRY' | 'SEX' | null
   source: Y1SourceSnapshot
 }) => {
+  requireAcceptedAttemptAuthority(source)
   const identity = [
     id,
     cohort,
@@ -1907,12 +2050,13 @@ export const longReadTrLocusCacheKey = ({
     source.database,
     source.release,
     source.run_id,
+    source.accepted_task_attempt_digest,
     source.metadata_run_id ?? null,
     source.chrom,
     'G_DATA_ANCESTRY_PENDING',
     'REMAINDER_COMPATIBILITY_UNAVAILABLE',
   ]
-  return `lr_tr_locus:v7:${crypto
+  return `lr_tr_locus:v8:${crypto
     .createHash('sha256')
     .update(JSON.stringify(identity))
     .digest('hex')}`

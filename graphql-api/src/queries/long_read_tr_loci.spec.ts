@@ -8,6 +8,8 @@ jest.mock('../cache', () => ({ withCache: (fn: any) => fn }))
 
 // The ClickHouse mock must be installed before this module initializes its client.
 // eslint-disable-next-line import/first
+import { y1AcceptedTaskAttemptDigest } from './long_read_y1_provenance'
+// eslint-disable-next-line import/first
 import {
   buildCanonicalAlleleStratifiedView,
   buildLongReadTrComponentContract,
@@ -38,19 +40,25 @@ const sourceVariantId = 'chr4-3074876-TRV-164'
 
 const source = (
   cohort: 'hgsvc_hprc' | 'aou',
-  options: { carriers?: boolean; metadata?: boolean } = {}
-) => ({
-  database: 'test',
-  release: 'y1',
-  cohort,
-  reference_genome: 'GRCh38',
-  chrom: 'chr4',
-  load_scope: 'full_chromosome',
-  run_id: `run-${cohort}`,
-  state: 'accepted_frozen' as const,
-  metadata_run_id: options.metadata ? 'metadata-1' : null,
-  carriers_available: options.carriers ?? cohort === 'hgsvc_hprc',
-})
+  options: { carriers?: boolean; metadata?: boolean; attemptId?: string } = {}
+) => {
+  const runId = `run-${cohort}`
+  const acceptedTaskAttempts = [{ task_id: 'task-1', attempt_id: options.attemptId || 'attempt-1' }]
+  return {
+    database: 'test',
+    release: 'y1',
+    cohort,
+    reference_genome: 'GRCh38',
+    chrom: 'chr4',
+    load_scope: 'full_chromosome',
+    run_id: runId,
+    state: 'accepted_frozen' as const,
+    metadata_run_id: options.metadata ? 'metadata-1' : null,
+    carriers_available: options.carriers ?? cohort === 'hgsvc_hprc',
+    accepted_task_attempts: acceptedTaskAttempts,
+    accepted_task_attempt_digest: y1AcceptedTaskAttemptDigest(runId, acceptedTaskAttempts),
+  }
+}
 
 const result = (rows: any[]) => Promise.resolve({ json: async () => rows })
 
@@ -112,6 +120,8 @@ const summary = (altCount: number, an: number) => {
 }
 
 const selectedAlt72 = {
+  task_id: 'task-1',
+  attempt_id: 'attempt-1',
   source_variant_id: sourceVariantId,
   alt_index: 72,
   ref_allele: `A${'C'.repeat(164)}`,
@@ -152,6 +162,16 @@ describe('long-read TR locus query contract', () => {
     expect(
       longReadTrLocusCacheKey({ ...base, ancestryFilterId: 'a:b', sexFilterId: 'c' })
     ).not.toBe(longReadTrLocusCacheKey({ ...base, ancestryFilterId: 'a', sexFilterId: 'b:c' }))
+    expect(longReadTrLocusCacheKey(base)).not.toBe(
+      longReadTrLocusCacheKey({ ...base, source: source('hgsvc_hprc', { attemptId: 'attempt-2' }) })
+    )
+    expect(longReadTrLocusCacheKey(base)).toMatch(/^lr_tr_locus:v8:/)
+    expect(() =>
+      longReadTrLocusCacheKey({
+        ...base,
+        source: { ...base.source, accepted_task_attempt_digest: '0'.repeat(64) },
+      })
+    ).toThrow('TR_LOCUS_ACCEPTED_ATTEMPT_AUTHORITY_INVALID')
   })
 
   test('returns complete, privacy-safe HTT whole-record aggregates and selected detail', async () => {
@@ -161,6 +181,8 @@ describe('long-read TR locus query contract', () => {
       .mockImplementationOnce(() =>
         result([
           {
+            task_id: 'task-1',
+            attempt_id: 'attempt-1',
             source_variant_id: sourceVariantId,
             alt_index: 1,
             division: 'afr_XX',
@@ -214,12 +236,36 @@ describe('long-read TR locus query contract', () => {
     expect(summaryRequest.query).not.toContain('ref_allele')
     expect(summaryRequest.query).toContain('LIMIT {limit:UInt16}')
     expect(summaryRequest.query_params.limit).toBe(MAX_TR_LOCUS_PAGE_SIZE + 1)
+    expect(summaryRequest.query).toContain('acceptedTaskIds:Array(String)')
+    expect(summaryRequest.query_params).toMatchObject({
+      acceptedTaskIds: ['task-1'],
+      acceptedAttemptIds: ['attempt-1'],
+    })
     const alleleRequest = mockQuery.mock.calls[1][0] as any
     expect(alleleRequest.query).toContain('task_id, attempt_id')
     expect(alleleRequest.query).toContain('length_provenance')
+    for (const requestIndex of [1, 2, 3]) {
+      const request = mockQuery.mock.calls[requestIndex][0] as any
+      expect(request.query).toContain('sourceRecordTaskIds:Array(String)')
+      expect(request.query_params).toMatchObject({
+        sourceRecordIds: [sourceVariantId],
+        sourceRecordTaskIds: ['task-1'],
+        sourceRecordAttemptIds: ['attempt-1'],
+      })
+    }
+    const genotypeRequest = mockQuery.mock.calls[4][0] as any
+    const selectedRequest = mockQuery.mock.calls[5][0] as any
+    for (const request of [genotypeRequest, selectedRequest]) {
+      expect(request.query).toContain('task_id = {sourceTaskId:String}')
+      expect(request.query_params).toMatchObject({
+        sourceTaskId: 'task-1',
+        sourceAttemptId: 'attempt-1',
+      })
+    }
     expect(locus).toMatchObject({
       id: httLocusId,
       source_trid: httSourceTrid,
+      accepted_task_attempt_digest: expect.stringMatching(/^[a-f0-9]{64}$/),
       exact_alt_count: 72,
       exact_alt_count_complete: true,
       delta_min: -24,
@@ -349,6 +395,69 @@ describe('long-read TR locus query contract', () => {
     })
     expect(aggregateJson).toContain(`A${'C'.repeat(140)}`)
     expect(aggregateJson).not.toContain('sample_id')
+  })
+
+  test('fails stale frequency and selected-detail rows closed without affecting accepted aggregates', async () => {
+    const acceptedAllele = compactAlleles(1, 2)[0]
+    mockQuery
+      .mockImplementationOnce(() => result([summary(1, 2)]))
+      .mockImplementationOnce(() => result([acceptedAllele]))
+      .mockImplementationOnce(() =>
+        result([
+          {
+            task_id: 'task-1',
+            attempt_id: 'failed-attempt',
+            source_variant_id: sourceVariantId,
+            alt_index: 1,
+            division: 'XX',
+            ac: 1,
+            an: 2,
+            af: 0.5,
+          },
+        ])
+      )
+      .mockImplementationOnce(() =>
+        result([{ ...selectedAlt72, alt_index: 1, attempt_id: 'failed-attempt' }])
+      )
+
+    const locus = await fetchLongReadTrLocus({
+      id: httLocusId,
+      cohort: 'aou',
+      selectedAllele: `${sourceVariantId}~1`,
+      source: source('aou', { carriers: false }),
+    })
+
+    expect(locus).toMatchObject({
+      exact_alt_count_complete: true,
+      delta_min: acceptedAllele.allele_length,
+      selected_allele: null,
+      selected_allele_unavailable_reason: 'SOURCE_RECEIPT_MISMATCH',
+      whole_record_allele_landscape: {
+        status: 'AVAILABLE',
+        stratified_available: false,
+        stratified_unavailable_reason: 'SOURCE_RECEIPT_MISMATCH',
+      },
+      alleles: {
+        nodes: [
+          expect.objectContaining({ freq: { all: { ac: 1, an: 2, af: 0.5 }, populations: [] } }),
+        ],
+      },
+    })
+    expect(JSON.stringify(locus)).not.toContain('failed-attempt')
+  })
+
+  test('rejects mutually consistent summary and allele rows from a failed attempt', async () => {
+    mockQuery.mockImplementationOnce(() =>
+      result([{ ...summary(1, 2), attempt_id: 'failed-attempt' }])
+    )
+
+    await expect(
+      fetchLongReadTrLocus({
+        id: httLocusId,
+        cohort: 'aou',
+        source: source('aou', { carriers: false }),
+      })
+    ).rejects.toThrow('TR_LOCUS_SOURCE_RECEIPT_MISMATCH')
   })
 
   test('keeps valid compact metadata but withholds over-bound selected sequence detail', async () => {
@@ -704,6 +813,8 @@ describe('round-two Phase 2A contracts', () => {
         {
           source_variant_id: 'record-a',
           alt_index: 1,
+          task_id: 'task-a',
+          attempt_id: 'attempt-a',
           alt: 'AACAC',
           allele_length: 0,
           ac: 1,
@@ -713,6 +824,8 @@ describe('round-two Phase 2A contracts', () => {
         {
           source_variant_id: 'record-b',
           alt_index: 1,
+          task_id: 'task-a',
+          attempt_id: 'attempt-a',
           alt: 'AACAC',
           allele_length: 0,
           ac: 1,
@@ -721,9 +834,20 @@ describe('round-two Phase 2A contracts', () => {
         },
       ],
       sourceRecords: [
-        { source_variant_id: 'record-a', alt_count: 1 },
-        { source_variant_id: 'record-b', alt_count: 1 },
+        {
+          source_variant_id: 'record-a',
+          alt_count: 1,
+          task_id: 'task-a',
+          attempt_id: 'attempt-a',
+        },
+        {
+          source_variant_id: 'record-b',
+          alt_count: 1,
+          task_id: 'task-a',
+          attempt_id: 'attempt-a',
+        },
       ],
+      acceptedTaskAttempts: [{ task_id: 'task-a', attempt_id: 'attempt-a' }],
     })
     expect(cardinality).toEqual({
       source_alt_identity_count: 2,
@@ -748,6 +872,49 @@ describe('round-two Phase 2A contracts', () => {
       duplicateScaffold.expected.source_alt_identity_count
     )
 
+    const staleInput = {
+      alleles: [
+        {
+          source_variant_id: 'record-stale',
+          alt_index: 1,
+          task_id: 'task-a',
+          attempt_id: 'failed-attempt',
+          ref_allele: 'AAC',
+          alt: 'AACC',
+          allele_length: 1,
+          length_provenance: 'sequence_derived',
+          ac: 1,
+          an: 2,
+          af: 0.5,
+        },
+      ],
+      sourceRecords: [
+        {
+          source_variant_id: 'record-stale',
+          alt_count: 1,
+          task_id: 'task-a',
+          attempt_id: 'failed-attempt',
+        },
+      ],
+      acceptedTaskAttempts: [{ task_id: 'task-a', attempt_id: 'accepted-attempt' }],
+    }
+    expect(buildSequenceCardinality(staleInput)).toMatchObject({
+      status: 'UNAVAILABLE',
+      unique_alt_sequence_count: null,
+      reason: 'SOURCE_RECEIPT_MISMATCH',
+    })
+    expect(
+      buildRepresentedLengthContract({
+        ...staleInput,
+        sourceRunId: 'synthetic-run',
+        approvedAnchorRule,
+      })
+    ).toMatchObject({
+      status: 'UNAVAILABLE',
+      represented_alt_min_length_bp: null,
+      reason: 'SOURCE_RECEIPT_MISMATCH',
+    })
+
     // Even a forced digest collision cannot merge unequal exact ALT bytes.
     expect(
       countUniqueExactAltBytes(
@@ -767,6 +934,8 @@ describe('round-two Phase 2A contracts', () => {
     const base = {
       source_variant_id: 'record-a',
       alt_index: 1,
+      task_id: 'task-a',
+      attempt_id: 'attempt-a',
       ref_allele: disagreementScaffold.complete_ref,
       alt: disagreementScaffold.complete_alt,
       allele_length: sequenceDerivedDelta,
@@ -777,7 +946,15 @@ describe('round-two Phase 2A contracts', () => {
     }
     const input = {
       alleles: [base],
-      sourceRecords: [{ source_variant_id: 'record-a', alt_count: 1 }],
+      sourceRecords: [
+        {
+          source_variant_id: 'record-a',
+          alt_count: 1,
+          task_id: 'task-a',
+          attempt_id: 'attempt-a',
+        },
+      ],
+      acceptedTaskAttempts: [{ task_id: 'task-a', attempt_id: 'attempt-a' }],
       sourceRunId: 'synthetic-run',
     }
     expect(buildRepresentedLengthContract({ ...input, approvedAnchorRule: null })).toMatchObject({
@@ -840,6 +1017,7 @@ describe('round-two Phase 2A contracts', () => {
       buildRepresentedLengthContract({
         alleles,
         sourceRecords,
+        acceptedTaskAttempts: [{ task_id: 'task-a', attempt_id: 'attempt-a' }],
         sourceRunId: 'synthetic-run',
         approvedAnchorRule,
       })
@@ -860,7 +1038,7 @@ describe('round-two Phase 2A contracts', () => {
       source_delta_provenance: 'UNAVAILABLE',
     })
     expect(build([{ ...base, task_id: 'wrong-task' }])).toMatchObject({
-      reason: 'SOURCE_RECORD_PROVENANCE_MISMATCH',
+      reason: 'SOURCE_RECEIPT_MISMATCH',
     })
 
     const second = {
@@ -881,7 +1059,15 @@ describe('round-two Phase 2A contracts', () => {
     expect(
       build(
         [base, { ...base, source_variant_id: 'record-b' }],
-        [oneRecord, { source_variant_id: 'record-b', alt_count: 1 }]
+        [
+          oneRecord,
+          {
+            source_variant_id: 'record-b',
+            alt_count: 1,
+            task_id: 'task-a',
+            attempt_id: 'attempt-a',
+          },
+        ]
       )
     ).toMatchObject({ reason: 'MULTIPLE_SOURCE_RECORDS' })
 
@@ -988,7 +1174,7 @@ describe('whole-record aggregate integrity', () => {
       rows,
       alleles: genotypeAlleles,
       expectedCalledAlleles: 4,
-      sexFilterId: 'XX',
+      sexFilterId: 'metadata-sex:XX',
       colorBy: 'SEX',
     })
     expect(sexFiltered).toMatchObject({
@@ -996,7 +1182,7 @@ describe('whole-record aggregate integrity', () => {
       cells: [],
       stratified_view: {
         status: 'AVAILABLE',
-        sex_filter_id: 'XX',
+        sex_filter_id: 'metadata-sex:XX',
         color_dimension: 'SEX',
         called_samples: 1,
         cells: [
@@ -1007,7 +1193,7 @@ describe('whole-record aggregate integrity', () => {
                 ancestry_group: 'AFR',
                 ancestry_group_id: 'metadata:AFR',
                 sex: 'XX',
-                sex_group_id: 'XX',
+                sex_group_id: 'metadata-sex:XX',
                 people: 1,
               }),
             ],
@@ -1108,6 +1294,8 @@ describe('Phase 2B filter and coloring contract', () => {
     },
   ]
   const frequencyRow = (altIndex: number, division: string, ac: number, an: number) => ({
+    task_id: 'task-1',
+    attempt_id: 'attempt-1',
     source_variant_id: sourceVariantId,
     alt_index: altIndex,
     division,
@@ -1145,7 +1333,8 @@ describe('Phase 2B filter and coloring contract', () => {
       status: 'PARTIAL',
       reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
       ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
-      available_color_dimensions: ['SEX'],
+      sex_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+      available_color_dimensions: [],
       allele_color_dimensions: ['ANCESTRY', 'SEX'],
       genotype_color_dimensions: ['ANCESTRY', 'SEX'],
       vocabulary_release: null,
@@ -1176,6 +1365,40 @@ describe('Phase 2B filter and coloring contract', () => {
       contract.ancestry_groups.some(
         (group: any) =>
           group.source_frequency_keys.includes('nfe') && group.source_metadata_keys.includes('EUR')
+      )
+    ).toBe(false)
+    expect(contract.sex_groups).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'frequency-sex:XX',
+          source_frequency_keys: ['afr_XX'],
+          source_metadata_keys: [],
+          shared_available: false,
+          unavailable_reason: 'SEX_MAPPING_NOT_APPROVED',
+        }),
+        expect.objectContaining({
+          id: 'metadata-sex:female',
+          source_frequency_keys: [],
+          source_metadata_keys: ['female'],
+          shared_available: false,
+          unavailable_reason: 'SEX_MAPPING_NOT_APPROVED',
+        }),
+        expect.objectContaining({
+          id: 'frequency-sex:XY',
+          source_metadata_keys: [],
+          shared_available: false,
+        }),
+        expect.objectContaining({
+          id: 'metadata-sex:male',
+          source_frequency_keys: [],
+          shared_available: false,
+        }),
+      ])
+    )
+    expect(
+      contract.sex_groups.some(
+        (group: any) =>
+          group.source_frequency_keys.length > 0 && group.source_metadata_keys.length > 0
       )
     ).toBe(false)
   })
@@ -1270,13 +1493,22 @@ describe('Phase 2B filter and coloring contract', () => {
       genotypeRows: [{ source_ancestry_key: 'AFR', source_sex_key: 'unsupported' }],
       genotypeProductAvailable: true,
     })
-    expect(contract.sex_groups).toEqual([
-      expect.objectContaining({
-        id: 'XX',
-        source_frequency_keys: ['XX'],
-        source_metadata_keys: [],
-      }),
-    ])
+    expect(contract.sex_groups).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'frequency-sex:XX',
+          source_frequency_keys: ['XX'],
+          source_metadata_keys: [],
+          shared_available: false,
+        }),
+        expect.objectContaining({
+          id: 'metadata-sex:unsupported',
+          source_frequency_keys: [],
+          source_metadata_keys: ['unsupported'],
+          shared_available: false,
+        }),
+      ])
+    )
     expect(contract.sex_groups.some((group) => group.id === 'SOURCE_UNKNOWN')).toBe(false)
   })
 
@@ -1290,17 +1522,19 @@ describe('Phase 2B filter and coloring contract', () => {
         frequencyRow(2, 'XY', 1, 6),
       ],
       frequencyProductAvailable: true,
-      sexFilterId: 'XX',
+      sexFilterId: 'frequency-sex:XX',
       colorBy: 'SEX',
     })
     expect(view).toMatchObject({
       status: 'AVAILABLE',
-      sex_filter_id: 'XX',
+      sex_filter_id: 'frequency-sex:XX',
       color_dimension: 'SEX',
       filtered_called_alleles: 2,
     })
     for (const bin of view.bins) {
-      expect(bin.segments.every((segment: any) => segment.group_id === 'XX')).toBe(true)
+      expect(bin.segments.every((segment: any) => segment.group_id === 'frequency-sex:XX')).toBe(
+        true
+      )
       expect(
         bin.segments.reduce((sum: number, segment: any) => sum + segment.called_alleles, 0)
       ).toBe(bin.called_alleles)
@@ -1317,14 +1551,14 @@ describe('Phase 2B filter and coloring contract', () => {
       ],
       sourceRecordCount: 1,
       purityByAllele: new Map(),
-      sexFilterId: 'XX',
+      sexFilterId: 'frequency-sex:XX',
       colorBy: 'SEX',
     })
     expect(landscape).toMatchObject({
       status: 'AVAILABLE',
       bins: [],
       purity_points: [],
-      stratified_view: { status: 'AVAILABLE', sex_filter_id: 'XX' },
+      stratified_view: { status: 'AVAILABLE', sex_filter_id: 'frequency-sex:XX' },
     })
   })
 

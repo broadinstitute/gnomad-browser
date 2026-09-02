@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { jest } from '@jest/globals'
 
 const mockQuery = jest.fn()
@@ -8,6 +9,8 @@ jest.mock('../clickhouse', () => ({
   y1ClickhouseClient: { query: (...args: any[]) => mockQuery(...args) },
 }))
 
+// The ClickHouse mock must be installed before the provenance module initializes.
+// eslint-disable-next-line import/first
 import {
   ACCEPTED_Y1_RUN_STATE,
   getY1SourceSnapshot,
@@ -36,7 +39,32 @@ const requiredSchema: Record<string, string[]> = {
     'carrier_rows',
     'expected_tasks',
   ],
-  lr_y1_summaries: ['run_id', 'release', 'cohort', 'reference_genome', 'chrom'],
+  lr_y1_task_attempts: [
+    'run_id',
+    'task_id',
+    'attempt_id',
+    'revision',
+    'state',
+    'chrom',
+    'interval_start',
+    'interval_end',
+    'source_records',
+    'summary_rows',
+    'allele_rows',
+    'frequency_rows',
+    'carrier_rows',
+    'rejected_records',
+    'report_json',
+  ],
+  lr_y1_summaries: [
+    'run_id',
+    'release',
+    'cohort',
+    'reference_genome',
+    'chrom',
+    'task_id',
+    'attempt_id',
+  ],
   lr_y1_alleles: [
     'run_id',
     'release',
@@ -63,6 +91,8 @@ const requiredSchema: Record<string, string[]> = {
     'short_read_match_id',
     'short_read_match_type',
     'short_read_match_source',
+    'task_id',
+    'attempt_id',
   ],
   lr_y1_frequencies: [
     'run_id',
@@ -78,6 +108,8 @@ const requiredSchema: Record<string, string[]> = {
     'an',
     'af',
     'values_available',
+    'task_id',
+    'attempt_id',
   ],
   lr_y1_carriers: [
     'run_id',
@@ -94,6 +126,8 @@ const requiredSchema: Record<string, string[]> = {
     'genotype_fields_json',
     'gt_phased',
     'gt_alleles',
+    'task_id',
+    'attempt_id',
   ],
 }
 
@@ -152,6 +186,7 @@ const installFixture = ({
   carriers,
   metadataRuns = [],
   metadataCounts,
+  physicalAttemptId,
 }: {
   runs: any[]
   schema?: Record<string, string[]>
@@ -159,6 +194,7 @@ const installFixture = ({
   carriers?: Record<string, PhysicalCounts>
   metadataRuns?: any[]
   metadataCounts?: PhysicalCounts
+  physicalAttemptId?: string
 }) => {
   mockQuery.mockImplementation(({ query, query_params = {} }: any) => {
     if (query.includes('FROM system.columns')) {
@@ -172,20 +208,78 @@ const installFixture = ({
     if (query.includes('FROM lr_y1_load_runs AS ledger')) {
       return Promise.resolve({ json: async () => runs })
     }
-    if (query.includes("SELECT 'lr_y1_summaries' AS table")) {
+    if (query.includes('FROM lr_y1_task_attempts')) {
+      const selected = runs.find((row) => row.run_id === query_params.runId)
+      const counts = {
+        source_records: 7,
+        summaries: Number(selected.summary_rows),
+        alleles: Number(selected.allele_rows),
+        frequencies: Number(selected.frequency_rows),
+        carriers: Number(selected.carrier_rows),
+        rejects: 0,
+      }
+      return Promise.resolve({
+        json: async () => [
+          {
+            task_id: `${selected.run_id}-task-1`,
+            attempt_id: 'accepted-0',
+            state: 'accepted',
+            chrom: selected.chrom,
+            interval_start: 1,
+            interval_end: 100,
+            source_records: counts.source_records,
+            summary_rows: counts.summaries,
+            allele_rows: counts.alleles,
+            frequency_rows: counts.frequencies,
+            carrier_rows: counts.carriers,
+            rejected_records: counts.rejects,
+            report_json: JSON.stringify({
+              run_id: selected.run_id,
+              task_id: `${selected.run_id}-task-1`,
+              attempt_id: 'accepted-0',
+              cohort: selected.cohort,
+              chrom: selected.chrom,
+              state: 'accepted',
+              counts,
+            }),
+          },
+        ],
+      })
+    }
+    if (query.includes('FROM lr_y1_rejects_staging')) {
+      return Promise.resolve({ json: async () => [{ physical_rejects: 0 }] })
+    }
+    if (query.includes('AS table_name')) {
       const selected = runs.find((row) => row.run_id === query_params.runId)
       const defaults: Record<string, number> = {
         lr_y1_summaries: Number(selected.summary_rows),
         lr_y1_alleles: Number(selected.allele_rows),
         lr_y1_frequencies: Number(selected.frequency_rows),
+        lr_y1_carriers: Number(selected.carrier_rows),
       }
       return Promise.resolve({
         json: async () =>
-          Object.entries(defaults).map(([table, expected]) => ({
-            table,
-            total: canonical?.[selected.run_id]?.[table]?.total ?? expected,
-            exact: canonical?.[selected.run_id]?.[table]?.exact ?? expected,
-          })),
+          Object.entries(defaults).flatMap(([table_name, expected]) => {
+            const total =
+              (table_name === 'lr_y1_carriers'
+                ? carriers?.[selected.run_id]?.total
+                : canonical?.[selected.run_id]?.[table_name]?.total) ?? expected
+            const exact =
+              (table_name === 'lr_y1_carriers'
+                ? carriers?.[selected.run_id]?.exact
+                : canonical?.[selected.run_id]?.[table_name]?.exact) ?? expected
+            return total
+              ? [
+                  {
+                    table_name,
+                    task_id: `${selected.run_id}-task-1`,
+                    attempt_id: physicalAttemptId || 'accepted-0',
+                    total,
+                    exact,
+                  },
+                ]
+              : []
+          }),
       })
     }
     if (query.includes('FROM lr_y1_carriers') && query.includes('countIf(release')) {
@@ -230,6 +324,10 @@ describe('Y1 accepted run discovery', () => {
         expect(source.run_id).toBe(`${cohort}-accepted`)
         expect(source.state).toBe('accepted_frozen')
         expect(source.metadata_run_id).toBeNull()
+        expect(source.accepted_task_attempts).toEqual([
+          { task_id: `${cohort}-accepted-task-1`, attempt_id: 'accepted-0' },
+        ])
+        expect(source.accepted_task_attempt_digest).toMatch(/^[a-f0-9]{64}$/)
       }
     }
     expect(available).toEqual(expected)
@@ -332,6 +430,14 @@ describe('Y1 accepted run discovery', () => {
     })
     await expect(preflightY1AcceptedSources()).rejects.toThrow(
       'lr_y1_summaries count/identity mismatch'
+    )
+  })
+
+  test('rejects equal-count primary rows substituted from an unrecognized attempt', async () => {
+    const selected = run('aou')
+    installFixture({ runs: [selected], physicalAttemptId: 'failed-attempt' })
+    await expect(preflightY1AcceptedSources()).rejects.toThrow(
+      'failed, unrecognized, or unqualified task/attempt rows'
     )
   })
 

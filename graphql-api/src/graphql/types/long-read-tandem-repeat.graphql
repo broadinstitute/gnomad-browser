@@ -57,8 +57,8 @@ type LongReadTrPrimaryRepeat {
 type LongReadTrSourceRecord {
   record_index: Int!
   source_variant_id: String!
-  task_id: String
-  attempt_id: String
+  task_id: String!
+  attempt_id: String!
   position: Int!
   alt_count: Int!
   ref: String
@@ -681,6 +681,7 @@ enum LongReadTrSequenceCardinalityReason {
   ALT_COUNT_EXCEEDS_600
   MISSING_OR_DUPLICATE_ALT_INDEX
   SOURCE_RECORD_PROVENANCE_MISMATCH
+  SOURCE_RECEIPT_MISMATCH
   EXACT_ALT_SEQUENCE_BYTES_INCOMPLETE
 }
 
@@ -704,6 +705,7 @@ enum LongReadTrRepresentedLengthReason {
   ALT_COUNT_EXCEEDS_600
   MISSING_OR_DUPLICATE_ALT_INDEX
   SOURCE_RECORD_PROVENANCE_MISMATCH
+  SOURCE_RECEIPT_MISMATCH
   SOURCE_DELTA_PROVENANCE_UNAVAILABLE
   NONFINITE_WHOLE_RECORD_DELTA
   MULTIPLE_SOURCE_RECORDS
@@ -769,6 +771,11 @@ enum LongReadTrAncestryMappingStatus {
   UNAVAILABLE_PENDING_OWNER_APPROVAL
 }
 
+enum LongReadTrSexMappingStatus {
+  APPROVED_EXACT
+  UNAVAILABLE_PENDING_OWNER_APPROVAL
+}
+
 enum LongReadTrFilterGroupKind {
   SOURCE_GROUP
   SOURCE_UNKNOWN
@@ -778,6 +785,7 @@ enum LongReadTrFilterGroupReason {
   FREQUENCY_ONLY
   GENOTYPE_ONLY
   ANCESTRY_MAPPING_NOT_APPROVED
+  SEX_MAPPING_NOT_APPROVED
   NO_COMPATIBLE_SHARED_OBSERVATIONS
   AGGREGATE_RESPONSE_BYTE_BOUND_EXCEEDED
 }
@@ -811,6 +819,7 @@ type LongReadTrFilterContract {
   status: LongReadTrFilterContractStatus!
   reason: LongReadTrFilterGroupReason
   ancestry_mapping_status: LongReadTrAncestryMappingStatus!
+  sex_mapping_status: LongReadTrSexMappingStatus!
   ancestry_groups: [LongReadTrFilterGroup!]!
   sex_groups: [LongReadTrFilterGroup!]!
   ancestry_control_redundant: Boolean!
@@ -845,6 +854,7 @@ enum LongReadTrStratifiedViewReason {
   FILTERED_SEGMENTS_DO_NOT_RECONCILE
   GENOTYPE_PRODUCT_UNAVAILABLE
   ANCESTRY_MAPPING_NOT_APPROVED
+  SEX_MAPPING_NOT_APPROVED
 }
 
 enum LongReadTrStratifiedSegmentKind {
@@ -907,6 +917,7 @@ type LongReadTandemRepeatLocus {
   lr_cohort: LongReadCohort!
   source_release: String!
   source_run_id: String!
+  accepted_task_attempt_digest: String!
   source_records: [LongReadTrSourceRecord!]!
   presentation: LongReadTrPresentation!
   bounds: LongReadTrBounds!

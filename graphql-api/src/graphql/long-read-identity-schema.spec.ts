@@ -35,7 +35,7 @@ const longReadTrLocusQuery = `
       sex_group_id: $sexGroupId
       color_by: $colorBy
     ) {
-      id source_trid chrom source_run_id total_alleles selected_allele_valid
+      id source_trid chrom source_run_id accepted_task_attempt_digest total_alleles selected_allele_valid
       selected_allele_unavailable_reason
       exact_alt_count exact_alt_count_complete exact_alt_count_unavailable_reason
       delta_min delta_max delta_unavailable_reason called_allele_count called_sample_count
@@ -88,7 +88,7 @@ const longReadTrLocusQuery = `
         anchor_rule anchor_rule_source anchor_rule_release anchor_rule_digest reconciliation_status
       }
       filter_contract {
-        status reason ancestry_mapping_status ancestry_control_redundant
+        status reason ancestry_mapping_status sex_mapping_status ancestry_control_redundant
         ancestry_control_redundancy_reason available_color_dimensions allele_color_dimensions
         genotype_color_dimensions unstratified_policy vocabulary_release vocabulary_digest
         source_key_inventory_release source_key_inventory_digest source_release source_run_id
@@ -392,6 +392,7 @@ describe('assembled LR identity GraphQL contract', () => {
                 status: 'PARTIAL',
                 reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
                 ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+                sex_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
                 ancestry_groups: [
                   {
                     id: 'frequency:nfe',
@@ -436,7 +437,7 @@ describe('assembled LR identity GraphQL contract', () => {
                 stratified_view: {
                   status: 'AVAILABLE',
                   ancestry_filter_id: null,
-                  sex_filter_id: 'XX',
+                  sex_filter_id: 'frequency-sex:XX',
                   color_dimension: 'SEX',
                   filtered_called_alleles: 2,
                   allele_counts: [{ allele_id: 'source~1', called_alleles: 2 }],
@@ -446,8 +447,8 @@ describe('assembled LR identity GraphQL contract', () => {
                       called_alleles: 2,
                       segments: [
                         {
-                          group_id: 'XX',
-                          label: 'XX',
+                          group_id: 'frequency-sex:XX',
+                          label: 'XX (frequency)',
                           kind: 'SOURCE_GROUP',
                           called_alleles: 2,
                         },
@@ -466,7 +467,7 @@ describe('assembled LR identity GraphQL contract', () => {
       source: `{
         locus {
           filter_contract {
-            status reason ancestry_mapping_status vocabulary_release vocabulary_digest
+            status reason ancestry_mapping_status sex_mapping_status vocabulary_release vocabulary_digest
             source_key_inventory_release source_key_inventory_digest metadata_source_run_id
             ancestry_groups { id source_frequency_keys source_metadata_keys shared_available }
           }
@@ -487,6 +488,7 @@ describe('assembled LR identity GraphQL contract', () => {
           status: 'PARTIAL',
           reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
           ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+          sex_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
           ancestry_groups: [
             { id: 'frequency:nfe', source_frequency_keys: ['nfe'], source_metadata_keys: [] },
             { id: 'metadata:EUR', source_frequency_keys: [], source_metadata_keys: ['EUR'] },
@@ -495,12 +497,18 @@ describe('assembled LR identity GraphQL contract', () => {
         whole_record_allele_landscape: {
           stratified_view: {
             status: 'AVAILABLE',
-            sex_filter_id: 'XX',
+            sex_filter_id: 'frequency-sex:XX',
             color_dimension: 'SEX',
             bins: [
               {
                 called_alleles: 2,
-                segments: [{ group_id: 'XX', kind: 'SOURCE_GROUP', called_alleles: 2 }],
+                segments: [
+                  {
+                    group_id: 'frequency-sex:XX',
+                    kind: 'SOURCE_GROUP',
+                    called_alleles: 2,
+                  },
+                ],
               },
             ],
           },

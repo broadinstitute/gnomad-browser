@@ -75,7 +75,32 @@ const schema: Record<string, string[]> = {
     'carrier_rows',
     'expected_tasks',
   ],
-  lr_y1_summaries: ['run_id', 'release', 'cohort', 'reference_genome', 'chrom'],
+  lr_y1_task_attempts: [
+    'run_id',
+    'task_id',
+    'attempt_id',
+    'revision',
+    'state',
+    'chrom',
+    'interval_start',
+    'interval_end',
+    'source_records',
+    'summary_rows',
+    'allele_rows',
+    'frequency_rows',
+    'carrier_rows',
+    'rejected_records',
+    'report_json',
+  ],
+  lr_y1_summaries: [
+    'run_id',
+    'release',
+    'cohort',
+    'reference_genome',
+    'chrom',
+    'task_id',
+    'attempt_id',
+  ],
   lr_y1_alleles: [
     'run_id',
     'release',
@@ -102,6 +127,8 @@ const schema: Record<string, string[]> = {
     'short_read_match_id',
     'short_read_match_type',
     'short_read_match_source',
+    'task_id',
+    'attempt_id',
   ],
   lr_y1_frequencies: [
     'run_id',
@@ -117,8 +144,27 @@ const schema: Record<string, string[]> = {
     'an',
     'af',
     'values_available',
+    'task_id',
+    'attempt_id',
   ],
-  lr_y1_carriers: ['run_id'],
+  lr_y1_carriers: [
+    'run_id',
+    'release',
+    'cohort',
+    'reference_genome',
+    'chrom',
+    'position',
+    'source_variant_id',
+    'alt_index',
+    'alt',
+    'sample_id',
+    'genotype_position',
+    'genotype_fields_json',
+    'gt_phased',
+    'gt_alleles',
+    'task_id',
+    'attempt_id',
+  ],
 }
 
 const runs = [
@@ -148,6 +194,11 @@ type FixtureOptions = {
   wrongGeneration?: boolean
   failedThenAccepted?: boolean
   emptyRunLedger?: boolean
+  physicalAttemptSubstitution?:
+    | 'lr_y1_summaries'
+    | 'lr_y1_alleles'
+    | 'lr_y1_frequencies'
+    | 'lr_y1_carriers'
 }
 
 const installFixture = (options: FixtureOptions = {}) => {
@@ -244,25 +295,42 @@ const installFixture = (options: FixtureOptions = {}) => {
     if (query.includes('FROM lr_y1_rejects_staging')) {
       return Promise.resolve({ json: async () => [{ physical_rejects: 0 }] })
     }
-    if (query.includes("SELECT 'lr_y1_summaries' AS table")) {
-      return Promise.resolve({
-        json: async () => [
-          { table: 'lr_y1_summaries', total: 11, exact: 11 },
-          { table: 'lr_y1_alleles', total: 17, exact: 17 },
-          { table: 'lr_y1_frequencies', total: 23, exact: 23 },
+    if (query.includes('AS table_name')) {
+      const runId = String(query_params.runId)
+      const manifest = [...configuredManifests.values()].find((entry) => entry.run_id === runId)!
+      const tables = [
+        ['lr_y1_summaries', [5, 6]],
+        ['lr_y1_alleles', [8, 9]],
+        ['lr_y1_frequencies', [11, 12]],
+        [
+          'lr_y1_carriers',
+          manifest.cohort === 'hgsvc_hprc' &&
+          manifest.carrier_loading_status !== 'unavailable_not_loaded'
+            ? [6, 7]
+            : [0, 0],
         ],
+      ] as const
+      return Promise.resolve({
+        json: async () =>
+          tables.flatMap(([table_name, counts]) =>
+            counts.flatMap((total, index) =>
+              total
+                ? [
+                    {
+                      table_name,
+                      task_id: manifest.tasks[index].task_id,
+                      attempt_id:
+                        options.physicalAttemptSubstitution === table_name && index === 0
+                          ? 'failed-0'
+                          : `accepted-${index}`,
+                      total,
+                      exact: total,
+                    },
+                  ]
+                : []
+            )
+          ),
       })
-    }
-    if (query.includes('FROM lr_y1_carriers WHERE run_id')) {
-      const manifest = [...configuredManifests.values()].find(
-        (entry) => entry.run_id === String(query_params.runId)
-      )!
-      const carriers =
-        manifest.cohort === 'hgsvc_hprc' &&
-        manifest.carrier_loading_status !== 'unavailable_not_loaded'
-          ? 13
-          : 0
-      return Promise.resolve({ json: async () => [{ total: carriers, exact: carriers }] })
     }
     throw new Error(`Unexpected query: ${query}`)
   })
@@ -277,7 +345,13 @@ describe('Y1 checked-manifest presentation routing', () => {
   test('accepts exact manifest tasks and preserves cohort/chromosome isolation', async () => {
     installFixture()
     await preflightY1AcceptedSources()
-    expect((await getY1SourceSnapshot('hgsvc_hprc', 'chr2'))?.run_id).toBe('hgsvc-chr2')
+    const hgsvc = await getY1SourceSnapshot('hgsvc_hprc', 'chr2')
+    expect(hgsvc?.run_id).toBe('hgsvc-chr2')
+    expect(hgsvc?.accepted_task_attempts).toEqual([
+      { task_id: 'hgsvc-chr2-task-1', attempt_id: 'accepted-0' },
+      { task_id: 'hgsvc-chr2-task-2', attempt_id: 'accepted-1' },
+    ])
+    expect(hgsvc?.accepted_task_attempt_digest).toMatch(/^[a-f0-9]{64}$/)
     expect((await getY1SourceSnapshot('aou', 'chr1'))?.run_id).toBe('aou-chr1')
     expect(await getY1SourceSnapshot('aou', 'chr2')).toBeNull()
   })
@@ -305,6 +379,16 @@ describe('Y1 checked-manifest presentation routing', () => {
     installFixture({ failedThenAccepted: true })
     await expect(preflightY1AcceptedSources()).resolves.toBeUndefined()
   })
+
+  test.each(['lr_y1_summaries', 'lr_y1_alleles', 'lr_y1_frequencies', 'lr_y1_carriers'] as const)(
+    'rejects equal-count %s substitution by a failed attempt',
+    async (physicalAttemptSubstitution) => {
+      installFixture({ failedThenAccepted: true, physicalAttemptSubstitution })
+      await expect(preflightY1AcceptedSources()).rejects.toThrow(
+        'failed, unrecognized, or unqualified task/attempt rows'
+      )
+    }
+  )
 
   test.each([
     [{ omitSecond: true }, 'accepted current attempt'],
