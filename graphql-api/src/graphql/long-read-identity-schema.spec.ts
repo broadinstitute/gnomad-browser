@@ -16,13 +16,24 @@ process.env.PWD = `${process.cwd()}/graphql-api`
 const schema = require('./schema').default
 
 const longReadTrLocusQuery = `
-  query LongReadTrLocus($id: String!, $cohort: LongReadCohort!, $after: String, $allele: String) {
+  query LongReadTrLocus(
+    $id: String!
+    $cohort: LongReadCohort!
+    $after: String
+    $allele: String
+    $ancestryGroupId: String
+    $sexGroupId: String
+    $colorBy: LongReadTrFilterDimension
+  ) {
     long_read_tandem_repeat_locus(
       id: $id
       lr_cohort: $cohort
       first: 50
       after: $after
       allele: $allele
+      ancestry_group_id: $ancestryGroupId
+      sex_group_id: $sexGroupId
+      color_by: $colorBy
     ) {
       id source_trid chrom source_run_id total_alleles selected_allele_valid
       selected_allele_unavailable_reason
@@ -76,19 +87,50 @@ const longReadTrLocusQuery = `
         sequence_source_record_digest sequence_content_digest
         anchor_rule anchor_rule_source anchor_rule_release anchor_rule_digest reconciliation_status
       }
+      filter_contract {
+        status reason ancestry_mapping_status ancestry_control_redundant
+        ancestry_control_redundancy_reason available_color_dimensions allele_color_dimensions
+        genotype_color_dimensions unstratified_policy vocabulary_release vocabulary_digest
+        source_key_inventory_release source_key_inventory_digest source_release source_run_id
+        metadata_source_run_id
+        ancestry_groups {
+          id label kind source_frequency_keys source_metadata_keys available_in_frequency
+          available_in_genotype shared_available unavailable_reason
+        }
+        sex_groups {
+          id label kind source_frequency_keys source_metadata_keys available_in_frequency
+          available_in_genotype shared_available unavailable_reason
+        }
+      }
       whole_record_allele_landscape {
         status reason_code unit called_alleles non_reference_called_alleles reference_called_alleles
         exact_alt_count stratified_available stratified_unavailable_reason ancestry_groups sexes
         bins { delta called_alleles exact_alt_count allele_ids stacks { ancestry_group sex called_alleles } }
         purity_points { allele_id delta motif_purity called_alleles }
         purity_available purity_unavailable_reason
+        stratified_view {
+          status reason ancestry_filter_id sex_filter_id color_dimension filtered_called_alleles
+          allele_counts { allele_id called_alleles }
+          bins {
+            delta called_alleles
+            segments { group_id label kind called_alleles }
+          }
+        }
       }
       whole_record_genotype_landscape {
         status reason_code unit reference_allele_id called_samples called_alleles ancestry_groups sexes
         cells {
           shorter_delta longer_delta people
           pairs {
-            shorter_allele_id longer_allele_id ancestry_group sex people phased_people unphased_people
+            shorter_allele_id longer_allele_id ancestry_group ancestry_group_id
+            sex sex_group_id people phased_people unphased_people
+          }
+        }
+        stratified_view {
+          status reason ancestry_filter_id sex_filter_id color_dimension called_samples
+          cells {
+            shorter_delta longer_delta people
+            pairs { ancestry_group ancestry_group_id sex sex_group_id people }
           }
         }
       }
@@ -337,6 +379,136 @@ describe('assembled LR identity GraphQL contract', () => {
     })
   })
 
+  test('executes and serializes the Phase 2B pending-vocabulary contract through GraphQL', async () => {
+    const locusType = schema.getType('LongReadTandemRepeatLocus')
+    const executionSchema = new GraphQLSchema({
+      query: new GraphQLObjectType({
+        name: 'Phase2BExecutionQuery',
+        fields: {
+          locus: {
+            type: locusType,
+            resolve: () => ({
+              filter_contract: {
+                status: 'PARTIAL',
+                reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+                ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+                ancestry_groups: [
+                  {
+                    id: 'frequency:nfe',
+                    label: 'nfe',
+                    kind: 'SOURCE_GROUP',
+                    source_frequency_keys: ['nfe'],
+                    source_metadata_keys: [],
+                    available_in_frequency: true,
+                    available_in_genotype: false,
+                    shared_available: false,
+                    unavailable_reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+                  },
+                  {
+                    id: 'metadata:EUR',
+                    label: 'EUR',
+                    kind: 'SOURCE_GROUP',
+                    source_frequency_keys: [],
+                    source_metadata_keys: ['EUR'],
+                    available_in_frequency: false,
+                    available_in_genotype: true,
+                    shared_available: false,
+                    unavailable_reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+                  },
+                ],
+                sex_groups: [],
+                ancestry_control_redundant: false,
+                ancestry_control_redundancy_reason: 'NOT_SOLE_ANCESTRY_STRATUM',
+                available_color_dimensions: [],
+                allele_color_dimensions: ['ANCESTRY'],
+                genotype_color_dimensions: ['ANCESTRY'],
+                unstratified_policy:
+                  'EXPLICIT_SOURCE_UNKNOWN_SEPARATE_AND_FAIL_CLOSED_WITHOUT_COMPATIBLE_DENOMINATORS',
+                vocabulary_release: null,
+                vocabulary_digest: null,
+                source_key_inventory_release: 'SOURCE_KEY_INVENTORY_V1',
+                source_key_inventory_digest: 'a'.repeat(64),
+                source_release: 'y1',
+                source_run_id: 'run-hgsvc',
+                metadata_source_run_id: 'metadata-hgsvc',
+              },
+              whole_record_allele_landscape: {
+                stratified_view: {
+                  status: 'AVAILABLE',
+                  ancestry_filter_id: null,
+                  sex_filter_id: 'XX',
+                  color_dimension: 'SEX',
+                  filtered_called_alleles: 2,
+                  allele_counts: [{ allele_id: 'source~1', called_alleles: 2 }],
+                  bins: [
+                    {
+                      delta: 0,
+                      called_alleles: 2,
+                      segments: [
+                        {
+                          group_id: 'XX',
+                          label: 'XX',
+                          kind: 'SOURCE_GROUP',
+                          called_alleles: 2,
+                        },
+                      ],
+                    },
+                  ],
+                },
+              },
+            }),
+          },
+        },
+      }),
+    })
+    const result = await graphql({
+      schema: executionSchema,
+      source: `{
+        locus {
+          filter_contract {
+            status reason ancestry_mapping_status vocabulary_release vocabulary_digest
+            source_key_inventory_release source_key_inventory_digest metadata_source_run_id
+            ancestry_groups { id source_frequency_keys source_metadata_keys shared_available }
+          }
+          whole_record_allele_landscape {
+            stratified_view {
+              status reason sex_filter_id color_dimension filtered_called_alleles
+              allele_counts { allele_id called_alleles }
+              bins { called_alleles segments { group_id kind called_alleles } }
+            }
+          }
+        }
+      }`,
+    })
+    expect(result.errors).toBeUndefined()
+    expect(result.data).toMatchObject({
+      locus: {
+        filter_contract: {
+          status: 'PARTIAL',
+          reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+          ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+          ancestry_groups: [
+            { id: 'frequency:nfe', source_frequency_keys: ['nfe'], source_metadata_keys: [] },
+            { id: 'metadata:EUR', source_frequency_keys: [], source_metadata_keys: ['EUR'] },
+          ],
+        },
+        whole_record_allele_landscape: {
+          stratified_view: {
+            status: 'AVAILABLE',
+            sex_filter_id: 'XX',
+            color_dimension: 'SEX',
+            bins: [
+              {
+                called_alleles: 2,
+                segments: [{ group_id: 'XX', kind: 'SOURCE_GROUP', called_alleles: 2 }],
+              },
+            ],
+          },
+        },
+      },
+    })
+  })
+
   test('accepts the bounded short-read to LR reference connection query', () => {
     expect(validate(schema, parse(longReadTrReferenceQuery))).toEqual([])
   })
@@ -412,6 +584,7 @@ describe('assembled LR identity GraphQL contract', () => {
         'component_summary',
         'sequence_cardinality',
         'represented_length',
+        'filter_contract',
       ])
     )
 

@@ -80,6 +80,34 @@ describe('long-read tandem-repeat resolvers', () => {
     expect(fetchLocus).toHaveBeenCalledTimes(source ? 1 : 0)
   })
 
+  test('forwards the server-canonical filter and color selection without normalization', async () => {
+    const source = { chrom: 'chrX' }
+    getSource.mockResolvedValueOnce(source)
+    fetchLocus.mockResolvedValueOnce({ id: 'locus' })
+
+    await resolvers.Query.long_read_tandem_repeat_locus(
+      null,
+      {
+        id: 'X-25013649-25013697-NGC',
+        lr_cohort: 'hgsvc_hprc',
+        first: 50,
+        ancestry_group_id: 'frequency:nfe',
+        sex_group_id: 'XX',
+        color_by: 'SEX',
+      },
+      null
+    )
+
+    expect(fetchLocus).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ancestryFilterId: 'frequency:nfe',
+        sexFilterId: 'XX',
+        colorBy: 'SEX',
+        source,
+      })
+    )
+  })
+
   test('resolves primary identity from the same receipt-validated short-read context', async () => {
     const locus = { id: 'exact-locus' }
     const context = { status: 'EXACT_UNIQUE', catalog_digest: 'digest' }

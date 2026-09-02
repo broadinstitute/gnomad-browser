@@ -9,16 +9,21 @@ jest.mock('../cache', () => ({ withCache: (fn: any) => fn }))
 // The ClickHouse mock must be installed before this module initializes its client.
 // eslint-disable-next-line import/first
 import {
+  buildCanonicalAlleleStratifiedView,
   buildLongReadTrComponentContract,
+  buildLongReadTrFilterContract,
   buildLongReadTrPresentation,
   buildRepresentedLengthContract,
   buildSequenceCardinality,
   buildWholeRecordAlleleLandscape,
   buildWholeRecordGenotypeLandscape,
+  certifySoleAncestryControlRedundant,
   countUniqueExactAltBytes,
   decodeTrAlleleCursor,
   encodeTrAlleleCursor,
   fetchLongReadTrLocus,
+  longReadTrLocusCacheKey,
+  MAX_TR_LOCUS_AGGREGATE_BYTES,
   MAX_TR_LOCUS_PAGE_SIZE,
   MAX_TR_SELECTED_ALLELE_DETAIL_BYTES,
 } from './long_read_tr_loci'
@@ -134,6 +139,21 @@ describe('long-read TR locus query contract', () => {
     expect(decodeTrAlleleCursor('not-a-cursor')).toBeNull()
   })
 
+  test('uses collision-safe cache identities for nullable and delimiter-bearing filters', () => {
+    const base = {
+      id: httLocusId,
+      cohort: 'hgsvc_hprc' as const,
+      first: 50,
+      source: source('hgsvc_hprc'),
+    }
+    expect(longReadTrLocusCacheKey(base)).not.toBe(
+      longReadTrLocusCacheKey({ ...base, ancestryFilterId: 'all-ancestries' })
+    )
+    expect(
+      longReadTrLocusCacheKey({ ...base, ancestryFilterId: 'a:b', sexFilterId: 'c' })
+    ).not.toBe(longReadTrLocusCacheKey({ ...base, ancestryFilterId: 'a', sexFilterId: 'b:c' }))
+  })
+
   test('returns complete, privacy-safe HTT whole-record aggregates and selected detail', async () => {
     mockQuery
       .mockImplementationOnce(() => result([summary(72, 584)]))
@@ -247,6 +267,19 @@ describe('long-read TR locus query contract', () => {
         anchor_rule: null,
         reconciliation_status: 'NOT_EVALUATED',
       },
+      filter_contract: {
+        status: 'PARTIAL',
+        reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+        ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+        ancestry_control_redundant: false,
+        available_color_dimensions: [],
+        vocabulary_release: null,
+        vocabulary_digest: null,
+        source_key_inventory_release: 'SOURCE_KEY_INVENTORY_V1',
+        source_release: 'y1',
+        source_run_id: 'run-hgsvc_hprc',
+        metadata_source_run_id: 'metadata-1',
+      },
       called_allele_count: 584,
       called_sample_count: 292,
       unique_carrier_count: 291,
@@ -271,6 +304,13 @@ describe('long-read TR locus query contract', () => {
       non_reference_called_alleles: 556,
       reference_called_alleles: 28,
       exact_alt_count: 72,
+      stratified_view: {
+        status: 'AVAILABLE',
+        ancestry_filter_id: null,
+        sex_filter_id: null,
+        color_dimension: null,
+        filtered_called_alleles: 556,
+      },
     })
     expect(locus.whole_record_allele_landscape.bins).toEqual(
       expect.arrayContaining([
@@ -924,6 +964,76 @@ describe('whole-record aggregate integrity', () => {
     ).toMatchObject({ status: 'UNAVAILABLE', reason_code: 'GENOTYPE_TOTAL_DOES_NOT_RECONCILE' })
   })
 
+  test('scopes genotype output under active sex filters and fails frequency ancestry IDs closed', () => {
+    const genotypeAlleles = [{ ...compact[0], ac: 2, an: 4, af: 0.5 }]
+    const rows = [
+      {
+        ancestry_group: 'AFR',
+        sex: 'XX',
+        allele_pair: [0, 1],
+        people: 1,
+        phased_people: 1,
+        invalid_people: 0,
+      },
+      {
+        ancestry_group: 'EUR',
+        sex: 'XY',
+        allele_pair: [0, 1],
+        people: 1,
+        phased_people: 1,
+        invalid_people: 0,
+      },
+    ]
+    const sexFiltered: any = buildWholeRecordGenotypeLandscape({
+      rows,
+      alleles: genotypeAlleles,
+      expectedCalledAlleles: 4,
+      sexFilterId: 'XX',
+      colorBy: 'SEX',
+    })
+    expect(sexFiltered).toMatchObject({
+      status: 'AVAILABLE',
+      cells: [],
+      stratified_view: {
+        status: 'AVAILABLE',
+        sex_filter_id: 'XX',
+        color_dimension: 'SEX',
+        called_samples: 1,
+        cells: [
+          {
+            people: 1,
+            pairs: [
+              expect.objectContaining({
+                ancestry_group: 'AFR',
+                ancestry_group_id: 'metadata:AFR',
+                sex: 'XX',
+                sex_group_id: 'XX',
+                people: 1,
+              }),
+            ],
+          },
+        ],
+      },
+    })
+    expect(JSON.stringify(sexFiltered.stratified_view)).not.toContain('XY')
+
+    const unmapped: any = buildWholeRecordGenotypeLandscape({
+      rows,
+      alleles: genotypeAlleles,
+      expectedCalledAlleles: 4,
+      ancestryFilterId: 'frequency:nfe',
+      colorBy: 'ANCESTRY',
+    })
+    expect(unmapped).toMatchObject({
+      cells: [],
+      stratified_view: {
+        status: 'UNAVAILABLE',
+        reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+        cells: [],
+      },
+    })
+  })
+
   test('retains every exact ID in equal-length allele bins and aligned purity only', () => {
     const second = { ...compact[0], alt_index: 2, ac: 1, an: 3, af: 1 / 3 }
     const first = { ...compact[0], an: 3, af: 1 / 3 }
@@ -975,5 +1085,319 @@ describe('whole-record aggregate integrity', () => {
       sexes: [],
       bins: [expect.objectContaining({ stacks: [] })],
     })
+  })
+})
+
+describe('Phase 2B filter and coloring contract', () => {
+  const alleles = [
+    {
+      source_variant_id: sourceVariantId,
+      alt_index: 1,
+      allele_length: -1,
+      ac: 3,
+      an: 10,
+      af: 0.3,
+    },
+    {
+      source_variant_id: sourceVariantId,
+      alt_index: 2,
+      allele_length: 1,
+      ac: 1,
+      an: 10,
+      af: 0.1,
+    },
+  ]
+  const frequencyRow = (altIndex: number, division: string, ac: number, an: number) => ({
+    source_variant_id: sourceVariantId,
+    alt_index: altIndex,
+    division,
+    ac,
+    an,
+    af: an ? ac / an : 0,
+  })
+
+  test('keeps HGSVC frequency and metadata ancestry keys distinct without an approved mapping', () => {
+    const contract = buildLongReadTrFilterContract({
+      cohort: 'hgsvc_hprc',
+      sourceRelease: 'y1',
+      sourceRunId: 'run-hgsvc',
+      metadataRunId: 'metadata-hgsvc',
+      alleles,
+      frequencyRows: [
+        frequencyRow(1, 'afr', 1, 4),
+        frequencyRow(2, 'afr', 0, 4),
+        frequencyRow(1, 'nfe', 2, 6),
+        frequencyRow(2, 'nfe', 1, 6),
+        frequencyRow(1, 'afr_XX', 1, 4),
+        frequencyRow(2, 'afr_XX', 0, 4),
+        frequencyRow(1, 'nfe_XY', 2, 6),
+        frequencyRow(2, 'nfe_XY', 1, 6),
+      ],
+      frequencyProductAvailable: true,
+      genotypeRows: [
+        { source_ancestry_key: 'AFR', source_sex_key: 'female' },
+        { source_ancestry_key: 'EUR', source_sex_key: 'male' },
+      ],
+      genotypeProductAvailable: true,
+    })
+
+    expect(contract).toMatchObject({
+      status: 'PARTIAL',
+      reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+      ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+      available_color_dimensions: ['SEX'],
+      allele_color_dimensions: ['ANCESTRY', 'SEX'],
+      genotype_color_dimensions: ['ANCESTRY', 'SEX'],
+      vocabulary_release: null,
+      vocabulary_digest: null,
+      source_key_inventory_release: 'SOURCE_KEY_INVENTORY_V1',
+      source_release: 'y1',
+      source_run_id: 'run-hgsvc',
+      metadata_source_run_id: 'metadata-hgsvc',
+    })
+    expect(contract.source_key_inventory_digest).toMatch(/^[a-f0-9]{64}$/)
+    expect(contract.ancestry_groups).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'frequency:nfe',
+          source_frequency_keys: ['nfe', 'nfe_XY'],
+          source_metadata_keys: [],
+          shared_available: false,
+        }),
+        expect.objectContaining({
+          id: 'metadata:EUR',
+          source_frequency_keys: [],
+          source_metadata_keys: ['EUR'],
+          shared_available: false,
+        }),
+      ])
+    )
+    expect(
+      contract.ancestry_groups.some(
+        (group: any) =>
+          group.source_frequency_keys.includes('nfe') && group.source_metadata_keys.includes('EUR')
+      )
+    ).toBe(false)
+  })
+
+  test('keeps an oversized source-key inventory typed unavailable under the aggregate guard', () => {
+    const hugeKey = 'x'.repeat(MAX_TR_LOCUS_AGGREGATE_BYTES)
+    const contract = buildLongReadTrFilterContract({
+      cohort: 'hgsvc_hprc',
+      sourceRelease: 'y1',
+      sourceRunId: 'run-hgsvc',
+      alleles,
+      frequencyRows: [frequencyRow(1, hugeKey, 1, 10)],
+      frequencyProductAvailable: true,
+      genotypeRows: [],
+      genotypeProductAvailable: false,
+    })
+    expect(contract).toMatchObject({
+      status: 'UNAVAILABLE',
+      reason: 'AGGREGATE_RESPONSE_BYTE_BOUND_EXCEEDED',
+      ancestry_groups: [],
+      sex_groups: [],
+      available_color_dimensions: [],
+      source_key_inventory_digest: expect.stringMatching(/^[a-f0-9]{64}$/),
+    })
+  })
+
+  test('certifies AoU sole-ancestry redundancy only on exact global reconciliation', () => {
+    const exactRows = [frequencyRow(1, 'afr', 3, 10), frequencyRow(2, 'afr', 1, 10)]
+    expect(certifySoleAncestryControlRedundant(alleles, exactRows)).toEqual({
+      redundant: true,
+      reason: 'CERTIFIED_EXACT_SOLE_STRATUM',
+    })
+    expect(
+      certifySoleAncestryControlRedundant(alleles, [
+        frequencyRow(1, 'afr', 2, 9),
+        frequencyRow(2, 'afr', 1, 9),
+      ])
+    ).toEqual({
+      redundant: false,
+      reason: 'SOLE_STRATUM_GLOBAL_OBSERVATIONS_DIFFER',
+    })
+    expect(
+      certifySoleAncestryControlRedundant(alleles, [
+        ...exactRows,
+        frequencyRow(1, 'eur_XX', 0, 2),
+        frequencyRow(2, 'eur_XX', 0, 2),
+      ])
+    ).toEqual({
+      redundant: false,
+      reason: 'NOT_SOLE_ANCESTRY_STRATUM',
+    })
+  })
+
+  test('exposes the AoU ancestry distinction unless the sole control is certified redundant', () => {
+    const build = (rows: any[]) =>
+      buildLongReadTrFilterContract({
+        cohort: 'aou',
+        sourceRelease: 'y1',
+        sourceRunId: 'run-aou',
+        alleles,
+        frequencyRows: rows,
+        frequencyProductAvailable: true,
+        genotypeRows: [],
+        genotypeProductAvailable: false,
+      })
+    const redundant = build([frequencyRow(1, 'afr', 3, 10), frequencyRow(2, 'afr', 1, 10)])
+    expect(redundant).toMatchObject({
+      ancestry_control_redundant: true,
+      ancestry_control_redundancy_reason: 'CERTIFIED_EXACT_SOLE_STRATUM',
+      available_color_dimensions: [],
+    })
+    expect(redundant.ancestry_groups).toEqual([
+      expect.objectContaining({ id: 'frequency:afr', source_frequency_keys: ['afr'] }),
+    ])
+
+    const distinct = build([frequencyRow(1, 'afr', 2, 9), frequencyRow(2, 'afr', 1, 9)])
+    expect(distinct).toMatchObject({
+      ancestry_control_redundant: false,
+      ancestry_control_redundancy_reason: 'SOLE_STRATUM_GLOBAL_OBSERVATIONS_DIFFER',
+      available_color_dimensions: ['ANCESTRY'],
+    })
+  })
+
+  test('derives sex options from supported source keys without inventing Unknown', () => {
+    const contract = buildLongReadTrFilterContract({
+      cohort: 'aou',
+      sourceRelease: 'y1',
+      sourceRunId: 'run-aou',
+      alleles,
+      frequencyRows: [frequencyRow(1, 'XX', 3, 10), frequencyRow(2, 'XX', 1, 10)],
+      frequencyProductAvailable: true,
+      genotypeRows: [{ source_ancestry_key: 'AFR', source_sex_key: 'unsupported' }],
+      genotypeProductAvailable: true,
+    })
+    expect(contract.sex_groups).toEqual([
+      expect.objectContaining({
+        id: 'XX',
+        source_frequency_keys: ['XX'],
+        source_metadata_keys: [],
+      }),
+    ])
+    expect(contract.sex_groups.some((group) => group.id === 'SOURCE_UNKNOWN')).toBe(false)
+  })
+
+  test('same-dimension sex filtering emits only the selected sex and reconciles every bar', () => {
+    const view = buildCanonicalAlleleStratifiedView({
+      alleles,
+      frequencyRows: [
+        frequencyRow(1, 'XX', 2, 4),
+        frequencyRow(2, 'XX', 0, 4),
+        frequencyRow(1, 'XY', 1, 6),
+        frequencyRow(2, 'XY', 1, 6),
+      ],
+      frequencyProductAvailable: true,
+      sexFilterId: 'XX',
+      colorBy: 'SEX',
+    })
+    expect(view).toMatchObject({
+      status: 'AVAILABLE',
+      sex_filter_id: 'XX',
+      color_dimension: 'SEX',
+      filtered_called_alleles: 2,
+    })
+    for (const bin of view.bins) {
+      expect(bin.segments.every((segment: any) => segment.group_id === 'XX')).toBe(true)
+      expect(
+        bin.segments.reduce((sum: number, segment: any) => sum + segment.called_alleles, 0)
+      ).toBe(bin.called_alleles)
+    }
+    expect(JSON.stringify(view)).not.toContain('XY')
+
+    const landscape: any = buildWholeRecordAlleleLandscape({
+      alleles,
+      frequencyRows: [
+        frequencyRow(1, 'XX', 2, 4),
+        frequencyRow(2, 'XX', 0, 4),
+        frequencyRow(1, 'XY', 1, 6),
+        frequencyRow(2, 'XY', 1, 6),
+      ],
+      sourceRecordCount: 1,
+      purityByAllele: new Map(),
+      sexFilterId: 'XX',
+      colorBy: 'SEX',
+    })
+    expect(landscape).toMatchObject({
+      status: 'AVAILABLE',
+      bins: [],
+      purity_points: [],
+      stratified_view: { status: 'AVAILABLE', sex_filter_id: 'XX' },
+    })
+  })
+
+  test('uses exact joint rows for cross-dimension filtering and coloring', () => {
+    const view = buildCanonicalAlleleStratifiedView({
+      alleles,
+      frequencyRows: [
+        frequencyRow(1, 'afr', 2, 6),
+        frequencyRow(2, 'afr', 1, 6),
+        frequencyRow(1, 'nfe', 1, 4),
+        frequencyRow(2, 'nfe', 0, 4),
+        frequencyRow(1, 'afr_XX', 1, 2),
+        frequencyRow(2, 'afr_XX', 0, 2),
+        frequencyRow(1, 'afr_XY', 1, 4),
+        frequencyRow(2, 'afr_XY', 1, 4),
+      ],
+      frequencyProductAvailable: true,
+      ancestryFilterId: 'frequency:afr',
+      colorBy: 'SEX',
+    })
+    expect(view).toMatchObject({
+      status: 'AVAILABLE',
+      ancestry_filter_id: 'frequency:afr',
+      color_dimension: 'SEX',
+      filtered_called_alleles: 3,
+    })
+    expect(JSON.stringify(view)).not.toContain('nfe')
+    for (const bin of view.bins) {
+      expect(
+        bin.segments.reduce((sum: number, segment: any) => sum + segment.called_alleles, 0)
+      ).toBe(bin.called_alleles)
+    }
+  })
+
+  test('keeps source Unknown distinct from computed Unstratified and fails bad remainders closed', () => {
+    const sourceUnknownRows = [frequencyRow(1, 'unknown', 2, 5), frequencyRow(2, 'unknown', 0, 5)]
+    expect(
+      buildCanonicalAlleleStratifiedView({
+        alleles,
+        frequencyRows: sourceUnknownRows,
+        frequencyProductAvailable: true,
+        colorBy: 'ANCESTRY',
+      })
+    ).toMatchObject({ status: 'UNAVAILABLE', reason: 'DENOMINATOR_COMPATIBILITY_NOT_PROVEN' })
+
+    const admitted = buildCanonicalAlleleStratifiedView({
+      alleles,
+      frequencyRows: sourceUnknownRows,
+      frequencyProductAvailable: true,
+      colorBy: 'ANCESTRY',
+      remainderCompatibilityProven: true,
+    })
+    expect(admitted).toMatchObject({ status: 'AVAILABLE' })
+    expect(admitted.bins.flatMap((bin: any) => bin.segments)).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ group_id: 'frequency:unknown', kind: 'SOURCE_UNKNOWN' }),
+        expect.objectContaining({ group_id: 'UNSTRATIFIED', kind: 'UNSTRATIFIED' }),
+      ])
+    )
+    for (const bin of admitted.bins) {
+      expect(
+        bin.segments.reduce((sum: number, segment: any) => sum + segment.called_alleles, 0)
+      ).toBe(bin.called_alleles)
+    }
+
+    expect(
+      buildCanonicalAlleleStratifiedView({
+        alleles: [alleles[0]],
+        frequencyRows: [frequencyRow(1, 'afr', 4, 10)],
+        frequencyProductAvailable: true,
+        colorBy: 'ANCESTRY',
+        remainderCompatibilityProven: true,
+      })
+    ).toMatchObject({ status: 'UNAVAILABLE', reason: 'NEGATIVE_REMAINDER' })
   })
 })

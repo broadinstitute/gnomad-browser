@@ -472,13 +472,16 @@ type LongReadTrWholeRecordAlleleLandscape {
   purity_points: [LongReadTrPurityPoint!]
   purity_available: Boolean
   purity_unavailable_reason: String
+  stratified_view: LongReadTrAlleleStratifiedView
 }
 
 type LongReadTrGenotypePair {
   shorter_allele_id: String!
   longer_allele_id: String!
   ancestry_group: String!
+  ancestry_group_id: String!
   sex: String!
+  sex_group_id: String!
   people: Int!
   phased_people: Int!
   unphased_people: Int!
@@ -501,6 +504,7 @@ type LongReadTrWholeRecordGenotypeLandscape {
   ancestry_groups: [String!]
   sexes: [String!]
   cells: [LongReadTrGenotypeCell!]
+  stratified_view: LongReadTrGenotypeStratifiedView
 }
 
 enum LongReadTrPrimaryMotifMeasurementStatus {
@@ -749,6 +753,148 @@ type LongReadTrRepresentedLength {
   reconciliation_status: LongReadTrRepresentedLengthReconciliationStatus!
 }
 
+enum LongReadTrFilterDimension {
+  ANCESTRY
+  SEX
+}
+
+enum LongReadTrFilterContractStatus {
+  AVAILABLE
+  PARTIAL
+  UNAVAILABLE
+}
+
+enum LongReadTrAncestryMappingStatus {
+  APPROVED_EXACT
+  UNAVAILABLE_PENDING_OWNER_APPROVAL
+}
+
+enum LongReadTrFilterGroupKind {
+  SOURCE_GROUP
+  SOURCE_UNKNOWN
+}
+
+enum LongReadTrFilterGroupReason {
+  FREQUENCY_ONLY
+  GENOTYPE_ONLY
+  ANCESTRY_MAPPING_NOT_APPROVED
+  NO_COMPATIBLE_SHARED_OBSERVATIONS
+  AGGREGATE_RESPONSE_BYTE_BOUND_EXCEEDED
+}
+
+enum LongReadTrAncestryControlRedundancyReason {
+  CERTIFIED_EXACT_SOLE_STRATUM
+  NOT_SOLE_ANCESTRY_STRATUM
+  SOLE_STRATUM_GLOBAL_OBSERVATIONS_DIFFER
+  FREQUENCY_PRODUCT_UNAVAILABLE
+}
+
+enum LongReadTrUnstratifiedPolicy {
+  EXPLICIT_SOURCE_UNKNOWN_SEPARATE_AND_FAIL_CLOSED_WITHOUT_COMPATIBLE_DENOMINATORS
+}
+
+# IDs are API-owned and source-scoped. Exact source keys remain visible so a client
+# never has to lowercase or infer equivalence between frequency and metadata vocabularies.
+type LongReadTrFilterGroup {
+  id: String!
+  label: String!
+  kind: LongReadTrFilterGroupKind!
+  source_frequency_keys: [String!]!
+  source_metadata_keys: [String!]!
+  available_in_frequency: Boolean!
+  available_in_genotype: Boolean!
+  shared_available: Boolean!
+  unavailable_reason: LongReadTrFilterGroupReason
+}
+
+type LongReadTrFilterContract {
+  status: LongReadTrFilterContractStatus!
+  reason: LongReadTrFilterGroupReason
+  ancestry_mapping_status: LongReadTrAncestryMappingStatus!
+  ancestry_groups: [LongReadTrFilterGroup!]!
+  sex_groups: [LongReadTrFilterGroup!]!
+  ancestry_control_redundant: Boolean!
+  ancestry_control_redundancy_reason: LongReadTrAncestryControlRedundancyReason!
+  available_color_dimensions: [LongReadTrFilterDimension!]!
+  allele_color_dimensions: [LongReadTrFilterDimension!]!
+  genotype_color_dimensions: [LongReadTrFilterDimension!]!
+  unstratified_policy: LongReadTrUnstratifiedPolicy!
+  # Null until G-DATA-ANCESTRY supplies an approved immutable mapping artifact.
+  vocabulary_release: String
+  vocabulary_digest: String
+  source_key_inventory_release: String!
+  source_key_inventory_digest: String!
+  source_release: String!
+  source_run_id: String!
+  metadata_source_run_id: String
+}
+
+enum LongReadTrStratifiedViewStatus {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum LongReadTrStratifiedViewReason {
+  FREQUENCY_PRODUCT_UNAVAILABLE
+  UNSUPPORTED_FILTER_GROUP
+  UNSUPPORTED_COLOR_DIMENSION
+  MISSING_OR_DUPLICATE_STRATUM_OBSERVATION
+  INCONSISTENT_STRATUM_DENOMINATOR
+  NEGATIVE_REMAINDER
+  DENOMINATOR_COMPATIBILITY_NOT_PROVEN
+  FILTERED_SEGMENTS_DO_NOT_RECONCILE
+  GENOTYPE_PRODUCT_UNAVAILABLE
+  ANCESTRY_MAPPING_NOT_APPROVED
+}
+
+enum LongReadTrStratifiedSegmentKind {
+  SOURCE_GROUP
+  SOURCE_UNKNOWN
+  UNSTRATIFIED
+}
+
+type LongReadTrStratifiedSegment {
+  group_id: String!
+  label: String!
+  kind: LongReadTrStratifiedSegmentKind!
+  called_alleles: Int!
+}
+
+type LongReadTrStratifiedBin {
+  delta: Int!
+  called_alleles: Int!
+  segments: [LongReadTrStratifiedSegment!]!
+}
+
+type LongReadTrFilteredAlleleCount {
+  allele_id: String!
+  called_alleles: Int!
+}
+
+# This is the server-canonical view for the optional query filters/color dimension.
+# With color_dimension set, every AVAILABLE bin guarantees
+# sum(segments.called_alleles) == called_alleles.
+type LongReadTrAlleleStratifiedView {
+  status: LongReadTrStratifiedViewStatus!
+  reason: LongReadTrStratifiedViewReason
+  ancestry_filter_id: String
+  sex_filter_id: String
+  color_dimension: LongReadTrFilterDimension
+  filtered_called_alleles: Int
+  allele_counts: [LongReadTrFilteredAlleleCount!]!
+  bins: [LongReadTrStratifiedBin!]!
+}
+
+type LongReadTrGenotypeStratifiedView {
+  status: LongReadTrStratifiedViewStatus!
+  reason: LongReadTrStratifiedViewReason
+  ancestry_filter_id: String
+  sex_filter_id: String
+  color_dimension: LongReadTrFilterDimension
+  called_samples: Int
+  cells: [LongReadTrGenotypeCell!]!
+}
+
 type LongReadTandemRepeatLocus {
   id: String!
   source_trid: String!
@@ -767,6 +913,7 @@ type LongReadTandemRepeatLocus {
   component_summary: LongReadTrComponentSummary!
   sequence_cardinality: LongReadTrSequenceCardinality!
   represented_length: LongReadTrRepresentedLength!
+  filter_contract: LongReadTrFilterContract!
   total_alleles: Int!
   exact_alt_count: Int!
   exact_alt_count_complete: Boolean!

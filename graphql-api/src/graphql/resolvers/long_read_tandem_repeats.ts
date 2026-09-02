@@ -33,6 +33,9 @@ const resolveLongReadTandemRepeatLocus = async (_obj: any, args: any, _ctx: any)
       first: args.first,
       after: args.after,
       selectedAllele: args.allele,
+      ancestryFilterId: args.ancestry_group_id,
+      sexFilterId: args.sex_group_id,
+      colorBy: args.color_by,
       source,
     })
     if (!result) return null

@@ -478,18 +478,492 @@ const parseDivision = (division: unknown) => {
   return { ancestry_group: division, sex: null }
 }
 
+const isSourceUnknown = (value: string) => value.toLowerCase() === 'unknown'
+const frequencyAncestryId = (key: string) => `frequency:${key}`
+const metadataAncestryId = (key: string) => `metadata:${key}`
+const sourceGroupLabel = (key: string, product: 'frequency' | 'metadata') =>
+  isSourceUnknown(key) ? `Unknown (source ${product})` : `${key} (${product})`
+
+const canonicalSexId = (key: unknown) => {
+  if (key === 'XX' || key === 'female') return 'XX'
+  if (key === 'XY' || key === 'male') return 'XY'
+  if (typeof key === 'string' && isSourceUnknown(key)) return 'SOURCE_UNKNOWN'
+  return null
+}
+
+const validatedFrequencySlice = (
+  alleles: CompactAllele[],
+  frequencyRows: any[],
+  ancestryKey: string | null,
+  sexKey: string | null
+) => {
+  if (ancestryKey == null && sexKey == null) {
+    return {
+      counts: new Map(
+        alleles.map((allele) => [
+          compactAlleleKey(allele.source_variant_id, allele.alt_index),
+          allele.ac,
+        ])
+      ),
+      denominator: alleles[0]?.an ?? 0,
+    }
+  }
+  const selected = frequencyRows.filter((row) => {
+    const parsed = parseDivision(row.division)
+    return parsed?.ancestry_group === ancestryKey && parsed?.sex === sexKey
+  })
+  const expected = new Set(
+    alleles.map((allele) => compactAlleleKey(allele.source_variant_id, allele.alt_index))
+  )
+  const counts = new Map<string, number>()
+  let denominator: number | null = null
+  for (const row of selected) {
+    const altIndex = integer(row.alt_index)
+    const ac = integer(row.ac)
+    const an = integer(row.an)
+    const af = finiteNumber(row.af)
+    const key = compactAlleleKey(String(row.source_variant_id || ''), altIndex || 0)
+    if (
+      !expected.delete(key) ||
+      ac == null ||
+      ac < 0 ||
+      an == null ||
+      an < 0 ||
+      ac > an ||
+      af == null ||
+      af < 0 ||
+      af > 1 ||
+      Math.abs(af - (an ? ac / an : 0)) > 1e-9 ||
+      (denominator != null && denominator !== an)
+    ) {
+      return { reason: 'MISSING_OR_DUPLICATE_STRATUM_OBSERVATION' as const }
+    }
+    denominator = an
+    counts.set(key, ac)
+  }
+  if (expected.size || denominator == null) {
+    return { reason: 'MISSING_OR_DUPLICATE_STRATUM_OBSERVATION' as const }
+  }
+  return { counts, denominator }
+}
+
+export const buildCanonicalAlleleStratifiedView = ({
+  alleles,
+  frequencyRows,
+  frequencyProductAvailable,
+  ancestryFilterId = null,
+  sexFilterId = null,
+  colorBy = null,
+  remainderCompatibilityProven = false,
+}: {
+  alleles: CompactAllele[]
+  frequencyRows: any[]
+  frequencyProductAvailable: boolean
+  ancestryFilterId?: string | null
+  sexFilterId?: string | null
+  colorBy?: 'ANCESTRY' | 'SEX' | null
+  remainderCompatibilityProven?: boolean
+}) => {
+  const unavailableView = (reason: string) => ({
+    status: 'UNAVAILABLE',
+    reason,
+    ancestry_filter_id: ancestryFilterId,
+    sex_filter_id: sexFilterId,
+    color_dimension: colorBy,
+    filtered_called_alleles: null,
+    allele_counts: [],
+    bins: [],
+  })
+  if (!frequencyProductAvailable && (ancestryFilterId || sexFilterId || colorBy)) {
+    return unavailableView('FREQUENCY_PRODUCT_UNAVAILABLE')
+  }
+  const ancestryKeys = new Set<string>()
+  const sexKeys = new Set<string>()
+  for (const row of frequencyRows) {
+    const parsed = parseDivision(row.division)
+    if (parsed?.ancestry_group) ancestryKeys.add(parsed.ancestry_group)
+    if (parsed?.sex) sexKeys.add(parsed.sex)
+  }
+  const ancestryMatch = ancestryFilterId && /^frequency:(.+)$/.exec(ancestryFilterId)
+  const ancestryKey = ancestryMatch ? ancestryMatch[1] : null
+  if (ancestryFilterId && (!ancestryKey || !ancestryKeys.has(ancestryKey))) {
+    return unavailableView('UNSUPPORTED_FILTER_GROUP')
+  }
+  const sexKey = sexFilterId === 'XX' || sexFilterId === 'XY' ? sexFilterId : null
+  if (sexFilterId && (!sexKey || !sexKeys.has(sexKey))) {
+    return unavailableView('UNSUPPORTED_FILTER_GROUP')
+  }
+  if (colorBy && !['ANCESTRY', 'SEX'].includes(colorBy)) {
+    return unavailableView('UNSUPPORTED_COLOR_DIMENSION')
+  }
+
+  const parent = validatedFrequencySlice(alleles, frequencyRows, ancestryKey, sexKey)
+  if ('reason' in parent) return unavailableView(parent.reason!)
+  const alleleByKey = new Map(
+    alleles.map((allele) => [compactAlleleKey(allele.source_variant_id, allele.alt_index), allele])
+  )
+  const segments = new Map<
+    string,
+    { id: string; label: string; kind: 'SOURCE_GROUP' | 'SOURCE_UNKNOWN'; slice: any }
+  >()
+  if (colorBy === 'ANCESTRY') {
+    const keys = ancestryKey ? [ancestryKey] : [...ancestryKeys].sort()
+    for (const key of keys) {
+      const slice = validatedFrequencySlice(alleles, frequencyRows, key, sexKey)
+      if ('reason' in slice) return unavailableView(slice.reason!)
+      segments.set(frequencyAncestryId(key), {
+        id: frequencyAncestryId(key),
+        label: sourceGroupLabel(key, 'frequency'),
+        kind: isSourceUnknown(key) ? 'SOURCE_UNKNOWN' : 'SOURCE_GROUP',
+        slice,
+      })
+    }
+  } else if (colorBy === 'SEX') {
+    const keys = sexKey ? [sexKey] : [...sexKeys].sort()
+    for (const key of keys) {
+      const slice = validatedFrequencySlice(alleles, frequencyRows, ancestryKey, key)
+      if ('reason' in slice) return unavailableView(slice.reason!)
+      segments.set(key, { id: key, label: key, kind: 'SOURCE_GROUP', slice })
+    }
+  }
+
+  if (colorBy) {
+    const childDenominator = [...segments.values()].reduce(
+      (sum, segment) => sum + segment.slice.denominator,
+      0
+    )
+    if (childDenominator > parent.denominator) return unavailableView('NEGATIVE_REMAINDER')
+    if (childDenominator < parent.denominator && !remainderCompatibilityProven) {
+      return unavailableView('DENOMINATOR_COMPATIBILITY_NOT_PROVEN')
+    }
+  }
+
+  const byDelta = new Map<number, { called_alleles: number; segments: Map<string, any> }>()
+  for (const [alleleKey, allele] of alleleByKey) {
+    const calledAlleles = parent.counts.get(alleleKey) || 0
+    const bin = byDelta.get(allele.allele_length!) || {
+      called_alleles: 0,
+      segments: new Map<string, any>(),
+    }
+    bin.called_alleles += calledAlleles
+    let segmentSum = 0
+    for (const segment of segments.values()) {
+      const count = segment.slice.counts.get(alleleKey) || 0
+      segmentSum += count
+      if (count) {
+        const current = bin.segments.get(segment.id) || { ...segment, called_alleles: 0 }
+        current.called_alleles += count
+        bin.segments.set(segment.id, current)
+      }
+    }
+    if (segmentSum > calledAlleles) return unavailableView('NEGATIVE_REMAINDER')
+    if (colorBy && segmentSum < calledAlleles) {
+      if (!remainderCompatibilityProven) {
+        return unavailableView('DENOMINATOR_COMPATIBILITY_NOT_PROVEN')
+      }
+      const count = calledAlleles - segmentSum
+      const current = bin.segments.get('UNSTRATIFIED') || {
+        id: 'UNSTRATIFIED',
+        label: 'Unstratified',
+        kind: 'UNSTRATIFIED',
+        called_alleles: 0,
+      }
+      current.called_alleles += count
+      bin.segments.set('UNSTRATIFIED', current)
+    }
+    byDelta.set(allele.allele_length!, bin)
+  }
+
+  const bins = [...byDelta]
+    .sort(([left], [right]) => left - right)
+    .map(([delta, bin]) => ({
+      delta,
+      called_alleles: bin.called_alleles,
+      segments: [...bin.segments.values()]
+        .map((segment) => ({
+          group_id: segment.id,
+          label: segment.label,
+          kind: segment.kind,
+          called_alleles: segment.called_alleles,
+        }))
+        .sort((left, right) => left.group_id.localeCompare(right.group_id)),
+    }))
+  if (
+    colorBy &&
+    bins.some(
+      (bin) =>
+        bin.segments.reduce((sum, segment) => sum + segment.called_alleles, 0) !==
+        bin.called_alleles
+    )
+  ) {
+    return unavailableView('FILTERED_SEGMENTS_DO_NOT_RECONCILE')
+  }
+  return {
+    status: 'AVAILABLE',
+    reason: null,
+    ancestry_filter_id: ancestryFilterId,
+    sex_filter_id: sexFilterId,
+    color_dimension: colorBy,
+    filtered_called_alleles: bins.reduce((sum, bin) => sum + bin.called_alleles, 0),
+    allele_counts: [...alleleByKey]
+      .map(([alleleKey, allele]) => ({
+        allele_id: browserVariantId(allele.source_variant_id, allele.alt_index),
+        called_alleles: parent.counts.get(alleleKey) || 0,
+      }))
+      .sort((left, right) => left.allele_id.localeCompare(right.allele_id)),
+    bins,
+  }
+}
+
+export const certifySoleAncestryControlRedundant = (
+  alleles: CompactAllele[],
+  frequencyRows: any[],
+  frequencyProductAvailable = true
+) => {
+  if (!frequencyProductAvailable) {
+    return { redundant: false, reason: 'FREQUENCY_PRODUCT_UNAVAILABLE' as const }
+  }
+  const ancestryKeys = new Set<string>()
+  for (const row of frequencyRows) {
+    const parsed = parseDivision(row.division)
+    if (parsed?.ancestry_group) ancestryKeys.add(parsed.ancestry_group)
+  }
+  if (ancestryKeys.size !== 1) {
+    return { redundant: false, reason: 'NOT_SOLE_ANCESTRY_STRATUM' as const }
+  }
+  const key = [...ancestryKeys][0]
+  const slice = validatedFrequencySlice(alleles, frequencyRows, key, null)
+  if (
+    'reason' in slice ||
+    slice.denominator !== alleles[0]?.an ||
+    alleles.some(
+      (allele) =>
+        slice.counts.get(compactAlleleKey(allele.source_variant_id, allele.alt_index)) !== allele.ac
+    )
+  ) {
+    return {
+      redundant: false,
+      reason: 'SOLE_STRATUM_GLOBAL_OBSERVATIONS_DIFFER' as const,
+    }
+  }
+  return { redundant: true, reason: 'CERTIFIED_EXACT_SOLE_STRATUM' as const }
+}
+
+export const buildLongReadTrFilterContract = ({
+  cohort,
+  sourceRelease,
+  sourceRunId,
+  metadataRunId = null,
+  alleles,
+  frequencyRows,
+  frequencyProductAvailable,
+  genotypeRows,
+  genotypeProductAvailable,
+}: {
+  cohort: LongReadCohort
+  sourceRelease: string
+  sourceRunId: string
+  metadataRunId?: string | null
+  alleles: CompactAllele[]
+  frequencyRows: any[]
+  frequencyProductAvailable: boolean
+  genotypeRows: any[]
+  genotypeProductAvailable: boolean
+}) => {
+  const frequencyAncestries = new Set<string>()
+  const frequencySexes = new Set<string>()
+  const ancestryFrequencyKeys = new Map<string, Set<string>>()
+  const sexFrequencyKeys = new Map<string, Set<string>>()
+  for (const row of frequencyRows) {
+    const parsed = parseDivision(row.division)
+    const sourceKey = typeof row.division === 'string' ? row.division : null
+    if (parsed?.ancestry_group && sourceKey) {
+      frequencyAncestries.add(parsed.ancestry_group)
+      const keys = ancestryFrequencyKeys.get(parsed.ancestry_group) || new Set<string>()
+      keys.add(sourceKey)
+      ancestryFrequencyKeys.set(parsed.ancestry_group, keys)
+    }
+    if (parsed?.sex && sourceKey) {
+      frequencySexes.add(parsed.sex)
+      const keys = sexFrequencyKeys.get(parsed.sex) || new Set<string>()
+      keys.add(sourceKey)
+      sexFrequencyKeys.set(parsed.sex, keys)
+    }
+  }
+  const metadataAncestries = new Set<string>()
+  const metadataSexKeys = new Set<string>()
+  for (const row of genotypeRows) {
+    const ancestry = exactMetadataValue(row, 'source_ancestry_key', 'ancestry_group')
+    const sex = exactMetadataValue(row, 'source_sex_key', 'sex')
+    if (typeof ancestry === 'string' && ancestry) metadataAncestries.add(ancestry)
+    if (typeof sex === 'string' && sex && canonicalSexId(sex)) metadataSexKeys.add(sex)
+  }
+  const ancestryGroups = [
+    ...[...frequencyAncestries].sort().map((key) => ({
+      id: frequencyAncestryId(key),
+      label: sourceGroupLabel(key, 'frequency'),
+      kind: isSourceUnknown(key) ? 'SOURCE_UNKNOWN' : 'SOURCE_GROUP',
+      source_frequency_keys: [...(ancestryFrequencyKeys.get(key) || [])].sort(),
+      source_metadata_keys: [],
+      available_in_frequency: frequencyProductAvailable,
+      available_in_genotype: false,
+      shared_available: false,
+      unavailable_reason: metadataAncestries.size
+        ? 'ANCESTRY_MAPPING_NOT_APPROVED'
+        : 'FREQUENCY_ONLY',
+    })),
+    ...[...metadataAncestries].sort().map((key) => ({
+      id: metadataAncestryId(key),
+      label: sourceGroupLabel(key, 'metadata'),
+      kind: isSourceUnknown(key) ? 'SOURCE_UNKNOWN' : 'SOURCE_GROUP',
+      source_frequency_keys: [],
+      source_metadata_keys: [key],
+      available_in_frequency: false,
+      available_in_genotype: genotypeProductAvailable,
+      shared_available: false,
+      unavailable_reason: frequencyAncestries.size
+        ? 'ANCESTRY_MAPPING_NOT_APPROVED'
+        : 'GENOTYPE_ONLY',
+    })),
+  ]
+  const sexIds = new Set(
+    [
+      ...[...frequencySexes].map(canonicalSexId),
+      ...[...metadataSexKeys].map(canonicalSexId),
+    ].filter(Boolean) as string[]
+  )
+  const sexGroups = [...sexIds].sort().map((id) => {
+    const frequencyKeys = [...frequencySexes]
+      .filter((key) => canonicalSexId(key) === id)
+      .flatMap((key) => [...(sexFrequencyKeys.get(key) || [])])
+      .sort()
+    const metadataKeys = [...metadataSexKeys].filter((key) => canonicalSexId(key) === id).sort()
+    const frequencyAvailable = frequencyProductAvailable && frequencyKeys.length > 0
+    const genotypeAvailable = genotypeProductAvailable && metadataKeys.length > 0
+    let unavailableReason: string | null = 'GENOTYPE_ONLY'
+    if (frequencyAvailable && genotypeAvailable) unavailableReason = null
+    else if (frequencyAvailable) unavailableReason = 'FREQUENCY_ONLY'
+    return {
+      id,
+      label: id === 'SOURCE_UNKNOWN' ? 'Unknown (source)' : id,
+      kind: id === 'SOURCE_UNKNOWN' ? 'SOURCE_UNKNOWN' : 'SOURCE_GROUP',
+      source_frequency_keys: frequencyKeys,
+      source_metadata_keys: metadataKeys,
+      available_in_frequency: frequencyAvailable,
+      available_in_genotype: genotypeAvailable,
+      shared_available: frequencyAvailable && (!genotypeProductAvailable || genotypeAvailable),
+      unavailable_reason: unavailableReason,
+    }
+  })
+  const alleleColorDimensions = [
+    ...(frequencyProductAvailable && frequencyAncestries.size ? ['ANCESTRY'] : []),
+    ...(frequencyProductAvailable && frequencySexes.size ? ['SEX'] : []),
+  ]
+  const genotypeColorDimensions = [
+    ...(genotypeProductAvailable && metadataAncestries.size ? ['ANCESTRY'] : []),
+    ...(genotypeProductAvailable && metadataSexKeys.size ? ['SEX'] : []),
+  ]
+  const frequencySexIds = new Set(
+    [...frequencySexes].map(canonicalSexId).filter(Boolean) as string[]
+  )
+  const metadataSexIds = new Set(
+    [...metadataSexKeys].map(canonicalSexId).filter(Boolean) as string[]
+  )
+  const sexVocabularyReconciles =
+    !genotypeProductAvailable ||
+    (frequencySexIds.size === metadataSexIds.size &&
+      [...frequencySexIds].every((id) => metadataSexIds.has(id)))
+  const availableColorDimensions = alleleColorDimensions.filter(
+    (dimension) => !genotypeProductAvailable || (dimension === 'SEX' && sexVocabularyReconciles)
+  )
+  const redundancy = certifySoleAncestryControlRedundant(
+    alleles,
+    frequencyRows,
+    frequencyProductAvailable
+  )
+  const vocabularyBody = {
+    contract: 'SOURCE_KEY_INVENTORY_V1',
+    cohort,
+    source_release: sourceRelease,
+    source_run_id: sourceRunId,
+    metadata_source_run_id: metadataRunId,
+    ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+    ancestry_groups: ancestryGroups.map((group) => [
+      group.id,
+      group.source_frequency_keys,
+      group.source_metadata_keys,
+    ]),
+    sex_groups: sexGroups.map((group) => [
+      group.id,
+      group.source_frequency_keys,
+      group.source_metadata_keys,
+    ]),
+  }
+  const sourceKeyInventoryDigest = crypto
+    .createHash('sha256')
+    .update(JSON.stringify(vocabularyBody))
+    .digest('hex')
+  const response = {
+    status:
+      alleleColorDimensions.length || genotypeColorDimensions.length ? 'PARTIAL' : 'UNAVAILABLE',
+    reason:
+      frequencyAncestries.size && metadataAncestries.size
+        ? 'ANCESTRY_MAPPING_NOT_APPROVED'
+        : 'NO_COMPATIBLE_SHARED_OBSERVATIONS',
+    ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+    ancestry_groups: ancestryGroups,
+    sex_groups: sexGroups,
+    ancestry_control_redundant: redundancy.redundant,
+    ancestry_control_redundancy_reason: redundancy.reason,
+    available_color_dimensions: availableColorDimensions.filter(
+      (dimension) => dimension !== 'ANCESTRY' || !redundancy.redundant
+    ),
+    allele_color_dimensions: alleleColorDimensions,
+    genotype_color_dimensions: genotypeColorDimensions,
+    unstratified_policy:
+      'EXPLICIT_SOURCE_UNKNOWN_SEPARATE_AND_FAIL_CLOSED_WITHOUT_COMPATIBLE_DENOMINATORS',
+    vocabulary_release: null,
+    vocabulary_digest: null,
+    source_key_inventory_release: 'SOURCE_KEY_INVENTORY_V1',
+    source_key_inventory_digest: sourceKeyInventoryDigest,
+    source_release: sourceRelease,
+    source_run_id: sourceRunId,
+    metadata_source_run_id: metadataRunId,
+  }
+  return responseWithinBound(response)
+    ? response
+    : {
+        ...response,
+        status: 'UNAVAILABLE',
+        reason: 'AGGREGATE_RESPONSE_BYTE_BOUND_EXCEEDED',
+        ancestry_groups: [],
+        sex_groups: [],
+        ancestry_control_redundant: false,
+        ancestry_control_redundancy_reason: 'FREQUENCY_PRODUCT_UNAVAILABLE',
+        available_color_dimensions: [],
+        allele_color_dimensions: [],
+        genotype_color_dimensions: [],
+      }
+}
+
 export const buildWholeRecordAlleleLandscape = ({
   alleles,
   frequencyRows,
   sourceRecordCount,
   frequencyRowsTruncated = false,
   purityByAllele,
+  ancestryFilterId = null,
+  sexFilterId = null,
+  colorBy = null,
 }: {
   alleles: CompactAllele[]
   frequencyRows: any[]
   sourceRecordCount: number
   frequencyRowsTruncated?: boolean
   purityByAllele: Map<string, number | null>
+  ancestryFilterId?: string | null
+  sexFilterId?: string | null
+  colorBy?: 'ANCESTRY' | 'SEX' | null
 }) => {
   if (sourceRecordCount !== 1) return unavailable('MULTIPLE_SOURCE_RECORDS_NOT_RECONCILABLE')
   if (!alleles.length) return unavailable('NO_COMPLETE_EXACT_ALLELES')
@@ -568,6 +1042,7 @@ export const buildWholeRecordAlleleLandscape = ({
     }
   }
 
+  const activeCanonicalProjection = Boolean(ancestryFilterId || sexFilterId || colorBy)
   const bins = [...byDelta]
     .sort(([left], [right]) => left - right)
     .map(([delta, members]) => ({
@@ -577,7 +1052,7 @@ export const buildWholeRecordAlleleLandscape = ({
       allele_ids: members
         .map((allele) => browserVariantId(allele.source_variant_id, allele.alt_index))
         .sort(),
-      stacks: [...stackCounts]
+      stacks: (activeCanonicalProjection ? [] : [...stackCounts])
         .filter(([key]) => Number(key.split('\u0000')[0]) === delta)
         .map(([key, count]) => {
           const [, ancestryGroup, sex] = key.split('\u0000')
@@ -618,6 +1093,17 @@ export const buildWholeRecordAlleleLandscape = ({
   else if (malformedStratifiedFrequencies)
     stratifiedUnavailableReason = 'MALFORMED_STRATIFIED_FREQUENCIES'
   else if (!stratifiedAvailable) stratifiedUnavailableReason = 'NO_STRATIFIED_FREQUENCIES'
+  const stratifiedView = buildCanonicalAlleleStratifiedView({
+    alleles,
+    frequencyRows,
+    frequencyProductAvailable: stratifiedAvailable,
+    ancestryFilterId,
+    sexFilterId,
+    colorBy,
+  })
+  let purityUnavailableReason: string | null = null
+  if (activeCanonicalProjection) purityUnavailableReason = 'USE_STRATIFIED_VIEW_FOR_ACTIVE_FILTER'
+  else if (!purityPoints.length) purityUnavailableReason = 'NO_ALIGNED_SOURCE_AP_ALLELE'
   const response = {
     status: 'AVAILABLE',
     reason_code: null,
@@ -630,10 +1116,11 @@ export const buildWholeRecordAlleleLandscape = ({
     stratified_unavailable_reason: stratifiedUnavailableReason,
     ancestry_groups: [...ancestryGroups].sort(),
     sexes: [...sexes].sort(),
-    bins,
-    purity_points: purityPoints,
-    purity_available: purityPoints.length > 0,
-    purity_unavailable_reason: purityPoints.length ? null : 'NO_ALIGNED_SOURCE_AP_ALLELE',
+    bins: activeCanonicalProjection ? [] : bins,
+    purity_points: activeCanonicalProjection ? [] : purityPoints,
+    purity_available: activeCanonicalProjection ? false : purityPoints.length > 0,
+    purity_unavailable_reason: purityUnavailableReason,
+    stratified_view: stratifiedView,
   }
   return responseWithinBound(response)
     ? response
@@ -643,17 +1130,91 @@ export const buildWholeRecordAlleleLandscape = ({
 const normalizedSex = (value: unknown) => {
   if (value === 'female' || value === 'XX') return 'XX'
   if (value === 'male' || value === 'XY') return 'XY'
-  return 'unknown'
+  if (typeof value === 'string' && isSourceUnknown(value)) return 'unknown'
+  return null
+}
+
+const exactMetadataValue = (row: any, exactKey: string, fallbackKey: string) =>
+  Object.prototype.hasOwnProperty.call(row, exactKey) ? row[exactKey] : row[fallbackKey]
+
+export const buildCanonicalGenotypeStratifiedView = ({
+  cells,
+  ancestryFilterId = null,
+  sexFilterId = null,
+  colorBy = null,
+}: {
+  cells: any[]
+  ancestryFilterId?: string | null
+  sexFilterId?: string | null
+  colorBy?: 'ANCESTRY' | 'SEX' | null
+}) => {
+  const unavailableView = (reason: string) => ({
+    status: 'UNAVAILABLE',
+    reason,
+    ancestry_filter_id: ancestryFilterId,
+    sex_filter_id: sexFilterId,
+    color_dimension: colorBy,
+    called_samples: null,
+    cells: [],
+  })
+  if (ancestryFilterId?.startsWith('frequency:')) {
+    return unavailableView('ANCESTRY_MAPPING_NOT_APPROVED')
+  }
+  const ancestryMatch = ancestryFilterId && /^metadata:(.+)$/.exec(ancestryFilterId)
+  const ancestryKey = ancestryMatch ? ancestryMatch[1] : null
+  const ancestryKeys = new Set(
+    cells.flatMap((cell) => cell.pairs.map((pair: any) => pair.ancestry_group))
+  )
+  if (ancestryFilterId && (!ancestryKey || !ancestryKeys.has(ancestryKey))) {
+    return unavailableView('UNSUPPORTED_FILTER_GROUP')
+  }
+  let requestedSex: string | null = null
+  if (sexFilterId === 'SOURCE_UNKNOWN') requestedSex = 'unknown'
+  else if (sexFilterId === 'XX' || sexFilterId === 'XY') requestedSex = sexFilterId
+  const sexKeys = new Set(cells.flatMap((cell) => cell.pairs.map((pair: any) => pair.sex)))
+  if (sexFilterId && (!requestedSex || !sexKeys.has(requestedSex))) {
+    return unavailableView('UNSUPPORTED_FILTER_GROUP')
+  }
+  const filteredCells = cells.flatMap((cell) => {
+    const pairs = cell.pairs.filter(
+      (pair: any) =>
+        (!ancestryKey || pair.ancestry_group === ancestryKey) &&
+        (!requestedSex || pair.sex === requestedSex)
+    )
+    if (!pairs.length) return []
+    return [
+      {
+        ...cell,
+        people: pairs.reduce((sum: number, pair: any) => sum + pair.people, 0),
+        pairs,
+      },
+    ]
+  })
+  return {
+    status: 'AVAILABLE',
+    reason: null,
+    ancestry_filter_id: ancestryFilterId,
+    sex_filter_id: sexFilterId,
+    color_dimension: colorBy,
+    called_samples: filteredCells.reduce((sum, cell) => sum + cell.people, 0),
+    cells: filteredCells,
+  }
 }
 
 export const buildWholeRecordGenotypeLandscape = ({
   rows,
   alleles,
   expectedCalledAlleles,
+  ancestryFilterId = null,
+  sexFilterId = null,
+  colorBy = null,
 }: {
   rows: any[]
   alleles: CompactAllele[]
   expectedCalledAlleles: number
+  ancestryFilterId?: string | null
+  sexFilterId?: string | null
+  colorBy?: 'ANCESTRY' | 'SEX' | null
 }) => {
   if (rows.length > MAX_TR_LOCUS_GENOTYPE_GROUPS)
     return unavailable('GENOTYPE_GROUP_BOUND_EXCEEDED')
@@ -691,8 +1252,13 @@ export const buildWholeRecordGenotypeLandscape = ({
     for (const alleleIndex of pair as number[]) {
       observedAlleleCopies.set(alleleIndex, (observedAlleleCopies.get(alleleIndex) || 0) + people)
     }
-    const ancestryGroup = String(row.ancestry_group || 'unknown')
-    const sex = normalizedSex(row.sex)
+    const ancestryValue = exactMetadataValue(row, 'source_ancestry_key', 'ancestry_group')
+    const sexValue = exactMetadataValue(row, 'source_sex_key', 'sex')
+    if (typeof ancestryValue !== 'string' || !ancestryValue || normalizedSex(sexValue) == null) {
+      return unavailable('MALFORMED_OR_UNSUPPORTED_METADATA_STRATUM')
+    }
+    const ancestryGroup = ancestryValue
+    const sex = normalizedSex(sexValue)!
     ancestryGroups.add(ancestryGroup)
     sexes.add(sex)
     const exactPair: { id: string; delta: number }[] = pair.map((index: number | null) =>
@@ -716,7 +1282,9 @@ export const buildWholeRecordGenotypeLandscape = ({
       shorter_allele_id: exactPair[0].id,
       longer_allele_id: exactPair[1].id,
       ancestry_group: ancestryGroup,
+      ancestry_group_id: metadataAncestryId(ancestryGroup),
       sex,
+      sex_group_id: sex === 'unknown' ? 'SOURCE_UNKNOWN' : sex,
       people,
       phased_people: phasedPeople,
       unphased_people: people - phasedPeople,
@@ -733,6 +1301,11 @@ export const buildWholeRecordGenotypeLandscape = ({
   ) {
     return unavailable('GENOTYPE_TOTAL_DOES_NOT_RECONCILE')
   }
+  const allCells = [...cells.values()].sort(
+    (left, right) =>
+      left.shorter_delta - right.shorter_delta || left.longer_delta - right.longer_delta
+  )
+  const activeCanonicalProjection = Boolean(ancestryFilterId || sexFilterId || colorBy)
   const response = {
     status: 'AVAILABLE',
     reason_code: null,
@@ -742,10 +1315,13 @@ export const buildWholeRecordGenotypeLandscape = ({
     called_alleles: expectedCalledAlleles,
     ancestry_groups: [...ancestryGroups].sort(),
     sexes: [...sexes].sort(),
-    cells: [...cells.values()].sort(
-      (left, right) =>
-        left.shorter_delta - right.shorter_delta || left.longer_delta - right.longer_delta
-    ),
+    cells: activeCanonicalProjection ? [] : allCells,
+    stratified_view: buildCanonicalGenotypeStratifiedView({
+      cells: allCells,
+      ancestryFilterId,
+      sexFilterId,
+      colorBy,
+    }),
   }
   return responseWithinBound(response)
     ? response
@@ -796,6 +1372,9 @@ const fetchLongReadTrLocusUncached = async ({
   first = DEFAULT_TR_LOCUS_PAGE_SIZE,
   after,
   selectedAllele,
+  ancestryFilterId,
+  sexFilterId,
+  colorBy,
   source,
 }: {
   id: string
@@ -803,6 +1382,9 @@ const fetchLongReadTrLocusUncached = async ({
   first?: number
   after?: string | null
   selectedAllele?: string | null
+  ancestryFilterId?: string | null
+  sexFilterId?: string | null
+  colorBy?: 'ANCESTRY' | 'SEX' | null
   source: Y1SourceSnapshot
 }) => {
   const locus = parseTrLocusId(id)
@@ -966,6 +1548,9 @@ const fetchLongReadTrLocusUncached = async ({
         sourceRecordCount: sourceRecords.length,
         frequencyRowsTruncated,
         purityByAllele,
+        ancestryFilterId,
+        sexFilterId,
+        colorBy,
       })
 
   let uniqueCarrierCount: number | null = null
@@ -983,6 +1568,7 @@ const fetchLongReadTrLocusUncached = async ({
     uniqueCarrierCount = Number(carrierRows[0]?.unique_carrier_count || 0)
   }
 
+  let rawGenotypeRows: any[] = []
   let wholeRecordGenotypeLandscape: any = unavailable('CARRIER_CALLS_NOT_AVAILABLE')
   if (
     !completenessReason &&
@@ -991,7 +1577,7 @@ const fetchLongReadTrLocusUncached = async ({
     sourceRecords.length === 1
   ) {
     try {
-      const genotypeRows = await queryRows(
+      rawGenotypeRows = await queryRows(
         `
         WITH sample_calls AS (
           SELECT sample_id, uniqExact(gt_alleles) AS genotype_count,
@@ -1005,6 +1591,7 @@ const fetchLongReadTrLocusUncached = async ({
         )
         SELECT ifNull(nullIf(m.superpopulation, ''), 'unknown') AS ancestry_group,
           ifNull(nullIf(m.sex, ''), 'unknown') AS sex,
+          m.superpopulation AS source_ancestry_key, m.sex AS source_sex_key,
           if(c.genotype_count = 0, [toUInt16(0), toUInt16(0)], c.allele_pair) AS allele_pair,
           count() AS people,
           countIf(c.genotype_count > 0 AND c.phased = 1) AS phased_people,
@@ -1015,7 +1602,7 @@ const fetchLongReadTrLocusUncached = async ({
         LEFT JOIN sample_calls AS c ON m.sample_id = c.sample_id
         WHERE m.metadata_run_id = {metadataRunId:String} AND m.release = 'y1'
           AND m.cohort = {cohort:String} AND m.reference_genome = 'GRCh38'
-        GROUP BY ancestry_group, sex, allele_pair, c.phased
+        GROUP BY ancestry_group, sex, source_ancestry_key, source_sex_key, allele_pair, c.phased
         ORDER BY ancestry_group, sex, allele_pair
         LIMIT {limit:UInt16}
       `,
@@ -1029,9 +1616,12 @@ const fetchLongReadTrLocusUncached = async ({
         }
       )
       wholeRecordGenotypeLandscape = buildWholeRecordGenotypeLandscape({
-        rows: genotypeRows,
+        rows: rawGenotypeRows,
         alleles: completeAlleles,
         expectedCalledAlleles: sourceRecords[0].an,
+        ancestryFilterId,
+        sexFilterId,
+        colorBy,
       })
     } catch {
       // Genotype calls are an optional, privacy-sensitive aggregate. A source
@@ -1201,6 +1791,19 @@ const fetchLongReadTrLocusUncached = async ({
   }
   const componentContract = buildLongReadTrComponentContract(locus.components)
   const totalAlleles = sourceRecords.reduce((sum, record) => sum + record.alt_count, 0)
+  const filterContract = buildLongReadTrFilterContract({
+    cohort,
+    sourceRelease: source.release,
+    sourceRunId: source.run_id,
+    metadataRunId: source.metadata_run_id,
+    alleles: completeAlleles,
+    frequencyRows,
+    frequencyProductAvailable:
+      wholeRecordAlleleLandscape.status === 'AVAILABLE' &&
+      (wholeRecordAlleleLandscape as any).stratified_available,
+    genotypeRows: rawGenotypeRows,
+    genotypeProductAvailable: wholeRecordGenotypeLandscape.status === 'AVAILABLE',
+  })
 
   return {
     id: locus.canonicalId,
@@ -1226,6 +1829,7 @@ const fetchLongReadTrLocusUncached = async ({
     component_summary: componentContract.component_summary,
     sequence_cardinality: sequenceCardinality,
     represented_length: representedLength,
+    filter_contract: filterContract,
     total_alleles: totalAlleles,
     exact_alt_count: totalAlleles,
     exact_alt_count_complete: !completenessReason,
@@ -1270,11 +1874,52 @@ const fetchLongReadTrLocusUncached = async ({
   }
 }
 
+export const longReadTrLocusCacheKey = ({
+  id,
+  cohort,
+  first = DEFAULT_TR_LOCUS_PAGE_SIZE,
+  after,
+  selectedAllele,
+  ancestryFilterId,
+  sexFilterId,
+  colorBy,
+  source,
+}: {
+  id: string
+  cohort: LongReadCohort
+  first?: number
+  after?: string | null
+  selectedAllele?: string | null
+  ancestryFilterId?: string | null
+  sexFilterId?: string | null
+  colorBy?: 'ANCESTRY' | 'SEX' | null
+  source: Y1SourceSnapshot
+}) => {
+  const identity = [
+    id,
+    cohort,
+    first,
+    after ?? null,
+    selectedAllele ?? null,
+    ancestryFilterId ?? null,
+    sexFilterId ?? null,
+    colorBy ?? null,
+    source.database,
+    source.release,
+    source.run_id,
+    source.metadata_run_id ?? null,
+    source.chrom,
+    'G_DATA_ANCESTRY_PENDING',
+    'REMAINDER_COMPATIBILITY_UNAVAILABLE',
+  ]
+  return `lr_tr_locus:v7:${crypto
+    .createHash('sha256')
+    .update(JSON.stringify(identity))
+    .digest('hex')}`
+}
+
 export const fetchLongReadTrLocus = withCache(
   fetchLongReadTrLocusUncached,
-  ({ id, cohort, first = DEFAULT_TR_LOCUS_PAGE_SIZE, after, selectedAllele, source }) =>
-    `lr_tr_locus:v6:${cohort}:${source.database}:${source.run_id}:${
-      source.metadata_run_id || 'no-metadata'
-    }:${source.chrom}:${id}:${first}:${after || 'first'}:${selectedAllele || 'none'}`,
+  longReadTrLocusCacheKey,
   { expiration: 300 }
 )

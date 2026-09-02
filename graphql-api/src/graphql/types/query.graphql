@@ -22,8 +22,7 @@ type Query {
     vrsId: String
     dataset: DatasetId!
     lr_cohort: LongReadCohort
-  ): VariantDetails
-    @cost(value: 1)
+  ): VariantDetails @cost(value: 1)
   copy_number_variant(
     variantId: String!
     dataset: CopyNumberVariantDatasetId!
@@ -44,11 +43,7 @@ type Query {
 
   short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 10)
 
-  long_read_variant(
-    variantId: String
-    rsid: String
-    lr_cohort: LongReadCohort
-  ): LongReadVariant
+  long_read_variant(variantId: String, rsid: String, lr_cohort: LongReadCohort): LongReadVariant
 
   long_read_tandem_repeat_locus(
     id: String!
@@ -56,6 +51,9 @@ type Query {
     first: Int = 50
     after: String
     allele: String
+    ancestry_group_id: String
+    sex_group_id: String
+    color_by: LongReadTrFilterDimension
   ): LongReadTandemRepeatLocus @cost(value: 10)
 
   long_read_tandem_repeat_reference(
