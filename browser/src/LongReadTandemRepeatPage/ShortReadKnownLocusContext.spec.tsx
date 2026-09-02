@@ -72,13 +72,7 @@ const exactContext: LongReadTrShortReadContext = {
 }
 
 const renderContext = (context: LongReadTrShortReadContext | null = exactContext) =>
-  render(
-    <ShortReadKnownLocusContext
-      locusId="4-3074876-3074933-CAG"
-      lrCohort="hgsvc_hprc"
-      context={context}
-    />
-  )
+  render(<ShortReadKnownLocusContext lrCohort="hgsvc_hprc" context={context} />)
 
 describe('ShortReadKnownLocusContext', () => {
   test('renders an unboxed assay-neutral disease section with only the retained catalog fields', () => {
@@ -87,13 +81,12 @@ describe('ShortReadKnownLocusContext', () => {
     const section = screen
       .getByRole('heading', { name: /Known disease-associated TR locus/ })
       .closest('section') as HTMLElement
-    expect(within(section).getByText('Exact catalog match')).not.toBeNull()
+    expect(within(section).queryByText('Exact catalog match')).toBeNull()
 
-    expect(
-      within(section)
-        .getByRole('link', { name: 'HTT — view known disease-associated TR locus' })
-        .getAttribute('href')
-    ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
+    const shortReadLink = within(section).getByRole('link', {
+      name: 'View HTT in gnomAD short-read data',
+    })
+    expect(shortReadLink.getAttribute('href')).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
 
     const tableScroller = within(section).getByRole('region', {
       name: 'Known disease-associated TR locus disease table',
@@ -123,21 +116,20 @@ describe('ShortReadKnownLocusContext', () => {
     expect(within(section).queryByText(/Known STR locus/)).toBeNull()
     expect(within(section).queryByText(/short-read details/)).toBeNull()
     expect(
-      within(section).getByText(/Catalog disease names and repeat-count ranges are locus reference/)
-    ).not.toBeNull()
-    expect(within(section).getByText(/does not classify any LR allele/)).not.toBeNull()
+      within(section).queryByText(
+        /Catalog disease names and repeat-count ranges are locus reference/
+      )
+    ).toBeNull()
+    expect(within(section).queryByText(/does not classify any LR allele/)).toBeNull()
 
-    expect(within(section).getByText('Catalog match provenance')).not.toBeNull()
-    expect(within(section).getByText(exactContext.catalog_source)).not.toBeNull()
-    expect(within(section).getByText('catalog-digest')).not.toBeNull()
-    expect(within(section).getByText('run-hgsvc')).not.toBeNull()
-    expect(within(section).getByText('hgsvc_hprc')).not.toBeNull()
-    expect(
-      within(section).getByRole('heading', {
-        level: 3,
-        name: 'Short-read reference-cohort distributions',
-      })
-    ).not.toBeNull()
+    expect(tableScroller.compareDocumentPosition(shortReadLink)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
+    expect(within(section).queryByText('Catalog match provenance')).toBeNull()
+    expect(within(section).queryByText(exactContext.catalog_source!)).toBeNull()
+    expect(within(section).queryByText('catalog-digest')).toBeNull()
+    expect(within(section).queryByText('Short-read reference-cohort distributions')).toBeNull()
+    expect(within(section).queryByText(/Green short-read repeat-count plots/)).toBeNull()
   })
 
   test('keeps multiple catalog diseases as separate rows without notes', () => {

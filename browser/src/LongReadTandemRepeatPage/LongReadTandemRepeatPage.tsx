@@ -571,7 +571,8 @@ const LongReadTandemRepeatPage = ({
         }}
         motifs={locus.motifs}
         neutralSequence={
-          clusterFocused || locus.selected_allele.decomposition_status !== 'AVAILABLE'
+          locus.selected_allele.decomposition_status !== 'AVAILABLE' &&
+          (clusterFocused || locus.components.length !== 1)
         }
         representedLength={representedLength}
       />
@@ -779,11 +780,7 @@ const LongReadTandemRepeatPage = ({
         />
       )}
 
-      <ShortReadKnownLocusContext
-        locusId={locus.id}
-        lrCohort={locus.lr_cohort}
-        context={locus.short_read_context}
-      />
+      <ShortReadKnownLocusContext lrCohort={locus.lr_cohort} context={locus.short_read_context} />
 
       <PrimaryMotifMeasurementSection measurement={primaryMotifMeasurement} />
 

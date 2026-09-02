@@ -7,6 +7,10 @@ const SPARSE_LOCUS = '1-121606499-121606508-AG+1-121606517-121606536-A'
 const ARX_1_LOCUS = 'X-25013649-25013697-NGC'
 const ATXN1_LOCUS = '6-16327633-16327723-TGC'
 const RFC1_LOCUS = '4-39348424-39348479-AAAAG'
+const GCA_LOCUS = '3-63912684-63912714-GCA'
+const GCA_ALT = 'chr3-63912684-TRV-30~15'
+const CHR16_TG_LOCUS =
+  '16-85400249-85400281-TG+16-85400285-85400298-TG+16-85400313-85400323-TG+16-85400333-85400342-TG'
 type Cohort = 'hgsvc_hprc' | 'aou'
 
 const datasetQuery = (cohort: Cohort) => `dataset=gnomad_r4_lr&lr_cohort=${cohort}`
@@ -438,6 +442,96 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'simple-three-alt-motif-previews.png')
   })
 
+  test('one-component GCA selected detail highlights motif matches and interruptions', async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(120_000)
+
+    const index = await openLocus(page, GCA_LOCUS, 16)
+    const selected = await selectExactAllele(page, GCA_LOCUS, 15, 16)
+    expect(selected).toBe(GCA_ALT)
+
+    const selectedRow = index.locator(`[role="row"][title="${GCA_ALT}"]`)
+    await expect(
+      selectedRow.getByRole('img', { name: 'Sequence 15 motif structure preview' })
+    ).toBeVisible()
+    await expect(
+      selectedRow.getByRole('img', { name: /neutral represented sequence/ })
+    ).toHaveCount(0)
+
+    const detail = page.getByTestId('lr-tr-selected-detail')
+    const exactSequence = detail.getByLabel('Exact copyable source sequence for Sequence 15')
+    await expect(exactSequence).toHaveText('GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC')
+    const matchingBases = exactSequence.locator('[data-sequence-match="motif"]')
+    const interruptionBases = exactSequence.locator(
+      '[data-sequence-match="interruption-or-mismatch"]'
+    )
+    expect(await matchingBases.count()).toBeGreaterThan(0)
+    expect(await interruptionBases.count()).toBeGreaterThan(0)
+    const [matchingColor, interruptionColor] = await Promise.all([
+      matchingBases.first().evaluate((base) => getComputedStyle(base).backgroundColor),
+      interruptionBases.first().evaluate((base) => getComputedStyle(base).backgroundColor),
+    ])
+    expect(matchingColor).not.toBe(interruptionColor)
+    expect(interruptionColor).toBe('rgb(51, 51, 51)')
+    await expect(interruptionBases.first()).toHaveAttribute(
+      'aria-label',
+      /interruption or mismatch/
+    )
+    await expect(detail.getByText(/Dark bases are interruptions or mismatches/)).toBeVisible()
+    await expect(detail.getByText(/does not assign bases to reference components/)).toBeVisible()
+    await expect(detail.getByText(/Sequence analysis details/)).toHaveCount(0)
+    await expect(detail.getByText(/tokens/)).toHaveCount(0)
+    await expect(detail.getByRole('heading', { name: /Exact ALT sequence/ })).toHaveCount(0)
+
+    const verifyNarrowDetail = async (width: number) => {
+      await page.setViewportSize({ width, height: 844 })
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+      ).toBe(true)
+      const [sequenceBox, detailBox] = await Promise.all([
+        exactSequence.boundingBox(),
+        detail.boundingBox(),
+      ])
+      expect(sequenceBox).not.toBeNull()
+      expect(detailBox).not.toBeNull()
+      expect(sequenceBox!.x).toBeGreaterThanOrEqual(detailBox!.x - 1)
+      expect(sequenceBox!.x + sequenceBox!.width).toBeLessThanOrEqual(
+        detailBox!.x + detailBox!.width + 1
+      )
+      await attachAlleleBrowserScreenshot(
+        page,
+        testInfo,
+        `gca-alt-15-selected-detail-${width}px.png`
+      )
+    }
+    await verifyNarrowDetail(320)
+    await verifyNarrowDetail(390)
+  })
+
+  test('multi-component chr16 TG selected detail stays neutral without projection', async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(120_000)
+
+    const index = await openLocus(page, CHR16_TG_LOCUS, 14)
+    const selected = await selectExactAllele(page, CHR16_TG_LOCUS, 6, 14)
+    expect(selected).toBe('chr16-85400249-TRV-93~6')
+
+    const detail = page.getByTestId('lr-tr-selected-detail')
+    await expect(detail.getByText(/shown neutrally because no admitted projection/)).toBeVisible()
+    await expect(detail.locator('[data-sequence-match="motif"]')).toHaveCount(0)
+    await expect(detail.getByLabel('Exact copyable source sequence for Sequence 6')).toHaveText(
+      'TTCTGTGTGTGTGTGTGTGTGTGTGTGTGTGTAATTGTGTGTGTTTCTGTGTATGATTTTGTGTGTGTGATTATATGTCTGTGTGTGT'
+    )
+    await expect(
+      index
+        .locator('[role="row"][title$="~6"]')
+        .getByRole('img', { name: /neutral represented sequence; no component projection/ })
+    ).toBeVisible()
+    await attachAlleleBrowserScreenshot(page, testInfo, 'chr16-tg-selected-detail-neutral.png')
+  })
+
   test('HTT, ATXN1, and RFC1 expose exact catalog identity without changing measurements', async ({
     page,
   }) => {
@@ -512,23 +606,38 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         .getByRole('heading', { name: /Known disease-associated TR locus/ })
         .locator('..')
         .locator('..')
-      await expect(diseaseSection.getByText('Exact catalog match')).toBeVisible()
-      await expect(
-        diseaseSection.getByRole('link', {
-          name: new RegExp(`^${item.catalogId} — view known disease-associated TR locus$`),
-        })
-      ).toHaveAttribute('href', new RegExp(`/short-tandem-repeat/${item.catalogId}`))
+      await expect(diseaseSection.getByText('Exact catalog match')).toHaveCount(0)
+      const shortReadLink = diseaseSection.getByRole('link', {
+        name: `View ${item.catalogId} in gnomAD short-read data`,
+      })
+      await expect(shortReadLink).toHaveAttribute(
+        'href',
+        new RegExp(`/short-tandem-repeat/${item.catalogId}\\?dataset=gnomad_r4`)
+      )
       await expect(diseaseSection.getByRole('rowheader', { name: item.disease })).toBeVisible()
       await expect(diseaseSection.getByRole('link', { name: item.omim })).toBeVisible()
       await expect(diseaseSection.getByText(item.inheritance)).toBeVisible()
       await expect(diseaseSection.getByText(item.ranges)).toBeVisible()
-      await expect(diseaseSection.getByText(/does not classify any LR allele/)).toBeVisible()
       await expect(
-        diseaseSection.getByRole('heading', {
-          level: 3,
-          name: 'Short-read reference-cohort distributions',
-        })
-      ).toBeVisible()
+        diseaseSection.getByText(
+          /Catalog disease names and repeat-count ranges are locus reference/
+        )
+      ).toHaveCount(0)
+      const diseaseTable = diseaseSection.getByRole('region', {
+        name: 'Known disease-associated TR locus disease table',
+      })
+      const [diseaseTableBox, shortReadLinkBox] = await Promise.all([
+        diseaseTable.boundingBox(),
+        shortReadLink.boundingBox(),
+      ])
+      expect(diseaseTableBox).not.toBeNull()
+      expect(shortReadLinkBox).not.toBeNull()
+      expect(shortReadLinkBox!.y).toBeGreaterThan(diseaseTableBox!.y + diseaseTableBox!.height)
+      await expect(diseaseSection.getByText('Catalog match provenance')).toHaveCount(0)
+      await expect(
+        diseaseSection.getByText('Short-read reference-cohort distributions')
+      ).toHaveCount(0)
+      await expect(diseaseSection.getByText(/Green short-read repeat-count plots/)).toHaveCount(0)
       await expect(diseaseSection.getByText(/Matched LR reference component/)).toHaveCount(0)
       await expect(diseaseSection.getByText(/Catalog reference repeat unit/)).toHaveCount(0)
       await expect(diseaseSection.getByText(/All catalog motifs/)).toHaveCount(0)
@@ -905,6 +1014,14 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       expect(Math.abs(selectedMetric.visualWidth - selectedMetric.diameter)).toBeLessThanOrEqual(1)
     }
     await expect(page.getByLabel('Selected ALT motif structure grid')).toHaveCount(0)
+    await expect(
+      page.getByTestId('lr-tr-selected-detail').locator('[data-sequence-match="motif"]')
+    ).toHaveCount(0)
+    await expect(
+      httIndex
+        .locator('[role="row"][title$="~72"]')
+        .getByRole('img', { name: /neutral represented sequence; no component projection/ })
+    ).toBeVisible()
     await expect(page.getByText('Sequence analysis details', { exact: true })).toHaveCount(0)
     await expect(page.getByText(/Browser motif analysis used/)).toHaveCount(0)
     await expect(page.getByText(/shown neutrally because no admitted projection/)).toBeVisible()

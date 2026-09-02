@@ -1197,11 +1197,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const section = screen
       .getByRole('heading', { name: /Known disease-associated TR locus/ })
       .closest('section') as HTMLElement
-    expect(
-      within(section)
-        .getByRole('link', { name: 'HTT — view known disease-associated TR locus' })
-        .getAttribute('href')
-    ).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
+    const shortReadLink = within(section).getByRole('link', {
+      name: 'View HTT in gnomAD short-read data',
+    })
+    expect(shortReadLink.getAttribute('href')).toBe('/short-tandem-repeat/HTT?dataset=gnomad_r4')
     expect(within(section).getByRole('rowheader', { name: 'Huntington disease' })).not.toBeNull()
     expect(within(section).getByRole('link', { name: '143100' })).not.toBeNull()
     expect(within(section).getByText('Autosomal dominant')).not.toBeNull()
@@ -1214,19 +1213,23 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(section).queryByText(/Catalog repeat units/)).toBeNull()
     expect(within(section).queryByText(/All catalog motifs/)).toBeNull()
     expect(
-      within(section).getByText(/Catalog disease names and repeat-count ranges are locus reference/)
-    ).not.toBeNull()
-    expect(within(section).getByText(/does not classify any LR allele/)).not.toBeNull()
-    const shortCohort = within(section)
-      .getByRole('heading', { level: 3, name: 'Short-read reference-cohort distributions' })
-      .closest('section') as HTMLElement
+      within(section).queryByText(
+        /Catalog disease names and repeat-count ranges are locus reference/
+      )
+    ).toBeNull()
+    expect(within(section).queryByText(/does not classify any LR allele/)).toBeNull()
+    const diseaseTable = within(section).getByRole('region', {
+      name: 'Known disease-associated TR locus disease table',
+    })
     const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')!
-    expect(section.contains(shortCohort)).toBe(true)
+    expect(diseaseTable.compareDocumentPosition(shortReadLink)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING
+    )
     expect(section.compareDocumentPosition(landscape)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(
-      within(shortCohort).getByRole('button', { name: 'Load short-read distributions' })
-    ).not.toBeNull()
-    expect(within(shortCohort).getByText(/Green short-read repeat-count plots/)).not.toBeNull()
+    expect(within(section).queryByText('Exact catalog match')).toBeNull()
+    expect(within(section).queryByText('Catalog match provenance')).toBeNull()
+    expect(within(section).queryByText('Short-read reference-cohort distributions')).toBeNull()
+    expect(within(section).queryByText(/Green short-read repeat-count plots/)).toBeNull()
     expect(within(section).getAllByRole('heading', { level: 2 })).toHaveLength(1)
     expect(within(section).getAllByRole('link')).toHaveLength(2)
     fireEvent.click(
@@ -1236,7 +1239,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
       name: 'About known disease-associated TR locus',
     })
     expect(within(help).getByText(/exact coordinate-and-stored-motif identity/)).not.toBeNull()
-    expect(within(help).getByText(/Load short-read distributions/)).not.toBeNull()
+    expect(within(help).getByText(/corresponding gnomAD short-read data page/)).not.toBeNull()
+    expect(within(help).queryByText(/Load short-read distributions/)).toBeNull()
     expect(
       within(help).getByText(/do not classify, filter, or select any LR allele/)
     ).not.toBeNull()
@@ -1315,6 +1319,74 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(table.getAttribute('aria-rowcount')).toBe('73')
   })
 
+  test('highlights the exact GCA ALT at a one-component repeat-focused locus without projection', () => {
+    const locus = makeSimpleLocus()
+    const gcaId = 'chr3-63912684-TRV-30~15'
+    const ref = 'GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA'
+    const alt = 'GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC'
+    Object.assign(locus, {
+      id: '3-63912684-63912714-GCA',
+      source_trid: '3-63912684-63912714-GCA',
+      chrom: '3',
+      motifs: ['GCA'],
+      components: [{ chrom: '3', start0: 63912684, end0: 63912714, motif: 'GCA' }],
+      selected_allele: {
+        ...locus.selected_allele,
+        variant_id: gcaId,
+        source_variant_id: 'chr3-63912684-TRV-30',
+        alt_index: 15,
+        alt_count: 16,
+        ref,
+        alt,
+        decomposition_status: 'UNAVAILABLE_NO_DECOMPOSITION',
+        decomposition_reason: 'No admitted source decomposition is available for this exact allele',
+      },
+      alleles: {
+        ...locus.alleles,
+        nodes: locus.alleles.nodes.map((allele, index) =>
+          index === 0
+            ? {
+                ...allele,
+                variant_id: gcaId,
+                source_variant_id: 'chr3-63912684-TRV-30',
+                alt_index: 15,
+                alt_count: 16,
+                ref,
+                alt,
+              }
+            : allele
+        ),
+      },
+    })
+
+    renderPage({ locus, selectedAllele: gcaId })
+
+    const detail = screen.getByTestId('lr-tr-selected-detail')
+    const exactSequence = within(detail).getByLabelText(
+      'Exact copyable source sequence for Sequence 15'
+    )
+    expect(exactSequence.textContent).toBe(alt)
+    expect(exactSequence.querySelectorAll('[data-sequence-match="motif"]').length).toBeGreaterThan(
+      0
+    )
+    expect(
+      exactSequence.querySelectorAll('[data-sequence-match="interruption-or-mismatch"]').length
+    ).toBeGreaterThan(0)
+    expect(within(detail).getByText(/Dark bases are interruptions or mismatches/)).not.toBeNull()
+    expect(within(detail).getByText(/does not assign bases to reference components/)).not.toBeNull()
+    expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
+    expect(within(detail).queryByText(/tokens/)).toBeNull()
+    expect(within(detail).queryByRole('heading', { name: /Exact ALT sequence/ })).toBeNull()
+
+    const selectedIndexRow = screen.getByTitle(gcaId)
+    expect(
+      within(selectedIndexRow).getByRole('img', { name: 'Sequence 15 motif structure preview' })
+    ).not.toBeNull()
+    expect(
+      within(selectedIndexRow).queryByRole('img', { name: /neutral represented sequence/ })
+    ).toBeNull()
+  })
+
   test('links purity and keeps compound selected sequence neutral and copyable', () => {
     renderPage()
     const detail = screen.getByTestId('lr-tr-selected-detail')
@@ -1329,8 +1401,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
       within(detail).getByLabelText('Exact copyable source sequence for Sequence 2').textContent
     ).toContain('ACAGCAA')
     expect(within(detail).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
+    expect(detail.querySelector('[data-sequence-match="motif"]')).toBeNull()
     expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
     expect(within(detail).queryByText(/tokens/)).toBeNull()
+    const selectedIndexRow = screen.getByTitle(exactId)
+    expect(
+      within(selectedIndexRow).getByRole('img', { name: /neutral represented sequence/ })
+    ).not.toBeNull()
     expect(
       screen.getByRole('group', {
         name: /source ALT alleles plotted by change from REF and source-reported motif purity/,

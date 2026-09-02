@@ -20,6 +20,7 @@ import {
   LongReadGenotypeDistributionSection,
 } from '../LongReadVariantPage/LongReadSTRDistributionSections'
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
+import { MotifHighlightedSequence } from '../Haplotypes/TrAlleleStructure'
 import { PATH_COLORS, SUPERPOPULATION_COLORS } from '../Haplotypes/colors'
 import { decomposeExactTrAlt } from '../Haplotypes/trAlleleStructureData'
 import {
@@ -342,8 +343,9 @@ const SelectedAlleleHelp = () => (
       technical provenance only when those details are needed.
     </p>
     <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> Neutral sequence presentation does not assign bases to
-      LR reference components or provide a clinical interpretation.
+      <strong>What it does not show.</strong> Sequence-only motif highlighting does not assign bases
+      to LR reference components or provide a clinical interpretation. Compound or cluster-focused
+      sequences stay neutral without an admitted projection.
     </p>
   </HaplotypeHelpButton>
 )
@@ -3175,6 +3177,63 @@ const Sequence = styled.pre`
   word-break: break-all;
 `
 
+const HighlightedExactSequence = styled.div`
+  overflow: auto;
+  max-height: 220px;
+  padding: 0.9em;
+  border: 1px solid #d8dee2;
+  border-radius: 3px;
+  background: #fff;
+`
+
+const SequenceHighlightKey = styled.p`
+  margin: 0.35em 0 0;
+  color: #38434a;
+  font-size: 0.85em;
+`
+
+const SelectedExactSequence = ({
+  allele,
+  motifs,
+  neutralSequence,
+}: {
+  allele: LongReadTrSelectedAllele
+  motifs: string[]
+  neutralSequence: boolean
+}) => {
+  const decomposition = neutralSequence
+    ? null
+    : decomposeExactTrAlt({ ref: allele.ref, alt: allele.alt, motifs })
+  if (decomposition?.status !== 'available') {
+    return (
+      <Sequence aria-label={`Exact copyable source sequence for ${alleleLabel(allele.variant_id)}`}>
+        {allele.alt}
+      </Sequence>
+    )
+  }
+
+  return (
+    <>
+      <HighlightedExactSequence>
+        <MotifHighlightedSequence
+          tokens={decomposition.structure.tokens}
+          motifs={decomposition.motifs}
+          leadingSequence={decomposition.sharedAnchorRemoved ? allele.alt.slice(0, 1) : ''}
+          ariaLabel={`Exact copyable source sequence for ${alleleLabel(allele.variant_id)}`}
+          wrap
+          showSummary={false}
+          compact
+        />
+      </HighlightedExactSequence>
+      <SequenceHighlightKey role="note">
+        Motif-matching bases are highlighted for the stored <code>{decomposition.motifs[0]}</code>{' '}
+        motif. Dark bases are interruptions or mismatches. This sequence-only pattern does not
+        assign bases to reference components or provide a clinical interpretation.
+      </SequenceHighlightKey>
+    </>
+  )
+}
+
 const SelectedDetail = styled.article`
   padding: 1em;
   border: 1px solid #d8dee2;
@@ -3241,11 +3300,7 @@ export const SelectedExactAlleleDetail = React.forwardRef<
         <p style={{ marginBottom: 4 }}>
           <strong>Exact copyable source sequence</strong>
         </p>
-        <Sequence
-          aria-label={`Exact copyable source sequence for ${alleleLabel(allele.variant_id)}`}
-        >
-          {allele.alt}
-        </Sequence>
+        <SelectedExactSequence allele={allele} motifs={motifs} neutralSequence={neutralSequence} />
       </div>
       <ScrollTable role="region" aria-label="Selected exact ALT summary table" tabIndex={0}>
         <table>

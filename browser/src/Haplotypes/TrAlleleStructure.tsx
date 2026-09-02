@@ -337,20 +337,24 @@ export const MotifHighlightedSequence = ({
   leadingSequence = '',
   ariaLabel = 'Motif-highlighted sequence',
   wrap = false,
+  showSummary = true,
+  compact = false,
 }: {
   tokens: SequenceToken[]
   motifs: string[]
   leadingSequence?: string
   ariaLabel?: string
   wrap?: boolean
+  showSummary?: boolean
+  compact?: boolean
 }) => (
   <div
     aria-label={ariaLabel}
     style={{
       overflowX: wrap ? 'visible' : 'auto',
-      maxWidth: STRUCTURE_MAX_GRID_WIDTH + 260,
-      padding: '4px 0 6px 2px',
-      borderTop: '1px solid #eee',
+      maxWidth: compact ? '100%' : STRUCTURE_MAX_GRID_WIDTH + 260,
+      padding: compact ? 0 : '4px 0 6px 2px',
+      borderTop: compact ? 0 : '1px solid #eee',
     }}
   >
     <div
@@ -387,7 +391,7 @@ export const MotifHighlightedSequence = ({
       {tokens.map((token, ti) => {
         const motifColor =
           token.type === 'motif' ? MOTIF_COLORS[token.motifIndex % MOTIF_COLORS.length] : null
-        const label = token.type === 'motif' ? motifs[token.motifIndex] ?? '?' : 'int'
+        const label = token.type === 'motif' ? motifs[token.motifIndex] ?? '?' : 'interruption'
         return (
           <span
             // Token sequence offset is stable and repeated motif tokens remain distinct.
@@ -405,6 +409,8 @@ export const MotifHighlightedSequence = ({
                   // Base position is stable and duplicate bases are meaningful.
                   // eslint-disable-next-line react/no-array-index-key
                   key={ci}
+                  data-sequence-match={matches ? 'motif' : 'interruption-or-mismatch'}
+                  aria-label={matches ? undefined : `${ch}, interruption or mismatch`}
                   style={{
                     fontFamily: 'monospace',
                     fontSize: 10,
@@ -430,14 +436,16 @@ export const MotifHighlightedSequence = ({
         )
       })}
     </div>
-    <div style={{ fontSize: 9, color: '#aaa', marginTop: 2 }}>
-      {leadingSequence.length + tokens.reduce((s, t) => s + t.sequence.length, 0)}bp
-      {' · '}
-      {tokens.length} tokens
-      {' · '}
-      motifs: {motifs.join(', ')}
-      {leadingSequence && ' · neutral shared VCF anchor included'}
-    </div>
+    {showSummary && (
+      <div style={{ fontSize: 9, color: '#aaa', marginTop: 2 }}>
+        {leadingSequence.length + tokens.reduce((s, t) => s + t.sequence.length, 0)}bp
+        {' · '}
+        {tokens.length} tokens
+        {' · '}
+        motifs: {motifs.join(', ')}
+        {leadingSequence && ' · neutral shared VCF anchor included'}
+      </div>
+    )}
   </div>
 )
 
