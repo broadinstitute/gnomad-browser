@@ -204,7 +204,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(previewUnit?.getAttribute('shape-rendering')).toBe('crispEdges')
     expect(screen.queryByText(/Restart the GraphQL API/)).toBeNull()
     const emptySelection = screen.getByText(
-      'No exact ALT selected. Choose Select in a row to view its sequence and details.'
+      'No sequence details shown. Choose Details in a row to view its sequence and aggregate annotations.'
     )
     expect(emptySelection).not.toHaveStyleRule('min-height')
     expect(emptySelection).toHaveStyleRule('padding', '0.65em 0.8em')
@@ -235,11 +235,11 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByRole('status').textContent).not.toMatch(/Restart/)
   })
 
-  test('maps ancestry and sex stack colors by canonical key, independent of API order', () => {
-    const ancestryOrder = ['sas', 'nfe', 'eas', 'asj', 'amr', 'afr', 'unknown']
+  test('does not guess source ancestry aliases when assigning stack colors', () => {
+    const ancestryOrder = ['SAS', 'nfe', 'EAS', 'ASJ', 'AMR', 'AFR', 'unknown']
     expect(ancestryOrder.map((category) => stackColorFor('population', category))).toEqual([
       '#FE9A10',
-      '#6AA6CE',
+      '#8C8C8C',
       '#128B44',
       '#FF7E4F',
       '#EF1E24',
@@ -285,7 +285,7 @@ describe('long-read TR visualization fidelity', () => {
       within(ancestryLegend)
         .getAllByLabelText(/stack color/)
         .map((entry) => entry.getAttribute('data-stack-color'))
-    ).toEqual(['#6AA6CE', '#941494'])
+    ).toEqual(['#8C8C8C', '#8C8C8C'])
 
     fireEvent.change(colorBy, { target: { value: 'sex' } })
     expect(screen.getByLabelText('XY stack color').getAttribute('data-stack-color')).toBe('#6AA6CE')
@@ -319,22 +319,20 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    const exactIndex = screen.getByRole('table', { name: 'Exact-ALT index' })
-    expect(screen.getByRole('heading', { name: '3 exact ALT sequences' })).not.toBeNull()
+    const exactIndex = screen.getByRole('table', { name: 'Source ALT allele index' })
+    expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
     expect(screen.queryByRole('table', { name: /Exact ALTs at/ })).toBeNull()
 
-    const histogram = screen.getByLabelText(
-      'Total allele length change (ALT minus REF, bp) histogram'
-    )
+    const histogram = screen.getByLabelText('Change from REF (bp) histogram')
     expect(window.getComputedStyle(histogram).paddingTop).toBe('18px')
     const deltaAxis = screen.getByTestId('whole-record-delta-axis')
-    expect(within(deltaAxis).getByLabelText('−6 bp tick').textContent).toBe('−6')
+    expect(within(deltaAxis).getByLabelText('-6 bp tick').textContent).toBe('−6')
     expect(within(deltaAxis).getByLabelText('0 bp tick').textContent).toBe('0')
-    expect(within(deltaAxis).getByLabelText('+12 bp tick').textContent).toBe('+12')
-    expect(deltaAxis.getAttribute('aria-label')).toMatch(/−6 bp.*0 bp.*\+12 bp/)
+    expect(within(deltaAxis).getByLabelText('12 bp tick').textContent).toBe('+12')
+    expect(deltaAxis.getAttribute('aria-label')).toMatch(/-6 bp.*0 bp.*12 bp/)
     const negativeBar = screen.getByRole('button', {
-      name: /−6 bp; 100 called non-reference allele copies/,
+      name: /−6 bp vs REF; 100 called non-reference allele copies/,
     })
     expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(156, 39, 176)')
     expect(histogram.closest('[data-bin-count]')?.getAttribute('data-bin-count')).toBe('3')
@@ -343,7 +341,7 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.click(negativeBar)
     expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(233, 120, 28)')
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '1 of 3 exact ALT sequences at −6 bp' })
+      screen.getByRole('heading', { name: '1 of 3 source ALT alleles at −6 bp vs REF' })
     )
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('2')
 
@@ -356,39 +354,39 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     expect(
-      screen.getByRole('heading', { name: '1 of 3 exact ALT sequences at −6 bp' })
+      screen.getByRole('heading', { name: '1 of 3 source ALT alleles at −6 bp vs REF' })
     ).not.toBeNull()
 
     fireEvent.click(
-      screen.getByRole('button', { name: /0 bp; 25 called non-reference allele copies/ })
+      screen.getByRole('button', { name: /0 bp vs REF; 25 called non-reference allele copies/ })
     )
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '1 of 3 exact ALT sequences at 0 bp' })
+      screen.getByRole('heading', { name: '1 of 3 source ALT alleles at 0 bp vs REF' })
     )
-    const exactLink = within(exactIndex).getByRole('link', { name: 'Select ALT 2' })
+    const exactLink = within(exactIndex).getByRole('link', { name: 'Details for Sequence 2' })
     expect(exactLink.getAttribute('href')).toBe(`?allele=${alleles[1].variant_id}`)
     fireEvent.click(exactLink)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[1].variant_id)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALT sequences' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show all source ALT alleles' }))
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '3 exact ALT sequences' })
+      screen.getByRole('heading', { name: '3 source ALT alleles' })
     )
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
 
     const tallest = screen.getByRole('button', {
-      name: /−6 bp; 100 called non-reference allele copies/,
+      name: /−6 bp vs REF; 100 called non-reference allele copies/,
     })
     const shortest = screen.getByRole('button', {
-      name: /\+12 bp; 5 called non-reference allele copies/,
+      name: /\+12 bp vs REF; 5 called non-reference allele copies/,
     })
     expect(Number(tallest.getAttribute('data-height-percent'))).toBeGreaterThan(
       Number(shortest.getAttribute('data-height-percent'))
     )
     expect(
       screen.getByText(
-        'Bar height: called non-reference allele copies. Number above: exact ALT sequences.'
+        'Bar height: called non-reference allele copies. Number above: source ALT identities.'
       )
     ).not.toBeNull()
   })
@@ -418,18 +416,18 @@ describe('long-read TR visualization fidelity', () => {
     )
 
     fireEvent.click(
-      screen.getByRole('button', { name: /−6 bp; 107 called non-reference allele copies/ })
+      screen.getByRole('button', { name: /−6 bp vs REF; 107 called non-reference allele copies/ })
     )
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '2 of 4 exact ALT sequences at −6 bp' })
+      screen.getByRole('heading', { name: '2 of 4 source ALT alleles at −6 bp vs REF' })
     )
-    const picker = screen.getByRole('table', { name: 'Exact-ALT index' })
+    const picker = screen.getByRole('table', { name: 'Source ALT allele index' })
     expect(screen.queryByRole('table', { name: /Exact ALTs at/ })).toBeNull()
     const links = within(picker).getAllByRole('link')
     expect(links).toHaveLength(2)
-    expect(within(picker).getByText(`${sourceId}~1`)).not.toBeNull()
-    expect(within(picker).getByText(`${sourceId}~4`)).not.toBeNull()
-    expect(links.map((link) => link.textContent)).toEqual(['Selected', 'Select'])
+    expect(within(picker).getByTitle(`${sourceId}~1`)).not.toBeNull()
+    expect(within(picker).getByTitle(`${sourceId}~4`)).not.toBeNull()
+    expect(links.map((link) => link.textContent)).toEqual(['Details shown', 'Details'])
     expect(links[0].getAttribute('aria-current')).toBe('page')
     expect(links[0].closest('[role="row"]')?.getAttribute('aria-selected')).toBeNull()
     fireEvent.keyDown(links[1], { key: 'Enter' })
@@ -459,7 +457,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    const scatter = screen.getByRole('group', { name: /3 exact ALT sequences plotted/ })
+    const scatter = screen.getByRole('group', { name: /3 source ALT alleles plotted/ })
     expect(scatter.getAttribute('data-purity-domain')).toBe('0.990000:1.000000')
     const tickLabels = within(scatter)
       .getAllByTestId('purity-axis-tick')
@@ -468,7 +466,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(tickLabels).toEqual(['0.9900', '0.9950', '1.0000'])
 
     const points = within(scatter).getAllByRole('button', {
-      name: /Filter the exact-ALT index to ALT/,
+      name: /Filter the source-ALT index to Sequence/,
     })
     expect(points).toHaveLength(3)
     expect(
@@ -476,17 +474,19 @@ describe('long-read TR visualization fidelity', () => {
     ).toEqual(['-12', '12'])
     expect(screen.getByText('Overlapping points are slightly separated.')).not.toBeNull()
     const point = within(scatter).getByRole('button', {
-      name: /Filter the exact-ALT index to ALT 3; \+12 bp; source-reported motif purity 1.0000/,
+      name: /Filter the source-ALT index to Sequence 3; \+12 bp vs REF; source-reported motif purity 1.0000/,
     })
     expect(point.getAttribute('aria-pressed')).toBe('false')
-    expect(point).toHaveStyleRule('width', '24px')
-    expect(point).toHaveStyleRule('height', '24px')
+    expect(point).toHaveStyleRule('width', '44px')
+    expect(point).toHaveStyleRule('height', '44px')
     expect(window.getComputedStyle(point.firstElementChild as Element).backgroundColor).toBe(
       'rgb(156, 39, 176)'
     )
-    expect(point.getAttribute('style')).toContain('bottom: calc(100% - 18px)')
+    expect(point.getAttribute('style')).toContain(
+      `bottom: calc(100% - ${PURITY_POINT_CLEARANCE}px)`
+    )
     const sameDeltaBar = screen.getByRole('button', {
-      name: /\+12 bp; 5 called non-reference allele copies/,
+      name: /\+12 bp vs REF; 5 called non-reference allele copies/,
     })
     fireEvent.click(sameDeltaBar)
     expect(sameDeltaBar.getAttribute('aria-pressed')).toBe('true')
@@ -496,10 +496,10 @@ describe('long-read TR visualization fidelity', () => {
     expect(point.getAttribute('aria-pressed')).toBe('true')
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '1 of 3 exact ALT sequences — ALT 3' })
+      screen.getByRole('heading', { name: '1 of 3 source ALT alleles — Sequence 3' })
     )
     fireEvent.click(point)
-    expect(screen.getByRole('heading', { name: '3 exact ALT sequences' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
   })
 
   test('keeps boundary AC marks and bounded coincidence jitter inside narrow plots', () => {
@@ -594,21 +594,21 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     const cell = screen.getByRole('button', {
-      name: /0 bp longer, 0 bp shorter: 1 person; filter the exact-ALT index/,
+      name: /0 bp vs REF longer allele, 0 bp vs REF shorter allele: 1 person; filter the source-ALT index/,
     })
     fireEvent.keyDown(cell, { key: 'Enter' })
     expect(cell.getAttribute('aria-pressed')).toBe('true')
     expect(
       screen.getByRole('heading', {
-        name: '0 of 3 exact ALT sequences — selected genotype cell (0 bp × 0 bp)',
+        name: '0 of 3 source ALT alleles — selected genotype cell (0 bp vs REF × 0 bp vs REF)',
       })
     ).toBe(document.activeElement)
     expect(
-      screen.getByRole('table', { name: 'Exact-ALT index' }).getAttribute('aria-rowcount')
+      screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
     ).toBe('1')
     expect(screen.getByText(/1 person across 1 exact ALT pair/)).not.toBeNull()
     fireEvent.keyDown(cell, { key: ' ' })
-    expect(screen.getByRole('heading', { name: '3 exact ALT sequences' })).toBe(
+    expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).toBe(
       document.activeElement
     )
   })
@@ -685,19 +685,19 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByText(/6 people with complete called genotypes/)).not.toBeNull()
     expect(
       screen.getByRole('button', {
-        name: /\+12 bp longer, −6 bp shorter: 6 people; filter the exact-ALT index/,
+        name: /\+12 bp vs REF longer allele, −6 bp vs REF shorter allele: 6 people; filter the source-ALT index/,
       })
     ).not.toBeNull()
     expect(
       screen.getByRole('button', {
-        name: /−6 bp; 2 called non-reference allele copies in this view/,
+        name: /−6 bp vs REF; 2 called non-reference allele copies in this view/,
       })
     ).not.toBeNull()
 
     fireEvent.change(within(filters).getByLabelText('Sex'), { target: { value: 'XX' } })
     expect(
       screen.getByRole('button', {
-        name: /−6 bp; 1 called non-reference allele copy in this view; 1 exact ALT sequence/,
+        name: /−6 bp vs REF; 1 called non-reference allele copy in this view; 1 source ALT allele/,
       })
     ).not.toBeNull()
     expect(screen.getByText(/6 people with complete called genotypes/)).not.toBeNull()
@@ -766,14 +766,14 @@ describe('long-read TR visualization fidelity', () => {
       target: { value: 'afr' },
     })
     fireEvent.click(
-      screen.getByRole('button', { name: /−6 bp; 2 called non-reference allele copies/ })
+      screen.getByRole('button', { name: /−6 bp vs REF; 2 called non-reference allele copies/ })
     )
     expect(
-      screen.getByRole('heading', { name: '1 of 3 exact ALT sequences at −6 bp' })
+      screen.getByRole('heading', { name: '1 of 3 source ALT alleles at −6 bp vs REF' })
     ).not.toBeNull()
-    const index = screen.getByRole('table', { name: 'Exact-ALT index' })
-    expect(within(index).getByText(stratifiedAlleles[0].variant_id)).not.toBeNull()
-    expect(within(index).queryByText(stratifiedAlleles[1].variant_id)).toBeNull()
+    const index = screen.getByRole('table', { name: 'Source ALT allele index' })
+    expect(within(index).getByTitle(stratifiedAlleles[0].variant_id)).not.toBeNull()
+    expect(within(index).queryByTitle(stratifiedAlleles[1].variant_id)).toBeNull()
 
     rendered.rerender(
       <WholeRecordAlleleLandscape
@@ -784,7 +784,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: '3 exact ALT sequences' })).not.toBeNull()
+      expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
     })
   })
 
@@ -810,7 +810,7 @@ describe('long-read TR visualization fidelity', () => {
     )
 
     const heatmap = screen.getByRole('group', {
-      name: 'Genotype distribution by total allele length change',
+      name: 'Genotype distribution by change from REF',
     })
     expect(heatmap.tagName.toLowerCase()).toBe('svg')
     expect(heatmap).toHaveStyleRule('width', '100%')
@@ -824,14 +824,14 @@ describe('long-read TR visualization fidelity', () => {
       media: '(max-width:700px)',
     })
     const cell = screen.getByRole('button', {
-      name: /\+12 bp longer, −6 bp shorter: 12 people; filter the exact-ALT index/,
+      name: /\+12 bp vs REF longer allele, −6 bp vs REF shorter allele: 12 people; filter the source-ALT index/,
     })
     expect(cell.getAttribute('fill')).toBe('transparent')
     expect(cell.getAttribute('width')).toBe('48')
     expect(cell.getAttribute('height')).toBe('48')
     expect(heatmap.querySelector(`rect[fill="${LONG_READ_PRIMARY_PLOT_COLOR}"]`)).not.toBeNull()
-    expect(within(heatmap).getByText('Longer allele: ALT − REF (bp)')).not.toBeNull()
-    expect(within(heatmap).getByText('Shorter allele: ALT − REF (bp)')).not.toBeNull()
+    expect(within(heatmap).getByText('Longer allele: change from REF (bp)')).not.toBeNull()
+    expect(within(heatmap).getByText('Shorter allele: change from REF (bp)')).not.toBeNull()
     expect(screen.getByLabelText('Logarithmic people intensity legend')).not.toBeNull()
     expect(cell.getAttribute('aria-pressed')).toBe('false')
     expect(
@@ -880,6 +880,88 @@ describe('long-read TR visualization fidelity', () => {
       'Exact short-read catalog reference match (identity only)'
     )
     expect(track.querySelector('[data-catalog-pathogenic-match]')).toBeNull()
+  })
+
+  test('keeps all 180 ordered components reachable through a bounded table', () => {
+    const components = Array.from({ length: 180 }, (_, index) => ({
+      chrom: '3',
+      start0: index * 3,
+      end0: index * 3 + 2,
+      motif: index % 2 ? 'TGC' : 'CAG',
+    }))
+    const locus = {
+      motifs: ['CAG', 'TGC'],
+      components,
+      region: { chrom: '3', start0: 0, end0: 539, size: 539 },
+    } as LongReadTrLocus
+    render(<LongReadTrComponentTrack locus={locus} />)
+
+    fireEvent.click(screen.getByText('Full ordered component table (180)'))
+    expect(screen.getByText('Components 1–25 of 180')).not.toBeNull()
+    const next = screen.getByRole('button', { name: 'Next components' })
+    for (let page = 1; page < 8; page += 1) fireEvent.click(next)
+    expect(screen.getByText('Components 176–180 of 180')).not.toBeNull()
+    expect(screen.getByRole('rowheader', { name: '180' })).not.toBeNull()
+    expect(screen.getByLabelText('Scrollable ordered source component table')).not.toBeNull()
+  })
+
+  test('enables one synchronized represented-length axis only for reconciled API lengths', () => {
+    const representedLength = {
+      status: 'AVAILABLE_EXACT' as const,
+      reason: null,
+      represented_ref_length_bp: 100,
+      represented_alt_min_length_bp: 94,
+      represented_alt_max_length_bp: 112,
+      source_delta_provenance: 'INFO_ALLELE_LENGTH' as const,
+      sequence_length_provenance: 'test',
+      sequence_source_record_digest: 'a'.repeat(64),
+      sequence_content_digest: 'b'.repeat(64),
+      anchor_rule: 'VCF_SHARED_LEFT_PADDING_BASE_V1' as const,
+      anchor_rule_source: 'test',
+      anchor_rule_release: 'test',
+      anchor_rule_digest: 'c'.repeat(64),
+      reconciliation_status: 'RECONCILED' as const,
+    }
+    const rendered = render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        alleles={alleles}
+        navigation={navigation}
+        representedLength={representedLength}
+      />
+    )
+    const axis = screen.getByLabelText('Length axis') as HTMLSelectElement
+    expect(
+      (
+        within(axis).getByRole('option', {
+          name: 'Represented allele length',
+        }) as HTMLOptionElement
+      ).disabled
+    ).toBe(false)
+    fireEvent.change(axis, { target: { value: 'absolute' } })
+    expect(screen.getByRole('heading', { name: 'Represented allele length (bp)' })).not.toBeNull()
+    expect(screen.getByText('94 bp represented (−6 bp vs REF)')).not.toBeNull()
+    expect(screen.getAllByLabelText(/94 bp represented \(−6 bp vs REF\)/).length).toBeGreaterThan(0)
+
+    rendered.rerender(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        alleles={alleles}
+        navigation={navigation}
+        representedLength={{
+          ...representedLength,
+          status: 'UNAVAILABLE',
+          reason: 'STORED_DELTA_RECONCILIATION_MISMATCH',
+          represented_ref_length_bp: null,
+          represented_alt_min_length_bp: null,
+          represented_alt_max_length_bp: null,
+          reconciliation_status: 'MISMATCH',
+        }}
+      />
+    )
+    expect((screen.getByLabelText('Length axis') as HTMLSelectElement).value).toBe('delta')
+    expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
+    expect(screen.queryByText(/bp represented \(−6 bp vs REF\)/)).toBeNull()
   })
 
   test('uses one stable color per motif and explains LR reference components accessibly', () => {

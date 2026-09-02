@@ -150,6 +150,117 @@ const makeLocus = (count = 72) => {
     lr_cohort: 'hgsvc_hprc' as const,
     source_release: 'y1',
     source_run_id: 'run-hgsvc',
+    accepted_task_attempt_digest: 'a'.repeat(64),
+    presentation: {
+      source_representation_kind: 'UNKNOWN' as const,
+      presentation_layout: 'REPEAT_FOCUSED' as const,
+      presentation_reason: 'REVIEWED_PRIMARY_REPEAT' as const,
+      classification_source: null,
+      classification_release: null,
+      classification_digest: null,
+      reviewed_override_digest: 'b'.repeat(64),
+    },
+    bounds: {
+      component_envelope_start0: 3074876,
+      component_envelope_end0: 3075040,
+      component_envelope_length_bp: 164,
+      component_envelope_basis: 'EXACT_ORDERED_COMPONENTS' as const,
+      source_ref_span_start0: null,
+      source_ref_span_end0: null,
+      source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT' as const,
+      variation_cluster_start0: null,
+      variation_cluster_end0: null,
+      variation_cluster_length_bp: null,
+      variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION' as const,
+      bounds_source: null,
+      bounds_release: null,
+      bounds_digest: null,
+    },
+    component_summary: {
+      ordered_component_count: 6,
+      distinct_stored_motif_count: 5,
+    },
+    sequence_cardinality: {
+      source_alt_identity_count: count,
+      unique_alt_sequence_count: count,
+      all_source_alts_sequence_complete: true,
+      status: 'AVAILABLE_EXACT' as const,
+      reason: null,
+      algorithm_version: 'ALT_BYTES_SHA256_THEN_EXACT_V1',
+    },
+    represented_length: {
+      status: 'AVAILABLE_EXACT' as const,
+      reason: null,
+      represented_ref_length_bp: 164,
+      represented_alt_min_length_bp: 140,
+      represented_alt_max_length_bp: 212,
+      source_delta_provenance: 'INFO_ALLELE_LENGTH' as const,
+      sequence_length_provenance: 'EXACT_SOURCE_REF_ALT_BYTES_V1',
+      sequence_source_record_digest: 'c'.repeat(64),
+      sequence_content_digest: 'd'.repeat(64),
+      anchor_rule: 'VCF_SHARED_LEFT_PADDING_BASE_V1' as const,
+      anchor_rule_source: 'approved-test-receipt',
+      anchor_rule_release: 'test-v1',
+      anchor_rule_digest: 'e'.repeat(64),
+      reconciliation_status: 'RECONCILED' as const,
+    },
+    filter_contract: {
+      status: 'PARTIAL' as const,
+      reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+      ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL' as const,
+      sex_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL' as const,
+      ancestry_groups: [
+        {
+          id: 'frequency:afr',
+          label: 'afr (source frequency key)',
+          kind: 'SOURCE_GROUP' as const,
+          source_frequency_keys: ['afr'],
+          source_metadata_keys: [],
+          available_in_frequency: true,
+          available_in_genotype: false,
+          shared_available: false,
+          unavailable_reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+        },
+        {
+          id: 'metadata:EUR',
+          label: 'EUR (source metadata key)',
+          kind: 'SOURCE_GROUP' as const,
+          source_frequency_keys: [],
+          source_metadata_keys: ['EUR'],
+          available_in_frequency: false,
+          available_in_genotype: true,
+          shared_available: false,
+          unavailable_reason: 'ANCESTRY_MAPPING_NOT_APPROVED',
+        },
+      ],
+      sex_groups: [
+        {
+          id: 'frequency-sex:XX',
+          label: 'XX (source frequency key)',
+          kind: 'SOURCE_GROUP' as const,
+          source_frequency_keys: ['XX'],
+          source_metadata_keys: [],
+          available_in_frequency: true,
+          available_in_genotype: false,
+          shared_available: false,
+          unavailable_reason: 'SEX_MAPPING_NOT_APPROVED',
+        },
+      ],
+      ancestry_control_redundant: false,
+      ancestry_control_redundancy_reason: 'NOT_SOLE_ANCESTRY_STRATUM',
+      available_color_dimensions: [],
+      allele_color_dimensions: ['ANCESTRY' as const, 'SEX' as const],
+      genotype_color_dimensions: ['ANCESTRY' as const, 'SEX' as const],
+      unstratified_policy:
+        'EXPLICIT_SOURCE_UNKNOWN_SEPARATE_AND_FAIL_CLOSED_WITHOUT_COMPATIBLE_DENOMINATORS',
+      vocabulary_release: null,
+      vocabulary_digest: null,
+      source_key_inventory_release: 'source-keys-v1',
+      source_key_inventory_digest: 'f'.repeat(64),
+      source_release: 'y1',
+      source_run_id: 'run-hgsvc',
+      metadata_source_run_id: 'metadata-run',
+    },
     total_alleles: count,
     exact_alt_count: count,
     exact_alt_count_complete: true,
@@ -381,6 +492,17 @@ const makeLocus = (count = 72) => {
 
 const makeSimpleLocus = () => ({
   ...makeLocus(),
+  presentation: {
+    ...makeLocus().presentation,
+    presentation_reason: 'SOLE_EXACT_COMPONENT' as const,
+    reviewed_override_digest: null,
+  },
+  bounds: {
+    ...makeLocus().bounds,
+    component_envelope_end0: 3074933,
+    component_envelope_length_bp: 57,
+  },
+  component_summary: { ordered_component_count: 1, distinct_stored_motif_count: 1 },
   component_measurement_available: true,
   component_measurement_unavailable_reason: null,
   components: [{ chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' }],
@@ -501,14 +623,17 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('renders grounded source attributes and ordered overlapping components', () => {
     renderPage()
     expect(screen.getByRole('heading', { name: 'HTT CAG tandem repeat' })).not.toBeNull()
-    expect(screen.getByLabelText('Primary repeat CAG').textContent).toBe(
+    expect(screen.getByLabelText(/Primary repeat CAG/).textContent).toContain(
       'Primary repeat CAG · exact catalog / LR component 1'
     )
+    expect(screen.getByText('Compound source representation · 6 components')).not.toBeNull()
     expect(screen.getByText('chr4:3,074,877–3,075,040 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
     expect(screen.queryByText('GRCh38 / hg38')).toBeNull()
-    expect(screen.getAllByText('72 exact ALT sequences')).toHaveLength(2)
-    expect(screen.getByText('140–212 bp (−24 to +48 bp)')).not.toBeNull()
+    expect(screen.getAllByText('72 source ALT alleles')).toHaveLength(1)
+    expect(
+      screen.getAllByText('140–212 bp represented (−24 to +48 bp versus REF)').length
+    ).toBeGreaterThan(0)
     expect(screen.getByText('HTT — exon')).not.toBeNull()
     expect(screen.getByRole('link', { name: 'TRExplorer' })).not.toBeNull()
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
@@ -517,13 +642,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
         name: /6 ordered LR reference components in 2 coordinate lanes/,
       })
     ).not.toBeNull()
-    expect(
-      screen.getByText(
-        (_text, element) =>
-          Boolean(element?.textContent?.includes('CCG — chr4:3,075,009–3,075,040')),
-        { selector: 'li' }
-      )
-    ).not.toBeNull()
+    fireEvent.click(screen.getByText('Full ordered component table (6)'))
+    const finalComponentRow = screen.getByText('chr4:3,075,009–3,075,040').closest('tr')!
+    expect(within(finalComponentRow).getByText('CCG')).not.toBeNull()
+    expect(within(finalComponentRow).getByText('32 bp')).not.toBeNull()
     expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
   })
 
@@ -680,8 +802,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByText('pathogenic', { exact: true })).toBeNull()
   })
 
-  test('uses a neutral fallback and opens source truth when primary identity is unavailable', () => {
+  test('uses the neutral cluster fallback and keeps source truth closed', () => {
     const locus = makeLocus()
+    ;(locus as any).presentation = {
+      ...locus.presentation,
+      presentation_layout: 'CLUSTER_FOCUSED',
+      presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+      reviewed_override_digest: null,
+    }
     ;(locus as any).primary_repeat = {
       status: 'UNAVAILABLE',
       reason_code: 'REGISTRY_DIGEST_MISMATCH',
@@ -696,13 +824,136 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'Tandem-repeat locus' })).not.toBeNull()
-    expect(screen.getByRole('status').textContent).toContain('No motif or component was inferred')
+    expect(screen.getByRole('heading', { name: 'Multi-component TR locus' })).not.toBeNull()
+    expect(screen.queryByText(/Primary repeat unavailable/)).toBeNull()
+    expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
     const disclosure = screen
-      .getByText('LR source representation and provenance — 6 ordered components')
+      .getByText('All ordered source components and provenance — 6 ordered components')
       .closest('details')
-    expect(disclosure?.hasAttribute('open')).toBe(true)
+    expect(disclosure?.hasAttribute('open')).toBe(false)
     expect(screen.queryByRole('heading', { name: /Long-read exact CAG units/ })).toBeNull()
+  })
+
+  test('uses positive cluster wording and source bounds only with complete API provenance', () => {
+    const locus = makeLocus()
+    ;(locus as any).presentation = {
+      source_representation_kind: 'VARIATION_CLUSTER',
+      presentation_layout: 'CLUSTER_FOCUSED',
+      presentation_reason: 'SOURCE_VARIATION_CLUSTER',
+      classification_source: 'source-catalog',
+      classification_release: 'catalog-v1',
+      classification_digest: '1'.repeat(64),
+      reviewed_override_digest: null,
+    }
+    ;(locus as any).bounds = {
+      ...locus.bounds,
+      variation_cluster_start0: 3074800,
+      variation_cluster_end0: 3075100,
+      variation_cluster_length_bp: 300,
+      variation_cluster_status: 'AVAILABLE_EXACT',
+      bounds_source: 'source-catalog',
+      bounds_release: 'catalog-v1',
+      bounds_digest: '2'.repeat(64),
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.getByRole('heading', { name: 'Variation cluster' })).not.toBeNull()
+    expect(screen.getByText('Source variation-cluster length')).not.toBeNull()
+    expect(screen.getByText('300 bp')).not.toBeNull()
+    expect(screen.getByText(/chr4:3,074,801–3,075,100/)).not.toBeNull()
+  })
+
+  test('falls back to envelope bounds when a classified cluster lacks a bounds receipt', () => {
+    const locus = makeLocus()
+    ;(locus as any).presentation = {
+      source_representation_kind: 'VARIATION_CLUSTER',
+      presentation_layout: 'CLUSTER_FOCUSED',
+      presentation_reason: 'SOURCE_VARIATION_CLUSTER',
+      classification_source: 'source-catalog',
+      classification_release: 'catalog-v1',
+      classification_digest: '1'.repeat(64),
+      reviewed_override_digest: null,
+    }
+    ;(locus as any).bounds = {
+      ...locus.bounds,
+      variation_cluster_start0: 3074800,
+      variation_cluster_end0: 3075100,
+      variation_cluster_length_bp: 300,
+      variation_cluster_status: 'AVAILABLE_EXACT',
+      bounds_source: 'source-catalog',
+      bounds_release: 'catalog-v1',
+      bounds_digest: null,
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.getByRole('heading', { name: 'Variation cluster' })).not.toBeNull()
+    expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
+    expect(screen.getByText('164 bp')).not.toBeNull()
+    expect(screen.getByText(/chr4:3,074,877–3,075,040/)).not.toBeNull()
+    expect(screen.queryByText('300 bp')).toBeNull()
+  })
+
+  test('falls back from an unreceipted reviewed compound presentation', () => {
+    const locus = makeLocus()
+    ;(locus as any).presentation = {
+      ...locus.presentation,
+      reviewed_override_digest: null,
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.getByRole('heading', { name: 'Multi-component TR locus' })).not.toBeNull()
+    expect(screen.queryByText(/Compound source representation/)).toBeNull()
+    expect(screen.getByText('Ordered source components')).not.toBeNull()
+  })
+
+  test('keeps duplicate source identities visible and fails length/filter gates closed', () => {
+    const locus = makeLocus()
+    ;(locus as any).sequence_cardinality = {
+      ...locus.sequence_cardinality,
+      source_alt_identity_count: 72,
+      unique_alt_sequence_count: 71,
+    }
+    ;(locus as any).represented_length = {
+      ...locus.represented_length,
+      status: 'UNAVAILABLE',
+      reason: 'STORED_DELTA_RECONCILIATION_MISMATCH',
+      represented_ref_length_bp: null,
+      represented_alt_min_length_bp: null,
+      represented_alt_max_length_bp: null,
+      reconciliation_status: 'MISMATCH',
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.getByText(/71 observed unique alternate sequences/).textContent).toContain(
+      '72 source ALT identities'
+    )
+    const axis = screen.getByLabelText('Length axis') as HTMLSelectElement
+    expect(
+      (
+        within(axis).getByRole('option', {
+          name: 'Represented allele length',
+        }) as HTMLOptionElement
+      ).disabled
+    ).toBe(true)
+    expect(screen.queryByText(/nfe = EUR/)).toBeNull()
+    expect((screen.getByLabelText('Genetic ancestry group') as HTMLSelectElement).disabled).toBe(
+      true
+    )
+  })
+
+  test('hides AoU ancestry controls only when API redundancy is certified', () => {
+    const locus = makeLocus()
+    ;(locus as any).lr_cohort = 'aou'
+    ;(locus as any).filter_contract = {
+      ...locus.filter_contract,
+      ancestry_control_redundant: true,
+      ancestry_control_redundancy_reason: 'CERTIFIED_EXACT_SOLE_STRATUM',
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.queryByLabelText('Genetic ancestry group')).toBeNull()
+    expect(screen.getByText(/API certified the sole ancestry stratum as redundant/)).not.toBeNull()
+    expect((screen.getByLabelText('Sex') as HTMLSelectElement).disabled).toBe(true)
   })
 
   test('gives every canonical page help dialog the task-first structure', () => {
@@ -712,7 +963,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       'About LR reference components',
       'About known disease-associated TR locus',
       'About the allelic landscape',
-      'About the exact-ALT index',
+      'About the source-ALT index',
       'About exact ALT details',
       'About unavailable data',
     ]
@@ -783,11 +1034,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('heading', { name: 'Data availability' })).toBeNull()
     expect(
       screen.getByRole('button', {
-        name: /−6 bp; 134 called non-reference allele copies.*2 exact ALT sequences/,
+        name: /−6 bp vs REF; 134 called non-reference allele copies.*2 source ALT alleles/,
       })
     ).not.toBeNull()
     expect(
-      screen.getByRole('button', { name: /\+48 bp; 5 called non-reference allele copies/ })
+      screen.getByRole('button', { name: /\+48 bp vs REF; 5 called non-reference allele copies/ })
     ).not.toBeNull()
   })
 
@@ -795,7 +1046,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
     const disclosure = screen
-      .getByText('LR source representation and provenance — 1 ordered component')
+      .getByText('All ordered source components and provenance — 1 ordered component')
       .closest('details')
     expect(disclosure).not.toBeNull()
     expect(disclosure?.hasAttribute('open')).toBe(false)
@@ -828,8 +1079,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(headings.map((heading) => heading.textContent)).toEqual([
       expect.stringContaining('Allele repeat-count distribution'),
       expect.stringContaining('Genotype repeat-count distribution'),
-      'Total allele length change (ALT − REF, bp)',
-      'Length change × motif purity',
+      'Change from REF (bp)',
+      'Change from REF × motif purity',
     ])
     expect(grid.getAttribute('data-plot-count')).toBe('4')
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(4)
@@ -868,7 +1119,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage()
     const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')
     const browser = screen.getByTestId('lr-tr-exact-allele-browser')
-    const alleleTables = screen.getAllByRole('table', { name: 'Exact-ALT index' })
+    const alleleTables = screen.getAllByRole('table', { name: 'Source ALT allele index' })
     const index = alleleTables[0]
     const selectedDetail = screen.getByTestId('lr-tr-selected-detail')
     const plotGrid = screen.getByTestId('whole-record-allele-plot-grid')
@@ -885,8 +1136,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
         .getAllByRole('heading', { level: 3 })
         .map((heading) => heading.textContent)
     ).toEqual([
-      'Total allele length change (ALT − REF, bp)',
-      'Length change × motif purity',
+      'Change from REF (bp)',
+      'Change from REF × motif purity',
       'Genotype length distribution',
     ])
     expect(plotGrid.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
@@ -1005,42 +1256,44 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('filters the primary index to every same-length identity and clears back to all', () => {
     renderPage()
-    const table = screen.getByRole('table', { name: 'Exact-ALT index' })
+    const table = screen.getByRole('table', { name: 'Source ALT allele index' })
     const allAllelesHeading = screen.getByRole('heading', {
-      name: '72 exact ALT sequences',
+      name: '72 source ALT alleles',
     })
     expect(allAllelesHeading).not.toBeNull()
     expect(allAllelesHeading.closest('header')).toHaveStyleRule('flex-wrap', 'wrap')
     expect(table.getAttribute('aria-rowcount')).toBe('73')
 
     fireEvent.click(
-      screen.getByRole('button', { name: /−6 bp; 134 called non-reference allele copies/ })
+      screen.getByRole('button', { name: /−6 bp vs REF; 134 called non-reference allele copies/ })
     )
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '2 of 72 exact ALT sequences at −6 bp' })
+      screen.getByRole('heading', { name: '2 of 72 source ALT alleles at −6 bp vs REF' })
     )
     expect(table.getAttribute('aria-rowcount')).toBe('3')
-    expect(within(table).getByText(`${sourceVariantId}~2`)).not.toBeNull()
-    expect(within(table).getByText(`${sourceVariantId}~3`)).not.toBeNull()
-    expect(screen.getAllByRole('table', { name: 'Exact-ALT index' })).toHaveLength(1)
+    expect(within(table).getByTitle(`${sourceVariantId}~2`)).not.toBeNull()
+    expect(within(table).getByTitle(`${sourceVariantId}~3`)).not.toBeNull()
+    expect(screen.getAllByRole('table', { name: 'Source ALT allele index' })).toHaveLength(1)
     expect(screen.queryByRole('table', { name: /Exact ALTs at/ })).toBeNull()
 
-    const selectedControl = within(table).getByRole('link', { name: 'Selected ALT 2' })
-    const otherControl = within(table).getByRole('link', { name: 'Select ALT 3' })
+    const selectedControl = within(table).getByRole('link', {
+      name: 'Details shown for Sequence 2',
+    })
+    const otherControl = within(table).getByRole('link', { name: 'Details for Sequence 3' })
     expect(selectedControl.getAttribute('aria-current')).toBe('page')
     expect(otherControl.getAttribute('aria-current')).toBeNull()
     expect(selectedControl.closest('[role="row"]')?.getAttribute('aria-selected')).toBeNull()
     expect(fireEvent.click(otherControl)).toBe(false)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALT sequences' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show all source ALT alleles' }))
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '72 exact ALT sequences' })
+      screen.getByRole('heading', { name: '72 source ALT alleles' })
     )
     expect(table.getAttribute('aria-rowcount')).toBe('73')
   })
 
-  test('links purity and exact detail and preserves source decomposition caveat', () => {
+  test('links purity and keeps compound selected sequence neutral and copyable', () => {
     renderPage()
     const detail = screen.getByTestId('lr-tr-selected-detail')
     expect(detail).toBe(document.activeElement)
@@ -1048,30 +1301,25 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(detail).getByText(exactId)).not.toBeNull()
     expect(within(detail).getByText(/source_ap_allele/)).not.toBeNull()
     expect(
-      within(detail).getByText(/do not represent the LR reference component coordinates/)
+      within(detail).getByText(/shown neutrally because no admitted projection/)
     ).not.toBeNull()
-    expect(within(detail).getByLabelText('Selected ALT motif structure grid')).not.toBeNull()
-    expect(screen.getByTestId('selected-motif-structure-boundaries')).toHaveStyleRule(
-      'stroke',
-      '#36454f!important',
-      { modifier: "& [aria-label='Selected ALT motif structure grid'] svg rect[stroke='white']" }
-    )
-    expect(screen.getByTestId('selected-motif-structure-boundaries')).toHaveStyleRule(
-      'stroke-width',
-      '1px!important',
-      { modifier: "& [aria-label='Selected ALT motif structure grid'] svg rect[stroke='white']" }
-    )
+    expect(
+      within(detail).getByLabelText('Exact copyable source sequence for Sequence 2').textContent
+    ).toContain('ACAGCAA')
+    expect(within(detail).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
+    expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
+    expect(within(detail).queryByText(/tokens/)).toBeNull()
     expect(
       screen.getByRole('group', {
-        name: /exact ALT sequences plotted by total allele length change and source-reported motif purity/,
+        name: /source ALT alleles plotted by change from REF and source-reported motif purity/,
       })
     ).not.toBeNull()
   })
 
   test('uses materially different point areas for heterogeneous exact-allele AC', () => {
     renderPage()
-    const lowAcPoint = screen.getByRole('button', { name: /ALT 1.+40 called allele copies/ })
-    const highAcPoint = screen.getByRole('button', { name: /ALT 2.+120 called allele copies/ })
+    const lowAcPoint = screen.getByRole('button', { name: /Sequence 1.+40 called allele copies/ })
+    const highAcPoint = screen.getByRole('button', { name: /Sequence 2.+120 called allele copies/ })
     const lowDiameter = Number(lowAcPoint.getAttribute('data-point-diameter'))
     const highDiameter = Number(highAcPoint.getAttribute('data-point-diameter'))
 
@@ -1080,7 +1328,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(highAcPoint.getAttribute('data-selected-allele')).toBe('true')
     expect(highAcPoint).toHaveStyleRule('box-sizing', 'border-box')
     expect(
-      screen.getByLabelText('Point size represents exact ALT sequence AC from 40 to 120')
+      screen.getByLabelText('Point size represents source ALT allele AC from 40 to 120')
     ).not.toBeNull()
   })
 
@@ -1091,15 +1339,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
         (_text, element) =>
           Boolean(
             element?.textContent?.includes(
-              'Reference (0 bp) remains distinct from an exact ALT sequence with 0 bp length change'
+              'Reference remains distinct from a zero-change source ALT identity in either axis mode'
             )
           ),
         { selector: 'p' }
       )
     ).not.toBeNull()
-    expect(screen.getAllByRole('link', { name: 'ALT 1' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('link', { name: 'Sequence 1' }).length).toBeGreaterThan(0)
     const zeroDeltaCell = screen.getByRole('button', {
-      name: /0 bp longer, 0 bp shorter: 20 people; filter the exact-ALT index/,
+      name: /0 bp vs REF longer allele, 0 bp vs REF shorter allele: 20 people; filter the source-ALT index/,
     })
     expect(zeroDeltaCell).not.toBeNull()
     expect(zeroDeltaCell.closest('svg')?.getAttribute('role')).toBe('group')
@@ -1107,14 +1355,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
     fireEvent.click(zeroDeltaCell)
     expect(document.activeElement).toBe(
       screen.getByRole('heading', {
-        name: '1 of 72 exact ALT sequences — selected genotype cell (0 bp × 0 bp)',
+        name: '1 of 72 source ALT alleles — selected genotype cell (0 bp vs REF × 0 bp vs REF)',
       })
     )
     expect(
-      screen.getByRole('table', { name: 'Exact-ALT index' }).getAttribute('aria-rowcount')
+      screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
     ).toBe('2')
-    fireEvent.click(screen.getByRole('button', { name: 'Show all exact ALT sequences' }))
-    expect(screen.getByRole('heading', { name: '72 exact ALT sequences' })).toBe(
+    fireEvent.click(screen.getByRole('button', { name: 'Show all source ALT alleles' }))
+    expect(screen.getByRole('heading', { name: '72 source ALT alleles' })).toBe(
       document.activeElement
     )
   })
@@ -1123,7 +1371,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     'shows all %s exact ALT sequences in the primary virtualized browser',
     (count) => {
       renderPage({ locus: makeLocus(count), selectedAllele: undefined })
-      const heading = screen.getByRole('heading', { name: `${count} exact ALT sequences` })
+      const heading = screen.getByRole('heading', { name: `${count} source ALT alleles` })
       const section = heading.closest('section')
       expect(section).not.toBeNull()
       expect(heading.closest('details')).toBeNull()
@@ -1133,18 +1381,24 @@ describe('canonical long-read tandem-repeat locus page', () => {
       expect(virtualIndex.classList.contains('lr-tr-exact-index-scroll')).toBe(true)
       const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
       expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
-      expect(within(finalRow).getByText(`${sourceVariantId}~${count}`)).not.toBeNull()
-      expect(within(finalRow).getByRole('link', { name: `Select ALT ${count}` })).not.toBeNull()
       expect(
-        within(finalRow).getByRole('img', { name: `ALT ${count} motif structure preview` })
+        within(finalRow).getByText(new RegExp(`Source ALT ${count} of ${count}`))
+      ).not.toBeNull()
+      expect(
+        within(finalRow).getByRole('link', { name: `Details for Sequence ${count}` })
+      ).not.toBeNull()
+      expect(
+        within(finalRow).getByRole('img', {
+          name: `Sequence ${count} neutral represented sequence; no component projection is admitted`,
+        })
       ).not.toBeNull()
       expect(finalRow.getAttribute('aria-label')).toMatch(
         new RegExp(
-          `ALT ${count}; ${sourceVariantId}~${count}; total allele length change .+; purity .+; AC .+; AF .+`
+          `Sequence ${count}; ${sourceVariantId}~${count}; length .+; purity .+; AC .+; AF .+`
         )
       )
       expect(
-        screen.getByRole('table', { name: 'Exact-ALT index' }).getAttribute('aria-rowcount')
+        screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
       ).toBe(String(count + 1))
     }
   )
@@ -1154,13 +1408,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
     locus.alleles.nodes[0].freq.all.ac = 20.00342
     renderPage({ locus, selectedAllele: undefined })
     const row = screen.getByTitle(`${sourceVariantId}~1`)
-    expect(within(row).getByText(`${sourceVariantId}~1`)).not.toBeNull()
+    expect(within(row).getByText(/Source ALT 1 of 72/)).not.toBeNull()
     expect(within(row).getByText('20')).not.toBeNull()
     expect(within(row).queryByText('20.00342')).toBeNull()
 
-    const table = screen.getByRole('table', { name: 'Exact-ALT index' })
+    const table = screen.getByRole('table', { name: 'Source ALT allele index' })
     const acSort = within(table).getByRole('button', { name: 'AC' })
-    fireEvent.click(acSort)
     expect(screen.getByTitle(`${sourceVariantId}~2`).getAttribute('aria-rowindex')).toBe('2')
     expect(acSort.closest('[role="columnheader"]')?.getAttribute('aria-sort')).toBe('descending')
     fireEvent.click(acSort)
@@ -1215,7 +1468,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       selectedAllele: exactId,
     })
 
-    expect(screen.getByRole('heading', { name: `${exactId} exact ALT details` })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: `Sequence 2 · Details shown` })).not.toBeNull()
     expect(
       screen.getByText(
         /Motif previews are unavailable because the allele sequences are too large to preview safely/
@@ -1235,7 +1488,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('keeps compound source provenance compact and accessible', () => {
     renderPage()
     const provenance = screen
-      .getByText('LR source representation and provenance — 6 ordered components')
+      .getByText('All ordered source components and provenance — 6 ordered components')
       .closest('details')
     expect(provenance).not.toBeNull()
     expect(provenance?.hasAttribute('open')).toBe(false)
@@ -1274,7 +1527,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     expect(
       screen.getByText(
-        /Genotype landscape unavailable: the source does not include the required metadata/
+        /Genotype length distribution is unavailable: the source does not include the required metadata/
       )
     ).not.toBeNull()
   })
@@ -1318,17 +1571,20 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect((global as any).__TR_QUERY_PROPS__.retainPreviousData).toBe(true)
     expect((global as any).__TR_QUERY_PROPS__.rejectGraphQLErrors).toBe(true)
     expect((global as any).__TR_QUERY_PROPS__.requestKey).toBe(`hgsvc_hprc:${staleLocus.id}`)
-    expect(screen.getByRole('status').textContent).toMatch(
-      /retain their loaded cohort and allele identity and are temporarily inert/i
-    )
-    expect(screen.getByRole('heading', { name: `${exactId} exact ALT details` })).not.toBeNull()
-    expect(screen.getByRole('heading', { name: '72 exact ALT sequences' })).not.toBeNull()
-    const retainedFrame = screen.getByRole('status').nextElementSibling as HTMLElement
+    const revalidationStatus = screen
+      .getAllByRole('status')
+      .find((element) =>
+        /retain their loaded cohort and allele identity/i.test(element.textContent || '')
+      )!
+    expect(revalidationStatus).toBeDefined()
+    expect(screen.getByRole('heading', { name: `Sequence 2 · Details shown` })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: '72 source ALT alleles' })).not.toBeNull()
+    const retainedFrame = revalidationStatus.nextElementSibling as HTMLElement
     expect(retainedFrame.hasAttribute('inert')).toBe(true)
     expect(retainedFrame.getAttribute('aria-busy')).toBe('true')
     expect(
       within(retainedFrame).queryByRole('heading', {
-        name: `${nextAlleleId} exact ALT details`,
+        name: `Sequence 3 · Details shown`,
       })
     ).toBeNull()
     ;(global as any).__TR_QUERY_STATE__ = {
@@ -1338,9 +1594,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     rendered.rerender(React.cloneElement(page))
 
-    expect(
-      screen.getByRole('heading', { name: `${nextAlleleId} exact ALT details` })
-    ).not.toBeNull()
+    expect(screen.getByRole('heading', { name: `Sequence 1 · Details shown` })).not.toBeNull()
     expect(screen.getByTestId('lr-tr-selected-detail')).not.toBe(document.activeElement)
     expect(scrollIntoView).not.toHaveBeenCalled()
   })
@@ -1369,8 +1623,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
       </Router>
     )
 
-    const status = screen.getByRole('status')
-    expect(status.textContent).toMatch(/retain their loaded cohort and allele identity/i)
+    const status = screen
+      .getAllByRole('status')
+      .find((element) =>
+        /retain their loaded cohort and allele identity/i.test(element.textContent || '')
+      )!
+    expect(status).toBeDefined()
     const retainedFrame = status.nextElementSibling as HTMLElement
     expect(retainedFrame.hasAttribute('inert')).toBe(true)
     expect(
@@ -1401,8 +1659,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
       </Router>
     )
     fireEvent.click(
-      within(screen.getByRole('table', { name: 'Exact-ALT index' })).getByRole('link', {
-        name: 'Select ALT 2',
+      within(screen.getByRole('table', { name: 'Source ALT allele index' })).getByRole('link', {
+        name: 'Details for Sequence 2',
       })
     )
     expect(history.action).toBe('PUSH')
@@ -1457,6 +1715,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(LONG_READ_TR_ALLELE_INDEX_LIMIT).toBe(600)
     expect(longReadTandemRepeatLocusQuery).toContain('first: $first')
     expect(longReadTandemRepeatLocusQuery).toContain('whole_record_allele_landscape')
+    expect(longReadTandemRepeatLocusQuery).toContain('accepted_task_attempt_digest')
+    expect(longReadTandemRepeatLocusQuery).toContain('presentation {')
+    expect(longReadTandemRepeatLocusQuery).toContain('bounds {')
+    expect(longReadTandemRepeatLocusQuery).toContain('component_summary {')
+    expect(longReadTandemRepeatLocusQuery).toContain('sequence_cardinality {')
+    expect(longReadTandemRepeatLocusQuery).toContain('represented_length {')
+    expect(longReadTandemRepeatLocusQuery).toContain('filter_contract {')
     expect(longReadTandemRepeatLocusQuery).toContain('represented_allele_length_min')
     expect(longReadTandemRepeatLocusQuery).toContain('whole_record_genotype_landscape')
     expect(longReadTandemRepeatLocusQuery).toContain('selected_allele_unavailable_reason')

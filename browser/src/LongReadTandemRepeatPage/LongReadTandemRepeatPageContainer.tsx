@@ -19,12 +19,12 @@ const LongReadTrPage = styled(Page)`
 
 const RevalidationStatus = styled.p`
   position: absolute;
+  overflow: hidden;
   width: 1px;
   height: 1px;
   padding: 0;
   border: 0;
   margin: -1px;
-  overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
 `
@@ -43,6 +43,43 @@ query ${operationName}(
     allele: $allele
   ) {
     id source_trid reference_genome chrom motifs structure lr_cohort source_release source_run_id
+    accepted_task_attempt_digest
+    presentation {
+      source_representation_kind presentation_layout presentation_reason classification_source
+      classification_release classification_digest reviewed_override_digest
+    }
+    bounds {
+      component_envelope_start0 component_envelope_end0 component_envelope_length_bp
+      component_envelope_basis source_ref_span_start0 source_ref_span_end0 source_ref_span_status
+      variation_cluster_start0 variation_cluster_end0 variation_cluster_length_bp
+      variation_cluster_status bounds_source bounds_release bounds_digest
+    }
+    component_summary { ordered_component_count distinct_stored_motif_count }
+    sequence_cardinality {
+      source_alt_identity_count unique_alt_sequence_count all_source_alts_sequence_complete
+      status reason algorithm_version
+    }
+    represented_length {
+      status reason represented_ref_length_bp represented_alt_min_length_bp
+      represented_alt_max_length_bp source_delta_provenance sequence_length_provenance
+      sequence_source_record_digest sequence_content_digest anchor_rule anchor_rule_source
+      anchor_rule_release anchor_rule_digest reconciliation_status
+    }
+    filter_contract {
+      status reason ancestry_mapping_status sex_mapping_status ancestry_control_redundant
+      ancestry_control_redundancy_reason available_color_dimensions allele_color_dimensions
+      genotype_color_dimensions unstratified_policy vocabulary_release vocabulary_digest
+      source_key_inventory_release source_key_inventory_digest source_release source_run_id
+      metadata_source_run_id
+      ancestry_groups {
+        id label kind source_frequency_keys source_metadata_keys available_in_frequency
+        available_in_genotype shared_available unavailable_reason
+      }
+      sex_groups {
+        id label kind source_frequency_keys source_metadata_keys available_in_frequency
+        available_in_genotype shared_available unavailable_reason
+      }
+    }
     total_alleles exact_alt_count exact_alt_count_complete exact_alt_count_unavailable_reason
     delta_min delta_max delta_unavailable_reason
     represented_allele_length_min represented_allele_length_max represented_allele_length_unavailable_reason
@@ -73,7 +110,7 @@ query ${operationName}(
     region { chrom start0 end0 size }
     components { chrom start0 end0 motif }
     source_records {
-      record_index source_variant_id task_id attempt_id position alt_count
+      record_index source_variant_id task_id attempt_id position alt_count ref
       non_reference_ac an non_reference_af source region
     }
     short_read_context {

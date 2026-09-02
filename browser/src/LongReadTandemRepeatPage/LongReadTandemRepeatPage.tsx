@@ -223,9 +223,26 @@ const CohortSelector = ({
   </CohortControl>
 )
 
+const immutableDigest = (value: string | null | undefined) =>
+  Boolean(value && /^[a-f0-9]{64}$/i.test(value))
+
+const variationClusterAuthorized = (locus: LongReadTrLocus) =>
+  locus.presentation?.presentation_layout === 'CLUSTER_FOCUSED' &&
+  locus.presentation.source_representation_kind === 'VARIATION_CLUSTER' &&
+  locus.presentation.presentation_reason === 'SOURCE_VARIATION_CLUSTER' &&
+  Boolean(
+    locus.presentation.classification_source &&
+      locus.presentation.classification_release &&
+      immutableDigest(locus.presentation.classification_digest)
+  )
+
 export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
+  if (locus.presentation?.presentation_layout === 'CLUSTER_FOCUSED') {
+    return variationClusterAuthorized(locus) ? 'Variation cluster' : 'Multi-component TR locus'
+  }
   if (locus.primary_repeat?.status !== 'AVAILABLE' || !locus.primary_repeat.motif) {
-    return 'Tandem-repeat locus'
+    const soleMotif = locus.components.length === 1 ? locus.components[0].motif : null
+    return soleMotif ? `${soleMotif} tandem repeat` : 'Tandem-repeat locus'
   }
   const record =
     locus.short_read_context?.status === 'EXACT_UNIQUE' &&
@@ -352,6 +369,103 @@ const LongReadTandemRepeatPage = ({
     canonicalId: locus.id,
     sourceTrid: locus.source_trid,
   })
+  // Retained story fixtures may predate the additive Phase 2 contracts. Live GraphQL always
+  // supplies them; fixture fallbacks preserve the same fail-closed behavior.
+  const rawPresentation = locus.presentation || {
+    source_representation_kind: 'UNKNOWN' as const,
+    presentation_layout:
+      locus.components.length === 1 ? ('REPEAT_FOCUSED' as const) : ('CLUSTER_FOCUSED' as const),
+    presentation_reason:
+      locus.components.length === 1
+        ? ('SOLE_EXACT_COMPONENT' as const)
+        : ('MULTI_COMPONENT_FALLBACK' as const),
+    classification_source: null,
+    classification_release: null,
+    classification_digest: null,
+    reviewed_override_digest: null,
+  }
+  const reviewedCompoundAuthorized =
+    locus.components.length > 1 &&
+    rawPresentation.presentation_layout === 'REPEAT_FOCUSED' &&
+    rawPresentation.presentation_reason === 'REVIEWED_PRIMARY_REPEAT' &&
+    immutableDigest(rawPresentation.reviewed_override_digest)
+  const presentation =
+    locus.components.length > 1 &&
+    rawPresentation.presentation_layout === 'REPEAT_FOCUSED' &&
+    !reviewedCompoundAuthorized
+      ? {
+          source_representation_kind: 'UNKNOWN' as const,
+          presentation_layout: 'CLUSTER_FOCUSED' as const,
+          presentation_reason: 'MULTI_COMPONENT_FALLBACK' as const,
+          classification_source: null,
+          classification_release: null,
+          classification_digest: null,
+          reviewed_override_digest: null,
+        }
+      : rawPresentation
+  const bounds = locus.bounds || {
+    component_envelope_start0: locus.region.start0,
+    component_envelope_end0: locus.region.end0,
+    component_envelope_length_bp: locus.region.size,
+    component_envelope_basis: 'EXACT_ORDERED_COMPONENTS' as const,
+    source_ref_span_start0: null,
+    source_ref_span_end0: null,
+    source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT' as const,
+    variation_cluster_start0: null,
+    variation_cluster_end0: null,
+    variation_cluster_length_bp: null,
+    variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION' as const,
+    bounds_source: null,
+    bounds_release: null,
+    bounds_digest: null,
+  }
+  const componentSummary = locus.component_summary || {
+    ordered_component_count: locus.components.length,
+    distinct_stored_motif_count: new Set(locus.components.map((component) => component.motif)).size,
+  }
+  const sequenceCardinality = locus.sequence_cardinality || {
+    source_alt_identity_count: locus.exact_alt_count,
+    unique_alt_sequence_count: null,
+    all_source_alts_sequence_complete: false,
+    status: 'UNAVAILABLE' as const,
+    reason: locus.exact_alt_count_unavailable_reason,
+    algorithm_version: 'UNAVAILABLE',
+  }
+  const representedLength = locus.represented_length || {
+    status: 'UNAVAILABLE' as const,
+    reason: locus.represented_allele_length_unavailable_reason,
+    represented_ref_length_bp: null,
+    represented_alt_min_length_bp: null,
+    represented_alt_max_length_bp: null,
+    source_delta_provenance: 'UNAVAILABLE' as const,
+    sequence_length_provenance: null,
+    sequence_source_record_digest: null,
+    sequence_content_digest: null,
+    anchor_rule: null,
+    anchor_rule_source: null,
+    anchor_rule_release: null,
+    anchor_rule_digest: null,
+    reconciliation_status: 'NOT_EVALUATED' as const,
+  }
+  const clusterFocused = presentation.presentation_layout === 'CLUSTER_FOCUSED'
+  const authorizedVariationCluster = variationClusterAuthorized({ ...locus, presentation })
+  const exactVariationBoundsAuthorized =
+    authorizedVariationCluster &&
+    bounds.variation_cluster_status === 'AVAILABLE_EXACT' &&
+    Boolean(bounds.bounds_source && bounds.bounds_release) &&
+    immutableDigest(bounds.bounds_digest) &&
+    Number.isSafeInteger(bounds.variation_cluster_start0) &&
+    Number.isSafeInteger(bounds.variation_cluster_end0) &&
+    Number.isSafeInteger(bounds.variation_cluster_length_bp) &&
+    (bounds.variation_cluster_start0 as number) < (bounds.variation_cluster_end0 as number) &&
+    (bounds.variation_cluster_end0 as number) - (bounds.variation_cluster_start0 as number) ===
+      bounds.variation_cluster_length_bp
+  const displayStart1 = exactVariationBoundsAuthorized
+    ? (bounds.variation_cluster_start0 as number) + 1
+    : envelope.start1
+  const displayEnd1 = exactVariationBoundsAuthorized
+    ? (bounds.variation_cluster_end0 as number)
+    : envelope.end1
   const orderedMotifs = locus.components.map((component) => component.motif)
   const vocabulary = [...new Set(locus.motifs.length ? locus.motifs : orderedMotifs)]
   const exactContext = locus.short_read_context
@@ -369,7 +483,7 @@ const LongReadTandemRepeatPage = ({
     exactComponent(exactContext.matched_component, locus.primary_repeat.component)
       ? primaryComponentIndex
       : null
-  const title = longReadTrLocusTitle(locus)
+  const title = longReadTrLocusTitle({ ...locus, presentation })
   const approvedCatalogRecord =
     locus.primary_repeat.status === 'AVAILABLE' &&
     locus.short_read_context?.status === 'EXACT_UNIQUE' &&
@@ -377,16 +491,15 @@ const LongReadTandemRepeatPage = ({
       ? locus.short_read_context.catalog_record
       : null
   const alleleLengthRange =
-    locus.represented_allele_length_min == null ||
-    locus.represented_allele_length_max == null ||
+    representedLength.status !== 'AVAILABLE_EXACT' ||
+    representedLength.represented_alt_min_length_bp == null ||
+    representedLength.represented_alt_max_length_bp == null ||
     locus.delta_min == null ||
     locus.delta_max == null
-      ? `Unavailable: ${unavailableReason(
-          locus.represented_allele_length_unavailable_reason || locus.delta_unavailable_reason
-        )}`
-      : `${locus.represented_allele_length_min.toLocaleString()}–${locus.represented_allele_length_max.toLocaleString()} bp (${signed(
+      ? `Absolute represented length unavailable: ${unavailableReason(representedLength.reason)}`
+      : `${representedLength.represented_alt_min_length_bp.toLocaleString()}–${representedLength.represented_alt_max_length_bp.toLocaleString()} bp represented (${signed(
           locus.delta_min
-        )} to ${signed(locus.delta_max)} bp)`
+        )} to ${signed(locus.delta_max)} bp versus REF)`
   const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
   // Compatibility for retained Phase 4–6 story fixtures. Live GraphQL always supplies
   // this non-null typed product field; an omitted fixture must remain fail-closed.
@@ -453,6 +566,10 @@ const LongReadTandemRepeatPage = ({
             null,
         }}
         motifs={locus.motifs}
+        neutralSequence={
+          clusterFocused || locus.selected_allele.decomposition_status !== 'AVAILABLE'
+        }
+        representedLength={representedLength}
       />
     )
   } else if (selectedAllele && locus.selected_allele_valid !== false) {
@@ -462,6 +579,61 @@ const LongReadTandemRepeatPage = ({
         .
       </p>
     )
+  }
+
+  let primaryIdentity: React.ReactNode = null
+  if (
+    !clusterFocused &&
+    locus.primary_repeat.status === 'AVAILABLE' &&
+    locus.primary_repeat.motif
+  ) {
+    primaryIdentity = (
+      <PrimaryIdentity
+        aria-label={`Primary repeat ${locus.primary_repeat.motif}${
+          reviewedCompoundAuthorized
+            ? `; compound source representation; ${locus.components.length} components`
+            : ''
+        }`}
+      >
+        <strong>Primary repeat</strong> <code>{locus.primary_repeat.motif}</code> ·{' '}
+        {primaryRepeatBasisLabel(locus.primary_repeat.selection_basis)} component{' '}
+        {(locus.primary_repeat.component_index || 0) + 1}
+        {locus.primary_repeat.biological_role && <> · {locus.primary_repeat.biological_role}</>}
+        {reviewedCompoundAuthorized && (
+          <>
+            <br />
+            <strong>
+              Compound source representation · {locus.components.length.toLocaleString()} components
+            </strong>
+          </>
+        )}
+      </PrimaryIdentity>
+    )
+  } else if (!clusterFocused) {
+    primaryIdentity = (
+      <PrimaryIdentity role="status">
+        <strong>Primary repeat unavailable.</strong> No motif or component was inferred or
+        substituted
+        {locus.primary_repeat.reason_code
+          ? ` (${unavailableReason(locus.primary_repeat.reason_code)})`
+          : ''}
+        .
+      </PrimaryIdentity>
+    )
+  }
+  let spanLabel = 'Represented LR region length'
+  if (clusterFocused) {
+    spanLabel = exactVariationBoundsAuthorized
+      ? 'Source variation-cluster length'
+      : 'Locus component-envelope length'
+  } else if (locus.components.length === 1) {
+    spanLabel = 'Reference repeat length'
+  }
+  let spanValue = `${bounds.component_envelope_length_bp.toLocaleString()} bp`
+  if (exactVariationBoundsAuthorized && bounds.variation_cluster_length_bp != null) {
+    spanValue = `${bounds.variation_cluster_length_bp.toLocaleString()} bp`
+  } else if (!clusterFocused && locus.components.length > 1) {
+    spanValue = alleleLengthRange
   }
 
   return (
@@ -482,28 +654,10 @@ const LongReadTandemRepeatPage = ({
               <LocusOverviewHelp />
             </HeadingWithHelp>
             <CoordinateContext>
-              chr{envelope.chrom}:{envelope.start1.toLocaleString()}–
-              {envelope.end1.toLocaleString()} (GRCh38)
+              chr{envelope.chrom}:{displayStart1.toLocaleString()}–{displayEnd1.toLocaleString()}{' '}
+              (GRCh38)
             </CoordinateContext>
-            {locus.primary_repeat.status === 'AVAILABLE' && locus.primary_repeat.motif ? (
-              <PrimaryIdentity aria-label={`Primary repeat ${locus.primary_repeat.motif}`}>
-                <strong>Primary repeat</strong> <code>{locus.primary_repeat.motif}</code> ·{' '}
-                {primaryRepeatBasisLabel(locus.primary_repeat.selection_basis)} component{' '}
-                {(locus.primary_repeat.component_index || 0) + 1}
-                {locus.primary_repeat.biological_role && (
-                  <> · {locus.primary_repeat.biological_role}</>
-                )}
-              </PrimaryIdentity>
-            ) : (
-              <PrimaryIdentity role="status">
-                <strong>Primary repeat unavailable.</strong> No motif or component was inferred or
-                substituted
-                {locus.primary_repeat.reason_code
-                  ? ` (${unavailableReason(locus.primary_repeat.reason_code)})`
-                  : ''}
-                .
-              </PrimaryIdentity>
-            )}
+            {primaryIdentity}
           </div>
         </HeadingWithHelp>
         <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
@@ -511,27 +665,37 @@ const LongReadTandemRepeatPage = ({
 
       <SourceAttributes>
         <AttributeList>
-          <AttributeListItem label="Region size">
-            {locus.region.size.toLocaleString()} bp
-          </AttributeListItem>
-          <AttributeListItem label="Primary repeat identity">
-            {locus.primary_repeat.status === 'AVAILABLE' && locus.primary_repeat.motif ? (
-              <RepeatMotifBadges aria-label={`Primary repeat: ${locus.primary_repeat.motif}`}>
-                <RepeatMotifBadge
-                  data-motif-badge={locus.primary_repeat.motif}
-                  data-motif-color={motifColor(locus.primary_repeat.motif, locus.motifs)}
-                  style={{
-                    backgroundColor: motifColor(locus.primary_repeat.motif, locus.motifs),
-                    color: badgeTextColor(motifColor(locus.primary_repeat.motif, locus.motifs)),
-                  }}
-                >
-                  {locus.primary_repeat.motif}
-                </RepeatMotifBadge>
-              </RepeatMotifBadges>
-            ) : (
-              'Unavailable — source components remain in the disclosure below'
-            )}
-          </AttributeListItem>
+          <AttributeListItem label={spanLabel}>{spanValue}</AttributeListItem>
+          {clusterFocused && (
+            <>
+              <AttributeListItem label="Ordered source components">
+                {componentSummary.ordered_component_count.toLocaleString()}
+              </AttributeListItem>
+              <AttributeListItem label="Distinct stored motifs">
+                {componentSummary.distinct_stored_motif_count.toLocaleString()}
+              </AttributeListItem>
+            </>
+          )}
+          {!clusterFocused && (
+            <AttributeListItem label="Primary repeat identity">
+              {locus.primary_repeat.status === 'AVAILABLE' && locus.primary_repeat.motif ? (
+                <RepeatMotifBadges aria-label={`Primary repeat: ${locus.primary_repeat.motif}`}>
+                  <RepeatMotifBadge
+                    data-motif-badge={locus.primary_repeat.motif}
+                    data-motif-color={motifColor(locus.primary_repeat.motif, locus.motifs)}
+                    style={{
+                      backgroundColor: motifColor(locus.primary_repeat.motif, locus.motifs),
+                      color: badgeTextColor(motifColor(locus.primary_repeat.motif, locus.motifs)),
+                    }}
+                  >
+                    {locus.primary_repeat.motif}
+                  </RepeatMotifBadge>
+                </RepeatMotifBadges>
+              ) : (
+                'Unavailable — source components remain in the disclosure below'
+              )}
+            </AttributeListItem>
+          )}
           {approvedCatalogRecord?.gene?.symbol && approvedCatalogRecord.gene.region && (
             <AttributeListItem label="Gene context">
               {approvedCatalogRecord.gene.symbol} — {approvedCatalogRecord.gene.region}
@@ -546,18 +710,36 @@ const LongReadTandemRepeatPage = ({
               : `${locus.called_allele_count.toLocaleString()} allele copies`}
           </AttributeListItem>
           <AttributeListItem
-            label="Observed exact ALT sequences"
-            tooltip="Each exact ALT sequence is one distinct source identity. Use this count to decide which reported sequence to inspect; it does not group biologically similar sequences."
+            label={
+              sequenceCardinality.status === 'AVAILABLE_EXACT' &&
+              sequenceCardinality.all_source_alts_sequence_complete
+                ? 'Observed unique alternate sequences'
+                : 'Source ALT alleles'
+            }
+            tooltip="Source ALT identities remain distinct even when complete ALT byte strings are equal. Byte uniqueness excludes REF and is shown only when the API proves all source ALT sequences complete."
           >
-            {locus.exact_alt_count_complete
-              ? `${locus.exact_alt_count.toLocaleString()} exact ALT ${
-                  locus.exact_alt_count === 1 ? 'sequence' : 'sequences'
-                }`
-              : `Unavailable: ${unavailableReason(locus.exact_alt_count_unavailable_reason)}`}
+            {sequenceCardinality.status === 'AVAILABLE_EXACT' &&
+            sequenceCardinality.all_source_alts_sequence_complete &&
+            sequenceCardinality.unique_alt_sequence_count != null ? (
+              <>
+                {sequenceCardinality.unique_alt_sequence_count.toLocaleString()} observed unique
+                alternate sequences
+                {sequenceCardinality.unique_alt_sequence_count !==
+                  sequenceCardinality.source_alt_identity_count && (
+                  <>
+                    {' '}
+                    · {sequenceCardinality.source_alt_identity_count.toLocaleString()} source ALT
+                    identities
+                  </>
+                )}
+              </>
+            ) : (
+              `${sequenceCardinality.source_alt_identity_count.toLocaleString()} source ALT alleles`
+            )}
           </AttributeListItem>
           <AttributeListItem
-            label="Allele length range (ALT − REF)"
-            tooltip="Absolute lengths include the complete REF and represented ALT sequences. Parentheses show each ALT's signed base-pair change from its complete REF. The range is unavailable if the exact sequence index is incomplete or exceeds its response bound."
+            label="Represented allele length / change from REF"
+            tooltip="Represented absolute length is shown only when the API admits complete sequence-length provenance, padding rule, and reconciliation. Signed source delta remains a separate measurement."
           >
             {alleleLengthRange}
           </AttributeListItem>
@@ -585,6 +767,14 @@ const LongReadTandemRepeatPage = ({
         </AttributeList>
       </SourceAttributes>
 
+      {clusterFocused && (
+        <LongReadTrComponentTrack
+          locus={locus}
+          exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
+          showTable={false}
+        />
+      )}
+
       <ShortReadKnownLocusContext
         locusId={locus.id}
         lrCohort={locus.lr_cohort}
@@ -610,6 +800,12 @@ const LongReadTandemRepeatPage = ({
         sequencesAvailable={locus.sequences_available}
         sequencesUnavailableReason={locus.sequences_unavailable_reason}
         selectedAlleleDetail={selectedAlleleDetail}
+        presentation={presentation}
+        sequenceCardinality={sequenceCardinality}
+        representedLength={representedLength}
+        filterContract={locus.filter_contract}
+        sourceRecordOrder={locus.source_records.map((record) => record.source_variant_id)}
+        neutralSequence={locus.components.length > 1}
       />
 
       {localHaplotypeBackgroundsEnabled && (
@@ -641,9 +837,9 @@ const LongReadTandemRepeatPage = ({
         </Panel>
       )}
 
-      <SourceRepresentationDetails open={locus.primary_repeat.status !== 'AVAILABLE'}>
+      <SourceRepresentationDetails>
         <summary>
-          LR source representation and provenance — {locus.components.length} ordered{' '}
+          All ordered source components and provenance — {locus.components.length} ordered{' '}
           {locus.components.length === 1 ? 'component' : 'components'}
         </summary>
         <AttributeList>
@@ -672,6 +868,7 @@ const LongReadTandemRepeatPage = ({
         <LongReadTrComponentTrack
           locus={locus}
           exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
+          showOverview={!clusterFocused}
         />
         <AttributeList>
           <AttributeListItem label="Tandem-repeat identifier">

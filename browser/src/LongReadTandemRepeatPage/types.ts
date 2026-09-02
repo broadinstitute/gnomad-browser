@@ -268,6 +268,102 @@ export type PrimaryMotifMeasurementData = {
   } | null
 }
 
+export type LongReadTrPresentation = {
+  source_representation_kind: 'STANDALONE_TR' | 'VARIATION_CLUSTER' | 'UNKNOWN'
+  presentation_layout: 'REPEAT_FOCUSED' | 'CLUSTER_FOCUSED'
+  presentation_reason:
+    | 'SOLE_EXACT_COMPONENT'
+    | 'REVIEWED_PRIMARY_REPEAT'
+    | 'SOURCE_VARIATION_CLUSTER'
+    | 'MULTI_COMPONENT_FALLBACK'
+  classification_source: string | null
+  classification_release: string | null
+  classification_digest: string | null
+  reviewed_override_digest: string | null
+}
+
+export type LongReadTrBounds = {
+  component_envelope_start0: number
+  component_envelope_end0: number
+  component_envelope_length_bp: number
+  component_envelope_basis: 'EXACT_ORDERED_COMPONENTS'
+  source_ref_span_start0: number | null
+  source_ref_span_end0: number | null
+  source_ref_span_status: 'AVAILABLE_EXACT' | 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT'
+  variation_cluster_start0: number | null
+  variation_cluster_end0: number | null
+  variation_cluster_length_bp: number | null
+  variation_cluster_status: 'AVAILABLE_EXACT' | 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION'
+  bounds_source: string | null
+  bounds_release: string | null
+  bounds_digest: string | null
+}
+
+export type LongReadTrSequenceCardinality = {
+  source_alt_identity_count: number
+  unique_alt_sequence_count: number | null
+  all_source_alts_sequence_complete: boolean
+  status: 'AVAILABLE_EXACT' | 'UNAVAILABLE'
+  reason: string | null
+  algorithm_version: string
+}
+
+export type LongReadTrRepresentedLength = {
+  status: 'AVAILABLE_EXACT' | 'UNAVAILABLE'
+  reason: string | null
+  represented_ref_length_bp: number | null
+  represented_alt_min_length_bp: number | null
+  represented_alt_max_length_bp: number | null
+  source_delta_provenance:
+    | 'INFO_ALLELE_LENGTH'
+    | 'INFO_SVLEN'
+    | 'SEQUENCE_DERIVED'
+    | 'MIXED'
+    | 'UNAVAILABLE'
+  sequence_length_provenance: string | null
+  sequence_source_record_digest: string | null
+  sequence_content_digest: string | null
+  anchor_rule: 'VCF_SHARED_LEFT_PADDING_BASE_V1' | null
+  anchor_rule_source: string | null
+  anchor_rule_release: string | null
+  anchor_rule_digest: string | null
+  reconciliation_status: 'NOT_EVALUATED' | 'NOT_RECONCILED' | 'MISMATCH' | 'RECONCILED'
+}
+
+export type LongReadTrFilterGroup = {
+  id: string
+  label: string
+  kind: 'SOURCE_GROUP' | 'SOURCE_UNKNOWN'
+  source_frequency_keys: string[]
+  source_metadata_keys: string[]
+  available_in_frequency: boolean
+  available_in_genotype: boolean
+  shared_available: boolean
+  unavailable_reason: string | null
+}
+
+export type LongReadTrFilterContract = {
+  status: 'AVAILABLE' | 'PARTIAL' | 'UNAVAILABLE'
+  reason: string | null
+  ancestry_mapping_status: 'APPROVED_EXACT' | 'UNAVAILABLE_PENDING_OWNER_APPROVAL'
+  sex_mapping_status: 'APPROVED_EXACT' | 'UNAVAILABLE_PENDING_OWNER_APPROVAL'
+  ancestry_groups: LongReadTrFilterGroup[]
+  sex_groups: LongReadTrFilterGroup[]
+  ancestry_control_redundant: boolean
+  ancestry_control_redundancy_reason: string
+  available_color_dimensions: ('ANCESTRY' | 'SEX')[]
+  allele_color_dimensions: ('ANCESTRY' | 'SEX')[]
+  genotype_color_dimensions: ('ANCESTRY' | 'SEX')[]
+  unstratified_policy: string
+  vocabulary_release: string | null
+  vocabulary_digest: string | null
+  source_key_inventory_release: string
+  source_key_inventory_digest: string
+  source_release: string
+  source_run_id: string
+  metadata_source_run_id: string | null
+}
+
 export type LongReadTrLocus = {
   id: string
   source_trid: string
@@ -279,6 +375,16 @@ export type LongReadTrLocus = {
   lr_cohort: LongReadCohort
   source_release: string
   source_run_id: string
+  accepted_task_attempt_digest: string
+  presentation: LongReadTrPresentation
+  bounds: LongReadTrBounds
+  component_summary: {
+    ordered_component_count: number
+    distinct_stored_motif_count: number
+  }
+  sequence_cardinality: LongReadTrSequenceCardinality
+  represented_length: LongReadTrRepresentedLength
+  filter_contract: LongReadTrFilterContract
   total_alleles: number
   exact_alt_count: number
   exact_alt_count_complete: boolean

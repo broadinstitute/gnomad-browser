@@ -21,7 +21,7 @@ const waitForLocusResponse = (page: Page) =>
 
 const exactIndexForCount = (page: Page, exactAlleleCount: number) => {
   const heading = page.getByRole('heading', {
-    name: `${exactAlleleCount} exact ALT ${exactAlleleCount === 1 ? 'sequence' : 'sequences'}`,
+    name: `${exactAlleleCount} source ALT ${exactAlleleCount === 1 ? 'allele' : 'alleles'}`,
   })
   return { heading, index: page.getByTestId('lr-tr-exact-allele-browser').locator('..') }
 }
@@ -36,11 +36,11 @@ const openLocus = async (
   await page.goto(`/tandem-repeat/${locusId}?${datasetQuery(cohort)}`)
   const { heading, index } = exactIndexForCount(page, exactAlleleCount)
   await expect(heading).toBeVisible({ timeout: 30_000 })
-  await expect(index.getByRole('table', { name: 'Exact-ALT index' })).toBeVisible()
-  await expect(page.getByRole('table', { name: 'Exact-ALT index' })).toHaveCount(1)
+  await expect(index.getByRole('table', { name: 'Source ALT allele index' })).toBeVisible()
+  await expect(page.getByRole('table', { name: 'Source ALT allele index' })).toHaveCount(1)
   await expect(page.getByRole('table', { name: /Exact ALTs at/ })).toHaveCount(0)
   await expect(index.locator('details')).toHaveCount(0)
-  await expect(index.getByRole('table', { name: 'Exact-ALT index' })).toHaveAttribute(
+  await expect(index.getByRole('table', { name: 'Source ALT allele index' })).toHaveAttribute(
     'aria-rowcount',
     String(exactAlleleCount + 1)
   )
@@ -70,7 +70,7 @@ const selectExactAllele = async (
 
   const exactRow = index.locator(`[role="row"][title$="~${altIndex}"]`)
   const exactLink = exactRow.getByRole('link', {
-    name: new RegExp(`^(Select|Selected) ALT ${altIndex}$`),
+    name: new RegExp(`^(Details for|Details shown for) Sequence ${altIndex}$`),
   })
   await expect(exactLink).toBeVisible()
   await exactLink.scrollIntoViewIfNeeded()
@@ -172,7 +172,7 @@ const selectExactAllele = async (
   expect(selected.ref).toBeTruthy()
   expect(selected.alt).toBeTruthy()
   await expect(
-    page.getByRole('heading', { name: `${selected.variant_id} exact ALT details` })
+    page.getByRole('heading', { name: `Sequence ${selected.alt_index} · Details shown` })
   ).toBeVisible()
   await expect(exactLink).toHaveAttribute('aria-current', 'page')
   await expect(page.locator('[data-revalidating="true"]')).toHaveCount(0)
@@ -196,8 +196,8 @@ const selectExactAllele = async (
   await expect(exactLink).toBeFocused()
   await expect(
     page.getByRole('heading', {
-      name: `${exactAlleleCount.toLocaleString()} exact ALT ${
-        exactAlleleCount === 1 ? 'sequence' : 'sequences'
+      name: `${exactAlleleCount.toLocaleString()} source ALT ${
+        exactAlleleCount === 1 ? 'allele' : 'alleles'
       }`,
     })
   ).toBeVisible()
@@ -322,11 +322,11 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(response.status()).toBe(200)
     expect(payload.errors).toBeUndefined()
     expect(payload.data.long_read_tandem_repeat_locus.id).toBe(ARX_1_LOCUS)
-    await expect(page.getByRole('heading', { name: '2 exact ALT sequences' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: '2 source ALT alleles' })).toBeVisible()
     await expect(page.getByText('Unable to load tandem-repeat locus')).toHaveCount(0)
 
     const componentDisclosure = page.locator('details').filter({
-      hasText: 'LR source representation and provenance — 1 ordered component',
+      hasText: 'All ordered source components and provenance — 1 ordered component',
     })
     await expect(componentDisclosure).not.toHaveAttribute('open', '')
     await page.setViewportSize({ width: 390, height: 844 })
@@ -352,7 +352,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
   }, testInfo) => {
     test.setTimeout(60_000)
     const index = await openLocus(page, SIMPLE_THREE_ALT_LOCUS, 3)
-    const indexTable = index.getByRole('table', { name: 'Exact-ALT index' })
+    const indexTable = index.getByRole('table', { name: 'Source ALT allele index' })
     await expect(indexTable.getByRole('img', { name: /motif structure preview/ })).toHaveCount(3)
     await expect(page.getByText(/Motif previews are unavailable/)).toHaveCount(0)
     const simpleLandscape = page.getByTestId('whole-record-allele-plot-grid')
@@ -408,7 +408,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     await expect(page.getByRole('img', { name: /ordered LR reference components/ })).toHaveCount(0)
     const previewColors = await indexTable
-      .getByRole('img', { name: /ALT \d+ motif structure preview/ })
+      .getByRole('img', { name: /Sequence \d+ motif structure preview/ })
       .evaluateAll((previews) =>
         previews.map((preview) => preview.querySelector('rect')?.getAttribute('fill'))
       )
@@ -417,8 +417,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     const selected = await selectExactAllele(page, SIMPLE_THREE_ALT_LOCUS, 1, 3)
     expect(selected).toBe('chr1-143278475-TRV-11~1')
-    await expect(page.getByTestId('motif-highlighted-sequence-text')).toHaveText('ATTTTTTTTTT')
-    await expect(page.getByLabel('Shared VCF anchor, 1 bp')).toHaveText('A')
+    await expect(page.getByLabel('Exact copyable source sequence for Sequence 1')).toHaveText(
+      'ATTTTTTTTTT'
+    )
+    await expect(page.getByLabel(/Shared VCF anchor/)).toHaveCount(0)
     await expect(page.getByLabel('Show all allele sequences')).toHaveCount(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'simple-three-alt-motif-previews.png')
   })
@@ -485,7 +487,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       }
       await expect(
         page.getByText(
-          `LR source representation and provenance — ${item.components} ordered ${
+          `All ordered source components and provenance — ${item.components} ordered ${
             item.components === 1 ? 'component' : 'components'
           }`
         )
@@ -572,11 +574,11 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
     await expect(page.getByRole('heading', { name: 'HTT CAG tandem repeat' })).toBeVisible()
-    await expect(page.getByLabel('Primary repeat CAG')).toContainText(
+    await expect(page.getByLabel(/Primary repeat CAG/)).toContainText(
       'exact catalog / LR component 1'
     )
     const sourceDisclosure = page
-      .getByText('LR source representation and provenance — 6 ordered components')
+      .getByText('All ordered source components and provenance — 6 ordered components')
       .locator('..')
     await expect(sourceDisclosure).not.toHaveAttribute('open', '')
     await sourceDisclosure.locator(':scope > summary').focus()
@@ -592,9 +594,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     ).toBe(true)
     await page.setViewportSize({ width: 1280, height: 720 })
     const emptyDetail = page.getByText(
-      'No exact ALT selected. Choose Select in a row to view its sequence and details.'
+      'No sequence details shown. Choose Details in a row to view its sequence and aggregate annotations.'
     )
-    const indexTable = httIndex.getByRole('table', { name: 'Exact-ALT index' })
+    const indexTable = httIndex.getByRole('table', { name: 'Source ALT allele index' })
     const wideIndexBox = await indexTable.boundingBox()
     const wideDetailBox = await emptyDetail.boundingBox()
     expect(wideIndexBox).not.toBeNull()
@@ -631,7 +633,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         rows.map((row) => Number(row.querySelectorAll('[role="cell"]')[4].textContent))
       )
     expect(renderedAcs).toEqual([...renderedAcs].sort((left, right) => right - left))
-    await indexTable.getByRole('button', { name: 'Exact ALT' }).click()
+    await indexTable.getByRole('button', { name: 'Source ALT' }).click()
 
     const headerCells = indexTable.locator(
       '[role="row"][aria-rowindex="1"] > [role="columnheader"]'
@@ -652,7 +654,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       )
     })
     const compactPreview = indexTable.getByRole('img', {
-      name: 'ALT 1 motif structure preview',
+      name: 'Sequence 1 neutral represented sequence; no component projection is admitted',
     })
     await expect(compactPreview).toBeVisible()
     const compactBoundary = await compactPreview
@@ -738,7 +740,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       'allelic-landscape-three-panel-wide.png'
     )
     const selectableGenotypeCell = genotypeCard
-      .locator('[role="button"][aria-label*="filter the exact-ALT index to this square"]')
+      .locator('[role="button"][aria-label*="filter the source-ALT index to this square"]')
       .first()
     const genotypeTargetBox = await selectableGenotypeCell.boundingBox()
     expect(genotypeTargetBox).not.toBeNull()
@@ -747,11 +749,11 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await selectableGenotypeCell.click()
     await expect(
       page.getByRole('heading', {
-        name: /of 72 exact ALT sequences — selected genotype cell \(.+ bp × .+ bp\)/,
+        name: /of 72 source ALT alleles — selected genotype cell \(.+ bp × .+ bp\)/,
       })
     ).toBeFocused()
-    await page.getByRole('button', { name: 'Show all exact ALT sequences' }).click()
-    await expect(page.getByRole('heading', { name: '72 exact ALT sequences' })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+    await expect(page.getByRole('heading', { name: '72 source ALT alleles' })).toBeFocused()
 
     const histogram = page.getByTestId('whole-record-delta-histogram')
     const histogramButtons = histogram.getByRole('button')
@@ -791,13 +793,13 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       buttons.map((button) => button.getAttribute('aria-label') || '')
     )
     const multiIdentityBinIndex = histogramLabels.findIndex((label) => {
-      const match = label.match(/; ([0-9,]+) exact ALT sequences?;/)
+      const match = label.match(/; ([0-9,]+) source ALT alleles?;/)
       return match != null && Number(match[1].replace(/,/g, '')) > 1
     })
     expect(multiIdentityBinIndex).toBeGreaterThanOrEqual(0)
     const multiIdentityLabel = histogramLabels[multiIdentityBinIndex]
     const multiIdentityMatch = multiIdentityLabel.match(
-      /^([+−]?[0-9]+) bp; .+; ([0-9,]+) exact ALT sequences?;/
+      /^([+−]?[0-9]+) bp; .+; ([0-9,]+) source ALT alleles?;/
     )!
     const filteredDelta = multiIdentityMatch[1]
     const filteredCount = Number(multiIdentityMatch[2].replace(/,/g, ''))
@@ -811,19 +813,19 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(deltaAxis.locator(`[data-delta="${filteredNumericDelta}"]`)).toBeVisible()
     await expect(
       page.getByRole('heading', {
-        name: `${filteredCount.toLocaleString()} of 72 exact ALT sequences at ${filteredDelta} bp`,
+        name: `${filteredCount.toLocaleString()} of 72 source ALT alleles at ${filteredDelta} bp`,
       })
     ).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', String(filteredCount + 1))
-    await expect(page.getByRole('table', { name: 'Exact-ALT index' })).toHaveCount(1)
+    await expect(page.getByRole('table', { name: 'Source ALT allele index' })).toHaveCount(1)
     await expect(page.getByRole('table', { name: /Exact ALTs at/ })).toHaveCount(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-filtered-exact-alts-wide.png')
-    await page.getByRole('button', { name: 'Show all exact ALT sequences' }).click()
-    await expect(page.getByRole('heading', { name: '72 exact ALT sequences' })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+    await expect(page.getByRole('heading', { name: '72 source ALT alleles' })).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
 
     const httPurityPlot = page.getByRole('group', {
-      name: /exact ALT sequences plotted by total allele length change and source-reported motif purity/,
+      name: /source ALT alleles plotted by change from REF and source-reported motif purity/,
     })
     const httPointMetrics = await purityPointMetrics(httPurityPlot)
     const httAcs = httPointMetrics.map(({ ac }: any) => ac)
@@ -856,7 +858,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await purityFilterPoint.click()
     await expect(purityFilterPoint).toHaveAttribute('aria-pressed', 'true')
     await expect(
-      page.getByRole('heading', { name: /1 of 72 exact ALT sequences — ALT [0-9]+/ })
+      page.getByRole('heading', { name: /1 of 72 source ALT alleles — ALT [0-9]+/ })
     ).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', '2')
     expect(await page.evaluate(() => window.location.href)).toBe(filterBefore.url)
@@ -876,7 +878,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     ).toBeLessThanOrEqual(1)
     await purityFilterPoint.focus()
     await purityFilterPoint.press('Enter')
-    await expect(page.getByRole('heading', { name: '72 exact ALT sequences' })).toBeFocused()
+    await expect(page.getByRole('heading', { name: '72 source ALT alleles' })).toBeFocused()
 
     const httAlt72 = await selectExactAllele(page, COMPOUND_LOCUS, 72, 72)
     expect(httAlt72).toMatch(/~72$/)
@@ -894,31 +896,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       expect(selectedMetric.targetWidth).toBeGreaterThanOrEqual(24)
       expect(Math.abs(selectedMetric.visualWidth - selectedMetric.diameter)).toBeLessThanOrEqual(1)
     }
-    const wideMotifGrid = page.getByLabel('Selected ALT motif structure grid')
-    await expect(wideMotifGrid).toBeVisible()
-    await expect(wideMotifGrid.getByText('DP', { exact: true })).toBeHidden()
-    await page.getByText('Sequence analysis details', { exact: true }).click()
-    await expect(
-      page.getByText(/Browser motif analysis used dynamic-programming sequence alignment/)
-    ).toBeVisible()
-    const selectedBoundary = await wideMotifGrid
-      .locator('svg rect[stroke="white"]')
-      .first()
-      .evaluate((unit) => ({
-        fill: unit.getAttribute('fill'),
-        stroke: getComputedStyle(unit).stroke,
-        strokeWidth: getComputedStyle(unit).strokeWidth,
-        vectorEffect: getComputedStyle(unit).getPropertyValue('vector-effect'),
-      }))
-    expect(selectedBoundary.fill).toBeTruthy()
-    expect(selectedBoundary.stroke).toBe('rgb(54, 69, 79)')
-    expect(selectedBoundary.strokeWidth).toBe('1px')
-    expect(selectedBoundary.vectorEffect).toBe('non-scaling-stroke')
-    const wideMotifMetrics = await wideMotifGrid.evaluate((grid) => ({
-      clientWidth: grid.clientWidth,
-      scrollWidth: grid.scrollWidth,
-    }))
-    expect(wideMotifMetrics.scrollWidth).toBeLessThanOrEqual(wideMotifMetrics.clientWidth)
+    await expect(page.getByLabel('Selected ALT motif structure grid')).toHaveCount(0)
+    await expect(page.getByText('Sequence analysis details', { exact: true })).toHaveCount(0)
+    await expect(page.getByText(/Browser motif analysis used/)).toHaveCount(0)
+    await expect(page.getByText(/shown neutrally because no admitted projection/)).toBeVisible()
+    await expect(page.getByLabel('Exact copyable source sequence for Sequence 72')).toBeVisible()
+    await expect(page.getByLabel(/Shared VCF anchor/)).toHaveCount(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-wide.png')
 
     await page.setViewportSize({ width: 760, height: 900 })
@@ -937,7 +920,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       'allelic-landscape-three-panel-medium.png'
     )
     const narrowIndexBox = await httIndex
-      .getByRole('table', { name: 'Exact-ALT index' })
+      .getByRole('table', { name: 'Source ALT allele index' })
       .boundingBox()
     const narrowDetailBox = await page.getByTestId('lr-tr-selected-detail').boundingBox()
     expect(narrowIndexBox).not.toBeNull()
@@ -946,8 +929,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(await indexTable.evaluate((table) => table.scrollWidth)).toBeLessThanOrEqual(
       await indexTable.evaluate((table) => table.clientWidth)
     )
-    expect(await wideMotifGrid.evaluate((grid) => grid.scrollWidth)).toBeLessThanOrEqual(
-      await wideMotifGrid.evaluate((grid) => grid.clientWidth)
+    const exactSequence = page.getByLabel('Exact copyable source sequence for Sequence 72')
+    expect(await exactSequence.evaluate((sequence) => sequence.scrollWidth)).toBeLessThanOrEqual(
+      await exactSequence.evaluate((sequence) => sequence.clientWidth)
     )
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-narrow.png')
 
@@ -1001,7 +985,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(indexTable.getByRole('columnheader', { name: 'Purity' })).toBeHidden()
     await expect(indexTable.getByRole('columnheader', { name: 'AC', exact: true })).toBeHidden()
     const compactAlt72 = indexTable.getByRole('row', {
-      name: /ALT 72; .+~72; total allele length change .+; purity .+; AC .+; AF .+/,
+      name: /Sequence 72; .+~72; length .+; purity .+; AC .+; AF .+/,
     })
     await expect(compactAlt72).toBeVisible()
     await expect(compactAlt72.getByText(/~72$/)).toBeVisible()
@@ -1011,14 +995,18 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     await page.setViewportSize({ width: 1280, height: 720 })
     const aouIndex = await openLocus(page, COMPOUND_LOCUS, 497, 'aou')
-    await expect(aouIndex.getByRole('img', { name: 'ALT 1 motif structure preview' })).toBeVisible()
+    await expect(
+      aouIndex.getByRole('img', {
+        name: 'Sequence 1 neutral represented sequence; no component projection is admitted',
+      })
+    ).toBeVisible()
     const aouAlt497 = await selectExactAllele(page, COMPOUND_LOCUS, 497, 497, 'aou')
     expect(aouAlt497).toMatch(/~497$/)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-497-aou-selected-detail-wide.png')
 
     await openLocus(page, SPARSE_LOCUS, 9)
     const sparsePurityPlot = page.getByRole('group', {
-      name: /exact ALT sequences plotted by total allele length change and source-reported motif purity/,
+      name: /source ALT alleles plotted by change from REF and source-reported motif purity/,
     })
     const sparseMetrics = await purityPointMetrics(sparsePurityPlot)
     const sparseAcs = sparseMetrics.map(({ ac }: any) => ac)
