@@ -3214,21 +3214,27 @@ const SelectedExactSequence = ({
 
   return (
     <>
+      <Sequence aria-label={`Exact copyable source sequence for ${alleleLabel(allele.variant_id)}`}>
+        {allele.alt}
+      </Sequence>
+      <p style={{ marginBottom: 4 }}>
+        <strong>Motif-highlighted represented sequence</strong>
+      </p>
       <HighlightedExactSequence>
         <MotifHighlightedSequence
           tokens={decomposition.structure.tokens}
           motifs={decomposition.motifs}
-          leadingSequence={decomposition.sharedAnchorRemoved ? allele.alt.slice(0, 1) : ''}
-          ariaLabel={`Exact copyable source sequence for ${alleleLabel(allele.variant_id)}`}
+          ariaLabel={`Motif-highlighted represented sequence for ${alleleLabel(allele.variant_id)}`}
           wrap
           showSummary={false}
           compact
         />
       </HighlightedExactSequence>
       <SequenceHighlightKey role="note">
-        Motif-matching bases are highlighted for the stored <code>{decomposition.motifs[0]}</code>{' '}
-        motif. Dark bases are interruptions or mismatches. This sequence-only pattern does not
-        assign bases to reference components or provide a clinical interpretation.
+        Motif-matching represented-sequence bases are highlighted for the stored{' '}
+        <code>{decomposition.motifs[0]}</code> motif. Dark bases are interruptions or mismatches.
+        This sequence-only pattern does not assign bases to reference components or provide a
+        clinical interpretation.
       </SequenceHighlightKey>
     </>
   )

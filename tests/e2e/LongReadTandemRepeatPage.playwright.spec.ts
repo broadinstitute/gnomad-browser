@@ -448,6 +448,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     test.setTimeout(120_000)
 
     const index = await openLocus(page, GCA_LOCUS, 16)
+    await expect(page.getByRole('heading', { name: 'ATXN7 GCA tandem repeat' })).toBeVisible()
+    await expect(page.getByLabel('Primary repeat GCA', { exact: true })).toHaveCount(0)
+    await expect(page.getByLabel('Primary repeat: GCA', { exact: true })).toBeVisible()
     const selected = await selectExactAllele(page, GCA_LOCUS, 15, 16)
     expect(selected).toBe(GCA_ALT)
 
@@ -461,13 +464,21 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     const detail = page.getByTestId('lr-tr-selected-detail')
     const exactSequence = detail.getByLabel('Exact copyable source sequence for Sequence 15')
+    const representedSequence = detail.getByLabel(
+      'Motif-highlighted represented sequence for Sequence 15'
+    )
     await expect(exactSequence).toHaveText('GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC')
-    const matchingBases = exactSequence.locator('[data-sequence-match="motif"]')
-    const interruptionBases = exactSequence.locator(
+    await expect(representedSequence).toHaveText('GCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC')
+    expect((await exactSequence.textContent())?.length).toBe(43)
+    expect((await representedSequence.textContent())?.length).toBe(42)
+    const matchingBases = representedSequence.locator('[data-sequence-match="motif"]')
+    const interruptionBases = representedSequence.locator(
       '[data-sequence-match="interruption-or-mismatch"]'
     )
-    expect(await matchingBases.count()).toBeGreaterThan(0)
-    expect(await interruptionBases.count()).toBeGreaterThan(0)
+    await expect(matchingBases).toHaveCount(41)
+    await expect(interruptionBases).toHaveCount(1)
+    await expect(page.getByText(/Shared VCF anchor/i)).toHaveCount(0)
+    await expect(page.getByLabel(/Shared VCF anchor/i)).toHaveCount(0)
     const [matchingColor, interruptionColor] = await Promise.all([
       matchingBases.first().evaluate((base) => getComputedStyle(base).backgroundColor),
       interruptionBases.first().evaluate((base) => getComputedStyle(base).backgroundColor),
@@ -489,16 +500,22 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
       ).toBe(true)
-      const [sequenceBox, detailBox] = await Promise.all([
+      const [sourceSequenceBox, representedSequenceBox, detailBox] = await Promise.all([
         exactSequence.boundingBox(),
+        representedSequence.boundingBox(),
         detail.boundingBox(),
       ])
-      expect(sequenceBox).not.toBeNull()
+      expect(sourceSequenceBox).not.toBeNull()
+      expect(representedSequenceBox).not.toBeNull()
       expect(detailBox).not.toBeNull()
-      expect(sequenceBox!.x).toBeGreaterThanOrEqual(detailBox!.x - 1)
-      expect(sequenceBox!.x + sequenceBox!.width).toBeLessThanOrEqual(
-        detailBox!.x + detailBox!.width + 1
-      )
+      const expectSequenceContained = (sequenceBox: NonNullable<typeof sourceSequenceBox>) => {
+        expect(sequenceBox.x).toBeGreaterThanOrEqual(detailBox!.x - 1)
+        expect(sequenceBox.x + sequenceBox.width).toBeLessThanOrEqual(
+          detailBox!.x + detailBox!.width + 1
+        )
+      }
+      expectSequenceContained(sourceSequenceBox!)
+      expectSequenceContained(representedSequenceBox!)
       await attachAlleleBrowserScreenshot(
         page,
         testInfo,
@@ -592,8 +609,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         registry_digest: null,
       })
       await expect(page.getByRole('heading', { name: item.title })).toBeVisible()
-      if (item.role) {
-        await expect(page.getByLabel(`Primary repeat ${item.motif}`)).toContainText(item.role)
+      await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
+      await expect(page.getByLabel(`Primary repeat ${item.motif}`, { exact: true })).toHaveCount(0)
+      if (item.components === 1) {
+        await expect(
+          page.getByLabel(`Primary repeat: ${item.motif}`, { exact: true })
+        ).toBeVisible()
       }
       await expect(
         page.getByText(
@@ -642,26 +663,23 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       await expect(diseaseSection.getByText(/Catalog reference repeat unit/)).toHaveCount(0)
       await expect(diseaseSection.getByText(/All catalog motifs/)).toHaveCount(0)
       await expect(page.getByRole('heading', { name: /Long-read exact .* units/ })).toHaveCount(0)
+      const verifyNarrowDiseaseContext = async (width: number) => {
+        await page.setViewportSize({ width, height: 844 })
+        expect(
+          await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
+        ).toBe(true)
+        await diseaseTable.focus()
+        await expect(diseaseTable).toBeFocused()
+      }
+      await verifyNarrowDiseaseContext(320)
+      await verifyNarrowDiseaseContext(390)
+      await page.setViewportSize({ width: 1280, height: 720 })
     }
 
     await verifyIdentity(cases[0])
     await verifyIdentity(cases[1])
     await verifyIdentity(cases[2])
     await expect(page.getByText('AAGGG', { exact: true })).toHaveCount(0)
-
-    const verifyNarrowDiseaseContext = async (width: number) => {
-      await page.setViewportSize({ width, height: 844 })
-      expect(
-        await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)
-      ).toBe(true)
-      const diseaseScroller = page.getByRole('region', {
-        name: 'Known disease-associated TR locus disease table',
-      })
-      await diseaseScroller.focus()
-      await expect(diseaseScroller).toBeFocused()
-    }
-    await verifyNarrowDiseaseContext(320)
-    await verifyNarrowDiseaseContext(390)
   })
 
   test('canonical selection, history, and legacy redirects stay in place for HTT', async ({

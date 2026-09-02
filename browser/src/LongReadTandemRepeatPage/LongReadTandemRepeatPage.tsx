@@ -79,19 +79,6 @@ const InlineResources = styled.span`
   }
 `
 
-const PrimaryIdentity = styled.div`
-  padding: 0.65em 0.8em;
-  border-left: 4px solid #6f3c8f;
-  margin-top: 0.75em;
-  background: #f7f2fa;
-  color: #3e2850;
-
-  code {
-    font-size: 1.08em;
-    font-weight: bold;
-  }
-`
-
 const SourceRepresentationDetails = styled.details`
   box-sizing: border-box;
   min-width: 0;
@@ -175,12 +162,6 @@ const UnavailableDataHelp = () => (
 
 const cohortName = (cohort: LongReadCohort) =>
   cohort === 'hgsvc_hprc' ? 'HGSVC / HPRC' : 'All of Us'
-
-const primaryRepeatBasisLabel = (basis: LongReadTrLocus['primary_repeat']['selection_basis']) => {
-  if (basis === 'EXACT_MAIN_CATALOG_COMPONENT') return 'exact catalog / LR'
-  if (basis === 'LR_SOLE_COMPONENT') return 'sole LR'
-  return 'reviewed registry / LR'
-}
 
 const exactComponent = (left: any, right: any) =>
   Boolean(
@@ -586,46 +567,6 @@ const LongReadTandemRepeatPage = ({
     )
   }
 
-  let primaryIdentity: React.ReactNode = null
-  if (
-    !clusterFocused &&
-    locus.primary_repeat.status === 'AVAILABLE' &&
-    locus.primary_repeat.motif
-  ) {
-    primaryIdentity = (
-      <PrimaryIdentity
-        aria-label={`Primary repeat ${locus.primary_repeat.motif}${
-          reviewedCompoundAuthorized
-            ? `; compound source representation; ${locus.components.length} components`
-            : ''
-        }`}
-      >
-        <strong>Primary repeat</strong> <code>{locus.primary_repeat.motif}</code> ·{' '}
-        {primaryRepeatBasisLabel(locus.primary_repeat.selection_basis)} component{' '}
-        {(locus.primary_repeat.component_index || 0) + 1}
-        {locus.primary_repeat.biological_role && <> · {locus.primary_repeat.biological_role}</>}
-        {reviewedCompoundAuthorized && (
-          <>
-            <br />
-            <strong>
-              Compound source representation · {locus.components.length.toLocaleString()} components
-            </strong>
-          </>
-        )}
-      </PrimaryIdentity>
-    )
-  } else if (!clusterFocused) {
-    primaryIdentity = (
-      <PrimaryIdentity role="status">
-        <strong>Primary repeat unavailable.</strong> No motif or component was inferred or
-        substituted
-        {locus.primary_repeat.reason_code
-          ? ` (${unavailableReason(locus.primary_repeat.reason_code)})`
-          : ''}
-        .
-      </PrimaryIdentity>
-    )
-  }
   let spanLabel = 'Represented LR region length'
   if (clusterFocused) {
     spanLabel = exactVariationBoundsAuthorized
@@ -662,7 +603,6 @@ const LongReadTandemRepeatPage = ({
               chr{envelope.chrom}:{displayStart1.toLocaleString()}–{displayEnd1.toLocaleString()}{' '}
               (GRCh38)
             </CoordinateContext>
-            {primaryIdentity}
           </div>
         </HeadingWithHelp>
         <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />

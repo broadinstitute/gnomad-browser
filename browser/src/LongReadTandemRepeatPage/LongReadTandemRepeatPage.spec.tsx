@@ -623,10 +623,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('renders grounded source attributes and ordered overlapping components', () => {
     renderPage()
     expect(screen.getByRole('heading', { name: 'HTT CAG tandem repeat' })).not.toBeNull()
-    expect(screen.getByLabelText(/Primary repeat CAG/).textContent).toContain(
-      'Primary repeat CAG · exact catalog / LR component 1'
-    )
-    expect(screen.getByText('Compound source representation · 6 components')).not.toBeNull()
+    expect(screen.queryByLabelText('Primary repeat CAG', { exact: true })).toBeNull()
+    expect(screen.getByLabelText('Primary repeat: CAG', { exact: true })).not.toBeNull()
+    expect(screen.queryByText(/Compound source representation/)).toBeNull()
     expect(screen.getByText('chr4:3,074,877–3,075,040 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
     expect(screen.queryByText('GRCh38 / hg38')).toBeNull()
@@ -730,9 +729,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     const rendered = renderPage({ locus: atxn1, selectedAllele: undefined })
     expect(screen.getByRole('heading', { name: 'ATXN1 TGC tandem repeat' })).not.toBeNull()
-    expect(screen.getByLabelText('Primary repeat TGC').textContent).toBe(
-      'Primary repeat TGC · exact catalog / LR component 1'
-    )
+    expect(screen.queryByLabelText('Primary repeat TGC', { exact: true })).toBeNull()
+    expect(screen.getByLabelText('Primary repeat: TGC', { exact: true })).not.toBeNull()
     expect(screen.queryByRole('heading', { name: /ATXN1 CAG/ })).toBeNull()
     const atxn1Disease = screen.getByRole('rowheader', { name: 'Spinocerebellar ataxia 1' })
     expect(atxn1Disease.closest('tr')?.textContent).toContain('164400')
@@ -789,9 +787,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     renderPage({ locus: rfc1, selectedAllele: undefined })
     expect(screen.getByRole('heading', { name: 'RFC1 AAAAG tandem repeat' })).not.toBeNull()
-    expect(screen.getByLabelText('Primary repeat AAAAG').textContent).toContain(
-      'benign reference motif'
-    )
+    expect(screen.queryByLabelText('Primary repeat AAAAG', { exact: true })).toBeNull()
+    expect(screen.getByLabelText('Primary repeat: AAAAG', { exact: true })).not.toBeNull()
+    expect(rfc1.primary_repeat.biological_role).toBe('benign reference motif')
     const rfc1Disease = screen.getByRole('rowheader', {
       name: 'Cerebellar ataxia, neuropathy, vestibular areflexia syndrome',
     })
@@ -1319,17 +1317,41 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(table.getAttribute('aria-rowcount')).toBe('73')
   })
 
-  test('highlights the exact GCA ALT at a one-component repeat-focused locus without projection', () => {
+  test('highlights the represented GCA tract while keeping the exact padded ALT separately copyable', () => {
     const locus = makeSimpleLocus()
     const gcaId = 'chr3-63912684-TRV-30~15'
     const ref = 'GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA'
     const alt = 'GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC'
+    const gcaComponent = { chrom: '3', start0: 63912684, end0: 63912714, motif: 'GCA' }
     Object.assign(locus, {
       id: '3-63912684-63912714-GCA',
       source_trid: '3-63912684-63912714-GCA',
       chrom: '3',
+      region: { chrom: '3', start0: 63912684, end0: 63912714, size: 30 },
       motifs: ['GCA'],
-      components: [{ chrom: '3', start0: 63912684, end0: 63912714, motif: 'GCA' }],
+      components: [gcaComponent],
+      primary_repeat: {
+        ...locus.primary_repeat,
+        motif: 'GCA',
+        component: gcaComponent,
+        catalog_id: 'ATXN7',
+      },
+      short_read_context: {
+        ...locus.short_read_context,
+        catalog_record: {
+          ...locus.short_read_context.catalog_record,
+          id: 'ATXN7',
+          gene: { ensembl_id: 'ENSG00000163635', symbol: 'ATXN7', region: 'coding' },
+          main_reference_region: {
+            reference_genome: 'GRCh38',
+            chrom: '3',
+            start: 63912684,
+            stop: 63912714,
+          },
+          reference_repeat_unit: 'GCA',
+        },
+        matched_component: gcaComponent,
+      },
       selected_allele: {
         ...locus.selected_allele,
         variant_id: gcaId,
@@ -1361,17 +1383,27 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
     renderPage({ locus, selectedAllele: gcaId })
 
+    expect(screen.getByRole('heading', { name: 'ATXN7 GCA tandem repeat' })).not.toBeNull()
+    expect(screen.queryByLabelText('Primary repeat GCA', { exact: true })).toBeNull()
+    expect(screen.getByLabelText('Primary repeat: GCA', { exact: true })).not.toBeNull()
+
     const detail = screen.getByTestId('lr-tr-selected-detail')
     const exactSequence = within(detail).getByLabelText(
       'Exact copyable source sequence for Sequence 15'
     )
-    expect(exactSequence.textContent).toBe(alt)
-    expect(exactSequence.querySelectorAll('[data-sequence-match="motif"]').length).toBeGreaterThan(
-      0
+    const representedSequence = within(detail).getByLabelText(
+      'Motif-highlighted represented sequence for Sequence 15'
     )
+    expect(exactSequence.textContent).toBe(alt)
+    expect(exactSequence.textContent).toHaveLength(43)
+    expect(representedSequence.textContent).toBe(alt.slice(1))
+    expect(representedSequence.textContent).toHaveLength(42)
+    expect(representedSequence.querySelectorAll('[data-sequence-match="motif"]')).toHaveLength(41)
     expect(
-      exactSequence.querySelectorAll('[data-sequence-match="interruption-or-mismatch"]').length
-    ).toBeGreaterThan(0)
+      representedSequence.querySelectorAll('[data-sequence-match="interruption-or-mismatch"]')
+    ).toHaveLength(1)
+    expect(screen.queryByText(/Shared VCF anchor/i)).toBeNull()
+    expect(screen.queryByLabelText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).getByText(/Dark bases are interruptions or mismatches/)).not.toBeNull()
     expect(within(detail).getByText(/does not assign bases to reference components/)).not.toBeNull()
     expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
@@ -1401,7 +1433,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
       within(detail).getByLabelText('Exact copyable source sequence for Sequence 2').textContent
     ).toContain('ACAGCAA')
     expect(within(detail).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
+    expect(within(detail).queryByLabelText(/Motif-highlighted represented sequence/)).toBeNull()
     expect(detail.querySelector('[data-sequence-match="motif"]')).toBeNull()
+    expect(within(detail).queryByText(/Shared VCF anchor/i)).toBeNull()
+    expect(within(detail).queryByLabelText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
     expect(within(detail).queryByText(/tokens/)).toBeNull()
     const selectedIndexRow = screen.getByTitle(exactId)

@@ -316,10 +316,9 @@ const PrimaryMotifMeasurementSection = ({
       </h2>
       <Boundary data-testid="primary-motif-boundary">
         <strong>Whole-record, non-clinical measurement.</strong> Each value counts exact,
-        non-overlapping {motif} units across the complete represented REF or ALT allele after the
-        shared VCF anchor is removed. It is an aggregate research measurement, not a component
-        repeat count, total length change, source MC/LPS value, short-read estimate, diagnostic
-        result, or clinical classification.
+        non-overlapping {motif} units across the complete represented REF or ALT allele. It is an
+        aggregate research measurement, not a component repeat count, total length change, source
+        MC/LPS value, short-read estimate, diagnostic result, or clinical classification.
       </Boundary>
       <Summary>
         <div>
