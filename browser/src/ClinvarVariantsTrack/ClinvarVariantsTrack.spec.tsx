@@ -229,10 +229,12 @@ describe('Clinvar Variants Track', () => {
 describe('ClinvarVariants', () => {
   const renderClinvarVariants = ({
     clinvarVariants,
+    clinvarReleaseDate = '2023-03-01',
     pageType = 'gene',
     zoomRegion = null,
   }: {
     clinvarVariants: ClinvarVariant[] | null | undefined
+    clinvarReleaseDate?: string
     pageType?: PageType
     zoomRegion?: { start: number; stop: number } | null
   }) =>
@@ -241,7 +243,7 @@ describe('ClinvarVariants', () => {
         <RegionViewerContext.Provider value={childPropsWithNonEmptyRegions}>
           <ClinvarVariants
             clinvarVariants={clinvarVariants}
-            clinvarReleaseDate="2023-03-01"
+            clinvarReleaseDate={clinvarReleaseDate}
             referenceGenome="GRCh38"
             transcripts={mockTranscripts}
             pageType={pageType}
@@ -310,4 +312,15 @@ describe('ClinvarVariants', () => {
       expect(screen.getByText(/ClinVar variants could not be loaded/)).not.toBeNull()
     }
   )
+
+  test('shows a malformed-date warning, rather than throwing, when the release date is malformed', () => {
+    expect(() =>
+      renderClinvarVariants({
+        clinvarVariants: mockClinvarVariantsOfEachCategory,
+        clinvarReleaseDate: 'not-a-date',
+      })
+    ).not.toThrow()
+
+    expect(screen.getByText(/Malformed date string: "not-a-date"/)).not.toBeNull()
+  })
 })
