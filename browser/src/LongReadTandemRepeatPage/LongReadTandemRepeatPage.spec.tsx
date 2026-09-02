@@ -926,7 +926,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByText('Ordered source components')).not.toBeNull()
   })
 
-  test('keeps duplicate source identities visible and fails length/filter gates closed', () => {
+  test('keeps duplicate source identities visible and hides unavailable controls', () => {
     const locus = makeLocus()
     ;(locus as any).sequence_cardinality = {
       ...locus.sequence_cardinality,
@@ -947,21 +947,17 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByText(/71 observed unique alternate sequences/).textContent).toContain(
       '72 source ALT identities'
     )
-    const axis = screen.getByLabelText('Length axis') as HTMLSelectElement
-    expect(
-      (
-        within(axis).getByRole('option', {
-          name: 'Represented allele length',
-        }) as HTMLOptionElement
-      ).disabled
-    ).toBe(true)
+    expect(screen.queryByLabelText('Length axis')).toBeNull()
+    expect(screen.queryByRole('option', { name: 'Represented allele length' })).toBeNull()
+    expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
+    expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
     expect(screen.queryByText(/nfe = EUR/)).toBeNull()
-    expect((screen.getByLabelText('Genetic ancestry group') as HTMLSelectElement).disabled).toBe(
-      true
-    )
+    expect(screen.queryByLabelText('Genetic ancestry group')).toBeNull()
+    expect(screen.queryByLabelText('Sex')).toBeNull()
+    expect(screen.queryByText(/Unavailable pending exact shared vocabulary/)).toBeNull()
   })
 
-  test('hides AoU ancestry controls only when API redundancy is certified', () => {
+  test('leaves no AoU filter callout when API redundancy is certified', () => {
     const locus = makeLocus()
     ;(locus as any).lr_cohort = 'aou'
     ;(locus as any).filter_contract = {
@@ -972,8 +968,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus, selectedAllele: undefined })
 
     expect(screen.queryByLabelText('Genetic ancestry group')).toBeNull()
-    expect(screen.getByText(/API certified the sole ancestry stratum as redundant/)).not.toBeNull()
-    expect((screen.getByLabelText('Sex') as HTMLSelectElement).disabled).toBe(true)
+    expect(screen.queryByLabelText('Sex')).toBeNull()
+    expect(screen.queryByText(/API certified the sole ancestry stratum as redundant/)).toBeNull()
+    expect(screen.queryByText(/Unavailable pending exact shared vocabulary/)).toBeNull()
   })
 
   test('gives every canonical page help dialog the task-first structure', () => {
@@ -1041,9 +1038,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(help).getByText('Genotype length distribution')).not.toBeNull()
     expect(within(help).getByText(/Only index row selection changes the URL/)).not.toBeNull()
     expect(
-      within(help).getByText(/Color and y-scale controls affect only the total-length histogram/)
+      within(help).queryByText(/Color and y-scale controls affect only the total-length histogram/)
+    ).toBeNull()
+    expect(within(help).queryByText(/Repeat-count controls are card-local/)).toBeNull()
+    expect(
+      within(help).getByText(/The length-axis control switches all total-length plots/)
     ).not.toBeNull()
-    expect(within(help).getByText(/Repeat-count controls are card-local/)).not.toBeNull()
     expect(
       within(help).getByText(
         /Purity is source-reported; the colored motif preview is a separate browser decomposition/

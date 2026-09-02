@@ -5,7 +5,6 @@ import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import Link from '../Link'
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
-import ControlSection from '../VariantPage/ControlSection'
 import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect'
 import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
 import ShortTandemRepeatScaleSelect from '../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect'
@@ -30,6 +29,7 @@ import {
   GenotypePair,
   LongReadTrAllele,
   LongReadTrFilterContract,
+  LongReadTrFilterGroup,
   LongReadTrLocus,
   LongReadTrPresentation,
   LongReadTrRepresentedLength,
@@ -185,6 +185,22 @@ const GenotypePairDetail = styled.div`
   }
 `
 
+const LandscapeControls = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  margin-top: 1em;
+  gap: 10px 22px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+`
+
 const LengthAxisControl = styled.label`
   display: inline-flex;
   align-items: center;
@@ -196,21 +212,47 @@ const LengthAxisControl = styled.label`
   }
 `
 
+const ContractControlGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  gap: 8px;
+
+  @media (max-width: 600px) {
+    align-items: stretch;
+    width: 100%;
+  }
+`
+
 const ContractSelect = styled.label`
   display: inline-flex;
   flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
   gap: 0.2em;
   font-weight: bold;
 
   select {
+    box-sizing: border-box;
     min-width: 13em;
+    max-width: 100%;
     min-height: 44px;
+  }
+
+  @media (max-width: 600px) {
+    flex: 1 1 13em;
   }
 `
 
 const ControlGroupLabel = styled.strong`
   align-self: center;
   white-space: nowrap;
+
+  @media (max-width: 600px) {
+    white-space: normal;
+  }
 `
 
 export type LengthAxisMode = 'delta' | 'absolute'
@@ -268,7 +310,19 @@ const UNAVAILABLE_REASON_COPY: Record<string, string> = {
 const unavailableReason = (reason: string | null | undefined) =>
   (reason && UNAVAILABLE_REASON_COPY[reason]) || 'the required source data are unavailable'
 
-const AllelicLandscapeHelp = () => (
+const AllelicLandscapeHelp = ({
+  showRepeatCountControls = false,
+  showLengthAxisControl = false,
+  showAncestryControl = false,
+  showSexControl = false,
+  showHistogramDisplayControl = false,
+}: {
+  showRepeatCountControls?: boolean
+  showLengthAxisControl?: boolean
+  showAncestryControl?: boolean
+  showSexControl?: boolean
+  showHistogramDisplayControl?: boolean
+}) => (
   <HaplotypeHelpButton title="About the allelic landscape">
     <p style={{ marginTop: 0 }}>
       These plots summarize long-read observations at this locus and connect them to the source-ALT
@@ -277,9 +331,11 @@ const AllelicLandscapeHelp = () => (
     </p>
     <h4>Repeat-count distributions (simple loci only)</h4>
     <p>
-      Bars show called allele copies; squares show people by shorter and longer repeat count. Use
-      the ancestry, sex, color, and scale controls within each card. These marks are read-only when
-      the source does not identify the contributing exact ALT sequences or allele pairs.
+      Bars show called allele copies; squares show people by shorter and longer repeat count.
+      {showRepeatCountControls &&
+        ' Use the ancestry, sex, color, and scale controls within each card.'}{' '}
+      These marks are read-only when the source does not identify the contributing exact ALT
+      sequences or allele pairs.
     </p>
     <h4>Total allele length change (ALT − REF, bp)</h4>
     <p>
@@ -299,11 +355,26 @@ const AllelicLandscapeHelp = () => (
       alleles, grouped by the shorter and longer allele&apos;s total length change. Choose a square
       to filter the index, then expand its exact-pair summary.
     </p>
-    <p>
-      Shared ancestry and sex controls affect the total-length plots. Color and y-scale controls
-      affect only the total-length histogram. Repeat-count controls are card-local. Only index row
-      selection changes the URL and selected detail.
-    </p>
+    {(showLengthAxisControl ||
+      showAncestryControl ||
+      showSexControl ||
+      showHistogramDisplayControl ||
+      showRepeatCountControls) && (
+      <p>
+        {showLengthAxisControl &&
+          'The length-axis control switches all total-length plots between change from REF and API-admitted represented allele length. '}
+        {(showAncestryControl || showSexControl) &&
+          `The shared ${[showAncestryControl ? 'ancestry' : null, showSexControl ? 'sex' : null]
+            .filter(Boolean)
+            .join(' and ')} ${
+            showAncestryControl && showSexControl ? 'controls affect' : 'control affects'
+          } the total-length plots. `}
+        {showHistogramDisplayControl &&
+          'Color and y-scale controls affect only the total-length histogram. '}
+        {showRepeatCountControls && 'Repeat-count controls are card-local. '}
+        Only index row selection changes the URL and selected detail.
+      </p>
+    )}
     <p style={{ marginBottom: 0 }}>
       Plot position, color, outlines, and catalog ranges do not classify an LR allele, genotype,
       component, person, or total allele length change.
@@ -899,12 +970,27 @@ const ScrollTable = styled.div`
   /* stylelint-enable no-descending-specificity */
 `
 
+const stackSourceKey = (stack: AlleleBin['stacks'][number]) => {
+  if (stack.ancestry_group && stack.sex) return `${stack.ancestry_group}_${stack.sex}`
+  return stack.ancestry_group || stack.sex
+}
+
 const binCount = (bin: AlleleBin, ancestry: PopulationId | null, sex: Sex | null): number => {
   if (!ancestry && !sex) return bin.called_alleles
   return bin.stacks
     .filter((stack) => stack.ancestry_group === (ancestry || null) && stack.sex === (sex || null))
     .reduce((sum, stack) => sum + stack.called_alleles, 0)
 }
+
+const groupSupportsVisiblePlots = (
+  group: LongReadTrFilterGroup,
+  genotypeLandscapeVisible: boolean
+) =>
+  group.shared_available &&
+  group.available_in_frequency &&
+  group.source_frequency_keys.length > 0 &&
+  (!genotypeLandscapeVisible ||
+    (group.available_in_genotype && group.source_metadata_keys.length > 0))
 
 export const reconciledFilterOptions = (
   alleleLandscape: WholeRecordAlleleLandscapeData,
@@ -1521,6 +1607,8 @@ export const WholeRecordAlleleLandscape = ({
   const repeatCountVariantId = variantId || 'lr-tr-locus'
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
+  const [selectedContractAncestryId, setSelectedContractAncestryId] = useState<string | null>(null)
+  const [selectedContractSexId, setSelectedContractSexId] = useState<string | null>(null)
   const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | null>(null)
   const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
   const [requestedLengthAxisMode, setLengthAxisMode] = useState<LengthAxisMode>('delta')
@@ -1542,13 +1630,78 @@ export const WholeRecordAlleleLandscape = ({
     () => reconciledFilterOptions(landscape, admittedGenotypeLandscape),
     [admittedGenotypeLandscape, landscape]
   )
+  const contractAvailable = Boolean(
+    filterContract &&
+      filterContract.status !== 'UNAVAILABLE' &&
+      filterContract.vocabulary_release &&
+      filterContract.vocabulary_digest
+  )
+  const admittedAncestryGroups = useMemo(
+    () =>
+      contractAvailable &&
+      filterContract?.ancestry_mapping_status === 'APPROVED_EXACT' &&
+      filterContract.available_color_dimensions.includes('ANCESTRY')
+        ? filterContract.ancestry_groups.filter((group) =>
+            groupSupportsVisiblePlots(group, Boolean(admittedGenotypeLandscape))
+          )
+        : [],
+    [admittedGenotypeLandscape, contractAvailable, filterContract]
+  )
+  const admittedSexGroups = useMemo(
+    () =>
+      contractAvailable &&
+      filterContract?.sex_mapping_status === 'APPROVED_EXACT' &&
+      filterContract.available_color_dimensions.includes('SEX')
+        ? filterContract.sex_groups.filter((group) =>
+            groupSupportsVisiblePlots(group, Boolean(admittedGenotypeLandscape))
+          )
+        : [],
+    [admittedGenotypeLandscape, contractAvailable, filterContract]
+  )
+  const showContractAncestryControl = Boolean(
+    filterContract && !filterContract.ancestry_control_redundant && admittedAncestryGroups.length
+  )
+  const showContractSexControl = Boolean(filterContract && admittedSexGroups.length)
+  const contractColorBys: ColorBy[] = [
+    ...(showContractAncestryControl ? (['population'] as ColorBy[]) : []),
+    ...(showContractSexControl ? (['sex'] as ColorBy[]) : []),
+  ]
+  const showLegacyFilterControls = landscape.stratified_available && !filterContract
+  const showHistogramDisplayControl = showLegacyFilterControls || contractColorBys.length > 0
+  const showControlSection =
+    absoluteLengthAvailable ||
+    showLegacyFilterControls ||
+    showContractAncestryControl ||
+    showContractSexControl
+  const bins = landscape.bins || []
   useEffect(() => {
     if (selectedPopulation && !filterOptions.ancestries.includes(selectedPopulation)) {
       setSelectedPopulation(null)
     }
     if (selectedSex && !filterOptions.sexes.includes(selectedSex)) setSelectedSex(null)
   }, [filterOptions, selectedPopulation, selectedSex])
-  const bins = landscape.bins || []
+  useEffect(() => {
+    if (
+      selectedContractAncestryId &&
+      !admittedAncestryGroups.some((group) => group.id === selectedContractAncestryId)
+    ) {
+      setSelectedContractAncestryId(null)
+    }
+    if (
+      selectedContractSexId &&
+      !admittedSexGroups.some((group) => group.id === selectedContractSexId)
+    ) {
+      setSelectedContractSexId(null)
+    }
+  }, [admittedAncestryGroups, admittedSexGroups, selectedContractAncestryId, selectedContractSexId])
+  useEffect(() => {
+    if (
+      (selectedColorBy === 'population' && !showContractAncestryControl && filterContract) ||
+      (selectedColorBy === 'sex' && !showContractSexControl && filterContract)
+    ) {
+      rawSetSelectedColorBy(null)
+    }
+  }, [filterContract, selectedColorBy, showContractAncestryControl, showContractSexControl])
   const alleleById = useMemo(
     () => new Map(alleles.map((allele) => [allele.variant_id, allele])),
     [alleles]
@@ -1562,20 +1715,53 @@ export const WholeRecordAlleleLandscape = ({
   const previousScopeKey = useRef(scopeKey)
   const [indexFilter, setIndexFilter] = useState<ExactIndexMarkFilter | null>(null)
   const indexHeading = useRef<HTMLHeadingElement>(null)
-  const selectedDivision =
+  const selectedContractAncestry = admittedAncestryGroups.find(
+    (group) => group.id === selectedContractAncestryId
+  )
+  const selectedContractSex = admittedSexGroups.find((group) => group.id === selectedContractSexId)
+  const contractSelectionActive = Boolean(selectedContractAncestry || selectedContractSex)
+  const matchingContractFrequencyKeys = (stack: AlleleBin['stacks'][number]) => {
+    const sourceKey = stackSourceKey(stack)
+    if (!sourceKey) return false
+    if (selectedContractAncestry && !selectedContractSex && stack.sex) return false
+    if (selectedContractSex && !selectedContractAncestry && stack.ancestry_group) return false
+    return (
+      (!selectedContractAncestry ||
+        selectedContractAncestry.source_frequency_keys.includes(sourceKey)) &&
+      (!selectedContractSex || selectedContractSex.source_frequency_keys.includes(sourceKey))
+    )
+  }
+  const selectedContractFrequencyKeys = [
+    ...new Set(
+      bins.flatMap((bin) =>
+        bin.stacks.filter(matchingContractFrequencyKeys).map((stack) => stackSourceKey(stack) || '')
+      )
+    ),
+  ].filter(Boolean)
+  const legacySelectedDivision =
     selectedPopulation && selectedSex
       ? `${selectedPopulation}_${selectedSex}`
       : selectedPopulation || selectedSex
-  const frequencyFor = (allele: LongReadTrAllele | undefined) => {
-    if (!allele) return undefined
-    return selectedDivision
-      ? allele.freq.populations.find((frequency) => frequency.id === selectedDivision)
-      : allele.freq.all
+  let selectedDivision = legacySelectedDivision
+  if (filterContract) {
+    selectedDivision = null
+    if (contractSelectionActive) {
+      selectedDivision =
+        selectedContractFrequencyKeys.length === 1
+          ? selectedContractFrequencyKeys[0]
+          : '__NO_EXACT_CONTRACT_FREQUENCY_SLICE__'
+    }
+  }
+  const frequencyCountFor = (allele: LongReadTrAllele | undefined) => {
+    if (!allele) return 0
+    if (!selectedDivision) return allele.freq.all.ac
+    if (selectedDivision === '__NO_EXACT_CONTRACT_FREQUENCY_SLICE__') return 0
+    return allele.freq.populations.find((frequency) => frequency.id === selectedDivision)?.ac || 0
   }
   const filteredPurityPoints = (landscape.purity_points || []).flatMap((point) => {
-    const frequency = frequencyFor(alleleById.get(point.allele_id))
-    if (!frequency || frequency.ac <= 0) return []
-    return selectedDivision ? [{ ...point, called_alleles: frequency.ac }] : [point]
+    const frequencyCount = frequencyCountFor(alleleById.get(point.allele_id))
+    if (frequencyCount <= 0) return []
+    return selectedDivision ? [{ ...point, called_alleles: frequencyCount }] : [point]
   })
   const filterScopeKey = indexFilter
     ? `${indexFilter.scope.locusId}\u0000${indexFilter.scope.cohort}\u0000${indexFilter.scope.sourceRunId}`
@@ -1593,17 +1779,34 @@ export const WholeRecordAlleleLandscape = ({
       cell.shorter_delta === activeGenotypeCell?.shorterDelta &&
       cell.longer_delta === activeGenotypeCell?.longerDelta
   )
+  let selectedGenotypeAncestries: readonly string[] = selectedPopulation ? [selectedPopulation] : []
+  let selectedGenotypeSexes: readonly string[] = selectedSex ? [selectedSex] : []
+  if (filterContract) {
+    selectedGenotypeAncestries = []
+    selectedGenotypeSexes = []
+    if (selectedContractAncestry) {
+      selectedGenotypeAncestries = selectedContractAncestry.source_metadata_keys.length
+        ? selectedContractAncestry.source_metadata_keys
+        : ['__NO_EXACT_CONTRACT_METADATA_ANCESTRY__']
+    }
+    if (selectedContractSex) {
+      selectedGenotypeSexes = selectedContractSex.source_metadata_keys.length
+        ? selectedContractSex.source_metadata_keys
+        : ['__NO_EXACT_CONTRACT_METADATA_SEX__']
+    }
+  }
   const activeGenotypePairs = (activeGenotypeSourceCell?.pairs || []).filter(
     (pair) =>
-      (!selectedPopulation || pair.ancestry_group === selectedPopulation) &&
-      (!selectedSex || pair.sex === selectedSex) &&
+      (!selectedGenotypeAncestries.length ||
+        selectedGenotypeAncestries.includes(pair.ancestry_group)) &&
+      (!selectedGenotypeSexes.length || selectedGenotypeSexes.includes(pair.sex)) &&
       pair.people > 0
   )
   let activeAlleleIds: string[] | null = null
   if (selectedBin) {
     activeAlleleIds = selectedBin.allele_ids.filter((alleleId) => {
       const allele = alleleById.get(alleleId)
-      return allele ? (frequencyFor(allele)?.ac || 0) > 0 : false
+      return allele ? frequencyCountFor(allele) > 0 : false
     })
   } else if (activePurityAllele) {
     activeAlleleIds = filteredPurityPoints.some((point) => point.allele_id === activePurityAllele)
@@ -1692,7 +1895,7 @@ export const WholeRecordAlleleLandscape = ({
       <Panel aria-labelledby="lr-tr-allele-landscape-heading">
         <HeadingWithHelp>
           <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
-          <AllelicLandscapeHelp />
+          <AllelicLandscapeHelp showRepeatCountControls={Boolean(admittedRepeatCountPlots)} />
         </HeadingWithHelp>
         <PlotGrid
           $plotCount={visiblePlotCount}
@@ -1755,24 +1958,77 @@ export const WholeRecordAlleleLandscape = ({
     if (selectedScaleType === 'log' && !logScaleAllowed(colorBy)) setSelectedScaleType('linear')
     rawSetSelectedColorBy(colorBy)
   }
-  const counts = bins.map((bin) => binCount(bin, selectedPopulation, selectedSex))
+  const counts = bins.map((bin) => {
+    if (!filterContract) return binCount(bin, selectedPopulation, selectedSex)
+    if (!contractSelectionActive) return bin.called_alleles
+    return bin.stacks
+      .filter(matchingContractFrequencyKeys)
+      .reduce((sum, stack) => sum + stack.called_alleles, 0)
+  })
   const maxCount = Math.max(0, ...counts)
   const yTicks = histogramTicks(maxCount, selectedScaleType)
-  let colorCategories: string[] = []
-  if (selectedColorBy === 'sex') colorCategories = landscape.sexes || []
-  if (selectedColorBy === 'population') colorCategories = landscape.ancestry_groups || []
+  let colorCategories: { id: string; label: string; group?: LongReadTrFilterGroup }[] = []
+  if (filterContract) {
+    if (selectedColorBy === 'sex') {
+      colorCategories = admittedSexGroups
+        .filter((group) => !selectedContractSex || group.id === selectedContractSex.id)
+        .map((group) => ({ id: group.id, label: group.label, group }))
+    }
+    if (selectedColorBy === 'population') {
+      colorCategories = admittedAncestryGroups
+        .filter((group) => !selectedContractAncestry || group.id === selectedContractAncestry.id)
+        .map((group) => ({ id: group.id, label: group.label, group }))
+    }
+  } else {
+    if (selectedColorBy === 'sex') {
+      colorCategories = (landscape.sexes || []).map((category) => ({
+        id: category,
+        label: category === 'unknown' ? 'Unknown' : category,
+      }))
+    }
+    if (selectedColorBy === 'population') {
+      colorCategories = (landscape.ancestry_groups || []).map((category) => ({
+        id: category,
+        label: longReadAncestryGroupDisplayName(category),
+      }))
+    }
+  }
   const segmentsForBin = (bin: AlleleBin) =>
-    colorCategories.map((category) => ({
-      category,
-      color: stackColorFor(selectedColorBy, category),
-      count: bin.stacks
-        .filter((stack) =>
-          selectedColorBy === 'sex'
-            ? stack.sex === category && stack.ancestry_group === (selectedPopulation || null)
-            : stack.ancestry_group === category && stack.sex === (selectedSex || null)
-        )
-        .reduce((sum, stack) => sum + stack.called_alleles, 0),
-    }))
+    colorCategories.map((category) => {
+      const matchingStacks = bin.stacks.filter((stack) => {
+        if (!category.group) {
+          return selectedColorBy === 'sex'
+            ? stack.sex === category.id && stack.ancestry_group === (selectedPopulation || null)
+            : stack.ancestry_group === category.id && stack.sex === (selectedSex || null)
+        }
+        const sourceKey = stackSourceKey(stack)
+        if (!sourceKey || !category.group.source_frequency_keys.includes(sourceKey)) return false
+        if (
+          selectedColorBy === 'sex' &&
+          ((selectedContractAncestry &&
+            !selectedContractAncestry.source_frequency_keys.includes(sourceKey)) ||
+            (!selectedContractAncestry && stack.ancestry_group))
+        ) {
+          return false
+        }
+        if (
+          selectedColorBy === 'population' &&
+          ((selectedContractSex &&
+            !selectedContractSex.source_frequency_keys.includes(sourceKey)) ||
+            (!selectedContractSex && stack.sex))
+        ) {
+          return false
+        }
+        return true
+      })
+      const colorKey =
+        matchingStacks[0]?.[selectedColorBy === 'sex' ? 'sex' : 'ancestry_group'] || category.id
+      return {
+        category: category.id,
+        color: stackColorFor(selectedColorBy, colorKey),
+        count: matchingStacks.reduce((sum, stack) => sum + stack.called_alleles, 0),
+      }
+    })
   const clippedAt = scaleCap(selectedScaleType)
   const totalInView = counts.reduce((sum, count) => sum + count, 0)
   let histogramLayout = { barWidth: 24, gap: 2, height: 260 }
@@ -1805,44 +2061,120 @@ export const WholeRecordAlleleLandscape = ({
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
       <HeadingWithHelp>
         <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
-        <AllelicLandscapeHelp />
+        <AllelicLandscapeHelp
+          showRepeatCountControls={Boolean(admittedRepeatCountPlots)}
+          showLengthAxisControl={absoluteLengthAvailable}
+          showAncestryControl={showLegacyFilterControls || showContractAncestryControl}
+          showSexControl={showLegacyFilterControls || showContractSexControl}
+          showHistogramDisplayControl={showHistogramDisplayControl}
+        />
       </HeadingWithHelp>
-      <ControlSection style={{ marginTop: '1em', flexWrap: 'wrap', gap: '10px 22px' }}>
-        <LengthAxisControl>
-          Length axis
-          <select
-            aria-label="Length axis"
-            value={lengthAxisMode}
-            onChange={(event) => setLengthAxisMode(event.target.value as LengthAxisMode)}
-          >
-            <option value="delta">Change from REF</option>
-            <option value="absolute" disabled={!absoluteLengthAvailable}>
-              Represented allele length
-            </option>
-          </select>
-        </LengthAxisControl>
-        {landscape.stratified_available && !filterContract && (
-          <>
-            <div
+      {showControlSection && (
+        <LandscapeControls role="group" aria-label="Allelic landscape controls">
+          {absoluteLengthAvailable && (
+            <LengthAxisControl>
+              Length axis
+              <select
+                aria-label="Length axis"
+                value={lengthAxisMode}
+                onChange={(event) => setLengthAxisMode(event.target.value as LengthAxisMode)}
+              >
+                <option value="delta">Change from REF</option>
+                <option value="absolute">Represented allele length</option>
+              </select>
+            </LengthAxisControl>
+          )}
+          {showLegacyFilterControls && (
+            <>
+              <div
+                role="group"
+                aria-label="Shared ancestry and sex filters for total-length plots"
+                style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}
+              >
+                <ControlGroupLabel>
+                  {admittedGenotypeLandscape
+                    ? 'Filter all three total-length plots:'
+                    : 'Total-length plots:'}
+                </ControlGroupLabel>
+                <ShortTandemRepeatPopulationOptions
+                  id="lr-tr-landscape"
+                  populations={filterOptions.ancestries}
+                  selectedPopulation={selectedPopulation}
+                  selectedSex={selectedSex}
+                  setSelectedPopulation={setSelectedPopulation}
+                  setSelectedSex={setSelectedSex}
+                  ancestryGroupName={longReadAncestryGroupDisplayName}
+                />
+              </div>
+              <div
+                role="group"
+                aria-label="Total-length histogram display controls"
+                style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}
+              >
+                <ControlGroupLabel>Total-length histogram display:</ControlGroupLabel>
+                <ShortTandemRepeatColorBySelect
+                  id="lr-tr-whole-record"
+                  selectedColorBy={selectedColorBy}
+                  setSelectedColorBy={setSelectedColorBy}
+                  setSelectedScaleType={setSelectedScaleType}
+                  allowedColorBys={['sex', 'population']}
+                />
+                <ShortTandemRepeatScaleSelect
+                  id="lr-tr-whole-record"
+                  selectedScaleType={selectedScaleType}
+                  setSelectedScaleType={setSelectedScaleType}
+                  selectedColorBy={selectedColorBy}
+                />
+              </div>
+            </>
+          )}
+          {(showContractAncestryControl || showContractSexControl) && (
+            <ContractControlGroup
               role="group"
-              aria-label="Shared ancestry and sex filters for total-length plots"
-              style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}
+              aria-label="API-admitted ancestry and sex filters for total-length plots"
             >
               <ControlGroupLabel>
                 {admittedGenotypeLandscape
                   ? 'Filter all three total-length plots:'
                   : 'Total-length plots:'}
               </ControlGroupLabel>
-              <ShortTandemRepeatPopulationOptions
-                id="lr-tr-landscape"
-                populations={filterOptions.ancestries}
-                selectedPopulation={selectedPopulation}
-                selectedSex={selectedSex}
-                setSelectedPopulation={setSelectedPopulation}
-                setSelectedSex={setSelectedSex}
-                ancestryGroupName={longReadAncestryGroupDisplayName}
-              />
-            </div>
+              {showContractAncestryControl && (
+                <ContractSelect>
+                  Genetic ancestry group
+                  <select
+                    aria-label="Genetic ancestry group"
+                    value={selectedContractAncestryId || ''}
+                    onChange={(event) => setSelectedContractAncestryId(event.target.value || null)}
+                  >
+                    <option value="">Global</option>
+                    {admittedAncestryGroups.map((group) => (
+                      <option key={group.id} value={group.id}>
+                        {group.label}
+                      </option>
+                    ))}
+                  </select>
+                </ContractSelect>
+              )}
+              {showContractSexControl && (
+                <ContractSelect>
+                  Sex
+                  <select
+                    aria-label="Sex"
+                    value={selectedContractSexId || ''}
+                    onChange={(event) => setSelectedContractSexId(event.target.value || null)}
+                  >
+                    <option value="">All</option>
+                    {admittedSexGroups.map((group) => (
+                      <option key={group.id} value={group.id}>
+                        {group.label}
+                      </option>
+                    ))}
+                  </select>
+                </ContractSelect>
+              )}
+            </ContractControlGroup>
+          )}
+          {contractColorBys.length > 0 && (
             <div
               role="group"
               aria-label="Total-length histogram display controls"
@@ -1854,7 +2186,7 @@ export const WholeRecordAlleleLandscape = ({
                 selectedColorBy={selectedColorBy}
                 setSelectedColorBy={setSelectedColorBy}
                 setSelectedScaleType={setSelectedScaleType}
-                allowedColorBys={['sex', 'population']}
+                allowedColorBys={contractColorBys}
               />
               <ShortTandemRepeatScaleSelect
                 id="lr-tr-whole-record"
@@ -1863,57 +2195,8 @@ export const WholeRecordAlleleLandscape = ({
                 selectedColorBy={selectedColorBy}
               />
             </div>
-          </>
-        )}
-        {filterContract && (
-          <div
-            role="group"
-            aria-label="API-certified ancestry and sex filter availability"
-            style={{ display: 'flex', alignItems: 'end', flexWrap: 'wrap', gap: 8 }}
-          >
-            {!filterContract.ancestry_control_redundant && (
-              <ContractSelect>
-                Genetic ancestry group
-                <select
-                  aria-label="Genetic ancestry group"
-                  disabled
-                  value=""
-                  onChange={() => undefined}
-                >
-                  <option value="">Unavailable pending exact shared vocabulary</option>
-                  {filterContract.ancestry_groups.map((group) => (
-                    <option key={group.id} value={group.id}>
-                      {group.label} ({group.id})
-                    </option>
-                  ))}
-                </select>
-              </ContractSelect>
-            )}
-            <ContractSelect>
-              Sex
-              <select aria-label="Sex" disabled value="" onChange={() => undefined}>
-                <option value="">Unavailable pending exact shared vocabulary</option>
-                {filterContract.sex_groups.map((group) => (
-                  <option key={group.id} value={group.id}>
-                    {group.label} ({group.id})
-                  </option>
-                ))}
-              </select>
-            </ContractSelect>
-            <span role="status">
-              {filterContract.ancestry_control_redundant
-                ? 'The ancestry selector and ancestry color-by are hidden because the API certified the sole ancestry stratum as redundant.'
-                : 'Shared filters and color-by remain disabled because source frequency and metadata keys have no approved exact mapping. No aliases are guessed.'}
-            </span>
-          </div>
-        )}
-      </ControlSection>
-      {!absoluteLengthAvailable && (
-        <p role="status">
-          Represented allele length is disabled: {unavailableReason(representedLength?.reason)}.
-          Change from REF remains available from{' '}
-          {representedLength?.source_delta_provenance || 'the source delta product'}.
-        </p>
+          )}
+        </LandscapeControls>
       )}
       {!landscape.stratified_available && !filterContract && (
         <p role="status">
@@ -1928,14 +2211,14 @@ export const WholeRecordAlleleLandscape = ({
         <p aria-label="Stack color legend">
           <strong>Stack colors:</strong>{' '}
           {colorCategories.map((category, index) => {
-            let label = category
-            if (selectedColorBy === 'population') label = longReadAncestryGroupDisplayName(category)
-            else if (category === 'unknown') label = 'Unknown'
-            const color = stackColorFor(selectedColorBy, category)
+            const segment = bins
+              .flatMap(segmentsForBin)
+              .find((item) => item.category === category.id)
+            const color = segment?.color || stackColorFor(selectedColorBy, category.id)
             return (
-              <React.Fragment key={category}>
+              <React.Fragment key={category.id}>
                 {index > 0 && ', '}
-                <span aria-label={`${label} stack color`} data-stack-color={color}>
+                <span aria-label={`${category.label} stack color`} data-stack-color={color}>
                   <span
                     aria-hidden="true"
                     style={{
@@ -1947,7 +2230,7 @@ export const WholeRecordAlleleLandscape = ({
                       background: color,
                     }}
                   />
-                  {label}
+                  {category.label}
                 </span>
               </React.Fragment>
             )
@@ -2115,6 +2398,8 @@ export const WholeRecordAlleleLandscape = ({
             navigation={navigation}
             selectedPopulation={selectedPopulation}
             selectedSex={selectedSex}
+            selectedPopulations={selectedGenotypeAncestries}
+            selectedSexes={selectedGenotypeSexes}
             activeCellKey={activeGenotypeCell?.markId}
             onSelectCell={filterIndexToGenotype}
             lengthAxisMode={lengthAxisMode}
@@ -2197,11 +2482,15 @@ const IntensityKey = styled.div`
   font-size: 11px;
 `
 
-const filteredPairs = (pairs: GenotypePair[], population: PopulationId | null, sex: Sex | null) =>
+const filteredPairs = (
+  pairs: GenotypePair[],
+  populations: readonly string[],
+  sexes: readonly string[]
+) =>
   pairs.filter(
     (pair) =>
-      (!population || pair.ancestry_group === population) &&
-      (!sex || pair.sex === sex) &&
+      (!populations.length || populations.includes(pair.ancestry_group)) &&
+      (!sexes.length || sexes.includes(pair.sex)) &&
       pair.people > 0
   )
 
@@ -2247,6 +2536,8 @@ export const WholeRecordGenotypeLandscape = ({
   navigation,
   selectedPopulation,
   selectedSex,
+  selectedPopulations,
+  selectedSexes,
   activeCellKey,
   onSelectCell,
   lengthAxisMode = 'delta',
@@ -2256,6 +2547,8 @@ export const WholeRecordGenotypeLandscape = ({
   navigation: AlleleNavigation
   selectedPopulation: PopulationId | null
   selectedSex: Sex | null
+  selectedPopulations?: readonly string[]
+  selectedSexes?: readonly string[]
   activeCellKey?: string
   onSelectCell?: (
     markId: string,
@@ -2268,6 +2561,8 @@ export const WholeRecordGenotypeLandscape = ({
   representedRefLength?: number | null
 }) => {
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  const activePopulations = selectedPopulations || (selectedPopulation ? [selectedPopulation] : [])
+  const activeSexes = selectedSexes || (selectedSex ? [selectedSex] : [])
 
   if (landscape.status !== 'AVAILABLE') {
     return (
@@ -2285,7 +2580,7 @@ export const WholeRecordGenotypeLandscape = ({
     .map((cell) => ({
       ...cell,
       selectedPairs: aggregateGenotypePairs(
-        filteredPairs(cell.pairs, selectedPopulation, selectedSex)
+        filteredPairs(cell.pairs, activePopulations, activeSexes)
       ),
     }))
     .map((cell) => ({

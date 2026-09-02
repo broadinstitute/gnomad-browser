@@ -27,6 +27,7 @@ import {
   AlleleNavigation,
   GenotypePair,
   LongReadTrAllele,
+  LongReadTrFilterContract,
   LongReadTrLocus,
   WholeRecordAlleleLandscapeData,
   WholeRecordGenotypeLandscapeData,
@@ -87,7 +88,7 @@ jest.mock(
 jest.mock(
   '../ShortTandemRepeatPage/ShortTandemRepeatColorBySelect',
   () =>
-    ({ selectedColorBy, setSelectedColorBy }: any) =>
+    ({ selectedColorBy, setSelectedColorBy, allowedColorBys = ['population', 'sex'] }: any) =>
       (
         <select
           aria-label="Color by"
@@ -95,8 +96,10 @@ jest.mock(
           onChange={(event) => setSelectedColorBy(event.target.value || null)}
         >
           <option value="">None</option>
-          <option value="population">Genetic ancestry group</option>
-          <option value="sex">Sex</option>
+          {allowedColorBys.includes('population') && (
+            <option value="population">Genetic ancestry group</option>
+          )}
+          {allowedColorBys.includes('sex') && <option value="sex">Sex</option>}
         </select>
       )
 )
@@ -140,6 +143,29 @@ const alleleLandscape: WholeRecordAlleleLandscapeData = {
   purity_points: [],
   purity_available: false,
   purity_unavailable_reason: 'NOT_AVAILABLE',
+}
+
+const unavailableFilterContract: LongReadTrFilterContract = {
+  status: 'UNAVAILABLE',
+  reason: 'NO_COMPATIBLE_SHARED_OBSERVATIONS',
+  ancestry_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+  sex_mapping_status: 'UNAVAILABLE_PENDING_OWNER_APPROVAL',
+  ancestry_groups: [],
+  sex_groups: [],
+  ancestry_control_redundant: false,
+  ancestry_control_redundancy_reason: 'NOT_SOLE_ANCESTRY_STRATUM',
+  available_color_dimensions: [],
+  allele_color_dimensions: [],
+  genotype_color_dimensions: [],
+  unstratified_policy:
+    'EXPLICIT_SOURCE_UNKNOWN_SEPARATE_AND_FAIL_CLOSED_WITHOUT_COMPATIBLE_DENOMINATORS',
+  vocabulary_release: null,
+  vocabulary_digest: null,
+  source_key_inventory_release: 'SOURCE_KEY_INVENTORY_V1',
+  source_key_inventory_digest: 'a'.repeat(64),
+  source_release: 'y1',
+  source_run_id: 'run-test',
+  metadata_source_run_id: null,
 }
 
 const navigation: AlleleNavigation = {
@@ -906,6 +932,271 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByLabelText('Scrollable ordered source component table')).not.toBeNull()
   })
 
+  test('omits fully unavailable landscape controls, messages, spacing, and stale help', () => {
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        alleles={alleles}
+        navigation={navigation}
+        representedLength={{
+          status: 'UNAVAILABLE',
+          reason: 'STORED_DELTA_RECONCILIATION_MISMATCH',
+          represented_ref_length_bp: null,
+          represented_alt_min_length_bp: null,
+          represented_alt_max_length_bp: null,
+          source_delta_provenance: 'INFO_ALLELE_LENGTH',
+          sequence_length_provenance: null,
+          sequence_source_record_digest: null,
+          sequence_content_digest: null,
+          anchor_rule: null,
+          anchor_rule_source: null,
+          anchor_rule_release: null,
+          anchor_rule_digest: null,
+          reconciliation_status: 'MISMATCH',
+        }}
+        filterContract={unavailableFilterContract}
+      />
+    )
+
+    expect(screen.queryByLabelText('Length axis')).toBeNull()
+    expect(screen.queryByLabelText('Genetic ancestry group')).toBeNull()
+    expect(screen.queryByLabelText('Sex')).toBeNull()
+    expect(screen.queryByLabelText('Color by')).toBeNull()
+    expect(screen.queryByText(/Unavailable pending exact shared vocabulary/)).toBeNull()
+    expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
+    const heading = screen.getByRole('heading', { name: 'Allelic landscape' })
+    expect(heading.parentElement?.nextElementSibling?.getAttribute('aria-live')).toBe('polite')
+    expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
+    const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
+    expect(
+      within(help).queryByText(/length-axis control|shared ancestry|y-scale controls/)
+    ).toBeNull()
+  })
+
+  test('shows only the positively admitted dimension for a partial filter contract', () => {
+    const ancestryGroup = {
+      id: 'approved-group-a',
+      label: 'API group A',
+      kind: 'SOURCE_GROUP' as const,
+      source_frequency_keys: ['group-a'],
+      source_metadata_keys: ['group-a'],
+      available_in_frequency: true,
+      available_in_genotype: true,
+      shared_available: true,
+      unavailable_reason: null,
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        alleles={alleles}
+        navigation={navigation}
+        filterContract={{
+          ...unavailableFilterContract,
+          status: 'PARTIAL',
+          reason: 'SEX_MAPPING_NOT_APPROVED',
+          ancestry_mapping_status: 'APPROVED_EXACT',
+          ancestry_groups: [ancestryGroup],
+          available_color_dimensions: ['ANCESTRY'],
+          allele_color_dimensions: ['ANCESTRY'],
+          genotype_color_dimensions: ['ANCESTRY'],
+          vocabulary_release: 'approved-v1',
+          vocabulary_digest: 'b'.repeat(64),
+        }}
+      />
+    )
+
+    expect((screen.getByLabelText('Genetic ancestry group') as HTMLSelectElement).disabled).toBe(
+      false
+    )
+    expect(screen.queryByLabelText('Sex')).toBeNull()
+    expect(
+      within(screen.getByLabelText('Color by')).queryByRole('option', { name: 'Sex' })
+    ).toBeNull()
+    expect(screen.queryByText(/pending exact shared vocabulary|remain disabled/i)).toBeNull()
+  })
+
+  test('omits an AoU ancestry control when exact API redundancy makes it unnecessary', () => {
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        alleles={alleles}
+        navigation={navigation}
+        filterContract={{
+          ...unavailableFilterContract,
+          status: 'AVAILABLE',
+          reason: null,
+          ancestry_mapping_status: 'APPROVED_EXACT',
+          ancestry_groups: [
+            {
+              id: 'approved-sole-ancestry',
+              label: 'Sole source ancestry',
+              kind: 'SOURCE_GROUP',
+              source_frequency_keys: ['group-a'],
+              source_metadata_keys: ['group-a'],
+              available_in_frequency: true,
+              available_in_genotype: true,
+              shared_available: true,
+              unavailable_reason: null,
+            },
+          ],
+          ancestry_control_redundant: true,
+          ancestry_control_redundancy_reason: 'CERTIFIED_EXACT_SOLE_STRATUM',
+          available_color_dimensions: [],
+          vocabulary_release: 'approved-v1',
+          vocabulary_digest: 'c'.repeat(64),
+        }}
+      />
+    )
+
+    expect(screen.queryByLabelText('Genetic ancestry group')).toBeNull()
+    expect(screen.queryByLabelText('Color by')).toBeNull()
+    expect(screen.queryByText(/sole ancestry stratum|certified.*redundant/i)).toBeNull()
+  })
+
+  test('enables API-admitted shared controls with exact source-key filtering and mobile containment', () => {
+    const contractAlleles = alleles.map((allele, index) => ({
+      ...allele,
+      freq: {
+        ...allele.freq,
+        populations: [
+          { id: 'group-a', ac: index + 1, an: 20, af: (index + 1) / 20 },
+          { id: 'source-sex-a', ac: index + 1, an: 20, af: (index + 1) / 20 },
+          { id: 'group-a_source-sex-a', ac: index + 1, an: 10, af: (index + 1) / 10 },
+        ],
+      },
+    }))
+    const contractLandscape: WholeRecordAlleleLandscapeData = {
+      ...alleleLandscape,
+      stratified_available: true,
+      stratified_unavailable_reason: null,
+      ancestry_groups: ['group-a'],
+      sexes: ['source-sex-a'],
+      bins: (alleleLandscape.bins || []).map((bin, index) => ({
+        ...bin,
+        stacks: [
+          { ancestry_group: 'group-a', sex: null, called_alleles: index + 1 },
+          { ancestry_group: null, sex: 'source-sex-a', called_alleles: index + 1 },
+          { ancestry_group: 'group-a', sex: 'source-sex-a', called_alleles: index + 1 },
+        ],
+      })),
+    }
+    const contract: LongReadTrFilterContract = {
+      ...unavailableFilterContract,
+      status: 'AVAILABLE',
+      reason: null,
+      ancestry_mapping_status: 'APPROVED_EXACT',
+      sex_mapping_status: 'APPROVED_EXACT',
+      ancestry_groups: [
+        {
+          id: 'approved-group-a',
+          label: 'API group A',
+          kind: 'SOURCE_GROUP',
+          source_frequency_keys: ['group-a', 'group-a_source-sex-a'],
+          source_metadata_keys: ['group-a'],
+          available_in_frequency: true,
+          available_in_genotype: true,
+          shared_available: true,
+          unavailable_reason: null,
+        },
+      ],
+      sex_groups: [
+        {
+          id: 'approved-source-sex-a',
+          label: 'API sex group A',
+          kind: 'SOURCE_GROUP',
+          source_frequency_keys: ['source-sex-a', 'group-a_source-sex-a'],
+          source_metadata_keys: ['source-sex-a'],
+          available_in_frequency: true,
+          available_in_genotype: true,
+          shared_available: true,
+          unavailable_reason: null,
+        },
+      ],
+      available_color_dimensions: ['ANCESTRY', 'SEX'],
+      allele_color_dimensions: ['ANCESTRY', 'SEX'],
+      genotype_color_dimensions: ['ANCESTRY', 'SEX'],
+      vocabulary_release: 'approved-v1',
+      vocabulary_digest: 'd'.repeat(64),
+    }
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: '__REFERENCE__',
+      called_samples: 4,
+      called_alleles: 8,
+      ancestry_groups: ['group-a'],
+      sexes: ['source-sex-a'],
+      cells: [
+        {
+          shorter_delta: -6,
+          longer_delta: 12,
+          people: 4,
+          pairs: [
+            {
+              ...duplicatePairs[0],
+              ancestry_group: 'group-a',
+              sex: 'source-sex-a',
+              people: 4,
+            },
+          ],
+        },
+      ],
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={contractLandscape}
+        genotypeLandscape={genotypeLandscape}
+        alleles={contractAlleles}
+        navigation={navigation}
+        filterContract={contract}
+      />
+    )
+
+    const controls = screen.getByRole('group', { name: 'Allelic landscape controls' })
+    expect(Array.from(controls.children).every((child) => child.childElementCount > 0)).toBe(true)
+    const group = screen.getByRole('group', {
+      name: 'API-admitted ancestry and sex filters for total-length plots',
+    })
+    expect(group).toHaveStyleRule('min-width', '0')
+    expect(group).toHaveStyleRule('max-width', '100%')
+    expect(group).toHaveStyleRule('width', '100%', { media: '(max-width:600px)' })
+    const ancestry = within(group).getByLabelText('Genetic ancestry group') as HTMLSelectElement
+    const sex = within(group).getByLabelText('Sex') as HTMLSelectElement
+    expect(ancestry.disabled).toBe(false)
+    expect(sex.disabled).toBe(false)
+    expect(ancestry.parentElement).toHaveStyleRule('max-width', '100%')
+    expect(ancestry.parentElement).toHaveStyleRule('min-height', '44px', { modifier: 'select' })
+
+    fireEvent.change(ancestry, { target: { value: 'approved-group-a' } })
+    expect(
+      screen.getByText((_text, element) =>
+        Boolean(
+          element?.getAttribute('aria-live') === 'polite' &&
+            element.textContent?.includes(
+              '6 called non-reference allele copies in the current filters.'
+            )
+        )
+      )
+    ).not.toBeNull()
+    expect(screen.getByText(/4 people with complete called genotypes/)).not.toBeNull()
+    fireEvent.change(sex, { target: { value: 'approved-source-sex-a' } })
+    expect(
+      screen.getByText((_text, element) =>
+        Boolean(
+          element?.getAttribute('aria-live') === 'polite' &&
+            element.textContent?.includes(
+              '6 called non-reference allele copies in the current filters.'
+            )
+        )
+      )
+    ).not.toBeNull()
+    fireEvent.change(screen.getByLabelText('Color by'), { target: { value: 'population' } })
+    expect(screen.getByLabelText('API group A stack color')).not.toBeNull()
+  })
+
   test('enables one synchronized represented-length axis only for reconciled API lengths', () => {
     const representedLength = {
       status: 'AVAILABLE_EXACT' as const,
@@ -960,7 +1251,9 @@ describe('long-read TR visualization fidelity', () => {
         }}
       />
     )
-    expect((screen.getByLabelText('Length axis') as HTMLSelectElement).value).toBe('delta')
+    expect(screen.queryByLabelText('Length axis')).toBeNull()
+    expect(screen.queryByRole('option', { name: 'Represented allele length' })).toBeNull()
+    expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
     expect(screen.queryByText(/bp represented \(−6 bp vs REF\)/)).toBeNull()
   })

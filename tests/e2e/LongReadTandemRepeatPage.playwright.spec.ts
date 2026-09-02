@@ -855,14 +855,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(compoundGap.column).toBeLessThanOrEqual(32)
     expect(compoundGap.row).toBeGreaterThanOrEqual(24)
     expect(compoundGap.row).toBeLessThanOrEqual(32)
-    const sharedFilters = page.getByRole('group', {
-      name: 'API-certified ancestry and sex filter availability',
-    })
-    await expect(
-      sharedFilters.getByText(
-        'Shared filters and color-by remain disabled because source frequency and metadata keys have no approved exact mapping. No aliases are guessed.'
-      )
-    ).toBeVisible()
+    await expect(page.getByLabel('Genetic ancestry group')).toHaveCount(0)
+    await expect(page.getByLabel('Sex')).toHaveCount(0)
+    await expect(page.getByText('Unavailable pending exact shared vocabulary')).toHaveCount(0)
+    await expect(page.getByText(/Shared filters and color-by remain disabled/)).toHaveCount(0)
     await expect(
       page.getByRole('group', { name: 'Total-length histogram display controls' })
     ).toHaveCount(0)
