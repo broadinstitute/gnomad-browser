@@ -834,6 +834,28 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('heading', { name: /Long-read exact CAG units/ })).toBeNull()
   })
 
+  test('wraps long source motifs inside the bounded component disclosure', () => {
+    const locus = makeLocus()
+    const denseMotif = 'ATATATATATATATATATATATATCCAAGAGGAG'
+    ;(locus as any).motifs = [denseMotif]
+    ;(locus as any).components = locus.components.map((component) => ({
+      ...component,
+      motif: denseMotif,
+    }))
+    renderPage({ locus, selectedAllele: undefined })
+
+    const disclosure = screen
+      .getByText('All ordered source components and provenance — 6 ordered components')
+      .closest('details') as HTMLElement
+    fireEvent.click(within(disclosure).getByText(/All ordered source components and provenance/))
+    const badge = disclosure.querySelector(`[data-motif-badge="${denseMotif}"]`) as HTMLElement
+    expect(badge).not.toBeNull()
+    expect(badge).toHaveStyleRule('box-sizing', 'border-box')
+    expect(badge).toHaveStyleRule('max-width', '100%')
+    expect(badge).toHaveStyleRule('overflow-wrap', 'anywhere')
+    expect(badge).toHaveStyleRule('word-break', 'break-word')
+  })
+
   test('uses positive cluster wording and source bounds only with complete API provenance', () => {
     const locus = makeLocus()
     ;(locus as any).presentation = {

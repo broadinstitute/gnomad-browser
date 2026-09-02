@@ -2051,16 +2051,7 @@ export const WholeRecordAlleleLandscape = ({
                 </Histogram>
                 <HistogramXAxis
                   role="group"
-                  aria-label={`${lengthAxisName} axis; ticks ${deltaAxisTicks
-                    .map(
-                      (tick) =>
-                        `${lengthAxisValue(
-                          tick.delta,
-                          lengthAxisMode,
-                          representedRefLength
-                        ).toLocaleString()} bp`
-                    )
-                    .join(', ')}`}
+                  aria-label={`${lengthAxisName} axis`}
                   data-testid="whole-record-delta-axis"
                   $height={deltaAxisHeight}
                   $width={histogramScrollableWidth}

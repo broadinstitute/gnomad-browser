@@ -121,12 +121,16 @@ const RepeatMotifBadges = styled.span`
 
 const RepeatMotifBadge = styled.span`
   display: inline-block;
+  box-sizing: border-box;
+  max-width: 100%;
   padding: 0.12em 0.48em;
   border: 1px solid rgb(0 0 0 / 18%);
   border-radius: 0.3em;
   font-family: monospace;
   font-weight: bold;
   line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 `
 
 const UnavailableList = styled.ul`

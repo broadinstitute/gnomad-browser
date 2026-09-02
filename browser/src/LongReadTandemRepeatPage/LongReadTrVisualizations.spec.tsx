@@ -330,7 +330,8 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(deltaAxis).getByLabelText('-6 bp tick').textContent).toBe('−6')
     expect(within(deltaAxis).getByLabelText('0 bp tick').textContent).toBe('0')
     expect(within(deltaAxis).getByLabelText('12 bp tick').textContent).toBe('+12')
-    expect(deltaAxis.getAttribute('aria-label')).toMatch(/-6 bp.*0 bp.*12 bp/)
+    expect(deltaAxis.getAttribute('aria-label')).toBe('Change from REF (bp) axis')
+    expect(deltaAxis.getAttribute('aria-label')).toHaveLength(25)
     const negativeBar = screen.getByRole('button', {
       name: /−6 bp vs REF; 100 called non-reference allele copies/,
     })
