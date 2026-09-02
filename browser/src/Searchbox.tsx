@@ -12,7 +12,10 @@ import { parseLongReadCohort } from './LongReadVariantPage/longReadCohort'
 const Wrapper = styled.div`
   display: flex;
   align-items: stretch;
+  box-sizing: border-box;
   width: ${(props: any) => props.width};
+  min-width: 0;
+  max-width: 100%;
 
   select {
     border-right: 1px solid #ddd;

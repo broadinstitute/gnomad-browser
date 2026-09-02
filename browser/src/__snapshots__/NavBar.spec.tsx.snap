@@ -87,7 +87,10 @@ exports[`NavBar has no unexpected changes 1`] = `
 .c5 {
   display: flex;
   align-items: stretch;
+  box-sizing: border-box;
   width: 360px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .c5 select {
@@ -224,6 +227,11 @@ exports[`NavBar has no unexpected changes 1`] = `
           value="gnomad_r4"
         >
           gnomAD v4.1.1
+        </option>
+        <option
+          value="gnomad_r4_lr"
+        >
+          gnomAD v4.1.1 (long reads)
         </option>
         <option
           value="gnomad_r3"
