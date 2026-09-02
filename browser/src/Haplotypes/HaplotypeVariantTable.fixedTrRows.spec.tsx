@@ -95,7 +95,7 @@ const reviewedPresentation = {
   classification_source: null,
   classification_release: null,
   classification_digest: null,
-  reviewed_override_digest: 'sha256:reviewed',
+  reviewed_override_digest: 'a'.repeat(64),
 }
 const compoundBounds = {
   component_envelope_start0: 100,

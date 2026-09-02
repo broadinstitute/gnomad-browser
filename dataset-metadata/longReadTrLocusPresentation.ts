@@ -52,6 +52,11 @@ const boundedContext = (value?: string | null) => {
 const hasText = (value?: string | null): value is string =>
   typeof value === 'string' && value.trim().length > 0
 
+const isCanonicalSha256Digest = (value?: string | null): value is string =>
+  typeof value === 'string' && /^[a-f0-9]{64}$/.test(value)
+
+const simpleMotifContext = (motif: string) => (motif.length <= 80 ? motif : 'Long stored-motif')
+
 const exactComponentFacts = (locus: TrLocusId) => {
   const envelope = trLocusDisplayEnvelope(locus)
   const start0 = envelope.start1 - 1
@@ -85,7 +90,7 @@ const hasReviewedPrimaryReceipt = (presentation?: TrLocusPresentationContract | 
   Boolean(
     presentation?.presentation_layout === 'REPEAT_FOCUSED' &&
       presentation.presentation_reason === 'REVIEWED_PRIMARY_REPEAT' &&
-      hasText(presentation.reviewed_override_digest)
+      isCanonicalSha256Digest(presentation.reviewed_override_digest)
   )
 
 const hasSourceVariationClusterReceipt = (presentation?: TrLocusPresentationContract | null) =>
@@ -95,7 +100,7 @@ const hasSourceVariationClusterReceipt = (presentation?: TrLocusPresentationCont
       presentation.presentation_reason === 'SOURCE_VARIATION_CLUSTER' &&
       hasText(presentation.classification_source) &&
       hasText(presentation.classification_release) &&
-      hasText(presentation.classification_digest)
+      isCanonicalSha256Digest(presentation.classification_digest)
   )
 
 const exactVariationClusterBounds = (bounds?: TrLocusBoundsContract | null) => {
@@ -165,7 +170,7 @@ export const getTrLocusRowDisplay = ({
 
   let label: string
   if (kind === 'simple') {
-    label = `${locus.components[0].motif} tandem repeat · ${envelopeDisplay}`
+    label = `${simpleMotifContext(locus.components[0].motif)} tandem repeat · ${envelopeDisplay}`
   } else if (kind === 'reviewed-primary') {
     label = `${
       sourceLabel ? `${sourceLabel} ` : ''
@@ -184,10 +189,7 @@ export const getTrLocusRowDisplay = ({
     )} components / ${facts.motifCount.toLocaleString('en-US')} motifs · ${envelopeDisplay}`
   }
 
-  const accessibleLabel =
-    kind === 'simple'
-      ? `${boundedContext(locus.components[0].motif)} tandem repeat · ${envelopeDisplay}`
-      : label
+  const accessibleLabel = label
 
   const interval = variationBounds || facts
   let intervalKind = 'component envelope'

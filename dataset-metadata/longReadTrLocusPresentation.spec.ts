@@ -34,6 +34,8 @@ const multiComponentId = (count: number, motifCount: number) =>
     return `3-${start}-${start + 2}-${motifs[index % motifCount]}`
   }).join('+')
 
+const canonicalDigest = 'a'.repeat(64)
+
 const fallbackPresentation: TrLocusPresentationContract = {
   source_representation_kind: 'UNKNOWN',
   presentation_layout: 'CLUSTER_FOCUSED',
@@ -87,7 +89,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
         ...fallbackPresentation,
         presentation_layout: 'REPEAT_FOCUSED',
         presentation_reason: 'REVIEWED_PRIMARY_REPEAT',
-        reviewed_override_digest: 'sha256:reviewed',
+        reviewed_override_digest: canonicalDigest,
       },
     })
     expect(display.kind).toBe('reviewed-primary')
@@ -102,7 +104,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
         ...fallbackPresentation,
         presentation_layout: 'REPEAT_FOCUSED',
         presentation_reason: 'REVIEWED_PRIMARY_REPEAT',
-        reviewed_override_digest: 'sha256:reviewed',
+        reviewed_override_digest: canonicalDigest,
       },
     })
     expect(display.kind).toBe('multi-component')
@@ -121,7 +123,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
         variation_cluster_status: 'AVAILABLE_EXACT',
         bounds_source: 'source catalog',
         bounds_release: 'v1',
-        bounds_digest: 'sha256:bounds',
+        bounds_digest: 'b'.repeat(64),
       },
       presentation: {
         ...fallbackPresentation,
@@ -129,7 +131,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
         presentation_reason: 'SOURCE_VARIATION_CLUSTER',
         classification_source: 'source catalog',
         classification_release: 'v1',
-        classification_digest: 'sha256:classification',
+        classification_digest: canonicalDigest,
       },
     })
     expect(display.kind).toBe('variation-cluster')
@@ -139,17 +141,31 @@ describe('bounded tandem-repeat locus row presentation', () => {
     )
   })
 
-  test('bounds the routine accessible name while retaining a long stored motif visibly', () => {
+  test('uses a bounded semantic label for a long motif while preserving exact identity', () => {
     const motif = 'A'.repeat(500)
-    const display = getTrLocusRowDisplay(contractsFor(`1-100-600-${motif}`))
-    expect(display.label).toContain(motif)
+    const input = contractsFor(`1-100-600-${motif}`)
+    const display = getTrLocusRowDisplay(input)
+    expect(input.locus.components[0].motif).toBe(motif)
+    expect(input.locus.canonicalId).toContain(motif)
+    expect(display.label).toBe('Long stored-motif tandem repeat · 1:101–600')
+    expect(display.detailsAccessibleLabel).toContain('Long stored-motif tandem repeat')
     expect(display.detailsAccessibleLabel).not.toContain(motif)
+    expect(display.detailsAccessibleLabel).not.toMatch(/\b(?:null|undefined) tandem repeat\b/i)
+    expect(display.label.length).toBeLessThan(130)
     expect(display.detailsAccessibleLabel.length).toBeLessThan(300)
   })
 
-  test('treats whitespace-only provenance as missing', () => {
+  test.each([
+    ['prefixed', `sha256:${canonicalDigest}`],
+    ['uppercase', 'A'.repeat(64)],
+    ['truncated', 'a'.repeat(63)],
+    ['non-hex', 'g'.repeat(64)],
+    ['whitespace-only', '   '],
+    ['leading whitespace', ` ${canonicalDigest}`],
+    ['trailing whitespace', `${canonicalDigest} `],
+  ])('fails positive wording closed for a %s digest', (_case, invalidDigest) => {
     const input = contractsFor(multiComponentId(24, 7))
-    const display = getTrLocusRowDisplay({
+    const classificationDisplay = getTrLocusRowDisplay({
       ...input,
       presentation: {
         ...fallbackPresentation,
@@ -157,10 +173,24 @@ describe('bounded tandem-repeat locus row presentation', () => {
         presentation_reason: 'SOURCE_VARIATION_CLUSTER',
         classification_source: 'source catalog',
         classification_release: 'v1',
-        classification_digest: '   ',
+        classification_digest: invalidDigest,
       },
     })
-    expect(display.kind).toBe('multi-component')
+    const reviewedDisplay = getTrLocusRowDisplay({
+      ...input,
+      reviewedPrimaryLabel: 'HTT CAG',
+      presentation: {
+        ...fallbackPresentation,
+        presentation_layout: 'REPEAT_FOCUSED',
+        presentation_reason: 'REVIEWED_PRIMARY_REPEAT',
+        reviewed_override_digest: invalidDigest,
+      },
+    })
+
+    expect(classificationDisplay.kind).toBe('multi-component')
+    expect(classificationDisplay.label).not.toContain('Variation cluster')
+    expect(reviewedDisplay.kind).toBe('multi-component')
+    expect(reviewedDisplay.label).not.toContain('HTT CAG')
   })
 
   test('fails positive scientific wording closed when summary does not match canonical identity', () => {
@@ -174,7 +204,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
         presentation_reason: 'SOURCE_VARIATION_CLUSTER',
         classification_source: 'source catalog',
         classification_release: 'v1',
-        classification_digest: 'sha256:classification',
+        classification_digest: canonicalDigest,
       },
     })
     expect(display.kind).toBe('multi-component')
