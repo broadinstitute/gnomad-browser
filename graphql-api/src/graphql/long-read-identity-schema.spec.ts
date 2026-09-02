@@ -1,4 +1,11 @@
-import { getIntrospectionQuery, graphql, parse, validate } from 'graphql'
+import {
+  getIntrospectionQuery,
+  graphql,
+  GraphQLObjectType,
+  GraphQLSchema,
+  parse,
+  validate,
+} from 'graphql'
 import { longReadTrShortReadDistributionSingleSelectionRule } from './long-read-tr-short-read-distribution-validation'
 
 process.env.ELASTICSEARCH_URL = process.env.ELASTICSEARCH_URL || 'http://127.0.0.1:9200'
@@ -47,6 +54,27 @@ const longReadTrLocusQuery = `
       components { chrom start0 end0 motif }
       source_records {
         source_variant_id task_id attempt_id alt_count non_reference_ac an non_reference_af
+      }
+      presentation {
+        source_representation_kind presentation_layout presentation_reason classification_source
+        classification_release classification_digest reviewed_override_digest
+      }
+      bounds {
+        component_envelope_start0 component_envelope_end0 component_envelope_length_bp
+        component_envelope_basis source_ref_span_start0 source_ref_span_end0 source_ref_span_status
+        variation_cluster_start0 variation_cluster_end0 variation_cluster_length_bp
+        variation_cluster_status bounds_source bounds_release bounds_digest
+      }
+      component_summary { ordered_component_count distinct_stored_motif_count }
+      sequence_cardinality {
+        source_alt_identity_count unique_alt_sequence_count all_source_alts_sequence_complete
+        status reason algorithm_version
+      }
+      represented_length {
+        status reason represented_ref_length_bp represented_alt_min_length_bp
+        represented_alt_max_length_bp source_delta_provenance sequence_length_provenance
+        sequence_source_record_digest sequence_content_digest
+        anchor_rule anchor_rule_source anchor_rule_release anchor_rule_digest reconciliation_status
       }
       whole_record_allele_landscape {
         status reason_code unit called_alleles non_reference_called_alleles reference_called_alleles
@@ -230,6 +258,85 @@ describe('assembled LR identity GraphQL contract', () => {
     expect(validate(schema, parse(longReadTrLocusQuery))).toEqual([])
   })
 
+  test('executes and serializes Phase 2A fallback enums through GraphQL', async () => {
+    const locusType = schema.getType('LongReadTandemRepeatLocus')
+    const executionSchema = new GraphQLSchema({
+      query: new GraphQLObjectType({
+        name: 'Phase2AExecutionQuery',
+        fields: {
+          locus: {
+            type: locusType,
+            resolve: () => ({
+              presentation: {
+                source_representation_kind: 'UNKNOWN',
+                presentation_layout: 'CLUSTER_FOCUSED',
+                presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+              },
+              bounds: {
+                component_envelope_start0: 100,
+                component_envelope_end0: 120,
+                component_envelope_length_bp: 20,
+                component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
+                source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
+                variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
+              },
+              component_summary: {
+                ordered_component_count: 2,
+                distinct_stored_motif_count: 2,
+              },
+              sequence_cardinality: {
+                source_alt_identity_count: 2,
+                unique_alt_sequence_count: 1,
+                all_source_alts_sequence_complete: true,
+                status: 'AVAILABLE_EXACT',
+                algorithm_version: 'SHA256_WITH_BYTE_EQUALITY_V1',
+              },
+              represented_length: {
+                status: 'UNAVAILABLE',
+                reason: 'ANCHOR_RULE_NOT_APPROVED',
+                source_delta_provenance: 'SEQUENCE_DERIVED',
+                reconciliation_status: 'NOT_EVALUATED',
+              },
+            }),
+          },
+        },
+      }),
+    })
+    const result = await graphql({
+      schema: executionSchema,
+      source: `{
+        locus {
+          presentation { source_representation_kind presentation_layout presentation_reason }
+          bounds { component_envelope_basis source_ref_span_status variation_cluster_status }
+          sequence_cardinality { status reason }
+          represented_length { status reason source_delta_provenance reconciliation_status }
+        }
+      }`,
+    })
+    expect(result.errors).toBeUndefined()
+    expect(result.data).toEqual({
+      locus: {
+        presentation: {
+          source_representation_kind: 'UNKNOWN',
+          presentation_layout: 'CLUSTER_FOCUSED',
+          presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+        },
+        bounds: {
+          component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
+          source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
+          variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
+        },
+        sequence_cardinality: { status: 'AVAILABLE_EXACT', reason: null },
+        represented_length: {
+          status: 'UNAVAILABLE',
+          reason: 'ANCHOR_RULE_NOT_APPROVED',
+          source_delta_provenance: 'SEQUENCE_DERIVED',
+          reconciliation_status: 'NOT_EVALUATED',
+        },
+      },
+    })
+  })
+
   test('accepts the bounded short-read to LR reference connection query', () => {
     expect(validate(schema, parse(longReadTrReferenceQuery))).toEqual([])
   })
@@ -295,6 +402,17 @@ describe('assembled LR identity GraphQL contract', () => {
     const detailsType = types.find((type: any) => type.name === 'LongReadVariantDetails')
     expect(detailsType.fields.map((field: any) => field.name)).toEqual(
       expect.arrayContaining(['source_variant_id', 'alt_index', 'alt_count'])
+    )
+
+    const locusType = types.find((type: any) => type.name === 'LongReadTandemRepeatLocus')
+    expect(locusType.fields.map((field: any) => field.name)).toEqual(
+      expect.arrayContaining([
+        'presentation',
+        'bounds',
+        'component_summary',
+        'sequence_cardinality',
+        'represented_length',
+      ])
     )
 
     const primaryRepeatType = types.find((type: any) => type.name === 'LongReadTrPrimaryRepeat')

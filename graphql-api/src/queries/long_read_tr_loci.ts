@@ -1,3 +1,5 @@
+import crypto from 'node:crypto'
+
 import { parseTrLocusId, TrLocusId } from '../../../dataset-metadata/longReadTrLocusId'
 import { y1ClickhouseClient } from '../clickhouse'
 import { withCache } from '../cache'
@@ -17,17 +19,41 @@ export const MAX_TR_SELECTED_ALLELE_DETAIL_BYTES = 1024 * 1024
 
 const REFERENCE_ALLELE_ID = 'REFERENCE'
 const WHOLE_RECORD_UNIT = 'WHOLE_RECORD_DELTA_BP'
+const SEQUENCE_CARDINALITY_ALGORITHM = 'SHA256_WITH_BYTE_EQUALITY_V1'
+const SOURCE_SEQUENCE_FIELDS = 'lr_y1_alleles.ref_allele+alt'
+const LENGTH_PROVENANCE_VALUES = new Map([
+  ['info_allele_length', 'INFO_ALLELE_LENGTH'],
+  ['info_svlen', 'INFO_SVLEN'],
+  ['sequence_derived', 'SEQUENCE_DERIVED'],
+])
+
+export type ApprovedRepresentedLengthAnchorRule = {
+  id: 'VCF_SHARED_LEFT_PADDING_BASE_V1'
+  source: string
+  release: string
+  digest: string
+}
 
 type Cursor = { version: 1; sourceVariantId: string; altIndex: number }
 type CompactAllele = {
   source_variant_id: string
   alt_index: number
+  task_id?: string | null
+  attempt_id?: string | null
   ref_allele?: string | null
   alt?: string | null
   allele_length: number | null
+  length_provenance?: string | null
   ac: number
   an: number
   af: number
+}
+
+type SourceRecordContract = {
+  source_variant_id: string
+  alt_count: number
+  task_id?: string | null
+  attempt_id?: string | null
 }
 
 export const encodeTrAlleleCursor = (cursor: Omit<Cursor, 'version'>) =>
@@ -124,20 +150,21 @@ const parseCompactAllele = (row: any): CompactAllele | null => {
   return {
     source_variant_id: row.source_variant_id,
     alt_index: altIndex,
+    task_id: typeof row.task_id === 'string' ? row.task_id : null,
+    attempt_id: typeof row.attempt_id === 'string' ? row.attempt_id : null,
     ref_allele: typeof row.ref_allele === 'string' ? row.ref_allele : null,
     alt: typeof row.alt === 'string' ? row.alt : null,
     allele_length: finiteNumber(row.allele_length),
+    length_provenance: typeof row.length_provenance === 'string' ? row.length_provenance : null,
     ac: Number(row.ac),
     an: Number(row.an),
     af: Number(row.af),
   }
 }
 
-const validateCompleteAlleles = (
-  rows: CompactAllele[],
-  sourceRecords: { source_variant_id: string; alt_count: number }[]
-) => {
+const validateAlleleIdentities = (rows: CompactAllele[], sourceRecords: SourceRecordContract[]) => {
   const expectedTotal = sourceRecords.reduce((sum, record) => sum + record.alt_count, 0)
+  if (expectedTotal < 1) return 'MISSING_OR_DUPLICATE_ALT_INDEX'
   if (expectedTotal > MAX_TR_LOCUS_PAGE_SIZE) return 'ALT_COUNT_EXCEEDS_600'
   if (rows.length !== expectedTotal) return 'MISSING_OR_DUPLICATE_ALT_INDEX'
   const seen = new Set<string>()
@@ -146,16 +173,300 @@ const validateCompleteAlleles = (
       seen.add(compactAlleleKey(record.source_variant_id, altIndex))
     }
   }
+  const sourceRecordById = new Map(
+    sourceRecords.map((record) => [record.source_variant_id, record])
+  )
   for (const row of rows) {
     const key = compactAlleleKey(row.source_variant_id, row.alt_index)
     if (!seen.delete(key)) return 'MISSING_OR_DUPLICATE_ALT_INDEX'
+    const record = sourceRecordById.get(row.source_variant_id)!
+    if (
+      (record.task_id != null && row.task_id !== record.task_id) ||
+      (record.attempt_id != null && row.attempt_id !== record.attempt_id)
+    ) {
+      return 'SOURCE_RECORD_PROVENANCE_MISMATCH'
+    }
+  }
+  return seen.size ? 'MISSING_OR_DUPLICATE_ALT_INDEX' : null
+}
+
+const validateCompleteAlleles = (rows: CompactAllele[], sourceRecords: SourceRecordContract[]) => {
+  const identityReason = validateAlleleIdentities(rows, sourceRecords)
+  if (identityReason) return identityReason
+  for (const row of rows) {
     if (row.allele_length == null) return 'NONFINITE_WHOLE_RECORD_DELTA'
+    if (!row.length_provenance || !LENGTH_PROVENANCE_VALUES.has(row.length_provenance)) {
+      return 'SOURCE_DELTA_PROVENANCE_UNAVAILABLE'
+    }
     if (!Number.isInteger(row.ac) || row.ac < 0 || !Number.isInteger(row.an) || row.an < 0)
       return 'MALFORMED_ALLELE_COUNTS'
     if (!Number.isFinite(row.af) || row.af < 0 || row.af > 1 || row.ac > row.an)
       return 'MALFORMED_ALLELE_COUNTS'
   }
-  return seen.size ? 'MISSING_OR_DUPLICATE_ALT_INDEX' : null
+  return null
+}
+
+export const buildLongReadTrComponentContract = (
+  components: { chrom: string; start0: number; end0: number; motif: string }[]
+) => {
+  if (!components.length) throw new Error('TR_LOCUS_INVARIANT')
+  let envelopeStart0 = components[0].start0
+  let envelopeEnd0 = components[0].end0
+  const motifs = new Set<string>()
+  for (const component of components) {
+    if (
+      !Number.isInteger(component.start0) ||
+      !Number.isInteger(component.end0) ||
+      component.end0 < component.start0 ||
+      component.chrom !== components[0].chrom
+    ) {
+      throw new Error('TR_LOCUS_INVARIANT')
+    }
+    envelopeStart0 = Math.min(envelopeStart0, component.start0)
+    envelopeEnd0 = Math.max(envelopeEnd0, component.end0)
+    motifs.add(component.motif)
+  }
+  return {
+    bounds: {
+      component_envelope_start0: envelopeStart0,
+      component_envelope_end0: envelopeEnd0,
+      component_envelope_length_bp: envelopeEnd0 - envelopeStart0,
+      component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
+      source_ref_span_start0: null,
+      source_ref_span_end0: null,
+      source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
+      variation_cluster_start0: null,
+      variation_cluster_end0: null,
+      variation_cluster_length_bp: null,
+      variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
+      bounds_source: null,
+      bounds_release: null,
+      bounds_digest: null,
+    },
+    component_summary: {
+      ordered_component_count: components.length,
+      distinct_stored_motif_count: motifs.size,
+    },
+  }
+}
+
+export const buildLongReadTrPresentation = (orderedComponentCount: number) => {
+  if (!Number.isInteger(orderedComponentCount) || orderedComponentCount < 1) {
+    throw new Error('TR_LOCUS_INVARIANT')
+  }
+  return orderedComponentCount === 1
+    ? {
+        source_representation_kind: 'UNKNOWN',
+        presentation_layout: 'REPEAT_FOCUSED',
+        presentation_reason: 'SOLE_EXACT_COMPONENT',
+        classification_source: null,
+        classification_release: null,
+        classification_digest: null,
+        reviewed_override_digest: null,
+      }
+    : {
+        source_representation_kind: 'UNKNOWN',
+        presentation_layout: 'CLUSTER_FOCUSED',
+        presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+        classification_source: null,
+        classification_release: null,
+        classification_digest: null,
+        reviewed_override_digest: null,
+      }
+}
+
+export const countUniqueExactAltBytes = (
+  altBytes: Buffer[],
+  digestBytes: (bytes: Buffer) => string = (bytes) =>
+    crypto.createHash('sha256').update(bytes).digest('hex')
+) => {
+  // A digest only chooses a bucket. Exact byte equality inside each bucket is what
+  // establishes uniqueness, so even a digest collision cannot merge two ALT strings.
+  const digestBuckets = new Map<string, Buffer[]>()
+  let uniqueAltSequenceCount = 0
+  for (const bytes of altBytes) {
+    const digest = digestBytes(bytes)
+    const bucket = digestBuckets.get(digest) || []
+    if (!bucket.some((candidate) => candidate.equals(bytes))) {
+      bucket.push(bytes)
+      uniqueAltSequenceCount += 1
+    }
+    digestBuckets.set(digest, bucket)
+  }
+  return uniqueAltSequenceCount
+}
+
+export const buildSequenceCardinality = ({
+  alleles,
+  sourceRecords,
+  digestBytes = (bytes: Buffer) => crypto.createHash('sha256').update(bytes).digest('hex'),
+}: {
+  alleles: CompactAllele[]
+  sourceRecords: SourceRecordContract[]
+  digestBytes?: (bytes: Buffer) => string
+}) => {
+  const sourceAltIdentityCount = sourceRecords.reduce((sum, record) => sum + record.alt_count, 0)
+  const identityReason = validateAlleleIdentities(alleles, sourceRecords)
+  if (identityReason) {
+    return {
+      source_alt_identity_count: sourceAltIdentityCount,
+      unique_alt_sequence_count: null,
+      all_source_alts_sequence_complete: false,
+      status: 'UNAVAILABLE',
+      reason: identityReason,
+      algorithm_version: SEQUENCE_CARDINALITY_ALGORITHM,
+    }
+  }
+  if (alleles.some((allele) => typeof allele.alt !== 'string')) {
+    return {
+      source_alt_identity_count: sourceAltIdentityCount,
+      unique_alt_sequence_count: null,
+      all_source_alts_sequence_complete: false,
+      status: 'UNAVAILABLE',
+      reason: 'EXACT_ALT_SEQUENCE_BYTES_INCOMPLETE',
+      algorithm_version: SEQUENCE_CARDINALITY_ALGORITHM,
+    }
+  }
+
+  const uniqueAltSequenceCount = countUniqueExactAltBytes(
+    alleles.map((allele) => Buffer.from(allele.alt!, 'utf8')),
+    digestBytes
+  )
+  return {
+    source_alt_identity_count: sourceAltIdentityCount,
+    unique_alt_sequence_count: uniqueAltSequenceCount,
+    all_source_alts_sequence_complete: true,
+    status: 'AVAILABLE_EXACT',
+    reason: null,
+    algorithm_version: SEQUENCE_CARDINALITY_ALGORITHM,
+  }
+}
+
+export const buildRepresentedLengthContract = ({
+  alleles,
+  sourceRecords,
+  sourceRunId,
+  approvedAnchorRule,
+}: {
+  alleles: CompactAllele[]
+  sourceRecords: SourceRecordContract[]
+  sourceRunId: string
+  approvedAnchorRule: ApprovedRepresentedLengthAnchorRule | null
+}) => {
+  const identityReason = validateAlleleIdentities(alleles, sourceRecords)
+  const admittedLengthProvenances = identityReason
+    ? []
+    : alleles.map((allele) => LENGTH_PROVENANCE_VALUES.get(allele.length_provenance || ''))
+  let sourceDeltaProvenance = 'UNAVAILABLE'
+  if (!admittedLengthProvenances.some((value) => !value)) {
+    sourceDeltaProvenance =
+      new Set(admittedLengthProvenances).size === 1 ? admittedLengthProvenances[0]! : 'MIXED'
+  }
+  const sourceRecordDigest = crypto
+    .createHash('sha256')
+    .update(
+      JSON.stringify(
+        sourceRecords.map(({ source_variant_id, alt_count, task_id, attempt_id }) => ({
+          source_variant_id,
+          alt_count,
+          task_id: task_id || null,
+          attempt_id: attempt_id || null,
+        }))
+      )
+    )
+    .digest('hex')
+  const unavailableLength = (reason: string, reconciliationStatus = 'NOT_EVALUATED') => ({
+    status: 'UNAVAILABLE',
+    reason,
+    represented_ref_length_bp: null,
+    represented_alt_min_length_bp: null,
+    represented_alt_max_length_bp: null,
+    source_delta_provenance: sourceDeltaProvenance,
+    sequence_length_provenance: null,
+    sequence_source_record_digest: null,
+    sequence_content_digest: null,
+    anchor_rule: null,
+    anchor_rule_source: null,
+    anchor_rule_release: null,
+    anchor_rule_digest: null,
+    reconciliation_status: reconciliationStatus,
+  })
+  if (identityReason) return unavailableLength(identityReason)
+  if (sourceDeltaProvenance === 'UNAVAILABLE') {
+    return unavailableLength('SOURCE_DELTA_PROVENANCE_UNAVAILABLE')
+  }
+  if (sourceRecords.length !== 1) return unavailableLength('MULTIPLE_SOURCE_RECORDS')
+  if (
+    alleles.some(
+      (allele) => typeof allele.ref_allele !== 'string' || typeof allele.alt !== 'string'
+    )
+  ) {
+    return unavailableLength('EXACT_REF_ALT_SEQUENCE_BYTES_INCOMPLETE')
+  }
+  if (!approvedAnchorRule) return unavailableLength('ANCHOR_RULE_NOT_APPROVED')
+  if (
+    approvedAnchorRule.id !== 'VCF_SHARED_LEFT_PADDING_BASE_V1' ||
+    !approvedAnchorRule.source ||
+    !approvedAnchorRule.release ||
+    !/^[a-f0-9]{64}$/.test(approvedAnchorRule.digest)
+  ) {
+    return unavailableLength('ANCHOR_RULE_RECEIPT_INVALID')
+  }
+
+  const refs = alleles.map((allele) => Buffer.from(allele.ref_allele!, 'utf8'))
+  const alts = alleles.map((allele) => Buffer.from(allele.alt!, 'utf8'))
+  if (
+    refs.some((ref, index) => ref.length < 1 || alts[index].length < 1 || ref[0] !== alts[index][0])
+  ) {
+    return unavailableLength('SHARED_PADDING_BASE_NOT_VALIDATED', 'NOT_RECONCILED')
+  }
+  if (refs.some((ref) => !ref.equals(refs[0]))) {
+    return unavailableLength('SOURCE_REF_BYTES_INCONSISTENT', 'NOT_RECONCILED')
+  }
+
+  const sequenceContentDigest = crypto
+    .createHash('sha256')
+    .update(
+      JSON.stringify(
+        alleles.map(({ source_variant_id, alt_index, ref_allele, alt }) => ({
+          source_variant_id,
+          alt_index,
+          ref_allele,
+          alt,
+        }))
+      )
+    )
+    .digest('hex')
+  const representedRefLength = refs[0].length - 1
+  const representedAltLengths = alts.map((alt) => alt.length - 1)
+  if (alleles.some((allele) => allele.allele_length == null)) {
+    return unavailableLength('NONFINITE_WHOLE_RECORD_DELTA', 'NOT_RECONCILED')
+  }
+  if (
+    alleles.some(
+      (allele, index) =>
+        allele.allele_length !== representedAltLengths[index] - representedRefLength
+    )
+  ) {
+    return unavailableLength('STORED_DELTA_RECONCILIATION_MISMATCH', 'MISMATCH')
+  }
+
+  return {
+    status: 'AVAILABLE_EXACT',
+    reason: null,
+    represented_ref_length_bp: representedRefLength,
+    represented_alt_min_length_bp: Math.min(...representedAltLengths),
+    represented_alt_max_length_bp: Math.max(...representedAltLengths),
+    source_delta_provenance: sourceDeltaProvenance,
+    sequence_length_provenance: `${SOURCE_SEQUENCE_FIELDS}@${sourceRunId}`,
+    sequence_source_record_digest: sourceRecordDigest,
+    sequence_content_digest: sequenceContentDigest,
+    anchor_rule: approvedAnchorRule.id,
+    anchor_rule_source: approvedAnchorRule.source,
+    anchor_rule_release: approvedAnchorRule.release,
+    anchor_rule_digest: approvedAnchorRule.digest,
+    reconciliation_status: 'RECONCILED',
+  }
 }
 
 const parseDivision = (division: unknown) => {
@@ -443,7 +754,7 @@ export const buildWholeRecordGenotypeLandscape = ({
 
 const cursorForSelectedAllelePage = (
   selectedAllele: string | null | undefined,
-  sourceRecords: { source_variant_id: string; alt_count: number }[],
+  sourceRecords: SourceRecordContract[],
   first: number
 ) => {
   if (!selectedAllele) return { cursor: null, valid: false }
@@ -536,7 +847,8 @@ const fetchLongReadTrLocusUncached = async ({
 
   const rawAlleleRows = await queryRows(
     `
-      SELECT source_variant_id, alt_index, ref_allele, alt, allele_length, ac, an, af
+      SELECT task_id, attempt_id, source_variant_id, alt_index, ref_allele, alt,
+        allele_length, length_provenance, ac, an, af
       FROM lr_y1_alleles
       WHERE run_id = {runId:String} AND release = 'y1'
         AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
@@ -572,6 +884,19 @@ const fetchLongReadTrLocusUncached = async ({
   })
   const completenessReason = validateCompleteAlleles(compactAlleles, sourceRecords)
   const completeAlleles = completenessReason ? [] : compactAlleles
+  const sequenceCardinality = buildSequenceCardinality({
+    alleles: compactAlleles,
+    sourceRecords,
+  })
+  // G-LENGTH remains pending. The builder supports receipt-gated admission, but this
+  // resolver intentionally supplies no rule until an immutable owner-approved artifact
+  // is wired in and verified. Existing signed source deltas remain independently usable.
+  const representedLength = buildRepresentedLengthContract({
+    alleles: compactAlleles,
+    sourceRecords,
+    sourceRunId: source.run_id,
+    approvedAnchorRule: null,
+  })
   const exactSequenceIndexComplete = completeAlleles.every(
     ({ ref_allele, alt }) => Boolean(ref_allele) && Boolean(alt)
   )
@@ -838,29 +1163,26 @@ const fetchLongReadTrLocusUncached = async ({
     }
   }
 
-  // VCF REF/ALT strings include one shared anchoring base outside the TR interval.
-  // Derive represented lengths from the complete strings only when that anchor is
-  // explicit and consistent; this also preserves a valid zero-length represented ALT.
-  const representedSequenceAnchorsValid =
-    exactSequenceIndexWithinBound &&
-    completeAlleles.every(
-      (allele) =>
-        allele.ref_allele!.length >= 1 &&
-        allele.alt!.length >= 1 &&
-        allele.ref_allele![0] === allele.alt![0]
-    )
-  const representedAlleleLengths = representedSequenceAnchorsValid
-    ? completeAlleles.flatMap((allele) => [allele.ref_allele!.length - 1, allele.alt!.length - 1])
-    : []
-  const representedAlleleDeltas = representedSequenceAnchorsValid
-    ? completeAlleles.map((allele) => allele.alt!.length - allele.ref_allele!.length)
-    : []
-  let representedAlleleLengthUnavailableReason = completenessReason
-  if (!representedAlleleLengthUnavailableReason && !representedSequenceAnchorsValid) {
-    representedAlleleLengthUnavailableReason = exactSequenceIndexWithinBound
-      ? 'EXACT_ALLELE_SEQUENCE_ANCHOR_NOT_RECONCILABLE'
-      : exactSequenceIndexUnavailableReason
+  const deltaIdentityReason = validateAlleleIdentities(compactAlleles, sourceRecords)
+  let sourceDeltaUnavailableReason = deltaIdentityReason
+  if (
+    !sourceDeltaUnavailableReason &&
+    compactAlleles.some((allele) => allele.allele_length == null)
+  ) {
+    sourceDeltaUnavailableReason = 'NONFINITE_WHOLE_RECORD_DELTA'
   }
+  if (
+    !sourceDeltaUnavailableReason &&
+    compactAlleles.some(
+      (allele) =>
+        !allele.length_provenance || !LENGTH_PROVENANCE_VALUES.has(allele.length_provenance)
+    )
+  ) {
+    sourceDeltaUnavailableReason = 'SOURCE_DELTA_PROVENANCE_UNAVAILABLE'
+  }
+  const sourceAlleleDeltas = sourceDeltaUnavailableReason
+    ? []
+    : compactAlleles.map((allele) => allele.allele_length!)
   const alignedSourceComponentCountsAvailable =
     locus.components.length === 1 &&
     summaries.every((summary) => {
@@ -877,8 +1199,7 @@ const fetchLongReadTrLocusUncached = async ({
         ? 'No complete aligned LR reference component counts are available; exact repeat-count plots remain separately fail-closed'
         : 'Compound loci lack an admitted mapping from whole-record sequence to LR reference components'
   }
-  const envelopeStart0 = Math.min(...locus.components.map((component) => component.start0))
-  const envelopeEnd0 = Math.max(...locus.components.map((component) => component.end0))
+  const componentContract = buildLongReadTrComponentContract(locus.components)
   const totalAlleles = sourceRecords.reduce((sum, record) => sum + record.alt_count, 0)
 
   return {
@@ -888,9 +1209,9 @@ const fetchLongReadTrLocusUncached = async ({
     chrom: locus.components[0].chrom,
     region: {
       chrom: locus.components[0].chrom,
-      start0: envelopeStart0,
-      end0: envelopeEnd0,
-      size: envelopeEnd0 - envelopeStart0,
+      start0: componentContract.bounds.component_envelope_start0,
+      end0: componentContract.bounds.component_envelope_end0,
+      size: componentContract.bounds.component_envelope_length_bp,
     },
     components: locus.components,
     motifs: Array.from(new Set(locus.components.map((component) => component.motif))),
@@ -900,20 +1221,21 @@ const fetchLongReadTrLocusUncached = async ({
     source_run_id: source.run_id,
     primary_database: source.database,
     source_records: sourceRecords,
+    presentation: buildLongReadTrPresentation(locus.components.length),
+    bounds: componentContract.bounds,
+    component_summary: componentContract.component_summary,
+    sequence_cardinality: sequenceCardinality,
+    represented_length: representedLength,
     total_alleles: totalAlleles,
     exact_alt_count: totalAlleles,
     exact_alt_count_complete: !completenessReason,
     exact_alt_count_unavailable_reason: completenessReason,
-    delta_min: representedAlleleDeltas.length ? Math.min(...representedAlleleDeltas) : null,
-    delta_max: representedAlleleDeltas.length ? Math.max(...representedAlleleDeltas) : null,
-    delta_unavailable_reason: representedAlleleLengthUnavailableReason,
-    represented_allele_length_min: representedAlleleLengths.length
-      ? Math.min(...representedAlleleLengths)
-      : null,
-    represented_allele_length_max: representedAlleleLengths.length
-      ? Math.max(...representedAlleleLengths)
-      : null,
-    represented_allele_length_unavailable_reason: representedAlleleLengthUnavailableReason,
+    delta_min: sourceAlleleDeltas.length ? Math.min(...sourceAlleleDeltas) : null,
+    delta_max: sourceAlleleDeltas.length ? Math.max(...sourceAlleleDeltas) : null,
+    delta_unavailable_reason: sourceDeltaUnavailableReason,
+    represented_allele_length_min: representedLength.represented_alt_min_length_bp,
+    represented_allele_length_max: representedLength.represented_alt_max_length_bp,
+    represented_allele_length_unavailable_reason: representedLength.reason,
     called_allele_count: sourceRecords.length === 1 ? sourceRecords[0].an : null,
     called_sample_count:
       wholeRecordGenotypeLandscape.status === 'AVAILABLE'
@@ -951,7 +1273,7 @@ const fetchLongReadTrLocusUncached = async ({
 export const fetchLongReadTrLocus = withCache(
   fetchLongReadTrLocusUncached,
   ({ id, cohort, first = DEFAULT_TR_LOCUS_PAGE_SIZE, after, selectedAllele, source }) =>
-    `lr_tr_locus:v5:${cohort}:${source.database}:${source.run_id}:${
+    `lr_tr_locus:v6:${cohort}:${source.database}:${source.run_id}:${
       source.metadata_run_id || 'no-metadata'
     }:${source.chrom}:${id}:${first}:${after || 'first'}:${selectedAllele || 'none'}`,
   { expiration: 300 }

@@ -9,14 +9,22 @@ jest.mock('../cache', () => ({ withCache: (fn: any) => fn }))
 // The ClickHouse mock must be installed before this module initializes its client.
 // eslint-disable-next-line import/first
 import {
+  buildLongReadTrComponentContract,
+  buildLongReadTrPresentation,
+  buildRepresentedLengthContract,
+  buildSequenceCardinality,
   buildWholeRecordAlleleLandscape,
   buildWholeRecordGenotypeLandscape,
+  countUniqueExactAltBytes,
   decodeTrAlleleCursor,
   encodeTrAlleleCursor,
   fetchLongReadTrLocus,
   MAX_TR_LOCUS_PAGE_SIZE,
   MAX_TR_SELECTED_ALLELE_DETAIL_BYTES,
 } from './long_read_tr_loci'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const phase0Fixture = require('./__fixtures__/ben-round-two-tr-phase0.json')
 
 const httLocusId =
   '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
@@ -57,11 +65,14 @@ const compactAlleles = (altCount: number, an: number) =>
       }
     }
     return {
+      task_id: 'task-1',
+      attempt_id: 'attempt-1',
       source_variant_id: sourceVariantId,
       alt_index: offset + 1,
       ref_allele: `A${'C'.repeat(164)}`,
       alt: `A${'C'.repeat(164 + alleleLength)}`,
       allele_length: alleleLength,
+      length_provenance: 'sequence_derived',
       ac,
       an,
       af: ac / an,
@@ -183,6 +194,9 @@ describe('long-read TR locus query contract', () => {
     expect(summaryRequest.query).not.toContain('ref_allele')
     expect(summaryRequest.query).toContain('LIMIT {limit:UInt16}')
     expect(summaryRequest.query_params.limit).toBe(MAX_TR_LOCUS_PAGE_SIZE + 1)
+    const alleleRequest = mockQuery.mock.calls[1][0] as any
+    expect(alleleRequest.query).toContain('task_id, attempt_id')
+    expect(alleleRequest.query).toContain('length_provenance')
     expect(locus).toMatchObject({
       id: httLocusId,
       source_trid: httSourceTrid,
@@ -190,9 +204,49 @@ describe('long-read TR locus query contract', () => {
       exact_alt_count_complete: true,
       delta_min: -24,
       delta_max: 48,
-      represented_allele_length_min: 140,
-      represented_allele_length_max: 212,
-      represented_allele_length_unavailable_reason: null,
+      represented_allele_length_min: null,
+      represented_allele_length_max: null,
+      represented_allele_length_unavailable_reason: 'ANCHOR_RULE_NOT_APPROVED',
+      presentation: {
+        source_representation_kind: 'UNKNOWN',
+        presentation_layout: 'CLUSTER_FOCUSED',
+        presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+        classification_digest: null,
+        reviewed_override_digest: null,
+      },
+      bounds: {
+        component_envelope_start0: 3074876,
+        component_envelope_end0: 3075040,
+        component_envelope_length_bp: 164,
+        component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
+        source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
+        variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
+        variation_cluster_start0: null,
+        bounds_digest: null,
+      },
+      component_summary: {
+        ordered_component_count: 6,
+        distinct_stored_motif_count: 5,
+      },
+      sequence_cardinality: {
+        source_alt_identity_count: 72,
+        unique_alt_sequence_count: 3,
+        all_source_alts_sequence_complete: true,
+        status: 'AVAILABLE_EXACT',
+        reason: null,
+        algorithm_version: 'SHA256_WITH_BYTE_EQUALITY_V1',
+      },
+      represented_length: {
+        status: 'UNAVAILABLE',
+        reason: 'ANCHOR_RULE_NOT_APPROVED',
+        represented_ref_length_bp: null,
+        represented_alt_min_length_bp: null,
+        represented_alt_max_length_bp: null,
+        source_delta_provenance: 'SEQUENCE_DERIVED',
+        sequence_length_provenance: null,
+        anchor_rule: null,
+        reconciliation_status: 'NOT_EVALUATED',
+      },
       called_allele_count: 584,
       called_sample_count: 292,
       unique_carrier_count: 291,
@@ -242,6 +296,8 @@ describe('long-read TR locus query contract', () => {
       source_run_id: 'run-hgsvc_hprc',
     })
     expect(locus.alleles.nodes).toHaveLength(72)
+    expect(locus.alleles.nodes[1].variant_id).not.toBe(locus.alleles.nodes[2].variant_id)
+    expect(locus.alleles.nodes[1].alt).toBe(locus.alleles.nodes[2].alt)
     expect(locus.alleles.nodes[0]).toMatchObject({
       ref: `A${'C'.repeat(164)}`,
       alt: `A${'C'.repeat(140)}`,
@@ -262,11 +318,14 @@ describe('long-read TR locus query contract', () => {
       .mockImplementationOnce(() =>
         result([
           {
+            task_id: 'task-1',
+            attempt_id: 'attempt-1',
             source_variant_id: sourceVariantId,
             alt_index: 1,
             ref_allele: 'C',
             alt: overBoundAlt,
             allele_length: MAX_TR_SELECTED_ALLELE_DETAIL_BYTES - 1,
+            length_provenance: 'sequence_derived',
             ac: 1,
             an: 2,
             af: 0.5,
@@ -302,7 +361,17 @@ describe('long-read TR locus query contract', () => {
       sequences_unavailable_reason: 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED',
       represented_allele_length_min: null,
       represented_allele_length_max: null,
-      represented_allele_length_unavailable_reason: 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED',
+      represented_allele_length_unavailable_reason: 'ANCHOR_RULE_NOT_APPROVED',
+      sequence_cardinality: {
+        source_alt_identity_count: 1,
+        unique_alt_sequence_count: 1,
+        all_source_alts_sequence_complete: true,
+        status: 'AVAILABLE_EXACT',
+      },
+      represented_length: {
+        status: 'UNAVAILABLE',
+        reason: 'ANCHOR_RULE_NOT_APPROVED',
+      },
       selected_allele_valid: true,
       selected_allele: null,
       selected_allele_unavailable_reason: 'SELECTED_ALLELE_DETAIL_BYTE_BOUND_EXCEEDED',
@@ -328,11 +397,14 @@ describe('long-read TR locus query contract', () => {
   test('keeps bounded selected detail when the cumulative exact-index sequence bound is exceeded', async () => {
     const boundedAlt = `C${'G'.repeat(549_999)}`
     const rows = [1, 2].map((altIndex) => ({
+      task_id: 'task-1',
+      attempt_id: 'attempt-1',
       source_variant_id: sourceVariantId,
       alt_index: altIndex,
       ref_allele: 'C',
       alt: boundedAlt,
       allele_length: boundedAlt.length - 1,
+      length_provenance: 'sequence_derived',
       ac: 1,
       an: 2,
       af: 0.5,
@@ -361,6 +433,16 @@ describe('long-read TR locus query contract', () => {
     expect(locus).toMatchObject({
       sequences_available: false,
       sequences_unavailable_reason: 'ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED',
+      sequence_cardinality: {
+        source_alt_identity_count: 2,
+        unique_alt_sequence_count: 1,
+        all_source_alts_sequence_complete: true,
+        status: 'AVAILABLE_EXACT',
+      },
+      represented_length: {
+        status: 'UNAVAILABLE',
+        reason: 'ANCHOR_RULE_NOT_APPROVED',
+      },
       selected_allele_unavailable_reason: null,
       selected_allele: { variant_id: `${sourceVariantId}~1`, alt: boundedAlt },
       alleles: {
@@ -378,9 +460,12 @@ describe('long-read TR locus query contract', () => {
       .mockImplementationOnce(() =>
         result([
           {
+            task_id: 'task-1',
+            attempt_id: 'attempt-1',
             source_variant_id: sourceVariantId,
             alt_index: 1,
             allele_length: 0,
+            length_provenance: 'sequence_derived',
             ac: 1,
             an: 2,
             af: 0.5,
@@ -401,7 +486,18 @@ describe('long-read TR locus query contract', () => {
       sequences_unavailable_reason: 'EXACT_ALLELE_SEQUENCE_NOT_AVAILABLE',
       represented_allele_length_min: null,
       represented_allele_length_max: null,
-      represented_allele_length_unavailable_reason: 'EXACT_ALLELE_SEQUENCE_NOT_AVAILABLE',
+      represented_allele_length_unavailable_reason: 'EXACT_REF_ALT_SEQUENCE_BYTES_INCOMPLETE',
+      sequence_cardinality: {
+        source_alt_identity_count: 1,
+        unique_alt_sequence_count: null,
+        all_source_alts_sequence_complete: false,
+        status: 'UNAVAILABLE',
+        reason: 'EXACT_ALT_SEQUENCE_BYTES_INCOMPLETE',
+      },
+      represented_length: {
+        status: 'UNAVAILABLE',
+        reason: 'EXACT_REF_ALT_SEQUENCE_BYTES_INCOMPLETE',
+      },
       alleles: { nodes: [expect.objectContaining({ ref: null, alt: null })] },
     })
   })
@@ -455,6 +551,17 @@ describe('long-read TR locus query contract', () => {
       selected_allele: null,
       selected_allele_unavailable_reason: 'ALT_COUNT_EXCEEDS_600',
       exact_alt_count_unavailable_reason: 'ALT_COUNT_EXCEEDS_600',
+      sequence_cardinality: {
+        source_alt_identity_count: 601,
+        unique_alt_sequence_count: null,
+        all_source_alts_sequence_complete: false,
+        status: 'UNAVAILABLE',
+        reason: 'ALT_COUNT_EXCEEDS_600',
+      },
+      represented_length: {
+        status: 'UNAVAILABLE',
+        reason: 'ALT_COUNT_EXCEEDS_600',
+      },
       delta_min: null,
       delta_max: null,
       whole_record_allele_landscape: {
@@ -485,6 +592,276 @@ describe('long-read TR locus query contract', () => {
     await expect(
       fetchLongReadTrLocus({ id: httLocusId, cohort: 'aou', source: source('aou') })
     ).rejects.toThrow('TR_LOCUS_INVARIANT')
+  })
+})
+
+describe('round-two Phase 2A contracts', () => {
+  const approvedAnchorRule = {
+    id: 'VCF_SHARED_LEFT_PADDING_BASE_V1' as const,
+    source: 'synthetic-test-receipt',
+    release: 'test-v1',
+    digest: 'a'.repeat(64),
+  }
+
+  test('keeps dense component summaries exact without inventing source bounds', () => {
+    const components = Array.from({ length: 180 }, (_, index) => ({
+      chrom: '3',
+      start0: 1000 + index * 10,
+      end0: 1005 + index * 10,
+      motif: ['TGC', 'CAG', 'TG', 'A', 'TGC'][index % 5],
+    }))
+    const contract = buildLongReadTrComponentContract(components)
+    expect(contract).toEqual({
+      bounds: {
+        component_envelope_start0: 1000,
+        component_envelope_end0: 2795,
+        component_envelope_length_bp: 1795,
+        component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
+        source_ref_span_start0: null,
+        source_ref_span_end0: null,
+        source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
+        variation_cluster_start0: null,
+        variation_cluster_end0: null,
+        variation_cluster_length_bp: null,
+        variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
+        bounds_source: null,
+        bounds_release: null,
+        bounds_digest: null,
+      },
+      component_summary: {
+        ordered_component_count: 180,
+        distinct_stored_motif_count: 4,
+      },
+    })
+    expect(components.map((component) => component.motif)).toEqual(
+      Array.from({ length: 180 }, (_, index) => ['TGC', 'CAG', 'TG', 'A', 'TGC'][index % 5])
+    )
+  })
+
+  test('uses only exact component count for the receipt-free presentation fallback', () => {
+    expect(buildLongReadTrPresentation(1)).toEqual({
+      source_representation_kind: 'UNKNOWN',
+      presentation_layout: 'REPEAT_FOCUSED',
+      presentation_reason: 'SOLE_EXACT_COMPONENT',
+      classification_source: null,
+      classification_release: null,
+      classification_digest: null,
+      reviewed_override_digest: null,
+    })
+    expect(buildLongReadTrPresentation(6)).toMatchObject({
+      source_representation_kind: 'UNKNOWN',
+      presentation_layout: 'CLUSTER_FOCUSED',
+      presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+      classification_digest: null,
+      reviewed_override_digest: null,
+    })
+    expect(JSON.stringify(buildLongReadTrPresentation(6))).not.toContain('VARIATION_CLUSTER')
+  })
+
+  test('counts exact ALT bytes without coalescing source identities', () => {
+    const cardinality = buildSequenceCardinality({
+      alleles: [
+        {
+          source_variant_id: 'record-a',
+          alt_index: 1,
+          alt: 'AACAC',
+          allele_length: 0,
+          ac: 1,
+          an: 4,
+          af: 0.25,
+        },
+        {
+          source_variant_id: 'record-b',
+          alt_index: 1,
+          alt: 'AACAC',
+          allele_length: 0,
+          ac: 1,
+          an: 4,
+          af: 0.25,
+        },
+      ],
+      sourceRecords: [
+        { source_variant_id: 'record-a', alt_count: 1 },
+        { source_variant_id: 'record-b', alt_count: 1 },
+      ],
+    })
+    expect(cardinality).toEqual({
+      source_alt_identity_count: 2,
+      unique_alt_sequence_count: 1,
+      all_source_alts_sequence_complete: true,
+      status: 'AVAILABLE_EXACT',
+      reason: null,
+      algorithm_version: 'SHA256_WITH_BYTE_EQUALITY_V1',
+    })
+
+    const duplicateScaffold = phase0Fixture.future_contract_scaffolds.find(
+      (item: any) => item.id === 'duplicate-alt-bytes'
+    )
+    expect(
+      countUniqueExactAltBytes(
+        duplicateScaffold.source_alt_identities.map((identity: any) =>
+          Buffer.from(identity.alt, 'utf8')
+        )
+      )
+    ).toBe(duplicateScaffold.expected.unique_alt_sequence_count)
+    expect(duplicateScaffold.source_alt_identities).toHaveLength(
+      duplicateScaffold.expected.source_alt_identity_count
+    )
+
+    // Even a forced digest collision cannot merge unequal exact ALT bytes.
+    expect(
+      countUniqueExactAltBytes(
+        [Buffer.from('AACAC'), Buffer.from('AACAG')],
+        () => 'forced-collision'
+      )
+    ).toBe(2)
+  })
+
+  test('admits absolute lengths only with a valid receipt and exact stored-delta reconciliation', () => {
+    const disagreementScaffold = phase0Fixture.future_contract_scaffolds.find(
+      (item: any) => item.id === 'represented-length-disagreement'
+    )
+    const sequenceDerivedDelta =
+      Buffer.byteLength(disagreementScaffold.complete_alt) -
+      Buffer.byteLength(disagreementScaffold.complete_ref)
+    const base = {
+      source_variant_id: 'record-a',
+      alt_index: 1,
+      ref_allele: disagreementScaffold.complete_ref,
+      alt: disagreementScaffold.complete_alt,
+      allele_length: sequenceDerivedDelta,
+      length_provenance: 'sequence_derived',
+      ac: 1,
+      an: 2,
+      af: 0.5,
+    }
+    const input = {
+      alleles: [base],
+      sourceRecords: [{ source_variant_id: 'record-a', alt_count: 1 }],
+      sourceRunId: 'synthetic-run',
+    }
+    expect(buildRepresentedLengthContract({ ...input, approvedAnchorRule: null })).toMatchObject({
+      status: 'UNAVAILABLE',
+      reason: 'ANCHOR_RULE_NOT_APPROVED',
+      represented_ref_length_bp: null,
+      reconciliation_status: 'NOT_EVALUATED',
+    })
+    expect(buildRepresentedLengthContract({ ...input, approvedAnchorRule })).toMatchObject({
+      status: 'AVAILABLE_EXACT',
+      reason: null,
+      represented_ref_length_bp: 4,
+      represented_alt_min_length_bp: 6,
+      represented_alt_max_length_bp: 6,
+      sequence_length_provenance: 'lr_y1_alleles.ref_allele+alt@synthetic-run',
+      sequence_source_record_digest: expect.stringMatching(/^[a-f0-9]{64}$/),
+      sequence_content_digest: expect.stringMatching(/^[a-f0-9]{64}$/),
+      anchor_rule: 'VCF_SHARED_LEFT_PADDING_BASE_V1',
+      anchor_rule_source: 'synthetic-test-receipt',
+      anchor_rule_release: 'test-v1',
+      anchor_rule_digest: 'a'.repeat(64),
+      reconciliation_status: 'RECONCILED',
+    })
+    expect(
+      buildRepresentedLengthContract({
+        ...input,
+        alleles: [{ ...base, allele_length: disagreementScaffold.stored_length_delta_bp }],
+        approvedAnchorRule,
+      })
+    ).toMatchObject({
+      status: 'UNAVAILABLE',
+      reason: 'STORED_DELTA_RECONCILIATION_MISMATCH',
+      represented_ref_length_bp: null,
+      reconciliation_status: 'MISMATCH',
+      source_delta_provenance: 'SEQUENCE_DERIVED',
+    })
+  })
+
+  test('keeps represented-length failure modes distinct and byte-bound independent', () => {
+    const base = {
+      source_variant_id: 'record-a',
+      alt_index: 1,
+      task_id: 'task-a',
+      attempt_id: 'attempt-a',
+      ref_allele: 'AACAC',
+      alt: 'AACACAC',
+      allele_length: 2,
+      length_provenance: 'info_svlen',
+      ac: 1,
+      an: 2,
+      af: 0.5,
+    }
+    const oneRecord = {
+      source_variant_id: 'record-a',
+      alt_count: 1,
+      task_id: 'task-a',
+      attempt_id: 'attempt-a',
+    }
+    const build = (alleles: any[], sourceRecords: any[] = [oneRecord]) =>
+      buildRepresentedLengthContract({
+        alleles,
+        sourceRecords,
+        sourceRunId: 'synthetic-run',
+        approvedAnchorRule,
+      })
+
+    expect(build([{ ...base, alt: null }])).toMatchObject({
+      reason: 'EXACT_REF_ALT_SEQUENCE_BYTES_INCOMPLETE',
+    })
+    expect(build([{ ...base, alt: 'TACACAC' }])).toMatchObject({
+      reason: 'SHARED_PADDING_BASE_NOT_VALIDATED',
+      reconciliation_status: 'NOT_RECONCILED',
+    })
+    expect(build([{ ...base, allele_length: null }])).toMatchObject({
+      reason: 'NONFINITE_WHOLE_RECORD_DELTA',
+      source_delta_provenance: 'INFO_SVLEN',
+    })
+    expect(build([{ ...base, length_provenance: null }])).toMatchObject({
+      reason: 'SOURCE_DELTA_PROVENANCE_UNAVAILABLE',
+      source_delta_provenance: 'UNAVAILABLE',
+    })
+    expect(build([{ ...base, task_id: 'wrong-task' }])).toMatchObject({
+      reason: 'SOURCE_RECORD_PROVENANCE_MISMATCH',
+    })
+
+    const second = {
+      ...base,
+      alt_index: 2,
+      ref_allele: 'ATCAC',
+      alt: 'ATCACAC',
+    }
+    expect(build([base, second], [{ ...oneRecord, alt_count: 2 }])).toMatchObject({
+      reason: 'SOURCE_REF_BYTES_INCONSISTENT',
+    })
+    expect(
+      build(
+        [base, { ...base, alt_index: 2, length_provenance: 'sequence_derived' }],
+        [{ ...oneRecord, alt_count: 2 }]
+      )
+    ).toMatchObject({ status: 'AVAILABLE_EXACT', source_delta_provenance: 'MIXED' })
+    expect(
+      build(
+        [base, { ...base, source_variant_id: 'record-b' }],
+        [oneRecord, { source_variant_id: 'record-b', alt_count: 1 }]
+      )
+    ).toMatchObject({ reason: 'MULTIPLE_SOURCE_RECORDS' })
+
+    const overResponseBoundAlt = `A${'C'.repeat(MAX_TR_SELECTED_ALLELE_DETAIL_BYTES + 1)}`
+    expect(
+      build([
+        {
+          ...base,
+          ref_allele: 'A',
+          alt: overResponseBoundAlt,
+          allele_length: overResponseBoundAlt.length - 1,
+        },
+      ])
+    ).toMatchObject({
+      status: 'AVAILABLE_EXACT',
+      represented_ref_length_bp: 0,
+      represented_alt_min_length_bp: MAX_TR_SELECTED_ALLELE_DETAIL_BYTES + 1,
+      source_delta_provenance: 'INFO_SVLEN',
+      reconciliation_status: 'RECONCILED',
+    })
   })
 })
 

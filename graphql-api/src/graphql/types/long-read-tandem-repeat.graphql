@@ -600,6 +600,155 @@ type LongReadTrPrimaryMotifMeasurement {
   provenance: LongReadTrPrimaryMotifProvenance
 }
 
+enum LongReadTrSourceRepresentationKind {
+  STANDALONE_TR
+  VARIATION_CLUSTER
+  UNKNOWN
+}
+
+enum LongReadTrPresentationLayout {
+  REPEAT_FOCUSED
+  CLUSTER_FOCUSED
+}
+
+enum LongReadTrPresentationReason {
+  SOLE_EXACT_COMPONENT
+  REVIEWED_PRIMARY_REPEAT
+  SOURCE_VARIATION_CLUSTER
+  MULTI_COMPONENT_FALLBACK
+}
+
+# Scientific source kind and visual layout are separate. Positive source kinds and
+# reviewed overrides require immutable receipts; missing receipts fail to UNKNOWN.
+type LongReadTrPresentation {
+  source_representation_kind: LongReadTrSourceRepresentationKind!
+  presentation_layout: LongReadTrPresentationLayout!
+  presentation_reason: LongReadTrPresentationReason!
+  classification_source: String
+  classification_release: String
+  classification_digest: String
+  reviewed_override_digest: String
+}
+
+enum LongReadTrComponentEnvelopeBasis {
+  EXACT_ORDERED_COMPONENTS
+}
+
+enum LongReadTrSourceRefSpanStatus {
+  AVAILABLE_EXACT
+  UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT
+}
+
+enum LongReadTrVariationClusterBoundsStatus {
+  AVAILABLE_EXACT
+  UNAVAILABLE_NO_APPROVED_CLASSIFICATION
+}
+
+# Component geometry, source REF span, and source-declared cluster bounds are never
+# substituted for one another. The latter two remain null without approved provenance.
+type LongReadTrBounds {
+  component_envelope_start0: Int!
+  component_envelope_end0: Int!
+  component_envelope_length_bp: Int!
+  component_envelope_basis: LongReadTrComponentEnvelopeBasis!
+  source_ref_span_start0: Int
+  source_ref_span_end0: Int
+  source_ref_span_status: LongReadTrSourceRefSpanStatus!
+  variation_cluster_start0: Int
+  variation_cluster_end0: Int
+  variation_cluster_length_bp: Int
+  variation_cluster_status: LongReadTrVariationClusterBoundsStatus!
+  bounds_source: String
+  bounds_release: String
+  bounds_digest: String
+}
+
+type LongReadTrComponentSummary {
+  ordered_component_count: Int!
+  distinct_stored_motif_count: Int!
+}
+
+enum LongReadTrSequenceCardinalityStatus {
+  AVAILABLE_EXACT
+  UNAVAILABLE
+}
+
+enum LongReadTrSequenceCardinalityReason {
+  ALT_COUNT_EXCEEDS_600
+  MISSING_OR_DUPLICATE_ALT_INDEX
+  SOURCE_RECORD_PROVENANCE_MISMATCH
+  EXACT_ALT_SEQUENCE_BYTES_INCOMPLETE
+}
+
+# Source identities are never coalesced. Unique ALT bytes are available only after
+# every bounded ALT is complete and SHA-256 bucketing is followed by exact byte equality.
+type LongReadTrSequenceCardinality {
+  source_alt_identity_count: Int!
+  unique_alt_sequence_count: Int
+  all_source_alts_sequence_complete: Boolean!
+  status: LongReadTrSequenceCardinalityStatus!
+  reason: LongReadTrSequenceCardinalityReason
+  algorithm_version: String!
+}
+
+enum LongReadTrRepresentedLengthStatus {
+  AVAILABLE_EXACT
+  UNAVAILABLE
+}
+
+enum LongReadTrRepresentedLengthReason {
+  ALT_COUNT_EXCEEDS_600
+  MISSING_OR_DUPLICATE_ALT_INDEX
+  SOURCE_RECORD_PROVENANCE_MISMATCH
+  SOURCE_DELTA_PROVENANCE_UNAVAILABLE
+  NONFINITE_WHOLE_RECORD_DELTA
+  MULTIPLE_SOURCE_RECORDS
+  EXACT_REF_ALT_SEQUENCE_BYTES_INCOMPLETE
+  ANCHOR_RULE_NOT_APPROVED
+  ANCHOR_RULE_RECEIPT_INVALID
+  SHARED_PADDING_BASE_NOT_VALIDATED
+  SOURCE_REF_BYTES_INCONSISTENT
+  STORED_DELTA_RECONCILIATION_MISMATCH
+}
+
+enum LongReadTrRepresentedLengthAnchorRule {
+  VCF_SHARED_LEFT_PADDING_BASE_V1
+}
+
+enum LongReadTrRepresentedLengthReconciliationStatus {
+  NOT_EVALUATED
+  NOT_RECONCILED
+  MISMATCH
+  RECONCILED
+}
+
+enum LongReadTrSourceDeltaProvenance {
+  INFO_ALLELE_LENGTH
+  INFO_SVLEN
+  SEQUENCE_DERIVED
+  MIXED
+  UNAVAILABLE
+}
+
+# Absolute represented lengths are an optional, receipt-gated product. Signed source
+# delta remains separate and available when this product is unavailable.
+type LongReadTrRepresentedLength {
+  status: LongReadTrRepresentedLengthStatus!
+  reason: LongReadTrRepresentedLengthReason
+  represented_ref_length_bp: Int
+  represented_alt_min_length_bp: Int
+  represented_alt_max_length_bp: Int
+  source_delta_provenance: LongReadTrSourceDeltaProvenance!
+  sequence_length_provenance: String
+  sequence_source_record_digest: String
+  sequence_content_digest: String
+  anchor_rule: LongReadTrRepresentedLengthAnchorRule
+  anchor_rule_source: String
+  anchor_rule_release: String
+  anchor_rule_digest: String
+  reconciliation_status: LongReadTrRepresentedLengthReconciliationStatus!
+}
+
 type LongReadTandemRepeatLocus {
   id: String!
   source_trid: String!
@@ -613,6 +762,11 @@ type LongReadTandemRepeatLocus {
   source_release: String!
   source_run_id: String!
   source_records: [LongReadTrSourceRecord!]!
+  presentation: LongReadTrPresentation!
+  bounds: LongReadTrBounds!
+  component_summary: LongReadTrComponentSummary!
+  sequence_cardinality: LongReadTrSequenceCardinality!
+  represented_length: LongReadTrRepresentedLength!
   total_alleles: Int!
   exact_alt_count: Int!
   exact_alt_count_complete: Boolean!
