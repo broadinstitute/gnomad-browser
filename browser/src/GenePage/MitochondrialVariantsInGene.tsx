@@ -5,13 +5,11 @@ import {
   referenceGenome,
   hasMitochondrialVariants,
 } from '@gnomad/dataset-metadata/metadata'
-import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import StatusMessage from '../StatusMessage'
-import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 
@@ -132,24 +130,14 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: P
 
         return (
           <>
-            <TrackPageSection>
-              <h2>ClinVar variants</h2>
-            </TrackPageSection>
-            {data.gene.clinvar_variants.length > 0 ? (
-              <>
-                <ClinvarVariantTrack
-                  referenceGenome={referenceGenome(datasetId)}
-                  transcripts={gene.transcripts}
-                  variants={filterVariantsInZoomRegion(data.gene.clinvar_variants, zoomRegion)}
-                />
-                <TrackPageSection as="p" style={{ margin: 0 }}>
-                  Data displayed here is from ClinVar&apos;s{' '}
-                  {formatClinvarDate(data.meta.clinvar_release_date)} release.
-                </TrackPageSection>
-              </>
-            ) : (
-              <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
-            )}
+            <ClinvarVariants
+              clinvarVariants={data.gene.clinvar_variants}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+              referenceGenome={referenceGenome(datasetId)}
+              transcripts={gene.transcripts}
+              zoomRegion={zoomRegion}
+              pageType="gene"
+            />
 
             <MitochondrialVariants
               {...rest}

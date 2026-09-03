@@ -2,6 +2,8 @@ import styled from 'styled-components'
 
 import { Page } from '@gnomad/ui'
 
+export type PageType = 'gene' | 'transcript' | 'region'
+
 export const TrackPage = styled(Page)`
   max-width: none;
 `

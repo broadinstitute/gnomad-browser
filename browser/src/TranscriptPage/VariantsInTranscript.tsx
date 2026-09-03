@@ -3,18 +3,17 @@ import React from 'react'
 import { Badge } from '@gnomad/ui'
 
 import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
-import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
-import { TrackPageSection } from '../TrackPage'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 
 type OwnVariantsInTranscriptProps = {
   clinvarReleaseDate: string
-  clinvarVariants?: any[]
+  clinvarVariants?: ClinvarVariant[] | null
   datasetId: DatasetId
   includeUTRs: boolean
   transcript: {
@@ -55,24 +54,14 @@ const VariantsInTranscript = ({
 
   return (
     <>
-      <TrackPageSection>
-        <h2>ClinVar variants</h2>
-      </TrackPageSection>
-      {clinvarVariants.length > 0 ? (
-        <>
-          <ClinvarVariantTrack
-            referenceGenome={referenceGenome(datasetId)}
-            transcripts={[transcript]}
-            variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
-          />
-          <TrackPageSection as="p">
-            Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)}{' '}
-            release.
-          </TrackPageSection>
-        </>
-      ) : (
-        <TrackPageSection as="p">No ClinVar variants found in this transcript.</TrackPageSection>
-      )}
+      <ClinvarVariants
+        clinvarVariants={clinvarVariants}
+        clinvarReleaseDate={clinvarReleaseDate}
+        referenceGenome={referenceGenome(datasetId)}
+        transcripts={[transcript]}
+        zoomRegion={zoomRegion}
+        pageType="transcript"
+      />
 
       <Variants
         clinvarReleaseDate={clinvarReleaseDate}
