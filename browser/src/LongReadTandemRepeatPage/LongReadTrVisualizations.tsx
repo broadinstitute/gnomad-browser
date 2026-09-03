@@ -1607,7 +1607,8 @@ export const WholeRecordAlleleLandscape = ({
     repeatCountPlots?.status === 'AVAILABLE_EXACT' ? repeatCountPlots : undefined
   const admittedGenotypeLandscape =
     genotypeLandscape?.status === 'AVAILABLE' ? genotypeLandscape : undefined
-  const visiblePlotCount = admittedRepeatCountPlots ? 4 : 2 + (admittedGenotypeLandscape ? 1 : 0)
+  const visiblePlotCount =
+    2 + (admittedRepeatCountPlots ? 2 : 0) + (admittedGenotypeLandscape ? 1 : 0)
   const repeatCountVariantId = variantId || 'lr-tr-locus'
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -3496,6 +3497,7 @@ const ExactStoredMotifSequence = ({
             }`
       const color =
         segment.type === 'motif' ? motifColor(motifs[segment.motifIndex], motifs) : '#333'
+      const followsMotif = segmentIndex > 0 && segments[segmentIndex - 1].type === 'motif'
       return (
         <span
           // Source sequence order is stable and repeated literal occurrences remain distinct.
@@ -3508,16 +3510,20 @@ const ExactStoredMotifSequence = ({
             let borderRadius: string | number = 0
             if (baseIndex === 0) borderRadius = '2px 0 0 2px'
             else if (baseIndex === segment.sequence.length - 1) borderRadius = '0 2px 2px 0'
+            const hasMotifSeparator = segment.type === 'motif' && followsMotif && baseIndex === 0
             return (
               <span
                 // Base offset within one stable source segment is deterministic.
                 // eslint-disable-next-line react/no-array-index-key
                 key={baseIndex}
                 data-sequence-match={segment.type === 'motif' ? 'motif' : 'unmatched'}
+                data-motif-visual-separator={hasMotifSeparator ? 'true' : undefined}
                 aria-label={segment.type === 'unmatched' ? `${base}, unmatched base` : undefined}
                 style={{
                   display: 'inline-block',
                   width: 8,
+                  // Visual separation only; no characters are inserted into the source sequence.
+                  marginLeft: hasMotifSeparator ? 2 : 0,
                   borderRadius,
                   background: color,
                   color: '#fff',
@@ -3565,7 +3571,7 @@ const SelectedExactSequence = ({
     <>
       {exactSequence}
       <p style={{ marginBottom: 4 }}>
-        <strong>Exact stored-motif string preview</strong>
+        <strong>Stored-motif matches</strong>
       </p>
       <HighlightedExactSequence>
         <ExactStoredMotifSequence
@@ -3670,7 +3676,7 @@ export const SelectedExactAlleleDetail = React.forwardRef<
           <code>{motifs.length ? motifs.join(', ') : 'unavailable'}</code>
         </p>
         <p style={{ marginBottom: 4 }}>
-          <strong>Exact copyable source sequence</strong>
+          <strong>Source ALT sequence</strong>
         </p>
         <SelectedExactSequence
           allele={allele}

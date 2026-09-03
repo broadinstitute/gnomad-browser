@@ -19,6 +19,7 @@ import {
   purityPointDiameter,
   purityScalePosition,
   reconciledFilterOptions,
+  SelectedExactAlleleDetail,
   stackColorFor,
   WholeRecordAlleleLandscape,
   WholeRecordGenotypeLandscape,
@@ -472,6 +473,134 @@ describe('long-read TR visualization fidelity', () => {
         'Bar height: called non-reference allele copies. Number above: source ALT identities.'
       )
     ).not.toBeNull()
+  })
+
+  test('renders repeat-count and genotype-length cards together with a dynamic plot count', () => {
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: '__REFERENCE__',
+      called_samples: 1,
+      called_alleles: 2,
+      ancestry_groups: [],
+      sexes: [],
+      cells: [
+        {
+          shorter_delta: -6,
+          longer_delta: 0,
+          people: 1,
+          pairs: [duplicatePairs[0]],
+        },
+      ],
+    }
+    const repeatCountPlots: LongReadTrLocus['repeat_count_plots'] = {
+      status: 'AVAILABLE_EXACT',
+      reason_code: null,
+      repeat_unit: 'CAG',
+      max_repunits: 11,
+      interaction: {
+        interaction_status: 'UNAVAILABLE_SOURCE_IDENTITIES',
+        reason: 'Aggregate histogram source has no exact contributor identities.',
+      },
+      allele_size_distribution: [
+        {
+          ancestry_group: 'afr',
+          sex: 'XX',
+          repunit: 'CAG',
+          distribution: [{ repunit_count: 10, frequency: 2, colorByValue: null }],
+        },
+      ],
+      genotype_distribution: [
+        {
+          ancestry_group: 'afr',
+          sex: 'XX',
+          short_allele_repunit: 'CAG',
+          long_allele_repunit: 'CAG',
+          distribution: [
+            {
+              short_allele_repunit_count: 10,
+              long_allele_repunit_count: 11,
+              frequency: 1,
+            },
+          ],
+        },
+      ],
+    }
+
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        genotypeLandscape={genotypeLandscape}
+        repeatCountPlots={repeatCountPlots}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+
+    const grid = screen.getByTestId('whole-record-allele-plot-grid')
+    expect(grid.getAttribute('data-plot-count')).toBe('5')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(5)
+    expect(within(grid).getByTestId('allele-repeat-count-card')).not.toBeNull()
+    expect(within(grid).getByTestId('genotype-repeat-count-card')).not.toBeNull()
+    expect(within(grid).getByTestId('genotype-length-card')).not.toBeNull()
+  })
+
+  test('visually separates adjacent motif matches without changing sequence bytes', () => {
+    render(
+      <SelectedExactAlleleDetail
+        allele={{
+          ...alleles[0],
+          ref: 'A',
+          alt: 'ACAGCAGCAA',
+          motif_purity_source: null,
+          decomposition_status: 'UNAVAILABLE_NO_DECOMPOSITION',
+          decomposition_reason: 'No admitted source decomposition is available',
+          rsids: [],
+          filters: [],
+          major_consequence: null,
+          cadd_phred: null,
+          phylop: null,
+          short_read_match_id: null,
+          short_read_match_type: null,
+          short_read_match_source: null,
+          source_release: 'test',
+          source_run_id: 'run-test',
+        }}
+        motifs={['CAG', 'CAA']}
+        representedLength={{
+          status: 'AVAILABLE_EXACT',
+          reason: null,
+          represented_ref_length_bp: 9,
+          represented_alt_min_length_bp: 9,
+          represented_alt_max_length_bp: 9,
+          source_delta_provenance: 'INFO_ALLELE_LENGTH',
+          sequence_length_provenance: 'test',
+          sequence_source_record_digest: 'a'.repeat(64),
+          sequence_content_digest: 'b'.repeat(64),
+          anchor_rule: 'VCF_SHARED_LEFT_PADDING_BASE_V1',
+          anchor_rule_source: 'test',
+          anchor_rule_release: 'test',
+          anchor_rule_digest: 'c'.repeat(64),
+          reconciliation_status: 'RECONCILED',
+        }}
+      />
+    )
+
+    expect(screen.getByText('Source ALT sequence', { exact: true })).not.toBeNull()
+    expect(screen.getByText('Stored-motif matches', { exact: true })).not.toBeNull()
+    expect(screen.getByLabelText('Exact copyable source sequence for Sequence 1').textContent).toBe(
+      'ACAGCAGCAA'
+    )
+    const preview = screen.getByLabelText(/Exact stored-motif string preview for Sequence 1/)
+    expect(preview.textContent).toBe('CAGCAGCAA')
+    const separators = preview.querySelectorAll('[data-motif-visual-separator="true"]')
+    expect(separators).toHaveLength(2)
+    expect(
+      Array.from(separators).every(
+        (separator) => window.getComputedStyle(separator).marginLeft === '2px'
+      )
+    ).toBe(true)
   })
 
   test('lists every same-length exact ALT as a keyboard-operable selection link', () => {

@@ -633,7 +633,7 @@ const LongReadTandemRepeatPage = ({
 
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}
-        genotypeLandscape={repeatPlotsAvailable ? undefined : locus.whole_record_genotype_landscape}
+        genotypeLandscape={locus.whole_record_genotype_landscape}
         repeatCountPlots={repeatPlotsAvailable ? locus.repeat_count_plots : undefined}
         variantId={locus.id}
         markFilterScope={{

@@ -361,20 +361,31 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     test.setTimeout(60_000)
     const index = await openLocus(page, SIMPLE_THREE_ALT_LOCUS, 3)
     const indexTable = index.getByRole('table', { name: 'Source ALT allele index' })
-    await expect(indexTable.getByRole('img', { name: /motif structure preview/ })).toHaveCount(3)
+    await expect(
+      indexTable.getByRole('img', { name: /exact stored-motif string preview/ })
+    ).toHaveCount(3)
     await expect(page.getByText(/Motif previews are unavailable/)).toHaveCount(0)
     const simpleLandscape = page.getByTestId('whole-record-allele-plot-grid')
-    await expect(simpleLandscape).toHaveAttribute('data-plot-count', '4')
+    await expect(simpleLandscape).toHaveAttribute('data-plot-count', '5')
     await expect(page.getByRole('heading', { name: 'Simple-locus repeat counts' })).toHaveCount(0)
     expect(await simpleLandscape.locator('rect[fill="#9c27b0"]').count()).toBeGreaterThan(0)
+    await expect(
+      simpleLandscape.getByRole('heading', { name: 'Genotype length distribution' })
+    ).toBeVisible()
     const simpleLandscapeCards = await simpleLandscape.locator(':scope > [data-plot-card]').all()
-    expect(simpleLandscapeCards).toHaveLength(4)
+    expect(simpleLandscapeCards).toHaveLength(5)
     const simpleCardBoxes = await Promise.all(
       simpleLandscapeCards.map((card) => card.boundingBox())
     )
     simpleCardBoxes.forEach((box) => expect(box).not.toBeNull())
     expect(Math.abs(simpleCardBoxes[0]!.y - simpleCardBoxes[1]!.y)).toBeLessThanOrEqual(2)
     expect(Math.abs(simpleCardBoxes[2]!.y - simpleCardBoxes[3]!.y)).toBeLessThanOrEqual(2)
+    expect(simpleCardBoxes[4]!.y).toBeGreaterThan(
+      Math.max(
+        simpleCardBoxes[2]!.y + simpleCardBoxes[2]!.height,
+        simpleCardBoxes[3]!.y + simpleCardBoxes[3]!.height
+      ) + 20
+    )
     expect(
       simpleCardBoxes[1]!.x - (simpleCardBoxes[0]!.x + simpleCardBoxes[0]!.width)
     ).toBeGreaterThanOrEqual(24)
@@ -392,7 +403,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachLocatorScreenshot(
       simpleLandscape,
       testInfo,
-      'simple-allelic-landscape-four-panel-wide.png'
+      'simple-allelic-landscape-five-panel-wide.png'
     )
 
     await page.setViewportSize({ width: 390, height: 844 })
@@ -410,13 +421,13 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachLocatorScreenshot(
       simpleLandscape,
       testInfo,
-      'simple-allelic-landscape-four-panel-narrow.png'
+      'simple-allelic-landscape-five-panel-narrow.png'
     )
     await page.setViewportSize({ width: 1280, height: 720 })
 
     await expect(page.getByRole('img', { name: /ordered LR reference components/ })).toHaveCount(0)
     const previewColors = await indexTable
-      .getByRole('img', { name: /Sequence \d+ motif structure preview/ })
+      .getByRole('img', { name: /Sequence \d+ exact stored-motif string preview/ })
       .evaluateAll((previews) =>
         previews.map((preview) => preview.querySelector('rect')?.getAttribute('fill'))
       )
@@ -456,6 +467,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     ).toHaveCount(0)
 
     const detail = page.getByTestId('lr-tr-selected-detail')
+    await expect(detail.getByText('Source ALT sequence', { exact: true })).toBeVisible()
+    await expect(detail.getByText('Stored-motif matches', { exact: true })).toBeVisible()
     const exactSequence = detail.getByLabel('Exact copyable source sequence for Sequence 15')
     const representedSequence = detail.getByLabel(
       /Exact stored-motif string preview for Sequence 15/
@@ -468,8 +481,15 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect((await representedSequence.textContent())?.length).toBe(42)
     const matchingBases = representedSequence.locator('[data-sequence-match="motif"]')
     const unmatchedBases = representedSequence.locator('[data-sequence-match="unmatched"]')
+    const visualSeparators = representedSequence.locator('[data-motif-visual-separator="true"]')
     await expect(matchingBases).toHaveCount(39)
     await expect(unmatchedBases).toHaveCount(3)
+    await expect(visualSeparators).toHaveCount(12)
+    expect(
+      await visualSeparators.evaluateAll((separators) =>
+        separators.every((separator) => getComputedStyle(separator).marginLeft === '2px')
+      )
+    ).toBe(true)
     await expect(page.getByText(/Shared VCF anchor/i)).toHaveCount(0)
     await expect(page.getByLabel(/Shared VCF anchor/i)).toHaveCount(0)
     const [matchingColor, interruptionColor] = await Promise.all([
@@ -1062,7 +1082,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(page.getByText('Sequence analysis details', { exact: true })).toHaveCount(0)
     await expect(page.getByText(/Browser motif analysis used/)).toHaveCount(0)
     await expect(page.getByText(/shown neutrally because no admitted projection/)).toHaveCount(0)
-    await expect(page.getByText('Exact stored-motif string preview', { exact: true })).toBeVisible()
+    await expect(page.getByText('Source ALT sequence', { exact: true })).toBeVisible()
+    await expect(page.getByText('Stored-motif matches', { exact: true })).toBeVisible()
     await expect(page.getByRole('table', { name: 'Exact motif match summary' })).toBeVisible()
     await expect(page.getByLabel('Exact copyable source sequence for Sequence 72')).toBeVisible()
     await expect(page.getByLabel(/Shared VCF anchor/)).toHaveCount(0)

@@ -1030,7 +1030,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('alert')).toBeNull()
   })
 
-  test('uses one spacious responsive 2 × 2 grid for the four actually admitted simple plots', () => {
+  test('keeps genotype length alongside the four admitted simple-locus plots', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
     const grid = screen.getByTestId('whole-record-allele-plot-grid')
@@ -1041,9 +1041,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
       expect.stringContaining('Genotype repeat-count distribution'),
       'Change from REF (bp)',
       'Change from REF × motif purity',
+      'Genotype length distribution',
     ])
-    expect(grid.getAttribute('data-plot-count')).toBe('4')
-    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(4)
+    expect(grid.getAttribute('data-plot-count')).toBe('5')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(5)
     expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
     expect(
@@ -1061,7 +1062,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
         /These marks are read-only when the source does not identify the contributing exact ALT sequences or allele pairs/
       )
     ).not.toBeNull()
-    expect(within(grid).queryByRole('heading', { name: 'Genotype length distribution' })).toBeNull()
+    expect(within(grid).getByTestId('genotype-length-card')).not.toBeNull()
     expect(grid).toHaveStyleRule('grid-template-columns', 'repeat( 2,minmax(280px,1fr) )')
     expect(grid).toHaveStyleRule('gap', 'clamp(24px,2vw,32px)')
     expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(280px,1fr))', {
@@ -1335,6 +1336,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByLabelText('Primary repeat: GCA', { exact: true })).not.toBeNull()
 
     const detail = screen.getByTestId('lr-tr-selected-detail')
+    expect(within(detail).getByText('Source ALT sequence', { exact: true })).not.toBeNull()
+    expect(within(detail).getByText('Stored-motif matches', { exact: true })).not.toBeNull()
     const exactSequence = within(detail).getByLabelText(
       'Exact copyable source sequence for Sequence 15'
     )
@@ -1399,6 +1402,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     expect(detail.querySelectorAll('[data-sequence-match="motif"]')).toHaveLength(6)
     expect(detail.querySelectorAll('[data-sequence-match="unmatched"]')).toHaveLength(0)
+    const visualSeparators = detail.querySelectorAll('[data-motif-visual-separator="true"]')
+    expect(visualSeparators).toHaveLength(1)
+    expect(
+      Array.from(visualSeparators).every(
+        (separator) => window.getComputedStyle(separator).marginLeft === '2px'
+      )
+    ).toBe(true)
     const motifSummary = within(detail).getByRole('table', { name: 'Exact motif match summary' })
     expect(
       within(motifSummary).getByRole('rowheader', { name: 'CAG' }).closest('tr')?.textContent
