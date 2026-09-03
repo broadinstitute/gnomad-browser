@@ -441,7 +441,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await attachAlleleBrowserScreenshot(page, testInfo, 'simple-three-alt-motif-previews.png')
   })
 
-  test('one-component GCA selected detail highlights motif matches and interruptions', async ({
+  test('one-component GCA selected detail highlights exact matches and unmatched bases', async ({
     page,
   }, testInfo) => {
     test.setTimeout(120_000)
@@ -455,8 +455,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
 
     const selectedRow = index.locator(`[role="row"][title="${GCA_ALT}"]`)
     await expect(
-      selectedRow.getByRole('img', { name: 'Sequence 15 motif structure preview' })
-    ).toBeVisible()
+      selectedRow.getByRole('img', {
+        name: /Sequence 15 exact stored-motif string preview; GCA: 13 exact occurrences/,
+      })
+    ).toHaveCount(1)
     await expect(
       selectedRow.getByRole('img', { name: /neutral represented sequence/ })
     ).toHaveCount(0)
@@ -464,7 +466,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const detail = page.getByTestId('lr-tr-selected-detail')
     const exactSequence = detail.getByLabel('Exact copyable source sequence for Sequence 15')
     const representedSequence = detail.getByLabel(
-      'Motif-highlighted represented sequence for Sequence 15'
+      /Exact stored-motif string preview for Sequence 15/
     )
     await expect(exactSequence).toHaveText('GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC')
     await expect(detail.getByText('42 bp represented')).toBeVisible()
@@ -473,25 +475,23 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect((await exactSequence.textContent())?.length).toBe(43)
     expect((await representedSequence.textContent())?.length).toBe(42)
     const matchingBases = representedSequence.locator('[data-sequence-match="motif"]')
-    const interruptionBases = representedSequence.locator(
-      '[data-sequence-match="interruption-or-mismatch"]'
-    )
-    await expect(matchingBases).toHaveCount(41)
-    await expect(interruptionBases).toHaveCount(1)
+    const unmatchedBases = representedSequence.locator('[data-sequence-match="unmatched"]')
+    await expect(matchingBases).toHaveCount(39)
+    await expect(unmatchedBases).toHaveCount(3)
     await expect(page.getByText(/Shared VCF anchor/i)).toHaveCount(0)
     await expect(page.getByLabel(/Shared VCF anchor/i)).toHaveCount(0)
     const [matchingColor, interruptionColor] = await Promise.all([
       matchingBases.first().evaluate((base) => getComputedStyle(base).backgroundColor),
-      interruptionBases.first().evaluate((base) => getComputedStyle(base).backgroundColor),
+      unmatchedBases.first().evaluate((base) => getComputedStyle(base).backgroundColor),
     ])
     expect(matchingColor).not.toBe(interruptionColor)
     expect(interruptionColor).toBe('rgb(51, 51, 51)')
-    await expect(interruptionBases.first()).toHaveAttribute(
-      'aria-label',
-      /interruption or mismatch/
-    )
-    await expect(detail.getByText(/Dark bases are interruptions or mismatches/)).toBeVisible()
-    await expect(detail.getByText(/does not assign bases to reference components/)).toBeVisible()
+    await expect(unmatchedBases.first()).toHaveAttribute('aria-label', /unmatched base/)
+    await expect(detail.getByText(/every other represented base is dark/)).toBeVisible()
+    await expect(detail.getByText(/does not project onto reference components/)).toBeVisible()
+    await expect(
+      detail.getByLabel(/Exact stored-motif string counts; GCA: 13 exact occurrences/)
+    ).toBeVisible()
     await expect(detail.getByText(/Sequence analysis details/)).toHaveCount(0)
     await expect(detail.getByText(/tokens/)).toHaveCount(0)
     await expect(detail.getByRole('heading', { name: /Exact ALT sequence/ })).toHaveCount(0)
@@ -527,7 +527,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await verifyNarrowDetail(390)
   })
 
-  test('multi-component chr16 TG selected detail stays neutral without projection', async ({
+  test('multi-component chr16 TG detail colors only literal TG strings', async ({
     page,
   }, testInfo) => {
     test.setTimeout(120_000)
@@ -537,17 +537,37 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(selected).toBe('chr16-85400249-TRV-93~6')
 
     const detail = page.getByTestId('lr-tr-selected-detail')
-    await expect(detail.getByText(/shown neutrally because no admitted projection/)).toBeVisible()
-    await expect(detail.locator('[data-sequence-match="motif"]')).toHaveCount(0)
-    await expect(detail.getByLabel('Exact copyable source sequence for Sequence 6')).toHaveText(
+    const exactSequence = detail.getByLabel('Exact copyable source sequence for Sequence 6')
+    await expect(exactSequence).toHaveText(
       'TTCTGTGTGTGTGTGTGTGTGTGTGTGTGTGTAATTGTGTGTGTTTCTGTGTATGATTTTGTGTGTGTGATTATATGTCTGTGTGTGT'
     )
+    const representedSequence = detail.getByLabel(
+      /Exact stored-motif string preview for Sequence 6; TG: 31 exact occurrences/
+    )
+    await expect(representedSequence).toHaveText(
+      'TCTGTGTGTGTGTGTGTGTGTGTGTGTGTGTAATTGTGTGTGTTTCTGTGTATGATTTTGTGTGTGTGATTATATGTCTGTGTGTGT'
+    )
+    const motifBases = representedSequence.locator('[data-sequence-match="motif"]')
+    const unmatchedBases = representedSequence.locator('[data-sequence-match="unmatched"]')
+    await expect(motifBases).toHaveCount(62)
+    await expect(unmatchedBases).toHaveCount(25)
+    expect(
+      await motifBases.first().evaluate((base) => getComputedStyle(base).backgroundColor)
+    ).toBe('rgb(31, 119, 180)')
+    expect(
+      await unmatchedBases.first().evaluate((base) => getComputedStyle(base).backgroundColor)
+    ).toBe('rgb(51, 51, 51)')
     await expect(
-      index
-        .locator('[role="row"][title$="~6"]')
-        .getByRole('img', { name: /neutral represented sequence; no component projection/ })
+      detail.getByLabel(
+        /Exact stored-motif string counts; TG: 31 exact occurrences.*unmatched: 25 bases/i
+      )
     ).toBeVisible()
-    await attachAlleleBrowserScreenshot(page, testInfo, 'chr16-tg-selected-detail-neutral.png')
+    await expect(
+      index.locator('[role="row"][title$="~6"]').getByRole('img', {
+        name: /Sequence 6 exact stored-motif string preview; TG: 31 exact occurrences.*unmatched: 25 bases/i,
+      })
+    ).toBeVisible()
+    await attachAlleleBrowserScreenshot(page, testInfo, 'chr16-tg-selected-detail-strict.png')
   })
 
   test('HTT, ATXN1, and RFC1 expose exact catalog identity without changing measurements', async ({
@@ -795,13 +815,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       )
     })
     const compactPreview = indexTable
-      .getByRole('img', {
-        name: /Sequence \d+ neutral represented sequence; no component projection is admitted/,
-      })
+      .locator('svg[aria-label*="exact stored-motif string preview"]:visible')
       .first()
     await expect(compactPreview).toBeVisible()
-    await expect(compactPreview.locator('[data-motif-unit]')).toHaveCount(0)
-    await expect(compactPreview.locator('rect')).toHaveAttribute('fill', '#737b80')
+    expect(await compactPreview.locator('[data-motif-unit="true"]').count()).toBeGreaterThan(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-all-exact-alts-wide.png')
 
     const wholeRecordPlots = page.getByTestId('whole-record-allele-plot-grid')
@@ -1029,17 +1046,22 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       expect(Math.abs(selectedMetric.visualWidth - selectedMetric.diameter)).toBeLessThanOrEqual(1)
     }
     await expect(page.getByLabel('Selected ALT motif structure grid')).toHaveCount(0)
-    await expect(
-      page.getByTestId('lr-tr-selected-detail').locator('[data-sequence-match="motif"]')
-    ).toHaveCount(0)
+    expect(
+      await page
+        .getByTestId('lr-tr-selected-detail')
+        .locator('[data-sequence-match="motif"]')
+        .count()
+    ).toBeGreaterThan(0)
     await expect(
       httIndex
         .locator('[role="row"][title$="~72"]')
-        .getByRole('img', { name: /neutral represented sequence; no component projection/ })
+        .getByRole('img', { name: /exact stored-motif string preview/ })
     ).toBeVisible()
     await expect(page.getByText('Sequence analysis details', { exact: true })).toHaveCount(0)
     await expect(page.getByText(/Browser motif analysis used/)).toHaveCount(0)
-    await expect(page.getByText(/shown neutrally because no admitted projection/)).toBeVisible()
+    await expect(page.getByText(/shown neutrally because no admitted projection/)).toHaveCount(0)
+    await expect(page.getByText('Exact stored-motif string preview', { exact: true })).toBeVisible()
+    await expect(page.getByLabel(/Exact stored-motif string counts; CAG:/)).toBeVisible()
     await expect(page.getByLabel('Exact copyable source sequence for Sequence 72')).toBeVisible()
     await expect(page.getByLabel(/Shared VCF anchor/)).toHaveCount(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-wide.png')
@@ -1144,7 +1166,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(
       aouIndex
         .getByRole('img', {
-          name: /Sequence \d+ neutral represented sequence; no component projection is admitted/,
+          name: /Sequence \d+ exact stored-motif string preview/,
         })
         .first()
     ).toBeVisible()

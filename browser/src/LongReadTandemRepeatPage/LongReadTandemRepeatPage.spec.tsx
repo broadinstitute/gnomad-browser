@@ -1407,7 +1407,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       'Exact copyable source sequence for Sequence 15'
     )
     const representedSequence = within(detail).getByLabelText(
-      'Motif-highlighted represented sequence for Sequence 15'
+      /Exact stored-motif string preview for Sequence 15/
     )
     expect(exactSequence.textContent).toBe(alt)
     expect(exactSequence.textContent).toHaveLength(43)
@@ -1415,50 +1415,63 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(detail).getByText(/\+12 bp vs REF/)).not.toBeNull()
     expect(representedSequence.textContent).toBe(alt.slice(1))
     expect(representedSequence.textContent).toHaveLength(42)
-    expect(representedSequence.querySelectorAll('[data-sequence-match="motif"]')).toHaveLength(41)
+    expect(representedSequence.querySelectorAll('[data-sequence-match="motif"]')).toHaveLength(39)
+    expect(representedSequence.querySelectorAll('[data-sequence-match="unmatched"]')).toHaveLength(
+      3
+    )
     expect(
-      representedSequence.querySelectorAll('[data-sequence-match="interruption-or-mismatch"]')
-    ).toHaveLength(1)
+      within(detail).getByLabelText(/Exact stored-motif string counts; GCA: 13 exact occurrences/)
+    ).not.toBeNull()
     expect(screen.queryByText(/Shared VCF anchor/i)).toBeNull()
     expect(screen.queryByLabelText(/Shared VCF anchor/i)).toBeNull()
-    expect(within(detail).getByText(/Dark bases are interruptions or mismatches/)).not.toBeNull()
-    expect(within(detail).getByText(/does not assign bases to reference components/)).not.toBeNull()
+    expect(within(detail).getByText(/every other represented base is dark/)).not.toBeNull()
+    expect(within(detail).getByText(/does not project onto reference components/)).not.toBeNull()
     expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
     expect(within(detail).queryByText(/tokens/)).toBeNull()
     expect(within(detail).queryByRole('heading', { name: /Exact ALT sequence/ })).toBeNull()
 
     const selectedIndexRow = screen.getByTitle(gcaId)
     expect(
-      within(selectedIndexRow).getByRole('img', { name: 'Sequence 15 motif structure preview' })
+      within(selectedIndexRow).getByRole('img', {
+        name: /Sequence 15 exact stored-motif string preview; GCA: 13 exact occurrences/,
+      })
     ).not.toBeNull()
     expect(
       within(selectedIndexRow).queryByRole('img', { name: /neutral represented sequence/ })
     ).toBeNull()
   })
 
-  test('links purity and keeps compound selected sequence neutral and copyable', () => {
+  test('links purity and renders compound literal motif detail without component projection', () => {
     renderPage()
     const detail = screen.getByTestId('lr-tr-selected-detail')
     expect(detail).toBe(document.activeElement)
     expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
     expect(within(detail).getByText(exactId)).not.toBeNull()
     expect(within(detail).getByText(/source_ap_allele/)).not.toBeNull()
-    expect(
-      within(detail).getByText(/shown neutrally because no admitted projection/)
-    ).not.toBeNull()
+    expect(within(detail).queryByText(/shown neutrally because no admitted projection/)).toBeNull()
     expect(
       within(detail).getByLabelText('Exact copyable source sequence for Sequence 2').textContent
     ).toContain('ACAGCAA')
     expect(within(detail).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
-    expect(within(detail).queryByLabelText(/Motif-highlighted represented sequence/)).toBeNull()
-    expect(detail.querySelector('[data-sequence-match="motif"]')).toBeNull()
+    expect(
+      within(detail).getByLabelText(/Exact stored-motif string preview for Sequence 2/)
+    ).not.toBeNull()
+    expect(detail.querySelectorAll('[data-sequence-match="motif"]')).toHaveLength(6)
+    expect(detail.querySelectorAll('[data-sequence-match="unmatched"]')).toHaveLength(0)
+    expect(
+      within(detail).getByLabelText(
+        /Exact stored-motif string counts; CAG: 1 exact occurrence.*CAA: 1 exact occurrence.*unmatched: 0 bases/i
+      )
+    ).not.toBeNull()
     expect(within(detail).queryByText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByLabelText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
     expect(within(detail).queryByText(/tokens/)).toBeNull()
     const selectedIndexRow = screen.getByTitle(exactId)
     expect(
-      within(selectedIndexRow).getByRole('img', { name: /neutral represented sequence/ })
+      within(selectedIndexRow).getByRole('img', {
+        name: /Sequence 2 exact stored-motif string preview; CAG: 3 exact occurrences.*CAA: 1 exact occurrence/i,
+      })
     ).not.toBeNull()
     expect(
       screen.getByRole('group', {
@@ -1540,7 +1553,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
       ).not.toBeNull()
       expect(
         within(finalRow).getByRole('img', {
-          name: `Sequence ${count} neutral represented sequence; no component projection is admitted`,
+          name: new RegExp(
+            `Sequence ${count} exact stored-motif string preview; CAG: \\d+ exact occurrence`
+          ),
         })
       ).not.toBeNull()
       expect(finalRow.getAttribute('aria-label')).toMatch(

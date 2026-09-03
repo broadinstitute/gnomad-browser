@@ -551,10 +551,6 @@ const LongReadTandemRepeatPage = ({
             null,
         }}
         motifs={locus.motifs}
-        neutralSequence={
-          locus.selected_allele.decomposition_status !== 'AVAILABLE' &&
-          (clusterFocused || locus.components.length !== 1)
-        }
         representedLength={representedLength}
       />
     )
@@ -735,7 +731,6 @@ const LongReadTandemRepeatPage = ({
         representedLength={representedLength}
         filterContract={locus.filter_contract}
         sourceRecordOrder={locus.source_records.map((record) => record.source_variant_id)}
-        neutralSequence={locus.components.length > 1}
       />
 
       {localHaplotypeBackgroundsEnabled && (

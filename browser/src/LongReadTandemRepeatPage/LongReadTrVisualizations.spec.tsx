@@ -217,10 +217,11 @@ describe('long-read TR visualization fidelity', () => {
         alleles={simpleAlleles}
         motifs={['T']}
         navigation={navigation}
+        excludeValidatedSharedPadding
         sequencesAvailable
       />
     )
-    const previews = screen.getAllByRole('img', { name: /motif structure preview/ })
+    const previews = screen.getAllByRole('img', { name: /exact stored-motif string preview/ })
     expect(previews).toHaveLength(3)
     const previewUnit = previews[0].querySelector('[data-motif-unit="true"]')
     expect(previewUnit).not.toBeNull()
@@ -234,6 +235,11 @@ describe('long-read TR visualization fidelity', () => {
     )
     expect(emptySelection).not.toHaveStyleRule('min-height')
     expect(emptySelection).toHaveStyleRule('padding', '0.65em 0.8em')
+
+    rendered.rerender(
+      <ExactAlleleIndex alleles={simpleAlleles} motifs={['T']} navigation={navigation} />
+    )
+    expect(screen.getAllByText('Unavailable')).toHaveLength(3)
 
     rendered.rerender(
       <ExactAlleleIndex

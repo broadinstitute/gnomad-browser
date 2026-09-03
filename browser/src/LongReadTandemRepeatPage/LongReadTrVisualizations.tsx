@@ -19,9 +19,7 @@ import {
   LongReadGenotypeDistributionSection,
 } from '../LongReadVariantPage/LongReadSTRDistributionSections'
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
-import { MotifHighlightedSequence } from '../Haplotypes/TrAlleleStructure'
 import { PATH_COLORS, SUPERPOPULATION_COLORS } from '../Haplotypes/colors'
-import { decomposeExactTrAlt } from '../Haplotypes/trAlleleStructureData'
 import {
   AlleleBin,
   AlleleNavigation,
@@ -39,6 +37,11 @@ import {
   WholeRecordAlleleLandscapeData,
   WholeRecordGenotypeLandscapeData,
 } from './types'
+import {
+  exactStoredMotifCountSummary,
+  exactStoredMotifPreview,
+  ExactStoredMotifSegment,
+} from './exactStoredMotifPreview'
 
 const Panel = styled.section`
   min-width: 0;
@@ -385,10 +388,10 @@ const AllelicLandscapeHelp = ({
 const ExactAlleleIndexHelp = () => (
   <HaplotypeHelpButton title="About the source-ALT index">
     <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> One row per source ALT identity, with motif preview, total
-      allele length change (ALT − REF, bp), source-reported motif purity, allele count, and allele
-      frequency. The colored motif preview is a separate browser decomposition and may differ from
-      source purity.
+      <strong>What this shows.</strong> One row per source ALT identity, with an exact stored-motif
+      string preview, total allele length change (ALT − REF, bp), source-reported motif purity,
+      allele count, and allele frequency. The exact stored-motif string preview marks only literal
+      occurrences of the displayed stored motif strings and may differ from source purity.
     </p>
     <p>
       <strong>How to use it.</strong> Sort with a column heading. Plot marks can temporarily filter
@@ -396,8 +399,8 @@ const ExactAlleleIndexHelp = () => (
       <strong>Details</strong> to update the allele detail and URL without reloading the page.
     </p>
     <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> A row is one exact source ALT identity, not a clinical
-      classification or a person.
+      <strong>What it does not show.</strong> A row is one exact source ALT identity, not a
+      component projection, clinical classification, or person.
     </p>
   </HaplotypeHelpButton>
 )
@@ -406,17 +409,17 @@ const SelectedAlleleHelp = () => (
   <HaplotypeHelpButton title="About exact ALT details">
     <p style={{ marginTop: 0 }}>
       <strong>What this shows.</strong> The selected source ALT identity, exact copyable sequence,
-      admitted represented length when available, signed change from REF, stored motifs, and
-      aggregate annotations.
+      an exact stored-motif string preview, admitted represented length when available, signed
+      change from REF, stored motifs, and aggregate annotations.
     </p>
     <p>
       <strong>How to use it.</strong> Copy the exact sequence and expand aggregate frequency or
       technical provenance only when those details are needed.
     </p>
     <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> Sequence-only motif highlighting does not assign bases
-      to LR reference components or provide a clinical interpretation. Compound or cluster-focused
-      sequences stay neutral without an admitted projection.
+      <strong>What it does not show.</strong> Literal sequence-only motif highlighting does not
+      assign bases to LR reference components, infer component-local repeat counts or longest-pure
+      segments, or provide a clinical interpretation.
     </p>
   </HaplotypeHelpButton>
 )
@@ -1578,7 +1581,6 @@ export const WholeRecordAlleleLandscape = ({
   representedLength,
   filterContract,
   sourceRecordOrder = [],
-  neutralSequence = false,
 }: {
   landscape: WholeRecordAlleleLandscapeData
   genotypeLandscape?: WholeRecordGenotypeLandscapeData
@@ -1597,7 +1599,6 @@ export const WholeRecordAlleleLandscape = ({
   representedLength?: LongReadTrRepresentedLength
   filterContract?: LongReadTrFilterContract
   sourceRecordOrder?: string[]
-  neutralSequence?: boolean
 }) => {
   const admittedRepeatCountPlots =
     repeatCountPlots?.status === 'AVAILABLE_EXACT' ? repeatCountPlots : undefined
@@ -1617,6 +1618,10 @@ export const WholeRecordAlleleLandscape = ({
     representedLength?.status === 'AVAILABLE_EXACT' &&
     representedLength.reconciliation_status === 'RECONCILED' &&
     representedRefLength != null
+  const excludeValidatedSharedPadding =
+    representedLength?.status === 'AVAILABLE_EXACT' &&
+    representedLength.reconciliation_status === 'RECONCILED' &&
+    representedLength.anchor_rule === 'VCF_SHARED_LEFT_PADDING_BASE_V1'
   const lengthAxisMode: LengthAxisMode =
     absoluteLengthAvailable && requestedLengthAxisMode === 'absolute' ? 'absolute' : 'delta'
   const lengthAxisName =
@@ -1946,7 +1951,7 @@ export const WholeRecordAlleleLandscape = ({
           sequencesUnavailableReason={sequencesUnavailableReason}
           sequenceCardinality={sequenceCardinality}
           sourceRecordOrder={sourceRecordOrder}
-          neutralSequence={neutralSequence}
+          excludeValidatedSharedPadding={excludeValidatedSharedPadding}
           lengthAxisMode={lengthAxisMode}
           representedRefLength={representedRefLength}
         />
@@ -2425,7 +2430,7 @@ export const WholeRecordAlleleLandscape = ({
         selectedDivision={selectedDivision}
         sequenceCardinality={sequenceCardinality}
         sourceRecordOrder={sourceRecordOrder}
-        neutralSequence={neutralSequence}
+        excludeValidatedSharedPadding={excludeValidatedSharedPadding}
         lengthAxisMode={lengthAxisMode}
         representedRefLength={representedRefLength}
         sequencesAvailable={sequencesAvailable}
@@ -3112,71 +3117,61 @@ const MotifPreview = styled.svg`
 const ExactAlleleMotifPreview = ({
   allele,
   motifs,
-  neutralSequence = false,
+  excludeValidatedSharedPadding = false,
 }: {
   allele: LongReadTrAllele
   motifs: string[]
-  neutralSequence?: boolean
+  excludeValidatedSharedPadding?: boolean
 }) => {
-  if (!allele.ref || !allele.alt) {
+  if (!allele.ref || !allele.alt || !excludeValidatedSharedPadding) {
     return (
       <span aria-label={`${alleleLabel(allele.variant_id)} motif preview unavailable`}>
         Unavailable
       </span>
     )
   }
-  if (neutralSequence) {
-    const representedBases = Math.max(
-      1,
-      allele.alt.length -
-        (allele.ref.length > 0 && allele.alt[0]?.toUpperCase() === allele.ref[0]?.toUpperCase()
-          ? 1
-          : 0)
-    )
-    return (
-      <MotifPreview
-        role="img"
-        aria-label={`${alleleLabel(
-          allele.variant_id
-        )} neutral represented sequence; no component projection is admitted`}
-        viewBox={`0 0 ${representedBases} 18`}
-        preserveAspectRatio="none"
-      >
-        <rect x={0} y={0} width={representedBases} height={18} fill="#737b80" />
-      </MotifPreview>
-    )
-  }
-  const decomposition = decomposeExactTrAlt({ ref: allele.ref, alt: allele.alt, motifs })
-  if (decomposition.status !== 'available') {
+  const preview = exactStoredMotifPreview({
+    ref: allele.ref,
+    alt: allele.alt,
+    motifs,
+    excludeValidatedSharedPadding,
+  })
+  if (preview.status !== 'available') {
     return (
       <span aria-label={`${alleleLabel(allele.variant_id)} motif preview unavailable`}>
         Unavailable
       </span>
     )
   }
-  const totalBases = Math.max(1, decomposition.structure.sequence.length)
+  const totalBases = Math.max(1, preview.representedSequence.length)
+  const countSummary = exactStoredMotifCountSummary(preview, motifs)
   let offset = 0
   return (
     <MotifPreview
       role="img"
-      aria-label={`${alleleLabel(allele.variant_id)} motif structure preview`}
+      aria-label={`${alleleLabel(
+        allele.variant_id
+      )} exact stored-motif string preview; ${countSummary}`}
       viewBox={`0 0 ${totalBases} 18`}
       preserveAspectRatio="none"
     >
-      {decomposition.structure.tokens.map((token, tokenIndex) => {
+      {preview.segments.map((segment, segmentIndex) => {
         const start = offset
-        offset += token.sequence.length
+        offset += segment.sequence.length
         return (
           <rect
-            // Sequence order is the stable identity for repeated motif tokens.
+            // Sequence order is the stable identity for repeated literal motif occurrences.
             // eslint-disable-next-line react/no-array-index-key
-            key={tokenIndex}
+            key={segmentIndex}
             x={start}
             y={0}
-            width={Math.max(1, token.sequence.length)}
+            width={segment.sequence.length}
             height={18}
-            fill={token.type === 'motif' ? motifColor(motifs[token.motifIndex], motifs) : '#737b80'}
-            data-motif-unit="true"
+            fill={
+              segment.type === 'motif' ? motifColor(motifs[segment.motifIndex], motifs) : '#333'
+            }
+            data-motif-unit={segment.type === 'motif' ? 'true' : undefined}
+            data-sequence-match={segment.type === 'motif' ? 'motif' : 'unmatched'}
             stroke={MOTIF_UNIT_SEPARATOR}
             strokeWidth={1}
             vectorEffect="non-scaling-stroke"
@@ -3197,7 +3192,7 @@ type ExactAlleleIndexRowData = {
   selectedAllele?: string
   selectedDivision?: string | null
   navigation: AlleleNavigation
-  neutralSequence: boolean
+  excludeValidatedSharedPadding: boolean
   lengthAxisMode: LengthAxisMode
   representedRefLength: number | null
 }
@@ -3246,7 +3241,7 @@ const ExactAlleleIndexRow = ({
         <ExactAlleleMotifPreview
           allele={allele}
           motifs={data.motifs}
-          neutralSequence={data.neutralSequence}
+          excludeValidatedSharedPadding={data.excludeValidatedSharedPadding}
         />
       </span>
       <NumericIndexCell role="cell">{length}</NumericIndexCell>
@@ -3289,7 +3284,7 @@ export const ExactAlleleIndex = ({
   onClearFilter,
   sequenceCardinality,
   sourceRecordOrder = [],
-  neutralSequence = false,
+  excludeValidatedSharedPadding = false,
   lengthAxisMode = 'delta',
   representedRefLength = null,
 }: {
@@ -3308,7 +3303,7 @@ export const ExactAlleleIndex = ({
   onClearFilter?: () => void
   sequenceCardinality?: LongReadTrSequenceCardinality
   sourceRecordOrder?: string[]
-  neutralSequence?: boolean
+  excludeValidatedSharedPadding?: boolean
   lengthAxisMode?: LengthAxisMode
   representedRefLength?: number | null
 }) => {
@@ -3372,7 +3367,7 @@ export const ExactAlleleIndex = ({
     selectedAllele,
     selectedDivision,
     navigation,
-    neutralSequence,
+    excludeValidatedSharedPadding,
     lengthAxisMode,
     representedRefLength,
   }
@@ -3420,8 +3415,12 @@ export const ExactAlleleIndex = ({
         >
           <IndexHeader role="row" aria-rowindex={1}>
             {sortHeader('alt', 'Source ALT')}
-            <span className="lr-tr-index-preview" role="columnheader">
-              Motif preview
+            <span
+              className="lr-tr-index-preview"
+              role="columnheader"
+              aria-label="Exact stored-motif string preview"
+            >
+              Exact motif strings
             </span>
             {sortHeader(
               'length',
@@ -3487,49 +3486,151 @@ const SequenceHighlightKey = styled.p`
   font-size: 0.85em;
 `
 
+const ExactMotifLegend = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0.5em 0 0;
+  gap: 0.35em 1em;
+  color: #27323a;
+  font-size: 0.85em;
+  list-style: none;
+`
+
+const LegendSwatch = styled.span`
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  border: 1px solid #36454f;
+  margin-right: 0.3em;
+  vertical-align: -0.08em;
+`
+
+const ExactStoredMotifSequence = ({
+  segments,
+  motifs,
+  ariaLabel,
+}: {
+  segments: ExactStoredMotifSegment[]
+  motifs: string[]
+  ariaLabel: string
+}) => (
+  <div aria-label={ariaLabel} style={{ userSelect: 'text' }}>
+    {segments.map((segment, segmentIndex) => {
+      const label =
+        segment.type === 'motif'
+          ? `${motifs[segment.motifIndex]}, exact stored-motif string occurrence`
+          : `${segment.sequence.length} unmatched ${
+              segment.sequence.length === 1 ? 'base' : 'bases'
+            }`
+      const color =
+        segment.type === 'motif' ? motifColor(motifs[segment.motifIndex], motifs) : '#333'
+      return (
+        <span
+          // Source sequence order is stable and repeated literal occurrences remain distinct.
+          // eslint-disable-next-line react/no-array-index-key
+          key={segmentIndex}
+          data-sequence-role={segment.type}
+          aria-label={label}
+        >
+          {segment.sequence.split('').map((base, baseIndex) => {
+            let borderRadius: string | number = 0
+            if (baseIndex === 0) borderRadius = '2px 0 0 2px'
+            else if (baseIndex === segment.sequence.length - 1) borderRadius = '0 2px 2px 0'
+            return (
+              <span
+                // Base offset within one stable source segment is deterministic.
+                // eslint-disable-next-line react/no-array-index-key
+                key={baseIndex}
+                data-sequence-match={segment.type === 'motif' ? 'motif' : 'unmatched'}
+                aria-label={segment.type === 'unmatched' ? `${base}, unmatched base` : undefined}
+                style={{
+                  display: 'inline-block',
+                  width: 8,
+                  borderRadius,
+                  background: color,
+                  color: '#fff',
+                  fontFamily: 'monospace',
+                  fontSize: 10,
+                  lineHeight: '14px',
+                  textAlign: 'center',
+                }}
+              >
+                {base}
+              </span>
+            )
+          })}
+        </span>
+      )
+    })}
+  </div>
+)
+
 const SelectedExactSequence = ({
   allele,
   motifs,
-  neutralSequence,
+  excludeValidatedSharedPadding,
 }: {
   allele: LongReadTrSelectedAllele
   motifs: string[]
-  neutralSequence: boolean
+  excludeValidatedSharedPadding: boolean
 }) => {
-  const decomposition = neutralSequence
-    ? null
-    : decomposeExactTrAlt({ ref: allele.ref, alt: allele.alt, motifs })
-  if (decomposition?.status !== 'available') {
-    return (
-      <Sequence aria-label={`Exact copyable source sequence for ${alleleLabel(allele.variant_id)}`}>
-        {allele.alt}
-      </Sequence>
-    )
-  }
+  const preview = exactStoredMotifPreview({
+    ref: allele.ref,
+    alt: allele.alt,
+    motifs,
+    excludeValidatedSharedPadding,
+  })
+  const sequenceLabel = alleleLabel(allele.variant_id)
+  const exactSequence = (
+    <Sequence aria-label={`Exact copyable source sequence for ${sequenceLabel}`}>
+      {allele.alt}
+    </Sequence>
+  )
+  if (!excludeValidatedSharedPadding || preview.status !== 'available') return exactSequence
 
+  const countSummary = exactStoredMotifCountSummary(preview, motifs)
   return (
     <>
-      <Sequence aria-label={`Exact copyable source sequence for ${alleleLabel(allele.variant_id)}`}>
-        {allele.alt}
-      </Sequence>
+      {exactSequence}
       <p style={{ marginBottom: 4 }}>
-        <strong>Motif-highlighted represented sequence</strong>
+        <strong>Exact stored-motif string preview</strong>
       </p>
       <HighlightedExactSequence>
-        <MotifHighlightedSequence
-          tokens={decomposition.structure.tokens}
-          motifs={decomposition.motifs}
-          ariaLabel={`Motif-highlighted represented sequence for ${alleleLabel(allele.variant_id)}`}
-          wrap
-          showSummary={false}
-          compact
+        <ExactStoredMotifSequence
+          segments={preview.segments}
+          motifs={motifs}
+          ariaLabel={`Exact stored-motif string preview for ${sequenceLabel}; ${countSummary}`}
         />
       </HighlightedExactSequence>
+      <ExactMotifLegend aria-label={`Exact stored-motif string counts; ${countSummary}`}>
+        {motifs.map((motif, motifIndex) => (
+          <li
+            // Stored vocabulary position distinguishes intentional duplicate motif strings.
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${motif}-${motifIndex}`}
+          >
+            <LegendSwatch
+              aria-hidden="true"
+              style={{ backgroundColor: motifColor(motif, motifs) }}
+            />
+            <code>{motif}</code>: {preview.occurrenceCounts[motifIndex].toLocaleString()} exact{' '}
+            {preview.occurrenceCounts[motifIndex] === 1 ? 'occurrence' : 'occurrences'} (
+            {counted(preview.matchedBases[motifIndex], 'matched base', 'matched bases')})
+          </li>
+        ))}
+        <li>
+          <LegendSwatch aria-hidden="true" style={{ backgroundColor: '#333' }} />
+          Unmatched: {preview.unmatchedBases.toLocaleString()}{' '}
+          {preview.unmatchedBases === 1 ? 'base' : 'bases'}
+        </li>
+      </ExactMotifLegend>
       <SequenceHighlightKey role="note">
-        Motif-matching represented-sequence bases are highlighted for the stored{' '}
-        <code>{decomposition.motifs[0]}</code> motif. Dark bases are interruptions or mismatches.
-        This sequence-only pattern does not assign bases to reference components or provide a
-        clinical interpretation.
+        Only literal occurrences of each stored motif string in its stored orientation are colored.
+        At overlaps, the longest string wins, then stored motif order; every other represented base
+        is dark. This sequence-only preview does not project onto reference components, report
+        component-local repeat counts or longest-pure segments, or provide a clinical
+        interpretation.
       </SequenceHighlightKey>
     </>
   )
@@ -3559,10 +3660,9 @@ export const SelectedExactAlleleDetail = React.forwardRef<
   {
     allele: LongReadTrSelectedAllele
     motifs: string[]
-    neutralSequence?: boolean
     representedLength?: LongReadTrRepresentedLength
   }
->(({ allele, motifs, neutralSequence = false, representedLength }, ref) => (
+>(({ allele, motifs, representedLength }, ref) => (
   <SelectedDetail
     ref={ref}
     tabIndex={-1}
@@ -3599,16 +3699,18 @@ export const SelectedExactAlleleDetail = React.forwardRef<
           · Stored {motifs.length === 1 ? 'motif' : 'motifs'}{' '}
           <code>{motifs.length ? motifs.join(', ') : 'unavailable'}</code>
         </p>
-        {neutralSequence && (
-          <p role="status">
-            The represented sequence is shown neutrally because no admitted projection assigns ALT
-            bases to the ordered reference components.
-          </p>
-        )}
         <p style={{ marginBottom: 4 }}>
           <strong>Exact copyable source sequence</strong>
         </p>
-        <SelectedExactSequence allele={allele} motifs={motifs} neutralSequence={neutralSequence} />
+        <SelectedExactSequence
+          allele={allele}
+          motifs={motifs}
+          excludeValidatedSharedPadding={
+            representedLength?.status === 'AVAILABLE_EXACT' &&
+            representedLength.reconciliation_status === 'RECONCILED' &&
+            representedLength.anchor_rule === 'VCF_SHARED_LEFT_PADDING_BASE_V1'
+          }
+        />
       </div>
       <ScrollTable role="region" aria-label="Selected exact ALT summary table" tabIndex={0}>
         <table>
