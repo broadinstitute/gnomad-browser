@@ -42,6 +42,10 @@ import {
   exactStoredMotifPreview,
   ExactStoredMotifSegment,
 } from './exactStoredMotifPreview'
+import {
+  exactStoredMotifDistribution,
+  ExactStoredMotifDistributionBin,
+} from './exactStoredMotifDistribution'
 
 const Panel = styled.section`
   min-width: 0;
@@ -1538,6 +1542,162 @@ const RepeatCountPlotCards = ({
   )
 }
 
+const MotifOccurrenceControl = styled.label`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45em;
+  font-weight: bold;
+
+  select {
+    max-width: 100%;
+    min-height: 36px;
+  }
+`
+
+const MotifOccurrenceAxis = styled.div<{ $gap: number; $width: number }>`
+  display: flex;
+  justify-content: center;
+  gap: ${(props) => props.$gap}px;
+  box-sizing: border-box;
+  width: ${(props) => props.$width}px;
+  padding-top: 6px;
+  border-top: 1px solid #566168;
+  margin: 0 auto;
+  color: #3f484d;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+`
+
+const MotifOccurrenceTick = styled.span`
+  flex: 0 0 34px;
+`
+
+const MotifOccurrencePlotCard = ({
+  motifs,
+  selectedMotifIndex,
+  bins,
+  activeOccurrenceCount,
+  onSelectMotifIndex,
+  onSelectBin,
+}: {
+  motifs: string[]
+  selectedMotifIndex: number
+  bins: ExactStoredMotifDistributionBin[]
+  activeOccurrenceCount: number | null
+  onSelectMotifIndex: (motifIndex: number) => void
+  onSelectBin: (occurrenceCount: number) => void
+}) => {
+  const motif = motifs[selectedMotifIndex]
+  const maxCopies = Math.max(0, ...bins.map((bin) => bin.allele_copies))
+  const ticks = histogramTicks(maxCopies, 'linear')
+  let height = 240
+  if (bins.length <= 3) height = 190
+  else if (bins.length <= 12) height = 220
+  const gap = bins.length <= 12 ? 6 : 3
+  const barWidth = 34
+  const sidePadding = 20
+  const contentWidth = bins.length * barWidth + Math.max(0, bins.length - 1) * gap
+  const scrollWidth = contentWidth + sidePadding * 2
+  return (
+    <PlotCard data-plot-card="source-alt-motif-occurrences" data-testid="motif-occurrence-card">
+      <h3>Exact literal motif occurrences among source ALT copies</h3>
+      <MotifOccurrenceControl>
+        Stored motif
+        <select
+          aria-label="Stored motif for source ALT occurrence distribution"
+          value={selectedMotifIndex}
+          onChange={(event) => onSelectMotifIndex(Number(event.target.value))}
+        >
+          {motifs.map((option, motifIndex) => (
+            // Vocabulary position is identity-bearing, including exact duplicate strings.
+            // eslint-disable-next-line react/no-array-index-key
+            <option key={motifIndex} value={motifIndex}>
+              {option}
+              {motifs.filter((candidate) => candidate === option).length > 1
+                ? ` (stored position ${motifIndex + 1})`
+                : ''}
+            </option>
+          ))}
+        </select>
+      </MotifOccurrenceControl>
+      <p>
+        Whole represented source ALT alleles only. Exact literal matches; not component repeat
+        count, genotype, or a clinical measure.
+      </p>
+      {bins.length ? (
+        <HistogramChart>
+          <HistogramYScale aria-hidden="true" $height={height}>
+            <AxisTitle>Called source ALT copies</AxisTitle>
+            {ticks.map((tick) => (
+              <AxisTick
+                key={tick}
+                style={{ bottom: `${histogramHeightPercent(tick, maxCopies, 'linear')}%` }}
+              >
+                {tick.toLocaleString()}
+              </AxisTick>
+            ))}
+          </HistogramYScale>
+          <HistogramScroller
+            role="region"
+            aria-label={`${motif} exact literal occurrence histogram for whole represented source ALTs`}
+            tabIndex={0}
+          >
+            <HistogramScrollContent style={{ width: scrollWidth }}>
+              <Histogram $height={height} $gap={gap}>
+                {bins.map((bin) => {
+                  const selected = activeOccurrenceCount === bin.occurrence_count
+                  const barHeight = histogramHeightPercent(bin.allele_copies, maxCopies, 'linear')
+                  return (
+                    <BarButton
+                      key={bin.occurrence_count}
+                      type="button"
+                      $height={barHeight}
+                      $hasValue={bin.allele_copies > 0}
+                      $width={barWidth}
+                      $selected={selected}
+                      aria-pressed={selected}
+                      aria-label={`${motif}; ${counted(
+                        bin.occurrence_count,
+                        'exact literal occurrence',
+                        'exact literal occurrences'
+                      )} in each whole represented source ALT; ${counted(
+                        bin.allele_copies,
+                        'called source ALT copy',
+                        'called source ALT copies'
+                      )} in this view; ${exactAltSequences(
+                        bin.allele_ids.length
+                      )}; filter the source-ALT index to this occurrence bin`}
+                      onClick={() => onSelectBin(bin.occurrence_count)}
+                    >
+                      <BarExactCount title={exactAltSequences(bin.allele_ids.length)}>
+                        {bin.allele_ids.length}
+                      </BarExactCount>
+                    </BarButton>
+                  )
+                })}
+              </Histogram>
+              <MotifOccurrenceAxis $gap={gap} $width={scrollWidth}>
+                {bins.map((bin) => (
+                  <MotifOccurrenceTick key={bin.occurrence_count}>
+                    {bin.occurrence_count.toLocaleString()}
+                  </MotifOccurrenceTick>
+                ))}
+              </MotifOccurrenceAxis>
+            </HistogramScrollContent>
+          </HistogramScroller>
+        </HistogramChart>
+      ) : (
+        <p role="status">No called source ALT copies in the current frequency slice.</p>
+      )}
+      <div style={{ color: '#566168', fontSize: 11, textAlign: 'center' }}>
+        Bar height: called source ALT copies. Number above: contributing source ALT identities.
+      </div>
+    </PlotCard>
+  )
+}
+
 export type ExactIndexMarkFilterScope = {
   locusId: string
   cohort: string
@@ -1550,6 +1710,13 @@ export type ExactIndexMarkFilter =
       kind: 'total-length-bin'
       markId: string
       delta: number
+    }
+  | {
+      scope: ExactIndexMarkFilterScope
+      kind: 'motif-occurrence-bin'
+      markId: string
+      motifIndex: number
+      occurrenceCount: number
     }
   | {
       scope: ExactIndexMarkFilterScope
@@ -1575,6 +1742,8 @@ export const WholeRecordAlleleLandscape = ({
   markFilterScope,
   alleles,
   motifs = [],
+  primaryMotif,
+  exactAltCountComplete = false,
   selectedAllele,
   navigation,
   selectedAlleleDetail,
@@ -1592,6 +1761,8 @@ export const WholeRecordAlleleLandscape = ({
   markFilterScope?: ExactIndexMarkFilterScope
   alleles: LongReadTrAllele[]
   motifs?: string[]
+  primaryMotif?: string | null
+  exactAltCountComplete?: boolean
   selectedAllele?: string
   navigation: AlleleNavigation
   selectedAlleleDetail?: React.ReactNode
@@ -1607,8 +1778,6 @@ export const WholeRecordAlleleLandscape = ({
     repeatCountPlots?.status === 'AVAILABLE_EXACT' ? repeatCountPlots : undefined
   const admittedGenotypeLandscape =
     genotypeLandscape?.status === 'AVAILABLE' ? genotypeLandscape : undefined
-  const visiblePlotCount =
-    2 + (admittedRepeatCountPlots ? 2 : 0) + (admittedGenotypeLandscape ? 1 : 0)
   const repeatCountVariantId = variantId || 'lr-tr-locus'
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -1626,6 +1795,10 @@ export const WholeRecordAlleleLandscape = ({
     representedLength?.status === 'AVAILABLE_EXACT' &&
     representedLength.reconciliation_status === 'RECONCILED' &&
     representedLength.anchor_rule === 'VCF_SHARED_LEFT_PADDING_BASE_V1'
+  const defaultMotifIndex = Math.max(0, primaryMotif ? motifs.indexOf(primaryMotif) : 0)
+  const motifVocabularyKey = `${motifs.join('\u0000')}\u0001${primaryMotif || ''}`
+  const [selectedMotifIndex, setSelectedMotifIndex] = useState(defaultMotifIndex)
+  useEffect(() => setSelectedMotifIndex(defaultMotifIndex), [defaultMotifIndex, motifVocabularyKey])
   const lengthAxisMode: LengthAxisMode =
     absoluteLengthAvailable && requestedLengthAxisMode === 'absolute' ? 'absolute' : 'delta'
   const lengthAxisName =
@@ -1767,6 +1940,40 @@ export const WholeRecordAlleleLandscape = ({
     if (selectedDivision === '__NO_EXACT_CONTRACT_FREQUENCY_SLICE__') return 0
     return allele.freq.populations.find((frequency) => frequency.id === selectedDivision)?.ac || 0
   }
+  const motifDistribution = useMemo(
+    () =>
+      exactStoredMotifDistribution({
+        alleles,
+        motifs,
+        sequenceCardinality,
+        representedLength,
+        exactAltCountComplete,
+        selectedFrequencyId:
+          selectedDivision === '__NO_EXACT_CONTRACT_FREQUENCY_SLICE__'
+            ? '__NO_MATCH__'
+            : selectedDivision,
+      }),
+    [
+      alleles,
+      exactAltCountComplete,
+      motifs,
+      representedLength,
+      selectedDivision,
+      sequenceCardinality,
+    ]
+  )
+  const admittedMotifDistribution =
+    landscape.status === 'AVAILABLE' &&
+    selectedDivision !== '__NO_EXACT_CONTRACT_FREQUENCY_SLICE__' &&
+    motifDistribution.status === 'available'
+      ? motifDistribution
+      : undefined
+  const selectedMotifDistribution = admittedMotifDistribution?.motifs[selectedMotifIndex]
+  const visiblePlotCount =
+    2 +
+    (admittedRepeatCountPlots ? 2 : 0) +
+    (admittedGenotypeLandscape ? 1 : 0) +
+    (admittedMotifDistribution ? 1 : 0)
   const filteredPurityPoints = (landscape.purity_points || []).flatMap((point) => {
     const frequencyCount = frequencyCountFor(alleleById.get(point.allele_id))
     if (frequencyCount <= 0) return []
@@ -1779,6 +1986,11 @@ export const WholeRecordAlleleLandscape = ({
   const selectedDelta =
     activeIndexFilter?.kind === 'total-length-bin' ? activeIndexFilter.delta : null
   const selectedBin = bins.find((bin) => bin.delta === selectedDelta)
+  const activeMotifFilter =
+    activeIndexFilter?.kind === 'motif-occurrence-bin' ? activeIndexFilter : null
+  const activeMotifBin = admittedMotifDistribution?.motifs[
+    activeMotifFilter?.motifIndex ?? -1
+  ]?.bins.find((bin) => bin.occurrence_count === activeMotifFilter?.occurrenceCount)
   const activePurityAllele =
     activeIndexFilter?.kind === 'purity-point' ? activeIndexFilter.alleleId : undefined
   const activeGenotypeCell =
@@ -1817,6 +2029,8 @@ export const WholeRecordAlleleLandscape = ({
       const allele = alleleById.get(alleleId)
       return allele ? frequencyCountFor(allele) > 0 : false
     })
+  } else if (activeMotifFilter) {
+    activeAlleleIds = activeMotifBin?.allele_ids || []
   } else if (activePurityAllele) {
     activeAlleleIds = filteredPurityPoints.some((point) => point.allele_id === activePurityAllele)
       ? [activePurityAllele]
@@ -1852,6 +2066,18 @@ export const WholeRecordAlleleLandscape = ({
       markId: `total-length:${delta}`,
       delta,
     })
+  const filterIndexToMotifOccurrence = (motifIndex: number, occurrenceCount: number) =>
+    activateIndexFilter({
+      scope,
+      kind: 'motif-occurrence-bin',
+      markId: `motif-occurrence:${motifIndex}:${occurrenceCount}`,
+      motifIndex,
+      occurrenceCount,
+    })
+  const selectMotifIndex = (motifIndex: number) => {
+    setSelectedMotifIndex(motifIndex)
+    if (activeIndexFilter?.kind === 'motif-occurrence-bin') setIndexFilter(null)
+  }
   const filterIndexToPurityPoint = (point: PurityPoint) =>
     activateIndexFilter({
       scope,
@@ -1887,6 +2113,7 @@ export const WholeRecordAlleleLandscape = ({
   }, [scopeKey])
   useEffect(() => {
     if (
+      (activeIndexFilter?.kind === 'motif-occurrence-bin' && !activeMotifBin) ||
       (activeIndexFilter?.kind === 'purity-point' && activeAlleleIds?.length === 0) ||
       (activeIndexFilter?.kind === 'genotype-length-cell' && activeGenotypePairs.length === 0)
     ) {
@@ -1896,6 +2123,7 @@ export const WholeRecordAlleleLandscape = ({
     activeAlleleIds?.length,
     activeGenotypePairs.length,
     activeIndexFilter?.kind,
+    activeMotifBin,
     selectedDivision,
   ])
 
@@ -2062,6 +2290,13 @@ export const WholeRecordAlleleLandscape = ({
       lengthAxisMode,
       representedRefLength
     )} × ${lengthAxisLabel(activeIndexFilter.shorterDelta, lengthAxisMode, representedRefLength)})`
+  } else if (activeIndexFilter?.kind === 'motif-occurrence-bin') {
+    const motif = motifs[activeIndexFilter.motifIndex]
+    activeFilterDescription = `${motif}: ${counted(
+      activeIndexFilter.occurrenceCount,
+      'exact literal occurrence',
+      'exact literal occurrences'
+    )} in each whole represented source ALT`
   } else if (activeIndexFilter?.kind === 'purity-point') {
     activeFilterDescription = alleleLabel(activeIndexFilter.alleleId)
   }
@@ -2261,6 +2496,22 @@ export const WholeRecordAlleleLandscape = ({
           <RepeatCountPlotCards
             variantId={repeatCountVariantId}
             repeatCountPlots={admittedRepeatCountPlots}
+          />
+        )}
+        {admittedMotifDistribution && selectedMotifDistribution && (
+          <MotifOccurrencePlotCard
+            motifs={admittedMotifDistribution.motifs.map((entry) => entry.motif)}
+            selectedMotifIndex={selectedMotifIndex}
+            bins={selectedMotifDistribution.bins}
+            activeOccurrenceCount={
+              activeMotifFilter?.motifIndex === selectedMotifIndex
+                ? activeMotifFilter.occurrenceCount
+                : null
+            }
+            onSelectMotifIndex={selectMotifIndex}
+            onSelectBin={(occurrenceCount) =>
+              filterIndexToMotifOccurrence(selectedMotifIndex, occurrenceCount)
+            }
           />
         )}
         <PlotCard data-plot-card="total-length-histogram">

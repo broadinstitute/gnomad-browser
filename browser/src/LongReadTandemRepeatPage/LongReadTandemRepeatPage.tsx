@@ -643,6 +643,14 @@ const LongReadTandemRepeatPage = ({
         }}
         alleles={locus.alleles.nodes}
         motifs={locus.motifs}
+        primaryMotif={
+          locus.primary_repeat.status === 'AVAILABLE' ? locus.primary_repeat.motif : null
+        }
+        exactAltCountComplete={
+          locus.exact_alt_count_complete &&
+          !locus.alleles.page_info.has_next_page &&
+          locus.total_alleles === locus.alleles.nodes.length
+        }
         selectedAllele={selectedAllele}
         navigation={navigation}
         sequencesAvailable={locus.sequences_available}

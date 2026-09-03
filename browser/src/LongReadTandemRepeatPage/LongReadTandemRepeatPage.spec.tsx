@@ -1030,7 +1030,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('alert')).toBeNull()
   })
 
-  test('keeps genotype length alongside the four admitted simple-locus plots', () => {
+  test('keeps genotype length and identity-backed motif occurrences alongside simple-locus plots', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
     const grid = screen.getByTestId('whole-record-allele-plot-grid')
@@ -1039,14 +1039,23 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(headings.map((heading) => heading.textContent)).toEqual([
       expect.stringContaining('Allele repeat-count distribution'),
       expect.stringContaining('Genotype repeat-count distribution'),
+      'Exact literal motif occurrences among source ALT copies',
       'Change from REF (bp)',
       'Change from REF × motif purity',
       'Genotype length distribution',
     ])
-    expect(grid.getAttribute('data-plot-count')).toBe('5')
-    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(5)
+    expect(grid.getAttribute('data-plot-count')).toBe('6')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(6)
     expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
+    expect(within(grid).getByTestId('motif-occurrence-card')).not.toBeNull()
+    expect(
+      (
+        within(grid).getByLabelText(
+          'Stored motif for source ALT occurrence distribution'
+        ) as HTMLSelectElement
+      ).value
+    ).toBe('0')
     expect(
       screen.getByTestId('allele-repeat-count-card').getAttribute('data-interaction-status')
     ).toBe('UNAVAILABLE_SOURCE_IDENTITIES')
@@ -1097,6 +1106,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
         .getAllByRole('heading', { level: 3 })
         .map((heading) => heading.textContent)
     ).toEqual([
+      'Exact literal motif occurrences among source ALT copies',
       'Change from REF (bp)',
       'Change from REF × motif purity',
       'Genotype length distribution',
@@ -1106,9 +1116,16 @@ describe('canonical long-read tandem-repeat locus page', () => {
       Node.DOCUMENT_POSITION_FOLLOWING
     )
     expect(genotypeDetail.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(plotGrid.getAttribute('data-plot-count')).toBe('3')
-    expect(plotGrid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
-    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat( 3,minmax(280px,1fr) )')
+    expect(plotGrid.getAttribute('data-plot-count')).toBe('4')
+    expect(plotGrid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(4)
+    expect(
+      (
+        within(plotGrid).getByLabelText(
+          'Stored motif for source ALT occurrence distribution'
+        ) as HTMLSelectElement
+      ).value
+    ).toBe('0')
+    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat( 2,minmax(280px,1fr) )')
     expect(plotGrid).toHaveStyleRule('gap', 'clamp(24px,2vw,32px)')
     expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(280px,1fr))', {
       media: '(max-width:1199px)',

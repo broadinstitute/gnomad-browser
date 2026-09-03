@@ -146,6 +146,36 @@ const alleleLandscape: WholeRecordAlleleLandscapeData = {
   purity_unavailable_reason: 'NOT_AVAILABLE',
 }
 
+const motifAlleles = [
+  { ...makeAllele(1, 8, 100), ref: 'A', alt: 'ACAGCAGCAA' },
+  { ...makeAllele(2, 3, 25), ref: 'A', alt: 'ACAA' },
+  { ...makeAllele(3, 3, 5), ref: 'A', alt: 'ACAG' },
+]
+const exactSequenceCardinality = {
+  source_alt_identity_count: 3,
+  unique_alt_sequence_count: 3,
+  all_source_alts_sequence_complete: true,
+  status: 'AVAILABLE_EXACT' as const,
+  reason: null,
+  algorithm_version: 'test',
+}
+const exactRepresentedLength = {
+  status: 'AVAILABLE_EXACT' as const,
+  reason: null,
+  represented_ref_length_bp: 0,
+  represented_alt_min_length_bp: 3,
+  represented_alt_max_length_bp: 9,
+  source_delta_provenance: 'SEQUENCE_DERIVED' as const,
+  sequence_length_provenance: 'test',
+  sequence_source_record_digest: 'a'.repeat(64),
+  sequence_content_digest: 'b'.repeat(64),
+  anchor_rule: 'VCF_SHARED_LEFT_PADDING_BASE_V1' as const,
+  anchor_rule_source: 'test',
+  anchor_rule_release: 'test',
+  anchor_rule_digest: 'c'.repeat(64),
+  reconciliation_status: 'RECONCILED' as const,
+}
+
 const unavailableFilterContract: LongReadTrFilterContract = {
   status: 'UNAVAILABLE',
   reason: 'NO_COMPATIBLE_SHARED_OBSERVATIONS',
@@ -544,6 +574,124 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(grid).getByTestId('allele-repeat-count-card')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-card')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-length-card')).not.toBeNull()
+  })
+
+  test('renders an identity-backed motif selector, defaults to the admitted primary motif, and filters without navigation', () => {
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        alleles={motifAlleles}
+        motifs={['CAG', 'CAA']}
+        primaryMotif="CAA"
+        exactAltCountComplete
+        sequenceCardinality={exactSequenceCardinality}
+        representedLength={exactRepresentedLength}
+        navigation={navigation}
+      />
+    )
+
+    const grid = screen.getByTestId('whole-record-allele-plot-grid')
+    expect(grid.getAttribute('data-plot-count')).toBe('3')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+    const card = within(grid).getByTestId('motif-occurrence-card')
+    expect(
+      within(card).getByRole('heading', {
+        name: 'Exact literal motif occurrences among source ALT copies',
+      })
+    ).not.toBeNull()
+    expect(within(card).getByText(/Whole represented source ALT alleles only/)).not.toBeNull()
+    expect(
+      within(card).getByText(/not component repeat count, genotype, or a clinical measure/)
+    ).not.toBeNull()
+    const selector = within(card).getByLabelText(
+      'Stored motif for source ALT occurrence distribution'
+    ) as HTMLSelectElement
+    expect(selector.value).toBe('1')
+    expect(within(card).queryByText(/pathogenic/i)).toBeNull()
+
+    const selectedBin = within(card).getByRole('button', {
+      name: /CAA; 1 exact literal occurrence in each whole represented source ALT; 125 called source ALT copies.*2 source ALT alleles; filter/,
+    })
+    fireEvent.click(selectedBin)
+    expect(selectedBin.getAttribute('aria-pressed')).toBe('true')
+    expect(
+      screen.getByRole('heading', {
+        name: '2 of 3 source ALT alleles — CAA: 1 exact literal occurrence in each whole represented source ALT',
+      })
+    ).toBe(document.activeElement)
+    expect(navigation.onSelectAllele).not.toHaveBeenCalled()
+    expect(
+      within(screen.getByRole('table', { name: 'Source ALT allele index' })).getAllByRole('row')
+    ).toHaveLength(3)
+
+    fireEvent.click(selectedBin)
+    expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).toBe(
+      document.activeElement
+    )
+    fireEvent.change(selector, { target: { value: '0' } })
+    expect(selector.value).toBe('0')
+  })
+
+  test('falls back to the first motif, follows active-slice AC, and omits the whole plot on one missing ALT', () => {
+    const slicedAlleles = motifAlleles.map((allele, index) => ({
+      ...allele,
+      freq: {
+        ...allele.freq,
+        populations: [{ id: 'afr', ac: index === 1 ? 2 : 0, an: 20, af: index === 1 ? 0.1 : 0 }],
+      },
+    }))
+    const stratifiedLandscape: WholeRecordAlleleLandscapeData = {
+      ...alleleLandscape,
+      stratified_available: true,
+      ancestry_groups: ['afr'],
+      sexes: [],
+      bins: (alleleLandscape.bins || []).map((bin) => ({
+        ...bin,
+        stacks: [{ ancestry_group: 'afr', sex: null, called_alleles: 2 }],
+      })),
+    }
+    const rendered = render(
+      <WholeRecordAlleleLandscape
+        landscape={stratifiedLandscape}
+        alleles={slicedAlleles}
+        motifs={['CAG', 'CAA']}
+        primaryMotif="GCC"
+        exactAltCountComplete
+        sequenceCardinality={exactSequenceCardinality}
+        representedLength={exactRepresentedLength}
+        navigation={navigation}
+      />
+    )
+    const selector = screen.getByLabelText(
+      'Stored motif for source ALT occurrence distribution'
+    ) as HTMLSelectElement
+    expect(selector.value).toBe('0')
+    fireEvent.change(screen.getByLabelText('Genetic ancestry group'), { target: { value: 'afr' } })
+    expect(
+      screen.getByRole('button', {
+        name: /CAG; 0 exact literal occurrences.*2 called source ALT copies.*1 source ALT allele; filter/,
+      })
+    ).not.toBeNull()
+    expect(screen.queryByRole('button', { name: /CAG; 1 exact literal occurrence/ })).toBeNull()
+
+    rendered.rerender(
+      <WholeRecordAlleleLandscape
+        landscape={stratifiedLandscape}
+        alleles={slicedAlleles.map((allele, index) =>
+          index === 2 ? { ...allele, alt: null } : allele
+        )}
+        motifs={['CAG', 'CAA']}
+        primaryMotif="GCC"
+        exactAltCountComplete
+        sequenceCardinality={exactSequenceCardinality}
+        representedLength={exactRepresentedLength}
+        navigation={navigation}
+      />
+    )
+    expect(screen.queryByTestId('motif-occurrence-card')).toBeNull()
+    expect(
+      screen.getByTestId('whole-record-allele-plot-grid').getAttribute('data-plot-count')
+    ).toBe('2')
   })
 
   test('visually separates adjacent motif matches without changing sequence bytes', () => {
