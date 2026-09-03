@@ -500,9 +500,48 @@ describe('long-read TR visualization fidelity', () => {
     )
     expect(
       screen.getByText(
-        'Bar height: called non-reference allele copies. Number above: source ALT identities.'
+        /Bar height: called non-reference allele copies. Number above: source ALT identities./
       )
     ).not.toBeNull()
+  })
+
+  test('selects and replaces accessible histogram ranges in both directions, then clears with Escape', () => {
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+    const negative = screen.getByRole('button', { name: /−6 bp vs REF; 100 called/ })
+    const zero = screen.getByRole('button', { name: /0 bp vs REF; 25 called/ })
+    const positive = screen.getByRole('button', { name: /\+12 bp vs REF; 5 called/ })
+
+    fireEvent.click(negative)
+    fireEvent.keyDown(negative, { key: 'ArrowRight', shiftKey: true })
+    expect(negative.getAttribute('aria-pressed')).toBe('true')
+    expect(zero.getAttribute('aria-pressed')).toBe('true')
+    expect(positive.getAttribute('aria-pressed')).toBe('false')
+    expect(
+      screen.getByRole('heading', {
+        name: '2 of 3 source ALT alleles — Change from REF (bp) range −6 bp vs REF through 0 bp vs REF',
+      })
+    ).toBe(document.activeElement)
+
+    fireEvent.click(positive)
+    expect(negative.getAttribute('aria-pressed')).toBe('false')
+    expect(positive.getAttribute('aria-pressed')).toBe('true')
+    expect(
+      screen.getByRole('heading', { name: '1 of 3 source ALT alleles at +12 bp vs REF' })
+    ).toBe(document.activeElement)
+
+    fireEvent.keyDown(positive, { key: 'ArrowLeft', shiftKey: true })
+    expect(zero.getAttribute('aria-pressed')).toBe('true')
+    expect(positive.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.keyDown(positive, { key: 'Escape' })
+    expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).toBe(
+      document.activeElement
+    )
   })
 
   test('renders repeat-count and genotype-length cards together with a dynamic plot count', () => {
@@ -624,7 +663,19 @@ describe('long-read TR visualization fidelity', () => {
       within(screen.getByRole('table', { name: 'Source ALT allele index' })).getAllByRole('row')
     ).toHaveLength(3)
 
-    fireEvent.click(selectedBin)
+    const zeroBin = within(card).getByRole('button', {
+      name: /CAA; 0 exact literal occurrences in each whole represented source ALT/,
+    })
+    fireEvent.keyDown(selectedBin, { key: 'ArrowLeft', shiftKey: true })
+    expect(selectedBin.getAttribute('aria-pressed')).toBe('true')
+    expect(zeroBin.getAttribute('aria-pressed')).toBe('true')
+    expect(
+      screen.getByRole('heading', {
+        name: '3 of 3 source ALT alleles — CAA: 0 through 1 exact literal occurrences in each whole represented source ALT',
+      })
+    ).toBe(document.activeElement)
+
+    fireEvent.keyDown(selectedBin, { key: 'Escape' })
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).toBe(
       document.activeElement
     )
@@ -858,7 +909,16 @@ describe('long-read TR visualization fidelity', () => {
     expect(document.activeElement).toBe(
       screen.getByRole('heading', { name: '1 of 3 source ALT alleles — Sequence 3' })
     )
-    fireEvent.click(point)
+    fireEvent.keyDown(point, { key: 'ArrowLeft', shiftKey: true })
+    expect(points.every((candidate) => candidate.getAttribute('aria-pressed') === 'true')).toBe(
+      true
+    )
+    expect(
+      screen.getByRole('heading', {
+        name: /3 of 3 source ALT alleles — purity region −6 bp vs REF through \+12 bp vs REF/,
+      })
+    ).toBe(document.activeElement)
+    fireEvent.keyDown(point, { key: 'Escape' })
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
   })
 
@@ -971,6 +1031,79 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).toBe(
       document.activeElement
     )
+  })
+
+  test('unions genotype-region contributors, bypasses frequency AC, and excludes the reference sentinel', () => {
+    const referenceId = '__REFERENCE__'
+    const genotypeAlleles = alleles.map((allele) => ({
+      ...allele,
+      freq: { ...allele.freq, all: { ...allele.freq.all, ac: 0, af: 0 } },
+    }))
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: referenceId,
+      called_samples: 2,
+      called_alleles: 4,
+      ancestry_groups: [],
+      sexes: [],
+      cells: [
+        {
+          shorter_delta: -6,
+          longer_delta: 0,
+          people: 1,
+          pairs: [
+            {
+              shorter_allele_id: referenceId,
+              longer_allele_id: alleles[0].variant_id,
+              ancestry_group: 'unknown',
+              sex: 'unknown',
+              people: 1,
+              phased_people: 0,
+              unphased_people: 1,
+            },
+          ],
+        },
+        {
+          shorter_delta: 0,
+          longer_delta: 12,
+          people: 1,
+          pairs: [
+            {
+              shorter_allele_id: alleles[1].variant_id,
+              longer_allele_id: alleles[2].variant_id,
+              ancestry_group: 'unknown',
+              sex: 'unknown',
+              people: 1,
+              phased_people: 1,
+              unphased_people: 0,
+            },
+          ],
+        },
+      ],
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        genotypeLandscape={genotypeLandscape}
+        alleles={genotypeAlleles}
+        navigation={navigation}
+      />
+    )
+    const cells = screen.getAllByTestId('genotype-length-cell-target')
+    const firstCell = screen.getByRole('button', {
+      name: /0 bp vs REF longer allele, −6 bp vs REF shorter allele/,
+    })
+    fireEvent.click(firstCell)
+    fireEvent.keyDown(firstCell, { key: 'ArrowRight', shiftKey: true })
+    expect(cells.every((cell) => cell.getAttribute('aria-pressed') === 'true')).toBe(true)
+    expect(
+      screen.getByRole('heading', {
+        name: /3 of 3 source ALT alleles — genotype region longer 0 bp vs REF through \+12 bp vs REF; shorter −6 bp vs REF through 0 bp vs REF/,
+      })
+    ).toBe(document.activeElement)
+    expect(screen.queryByTitle(referenceId)).toBeNull()
   })
 
   test('reconciles one controlled ancestry and sex filter across all three plots', async () => {
