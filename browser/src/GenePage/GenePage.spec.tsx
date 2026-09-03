@@ -71,6 +71,11 @@ forDatasetsNotMatching(svRegexp, 'GenePage with non-SV dataset "%s"', (datasetId
           coverage: {},
         },
       }),
+      GeneAlleleNumber: () => ({
+        gene: {
+          allele_number: {},
+        },
+      }),
       CopyNumberVariantsInGene: () => ({
         gene: { copy_number_variants: [] },
       }),
@@ -154,6 +159,11 @@ forDatasetsMatching(cnvRegexp, 'GenePage with CNV dataset "%s"', (datasetId) => 
           coverage: {},
         },
       }),
+      GeneAlleleNumber: () => ({
+        gene: {
+          allele_number: {},
+        },
+      }),
     })
     const tree = renderer.create(
       <MemoryRouter>
@@ -172,6 +182,11 @@ forDatasetsMatching(cnvRegexp, 'GenePage with CNV dataset "%s"', (datasetId) => 
       GeneCoverage: () => ({
         gene: {
           coverage: {},
+        },
+      }),
+      GeneAlleleNumber: () => ({
+        gene: {
+          allele_number: {},
         },
       }),
     })
@@ -215,6 +230,11 @@ describe.each([
       GeneCoverage: () => ({
         gene: {
           coverage: {},
+        },
+      }),
+      GeneAlleleNumber: () => ({
+        gene: {
+          allele_number: {},
         },
       }),
       CopyNumberVariantsInGene: () => ({
