@@ -33,6 +33,7 @@ grep -q '^LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:8126$' <<<"$gcp_only_output"
 grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_scratch_demo_full_genome_20260803$' <<<"$gcp_only_output"
 grep -q '^LR_Y1_GCP_CH_VM=gnomad-lr-y1-full-genome-clickhouse$' <<<"$gcp_only_output"
 grep -q "^LR_Y1_PRIMARY_MANIFEST_PATH=$ROOT_DIR/graphql-api/config/y1-presentation-primary-manifests.json$" <<<"$gcp_only_output"
+grep -q "^LR_Y1_REPRESENTED_LENGTH_RULE_PATH=$ROOT_DIR/graphql-api/config/y1-represented-length-source-contract.json$" <<<"$gcp_only_output"
 if grep -q '/app/graphql-api' <<<"$gcp_only_output"; then
     echo "container-only paths leaked into local full-genome configuration" >&2
     exit 1
@@ -52,6 +53,7 @@ url_output="$(
     LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_test_fixture \
     LR_Y1_RUN_MAP='{"hgsvc_hprc":{"chr1":"run-1"}}' \
     LR_Y1_PRIMARY_MANIFEST_PATH=/tmp/primary-manifests.json \
+    LR_Y1_REPRESENTED_LENGTH_RULE_PATH=/tmp/represented-length-receipt.json \
     LR_Y1_ANCILLARY_ROUTES='{"coverage":{"hgsvc_hprc":{"database":"gnomad_lr_y1_cov","run_id":"cov-1","receipt_path":"/tmp/cov-receipt.json"}}}' \
     "$ROOT_DIR/start_lr_dev.sh"
 )"
@@ -59,6 +61,7 @@ grep -q '^LR_Y1_CLICKHOUSE_URL=http://clickhouse.test:8123$' <<<"$url_output"
 grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_test_fixture$' <<<"$url_output"
 grep -q '^LR_Y1_RUN_MAP={"hgsvc_hprc":{"chr1":"run-1"}}$' <<<"$url_output"
 grep -q '^LR_Y1_PRIMARY_MANIFEST_PATH=/tmp/primary-manifests.json$' <<<"$url_output"
+grep -q '^LR_Y1_REPRESENTED_LENGTH_RULE_PATH=/tmp/represented-length-receipt.json$' <<<"$url_output"
 grep -q '^LR_Y1_ANCILLARY_ROUTES={"coverage":{"hgsvc_hprc":{"database":"gnomad_lr_y1_cov","run_id":"cov-1","receipt_path":"/tmp/cov-receipt.json"}}}$' <<<"$url_output"
 
 if LR_DEV_DRY_RUN=1 LR_Y1_ENABLED=true env -u LR_Y1_CLICKHOUSE_URL \

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "contract_id": "GNOMAD_LR_Y1_REPRESENTED_LENGTH_SOURCE_CONTRACT_V1",
+  "measurement_scope": "ENGINEERING_REPRESENTED_ALLELE_LENGTH_NOT_CLINICAL_OR_COMPONENT_REPEAT",
+  "rule": {
+    "id": "VCF_SHARED_LEFT_PADDING_BASE_V1",
+    "remove_left_padding_bytes": 1,
+    "requires_complete_non_symbolic_ref_alt": true,
+    "requires_identical_first_byte": true,
+    "requires_source_ref_byte_agreement": true,
+    "requires_single_source_record_task_attempt": true,
+    "requires_whole_record_delta_reconciliation": true
+  },
+  "source": "gnomAD LR Y1 primary VCF REF and ALT fields",
+  "release": "gnomAD LR Y1",
+  "manifest_binding": {
+    "path_basename": "y1-presentation-primary-manifests.json",
+    "artifact_sha256": "7aee998adbb40b50d920c81061dcec7437db04fd8d4c72ff12dfc40abe160c9a",
+    "entry_count": 48,
+    "contract_sha256": "e813987f5c115c2209e82ec13a71527be9318090329f35fd68f36450264f5f57"
+  },
+  "digest_algorithm": "SHA256_CANONICAL_JSON_V1",
+  "canonical_digest_sha256": "ad16242c7d0bff2321c87ad7d2ceecef2d7285706f71210699dc5e3af9cf1615"
+}

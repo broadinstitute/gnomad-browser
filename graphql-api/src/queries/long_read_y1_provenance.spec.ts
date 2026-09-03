@@ -328,6 +328,7 @@ describe('Y1 accepted run discovery', () => {
           { task_id: `${cohort}-accepted-task-1`, attempt_id: 'accepted-0' },
         ])
         expect(source.accepted_task_attempt_digest).toMatch(/^[a-f0-9]{64}$/)
+        expect(source.primary_manifest_sha256).toBeNull()
       }
     }
     expect(available).toEqual(expected)

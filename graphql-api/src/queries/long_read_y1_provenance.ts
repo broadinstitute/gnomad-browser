@@ -32,6 +32,7 @@ export type Y1SourceSnapshot = {
   carriers_available: boolean
   accepted_task_attempts: readonly Y1AcceptedTaskAttempt[]
   accepted_task_attempt_digest: string
+  primary_manifest_sha256: string | null
 }
 
 type RunRow = Omit<
@@ -42,6 +43,7 @@ type RunRow = Omit<
   | 'carriers_available'
   | 'accepted_task_attempts'
   | 'accepted_task_attempt_digest'
+  | 'primary_manifest_sha256'
 > & {
   state: string
   interval_start: number
@@ -874,6 +876,7 @@ export const preflightY1AcceptedSources = async () => {
             )
           ),
           accepted_task_attempt_digest: authority.digest,
+          primary_manifest_sha256: manifest.manifest_sha256,
         })
         return [key, snapshot] as const
       })
@@ -914,6 +917,7 @@ export const preflightY1AcceptedSources = async () => {
             )
           ),
           accepted_task_attempt_digest: authority.digest,
+          primary_manifest_sha256: null,
         })
       )
     }

@@ -6,7 +6,10 @@ import {
   resolveY1PrimaryRunMap,
   type Y1AncillaryRoute,
 } from './y1_config'
-import { resolveY1PrimaryManifests } from './y1_admission_config'
+import {
+  resolveY1PrimaryManifests,
+  resolveY1RepresentedLengthAnchorRule,
+} from './y1_admission_config'
 import {
   resolveSourcePhasedMethylationRoute,
   type SourcePhasedMethylationRoute,
@@ -40,6 +43,9 @@ export const y1PrimaryRunMap = isY1PilotEnabled ? resolveY1PrimaryRunMap() : nul
 export const y1PrimaryManifests = isY1PilotEnabled
   ? resolveY1PrimaryManifests(y1PrimaryRunMap)
   : null
+export const y1RepresentedLengthAnchorRule = isY1PilotEnabled
+  ? resolveY1RepresentedLengthAnchorRule(y1PrimaryManifests)
+  : null
 export const y1AncillaryRoutes = isY1PilotEnabled ? resolveY1AncillaryRoutes() : []
 export const sourcePhasedMethylationRoute = isY1PilotEnabled
   ? resolveSourcePhasedMethylationRoute()
@@ -69,9 +75,7 @@ export const getY1AncillaryClickhouseClient = (route: Y1AncillaryRoute) => {
 }
 
 const sourcePhasedMethylationClients = new Map<string, ReturnType<typeof createClient>>()
-export const getSourcePhasedMethylationClickhouseClient = (
-  route: SourcePhasedMethylationRoute
-) => {
+export const getSourcePhasedMethylationClickhouseClient = (route: SourcePhasedMethylationRoute) => {
   let client = sourcePhasedMethylationClients.get(route.database)
   if (!client) {
     client = createClient({

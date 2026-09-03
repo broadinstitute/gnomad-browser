@@ -475,16 +475,16 @@ const LongReadTandemRepeatPage = ({
     locus.short_read_context.catalog_record?.id === locus.primary_repeat.catalog_id
       ? locus.short_read_context.catalog_record
       : null
+  const absoluteRepresentedLengthAvailable =
+    representedLength.status === 'AVAILABLE_EXACT' &&
+    representedLength.represented_alt_min_length_bp != null &&
+    representedLength.represented_alt_max_length_bp != null
   const alleleLengthRange =
-    representedLength.status !== 'AVAILABLE_EXACT' ||
-    representedLength.represented_alt_min_length_bp == null ||
-    representedLength.represented_alt_max_length_bp == null ||
-    locus.delta_min == null ||
-    locus.delta_max == null
-      ? `Absolute represented length unavailable: ${unavailableReason(representedLength.reason)}`
-      : `${representedLength.represented_alt_min_length_bp.toLocaleString()}–${representedLength.represented_alt_max_length_bp.toLocaleString()} bp represented (${signed(
+    absoluteRepresentedLengthAvailable && locus.delta_min != null && locus.delta_max != null
+      ? `${representedLength.represented_alt_min_length_bp!.toLocaleString()}–${representedLength.represented_alt_max_length_bp!.toLocaleString()} bp represented (${signed(
           locus.delta_min
         )} to ${signed(locus.delta_max)} bp versus REF)`
+      : null
   const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
   // Compatibility for retained Phase 4–6 story fixtures. Live GraphQL always supplies
   // this non-null typed product field; an omitted fixture must remain fail-closed.
@@ -578,7 +578,7 @@ const LongReadTandemRepeatPage = ({
   let spanValue = `${bounds.component_envelope_length_bp.toLocaleString()} bp`
   if (exactVariationBoundsAuthorized && bounds.variation_cluster_length_bp != null) {
     spanValue = `${bounds.variation_cluster_length_bp.toLocaleString()} bp`
-  } else if (!clusterFocused && locus.components.length > 1) {
+  } else if (!clusterFocused && locus.components.length > 1 && alleleLengthRange) {
     spanValue = alleleLengthRange
   }
 
@@ -641,19 +641,6 @@ const LongReadTandemRepeatPage = ({
               )}
             </AttributeListItem>
           )}
-          {approvedCatalogRecord?.gene?.symbol && approvedCatalogRecord.gene.region && (
-            <AttributeListItem label="Gene context">
-              {approvedCatalogRecord.gene.symbol} — {approvedCatalogRecord.gene.region}
-            </AttributeListItem>
-          )}
-          <AttributeListItem
-            label="Allele copies with a genotype call"
-            tooltip="The frequency denominator: chromosome copies with a genotype call at this locus. An allele copy is not a person; a person may contribute more than one copy depending on chromosome and ploidy."
-          >
-            {locus.called_allele_count == null
-              ? 'Unavailable'
-              : `${locus.called_allele_count.toLocaleString()} allele copies`}
-          </AttributeListItem>
           <AttributeListItem
             label={
               sequenceCardinality.status === 'AVAILABLE_EXACT' &&
@@ -682,12 +669,14 @@ const LongReadTandemRepeatPage = ({
               `${sequenceCardinality.source_alt_identity_count.toLocaleString()} source ALT alleles`
             )}
           </AttributeListItem>
-          <AttributeListItem
-            label="Represented allele length / change from REF"
-            tooltip="Represented absolute length is shown only when the API admits complete sequence-length provenance, padding rule, and reconciliation. Signed source delta remains a separate measurement."
-          >
-            {alleleLengthRange}
-          </AttributeListItem>
+          {alleleLengthRange && (
+            <AttributeListItem
+              label="Represented allele length / change from REF"
+              tooltip="Represented absolute length is shown only when the API admits complete sequence-length provenance, padding rule, and reconciliation. Signed source delta remains a separate measurement."
+            >
+              {alleleLengthRange}
+            </AttributeListItem>
+          )}
           {approvedCatalogRecord && (
             <AttributeListItem label="External resources">
               <InlineResources>

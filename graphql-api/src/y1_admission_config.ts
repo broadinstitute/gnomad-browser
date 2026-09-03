@@ -1,4 +1,6 @@
+import crypto from 'node:crypto'
 import { readFileSync } from 'node:fs'
+import nodePath from 'node:path'
 import type { Y1AncillaryModality, Y1Cohort, Y1PrimaryRunMap } from './y1_config'
 
 export type Y1PrimaryManifestTask = {
@@ -6,6 +8,15 @@ export type Y1PrimaryManifestTask = {
   start: number
   stop: number
 }
+
+export type Y1RepresentedLengthAnchorRule = Readonly<{
+  id: 'VCF_SHARED_LEFT_PADDING_BASE_V1'
+  source: string
+  release: string
+  digest: string
+  manifest_bundle_digest: string
+  admitted_manifest_sha256s: readonly string[]
+}>
 
 export type Y1PrimaryManifest = {
   cohort: Y1Cohort
@@ -136,6 +147,30 @@ export const y1CoverageViewColumnShape = [
   ['over_100', 'Float32'],
   ['is_source_zero', 'UInt8'],
 ] as const
+
+const lexicalCompare = (left: string, right: string) => {
+  if (left < right) return -1
+  if (left > right) return 1
+  return 0
+}
+
+const canonicalJson = (value: unknown): string => {
+  if (value === null || typeof value === 'string' || typeof value === 'boolean') {
+    return JSON.stringify(value)
+  }
+  if (typeof value === 'number' && Number.isFinite(value)) return JSON.stringify(value)
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`
+  if (value && typeof value === 'object') {
+    return `{${Object.entries(value as Record<string, unknown>)
+      .sort(([left], [right]) => lexicalCompare(left, right))
+      .map(([key, item]) => `${JSON.stringify(key)}:${canonicalJson(item)}`)
+      .join(',')}}`
+  }
+  throw new Error('canonical JSON input contains an unsupported value')
+}
+
+export const y1CanonicalDigest = (value: unknown) =>
+  crypto.createHash('sha256').update(canonicalJson(value), 'utf8').digest('hex')
 
 const object = (value: unknown, label: string): Record<string, unknown> => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -298,6 +333,123 @@ const parsePrimaryManifest = (value: unknown, index: number): Y1PrimaryManifest 
     source,
     tasks,
   }
+}
+
+const representedLengthManifestContract = (manifests: Map<string, Y1PrimaryManifest>) =>
+  [...manifests.values()]
+    .sort((left, right) => {
+      const leftKey = `${left.cohort}\u0000${left.chrom}`
+      const rightKey = `${right.cohort}\u0000${right.chrom}`
+      return lexicalCompare(leftKey, rightKey)
+    })
+    .map(({ cohort, chrom, run_id, manifest_sha256, source }) => ({
+      cohort,
+      chrom,
+      run_id,
+      manifest_sha256,
+      source,
+    }))
+
+export const resolveY1RepresentedLengthAnchorRule = (
+  primaryManifests: Map<string, Y1PrimaryManifest> | null,
+  env: NodeJS.ProcessEnv = process.env
+): Y1RepresentedLengthAnchorRule | null => {
+  const receiptPath = (env.LR_Y1_REPRESENTED_LENGTH_RULE_PATH || '').trim()
+  if (!receiptPath) return null
+  if (!primaryManifests) {
+    throw new Error('LR_Y1_REPRESENTED_LENGTH_RULE_PATH requires checked primary manifests')
+  }
+  const label = 'represented-length source-contract receipt'
+  const receipt = object(readJson(receiptPath, label), label)
+  exactKeys(
+    receipt,
+    [
+      'schema_version',
+      'contract_id',
+      'measurement_scope',
+      'rule',
+      'source',
+      'release',
+      'manifest_binding',
+      'digest_algorithm',
+      'canonical_digest_sha256',
+    ],
+    label
+  )
+  if (
+    receipt.schema_version !== 1 ||
+    receipt.contract_id !== 'GNOMAD_LR_Y1_REPRESENTED_LENGTH_SOURCE_CONTRACT_V1' ||
+    receipt.measurement_scope !==
+      'ENGINEERING_REPRESENTED_ALLELE_LENGTH_NOT_CLINICAL_OR_COMPONENT_REPEAT' ||
+    receipt.digest_algorithm !== 'SHA256_CANONICAL_JSON_V1'
+  ) {
+    throw new Error(`${label} has an unsupported identity or digest algorithm`)
+  }
+  const rule = object(receipt.rule, `${label}.rule`)
+  exactKeys(
+    rule,
+    [
+      'id',
+      'remove_left_padding_bytes',
+      'requires_complete_non_symbolic_ref_alt',
+      'requires_identical_first_byte',
+      'requires_source_ref_byte_agreement',
+      'requires_single_source_record_task_attempt',
+      'requires_whole_record_delta_reconciliation',
+    ],
+    `${label}.rule`
+  )
+  if (
+    rule.id !== 'VCF_SHARED_LEFT_PADDING_BASE_V1' ||
+    rule.remove_left_padding_bytes !== 1 ||
+    rule.requires_complete_non_symbolic_ref_alt !== true ||
+    rule.requires_identical_first_byte !== true ||
+    rule.requires_source_ref_byte_agreement !== true ||
+    rule.requires_single_source_record_task_attempt !== true ||
+    rule.requires_whole_record_delta_reconciliation !== true
+  ) {
+    throw new Error(`${label} does not declare the exact admitted padding rule`)
+  }
+  const binding = object(receipt.manifest_binding, `${label}.manifest_binding`)
+  exactKeys(
+    binding,
+    ['path_basename', 'artifact_sha256', 'entry_count', 'contract_sha256'],
+    `${label}.manifest_binding`
+  )
+  const primaryPath = string(
+    env.LR_Y1_PRIMARY_MANIFEST_PATH,
+    'LR_Y1_PRIMARY_MANIFEST_PATH for represented-length receipt'
+  )
+  const primaryBytes = readFileSync(primaryPath)
+  const artifactDigest = crypto.createHash('sha256').update(primaryBytes).digest('hex')
+  const manifestContract = representedLengthManifestContract(primaryManifests)
+  if (
+    binding.path_basename !== nodePath.basename(primaryPath) ||
+    binding.artifact_sha256 !== artifactDigest ||
+    binding.entry_count !== primaryManifests.size ||
+    binding.contract_sha256 !== y1CanonicalDigest(manifestContract)
+  ) {
+    throw new Error(`${label} is stale or does not match the checked primary manifests`)
+  }
+  const declaredDigest = string(receipt.canonical_digest_sha256, `${label}.canonical_digest_sha256`)
+  if (!/^[a-f0-9]{64}$/.test(declaredDigest)) throw new Error(`${label} has an invalid digest`)
+  const canonicalReceipt = { ...receipt }
+  delete canonicalReceipt.canonical_digest_sha256
+  if (declaredDigest !== y1CanonicalDigest(canonicalReceipt)) {
+    throw new Error(`${label} canonical digest does not match its content`)
+  }
+  const source = string(receipt.source, `${label}.source`)
+  const release = string(receipt.release, `${label}.release`)
+  return Object.freeze({
+    id: 'VCF_SHARED_LEFT_PADDING_BASE_V1' as const,
+    source,
+    release,
+    digest: declaredDigest,
+    manifest_bundle_digest: artifactDigest,
+    admitted_manifest_sha256s: Object.freeze(
+      manifestContract.map(({ manifest_sha256 }) => manifest_sha256)
+    ),
+  })
 }
 
 export const resolveY1PrimaryManifests = (

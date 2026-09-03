@@ -1,7 +1,8 @@
 import crypto from 'node:crypto'
 
 import { parseTrLocusId, TrLocusId } from '../../../dataset-metadata/longReadTrLocusId'
-import { y1ClickhouseClient } from '../clickhouse'
+import { y1ClickhouseClient, y1RepresentedLengthAnchorRule } from '../clickhouse'
+import type { Y1RepresentedLengthAnchorRule } from '../y1_admission_config'
 import { withCache } from '../cache'
 import {
   type Y1AcceptedTaskAttempt,
@@ -37,12 +38,7 @@ const LENGTH_PROVENANCE_VALUES = new Map([
   ['sequence_derived', 'SEQUENCE_DERIVED'],
 ])
 
-export type ApprovedRepresentedLengthAnchorRule = {
-  id: 'VCF_SHARED_LEFT_PADDING_BASE_V1'
-  source: string
-  release: string
-  digest: string
-}
+export type ApprovedRepresentedLengthAnchorRule = Y1RepresentedLengthAnchorRule
 
 type Cursor = { version: 1; sourceVariantId: string; altIndex: number }
 type CompactAllele = {
@@ -358,12 +354,14 @@ export const buildRepresentedLengthContract = ({
   acceptedTaskAttempts,
   sourceRunId,
   approvedAnchorRule,
+  sourceManifestSha256,
 }: {
   alleles: CompactAllele[]
   sourceRecords: SourceRecordContract[]
   acceptedTaskAttempts: readonly Y1AcceptedTaskAttempt[]
   sourceRunId: string
   approvedAnchorRule: ApprovedRepresentedLengthAnchorRule | null
+  sourceManifestSha256?: string | null
 }) => {
   const identityReason = validateAlleleIdentities(alleles, sourceRecords, acceptedTaskAttempts)
   const admittedLengthProvenances = identityReason
@@ -420,13 +418,45 @@ export const buildRepresentedLengthContract = ({
     approvedAnchorRule.id !== 'VCF_SHARED_LEFT_PADDING_BASE_V1' ||
     !approvedAnchorRule.source ||
     !approvedAnchorRule.release ||
-    !/^[a-f0-9]{64}$/.test(approvedAnchorRule.digest)
+    !/^[a-f0-9]{64}$/.test(approvedAnchorRule.digest) ||
+    !/^[a-f0-9]{64}$/.test(approvedAnchorRule.manifest_bundle_digest) ||
+    !Array.isArray(approvedAnchorRule.admitted_manifest_sha256s)
   ) {
     return unavailableLength('ANCHOR_RULE_RECEIPT_INVALID')
+  }
+  if (
+    !sourceManifestSha256 ||
+    !approvedAnchorRule.admitted_manifest_sha256s.includes(sourceManifestSha256)
+  ) {
+    return unavailableLength('SOURCE_MANIFEST_NOT_ADMITTED')
+  }
+  if (
+    alleles.some(
+      ({ ref_allele, alt }) => !/^[ACGTN]+$/i.test(ref_allele!) || !/^[ACGTN]+$/i.test(alt!)
+    )
+  ) {
+    return unavailableLength('NON_SYMBOLIC_REF_ALT_BYTES_REQUIRED')
   }
 
   const refs = alleles.map((allele) => Buffer.from(allele.ref_allele!, 'utf8'))
   const alts = alleles.map((allele) => Buffer.from(allele.alt!, 'utf8'))
+  if (
+    refs.some(
+      (ref, index) =>
+        ref.length > MAX_TR_SELECTED_ALLELE_DETAIL_BYTES ||
+        alts[index].length > MAX_TR_SELECTED_ALLELE_DETAIL_BYTES
+    ) ||
+    !responseWithinBound(
+      alleles.map(({ source_variant_id, alt_index, ref_allele, alt }) => ({
+        source_variant_id,
+        alt_index,
+        ref_allele,
+        alt,
+      }))
+    )
+  ) {
+    return unavailableLength('EXACT_REF_ALT_SEQUENCE_BYTES_BOUND_EXCEEDED')
+  }
   if (
     refs.some((ref, index) => ref.length < 1 || alts[index].length < 1 || ref[0] !== alts[index][0])
   ) {
@@ -1503,15 +1533,13 @@ const fetchLongReadTrLocusUncached = async ({
     sourceRecords,
     acceptedTaskAttempts: source.accepted_task_attempts,
   })
-  // G-LENGTH remains pending. The builder supports receipt-gated admission, but this
-  // resolver intentionally supplies no rule until an immutable owner-approved artifact
-  // is wired in and verified. Existing signed source deltas remain independently usable.
   const representedLength = buildRepresentedLengthContract({
     alleles: compactAlleles,
     sourceRecords,
     acceptedTaskAttempts: source.accepted_task_attempts,
     sourceRunId: source.run_id,
-    approvedAnchorRule: null,
+    approvedAnchorRule: y1RepresentedLengthAnchorRule,
+    sourceManifestSha256: source.primary_manifest_sha256,
   })
   const exactSequenceIndexComplete = completeAlleles.every(
     ({ ref_allele, alt }) => Boolean(ref_allele) && Boolean(alt)
@@ -1989,11 +2017,13 @@ export const longReadTrLocusCacheKey = ({
     source.run_id,
     source.accepted_task_attempt_digest,
     source.metadata_run_id ?? null,
+    source.primary_manifest_sha256,
+    y1RepresentedLengthAnchorRule?.digest ?? null,
     source.chrom,
     'G_DATA_ANCESTRY_PENDING',
     'REMAINDER_COMPATIBILITY_UNAVAILABLE',
   ]
-  return `lr_tr_locus:v8:${crypto
+  return `lr_tr_locus:v9:${crypto
     .createHash('sha256')
     .update(JSON.stringify(identity))
     .digest('hex')}`

@@ -11,8 +11,10 @@ deploy/terraform/lr-viewer/test-deploy-offline.sh
 ```
 
 The routing manifest pins the exact admitted API artifacts. `full-genome-api-env.json`
-is the checked runtime map. Tests use only synthetic local fakes; live validation remains
-a separately authorized operation.
+is the checked runtime map. This includes the manifest-bound represented-length engineering
+contract; startup rejects a wrong rule, canonical digest, or primary-manifest binding before it
+can admit absolute represented lengths. Tests use only synthetic local fakes; live validation
+remains a separately authorized operation.
 
 ## Build/push: immutable source and durable receipts
 

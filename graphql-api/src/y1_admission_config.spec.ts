@@ -6,6 +6,7 @@ import {
   fullGrch38PositionCount,
   readY1AncillaryReceipt,
   resolveY1PrimaryManifests,
+  resolveY1RepresentedLengthAnchorRule,
   y1CoverageViewColumnShape,
 } from './y1_admission_config'
 
@@ -62,6 +63,57 @@ describe('Y1 startup admission artifacts', () => {
     expect(manifests.get('hgsvc_hprc\u0000chrY')?.carrier_loading_status).toBe(
       'unavailable_not_loaded'
     )
+
+    const rulePath = join(__dirname, '../config/y1-represented-length-source-contract.json')
+    const rule = resolveY1RepresentedLengthAnchorRule(manifests, {
+      LR_Y1_PRIMARY_MANIFEST_PATH: path,
+      LR_Y1_REPRESENTED_LENGTH_RULE_PATH: rulePath,
+    })!
+    expect(rule).toMatchObject({
+      id: 'VCF_SHARED_LEFT_PADDING_BASE_V1',
+      source: 'gnomAD LR Y1 primary VCF REF and ALT fields',
+      release: 'gnomAD LR Y1',
+      digest: 'ad16242c7d0bff2321c87ad7d2ceecef2d7285706f71210699dc5e3af9cf1615',
+      manifest_bundle_digest: '7aee998adbb40b50d920c81061dcec7437db04fd8d4c72ff12dfc40abe160c9a',
+    })
+    expect(rule.admitted_manifest_sha256s).toHaveLength(48)
+  })
+
+  test('rejects wrong, stale, or noncanonical represented-length receipts', () => {
+    const primaryPath = join(__dirname, '../config/y1-presentation-primary-manifests.json')
+    const document = JSON.parse(readFileSync(primaryPath, 'utf8'))
+    const runMap = new Map<any, any>()
+    for (const entry of document.entries) {
+      const cohortRuns = runMap.get(entry.cohort) || new Map()
+      cohortRuns.set(entry.chrom, entry.run_id)
+      runMap.set(entry.cohort, cohortRuns)
+    }
+    const manifests = resolveY1PrimaryManifests(runMap, {
+      LR_Y1_PRIMARY_MANIFEST_PATH: primaryPath,
+    })!
+    const original = JSON.parse(
+      readFileSync(join(__dirname, '../config/y1-represented-length-source-contract.json'), 'utf8')
+    )
+    for (const [mutation, expected] of [
+      [{ canonical_digest_sha256: '0'.repeat(64) }, /canonical digest/],
+      [{ rule: { ...original.rule, id: 'OTHER_RULE' } }, /exact admitted padding rule/],
+      [
+        { manifest_binding: { ...original.manifest_binding, artifact_sha256: '0'.repeat(64) } },
+        /stale or does not match/,
+      ],
+    ] as const) {
+      const file = tempJson({ ...original, ...mutation })
+      try {
+        expect(() =>
+          resolveY1RepresentedLengthAnchorRule(manifests, {
+            LR_Y1_PRIMARY_MANIFEST_PATH: primaryPath,
+            LR_Y1_REPRESENTED_LENGTH_RULE_PATH: file.path,
+          })
+        ).toThrow(expected)
+      } finally {
+        file.cleanup()
+      }
+    }
   })
 
   test('accepts an exact gapless checked primary manifest bundle', () => {

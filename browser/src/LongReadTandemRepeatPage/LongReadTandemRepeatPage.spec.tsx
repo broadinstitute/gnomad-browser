@@ -633,7 +633,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       screen.getAllByText('140–212 bp represented (−24 to +48 bp versus REF)').length
     ).toBeGreaterThan(0)
-    expect(screen.getByText('HTT — exon')).not.toBeNull()
+    expect(screen.queryByText('Gene context')).toBeNull()
+    expect(screen.queryByText('Allele copies with a genotype call')).toBeNull()
     expect(screen.getByRole('link', { name: 'TRExplorer' })).not.toBeNull()
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
     expect(
@@ -950,6 +951,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByLabelText('Length axis')).toBeNull()
     expect(screen.queryByRole('option', { name: 'Represented allele length' })).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
+    expect(screen.queryByText('Represented allele length / change from REF')).toBeNull()
+    expect(screen.queryByText(/Absolute represented length unavailable/)).toBeNull()
+    expect(screen.queryByText(/Represented length unavailable/)).toBeNull()
     expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
     expect(screen.queryByText(/nfe = EUR/)).toBeNull()
     expect(screen.queryByLabelText('Genetic ancestry group')).toBeNull()
@@ -1352,6 +1356,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
         },
         matched_component: gcaComponent,
       },
+      represented_length: {
+        ...locus.represented_length,
+        status: 'AVAILABLE_EXACT',
+        reason: null,
+        represented_ref_length_bp: 30,
+        represented_alt_min_length_bp: 30,
+        represented_alt_max_length_bp: 42,
+        reconciliation_status: 'RECONCILED',
+      },
       selected_allele: {
         ...locus.selected_allele,
         variant_id: gcaId,
@@ -1360,6 +1373,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
         alt_count: 16,
         ref,
         alt,
+        length: 12,
         decomposition_status: 'UNAVAILABLE_NO_DECOMPOSITION',
         decomposition_reason: 'No admitted source decomposition is available for this exact allele',
       },
@@ -1375,6 +1389,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
                 alt_count: 16,
                 ref,
                 alt,
+                length: 12,
               }
             : allele
         ),
@@ -1396,6 +1411,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     )
     expect(exactSequence.textContent).toBe(alt)
     expect(exactSequence.textContent).toHaveLength(43)
+    expect(within(detail).getByText('42 bp represented')).not.toBeNull()
+    expect(within(detail).getByText(/\+12 bp vs REF/)).not.toBeNull()
     expect(representedSequence.textContent).toBe(alt.slice(1))
     expect(representedSequence.textContent).toHaveLength(42)
     expect(representedSequence.querySelectorAll('[data-sequence-match="motif"]')).toHaveLength(41)

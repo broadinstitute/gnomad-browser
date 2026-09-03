@@ -9,6 +9,13 @@
       "purpose": "startup-consumed primary route manifest"
     },
     {
+      "path": "graphql-api/config/y1-represented-length-source-contract.json",
+      "target_in_image": "/app/graphql-api/config/y1-represented-length-source-contract.json",
+      "sha256": "b42ffd9573dcbc92d69b1a7dc512b5fe7ba8c658c4727d37a8d53aac2547ddbe",
+      "bytes": 1077,
+      "purpose": "startup-consumed manifest-bound represented-length engineering source contract"
+    },
+    {
       "path": "graphql-api/config/y1-source-phased-methylation-serving-receipt.json",
       "target_in_image": "/app/graphql-api/config/y1-source-phased-methylation-serving-receipt.json",
       "sha256": "be522cfe12455af49127ba8cf84ccb102af0c408112d6ec7b650892815aec218",

@@ -3579,17 +3579,24 @@ export const SelectedExactAlleleDetail = React.forwardRef<
     <SelectedDetailGrid>
       <div>
         <p>
-          <strong>
-            {representedLength?.status === 'AVAILABLE_EXACT' &&
-            representedLength.represented_ref_length_bp != null &&
-            allele.length != null
-              ? `${(
-                  representedLength.represented_ref_length_bp + allele.length
-                ).toLocaleString()} bp represented`
-              : 'Represented length unavailable'}
-          </strong>
-          {allele.length != null && <> ({signed(allele.length)} bp vs REF)</>} · Stored{' '}
-          {motifs.length === 1 ? 'motif' : 'motifs'}{' '}
+          {representedLength?.status === 'AVAILABLE_EXACT' &&
+          representedLength.represented_ref_length_bp != null &&
+          allele.length != null ? (
+            <>
+              <strong>
+                {(representedLength.represented_ref_length_bp + allele.length).toLocaleString()} bp
+                represented
+              </strong>{' '}
+              ({signed(allele.length)} bp vs REF)
+            </>
+          ) : (
+            <strong>
+              {allele.length == null
+                ? 'Change from REF unavailable'
+                : `${signed(allele.length)} bp vs REF`}
+            </strong>
+          )}{' '}
+          · Stored {motifs.length === 1 ? 'motif' : 'motifs'}{' '}
           <code>{motifs.length ? motifs.join(', ') : 'unavailable'}</code>
         </p>
         {neutralSequence && (

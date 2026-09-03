@@ -37,6 +37,7 @@ RUN pnpm tsc -p /app/graphql-api/tsconfig.build.json
 # do not copy the config directory wholesale.
 COPY --chown=node:node graphql-api/static_data /app/static_data
 COPY --chown=node:node graphql-api/config/y1-presentation-primary-manifests.json /app/graphql-api/config/y1-presentation-primary-manifests.json
+COPY --chown=node:node graphql-api/config/y1-represented-length-source-contract.json /app/graphql-api/config/y1-represented-length-source-contract.json
 COPY --chown=node:node graphql-api/config/y1-source-phased-methylation-serving-receipt.json /app/graphql-api/config/y1-source-phased-methylation-serving-receipt.json
 COPY --chown=node:node graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json /app/graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json
 COPY --chown=node:node graphql-api/config/completion-receipt-coverage-aou.json /app/graphql-api/config/completion-receipt-coverage-aou.json

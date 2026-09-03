@@ -352,6 +352,7 @@ describe('Y1 checked-manifest presentation routing', () => {
       { task_id: 'hgsvc-chr2-task-2', attempt_id: 'accepted-1' },
     ])
     expect(hgsvc?.accepted_task_attempt_digest).toMatch(/^[a-f0-9]{64}$/)
+    expect(hgsvc?.primary_manifest_sha256).toBe('a'.repeat(64))
     expect((await getY1SourceSnapshot('aou', 'chr1'))?.run_id).toBe('aou-chr1')
     expect(await getY1SourceSnapshot('aou', 'chr2')).toBeNull()
   })

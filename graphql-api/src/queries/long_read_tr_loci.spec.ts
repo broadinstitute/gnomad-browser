@@ -57,6 +57,7 @@ const source = (
     carriers_available: options.carriers ?? cohort === 'hgsvc_hprc',
     accepted_task_attempts: acceptedTaskAttempts,
     accepted_task_attempt_digest: y1AcceptedTaskAttemptDigest(runId, acceptedTaskAttempts),
+    primary_manifest_sha256: null,
   }
 }
 
@@ -165,7 +166,7 @@ describe('long-read TR locus query contract', () => {
     expect(longReadTrLocusCacheKey(base)).not.toBe(
       longReadTrLocusCacheKey({ ...base, source: source('hgsvc_hprc', { attemptId: 'attempt-2' }) })
     )
-    expect(longReadTrLocusCacheKey(base)).toMatch(/^lr_tr_locus:v8:/)
+    expect(longReadTrLocusCacheKey(base)).toMatch(/^lr_tr_locus:v9:/)
     expect(() =>
       longReadTrLocusCacheKey({
         ...base,
@@ -745,11 +746,14 @@ describe('long-read TR locus query contract', () => {
 })
 
 describe('round-two Phase 2A contracts', () => {
+  const admittedManifestSha256 = 'b'.repeat(64)
   const approvedAnchorRule = {
     id: 'VCF_SHARED_LEFT_PADDING_BASE_V1' as const,
     source: 'synthetic-test-receipt',
     release: 'test-v1',
     digest: 'a'.repeat(64),
+    manifest_bundle_digest: 'c'.repeat(64),
+    admitted_manifest_sha256s: [admittedManifestSha256],
   }
 
   test('keeps dense component summaries exact without inventing source bounds', () => {
@@ -908,6 +912,7 @@ describe('round-two Phase 2A contracts', () => {
         ...staleInput,
         sourceRunId: 'synthetic-run',
         approvedAnchorRule,
+        sourceManifestSha256: admittedManifestSha256,
       })
     ).toMatchObject({
       status: 'UNAVAILABLE',
@@ -956,6 +961,7 @@ describe('round-two Phase 2A contracts', () => {
       ],
       acceptedTaskAttempts: [{ task_id: 'task-a', attempt_id: 'attempt-a' }],
       sourceRunId: 'synthetic-run',
+      sourceManifestSha256: admittedManifestSha256,
     }
     expect(buildRepresentedLengthContract({ ...input, approvedAnchorRule: null })).toMatchObject({
       status: 'UNAVAILABLE',
@@ -1020,6 +1026,7 @@ describe('round-two Phase 2A contracts', () => {
         acceptedTaskAttempts: [{ task_id: 'task-a', attempt_id: 'attempt-a' }],
         sourceRunId: 'synthetic-run',
         approvedAnchorRule,
+        sourceManifestSha256: admittedManifestSha256,
       })
 
     expect(build([{ ...base, alt: null }])).toMatchObject({
@@ -1029,6 +1036,19 @@ describe('round-two Phase 2A contracts', () => {
       reason: 'SHARED_PADDING_BASE_NOT_VALIDATED',
       reconciliation_status: 'NOT_RECONCILED',
     })
+    expect(build([{ ...base, alt: '<DEL>' }])).toMatchObject({
+      reason: 'NON_SYMBOLIC_REF_ALT_BYTES_REQUIRED',
+    })
+    expect(
+      buildRepresentedLengthContract({
+        alleles: [base],
+        sourceRecords: [oneRecord],
+        acceptedTaskAttempts: [{ task_id: 'task-a', attempt_id: 'attempt-a' }],
+        sourceRunId: 'synthetic-run',
+        approvedAnchorRule,
+        sourceManifestSha256: 'd'.repeat(64),
+      })
+    ).toMatchObject({ reason: 'SOURCE_MANIFEST_NOT_ADMITTED' })
     expect(build([{ ...base, allele_length: null }])).toMatchObject({
       reason: 'NONFINITE_WHOLE_RECORD_DELTA',
       source_delta_provenance: 'INFO_SVLEN',
@@ -1082,10 +1102,52 @@ describe('round-two Phase 2A contracts', () => {
         },
       ])
     ).toMatchObject({
+      status: 'UNAVAILABLE',
+      reason: 'EXACT_REF_ALT_SEQUENCE_BYTES_BOUND_EXCEEDED',
+      represented_ref_length_bp: null,
+      reconciliation_status: 'NOT_EVALUATED',
+    })
+  })
+
+  test('derives GCA represented lengths from exact source bytes without replacing source ALT', () => {
+    const ref = 'GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA'
+    const alt = 'GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC'
+    const contract = buildRepresentedLengthContract({
+      alleles: Array.from({ length: 16 }, (_, offset) => ({
+        source_variant_id: 'chr3-63912684-TRV-30',
+        alt_index: offset + 1,
+        task_id: 'task-1',
+        attempt_id: 'attempt-1',
+        ref_allele: ref,
+        alt: offset === 14 ? alt : ref,
+        allele_length: offset === 14 ? 12 : 0,
+        length_provenance: 'sequence_derived',
+        ac: 1,
+        an: 32,
+        af: 1 / 32,
+      })),
+      sourceRecords: [
+        {
+          source_variant_id: 'chr3-63912684-TRV-30',
+          alt_count: 16,
+          task_id: 'task-1',
+          attempt_id: 'attempt-1',
+        },
+      ],
+      acceptedTaskAttempts: [{ task_id: 'task-1', attempt_id: 'attempt-1' }],
+      sourceRunId: 'y1-gca-test',
+      approvedAnchorRule,
+      sourceManifestSha256: admittedManifestSha256,
+    })
+
+    expect(ref).toHaveLength(31)
+    expect(alt).toHaveLength(43)
+    expect(Buffer.byteLength(alt) - 1).toBe(42)
+    expect(contract).toMatchObject({
       status: 'AVAILABLE_EXACT',
-      represented_ref_length_bp: 0,
-      represented_alt_min_length_bp: MAX_TR_SELECTED_ALLELE_DETAIL_BYTES + 1,
-      source_delta_provenance: 'INFO_SVLEN',
+      represented_ref_length_bp: 30,
+      represented_alt_min_length_bp: 30,
+      represented_alt_max_length_bp: 42,
       reconciliation_status: 'RECONCILED',
     })
   })

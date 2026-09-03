@@ -323,11 +323,10 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     test.setTimeout(60_000)
     await openLocus(page, ARX_1_LOCUS, 73, 'aou')
     await expect(page.getByRole('heading', { name: 'ARX_1 (ARX) NGC tandem repeat' })).toBeVisible()
-    await expect(
-      page.getByText(
-        'Absolute represented length unavailable: the required source data are unavailable'
-      )
-    ).toBeVisible()
+    await expect(page.getByText(/Absolute represented length unavailable/)).toHaveCount(0)
+    await expect(page.getByText('Represented allele length / change from REF')).toHaveCount(0)
+    await expect(page.getByText('Gene context')).toHaveCount(0)
+    await expect(page.getByText('Allele copies with a genotype call')).toHaveCount(0)
     await expect(page.getByText('−9 bp')).toBeVisible()
     await expect(page.getByText('+25 bp')).toBeVisible()
     await expect(page.getByText('ARX — coding: polyalanine')).toBeVisible()
@@ -468,6 +467,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       'Motif-highlighted represented sequence for Sequence 15'
     )
     await expect(exactSequence).toHaveText('GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC')
+    await expect(detail.getByText('42 bp represented')).toBeVisible()
+    await expect(detail.getByText(/\+12 bp vs REF/)).toBeVisible()
     await expect(representedSequence).toHaveText('GCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCC')
     expect((await exactSequence.textContent())?.length).toBe(43)
     expect((await representedSequence.textContent())?.length).toBe(42)

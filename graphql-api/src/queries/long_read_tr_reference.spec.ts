@@ -43,6 +43,7 @@ const sourceFor = async (cohort: 'hgsvc_hprc' | 'aou', chrom: string) => {
     carriers_available: cohort === 'hgsvc_hprc',
     accepted_task_attempts: [{ task_id: 'task-1', attempt_id: 'attempt-1' }],
     accepted_task_attempt_digest: 'a'.repeat(64),
+    primary_manifest_sha256: null,
   }
 }
 

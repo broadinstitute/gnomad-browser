@@ -12,9 +12,10 @@ ROOT = SCRIPT_DIR.parents[2]
 CONFIG_DIR = ROOT / "graphql-api" / "config"
 MANIFEST_PATH = CONFIG_DIR / "full-genome-routing-artifact-manifest.json"
 API_ENV_PATH = SCRIPT_DIR / "full-genome-api-env.json"
-EXPECTED_ENV_SHA256 = "743ad9147ba9f93d23fb39883bfb7b84b3f228ef59a2e4ff84d51bb58cf81213"
+EXPECTED_ENV_SHA256 = "e38c9d37c82134b5fc84d284130b68cabaf35e0539a467132861a3d19544f893"
 EXPECTED_ARTIFACTS = {
     "y1-presentation-primary-manifests.json",
+    "y1-represented-length-source-contract.json",
     "y1-source-phased-methylation-serving-receipt.json",
     "y1-source-to-browser-vcf-orientation-receipt.json",
     "completion-receipt-coverage-aou.json",
@@ -43,6 +44,11 @@ def compact_sha256(value: object) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def canonical_sha256(value: object) -> str:
+    payload = json.dumps(value, separators=(",", ":"), ensure_ascii=False, sort_keys=True).encode()
+    return hashlib.sha256(payload).hexdigest()
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise SystemExit(f"release config check failed: {message}")
@@ -66,7 +72,7 @@ def main() -> None:
     require(manifest.get("schema_version") == 1, "unexpected artifact manifest schema")
     artifacts = manifest.get("artifacts", [])
     names = {Path(item["path"]).name for item in artifacts}
-    require(len(artifacts) == 10 and names == EXPECTED_ARTIFACTS, "artifact allowlist is not the exact ten-file bundle")
+    require(len(artifacts) == 11 and names == EXPECTED_ARTIFACTS, "artifact allowlist is not the exact eleven-file bundle")
 
     for item in artifacts:
         relative = Path(item["path"])
@@ -89,6 +95,58 @@ def main() -> None:
     require(api_env["LR_Y1_ENABLED"] == "true", "API Y1 mode must be enabled")
     require(json.loads(api_env["LR_Y1_RUN_MAP"])["hgsvc_hprc"]["chr3"].endswith("recovery-r2"), "approved chr3 recovery route is missing")
     require_exact_joined_route(api_env)
+
+    represented_length_receipt = json.loads((CONFIG_DIR / "y1-represented-length-source-contract.json").read_text())
+    represented_length_digest = represented_length_receipt.pop("canonical_digest_sha256", None)
+    require(
+        represented_length_digest == "ad16242c7d0bff2321c87ad7d2ceecef2d7285706f71210699dc5e3af9cf1615",
+        "represented-length canonical receipt digest drifted",
+    )
+    require(
+        canonical_sha256(represented_length_receipt) == represented_length_digest,
+        "represented-length receipt is not canonical-digest valid",
+    )
+    require(
+        represented_length_receipt.get("measurement_scope")
+        == "ENGINEERING_REPRESENTED_ALLELE_LENGTH_NOT_CLINICAL_OR_COMPONENT_REPEAT",
+        "represented length was mislabeled as clinical or component-repeat measurement",
+    )
+    require(
+        represented_length_receipt.get("rule")
+        == {
+            "id": "VCF_SHARED_LEFT_PADDING_BASE_V1",
+            "remove_left_padding_bytes": 1,
+            "requires_complete_non_symbolic_ref_alt": True,
+            "requires_identical_first_byte": True,
+            "requires_source_ref_byte_agreement": True,
+            "requires_single_source_record_task_attempt": True,
+            "requires_whole_record_delta_reconciliation": True,
+        },
+        "represented-length receipt has the wrong padding rule",
+    )
+    primary_manifest_path = CONFIG_DIR / "y1-presentation-primary-manifests.json"
+    primary_manifest = json.loads(primary_manifest_path.read_text())
+    manifest_contract = [
+        {
+            key: entry[key]
+            for key in ("cohort", "chrom", "run_id", "manifest_sha256", "source")
+        }
+        for entry in sorted(
+            primary_manifest["entries"], key=lambda entry: (entry["cohort"], entry["chrom"])
+        )
+    ]
+    binding = represented_length_receipt.get("manifest_binding", {})
+    require(
+        binding.get("artifact_sha256") == sha256(primary_manifest_path)
+        and binding.get("entry_count") == len(primary_manifest["entries"]) == 48
+        and binding.get("contract_sha256") == canonical_sha256(manifest_contract),
+        "represented-length receipt is stale against the primary manifest bundle",
+    )
+    require(
+        api_env.get("LR_Y1_REPRESENTED_LENGTH_RULE_PATH")
+        == "/app/graphql-api/config/y1-represented-length-source-contract.json",
+        "represented-length receipt is not wired into API startup",
+    )
 
     crosswalk = json.loads((CONFIG_DIR / "long-read-tr-reference-crosswalk.json").read_text())
     require(crosswalk.get("schema_version") == 4, "STR crosswalk is not receipt-bound schema v4")
@@ -241,7 +299,7 @@ def main() -> None:
     for path in [MANIFEST_PATH, API_ENV_PATH]:
         require("/Users/" not in path.read_text(), f"local absolute path leaked into {path.relative_to(ROOT)}")
 
-    print(f"verified 10 artifacts; routing manifest sha256={sha256(MANIFEST_PATH)}")
+    print(f"verified 11 artifacts; routing manifest sha256={sha256(MANIFEST_PATH)}")
     print(f"verified approved API env sha256={EXPECTED_ENV_SHA256}")
 
 
