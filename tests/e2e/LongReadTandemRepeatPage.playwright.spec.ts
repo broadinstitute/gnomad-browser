@@ -1,4 +1,4 @@
-import { expect, test, type Page, type TestInfo } from '@playwright/test'
+import { expect, test, type Locator, type Page, type TestInfo } from '@playwright/test'
 
 const COMPOUND_LOCUS =
   '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
@@ -22,6 +22,41 @@ const isGraphqlOperation = (response: any, operation: string) => {
 
 const waitForLocusResponse = (page: Page) =>
   page.waitForResponse((response) => isGraphqlOperation(response, 'LongReadTandemRepeatLocus'))
+
+const dragBetweenMarks = async (page: Page, from: Locator, to: Locator) => {
+  await from.scrollIntoViewIfNeeded()
+  await to.scrollIntoViewIfNeeded()
+  const [fromBox, toBox] = await Promise.all([from.boundingBox(), to.boundingBox()])
+  expect(fromBox).not.toBeNull()
+  expect(toBox).not.toBeNull()
+  const start = { x: fromBox!.x + fromBox!.width / 2, y: fromBox!.y + fromBox!.height / 2 }
+  const end = { x: toBox!.x + toBox!.width / 2, y: toBox!.y + toBox!.height / 2 }
+  await page.mouse.move(start.x, start.y)
+  await page.mouse.down()
+  await page.mouse.move((start.x + end.x) / 2, (start.y + end.y) / 2, { steps: 4 })
+  await page.mouse.move(end.x, end.y, { steps: 4 })
+  await page.mouse.up()
+}
+
+const farthestMarkPair = (marks: Locator) =>
+  marks.evaluateAll((elements) => {
+    const centers = elements.map((element) => {
+      const box = element.getBoundingClientRect()
+      return { x: box.left + box.width / 2, y: box.top + box.height / 2 }
+    })
+    let pair: [number, number] = [0, Math.min(1, centers.length - 1)]
+    let maximumDistance = -1
+    centers.forEach((left, leftIndex) => {
+      centers.forEach((right, rightIndex) => {
+        const distance = (left.x - right.x) ** 2 + (left.y - right.y) ** 2
+        if (distance > maximumDistance) {
+          maximumDistance = distance
+          pair = [leftIndex, rightIndex]
+        }
+      })
+    })
+    return pair
+  })
 
 const exactIndexForCount = (page: Page, exactAlleleCount: number) => {
   const heading = page.getByRole('heading', {
@@ -957,6 +992,26 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       testInfo,
       'allelic-landscape-three-panel-wide.png'
     )
+    const desktopHistogramMarks = page
+      .getByTestId('whole-record-delta-histogram')
+      .getByRole('button')
+    expect(await desktopHistogramMarks.count()).toBeGreaterThan(1)
+    await dragBetweenMarks(page, desktopHistogramMarks.nth(1), desktopHistogramMarks.nth(0))
+    await expect(desktopHistogramMarks.nth(0)).toHaveAttribute('aria-pressed', 'true')
+    await expect(desktopHistogramMarks.nth(1)).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.getByRole('heading', { name: /Change from REF \(bp\) range/ })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+
+    const genotypeBrushMarks = genotypeCard.locator(
+      '[role="button"][aria-label*="filter the source-ALT index to this square"]'
+    )
+    expect(await genotypeBrushMarks.count()).toBeGreaterThan(1)
+    await dragBetweenMarks(page, genotypeBrushMarks.nth(0), genotypeBrushMarks.nth(1))
+    await expect(genotypeBrushMarks.nth(0)).toHaveAttribute('aria-pressed', 'true')
+    await expect(genotypeBrushMarks.nth(1)).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.getByRole('heading', { name: /genotype region longer/ })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+
     const selectableGenotypeCell = genotypeCard
       .locator('[role="button"][aria-label*="filter the source-ALT index to this square"]')
       .first()
@@ -1202,6 +1257,32 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       testInfo,
       'allelic-landscape-four-panel-narrow.png'
     )
+    const narrowMotifMarks = motifCard.getByRole('button')
+    expect(await narrowMotifMarks.count()).toBeGreaterThan(1)
+    await dragBetweenMarks(page, narrowMotifMarks.nth(0), narrowMotifMarks.nth(1))
+    await expect(narrowMotifMarks.nth(0)).toHaveAttribute('aria-pressed', 'true')
+    await expect(narrowMotifMarks.nth(1)).toHaveAttribute('aria-pressed', 'true')
+    await expect(
+      page.getByRole('heading', { name: /source ALT alleles — .+ exact literal occurrences/ })
+    ).toBeFocused()
+    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+
+    const narrowPurityMarks = httPurityPlot.getByRole('button')
+    expect(await narrowPurityMarks.count()).toBeGreaterThan(1)
+    const [firstPurityIndex, secondPurityIndex] = await farthestMarkPair(narrowPurityMarks)
+    await dragBetweenMarks(
+      page,
+      narrowPurityMarks.nth(firstPurityIndex),
+      narrowPurityMarks.nth(secondPurityIndex)
+    )
+    expect(
+      await narrowPurityMarks.evaluateAll(
+        (points) => points.filter((point) => point.getAttribute('aria-pressed') === 'true').length
+      )
+    ).toBeGreaterThan(1)
+    await expect(page.getByRole('heading', { name: /purity region/ })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+
     const histogramScroller = page.getByTestId('whole-record-delta-histogram-scroller')
     const narrowHistogramMetrics = await histogramScroller.evaluate((scroller) => {
       const scrollElement = scroller as HTMLElement

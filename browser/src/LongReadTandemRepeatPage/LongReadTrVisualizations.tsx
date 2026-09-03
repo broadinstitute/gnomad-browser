@@ -46,6 +46,7 @@ import {
   exactStoredMotifDistribution,
   ExactStoredMotifDistributionBin,
 } from './exactStoredMotifDistribution'
+import { DiscreteBrushMark, useDiscretePlotBrush } from './discretePlotBrush'
 
 const Panel = styled.section`
   min-width: 0;
@@ -333,8 +334,9 @@ const AllelicLandscapeHelp = ({
   <HaplotypeHelpButton title="About the allelic landscape">
     <p style={{ marginTop: 0 }}>
       These plots summarize long-read observations at this locus and connect them to the source-ALT
-      index below. Choosing a plot mark filters the index; it does not select an ALT or change the
-      URL. Choose <strong>Details</strong> in the index to update allele details.
+      index below. Choosing a mark filters the index; dragging between identity-backed marks selects
+      a range or region. A new plot selection replaces the previous one and never changes the URL.
+      Choose <strong>Details</strong> in the index to update allele details.
     </p>
     <h4>Repeat-count distributions (simple loci only)</h4>
     <p>
@@ -347,20 +349,22 @@ const AllelicLandscapeHelp = ({
     <h4>Total allele length change (ALT − REF, bp)</h4>
     <p>
       Bar height shows called non-reference allele copies; the number above each bar shows source
-      ALT identities in that bin. Choose a bar to filter the index; choose it again or{' '}
+      ALT identities in that bin. Choose a bar to filter the index, or drag between bars to union a
+      contiguous range; choose a single selected bar again, press Escape, or use{' '}
       <strong>Show all source ALT alleles</strong> to clear.
     </p>
     <h4>Length change × motif purity</h4>
     <p>
-      Each point is one source ALT identity; point area shows allele count. Choose a point to filter
-      to that identity without selecting it. Purity is source-reported; the colored motif preview is
-      a separate browser decomposition and may differ.
+      Each point is one source ALT identity; point area shows allele count. Choose a point or drag a
+      rectangle to filter without selecting an ALT. Purity is source-reported; the colored motif
+      preview is a separate browser decomposition and may differ.
     </p>
     <h4>Genotype length distribution</h4>
     <p>
       Each populated square summarizes people with complete called genotypes containing both plotted
       alleles, grouped by the shorter and longer allele&apos;s total length change. Choose a square
-      to filter the index, then expand its exact-pair summary.
+      or drag a rectangle to union exact contributors; reference sentinel identities are excluded.
+      Expand a square&apos;s exact-pair summary for details.
     </p>
     {(showLengthAxisControl ||
       showAncestryControl ||
@@ -1247,18 +1251,32 @@ const purityPositionCss = ({ percent, pixelOffset }: ReturnType<typeof puritySca
 const PurityScatter = ({
   points,
   selectedAllele,
-  activeAllele,
-  onActivatePoint,
+  activeMarkIds,
+  onSelectPoints,
+  onClear,
   lengthAxisMode = 'delta',
   representedRefLength = null,
 }: {
   points: PurityPoint[]
   selectedAllele?: string
-  activeAllele?: string
-  onActivatePoint: (point: PurityPoint) => void
+  activeMarkIds: Set<string>
+  onSelectPoints: (points: PurityPoint[]) => void
+  onClear: () => void
   lengthAxisMode?: LengthAxisMode
   representedRefLength?: number | null
 }) => {
+  const brushMarks: DiscreteBrushMark<PurityPoint>[] = points.map((point) => ({
+    id: `purity:${point.allele_id}`,
+    x: point.delta,
+    y: point.motif_purity,
+    value: point,
+  }))
+  const brush = useDiscretePlotBrush({
+    marks: brushMarks,
+    axis: 'xy',
+    onSelect: (selection) => onSelectPoints(selection.marks),
+    onClear,
+  })
   if (!points.length) return <p>Motif purity is unavailable.</p>
   const minDelta = Math.min(...points.map((point) => point.delta))
   const maxDelta = Math.max(...points.map((point) => point.delta))
@@ -1289,6 +1307,7 @@ const PurityScatter = ({
         data-purity-domain={`${domainMinimum.toFixed(6)}:${domainMaximum.toFixed(6)}`}
         data-horizontal-inset={PURITY_HORIZONTAL_INSET}
         data-vertical-inset={PURITY_POINT_CLEARANCE}
+        {...brush.containerProps}
         style={{
           position: 'relative',
           height: scatterHeight,
@@ -1331,6 +1350,9 @@ const PurityScatter = ({
           )
         })}
         {points.map((point) => {
+          const mark = brushMarks.find((candidate) => candidate.value === point)!
+          const markProps = brush.markProps(mark)
+          const pointSelected = activeMarkIds.has(mark.id) || brush.previewMarkIds.has(mark.id)
           const left = purityPositionCss(
             purityScalePosition(point.delta, minDelta, maxDelta, PURITY_HORIZONTAL_INSET)
           )
@@ -1357,8 +1379,9 @@ const PurityScatter = ({
               key={point.allele_id}
               type="button"
               $diameter={size}
-              aria-pressed={point.allele_id === activeAllele}
+              aria-pressed={pointSelected}
               data-selected-allele={point.allele_id === selectedAllele}
+              data-discrete-brush-id={markProps['data-discrete-brush-id']}
               title={`${alleleLabel(point.allele_id)}: ${lengthAxisLabel(
                 point.delta,
                 lengthAxisMode,
@@ -1377,7 +1400,10 @@ const PurityScatter = ({
               data-called-alleles={point.called_alleles}
               data-point-diameter={size}
               data-overlap-offset={overlapOffset}
-              onClick={() => onActivatePoint(point)}
+              onClick={(event) => {
+                if (!markProps.onClick(event)) onSelectPoints([point])
+              }}
+              onKeyDown={(event) => markProps.onKeyDown(event)}
               style={{
                 left,
                 bottom,
@@ -1431,6 +1457,10 @@ const PurityScatter = ({
         >
           Motif purity
         </span>
+      </div>
+      <div style={{ color: '#566168', fontSize: 11 }}>
+        Drag between points for a rectangular selection, or activate one point then use Shift+Arrow.
+        Escape clears the selection.
       </div>
       <div
         aria-label={`Point size represents source ALT allele AC from ${minimumCalledAlleles} to ${maximumCalledAlleles}`}
@@ -1577,18 +1607,32 @@ const MotifOccurrencePlotCard = ({
   motifs,
   selectedMotifIndex,
   bins,
-  activeOccurrenceCount,
+  activeMarkIds,
   onSelectMotifIndex,
-  onSelectBin,
+  onSelectBins,
+  onClear,
 }: {
   motifs: string[]
   selectedMotifIndex: number
   bins: ExactStoredMotifDistributionBin[]
-  activeOccurrenceCount: number | null
+  activeMarkIds: Set<string>
   onSelectMotifIndex: (motifIndex: number) => void
-  onSelectBin: (occurrenceCount: number) => void
+  onSelectBins: (bins: ExactStoredMotifDistributionBin[]) => void
+  onClear: () => void
 }) => {
   const motif = motifs[selectedMotifIndex]
+  const brushMarks: DiscreteBrushMark<ExactStoredMotifDistributionBin>[] = bins.map((bin) => ({
+    id: `motif-occurrence:${selectedMotifIndex}:${bin.occurrence_count}`,
+    x: bin.occurrence_count,
+    y: 0,
+    value: bin,
+  }))
+  const brush = useDiscretePlotBrush({
+    marks: brushMarks,
+    axis: 'x',
+    onSelect: (selection) => onSelectBins(selection.marks),
+    onClear,
+  })
   const maxCopies = Math.max(0, ...bins.map((bin) => bin.allele_copies))
   const ticks = histogramTicks(maxCopies, 'linear')
   let height = 240
@@ -1623,7 +1667,8 @@ const MotifOccurrencePlotCard = ({
       </MotifOccurrenceControl>
       <p>
         Whole represented source ALT alleles only. Exact literal matches; not component repeat
-        count, genotype, or a clinical measure.
+        count, genotype, or a clinical measure. Drag between bars, or activate one bar then use
+        Shift+Arrow, to replace the current plot selection. Escape clears it.
       </p>
       {bins.length ? (
         <HistogramChart>
@@ -1644,13 +1689,18 @@ const MotifOccurrencePlotCard = ({
             tabIndex={0}
           >
             <HistogramScrollContent style={{ width: scrollWidth }}>
-              <Histogram $height={height} $gap={gap}>
+              <Histogram $height={height} $gap={gap} {...brush.containerProps}>
                 {bins.map((bin) => {
-                  const selected = activeOccurrenceCount === bin.occurrence_count
+                  const mark = brushMarks.find(
+                    (candidate) => candidate.value.occurrence_count === bin.occurrence_count
+                  )!
+                  const selected = activeMarkIds.has(mark.id) || brush.previewMarkIds.has(mark.id)
                   const barHeight = histogramHeightPercent(bin.allele_copies, maxCopies, 'linear')
+                  const markProps = brush.markProps(mark)
                   return (
                     <BarButton
                       key={bin.occurrence_count}
+                      data-discrete-brush-id={markProps['data-discrete-brush-id']}
                       type="button"
                       $height={barHeight}
                       $hasValue={bin.allele_copies > 0}
@@ -1668,7 +1718,10 @@ const MotifOccurrencePlotCard = ({
                       )} in this view; ${exactAltSequences(
                         bin.allele_ids.length
                       )}; filter the source-ALT index to this occurrence bin`}
-                      onClick={() => onSelectBin(bin.occurrence_count)}
+                      onClick={(event) => {
+                        if (!markProps.onClick(event)) onSelectBins([bin])
+                      }}
+                      onKeyDown={(event) => markProps.onKeyDown(event)}
                     >
                       <BarExactCount title={exactAltSequences(bin.allele_ids.length)}>
                         {bin.allele_ids.length}
@@ -1703,35 +1756,20 @@ export type ExactIndexMarkFilterScope = {
   sourceRunId: string
 }
 
-export type ExactIndexMarkFilter =
-  | {
-      scope: ExactIndexMarkFilterScope
-      kind: 'total-length-bin'
-      markId: string
-      delta: number
-    }
-  | {
-      scope: ExactIndexMarkFilterScope
-      kind: 'motif-occurrence-bin'
-      markId: string
-      motifIndex: number
-      occurrenceCount: number
-    }
-  | {
-      scope: ExactIndexMarkFilterScope
-      kind: 'purity-point'
-      markId: string
-      alleleId: string
-    }
-  | {
-      scope: ExactIndexMarkFilterScope
-      kind: 'genotype-length-cell'
-      markId: string
-      label: string
-      shorterDelta: number
-      longerDelta: number
-      exactPairs: ExactGenotypePair[]
-    }
+export type ExactIndexSelectionOrigin =
+  | 'total-length'
+  | 'motif-occurrence'
+  | 'purity'
+  | 'genotype-length'
+
+export type ExactIndexSelection = {
+  scope: ExactIndexMarkFilterScope
+  origin: ExactIndexSelectionOrigin
+  markIds: string[]
+  alleleIds: string[]
+  label: string
+  singleDelta?: number
+}
 
 export const WholeRecordAlleleLandscape = ({
   landscape,
@@ -1894,7 +1932,7 @@ export const WholeRecordAlleleLandscape = ({
   }
   const scopeKey = `${scope.locusId}\u0000${scope.cohort}\u0000${scope.sourceRunId}`
   const previousScopeKey = useRef(scopeKey)
-  const [indexFilter, setIndexFilter] = useState<ExactIndexMarkFilter | null>(null)
+  const [indexSelection, setIndexSelection] = useState<ExactIndexSelection | null>(null)
   const indexHeading = useRef<HTMLHeadingElement>(null)
   const selectedContractAncestry = admittedAncestryGroups.find(
     (group) => group.id === selectedContractAncestryId
@@ -1978,27 +2016,16 @@ export const WholeRecordAlleleLandscape = ({
     if (frequencyCount <= 0) return []
     return selectedDivision ? [{ ...point, called_alleles: frequencyCount }] : [point]
   })
-  const filterScopeKey = indexFilter
-    ? `${indexFilter.scope.locusId}\u0000${indexFilter.scope.cohort}\u0000${indexFilter.scope.sourceRunId}`
+  const selectionScopeKey = indexSelection
+    ? `${indexSelection.scope.locusId}\u0000${indexSelection.scope.cohort}\u0000${indexSelection.scope.sourceRunId}`
     : null
-  const activeIndexFilter = filterScopeKey === scopeKey ? indexFilter : null
+  const activeIndexSelection = selectionScopeKey === scopeKey ? indexSelection : null
+  const activeMarkIds = new Set(activeIndexSelection?.markIds || [])
   const selectedDelta =
-    activeIndexFilter?.kind === 'total-length-bin' ? activeIndexFilter.delta : null
+    activeIndexSelection?.origin === 'total-length' && activeIndexSelection.markIds.length === 1
+      ? activeIndexSelection.singleDelta ?? null
+      : null
   const selectedBin = bins.find((bin) => bin.delta === selectedDelta)
-  const activeMotifFilter =
-    activeIndexFilter?.kind === 'motif-occurrence-bin' ? activeIndexFilter : null
-  const activeMotifBin = admittedMotifDistribution?.motifs[
-    activeMotifFilter?.motifIndex ?? -1
-  ]?.bins.find((bin) => bin.occurrence_count === activeMotifFilter?.occurrenceCount)
-  const activePurityAllele =
-    activeIndexFilter?.kind === 'purity-point' ? activeIndexFilter.alleleId : undefined
-  const activeGenotypeCell =
-    activeIndexFilter?.kind === 'genotype-length-cell' ? activeIndexFilter : null
-  const activeGenotypeSourceCell = admittedGenotypeLandscape?.cells?.find(
-    (cell) =>
-      cell.shorter_delta === activeGenotypeCell?.shorterDelta &&
-      cell.longer_delta === activeGenotypeCell?.longerDelta
-  )
   let selectedGenotypeAncestries: readonly string[] = selectedPopulation ? [selectedPopulation] : []
   let selectedGenotypeSexes: readonly string[] = selectedSex ? [selectedSex] : []
   if (filterContract) {
@@ -2015,116 +2042,203 @@ export const WholeRecordAlleleLandscape = ({
         : ['__NO_EXACT_CONTRACT_METADATA_SEX__']
     }
   }
-  const activeGenotypePairs = (activeGenotypeSourceCell?.pairs || []).filter(
-    (pair) =>
-      (!selectedGenotypeAncestries.length ||
-        selectedGenotypeAncestries.includes(pair.ancestry_group)) &&
-      (!selectedGenotypeSexes.length || selectedGenotypeSexes.includes(pair.sex)) &&
-      pair.people > 0
-  )
-  let activeAlleleIds: string[] | null = null
-  if (selectedBin) {
-    activeAlleleIds = selectedBin.allele_ids.filter((alleleId) => {
-      const allele = alleleById.get(alleleId)
-      return allele ? frequencyCountFor(allele) > 0 : false
-    })
-  } else if (activeMotifFilter) {
-    activeAlleleIds = activeMotifBin?.allele_ids || []
-  } else if (activePurityAllele) {
-    activeAlleleIds = filteredPurityPoints.some((point) => point.allele_id === activePurityAllele)
-      ? [activePurityAllele]
+  const uniqueIds = (ids: string[]) => [...new Set(ids)]
+  const currentGenotypeSelectionAlleleIds =
+    activeIndexSelection?.origin === 'genotype-length'
+      ? uniqueIds(
+          (admittedGenotypeLandscape?.cells || [])
+            .filter((cell) =>
+              activeIndexSelection.markIds.includes(
+                `genotype-length:${cell.shorter_delta}/${cell.longer_delta}`
+              )
+            )
+            .flatMap((cell) =>
+              cell.pairs
+                .filter(
+                  (pair) =>
+                    (!selectedGenotypeAncestries.length ||
+                      selectedGenotypeAncestries.includes(pair.ancestry_group)) &&
+                    (!selectedGenotypeSexes.length || selectedGenotypeSexes.includes(pair.sex)) &&
+                    pair.people > 0
+                )
+                .flatMap((pair) => [pair.shorter_allele_id, pair.longer_allele_id])
+            )
+        ).filter((alleleId) => alleleId !== admittedGenotypeLandscape?.reference_allele_id)
       : []
-  } else if (activeGenotypeCell) {
-    activeAlleleIds = [
-      ...new Set(
-        activeGenotypePairs.flatMap((pair) => [pair.shorter_allele_id, pair.longer_allele_id])
-      ),
-    ].filter((alleleId) => alleleId !== admittedGenotypeLandscape?.reference_allele_id)
-  }
-  const activeAlleleSet = activeAlleleIds ? new Set(activeAlleleIds) : null
+  const activeAlleleSet = activeIndexSelection
+    ? new Set(
+        activeIndexSelection.origin === 'genotype-length'
+          ? currentGenotypeSelectionAlleleIds
+          : activeIndexSelection.alleleIds.filter((alleleId) =>
+              frequencyCountFor(alleleById.get(alleleId))
+            )
+      )
+    : null
   const indexedAlleles = activeAlleleSet
     ? alleles.filter((allele) => activeAlleleSet.has(allele.variant_id))
     : alleles
   const focusIndex = () => indexHeading.current?.focus({ preventScroll: true })
-  const activateIndexFilter = (next: ExactIndexMarkFilter) => {
-    setIndexFilter((current) =>
+  const activateIndexSelection = (next: ExactIndexSelection) => {
+    setIndexSelection((current) =>
       current &&
+      current.origin === next.origin &&
+      current.markIds.length === 1 &&
+      next.markIds.length === 1 &&
+      current.markIds[0] === next.markIds[0] &&
       `${current.scope.locusId}\u0000${current.scope.cohort}\u0000${current.scope.sourceRunId}` ===
-        scopeKey &&
-      current.kind === next.kind &&
-      current.markId === next.markId
+        scopeKey
         ? null
         : next
     )
     focusIndex()
   }
-  const filterIndexToDelta = (delta: number) =>
-    activateIndexFilter({
+  const filterIndexToLengthBins = (selectedBins: AlleleBin[]) => {
+    const ordered = [...selectedBins].sort((left, right) => left.delta - right.delta)
+    if (!ordered.length) return
+    const first = ordered[0]
+    const last = ordered[ordered.length - 1]
+    activateIndexSelection({
       scope,
-      kind: 'total-length-bin',
-      markId: `total-length:${delta}`,
-      delta,
+      origin: 'total-length',
+      markIds: ordered.map((bin) => `total-length:${bin.delta}`),
+      alleleIds: uniqueIds(ordered.flatMap((bin) => bin.allele_ids)),
+      label:
+        ordered.length === 1
+          ? `at ${lengthAxisLabel(first.delta, lengthAxisMode, representedRefLength)}`
+          : `${lengthAxisName} range ${lengthAxisLabel(
+              first.delta,
+              lengthAxisMode,
+              representedRefLength
+            )} through ${lengthAxisLabel(last.delta, lengthAxisMode, representedRefLength)}`,
+      singleDelta: ordered.length === 1 ? first.delta : undefined,
     })
-  const filterIndexToMotifOccurrence = (motifIndex: number, occurrenceCount: number) =>
-    activateIndexFilter({
+  }
+  const filterIndexToMotifBins = (
+    motifIndex: number,
+    selectedBins: ExactStoredMotifDistributionBin[]
+  ) => {
+    const ordered = [...selectedBins].sort(
+      (left, right) => left.occurrence_count - right.occurrence_count
+    )
+    if (!ordered.length) return
+    const motif = motifs[motifIndex]
+    const first = ordered[0].occurrence_count
+    const last = ordered[ordered.length - 1].occurrence_count
+    activateIndexSelection({
       scope,
-      kind: 'motif-occurrence-bin',
-      markId: `motif-occurrence:${motifIndex}:${occurrenceCount}`,
-      motifIndex,
-      occurrenceCount,
+      origin: 'motif-occurrence',
+      markIds: ordered.map((bin) => `motif-occurrence:${motifIndex}:${bin.occurrence_count}`),
+      alleleIds: uniqueIds(ordered.flatMap((bin) => bin.allele_ids)),
+      label:
+        first === last
+          ? `${motif}: ${counted(
+              first,
+              'exact literal occurrence',
+              'exact literal occurrences'
+            )} in each whole represented source ALT`
+          : `${motif}: ${first.toLocaleString()} through ${last.toLocaleString()} exact literal occurrences in each whole represented source ALT`,
     })
+  }
   const selectMotifIndex = (motifIndex: number) => {
     setSelectedMotifIndex(motifIndex)
-    if (activeIndexFilter?.kind === 'motif-occurrence-bin') setIndexFilter(null)
+    if (activeIndexSelection?.origin === 'motif-occurrence') setIndexSelection(null)
   }
-  const filterIndexToPurityPoint = (point: PurityPoint) =>
-    activateIndexFilter({
+  const filterIndexToPurityPoints = (points: PurityPoint[]) => {
+    if (!points.length) return
+    const deltas = points.map((point) => point.delta)
+    const purities = points.map((point) => point.motif_purity)
+    activateIndexSelection({
       scope,
-      kind: 'purity-point',
-      markId: `purity:${point.allele_id}`,
-      alleleId: point.allele_id,
+      origin: 'purity',
+      markIds: points.map((point) => `purity:${point.allele_id}`),
+      alleleIds: uniqueIds(points.map((point) => point.allele_id)),
+      label:
+        points.length === 1
+          ? alleleLabel(points[0].allele_id)
+          : `purity region ${lengthAxisLabel(
+              Math.min(...deltas),
+              lengthAxisMode,
+              representedRefLength
+            )} through ${lengthAxisLabel(
+              Math.max(...deltas),
+              lengthAxisMode,
+              representedRefLength
+            )}, purity ${Math.min(...purities).toFixed(4)} through ${Math.max(...purities).toFixed(
+              4
+            )}`,
     })
-  const filterIndexToGenotype = (
-    markId: string,
-    label: string,
-    shorterDelta: number,
-    longerDelta: number,
-    exactPairs: ExactGenotypePair[]
-  ) =>
-    activateIndexFilter({
+  }
+  const filterIndexToGenotypeCells = (
+    selectedCells: Array<{
+      markId: string
+      shorterDelta: number
+      longerDelta: number
+      pairs: ExactGenotypePair[]
+    }>
+  ) => {
+    if (!selectedCells.length) return
+    const shorter = selectedCells.map((cell) => cell.shorterDelta)
+    const longer = selectedCells.map((cell) => cell.longerDelta)
+    const referenceId = admittedGenotypeLandscape?.reference_allele_id
+    const alleleIds = uniqueIds(
+      selectedCells.flatMap((cell) =>
+        cell.pairs.flatMap((pair) => [pair.shorter_allele_id, pair.longer_allele_id])
+      )
+    ).filter((alleleId) => alleleId !== referenceId)
+    const first = selectedCells[0]
+    activateIndexSelection({
       scope,
-      kind: 'genotype-length-cell',
-      markId,
-      label,
-      shorterDelta,
-      longerDelta,
-      exactPairs,
+      origin: 'genotype-length',
+      markIds: selectedCells.map((cell) => cell.markId),
+      alleleIds,
+      label:
+        selectedCells.length === 1
+          ? `selected genotype cell (${lengthAxisLabel(
+              first.longerDelta,
+              lengthAxisMode,
+              representedRefLength
+            )} × ${lengthAxisLabel(first.shorterDelta, lengthAxisMode, representedRefLength)})`
+          : `genotype region longer ${lengthAxisLabel(
+              Math.min(...longer),
+              lengthAxisMode,
+              representedRefLength
+            )} through ${lengthAxisLabel(
+              Math.max(...longer),
+              lengthAxisMode,
+              representedRefLength
+            )}; shorter ${lengthAxisLabel(
+              Math.min(...shorter),
+              lengthAxisMode,
+              representedRefLength
+            )} through ${lengthAxisLabel(
+              Math.max(...shorter),
+              lengthAxisMode,
+              representedRefLength
+            )}`,
     })
+  }
   const clearIndexFilter = () => {
-    setIndexFilter(null)
+    setIndexSelection(null)
     focusIndex()
   }
   useEffect(() => {
     if (previousScopeKey.current !== scopeKey) {
       previousScopeKey.current = scopeKey
-      setIndexFilter(null)
+      setIndexSelection(null)
     }
   }, [scopeKey])
-  useEffect(() => {
-    if (
-      (activeIndexFilter?.kind === 'motif-occurrence-bin' && !activeMotifBin) ||
-      (activeIndexFilter?.kind === 'purity-point' && activeAlleleIds?.length === 0) ||
-      (activeIndexFilter?.kind === 'genotype-length-cell' && activeGenotypePairs.length === 0)
-    ) {
-      setIndexFilter(null)
-    }
-  }, [
-    activeAlleleIds?.length,
-    activeGenotypePairs.length,
-    activeIndexFilter?.kind,
-    activeMotifBin,
-    selectedDivision,
-  ])
+  const totalLengthBrushMarks: DiscreteBrushMark<AlleleBin>[] = bins.map((bin) => ({
+    id: `total-length:${bin.delta}`,
+    x: bin.delta,
+    y: 0,
+    value: bin,
+  }))
+  const totalLengthBrush = useDiscretePlotBrush({
+    marks: totalLengthBrushMarks,
+    axis: 'x',
+    onSelect: (selection) => filterIndexToLengthBins(selection.marks),
+    onClear: clearIndexFilter,
+  })
 
   if (landscape.status !== 'AVAILABLE') {
     return (
@@ -2282,23 +2396,7 @@ export const WholeRecordAlleleLandscape = ({
     selectedBin?.delta ?? null
   )
   const deltaAxisHeight = 25 + Math.max(0, ...deltaAxisTicks.map((tick) => tick.lane)) * 15
-  let activeFilterDescription: string | undefined
-  if (activeIndexFilter?.kind === 'genotype-length-cell') {
-    activeFilterDescription = `selected genotype cell (${lengthAxisLabel(
-      activeIndexFilter.longerDelta,
-      lengthAxisMode,
-      representedRefLength
-    )} × ${lengthAxisLabel(activeIndexFilter.shorterDelta, lengthAxisMode, representedRefLength)})`
-  } else if (activeIndexFilter?.kind === 'motif-occurrence-bin') {
-    const motif = motifs[activeIndexFilter.motifIndex]
-    activeFilterDescription = `${motif}: ${counted(
-      activeIndexFilter.occurrenceCount,
-      'exact literal occurrence',
-      'exact literal occurrences'
-    )} in each whole represented source ALT`
-  } else if (activeIndexFilter?.kind === 'purity-point') {
-    activeFilterDescription = alleleLabel(activeIndexFilter.alleleId)
-  }
+  const activeFilterDescription = selectedDelta == null ? activeIndexSelection?.label : undefined
 
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
@@ -2502,15 +2600,12 @@ export const WholeRecordAlleleLandscape = ({
             motifs={admittedMotifDistribution.motifs.map((entry) => entry.motif)}
             selectedMotifIndex={selectedMotifIndex}
             bins={selectedMotifDistribution.bins}
-            activeOccurrenceCount={
-              activeMotifFilter?.motifIndex === selectedMotifIndex
-                ? activeMotifFilter.occurrenceCount
-                : null
-            }
+            activeMarkIds={activeMarkIds}
             onSelectMotifIndex={selectMotifIndex}
-            onSelectBin={(occurrenceCount) =>
-              filterIndexToMotifOccurrence(selectedMotifIndex, occurrenceCount)
+            onSelectBins={(selectedBins) =>
+              filterIndexToMotifBins(selectedMotifIndex, selectedBins)
             }
+            onClear={clearIndexFilter}
           />
         )}
         <PlotCard data-plot-card="total-length-histogram">
@@ -2541,21 +2636,27 @@ export const WholeRecordAlleleLandscape = ({
                   data-testid="whole-record-delta-histogram"
                   $height={histogramLayout.height}
                   $gap={histogramLayout.gap}
+                  {...totalLengthBrush.containerProps}
                 >
                   {bins.map((bin, index) => {
                     const count = counts[index]
                     const height = histogramHeightPercent(count, maxCount, selectedScaleType)
+                    const mark = totalLengthBrushMarks[index]
+                    const markProps = totalLengthBrush.markProps(mark)
+                    const selected =
+                      activeMarkIds.has(mark.id) || totalLengthBrush.previewMarkIds.has(mark.id)
                     return (
                       <BarButton
                         key={bin.delta}
+                        data-discrete-brush-id={markProps['data-discrete-brush-id']}
                         type="button"
                         $height={height}
                         $hasValue={count > 0}
                         $width={histogramLayout.barWidth}
                         data-height-percent={height.toFixed(3)}
                         data-bar-width={histogramLayout.barWidth}
-                        $selected={bin.delta === selectedBin?.delta}
-                        aria-pressed={bin.delta === selectedBin?.delta}
+                        $selected={selected}
+                        aria-pressed={selected}
                         aria-label={`${lengthAxisLabel(
                           bin.delta,
                           lengthAxisMode,
@@ -2570,7 +2671,10 @@ export const WholeRecordAlleleLandscape = ({
                         )} · ${calledAlleleCopies(count, true)} · ${exactAltSequences(
                           bin.exact_alt_count
                         )}`}
-                        onClick={() => filterIndexToDelta(bin.delta)}
+                        onClick={(event) => {
+                          if (!markProps.onClick(event)) filterIndexToLengthBins([bin])
+                        }}
+                        onKeyDown={(event) => markProps.onKeyDown(event)}
                       >
                         {selectedColorBy && count > 0 && (
                           <BarSegments aria-hidden="true">
@@ -2628,6 +2732,8 @@ export const WholeRecordAlleleLandscape = ({
           </HistogramChart>
           <div style={{ color: '#566168', fontSize: 11, textAlign: 'center' }}>
             Bar height: called non-reference allele copies. Number above: source ALT identities.
+            Drag between bars, or activate one bar then use Shift+Arrow, to select a range. Escape
+            clears it.
           </div>
         </PlotCard>
         <PlotCard data-plot-card="motif-purity">
@@ -2640,8 +2746,9 @@ export const WholeRecordAlleleLandscape = ({
             <PurityScatter
               points={filteredPurityPoints}
               selectedAllele={selectedAllele}
-              activeAllele={activePurityAllele}
-              onActivatePoint={filterIndexToPurityPoint}
+              activeMarkIds={activeMarkIds}
+              onSelectPoints={filterIndexToPurityPoints}
+              onClear={clearIndexFilter}
               lengthAxisMode={lengthAxisMode}
               representedRefLength={representedRefLength}
             />
@@ -2659,8 +2766,9 @@ export const WholeRecordAlleleLandscape = ({
             selectedSex={selectedSex}
             selectedPopulations={selectedGenotypeAncestries}
             selectedSexes={selectedGenotypeSexes}
-            activeCellKey={activeGenotypeCell?.markId}
-            onSelectCell={filterIndexToGenotype}
+            activeMarkIds={activeMarkIds}
+            onSelectCells={filterIndexToGenotypeCells}
+            onClear={clearIndexFilter}
             lengthAxisMode={lengthAxisMode}
             representedRefLength={representedRefLength}
           />
@@ -2790,6 +2898,13 @@ export const aggregateGenotypePairs = (pairs: GenotypePair[]): ExactGenotypePair
 const pairName = (id: string, referenceId: string | null) =>
   id === referenceId ? 'Reference (Δ 0)' : alleleLabel(id)
 
+export type GenotypeBrushCell = {
+  markId: string
+  shorterDelta: number
+  longerDelta: number
+  pairs: ExactGenotypePair[]
+}
+
 export const WholeRecordGenotypeLandscape = ({
   landscape,
   navigation,
@@ -2797,8 +2912,9 @@ export const WholeRecordGenotypeLandscape = ({
   selectedSex,
   selectedPopulations,
   selectedSexes,
-  activeCellKey,
-  onSelectCell,
+  activeMarkIds = new Set<string>(),
+  onSelectCells,
+  onClear = () => {},
   lengthAxisMode = 'delta',
   representedRefLength = null,
 }: {
@@ -2808,32 +2924,15 @@ export const WholeRecordGenotypeLandscape = ({
   selectedSex: Sex | null
   selectedPopulations?: readonly string[]
   selectedSexes?: readonly string[]
-  activeCellKey?: string
-  onSelectCell?: (
-    markId: string,
-    label: string,
-    shorterDelta: number,
-    longerDelta: number,
-    exactPairs: ExactGenotypePair[]
-  ) => void
+  activeMarkIds?: Set<string>
+  onSelectCells?: (cells: GenotypeBrushCell[]) => void
+  onClear?: () => void
   lengthAxisMode?: LengthAxisMode
   representedRefLength?: number | null
 }) => {
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const activePopulations = selectedPopulations || (selectedPopulation ? [selectedPopulation] : [])
   const activeSexes = selectedSexes || (selectedSex ? [selectedSex] : [])
-
-  if (landscape.status !== 'AVAILABLE') {
-    return (
-      <PlotCard data-plot-card="total-length-genotype" data-testid="genotype-length-card">
-        <h3>Genotype length distribution</h3>
-        <p role="status">
-          Genotype landscape unavailable: {unavailableReason(landscape.reason_code)}.
-        </p>
-      </PlotCard>
-    )
-  }
-
   const sourceCells = landscape.cells || []
   const cells = sourceCells
     .map((cell) => ({
@@ -2847,6 +2946,36 @@ export const WholeRecordGenotypeLandscape = ({
       selectedPeople: cell.selectedPairs.reduce((sum, pair) => sum + pair.people, 0),
     }))
     .filter((cell) => cell.selectedPeople > 0)
+  const brushCells: GenotypeBrushCell[] = cells.map((cell) => ({
+    markId: `genotype-length:${cell.shorter_delta}/${cell.longer_delta}`,
+    shorterDelta: cell.shorter_delta,
+    longerDelta: cell.longer_delta,
+    pairs: cell.selectedPairs,
+  }))
+  const brushMarks: DiscreteBrushMark<GenotypeBrushCell>[] = brushCells.map((cell) => ({
+    id: cell.markId,
+    x: cell.longerDelta,
+    y: cell.shorterDelta,
+    value: cell,
+  }))
+  const brush = useDiscretePlotBrush({
+    marks: brushMarks,
+    axis: 'xy',
+    onSelect: (selection) => onSelectCells?.(selection.marks),
+    onClear,
+  })
+
+  if (landscape.status !== 'AVAILABLE') {
+    return (
+      <PlotCard data-plot-card="total-length-genotype" data-testid="genotype-length-card">
+        <h3>Genotype length distribution</h3>
+        <p role="status">
+          Genotype landscape unavailable: {unavailableReason(landscape.reason_code)}.
+        </p>
+      </PlotCard>
+    )
+  }
+
   const values = [
     ...new Set([0, ...sourceCells.flatMap((cell) => [cell.shorter_delta, cell.longer_delta])]),
   ].sort((a, b) => a - b)
@@ -2881,17 +3010,14 @@ export const WholeRecordGenotypeLandscape = ({
   )
   const selectCell = (cell: (typeof cells)[number], key: string) => {
     setSelectedKey(key)
-    onSelectCell?.(
-      `genotype-length:${key}`,
-      `selected genotype cell (${lengthAxisLabel(
-        cell.longer_delta,
-        lengthAxisMode,
-        representedRefLength
-      )} × ${lengthAxisLabel(cell.shorter_delta, lengthAxisMode, representedRefLength)})`,
-      cell.shorter_delta,
-      cell.longer_delta,
-      cell.selectedPairs
-    )
+    onSelectCells?.([
+      {
+        markId: `genotype-length:${key}`,
+        shorterDelta: cell.shorter_delta,
+        longerDelta: cell.longer_delta,
+        pairs: cell.selectedPairs,
+      },
+    ])
   }
 
   return (
@@ -2906,12 +3032,14 @@ export const WholeRecordGenotypeLandscape = ({
           in this view.
         </p>
         <p style={{ color: '#566168', fontSize: 11 }}>
-          Select a square to filter the source-ALT index. Reference remains distinct from a
-          zero-change source ALT identity in either axis mode.
+          Select a square to filter the source-ALT index. Drag between squares for a rectangular
+          selection, or activate one square then use Shift+Arrow. Escape clears it. Reference
+          remains distinct from a zero-change source ALT identity in either axis mode.
         </p>
         <HeatmapFigure role="region" aria-label="Genotype length distribution plot" tabIndex={0}>
           <HeatmapSvg
             viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
+            {...brush.containerProps}
             role="group"
             aria-label={`Genotype distribution by ${
               lengthAxisMode === 'absolute' ? 'represented allele length' : 'change from REF'
@@ -2947,7 +3075,10 @@ export const WholeRecordGenotypeLandscape = ({
                   const cell = byCoordinate.get(`${shorter}/${longer}`)
                   const key = `${shorter}/${longer}`
                   const markId = `genotype-length:${key}`
-                  const selected = Boolean(cell && activeCellKey === markId)
+                  const mark = brushMarks.find((candidate) => candidate.id === markId)
+                  const selected = Boolean(
+                    cell && (activeMarkIds.has(markId) || brush.previewMarkIds.has(markId))
+                  )
                   const intensity = cell
                     ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
                     : 0
@@ -2996,6 +3127,7 @@ export const WholeRecordGenotypeLandscape = ({
                             cell.selectedPeople === 1 ? 'person' : 'people'
                           }; filter the source-ALT index to this square`}
                           data-testid="genotype-length-cell-target"
+                          data-discrete-brush-id={markId}
                           x={xFor(longer) + band / 2 - 24}
                           y={yFor(shorter) + band / 2 - 24}
                           width={48}
@@ -3004,8 +3136,13 @@ export const WholeRecordGenotypeLandscape = ({
                           fill="transparent"
                           stroke="transparent"
                           cursor="pointer"
-                          onClick={() => selectCell(cell, key)}
+                          onClick={(event) => {
+                            if (!mark || !brush.markProps(mark).onClick(event)) {
+                              selectCell(cell, key)
+                            }
+                          }}
                           onKeyDown={(event) => {
+                            if (mark && brush.markProps(mark).onKeyDown(event)) return
                             if (event.key === 'Enter' || event.key === ' ') {
                               event.preventDefault()
                               selectCell(cell, key)
@@ -3657,6 +3794,9 @@ export const ExactAlleleIndex = ({
           </ClearIndexFilter>
         )}
       </IndexTitle>
+      {(filteredDelta != null || filterDescription) && alleles.length === 0 && (
+        <p role="status">No source ALT alleles match this plot selection in the current slice.</p>
+      )}
       {previewUnavailableMessage && <p role="status">{previewUnavailableMessage}</p>}
       <AlleleBrowserGrid data-testid="lr-tr-exact-allele-browser">
         <IndexPane
