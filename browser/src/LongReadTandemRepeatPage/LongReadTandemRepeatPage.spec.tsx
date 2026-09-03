@@ -1182,7 +1182,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)')
     expect(index).toHaveStyleRule('overflow-x', 'hidden')
     const indexHeader = within(index).getAllByRole('row')[0]
-    expect(indexHeader).toHaveStyleRule('grid-template-columns', 'minmax(145px, 1fr) 60px 70px', {
+    expect(indexHeader).toHaveStyleRule('grid-template-columns', '42px minmax(115px, 1fr) 62px', {
       media: '(max-width:420px)',
     })
     expect(indexHeader).toHaveStyleRule('column-gap', '0.4em', {
@@ -1305,7 +1305,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('table', { name: /Exact ALTs at/ })).toBeNull()
 
     const selectedControl = within(table).getByRole('link', {
-      name: 'Details shown for Sequence 2',
+      name: 'Details for Sequence 2',
     })
     const otherControl = within(table).getByRole('link', { name: 'Details for Sequence 3' })
     expect(selectedControl.getAttribute('aria-current')).toBe('page')
@@ -1545,9 +1545,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
       expect(virtualIndex.classList.contains('lr-tr-exact-index-scroll')).toBe(true)
       const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
       expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
-      expect(
-        within(finalRow).getByText(new RegExp(`Source ALT ${count} of ${count}`))
-      ).not.toBeNull()
+      const cells = within(finalRow).getAllByRole('cell')
+      expect(cells[0].textContent).toBe(String(count))
+      expect(cells[1].textContent).toBe(sourceVariantId)
       expect(
         within(finalRow).getByRole('link', { name: `Details for Sequence ${count}` })
       ).not.toBeNull()
@@ -1560,7 +1560,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       ).not.toBeNull()
       expect(finalRow.getAttribute('aria-label')).toMatch(
         new RegExp(
-          `Sequence ${count}; ${sourceVariantId}~${count}; length .+; purity .+; AC .+; AF .+`
+          `Source ALT ${count}; source ID ${sourceVariantId}; represented length .+; change from REF .+; purity .+; AC .+; AF .+`
         )
       )
       expect(
@@ -1574,7 +1574,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     locus.alleles.nodes[0].freq.all.ac = 20.00342
     renderPage({ locus, selectedAllele: undefined })
     const row = screen.getByTitle(`${sourceVariantId}~1`)
-    expect(within(row).getByText(/Source ALT 1 of 72/)).not.toBeNull()
+    const cells = within(row).getAllByRole('cell')
+    expect(cells[0].textContent).toBe('1')
+    expect(cells[1].textContent).toBe(sourceVariantId)
+    expect(within(row).queryByText(/Source ALT 1 of 72/)).toBeNull()
     expect(within(row).getByText('20')).not.toBeNull()
     expect(within(row).queryByText('20.00342')).toBeNull()
 
@@ -1634,7 +1637,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       selectedAllele: exactId,
     })
 
-    expect(screen.getByRole('heading', { name: `Sequence 2 · Details shown` })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Sequence 2', exact: true })).not.toBeNull()
     expect(
       screen.getByText(
         /Motif previews are unavailable because the allele sequences are too large to preview safely/
@@ -1743,14 +1746,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
         /retain their loaded cohort and allele identity/i.test(element.textContent || '')
       )!
     expect(revalidationStatus).toBeDefined()
-    expect(screen.getByRole('heading', { name: `Sequence 2 · Details shown` })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Sequence 2', exact: true })).not.toBeNull()
     expect(screen.getByRole('heading', { name: '72 source ALT alleles' })).not.toBeNull()
     const retainedFrame = revalidationStatus.nextElementSibling as HTMLElement
     expect(retainedFrame.hasAttribute('inert')).toBe(true)
     expect(retainedFrame.getAttribute('aria-busy')).toBe('true')
     expect(
       within(retainedFrame).queryByRole('heading', {
-        name: `Sequence 3 · Details shown`,
+        name: 'Sequence 3',
+        exact: true,
       })
     ).toBeNull()
     ;(global as any).__TR_QUERY_STATE__ = {
@@ -1760,7 +1764,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     rendered.rerender(React.cloneElement(page))
 
-    expect(screen.getByRole('heading', { name: `Sequence 1 · Details shown` })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Sequence 1', exact: true })).not.toBeNull()
     expect(screen.getByTestId('lr-tr-selected-detail')).not.toBe(document.activeElement)
     expect(scrollIntoView).not.toHaveBeenCalled()
   })

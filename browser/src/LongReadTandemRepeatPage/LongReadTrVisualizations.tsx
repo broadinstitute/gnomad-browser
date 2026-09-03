@@ -920,13 +920,16 @@ const SelectAlleleControl = styled(SelectionLink)`
   display: inline-flex;
   align-items: center;
   box-sizing: border-box;
-  min-height: 44px;
-  padding: 0.3em 0.7em;
-  border: 1px solid #9aa8b2;
-  border-radius: 3px;
-  background: #fff;
+  height: calc(2em + 2px);
+  padding: 0.375em 0.75em;
+  border: 1px solid #6c757d;
+  border-radius: 0.5em;
+  background: #f8f9fa;
   color: #111;
+  font-size: 0.85em;
+  line-height: 1.25;
   text-decoration: none;
+  user-select: none;
 
   &[aria-current='page'] {
     border-color: #a65310;
@@ -935,12 +938,12 @@ const SelectAlleleControl = styled(SelectionLink)`
   }
 
   &:hover {
-    border-color: #397daf;
+    background: #d3d7da;
   }
 
   &:focus-visible {
-    outline: 3px solid #111;
-    outline-offset: 2px;
+    outline: none;
+    box-shadow: 0 0 0 0.2em rgb(108 117 125 / 50%);
   }
 `
 
@@ -2939,27 +2942,15 @@ const EmptySelectedAllele = styled.p`
   color: #566168;
 `
 
-const indexColumns = 'minmax(280px, 1.7fr) minmax(150px, 2fr) 76px 72px 54px 80px 86px'
-const narrowIndexColumns = 'minmax(200px, 1fr) 72px 86px'
-const compactIndexColumns = 'minmax(145px, 1fr) 60px 70px'
+const indexColumns = '52px minmax(150px, 1.3fr) minmax(120px, 1.4fr) 96px 90px 64px 50px 70px 68px'
+const narrowIndexColumns = '56px minmax(160px, 1fr) 68px'
+const compactIndexColumns = '42px minmax(115px, 1fr) 62px'
 
-const ExactAlleleIdentity = styled.span`
-  display: flex;
-  align-items: baseline;
+const SourceIdIndexCell = styled.code`
   min-width: 0;
-  gap: 0.45em;
-  line-height: 1.15;
-
-  strong {
-    flex: 0 0 auto;
-  }
-
-  code {
-    min-width: 0;
-    overflow-wrap: anywhere;
-    font-size: 11px;
-    white-space: normal;
-  }
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  white-space: normal;
 `
 
 const IndexTitle = styled.header`
@@ -3043,6 +3034,8 @@ const IndexHeader = styled.div`
     grid-template-columns: ${narrowIndexColumns};
 
     .lr-tr-index-preview,
+    .lr-tr-index-represented-length,
+    .lr-tr-index-length-change,
     .lr-tr-index-purity,
     .lr-tr-index-ac,
     .lr-tr-index-af {
@@ -3082,10 +3075,18 @@ const IndexRow = styled.div<{ selected: boolean }>`
     grid-template-columns: ${narrowIndexColumns};
 
     .lr-tr-index-preview,
+    .lr-tr-index-represented-length,
+    .lr-tr-index-length-change,
     .lr-tr-index-purity,
     .lr-tr-index-ac,
     .lr-tr-index-af {
       display: none;
+    }
+
+    .lr-tr-index-source-id {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
@@ -3093,12 +3094,6 @@ const IndexRow = styled.div<{ selected: boolean }>`
     grid-template-columns: ${compactIndexColumns};
     column-gap: 0.4em;
     padding: 0 0.35em;
-
-    .lr-tr-index-identity code {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
   }
   /* stylelint-enable no-descending-specificity */
 `
@@ -3183,7 +3178,7 @@ const ExactAlleleMotifPreview = ({
   )
 }
 
-type ExactAlleleSortKey = 'alt' | 'length' | 'purity' | 'ac' | 'af'
+type ExactAlleleSortKey = 'alt' | 'representedLength' | 'lengthChange' | 'purity' | 'ac' | 'af'
 type ExactAlleleSortDirection = 'ascending' | 'descending'
 
 type ExactAlleleIndexRowData = {
@@ -3193,7 +3188,6 @@ type ExactAlleleIndexRowData = {
   selectedDivision?: string | null
   navigation: AlleleNavigation
   excludeValidatedSharedPadding: boolean
-  lengthAxisMode: LengthAxisMode
   representedRefLength: number | null
 }
 
@@ -3213,10 +3207,11 @@ const ExactAlleleIndexRow = ({
 }) => {
   const allele = data.alleles[index]
   const altLabel = alleleLabel(allele.variant_id)
-  const length =
-    allele.length == null
+  const lengthChange = allele.length == null ? '—' : signed(allele.length)
+  const representedLength =
+    allele.length == null || data.representedRefLength == null
       ? '—'
-      : lengthAxisLabel(allele.length, data.lengthAxisMode, data.representedRefLength)
+      : (data.representedRefLength + allele.length).toLocaleString()
   const purity = allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)
   const frequency = exactAlleleFrequency(allele, data.selectedDivision)
   const ac = frequency ? Math.round(frequency.ac).toLocaleString() : '—'
@@ -3227,16 +3222,14 @@ const ExactAlleleIndexRow = ({
       style={style}
       selected={selected}
       role="row"
-      aria-label={`${altLabel}; ${allele.variant_id}; length ${length}; purity ${purity}; AC ${ac}; AF ${af}`}
+      aria-label={`Source ALT ${allele.alt_index}; source ID ${allele.source_variant_id}; represented length ${representedLength}; change from REF ${lengthChange}; purity ${purity}; AC ${ac}; AF ${af}`}
       aria-rowindex={index + 2}
       title={allele.variant_id}
     >
-      <ExactAlleleIdentity className="lr-tr-index-identity" role="cell">
-        <strong>{altLabel}</strong>
-        <code>
-          Source ALT {allele.alt_index} of {allele.alt_count} · {allele.source_variant_id}
-        </code>
-      </ExactAlleleIdentity>
+      <NumericIndexCell role="cell">{allele.alt_index.toLocaleString()}</NumericIndexCell>
+      <SourceIdIndexCell className="lr-tr-index-source-id" role="cell">
+        {allele.source_variant_id}
+      </SourceIdIndexCell>
       <span className="lr-tr-index-preview" role="cell">
         <ExactAlleleMotifPreview
           allele={allele}
@@ -3244,7 +3237,12 @@ const ExactAlleleIndexRow = ({
           excludeValidatedSharedPadding={data.excludeValidatedSharedPadding}
         />
       </span>
-      <NumericIndexCell role="cell">{length}</NumericIndexCell>
+      <NumericIndexCell className="lr-tr-index-represented-length" role="cell">
+        {representedLength}
+      </NumericIndexCell>
+      <NumericIndexCell className="lr-tr-index-length-change" role="cell">
+        {lengthChange}
+      </NumericIndexCell>
       <NumericIndexCell className="lr-tr-index-purity" role="cell">
         {purity}
       </NumericIndexCell>
@@ -3259,9 +3257,9 @@ const ExactAlleleIndexRow = ({
           alleleId={allele.variant_id}
           navigation={data.navigation}
           selected={selected}
-          aria-label={`${selected ? 'Details shown for' : 'Details for'} ${altLabel}`}
+          aria-label={`Details for ${altLabel}`}
         >
-          {selected ? 'Details shown' : 'Details'}
+          Details
         </SelectAlleleControl>
       </span>
     </IndexRow>
@@ -3312,7 +3310,12 @@ export const ExactAlleleIndex = ({
   const sortedAlleles = useMemo(() => {
     const sortValue = (allele: LongReadTrAllele): number | null | undefined => {
       if (sortKey === 'alt') return allele.alt_index
-      if (sortKey === 'length') return allele.length
+      if (sortKey === 'representedLength') {
+        return representedRefLength == null || allele.length == null
+          ? null
+          : representedRefLength + allele.length
+      }
+      if (sortKey === 'lengthChange') return allele.length
       if (sortKey === 'purity') return allele.motif_purity
       const frequency = exactAlleleFrequency(allele, selectedDivision)
       return sortKey === 'ac' ? frequency?.ac : frequency?.af
@@ -3331,7 +3334,7 @@ export const ExactAlleleIndex = ({
         (rightRecordOrder < 0 ? Number.MAX_SAFE_INTEGER : rightRecordOrder)
       return sourceComparison || left.alt_index - right.alt_index
     })
-  }, [alleles, selectedDivision, sortDirection, sortKey, sourceRecordOrder])
+  }, [alleles, representedRefLength, selectedDivision, sortDirection, sortKey, sourceRecordOrder])
   const changeSort = (nextKey: ExactAlleleSortKey) => {
     if (nextKey === sortKey) {
       setSortDirection((current) => (current === 'ascending' ? 'descending' : 'ascending'))
@@ -3368,7 +3371,6 @@ export const ExactAlleleIndex = ({
     selectedDivision,
     navigation,
     excludeValidatedSharedPadding,
-    lengthAxisMode,
     representedRefLength,
   }
   const hasMissingIndexSequence = alleles.some((allele) => !allele.ref || !allele.alt)
@@ -3414,20 +3416,18 @@ export const ExactAlleleIndex = ({
           aria-rowcount={alleles.length + 1}
         >
           <IndexHeader role="row" aria-rowindex={1}>
-            {sortHeader('alt', 'Source ALT')}
-            <span
-              className="lr-tr-index-preview"
-              role="columnheader"
-              aria-label="Exact stored-motif string preview"
-            >
-              Exact motif strings
+            {sortHeader('alt', 'Source ALT', undefined, true)}
+            <span role="columnheader">Source ID</span>
+            <span className="lr-tr-index-preview" role="columnheader">
+              Motifs
             </span>
             {sortHeader(
-              'length',
-              lengthAxisMode === 'absolute' ? 'Represented length (bp)' : 'Change from REF (bp)',
-              undefined,
+              'representedLength',
+              'Represented length (bp)',
+              'lr-tr-index-represented-length',
               true
             )}
+            {sortHeader('lengthChange', 'Change from REF (bp)', 'lr-tr-index-length-change', true)}
             {sortHeader('purity', 'Purity', 'lr-tr-index-purity', true)}
             {sortHeader('ac', 'AC', 'lr-tr-index-ac', true)}
             {sortHeader('af', 'AF', 'lr-tr-index-af', true)}
@@ -3670,10 +3670,7 @@ export const SelectedExactAlleleDetail = React.forwardRef<
     data-testid="lr-tr-selected-detail"
   >
     <HeadingWithHelp>
-      <h3 id="lr-tr-selected-detail-heading">
-        {alleleLabel(allele.variant_id)}{' '}
-        <span style={{ fontWeight: 'normal' }}>· Details shown</span>
-      </h3>
+      <h3 id="lr-tr-selected-detail-heading">{alleleLabel(allele.variant_id)}</h3>
       <SelectedAlleleHelp />
     </HeadingWithHelp>
     <SelectedDetailGrid>

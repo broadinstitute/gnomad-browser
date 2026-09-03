@@ -267,6 +267,57 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByRole('status').textContent).not.toMatch(/Restart/)
   })
 
+  test('uses concise identity and length columns with a compact consistent details control', () => {
+    render(
+      <ExactAlleleIndex
+        alleles={alleles}
+        motifs={['CAG']}
+        navigation={navigation}
+        selectedAllele={alleles[0].variant_id}
+        representedRefLength={100}
+      />
+    )
+
+    const table = screen.getByRole('table', { name: 'Source ALT allele index' })
+    ;[
+      'Source ALT',
+      'Source ID',
+      'Motifs',
+      'Represented length (bp)',
+      'Change from REF (bp)',
+      'Purity',
+      'AC',
+      'AF',
+      'Details',
+    ].forEach((name) => expect(within(table).getByRole('columnheader', { name })).not.toBeNull())
+
+    const firstRow = within(table).getByTitle(`${sourceId}~1`)
+    expect(
+      within(firstRow)
+        .getAllByRole('cell')
+        .map((cell) => cell.textContent)
+    ).toEqual(['1', sourceId, 'Unavailable', '94', '−6', '0.9900', '100', '0.5000', 'Details'])
+    expect(
+      within(firstRow).queryByText(/Sequence 1|Source ALT 1 of|bp represented|bp vs REF/)
+    ).toBeNull()
+
+    const details = within(firstRow).getByRole('link', { name: 'Details for Sequence 1' })
+    expect(details.textContent).toBe('Details')
+    expect(details.getAttribute('aria-current')).toBe('page')
+    expect(details).toHaveStyleRule('height', 'calc(2em + 2px)')
+    expect(details).toHaveStyleRule('border-radius', '0.5em')
+    expect(details).toHaveStyleRule('background', '#f8f9fa')
+
+    const representedLengthSort = within(table).getByRole('button', {
+      name: 'Represented length (bp)',
+    })
+    fireEvent.click(representedLengthSort)
+    expect(representedLengthSort.closest('[role="columnheader"]')?.getAttribute('aria-sort')).toBe(
+      'descending'
+    )
+    expect(within(table).getByTitle(`${sourceId}~3`).getAttribute('aria-rowindex')).toBe('2')
+  })
+
   test('does not guess source ancestry aliases when assigning stack colors', () => {
     const ancestryOrder = ['SAS', 'nfe', 'EAS', 'ASJ', 'AMR', 'AFR', 'unknown']
     expect(ancestryOrder.map((category) => stackColorFor('population', category))).toEqual([
@@ -460,7 +511,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(links).toHaveLength(2)
     expect(within(picker).getByTitle(`${sourceId}~1`)).not.toBeNull()
     expect(within(picker).getByTitle(`${sourceId}~4`)).not.toBeNull()
-    expect(links.map((link) => link.textContent)).toEqual(['Details shown', 'Details'])
+    expect(links.map((link) => link.textContent)).toEqual(['Details', 'Details'])
     expect(links[0].getAttribute('aria-current')).toBe('page')
     expect(links[0].closest('[role="row"]')?.getAttribute('aria-selected')).toBeNull()
     fireEvent.keyDown(links[1], { key: 'Enter' })
@@ -1238,8 +1289,11 @@ describe('long-read TR visualization fidelity', () => {
     ).toBe(false)
     fireEvent.change(axis, { target: { value: 'absolute' } })
     expect(screen.getByRole('heading', { name: 'Represented allele length (bp)' })).not.toBeNull()
-    expect(screen.getByText('94 bp represented (−6 bp vs REF)')).not.toBeNull()
+    expect(screen.queryByText('94 bp represented (−6 bp vs REF)')).toBeNull()
     expect(screen.getAllByLabelText(/94 bp represented \(−6 bp vs REF\)/).length).toBeGreaterThan(0)
+    const representedRow = screen.getByTitle(`${sourceId}~1`)
+    expect(within(representedRow).getAllByRole('cell')[3].textContent).toBe('94')
+    expect(within(representedRow).getAllByRole('cell')[4].textContent).toBe('−6')
 
     rendered.rerender(
       <WholeRecordAlleleLandscape
@@ -1262,6 +1316,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
     expect(screen.queryByText(/bp represented \(−6 bp vs REF\)/)).toBeNull()
+    expect(within(screen.getByTitle(`${sourceId}~1`)).getAllByRole('cell')[3].textContent).toBe('—')
   })
 
   test('uses one stable color per motif and explains LR reference components accessibly', () => {

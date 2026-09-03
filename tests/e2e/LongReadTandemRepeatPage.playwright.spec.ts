@@ -67,7 +67,7 @@ const selectExactAllele = async (
   const indexScroller = index.locator('.lr-tr-exact-index-scroll')
   const exactRow = index.locator(`[role="row"][title$="~${altIndex}"]`)
   const exactLink = exactRow.getByRole('link', {
-    name: new RegExp(`^(Details for|Details shown for) Sequence ${altIndex}$`),
+    name: `Details for Sequence ${altIndex}`,
   })
   if (!(await exactLink.isVisible())) {
     const sourceAltSort = index.getByRole('button', { name: 'Source ALT' })
@@ -183,7 +183,7 @@ const selectExactAllele = async (
   expect(selected.ref).toBeTruthy()
   expect(selected.alt).toBeTruthy()
   await expect(
-    page.getByRole('heading', { name: `Sequence ${selected.alt_index} · Details shown` })
+    page.getByRole('heading', { name: `Sequence ${selected.alt_index}`, exact: true })
   ).toBeVisible()
   await expect(exactLink).toHaveAttribute('aria-current', 'page')
   await expect(page.locator('[data-revalidating="true"]')).toHaveCount(0)
@@ -791,7 +791,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const renderedAcs = await indexTable
       .locator('[role="row"][aria-rowindex]:not([aria-rowindex="1"])')
       .evaluateAll((rows) =>
-        rows.map((row) => Number(row.querySelectorAll('[role="cell"]')[4].textContent))
+        rows.map((row) => Number(row.querySelectorAll('[role="cell"]')[6].textContent))
       )
     expect(renderedAcs).toEqual([...renderedAcs].sort((left, right) => right - left))
     await indexTable.getByRole('button', { name: 'Source ALT' }).click()
@@ -800,8 +800,24 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       '[role="row"][aria-rowindex="1"] > [role="columnheader"]'
     )
     const firstRowCells = indexTable.locator('[role="row"][aria-rowindex="2"] > [role="cell"]')
+    await expect(indexTable.getByRole('columnheader', { name: 'Source ID' })).toBeVisible()
+    await expect(indexTable.getByRole('columnheader', { name: 'Motifs' })).toBeVisible()
+    await expect(
+      indexTable.getByRole('columnheader', { name: 'Represented length (bp)' })
+    ).toBeVisible()
+    await expect(
+      indexTable.getByRole('columnheader', { name: 'Change from REF (bp)' })
+    ).toBeVisible()
+    await expect(firstRowCells.nth(0)).toHaveText(/^\d+$/)
+    await expect(firstRowCells.nth(1)).toHaveText(/^chr4-\d+-TRV-\d+$/)
+    await expect(firstRowCells.nth(3)).toHaveText(/^\d[\d,]*$/)
+    await expect(firstRowCells.nth(4)).toHaveText(/^(?:[+−]\d[\d,]*|0)$/)
+    const firstDetails = firstRowCells.nth(8).getByRole('link', { name: /Details for Sequence/ })
+    await expect(firstDetails).toHaveText('Details')
+    expect((await firstDetails.boundingBox())!.height).toBeLessThan(44)
+
     const columnBoxes = await Promise.all(
-      Array.from({ length: 7 }, async (_, column) => ({
+      Array.from({ length: 9 }, async (_, column) => ({
         header: await headerCells.nth(column).boundingBox(),
         cell: await firstRowCells.nth(column).boundingBox(),
       }))
@@ -1144,6 +1160,16 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         (tick) => tick.getBoundingClientRect().left + tick.getBoundingClientRect().width / 2
       )
     expect(Math.abs(lastBarCenter - lastTickCenter)).toBeLessThanOrEqual(1)
+    await expect(indexTable.getByRole('columnheader', { name: 'Source ALT' })).toBeVisible()
+    await expect(indexTable.getByRole('columnheader', { name: 'Source ID' })).toBeVisible()
+    await expect(indexTable.getByRole('columnheader', { name: 'Details' })).toBeVisible()
+    await expect(indexTable.getByRole('columnheader', { name: 'Motifs' })).toBeHidden()
+    await expect(
+      indexTable.getByRole('columnheader', { name: 'Represented length (bp)' })
+    ).toBeHidden()
+    await expect(
+      indexTable.getByRole('columnheader', { name: 'Change from REF (bp)' })
+    ).toBeHidden()
     await expect(indexTable.getByRole('columnheader', { name: 'Purity' })).toBeHidden()
     await expect(indexTable.getByRole('columnheader', { name: 'AC', exact: true })).toBeHidden()
     await page.setViewportSize({ width: 320, height: 844 })
@@ -1153,10 +1179,15 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     ).toBe(true)
     await page.setViewportSize({ width: 390, height: 844 })
     const compactAlt72 = indexTable.getByRole('row', {
-      name: /Sequence 72; .+~72; length .+; purity .+; AC .+; AF .+/,
+      name: /Source ALT 72; source ID .+; represented length .+; change from REF .+; purity .+; AC .+; AF .+/,
     })
     await expect(compactAlt72).toBeVisible()
     await expect(compactAlt72).toHaveAttribute('title', /~72$/)
+    await expect(compactAlt72.getByRole('cell').nth(0)).toHaveText('72')
+    await expect(compactAlt72.getByRole('cell').nth(1)).toHaveText(/^chr4-\d+-TRV-\d+$/)
+    await expect(compactAlt72.getByRole('link', { name: 'Details for Sequence 72' })).toHaveText(
+      'Details'
+    )
     expect(await indexTable.evaluate((table) => table.scrollWidth)).toBeLessThanOrEqual(
       await indexTable.evaluate((table) => table.clientWidth)
     )
