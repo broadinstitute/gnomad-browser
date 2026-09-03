@@ -70,19 +70,13 @@ const selectExactAllele = async (
     name: `Details for Sequence ${altIndex}`,
   })
   if (!(await exactLink.isVisible())) {
-    const sourceAltSort = index.getByRole('button', { name: 'Source ALT' })
-    const sourceAltHeader = sourceAltSort.locator('..')
-    if ((await sourceAltHeader.getAttribute('aria-sort')) !== 'ascending') {
-      await sourceAltSort.click()
-      if ((await sourceAltHeader.getAttribute('aria-sort')) !== 'ascending') {
-        await sourceAltSort.click()
-      }
+    const revealExactLink = async (rowIndex: number): Promise<void> => {
+      if (rowIndex >= exactAlleleCount) return
+      await indexScroller.evaluate((element, top) => element.scrollTo({ top }), rowIndex * 52)
+      await page.waitForTimeout(20)
+      if (!(await exactLink.isVisible())) await revealExactLink(rowIndex + 6)
     }
-    await expect(sourceAltHeader).toHaveAttribute('aria-sort', 'ascending')
-    await indexScroller.evaluate(
-      (element, top) => element.scrollTo({ top }),
-      Math.max(0, (altIndex - 1) * 52)
-    )
+    await revealExactLink(0)
   }
   await expect(exactLink).toBeVisible()
   await exactLink.scrollIntoViewIfNeeded()
@@ -341,10 +335,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(page.getByRole('heading', { name: '2 source ALT alleles' })).toBeVisible()
     await expect(page.getByText('Unable to load tandem-repeat locus')).toHaveCount(0)
 
-    const componentDisclosure = page.locator('details').filter({
-      hasText: 'All ordered source components and provenance — 1 ordered component',
-    })
-    await expect(componentDisclosure).not.toHaveAttribute('open', '')
+    await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
+    await expect(page.getByRole('heading', { name: 'Unavailable data' })).toHaveCount(0)
     await page.setViewportSize({ width: 390, height: 844 })
     await expect(page.getByRole('heading', { name: 'ARX_1 (ARX) NGC tandem repeat' })).toBeVisible()
     await expectNarrowControlsContained(page)
@@ -487,11 +479,22 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(matchingColor).not.toBe(interruptionColor)
     expect(interruptionColor).toBe('rgb(51, 51, 51)')
     await expect(unmatchedBases.first()).toHaveAttribute('aria-label', /unmatched base/)
-    await expect(detail.getByText(/every other represented base is dark/)).toBeVisible()
-    await expect(detail.getByText(/does not project onto reference components/)).toBeVisible()
+    await expect(detail.getByText(/every other represented base is dark/)).toHaveCount(0)
+    await expect(detail.getByText(/does not project onto reference components/)).toHaveCount(0)
+    const motifSummary = detail.getByRole('table', { name: 'Exact motif match summary' })
+    await expect(motifSummary.getByRole('columnheader')).toHaveText([
+      'Motif',
+      'Exact occurrences',
+      'Matched bases',
+    ])
     await expect(
-      detail.getByLabel(/Exact stored-motif string counts; GCA: 13 exact occurrences/)
-    ).toBeVisible()
+      motifSummary.getByRole('rowheader', { name: 'GCA' }).locator('..').getByRole('cell')
+    ).toHaveText(['13', '39'])
+    await expect(
+      motifSummary.getByRole('rowheader', { name: 'Unmatched' }).locator('..').getByRole('cell')
+    ).toHaveText(['—', '3'])
+    await expect(detail.getByText('Technical identity and measurement provenance')).toHaveCount(0)
+    await expect(detail.getByText(/Population and sex frequencies/)).toHaveCount(0)
     await expect(detail.getByText(/Sequence analysis details/)).toHaveCount(0)
     await expect(detail.getByText(/tokens/)).toHaveCount(0)
     await expect(detail.getByRole('heading', { name: /Exact ALT sequence/ })).toHaveCount(0)
@@ -557,11 +560,13 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(
       await unmatchedBases.first().evaluate((base) => getComputedStyle(base).backgroundColor)
     ).toBe('rgb(51, 51, 51)')
+    const motifSummary = detail.getByRole('table', { name: 'Exact motif match summary' })
     await expect(
-      detail.getByLabel(
-        /Exact stored-motif string counts; TG: 31 exact occurrences.*unmatched: 25 bases/i
-      )
-    ).toBeVisible()
+      motifSummary.getByRole('rowheader', { name: 'TG' }).locator('..').getByRole('cell')
+    ).toHaveText(['31', '62'])
+    await expect(
+      motifSummary.getByRole('rowheader', { name: 'Unmatched' }).locator('..').getByRole('cell')
+    ).toHaveText(['—', '25'])
     await expect(
       index.locator('[role="row"][title$="~6"]').getByRole('img', {
         name: /Sequence 6 exact stored-motif string preview; TG: 31 exact occurrences.*unmatched: 25 bases/i,
@@ -637,13 +642,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
           page.getByLabel(`Primary repeat: ${item.motif}`, { exact: true })
         ).toBeVisible()
       }
-      await expect(
-        page.getByText(
-          `All ordered source components and provenance — ${item.components} ordered ${
-            item.components === 1 ? 'component' : 'components'
-          }`
-        )
-      ).toBeVisible()
+      await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
       const diseaseSection = page
         .getByRole('heading', { name: /Known disease-associated TR locus/ })
         .locator('..')
@@ -737,18 +736,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
     await expect(page.getByRole('heading', { name: 'Multi-component TR locus' })).toBeVisible()
     await expect(page.getByLabel(/Primary repeat CAG/)).toHaveCount(0)
-    const sourceDisclosure = page
-      .getByText('All ordered source components and provenance — 6 ordered components')
-      .locator('..')
-    await expect(sourceDisclosure).not.toHaveAttribute('open', '')
-    await sourceDisclosure.locator(':scope > summary').focus()
-    await sourceDisclosure.locator(':scope > summary').press('Enter')
-    await expect(sourceDisclosure).toHaveAttribute('open', '')
-    const orderedComponents = sourceDisclosure
-      .getByText('Full ordered component table (6)')
-      .locator('..')
-    await orderedComponents.locator(':scope > summary').click()
-    await expect(orderedComponents.getByRole('rowheader')).toHaveCount(6)
+    await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
     await page.setViewportSize({ width: 390, height: 844 })
     await expectNarrowControlsContained(page)
     expect(
@@ -791,10 +779,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const renderedAcs = await indexTable
       .locator('[role="row"][aria-rowindex]:not([aria-rowindex="1"])')
       .evaluateAll((rows) =>
-        rows.map((row) => Number(row.querySelectorAll('[role="cell"]')[6].textContent))
+        rows.map((row) => Number(row.querySelectorAll('[role="cell"]')[5].textContent))
       )
     expect(renderedAcs).toEqual([...renderedAcs].sort((left, right) => right - left))
-    await indexTable.getByRole('button', { name: 'Source ALT' }).click()
 
     const headerCells = indexTable.locator(
       '[role="row"][aria-rowindex="1"] > [role="columnheader"]'
@@ -808,16 +795,15 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(
       indexTable.getByRole('columnheader', { name: 'Change from REF (bp)' })
     ).toBeVisible()
-    await expect(firstRowCells.nth(0)).toHaveText(/^\d+$/)
-    await expect(firstRowCells.nth(1)).toHaveText(/^chr4-\d+-TRV-\d+$/)
-    await expect(firstRowCells.nth(3)).toHaveText(/^\d[\d,]*$/)
-    await expect(firstRowCells.nth(4)).toHaveText(/^(?:[+−]\d[\d,]*|0)$/)
-    const firstDetails = firstRowCells.nth(8).getByRole('link', { name: /Details for Sequence/ })
+    await expect(firstRowCells.nth(0)).toHaveText(/^chr4-\d+-TRV-\d+$/)
+    await expect(firstRowCells.nth(2)).toHaveText(/^\d[\d,]*$/)
+    await expect(firstRowCells.nth(3)).toHaveText(/^(?:[+−]\d[\d,]*|0)$/)
+    const firstDetails = firstRowCells.nth(7).getByRole('link', { name: /Details for Sequence/ })
     await expect(firstDetails).toHaveText('Details')
     expect((await firstDetails.boundingBox())!.height).toBeLessThan(44)
 
     const columnBoxes = await Promise.all(
-      Array.from({ length: 9 }, async (_, column) => ({
+      Array.from({ length: 8 }, async (_, column) => ({
         header: await headerCells.nth(column).boundingBox(),
         cell: await firstRowCells.nth(column).boundingBox(),
       }))
@@ -1077,7 +1063,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(page.getByText(/Browser motif analysis used/)).toHaveCount(0)
     await expect(page.getByText(/shown neutrally because no admitted projection/)).toHaveCount(0)
     await expect(page.getByText('Exact stored-motif string preview', { exact: true })).toBeVisible()
-    await expect(page.getByLabel(/Exact stored-motif string counts; CAG:/)).toBeVisible()
+    await expect(page.getByRole('table', { name: 'Exact motif match summary' })).toBeVisible()
     await expect(page.getByLabel('Exact copyable source sequence for Sequence 72')).toBeVisible()
     await expect(page.getByLabel(/Shared VCF anchor/)).toHaveCount(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-selected-detail-wide.png')
@@ -1160,7 +1146,6 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         (tick) => tick.getBoundingClientRect().left + tick.getBoundingClientRect().width / 2
       )
     expect(Math.abs(lastBarCenter - lastTickCenter)).toBeLessThanOrEqual(1)
-    await expect(indexTable.getByRole('columnheader', { name: 'Source ALT' })).toBeVisible()
     await expect(indexTable.getByRole('columnheader', { name: 'Source ID' })).toBeVisible()
     await expect(indexTable.getByRole('columnheader', { name: 'Details' })).toBeVisible()
     await expect(indexTable.getByRole('columnheader', { name: 'Motifs' })).toBeHidden()
@@ -1183,8 +1168,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     })
     await expect(compactAlt72).toBeVisible()
     await expect(compactAlt72).toHaveAttribute('title', /~72$/)
-    await expect(compactAlt72.getByRole('cell').nth(0)).toHaveText('72')
-    await expect(compactAlt72.getByRole('cell').nth(1)).toHaveText(/^chr4-\d+-TRV-\d+$/)
+    await expect(compactAlt72.getByRole('cell').nth(0)).toHaveText(/^chr4-\d+-TRV-\d+$/)
     await expect(compactAlt72.getByRole('link', { name: 'Details for Sequence 72' })).toHaveText(
       'Details'
     )

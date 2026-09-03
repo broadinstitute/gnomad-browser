@@ -12,7 +12,6 @@ import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   LongReadTrComponentTrack,
   motifColor,
-  Panel,
   SelectedExactAlleleDetail,
   WholeRecordAlleleLandscape,
   signed,
@@ -79,27 +78,6 @@ const InlineResources = styled.span`
   }
 `
 
-const SourceRepresentationDetails = styled.details`
-  box-sizing: border-box;
-  min-width: 0;
-  max-width: 100%;
-  padding: 0.65em 0.8em;
-  border: 1px solid #d8dee2;
-  margin-top: 2.4em;
-  border-radius: 4px;
-  color: #3e4b54;
-
-  > summary {
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  code {
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-`
-
 const RepeatMotifBadges = styled.span`
   display: inline-flex;
   flex-wrap: wrap;
@@ -120,42 +98,19 @@ const RepeatMotifBadge = styled.span`
   word-break: break-word;
 `
 
-const UnavailableList = styled.ul`
-  margin-bottom: 0;
-`
-
 const LocusOverviewHelp = () => (
   <HaplotypeHelpButton title="About this tandem-repeat locus">
     <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> The canonical long-read locus, its ordered LR reference
-      components, observed exact ALT sequences, aggregate plots, and any exact short-read catalog
-      context.
+      <strong>What this shows.</strong> The canonical long-read locus, observed exact ALT sequences,
+      aggregate plots, and any exact short-read catalog context.
     </p>
     <p>
-      <strong>How to use it.</strong> Choose a long-read cohort, review the component track and
-      assay-specific plots, then filter or select an exact ALT sequence in the Allelic landscape.
-      Expand data source details only when technical provenance is needed.
+      <strong>How to use it.</strong> Choose a long-read cohort, review the available plots, then
+      filter or select an exact ALT sequence in the Allelic landscape.
     </p>
     <p style={{ marginBottom: 0 }}>
       <strong>What it does not show.</strong> Short-read catalog labels and ranges do not classify
       long-read alleles, genotypes, components, people, or total allele length change.
-    </p>
-  </HaplotypeHelpButton>
-)
-
-const UnavailableDataHelp = () => (
-  <HaplotypeHelpButton title="About unavailable data">
-    <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> Features that could not be displayed from the available data
-      for this locus and cohort.
-    </p>
-    <p>
-      <strong>How to use it.</strong> Read each reason, and continue using the sections that remain
-      available. Changing the long-read cohort may change availability.
-    </p>
-    <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> Unavailable values are not zero and are never inferred
-      from another measurement.
     </p>
   </HaplotypeHelpButton>
 )
@@ -172,18 +127,6 @@ const exactComponent = (left: any, right: any) =>
       left.end0 === right.end0 &&
       left.motif === right.motif
   )
-
-const primaryRepeatAuthorizationLabel = (
-  basis: LongReadTrLocus['primary_repeat']['selection_basis']
-) => {
-  if (basis === 'EXACT_MAIN_CATALOG_COMPONENT') {
-    return 'Exact short-read catalog main region and stored motif; no override registry used'
-  }
-  if (basis === 'LR_SOLE_COMPONENT') {
-    return 'Sole ordered LR source component; no catalog or registry digest required'
-  }
-  return 'Future reviewed primary-repeat registry entry'
-}
 
 const CohortSelector = ({
   cohort,
@@ -451,8 +394,6 @@ const LongReadTandemRepeatPage = ({
   const displayEnd1 = exactVariationBoundsAuthorized
     ? (bounds.variation_cluster_end0 as number)
     : envelope.end1
-  const orderedMotifs = locus.components.map((component) => component.motif)
-  const vocabulary = [...new Set(locus.motifs.length ? locus.motifs : orderedMotifs)]
   const exactContext = locus.short_read_context
   const primaryComponentIndex = locus.primary_repeat.component_index
   const authorizedExactReferenceComponentIndex =
@@ -511,25 +452,6 @@ const LongReadTandemRepeatPage = ({
     provenance: null,
   }
   const localHaplotypeBackgroundsEnabled = isExperimentalFeatureEnabled('tr_haplotype_backgrounds')
-  const unavailableData: { label: string; reason: string }[] = []
-  if (!repeatPlotsAvailable) {
-    unavailableData.push({
-      label: 'Component repeat counts',
-      reason:
-        locus.components.length > 1
-          ? 'compound loci do not have one unambiguous component repeat count'
-          : unavailableReason(locus.repeat_count_plots.reason_code),
-    })
-  }
-  if (primaryMotifMeasurement.status !== 'AVAILABLE') {
-    unavailableData.push({
-      label: 'Whole-record exact primary-motif measurement',
-      reason:
-        primaryMotifMeasurement.reason_code === 'PUBLIC_PRODUCT_NOT_APPROVED'
-          ? 'the candidate primary-motif registry and product are not approved for public display'
-          : unavailableReason(primaryMotifMeasurement.reason_code),
-    })
-  }
   let selectedAlleleDetail: React.ReactNode
   if (locus.selected_allele) {
     selectedAlleleDetail = (
@@ -745,92 +667,6 @@ const LongReadTandemRepeatPage = ({
           distributions are hidden rather than calculated from incomplete data.
         </p>
       )}
-
-      {unavailableData.length > 0 && (
-        <Panel aria-labelledby="lr-tr-unavailable-heading">
-          <HeadingWithHelp>
-            <h2 id="lr-tr-unavailable-heading">Unavailable data</h2>
-            <UnavailableDataHelp />
-          </HeadingWithHelp>
-          <UnavailableList>
-            {unavailableData.map(({ label, reason }) => (
-              <li key={label}>
-                <strong>{label}:</strong> {reason}
-              </li>
-            ))}
-          </UnavailableList>
-        </Panel>
-      )}
-
-      <SourceRepresentationDetails>
-        <summary>
-          All ordered source components and provenance — {locus.components.length} ordered{' '}
-          {locus.components.length === 1 ? 'component' : 'components'}
-        </summary>
-        <AttributeList>
-          <AttributeListItem label={vocabulary.length === 1 ? 'Repeat motif' : 'Repeat motifs'}>
-            {vocabulary.length ? (
-              <RepeatMotifBadges aria-label={`Repeat motifs: ${vocabulary.join(', ')}`}>
-                {vocabulary.map((motif) => {
-                  const color = motifColor(motif, locus.motifs)
-                  return (
-                    <RepeatMotifBadge
-                      key={motif}
-                      data-motif-badge={motif}
-                      data-motif-color={color}
-                      style={{ backgroundColor: color, color: badgeTextColor(color) }}
-                    >
-                      {motif}
-                    </RepeatMotifBadge>
-                  )
-                })}
-              </RepeatMotifBadges>
-            ) : (
-              'Unavailable'
-            )}
-          </AttributeListItem>
-        </AttributeList>
-        <LongReadTrComponentTrack
-          locus={locus}
-          exactReferenceComponentIndex={authorizedExactReferenceComponentIndex}
-          showOverview={!clusterFocused}
-        />
-        <AttributeList>
-          <AttributeListItem label="Tandem-repeat identifier">
-            <code>{locus.source_trid}</code>
-          </AttributeListItem>
-          <AttributeListItem label="Variant records">
-            {locus.source_records.map((record, index) => (
-              <React.Fragment key={record.source_variant_id}>
-                {index > 0 && ', '}
-                <code>{record.source_variant_id}</code> (record {record.record_index}; task{' '}
-                <code>{record.task_id || 'unavailable'}</code>; attempt{' '}
-                <code>{record.attempt_id || 'unavailable'}</code>;{' '}
-                {record.alt_count.toLocaleString()} alternate alleles)
-              </React.Fragment>
-            ))}
-          </AttributeListItem>
-          <AttributeListItem label="Release / processing run">
-            {locus.source_release} / <code>{locus.source_run_id}</code>
-          </AttributeListItem>
-          {locus.primary_repeat.status === 'AVAILABLE' && (
-            <AttributeListItem label="Primary-repeat authorization">
-              {primaryRepeatAuthorizationLabel(locus.primary_repeat.selection_basis)}
-            </AttributeListItem>
-          )}
-          {locus.primary_repeat.catalog_digest && (
-            <AttributeListItem label="Exact short-read catalog digest">
-              <code>{locus.primary_repeat.catalog_digest}</code>
-            </AttributeListItem>
-          )}
-          {locus.primary_repeat.selection_basis === 'REVIEWED_PRIMARY_REPEAT_REGISTRY' &&
-            locus.primary_repeat.registry_digest && (
-              <AttributeListItem label="Reviewed primary-repeat registry digest">
-                <code>{locus.primary_repeat.registry_digest}</code>
-              </AttributeListItem>
-            )}
-        </AttributeList>
-      </SourceRepresentationDetails>
     </>
   )
 }

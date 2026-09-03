@@ -280,7 +280,6 @@ describe('long-read TR visualization fidelity', () => {
 
     const table = screen.getByRole('table', { name: 'Source ALT allele index' })
     ;[
-      'Source ALT',
       'Source ID',
       'Motifs',
       'Represented length (bp)',
@@ -296,7 +295,7 @@ describe('long-read TR visualization fidelity', () => {
       within(firstRow)
         .getAllByRole('cell')
         .map((cell) => cell.textContent)
-    ).toEqual(['1', sourceId, 'Unavailable', '94', '−6', '0.9900', '100', '0.5000', 'Details'])
+    ).toEqual([sourceId, 'Unavailable', '94', '−6', '0.9900', '100', '0.5000', 'Details'])
     expect(
       within(firstRow).queryByText(/Sequence 1|Source ALT 1 of|bp represented|bp vs REF/)
     ).toBeNull()
@@ -1292,8 +1291,8 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByText('94 bp represented (−6 bp vs REF)')).toBeNull()
     expect(screen.getAllByLabelText(/94 bp represented \(−6 bp vs REF\)/).length).toBeGreaterThan(0)
     const representedRow = screen.getByTitle(`${sourceId}~1`)
-    expect(within(representedRow).getAllByRole('cell')[3].textContent).toBe('94')
-    expect(within(representedRow).getAllByRole('cell')[4].textContent).toBe('−6')
+    expect(within(representedRow).getAllByRole('cell')[2].textContent).toBe('94')
+    expect(within(representedRow).getAllByRole('cell')[3].textContent).toBe('−6')
 
     rendered.rerender(
       <WholeRecordAlleleLandscape
@@ -1316,7 +1315,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
     expect(screen.queryByText(/bp represented \(−6 bp vs REF\)/)).toBeNull()
-    expect(within(screen.getByTitle(`${sourceId}~1`)).getAllByRole('cell')[3].textContent).toBe('—')
+    expect(within(screen.getByTitle(`${sourceId}~1`)).getAllByRole('cell')[2].textContent).toBe('—')
   })
 
   test('uses one stable color per motif and explains LR reference components accessibly', () => {

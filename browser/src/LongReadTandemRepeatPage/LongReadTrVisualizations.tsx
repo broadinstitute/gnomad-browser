@@ -2942,9 +2942,9 @@ const EmptySelectedAllele = styled.p`
   color: #566168;
 `
 
-const indexColumns = '52px minmax(150px, 1.3fr) minmax(120px, 1.4fr) 96px 90px 64px 50px 70px 68px'
-const narrowIndexColumns = '56px minmax(160px, 1fr) 68px'
-const compactIndexColumns = '42px minmax(115px, 1fr) 62px'
+const indexColumns = 'minmax(150px, 1.3fr) minmax(120px, 1.4fr) 96px 90px 64px 50px 70px 68px'
+const narrowIndexColumns = 'minmax(160px, 1fr) 68px'
+const compactIndexColumns = 'minmax(115px, 1fr) 62px'
 
 const SourceIdIndexCell = styled.code`
   min-width: 0;
@@ -3178,7 +3178,7 @@ const ExactAlleleMotifPreview = ({
   )
 }
 
-type ExactAlleleSortKey = 'alt' | 'representedLength' | 'lengthChange' | 'purity' | 'ac' | 'af'
+type ExactAlleleSortKey = 'representedLength' | 'lengthChange' | 'purity' | 'ac' | 'af'
 type ExactAlleleSortDirection = 'ascending' | 'descending'
 
 type ExactAlleleIndexRowData = {
@@ -3226,7 +3226,6 @@ const ExactAlleleIndexRow = ({
       aria-rowindex={index + 2}
       title={allele.variant_id}
     >
-      <NumericIndexCell role="cell">{allele.alt_index.toLocaleString()}</NumericIndexCell>
       <SourceIdIndexCell className="lr-tr-index-source-id" role="cell">
         {allele.source_variant_id}
       </SourceIdIndexCell>
@@ -3309,7 +3308,6 @@ export const ExactAlleleIndex = ({
   const [sortDirection, setSortDirection] = useState<ExactAlleleSortDirection>('descending')
   const sortedAlleles = useMemo(() => {
     const sortValue = (allele: LongReadTrAllele): number | null | undefined => {
-      if (sortKey === 'alt') return allele.alt_index
       if (sortKey === 'representedLength') {
         return representedRefLength == null || allele.length == null
           ? null
@@ -3341,7 +3339,7 @@ export const ExactAlleleIndex = ({
       return
     }
     setSortKey(nextKey)
-    setSortDirection(nextKey === 'alt' ? 'ascending' : 'descending')
+    setSortDirection('descending')
   }
   const sortHeader = (
     key: ExactAlleleSortKey,
@@ -3416,7 +3414,6 @@ export const ExactAlleleIndex = ({
           aria-rowcount={alleles.length + 1}
         >
           <IndexHeader role="row" aria-rowindex={1}>
-            {sortHeader('alt', 'Source ALT', undefined, true)}
             <span role="columnheader">Source ID</span>
             <span className="lr-tr-index-preview" role="columnheader">
               Motifs
@@ -3478,32 +3475,6 @@ const HighlightedExactSequence = styled.div`
   border: 1px solid #d8dee2;
   border-radius: 3px;
   background: #fff;
-`
-
-const SequenceHighlightKey = styled.p`
-  margin: 0.35em 0 0;
-  color: #38434a;
-  font-size: 0.85em;
-`
-
-const ExactMotifLegend = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0;
-  margin: 0.5em 0 0;
-  gap: 0.35em 1em;
-  color: #27323a;
-  font-size: 0.85em;
-  list-style: none;
-`
-
-const LegendSwatch = styled.span`
-  display: inline-block;
-  width: 0.9em;
-  height: 0.9em;
-  border: 1px solid #36454f;
-  margin-right: 0.3em;
-  vertical-align: -0.08em;
 `
 
 const ExactStoredMotifSequence = ({
@@ -3603,35 +3574,37 @@ const SelectedExactSequence = ({
           ariaLabel={`Exact stored-motif string preview for ${sequenceLabel}; ${countSummary}`}
         />
       </HighlightedExactSequence>
-      <ExactMotifLegend aria-label={`Exact stored-motif string counts; ${countSummary}`}>
-        {motifs.map((motif, motifIndex) => (
-          <li
-            // Stored vocabulary position distinguishes intentional duplicate motif strings.
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${motif}-${motifIndex}`}
-          >
-            <LegendSwatch
-              aria-hidden="true"
-              style={{ backgroundColor: motifColor(motif, motifs) }}
-            />
-            <code>{motif}</code>: {preview.occurrenceCounts[motifIndex].toLocaleString()} exact{' '}
-            {preview.occurrenceCounts[motifIndex] === 1 ? 'occurrence' : 'occurrences'} (
-            {counted(preview.matchedBases[motifIndex], 'matched base', 'matched bases')})
-          </li>
-        ))}
-        <li>
-          <LegendSwatch aria-hidden="true" style={{ backgroundColor: '#333' }} />
-          Unmatched: {preview.unmatchedBases.toLocaleString()}{' '}
-          {preview.unmatchedBases === 1 ? 'base' : 'bases'}
-        </li>
-      </ExactMotifLegend>
-      <SequenceHighlightKey role="note">
-        Only literal occurrences of each stored motif string in its stored orientation are colored.
-        At overlaps, the longest string wins, then stored motif order; every other represented base
-        is dark. This sequence-only preview does not project onto reference components, report
-        component-local repeat counts or longest-pure segments, or provide a clinical
-        interpretation.
-      </SequenceHighlightKey>
+      <ScrollTable>
+        <table aria-label="Exact motif match summary">
+          <thead>
+            <tr>
+              <th scope="col">Motif</th>
+              <th scope="col">Exact occurrences</th>
+              <th scope="col">Matched bases</th>
+            </tr>
+          </thead>
+          <tbody>
+            {motifs.map((motif, motifIndex) => (
+              <tr
+                // Stored vocabulary position distinguishes intentional duplicate motif strings.
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${motif}-${motifIndex}`}
+              >
+                <th scope="row">
+                  <code>{motif}</code>
+                </th>
+                <td>{preview.occurrenceCounts[motifIndex].toLocaleString()}</td>
+                <td>{preview.matchedBases[motifIndex].toLocaleString()}</td>
+              </tr>
+            ))}
+            <tr>
+              <th scope="row">Unmatched</th>
+              <td>—</td>
+              <td>{preview.unmatchedBases.toLocaleString()}</td>
+            </tr>
+          </tbody>
+        </table>
+      </ScrollTable>
     </>
   )
 }
@@ -3754,76 +3727,6 @@ export const SelectedExactAlleleDetail = React.forwardRef<
         </table>
       </ScrollTable>
     </SelectedDetailGrid>
-    <details>
-      <summary>Technical identity and measurement provenance</summary>
-      <dl>
-        <dt>Source allele</dt>
-        <dd>
-          <code>{allele.variant_id}</code> · source record <code>{allele.source_variant_id}</code> /
-          ALT {allele.alt_index} of {allele.alt_count}
-        </dd>
-        <dt>Stored source REF length</dt>
-        <dd>{allele.ref.length.toLocaleString()} bp</dd>
-        <dt>Validated padding rule</dt>
-        <dd>
-          {representedLength?.anchor_rule ? (
-            <>
-              <code>{representedLength.anchor_rule}</code> — padding is excluded only from admitted
-              represented-length measurements
-            </>
-          ) : (
-            'Unavailable; no padding-base assumption is applied to the displayed source sequence'
-          )}
-        </dd>
-        <dt>Release / processing run</dt>
-        <dd>
-          {allele.source_release} / <code>{allele.source_run_id}</code>
-        </dd>
-        {allele.motif_purity_source && (
-          <>
-            <dt>Motif-purity field</dt>
-            <dd>
-              <code>{allele.motif_purity_source}</code>
-            </dd>
-          </>
-        )}
-        {allele.repeat_count_source && (
-          <>
-            <dt>Repeat-count field</dt>
-            <dd>
-              <code>{allele.repeat_count_source}</code>
-            </dd>
-          </>
-        )}
-      </dl>
-    </details>
-    {allele.freq.populations.length > 0 && (
-      <details>
-        <summary>Population and sex frequencies ({allele.freq.populations.length})</summary>
-        <ScrollTable role="region" aria-label="Population and sex frequencies table" tabIndex={0}>
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Group</th>
-                <th scope="col">AC</th>
-                <th scope="col">AN</th>
-                <th scope="col">AF</th>
-              </tr>
-            </thead>
-            <tbody>
-              {allele.freq.populations.map((frequency) => (
-                <tr key={frequency.id}>
-                  <th scope="row">{frequency.id}</th>
-                  <td>{frequency.ac}</td>
-                  <td>{frequency.an}</td>
-                  <td>{frequency.af.toPrecision(4)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </ScrollTable>
-      </details>
-    )}
   </SelectedDetail>
 ))
 

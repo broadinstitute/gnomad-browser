@@ -620,7 +620,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByLabelText('Experimental local haplotype backgrounds')).not.toBeNull()
   })
 
-  test('renders grounded source attributes and ordered overlapping components', () => {
+  test('renders grounded source attributes without technical component provenance', () => {
     renderPage()
     expect(screen.getByRole('heading', { name: 'HTT CAG tandem repeat' })).not.toBeNull()
     expect(screen.queryByLabelText('Primary repeat CAG', { exact: true })).toBeNull()
@@ -637,15 +637,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByText('Allele copies with a genotype call')).toBeNull()
     expect(screen.getByRole('link', { name: 'TRExplorer' })).not.toBeNull()
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
-    expect(
-      screen.getByRole('img', {
-        name: /6 ordered LR reference components in 2 coordinate lanes/,
-      })
-    ).not.toBeNull()
-    fireEvent.click(screen.getByText('Full ordered component table (6)'))
-    const finalComponentRow = screen.getByText('chr4:3,075,009–3,075,040').closest('tr')!
-    expect(within(finalComponentRow).getByText('CCG')).not.toBeNull()
-    expect(within(finalComponentRow).getByText('32 bp')).not.toBeNull()
+    expect(screen.queryByRole('img', { name: /ordered LR reference components/ })).toBeNull()
+    expect(screen.queryByText('Full ordered component table (6)')).toBeNull()
     expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
   })
 
@@ -673,11 +666,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       screen.queryByText('Exact short-read catalog reference match (identity only)')
     ).toBeNull()
     expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
-    expect(
-      screen
-        .getByRole('img', { name: /1 ordered LR reference component/ })
-        .getAttribute('aria-label')
-    ).not.toMatch(/exact short-read catalog reference match/i)
+    expect(screen.queryByRole('img', { name: /ordered LR reference component/ })).toBeNull()
   })
 
   test('preserves ATXN1 stored TGC orientation and RFC1 benign reference identity', () => {
@@ -826,33 +815,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByRole('heading', { name: 'Multi-component TR locus' })).not.toBeNull()
     expect(screen.queryByText(/Primary repeat unavailable/)).toBeNull()
     expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
-    const disclosure = screen
-      .getByText('All ordered source components and provenance — 6 ordered components')
-      .closest('details')
-    expect(disclosure?.hasAttribute('open')).toBe(false)
+    expect(screen.queryByText(/All ordered source components and provenance/)).toBeNull()
     expect(screen.queryByRole('heading', { name: /Long-read exact CAG units/ })).toBeNull()
-  })
-
-  test('wraps long source motifs inside the bounded component disclosure', () => {
-    const locus = makeLocus()
-    const denseMotif = 'ATATATATATATATATATATATATCCAAGAGGAG'
-    ;(locus as any).motifs = [denseMotif]
-    ;(locus as any).components = locus.components.map((component) => ({
-      ...component,
-      motif: denseMotif,
-    }))
-    renderPage({ locus, selectedAllele: undefined })
-
-    const disclosure = screen
-      .getByText('All ordered source components and provenance — 6 ordered components')
-      .closest('details') as HTMLElement
-    fireEvent.click(within(disclosure).getByText(/All ordered source components and provenance/))
-    const badge = disclosure.querySelector(`[data-motif-badge="${denseMotif}"]`) as HTMLElement
-    expect(badge).not.toBeNull()
-    expect(badge).toHaveStyleRule('box-sizing', 'border-box')
-    expect(badge).toHaveStyleRule('max-width', '100%')
-    expect(badge).toHaveStyleRule('overflow-wrap', 'anywhere')
-    expect(badge).toHaveStyleRule('word-break', 'break-word')
   })
 
   test('uses positive cluster wording and source bounds only with complete API provenance', () => {
@@ -981,13 +945,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage()
     const helpTitles = [
       'About this tandem-repeat locus',
-      'About LR reference components',
       'About known disease-associated TR locus',
       'About the allelic landscape',
       'About the source-ALT index',
       'About exact ALT details',
-      'About unavailable data',
     ]
+    expect(screen.queryByRole('heading', { name: 'Unavailable data' })).toBeNull()
+    expect(screen.queryByRole('button', { name: 'About unavailable data' })).toBeNull()
 
     const firstHelpButton = screen.getByRole('button', { name: helpTitles[0] })
     expect(firstHelpButton).toHaveStyleRule('min-width', '44px')
@@ -1008,32 +972,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
   })
 
-  test('uses the shared motif palette for ordered vocabulary badges and components', () => {
-    renderPage()
-    const expectedMotifs = ['CAG', 'CAA', 'CCG', 'CCT', 'GCC']
-    const badges = screen.getByLabelText(`Repeat motifs: ${expectedMotifs.join(', ')}`)
-
-    expect(
-      within(badges)
-        .getAllByText(/^(CAG|CAA|CCG|CCT|GCC)$/)
-        .map((badge) => badge.textContent)
-    ).toEqual(expectedMotifs)
-    expectedMotifs.forEach((motif) => {
-      const badge = within(badges).getByText(motif)
-      const component = document.querySelector(`[data-component-motif="${motif}"]`)
-      expect(component).not.toBeNull()
-      expect(badge.getAttribute('data-motif-color')).toBe(component?.getAttribute('fill'))
-      expect(badge.getAttribute('style')).toMatch(/background-color: rgb\(/)
-      expect(badge.getAttribute('style')).toMatch(/color: (rgb\(17, 17, 17\)|rgb\(255, 255, 255\))/)
-    })
-    expect(screen.queryByLabelText('Repeat motif color legend')).toBeNull()
-  })
-
   test('states compound measurement limits and signed total-length semantics', () => {
     renderPage()
     expect(
-      screen.getByText(/compound loci do not have one unambiguous component repeat count/)
-    ).not.toBeNull()
+      screen.queryByText(/compound loci do not have one unambiguous component repeat count/)
+    ).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
     const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
     expect(within(help).getByText('Repeat-count distributions (simple loci only)')).not.toBeNull()
@@ -1066,19 +1009,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
   })
 
-  test('keeps source components and exact provenance in one closed disclosure', () => {
+  test('omits the source component provenance disclosure', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
-    const disclosure = screen
-      .getByText('All ordered source components and provenance — 1 ordered component')
-      .closest('details')
-    expect(disclosure).not.toBeNull()
-    expect(disclosure?.hasAttribute('open')).toBe(false)
-    expect(within(disclosure as HTMLElement).getByText('Repeat motif')).not.toBeNull()
-    expect(within(disclosure as HTMLElement).getByText('task', { selector: 'code' })).not.toBeNull()
-    expect(
-      within(disclosure as HTMLElement).getByText('attempt', { selector: 'code' })
-    ).not.toBeNull()
+    expect(screen.queryByText(/All ordered source components and provenance/)).toBeNull()
+    expect(screen.queryByText('Variant records')).toBeNull()
+    expect(screen.queryByText('Release / processing run')).toBeNull()
   })
 
   test('renders an explicit non-error state when a locus is absent from one cohort', () => {
@@ -1182,16 +1118,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(browser).toHaveStyleRule('grid-template-columns', 'minmax(0,100%)')
     expect(index).toHaveStyleRule('overflow-x', 'hidden')
     const indexHeader = within(index).getAllByRole('row')[0]
-    expect(indexHeader).toHaveStyleRule('grid-template-columns', '42px minmax(115px, 1fr) 62px', {
+    expect(indexHeader).toHaveStyleRule('grid-template-columns', 'minmax(115px, 1fr) 62px', {
       media: '(max-width:420px)',
     })
     expect(indexHeader).toHaveStyleRule('column-gap', '0.4em', {
       media: '(max-width:420px)',
     })
-    const componentScroller = screen.getByRole('region', {
-      name: 'Scrollable LR reference component track',
-    })
-    expect(componentScroller.getAttribute('tabindex')).toBe('0')
+    expect(
+      screen.queryByRole('region', { name: 'Scrollable LR reference component track' })
+    ).toBeNull()
   })
 
   test('renders complete non-classifying disease context with a fixed dataset link', () => {
@@ -1246,10 +1181,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       within(help).getByText(/do not classify, filter, or select any LR allele/)
     ).not.toBeNull()
-    const highlightedComponent = screen
-      .getByRole('img', { name: /component 1 has a neutral dotted outline/ })
-      .querySelector('[data-exact-reference-component-match="true"]')
-    expect(highlightedComponent).not.toBeNull()
+    expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
   })
 
   test.each([
@@ -1419,13 +1351,22 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(representedSequence.querySelectorAll('[data-sequence-match="unmatched"]')).toHaveLength(
       3
     )
+    const motifSummary = within(detail).getByRole('table', { name: 'Exact motif match summary' })
     expect(
-      within(detail).getByLabelText(/Exact stored-motif string counts; GCA: 13 exact occurrences/)
-    ).not.toBeNull()
+      within(motifSummary)
+        .getAllByRole('columnheader')
+        .map((header) => header.textContent)
+    ).toEqual(['Motif', 'Exact occurrences', 'Matched bases'])
+    const motifRows = within(motifSummary).getAllByRole('row')
+    expect(motifRows).toHaveLength(3)
+    expect(motifRows[1].textContent).toBe('GCA1339')
+    expect(motifRows[2].textContent).toBe('Unmatched—3')
     expect(screen.queryByText(/Shared VCF anchor/i)).toBeNull()
     expect(screen.queryByLabelText(/Shared VCF anchor/i)).toBeNull()
-    expect(within(detail).getByText(/every other represented base is dark/)).not.toBeNull()
-    expect(within(detail).getByText(/does not project onto reference components/)).not.toBeNull()
+    expect(within(detail).queryByText(/every other represented base is dark/)).toBeNull()
+    expect(within(detail).queryByText(/does not project onto reference components/)).toBeNull()
+    expect(within(detail).queryByText('Technical identity and measurement provenance')).toBeNull()
+    expect(within(detail).queryByText(/Population and sex frequencies/)).toBeNull()
     expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
     expect(within(detail).queryByText(/tokens/)).toBeNull()
     expect(within(detail).queryByRole('heading', { name: /Exact ALT sequence/ })).toBeNull()
@@ -1446,8 +1387,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const detail = screen.getByTestId('lr-tr-selected-detail')
     expect(detail).toBe(document.activeElement)
     expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
-    expect(within(detail).getByText(exactId)).not.toBeNull()
-    expect(within(detail).getByText(/source_ap_allele/)).not.toBeNull()
+    expect(within(detail).queryByText(exactId)).toBeNull()
+    expect(within(detail).queryByText(/source_ap_allele/)).toBeNull()
     expect(within(detail).queryByText(/shown neutrally because no admitted projection/)).toBeNull()
     expect(
       within(detail).getByLabelText('Exact copyable source sequence for Sequence 2').textContent
@@ -1458,11 +1399,16 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     expect(detail.querySelectorAll('[data-sequence-match="motif"]')).toHaveLength(6)
     expect(detail.querySelectorAll('[data-sequence-match="unmatched"]')).toHaveLength(0)
+    const motifSummary = within(detail).getByRole('table', { name: 'Exact motif match summary' })
     expect(
-      within(detail).getByLabelText(
-        /Exact stored-motif string counts; CAG: 1 exact occurrence.*CAA: 1 exact occurrence.*unmatched: 0 bases/i
-      )
-    ).not.toBeNull()
+      within(motifSummary).getByRole('rowheader', { name: 'CAG' }).closest('tr')?.textContent
+    ).toBe('CAG13')
+    expect(
+      within(motifSummary).getByRole('rowheader', { name: 'CAA' }).closest('tr')?.textContent
+    ).toBe('CAA13')
+    expect(
+      within(motifSummary).getByRole('rowheader', { name: 'Unmatched' }).closest('tr')?.textContent
+    ).toBe('Unmatched—0')
     expect(within(detail).queryByText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByLabelText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
@@ -1546,8 +1492,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
       expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
       const cells = within(finalRow).getAllByRole('cell')
-      expect(cells[0].textContent).toBe(String(count))
-      expect(cells[1].textContent).toBe(sourceVariantId)
+      expect(cells[0].textContent).toBe(sourceVariantId)
       expect(
         within(finalRow).getByRole('link', { name: `Details for Sequence ${count}` })
       ).not.toBeNull()
@@ -1575,8 +1520,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus, selectedAllele: undefined })
     const row = screen.getByTitle(`${sourceVariantId}~1`)
     const cells = within(row).getAllByRole('cell')
-    expect(cells[0].textContent).toBe('1')
-    expect(cells[1].textContent).toBe(sourceVariantId)
+    expect(cells[0].textContent).toBe(sourceVariantId)
     expect(within(row).queryByText(/Source ALT 1 of 72/)).toBeNull()
     expect(within(row).getByText('20')).not.toBeNull()
     expect(within(row).queryByText('20.00342')).toBeNull()
@@ -1654,25 +1598,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(onCohortChange).toHaveBeenCalledWith('aou')
   })
 
-  test('keeps compound source provenance compact and accessible', () => {
+  test('omits page-level availability and source provenance sections', () => {
     renderPage()
-    const provenance = screen
-      .getByText('All ordered source components and provenance — 6 ordered components')
-      .closest('details')
-    expect(provenance).not.toBeNull()
-    expect(provenance?.hasAttribute('open')).toBe(false)
-    expect(
-      within(provenance as HTMLElement).getByText('run-hgsvc', { selector: 'code' })
-    ).not.toBeNull()
-    expect(
-      within(provenance as HTMLElement).getByText('catalog-test-digest', { selector: 'code' })
-    ).not.toBeNull()
-    expect(
-      within(provenance as HTMLElement).getByText(
-        'Exact short-read catalog main region and stored motif; no override registry used'
-      )
-    ).not.toBeNull()
-    expect(within(provenance as HTMLElement).queryByText(/registry digest/i)).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Unavailable data' })).toBeNull()
+    expect(screen.queryByText(/All ordered source components and provenance/)).toBeNull()
+    expect(screen.queryByText('Primary-repeat authorization')).toBeNull()
   })
 
   test('renders API-driven unavailable states without an empty plot', () => {
