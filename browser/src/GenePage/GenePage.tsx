@@ -42,6 +42,7 @@ import RegionalMissenseConstraintTrack, {
 } from '../RegionalMissenseConstraintTrack'
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import RegionViewer from '../RegionViewer/ZoomableRegionViewer'
+import { useSectionErrorBoundary } from '../SectionErrorBoundary'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -359,6 +360,12 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
 
   const { preferredTranscriptId, preferredTranscriptDescription } = getPreferredTranscript(gene)
 
+  const wrapWithSectionErrorBoundary = useSectionErrorBoundary(
+    `gene ${gene.symbol} (${gene.gene_id})`,
+    datasetId,
+    [gene.gene_id, datasetId]
+  )
+
   return (
     <TrackPage>
       <TrackPageSection>
@@ -380,17 +387,22 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         </GnomadPageHeading>
         <GeneInfoColumnWrapper>
           <GeneInfoColumn>
-            {/* @ts-expect-error TS(2741) FIXME: Property 'gencode_symbol' is missing in type '{ ge... Remove this comment to see the full error message */}
-            <GeneInfo gene={gene} />
-            <GeneFlags gene={gene} />
-            {gene.short_tandem_repeats && gene.short_tandem_repeats.length > 0 && (
-              <p>
-                <Badge level="info">Note</Badge> Data is available for a{' '}
-                <Link to={`/short-tandem-repeat/${gene.short_tandem_repeats[0].id}`}>
-                  tandem repeat locus
-                </Link>{' '}
-                in this gene.
-              </p>
+            {wrapWithSectionErrorBoundary(
+              'Gene information',
+              <>
+                {/* @ts-expect-error TS(2741) FIXME: Property 'gencode_symbol' is missing in type '{ ge... Remove this comment to see the full error message */}
+                <GeneInfo gene={gene} />
+                <GeneFlags gene={gene} />
+                {gene.short_tandem_repeats && gene.short_tandem_repeats.length > 0 && (
+                  <p>
+                    <Badge level="info">Note</Badge> Data is available for a{' '}
+                    <Link to={`/short-tandem-repeat/${gene.short_tandem_repeats[0].id}`}>
+                      tandem repeat locus
+                    </Link>{' '}
+                    in this gene.
+                  </p>
+                )}
+              </>
             )}
           </GeneInfoColumn>
           <ConstraintOrCooccurrenceColumn>
@@ -413,19 +425,25 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 Variant co-occurrence <InfoButton topic="variant-cooccurrence-table" />
               </TableSelector>
             </TableSelectorWrapper>
-            {selectedTableName === 'constraint' ? (
-              <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />
-            ) : (
-              <VariantCooccurrenceCountsTable
-                datasetId={datasetId}
-                heterozygous_variant_cooccurrence_counts={
-                  gene.heterozygous_variant_cooccurrence_counts!
-                }
-                homozygous_variant_cooccurrence_counts={
-                  gene.homozygous_variant_cooccurrence_counts!
-                }
-              />
-            )}
+            {selectedTableName === 'constraint'
+              ? wrapWithSectionErrorBoundary(
+                  'Constraint',
+                  <ConstraintTable datasetId={datasetId} geneOrTranscript={gene} />,
+                  [selectedTableName]
+                )
+              : wrapWithSectionErrorBoundary(
+                  'Variant co-occurrence',
+                  <VariantCooccurrenceCountsTable
+                    datasetId={datasetId}
+                    heterozygous_variant_cooccurrence_counts={
+                      gene.heterozygous_variant_cooccurrence_counts!
+                    }
+                    homozygous_variant_cooccurrence_counts={
+                      gene.homozygous_variant_cooccurrence_counts!
+                    }
+                  />,
+                  [selectedTableName]
+                )}
           </ConstraintOrCooccurrenceColumn>
         </GeneInfoColumnWrapper>
       </TrackPageSection>
@@ -450,24 +468,31 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
         onChangeZoomRegion={setZoomRegion}
       >
         {/* eslint-disable-next-line no-nested-ternary */}
-        {!hasExons(datasetId) ? (
-          <RegionCoverageTrack
-            chrom={gene.chrom}
-            datasetId={datasetId}
-            includeExomeCoverage={false}
-            start={gene.start}
-            stop={gene.stop}
-          />
-        ) : gene.chrom === 'M' ? (
-          <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
-        ) : (
-          <GeneCoverageTrack
-            datasetId={datasetId}
-            geneId={geneId}
-            includeExomeCoverage={genesHaveExomeCoverage(datasetId)}
-            includeGenomeCoverage={genesHaveGenomeCoverage(datasetId)}
-          />
-        )}
+        {!hasExons(datasetId)
+          ? wrapWithSectionErrorBoundary(
+              'Gene coverage',
+              <RegionCoverageTrack
+                chrom={gene.chrom}
+                datasetId={datasetId}
+                includeExomeCoverage={false}
+                start={gene.start}
+                stop={gene.stop}
+              />
+            )
+          : gene.chrom === 'M'
+          ? wrapWithSectionErrorBoundary(
+              'Gene coverage',
+              <MitochondrialGeneCoverageTrack datasetId={datasetId} geneId={geneId} />
+            )
+          : wrapWithSectionErrorBoundary(
+              'Gene coverage',
+              <GeneCoverageTrack
+                datasetId={datasetId}
+                geneId={geneId}
+                includeExomeCoverage={genesHaveExomeCoverage(datasetId)}
+                includeGenomeCoverage={genesHaveGenomeCoverage(datasetId)}
+              />
+            )}
 
         {/* @ts-expect-error TS(2769) FIXME: No overload matches this call. */}
         <ControlPanel marginLeft={100} width={regionViewerWidth - 100 - (isSmallScreen ? 0 : 80)}>
@@ -556,87 +581,118 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
               )
             }}
           >
-            {({ scalePosition, width: trackWidth }: any) => (
-              <CompositeTranscriptPlotWrapper>
-                <TranscriptPlot
-                  height={20}
-                  scalePosition={scalePosition}
-                  showNonCodingExons={includeNonCodingTranscripts}
-                  showUTRs={includeUTRs}
-                  transcript={{ exons: gene.exons }}
-                  width={trackWidth}
-                />
-              </CompositeTranscriptPlotWrapper>
-            )}
+            {({ scalePosition, width: trackWidth }: any) =>
+              wrapWithSectionErrorBoundary(
+                'Transcript composite plot',
+                <CompositeTranscriptPlotWrapper>
+                  <TranscriptPlot
+                    height={20}
+                    scalePosition={scalePosition}
+                    showNonCodingExons={includeNonCodingTranscripts}
+                    showUTRs={includeUTRs}
+                    transcript={{ exons: gene.exons }}
+                    width={trackWidth}
+                  />
+                </CompositeTranscriptPlotWrapper>
+              )
+            }
           </Track>
         </TrackWrapper>
 
-        {showTranscripts && (
-          <TrackWrapper>
-            <GeneTranscriptsTrack
-              datasetId={datasetId}
-              isTissueExpressionAvailable={!!gene.pext}
-              gene={gene}
-              includeNonCodingTranscripts={includeNonCodingTranscripts}
-              includeUTRs={includeUTRs}
+        {showTranscripts &&
+          wrapWithSectionErrorBoundary(
+            'Transcripts',
+            <TrackWrapper>
+              <GeneTranscriptsTrack
+                datasetId={datasetId}
+                isTissueExpressionAvailable={!!gene.pext}
+                gene={gene}
+                includeNonCodingTranscripts={includeNonCodingTranscripts}
+                includeUTRs={includeUTRs}
+                preferredTranscriptId={preferredTranscriptId}
+                preferredTranscriptDescription={preferredTranscriptDescription}
+              />
+            </TrackWrapper>,
+            [includeNonCodingTranscripts, includeUTRs]
+          )}
+
+        {gene.chrom.startsWith('M') &&
+          wrapWithSectionErrorBoundary(
+            'Mitochondrial region constraint',
+            <MitochondrialRegionConstraintTrack
+              constraintRegions={gene.mitochondrial_missense_constraint_regions}
+              exons={gene.exons}
+              geneSymbol={gene.symbol}
+            />
+          )}
+
+        {hasCodingExons &&
+          gene.chrom !== 'M' &&
+          gene.pext &&
+          wrapWithSectionErrorBoundary(
+            'Tissue expression',
+            <TissueExpressionTrack
+              exons={cdsCompositeExons}
+              expressionRegions={gene.pext.regions}
+              flags={gene.pext.flags}
+              transcripts={gene.transcripts as TranscriptWithTissueExpression[]} // if a gene has pext, it has gtex
               preferredTranscriptId={preferredTranscriptId}
               preferredTranscriptDescription={preferredTranscriptDescription}
+              topLevelDataset={getTopLevelDataset(datasetId)}
             />
-          </TrackWrapper>
-        )}
+          )}
 
-        {gene.chrom.startsWith('M') && (
-          <MitochondrialRegionConstraintTrack
-            constraintRegions={gene.mitochondrial_missense_constraint_regions}
-            exons={gene.exons}
-            geneSymbol={gene.symbol}
-          />
-        )}
+        {isExac(datasetId) &&
+          gene.exac_regional_missense_constraint_regions &&
+          wrapWithSectionErrorBoundary(
+            'Regional missense constraint (ExAC)',
+            <RegionalConstraintTrack
+              height={15}
+              regions={gene.exac_regional_missense_constraint_regions}
+            />
+          )}
 
-        {hasCodingExons && gene.chrom !== 'M' && gene.pext && (
-          <TissueExpressionTrack
-            exons={cdsCompositeExons}
-            expressionRegions={gene.pext.regions}
-            flags={gene.pext.flags}
-            transcripts={gene.transcripts as TranscriptWithTissueExpression[]} // if a gene has pext, it has gtex
-            preferredTranscriptId={preferredTranscriptId}
-            preferredTranscriptDescription={preferredTranscriptDescription}
-            topLevelDataset={getTopLevelDataset(datasetId)}
-          />
-        )}
-
-        {isExac(datasetId) && gene.exac_regional_missense_constraint_regions && (
-          <RegionalConstraintTrack
-            height={15}
-            regions={gene.exac_regional_missense_constraint_regions}
-          />
-        )}
-
-        {isV2(datasetId) && (
-          <RegionalMissenseConstraintTrack
-            regionalMissenseConstraint={gene.gnomad_v2_regional_missense_constraint}
-            gene={gene}
-          />
-        )}
+        {isV2(datasetId) &&
+          wrapWithSectionErrorBoundary(
+            'Regional missense constraint (gnomAD v2)',
+            <RegionalMissenseConstraintTrack
+              regionalMissenseConstraint={gene.gnomad_v2_regional_missense_constraint}
+              gene={gene}
+            />
+          )}
 
         {/* eslint-disable-next-line no-nested-ternary */}
-        {hasStructuralVariants(datasetId) ? (
-          <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : // eslint-disable-next-line no-nested-ternary
-        hasCopyNumberVariants(datasetId) ? (
-          <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : gene.chrom === 'M' ? (
-          <MitochondrialVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
-        ) : (
-          <VariantsInGene
-            datasetId={datasetId}
-            gene={gene}
-            includeNonCodingTranscripts={includeNonCodingTranscripts}
-            includeUTRs={includeUTRs}
-            zoomRegion={zoomRegion}
-            hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
-          />
-        )}
+        {hasStructuralVariants(datasetId)
+          ? wrapWithSectionErrorBoundary(
+              'Variants',
+              <StructuralVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+            )
+          : // eslint-disable-next-line no-nested-ternary
+          hasCopyNumberVariants(datasetId)
+          ? wrapWithSectionErrorBoundary(
+              'Variants',
+              <CopyNumberVariantsInGene datasetId={datasetId} gene={gene} zoomRegion={zoomRegion} />
+            )
+          : gene.chrom === 'M'
+          ? wrapWithSectionErrorBoundary(
+              'Variants',
+              <MitochondrialVariantsInGene
+                datasetId={datasetId}
+                gene={gene}
+                zoomRegion={zoomRegion}
+              />
+            )
+          : wrapWithSectionErrorBoundary(
+              'Variants',
+              <VariantsInGene
+                datasetId={datasetId}
+                gene={gene}
+                includeNonCodingTranscripts={includeNonCodingTranscripts}
+                includeUTRs={includeUTRs}
+                zoomRegion={zoomRegion}
+                hasOnlyNonCodingTranscripts={!hasCodingExons && hasNonCodingTranscripts}
+              />
+            )}
       </RegionViewer>
     </TrackPage>
   )

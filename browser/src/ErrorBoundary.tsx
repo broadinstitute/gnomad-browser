@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { ExternalLink, Link as StyledLink, PageHeading } from '@gnomad/ui'
+import { PageHeading } from '@gnomad/ui'
 
+import BugReportControls from './BugReportControls'
 import DocumentTitle from './DocumentTitle'
 import InfoPage from './InfoPage'
 
@@ -14,91 +15,32 @@ type Props = {
   }
 }
 
-type State = any
+type State = {
+  error: Error | null
+}
 
 class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    this.state = { error: null, bugDescription: '' }
+    this.state = { error: null }
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError(error: Error) {
     return { error }
   }
 
   render() {
     const { children, location } = this.props
-    const { error, bugDescription } = this.state
+    const { error } = this.state
 
     if (error) {
-      const issueBody = `
-**Description**: ${bugDescription}
-
-**Error message**: ${error.message}
-
-**Stack trace**:
-\`\`\`
-${error.stack}
-\`\`\`
-
-**Route**: ${location.pathname}${location.search}
-
-**Browser**: ${navigator.userAgent}
-`
-
-      const issueURL = `https://github.com/broadinstitute/gnomad-browser/issues/new?title=${encodeURIComponent(
-        error.message
-      )}&body=${encodeURIComponent(issueBody)}&labels=Type%3A%20Bug`
-
-      const forumURL = `https://discuss.gnomad.broadinstitute.org/new-topic?title=topic%20${encodeURIComponent(
-        error.message
-      )}&body=${encodeURIComponent(issueBody)}&category=Browser&tags=bug`
-
-      const emailURL = `mailto:gnomad@broadinstitute.org?subject=${encodeURIComponent(
-        'Browser bug report'
-      )}&body=${encodeURIComponent(issueBody.replace(/```\n/g, ''))}`
-
       return (
         <InfoPage>
           <DocumentTitle title="Error" />
           <PageHeading>Something Went Wrong</PageHeading>
           <p>An error prevented this page from being displayed.</p>
           <p>This is a bug.</p>
-          <p>
-            Please describe what you were trying to do at the time the page crashed
-            <div>
-              <textarea
-                id="bug-description"
-                name="bug-description"
-                value={bugDescription}
-                onChange={(e) => this.setState({ bugDescription: e.target.value })}
-                rows={4}
-                cols={50}
-              />
-            </div>
-          </p>
-
-          <p>
-            And submit this bug report as{' '}
-            <ul>
-              <li>
-                <ExternalLink href={issueURL}>an issue on GitHub</ExternalLink> or{' '}
-              </li>
-              <li>
-                <ExternalLink href={forumURL}>a topic on our forum</ExternalLink>
-              </li>
-            </ul>
-            Then
-            <StyledLink href="/">reload the browser</StyledLink>.
-            <br />
-            <br />
-            <br />
-            <p>
-              Alternately, you can <ExternalLink href={emailURL}>email us</ExternalLink>. Please
-              note that we prioritize answering issues on Github and topics on the Forum, so if you
-              choose to email it may take us longer to respond.
-            </p>
-          </p>
+          <BugReportControls error={error} context={{ route: location }} />
         </InfoPage>
       )
     }
