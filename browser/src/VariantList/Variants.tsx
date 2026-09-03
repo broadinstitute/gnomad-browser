@@ -50,11 +50,21 @@ type OwnVariantsProps = {
   datasetId: DatasetId
   exportFileName?: string
   variants: Variant[]
+  externalCursorClick?: { position: number } | null
+  wrapInCursor?: boolean
+  /** Wraps the variant tracks (and position axis) — the always-on cursor lives here. */
+  trackWrapper?: (tracks: React.ReactNode) => React.ReactNode
+  /** Wraps the heading + headerControl — the toggle-controlled cursor lives here, so
+      the line only extends through the heading when the cursor is enabled. */
+  headerWrapper?: (header: React.ReactNode) => React.ReactNode
+  /** Optional control rendered just under the "gnomAD variants" heading (e.g. the cursor toggle). */
+  headerControl?: React.ReactNode
 }
 
 const variantsDefaultProps = {
   children: null,
   exportFileName: 'variants',
+  wrapInCursor: true,
 }
 
 type VariantsProps = OwnVariantsProps & typeof variantsDefaultProps
@@ -87,6 +97,11 @@ const Variants = ({
   datasetId,
   exportFileName,
   variants,
+  externalCursorClick,
+  wrapInCursor,
+  trackWrapper,
+  headerWrapper,
+  headerControl,
 }: VariantsProps) => {
   const table = useRef(null)
 
@@ -208,6 +223,17 @@ const Variants = ({
   const onNavigatorClick = createCallback('variant_id', setPositionLastClicked)
   const onSearchResult = createCallback('variant_id', setFilter)
 
+  // When the parent page owns the cursor (e.g. the gene page) and reports a click,
+  // mirror it into our internal state so the existing scroll/sort logic below kicks in.
+  // externalCursorClick is a fresh object per click, so re-clicking the same
+  // position still re-runs this effect. onNavigatorClick is intentionally omitted
+  // from the deps: it is recreated each render but is stable in behavior.
+  useEffect(() => {
+    if (externalCursorClick != null) {
+      onNavigatorClick(externalCursorClick.position)
+    }
+  }, [externalCursorClick]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // When a user clicks on the bubble track, update the position in the variant table
   useEffect(() => {
     if (positionLastClicked === null || table.current === null) {
@@ -265,40 +291,73 @@ const Variants = ({
 
   if (variants.length === 0) {
     return (
-      <TrackPageSection>
-        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
-        <p>No gnomAD variants found.</p>
-      </TrackPageSection>
+      <>
+        <TrackPageSection>
+          <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+          {headerControl}
+        </TrackPageSection>
+        <TrackPageSection as="p">No gnomAD variants found.</TrackPageSection>
+      </>
     )
   }
 
-  return (
-    <div>
-      <TrackPageSection>
-        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
-      </TrackPageSection>
-      <Cursor onClick={onNavigatorClick}>
-        <VariantTrack
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-          title={`${datasetLabel} variants (${renderedVariants.length})`}
-          variants={renderedVariants}
-        />
+  const variantTracks = (
+    <>
+      <VariantTrack
+        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+        title={`${datasetLabel} variants (${renderedVariants.length})`}
+        variants={renderedVariants}
+      />
 
-        <VariantTrack
-          // @ts-expect-error TS(2769) FIXME: No overload matches this call.
-          title="Viewing in table"
-          variants={renderedVariants
-            .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
-            .map((variant) => ({
-              ...variant,
-              isHighlighted: variant.variant_id === variantHoveredInTable,
-            }))}
-          onHoverVariants={onHoverVariantsInTrack}
-        />
-      </Cursor>
+      <VariantTrack
+        // @ts-expect-error TS(2769) FIXME: No overload matches this call.
+        title="Viewing in table"
+        variants={renderedVariants
+          .slice(visibleVariantWindow[0], visibleVariantWindow[1] + 1)
+          .map((variant) => ({
+            ...variant,
+            isHighlighted: variant.variant_id === variantHoveredInTable,
+          }))}
+        onHoverVariants={onHoverVariantsInTrack}
+      />
+    </>
+  )
+
+  // The heading + toggle are wrapped separately from the tracks so the
+  // toggle-controlled cursor (headerWrapper) only draws a line through this region
+  // when the cursor is enabled, while the always-on track cursor (trackWrapper)
+  // keeps the line on the variant track itself even when the toggle is off.
+  const headerContent = (
+    <>
+      <TrackPageSection>
+        {/* inline-block + page-colored background masks the cross-track cursor line
+            behind the heading text only, so the line stays continuous elsewhere. */}
+        <h2
+          style={{
+            display: 'inline-block',
+            margin: '2em 0 0.25em',
+            position: 'relative',
+            zIndex: 1,
+            background: '#fafafa',
+          }}
+        >
+          gnomAD variants
+        </h2>
+      </TrackPageSection>
+      {headerControl && <TrackPageSection>{headerControl}</TrackPageSection>}
+    </>
+  )
+
+  const trackContent = (
+    <>
+      {wrapInCursor ? <Cursor onClick={onNavigatorClick}>{variantTracks}</Cursor> : variantTracks}
 
       <PositionAxisTrack />
+    </>
+  )
 
+  const tableContent = (
+    <>
       <TrackPageSection style={{ fontSize: '14px', marginTop: '1em' }}>
         <VariantFilterControls
           onChange={setFilter}
@@ -374,6 +433,14 @@ const Variants = ({
           }}
         />
       )}
+    </>
+  )
+
+  return (
+    <div>
+      {headerWrapper ? headerWrapper(headerContent) : headerContent}
+      {trackWrapper ? trackWrapper(trackContent) : trackContent}
+      {tableContent}
     </div>
   )
 }

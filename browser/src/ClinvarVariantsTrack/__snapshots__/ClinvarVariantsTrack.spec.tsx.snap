@@ -139,6 +139,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   border-color: #E6573D;
   border-style: solid;
   border-width: 1px;
+  background: #fafafa;
 }
 
 .c5:first-child {
@@ -159,6 +160,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   border-color: #FAB470;
   border-style: solid;
   border-width: 1px;
+  background: #fafafa;
 }
 
 .c12:first-child {
@@ -179,6 +181,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   border-color: #5E6F9E;
   border-style: solid;
   border-width: 1px;
+  background: #fafafa;
 }
 
 .c14:first-child {
@@ -199,6 +202,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
   border-color: #bababa;
   border-style: solid;
   border-width: 1px;
+  background: #fafafa;
 }
 
 .c16:first-child {
@@ -297,6 +301,8 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
 }
 
 .c1 {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -331,6 +337,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
 
 .c23 {
   margin-right: 1ch;
+  background: #fafafa;
 }
 
 .c26 {
@@ -564,6 +571,11 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
               alt=""
               aria-hidden="true"
               src="test-file-stub"
+              style={
+                {
+                  "backgroundColor": "#fafafa",
+                }
+              }
             />
             <span
               style={
@@ -736,22 +748,35 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
       <div
         className="c27"
       >
-        <label
-          className="c24"
-          htmlFor="clinvar-track-in-gnomad"
+        <span
+          style={
+            {
+              "background": "#fafafa",
+            }
+          }
         >
-          <input
-            checked={false}
-            className="c25"
-            disabled={false}
-            id="clinvar-track-in-gnomad"
-            onChange={[Function]}
-            type="checkbox"
-          />
-          Only show ClinVar variants that are in gnomAD
-        </label>
+          <label
+            className="c24"
+            htmlFor="clinvar-track-in-gnomad"
+          >
+            <input
+              checked={false}
+              className="c25"
+              disabled={false}
+              id="clinvar-track-in-gnomad"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Only show ClinVar variants that are in gnomAD
+          </label>
+        </span>
         <label
           htmlFor="star-filtering"
+          style={
+            {
+              "background": "#fafafa",
+            }
+          }
         >
           Filter by
            

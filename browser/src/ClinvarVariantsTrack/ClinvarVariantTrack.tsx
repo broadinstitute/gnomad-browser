@@ -25,6 +25,13 @@ import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 
 const TopPanel = styled.div`
+  position: relative;
+
+  /* Sit above the cross-track cursor line (drawn in an absolutely positioned
+     overlay) so the line passes behind the filter controls. The controls have
+     their own backgrounds, so the line is hidden behind them but stays visible
+     (continuous) in the empty space between them. */
+  z-index: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -76,6 +83,10 @@ const ConsequenceCategoryFiltersWrapper = styled.div`
 
 const ConsequenceCategoryFilter = styled.div`
   margin-right: 1ch;
+
+  /* Opaque page-colored backdrop so the cursor line is masked behind the
+     checkbox + label (it still shows in the gaps between filters). */
+  background: #fafafa;
 `
 
 const SelectCategoryButton = styled(Button)`
@@ -154,7 +165,9 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
                 id="clinvar-track-included-categories"
                 onChange={setIncludedClinicalSignificanceCategories}
               />{' '}
-              <InfoButton topic="clinvar-variant-categories" />
+              {/* Backdrop on the icon so the cursor line doesn't show through its
+                  transparent "?" (sized to the icon, so it doesn't break the line). */}
+              <InfoButton topic="clinvar-variant-categories" iconBackgroundColor="#fafafa" />
             </div>
           </ControlRow>
           <ControlRow>
@@ -219,13 +232,17 @@ const ClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) 
             </Button>
           </ControlRow>
           <FilterRow>
-            <Checkbox
-              id="clinvar-track-in-gnomad"
-              label="Only show ClinVar variants that are in gnomAD"
-              checked={showOnlyGnomad}
-              onChange={setShowOnlyGnomad}
-            />
-            <label htmlFor="star-filtering">
+            {/* Opaque backdrops so the cursor line is masked behind the text
+                controls (it still shows in the gap between them). */}
+            <span style={{ background: '#fafafa' }}>
+              <Checkbox
+                id="clinvar-track-in-gnomad"
+                label="Only show ClinVar variants that are in gnomAD"
+                checked={showOnlyGnomad}
+                onChange={setShowOnlyGnomad}
+              />
+            </span>
+            <label htmlFor="star-filtering" style={{ background: '#fafafa' }}>
               Filter by{' '}
               <ExternalLink href="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/">
                 review status

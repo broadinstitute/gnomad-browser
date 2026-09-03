@@ -11,6 +11,7 @@ import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import StatusMessage from '../StatusMessage'
+import { SynchronizedCursor } from '../CursorSync'
 import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
@@ -81,13 +82,26 @@ type OwnProps = {
     start: number
     stop: number
   }
+  cursorClick?: { position: number } | null
+  /** When true, the cross-track cursor line extends through the ClinVar track. */
+  showCursor?: boolean
+  /** The cursor toggle control, rendered under the gnomAD variants heading. */
+  cursorToggle?: React.ReactNode
 }
 
 // @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
 type Props = OwnProps & typeof MitochondrialVariantsInGene.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'MitochondrialVariantsInGene' implicitly has type ... Remove this comment to see the full error message
-const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Props) => {
+const MitochondrialVariantsInGene = ({
+  datasetId,
+  gene,
+  zoomRegion,
+  cursorClick,
+  showCursor,
+  cursorToggle,
+  ...rest
+}: Props) => {
   if (!hasMitochondrialVariants(datasetId)) {
     return (
       <StatusMessage>
@@ -130,10 +144,25 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: P
           /* eslint-enable no-param-reassign */
         })
 
-        return (
+        // Compose the parent-supplied trackWrapper so it wraps both the ClinVar
+        // track and the gnomAD mitochondrial tracks together (keeping the variant
+        // table outside). When no trackWrapper is provided, ClinVar tracks render
+        // inline and each section keeps its own cursor.
+        const clinvarTracksContent = (
           <>
             <TrackPageSection>
-              <h2>ClinVar variants</h2>
+              {/* inline-block + page-colored background masks the cross-track cursor
+                  line behind the heading text only, so the line stays continuous. */}
+              <h2
+                style={{
+                  display: 'inline-block',
+                  position: 'relative',
+                  zIndex: 1,
+                  background: '#fafafa',
+                }}
+              >
+                ClinVar variants
+              </h2>
             </TrackPageSection>
             {data.gene.clinvar_variants.length > 0 ? (
               <>
@@ -143,13 +172,39 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: P
                   variants={filterVariantsInZoomRegion(data.gene.clinvar_variants, zoomRegion)}
                 />
                 <TrackPageSection as="p" style={{ margin: 0 }}>
-                  Data displayed here is from ClinVar&apos;s{' '}
-                  {formatClinvarDate(data.meta.clinvar_release_date)} release.
+                  {/* Mask only the note text (the section has wide padding, so
+                      masking it would interrupt the line far past the text). */}
+                  <span style={{ position: 'relative', zIndex: 1, background: '#fafafa' }}>
+                    Data displayed here is from ClinVar&apos;s{' '}
+                    {formatClinvarDate(data.meta.clinvar_release_date)} release.
+                  </span>
                 </TrackPageSection>
               </>
             ) : (
               <TrackPageSection as="p">No ClinVar variants found in this gene.</TrackPageSection>
             )}
+          </>
+        )
+
+        // The mito variant track always carries the cursor; the toggle controls
+        // whether the line extends to ClinVar (and the feature tracks).
+        const renderMitoCursor = (mitochondrialTracks: React.ReactNode) => (
+          <SynchronizedCursor enabled>{mitochondrialTracks}</SynchronizedCursor>
+        )
+
+        // The heading + toggle share the cursor only when extended, so the line
+        // stays off the heading (and the whitespace above the track) when off.
+        const renderMitoHeader = (mitochondrialHeader: React.ReactNode) => (
+          <SynchronizedCursor enabled={Boolean(showCursor)}>
+            {mitochondrialHeader}
+          </SynchronizedCursor>
+        )
+
+        return (
+          <>
+            <SynchronizedCursor enabled={Boolean(showCursor)}>
+              {clinvarTracksContent}
+            </SynchronizedCursor>
 
             <MitochondrialVariants
               {...rest}
@@ -164,6 +219,11 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: P
                 ),
                 zoomRegion
               )}
+              wrapInCursor={false}
+              trackWrapper={renderMitoCursor}
+              headerWrapper={renderMitoHeader}
+              externalCursorClick={cursorClick}
+              headerControl={cursorToggle}
             />
           </>
         )
