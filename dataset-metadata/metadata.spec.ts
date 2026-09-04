@@ -1,5 +1,11 @@
 import { test, expect } from '@jest/globals'
-import { DatasetId, ReferenceGenome, referenceGenome } from './metadata'
+import {
+  DatasetId,
+  ReferenceGenome,
+  allDatasetIds,
+  hasAlleleNumber,
+  referenceGenome,
+} from './metadata'
 import { forAllDatasets } from '../tests/__helpers__/datasets'
 
 const expectedReferenceGenome: Record<DatasetId, ReferenceGenome> = {
@@ -28,4 +34,12 @@ forAllDatasets('referenceGenome(%s)', (datasetId) => {
   const expectedResult = expectedReferenceGenome[datasetId]
   test(`${datasetId} uses reference genome ${expectedResult}`, () =>
     expect(referenceGenome(datasetId)).toEqual(expectedResult))
+})
+
+// Allele number is what the coverage track's call rate metric is drawn from,
+// and it is a function of which samples are in the callset. A subset showing
+// the full release's call rate would be showing the wrong number, so pin the
+// list rather than trusting each record's flag to have been set by hand.
+test('only the full gnomAD v4.1 callset has an allele number release', () => {
+  expect(allDatasetIds.filter(hasAlleleNumber)).toEqual(['gnomad_r4'])
 })
