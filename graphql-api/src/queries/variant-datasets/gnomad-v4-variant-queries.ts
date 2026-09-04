@@ -17,7 +17,16 @@ import { getFlagsForContext } from './shared/flags'
 import { getConsequenceForContext } from './shared/transcriptConsequence'
 import largeGenes from '../helpers/large-genes'
 
-const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants-2026-03-25--21-20'
+const GNOMAD_V4_VARIANT_INDEX = 'gnomad_v4_variants'
+const IN_SILICO_PREDICTOR_IDS = [
+  'cadd',
+  'revel_max',
+  'spliceai_ds_max',
+  'pangolin_largest_ds',
+  'phylop',
+  'sift_max',
+  'polyphen_max',
+]
 
 type Subset = 'all' | 'non_ukb'
 
@@ -258,34 +267,22 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
 // ================================================================================================
 
 const createInSilicoPredictorsList = (variant: any) => {
-  const inSilicoPredictorIds = [
-    'cadd',
-    'revel_max',
-    'spliceai_ds_max',
-    'pangolin_largest_ds',
-    'phylop',
-    'sift_max',
-    'polyphen_max',
-  ]
-
-  const inSilicoPredictorsList = inSilicoPredictorIds
-    .map((id) => {
-      if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
-        const name: string = id
-        if (id === 'cadd') {
-          return variant.in_silico_predictors.cadd.phred
-            ? {
-                id: name,
-                value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
-                flags: [],
-              }
-            : null
-        }
-        return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
+  const inSilicoPredictorsList = IN_SILICO_PREDICTOR_IDS.map((id) => {
+    if (variant.in_silico_predictors[id] || variant.in_silico_predictors[id] === 0) {
+      const name: string = id
+      if (id === 'cadd') {
+        return variant.in_silico_predictors.cadd.phred
+          ? {
+              id: name,
+              value: variant.in_silico_predictors.cadd.phred.toPrecision(3),
+              flags: [],
+            }
+          : null
       }
-      return null
-    })
-    .filter((item) => item)
+      return { id: name, value: variant.in_silico_predictors[id].toPrecision(3), flags: [] }
+    }
+    return null
+  }).filter((item) => item)
 
   return inSilicoPredictorsList
 }
@@ -555,16 +552,14 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
     ])
   )
 
-  const variantsWithLofCurations = variants.map((variant: any) => ({
-    ...variant,
-    lof_curation: variant.transcript_consequence
+  for (const variant of variants) {
+    variant.lof_curation = variant.transcript_consequence
       ? lofCurationsByVariantAndGene
           .get(variant.variant_id)
           ?.get(variant.transcript_consequence.gene_id)
-      : undefined,
-  }))
-
-  return variantsWithLofCurations
+      : undefined
+  }
+  return variants
 }
 
 // ================================================================================================

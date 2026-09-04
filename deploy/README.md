@@ -12,9 +12,7 @@
 
   To allow pushing images to GCR, register `gcloud` as a Docker credential helper with `gcloud auth configure-docker`.
 
-- Python dependencies
-
-  `pip install -r deploy/deployctl/requirements.txt`
+- Python requirements are managed by the root of the project's `pyproject.toml` and `uv`.
 
 ## Configuration
 

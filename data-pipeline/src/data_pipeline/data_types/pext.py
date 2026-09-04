@@ -99,7 +99,7 @@ def prepare_base_level_pext(base_level_pext_path):
         **{
             renamed: hl.if_else(hl.is_missing(ds[original]) | hl.is_nan(ds[original]), hl.float(0), ds[original])
             for original, renamed in TISSUE_NAME_MAP.items()
-        }
+        },
     )
 
     ds = ds.order_by(ds.gene_id, hl.asc(ds.pos)).drop("locus")

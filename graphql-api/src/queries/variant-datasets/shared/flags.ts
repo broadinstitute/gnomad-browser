@@ -5,6 +5,7 @@ const LOF_CONSEQUENCE_TERMS = new Set([
   'stop_gained',
   'frameshift_variant',
 ])
+const REGIONAL_FLAGS = ['par', 'segdup', 'lcr']
 
 const isLofOnNonCodingTranscript = (transcriptConsequence: any) =>
   LOF_CONSEQUENCE_TERMS.has(transcriptConsequence.major_consequence) && !transcriptConsequence.lof
@@ -132,7 +133,7 @@ export const getFlagsForContext = (context: any, variant: any) => {
   const baseExomeFlags = variant.exome?.flags || []
   const baseGenomeFlags = variant.genome?.flags || []
 
-  const regionalFlags = ['par', 'segdup', 'lcr'].filter(
+  const regionalFlags = REGIONAL_FLAGS.filter(
     (regionalFlag) =>
       baseExomeFlags.includes(regionalFlag) || baseGenomeFlags.includes(regionalFlag)
   )

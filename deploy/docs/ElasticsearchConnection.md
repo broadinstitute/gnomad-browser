@@ -1,5 +1,7 @@
 # Connecting to Elasticsearch
 
+- If not at the Broad, VPN to the Broad's network
+
 - Forward local port to Elasticsearch service.
 
   ```
@@ -19,6 +21,28 @@
   ```
   curl -u "elastic:$ELASTICSEARCH_PASSWORD" http://localhost:9200/_cluster/health
   ```
+
+## Using the Kibana UI to connect to Elasticsearch
+
+- If not at the Broad, VPN to the Broad's network
+
+- Forward local port to Kibana service.
+
+  ```
+  kubectl port-forward service/gnomad-kb-http 5601:5601
+  ```
+
+- Navigate to `https://localhost:5601`
+
+  - Note the `https` in the URL, even when using localhost this is required
+
+  - Some browsers (e.g. Chromium based ones) warn about an unsecure connection, bypass this as it's our own service
+
+- Log in with the elastic username/password
+
+  - Username: `elastic`
+
+  - Password: obtained from the K8S secret: `ELASTICSEARCH_PASSWORD=$(./deployctl elasticsearch get-password)`
 
 ## Connecting to Elasticsearch from a Dataproc cluster
 

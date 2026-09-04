@@ -69,26 +69,28 @@ def compressed_variant_id(locus: hl.expr.LocusExpression, alleles: hl.expr.Array
     return hl.rbind(
         hl.len(alleles[0]),
         hl.len(alleles[1]),
-        lambda ref_len, alt_len: hl.case()
-        .when(
-            ref_len > alt_len,
-            normalized_contig(locus.contig)
-            + "-"
-            + hl.str(locus.position)
-            + "d"
-            + hl.str(ref_len - alt_len)
-            + "-"
-            + alleles[1],
-        )
-        .when(
-            ref_len < alt_len,
-            normalized_contig(locus.contig)
-            + "-"
-            + hl.str(locus.position)
-            + "i"
-            + hl.str(alt_len - ref_len)
-            + "-"
-            + _encode_allele(alleles[1]),
-        )
-        .default(variant_id(locus, alleles)),
+        lambda ref_len, alt_len: (
+            hl.case()
+            .when(
+                ref_len > alt_len,
+                normalized_contig(locus.contig)
+                + "-"
+                + hl.str(locus.position)
+                + "d"
+                + hl.str(ref_len - alt_len)
+                + "-"
+                + alleles[1],
+            )
+            .when(
+                ref_len < alt_len,
+                normalized_contig(locus.contig)
+                + "-"
+                + hl.str(locus.position)
+                + "i"
+                + hl.str(alt_len - ref_len)
+                + "-"
+                + _encode_allele(alleles[1]),
+            )
+            .default(variant_id(locus, alleles))
+        ),
     )

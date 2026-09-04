@@ -112,12 +112,13 @@ exports[`Publications Page has no unexpected changes 1`] = `
   <p>
     There is no need to include us as authors on your manuscript, unless we contributed specific advice or analysis for your work.
   </p>
+  <br />
   <p>
     Current flagship paper (
     <b>
-      v3
+      v4
     </b>
-    ):
+     Preprint):
     <ul
       className="c5"
     >
@@ -127,6 +128,69 @@ exports[`Publications Page has no unexpected changes 1`] = `
         <cite
           className="c7"
         >
+          Guez, J.*, Goodrich, J. K.*, Moldovan, M. A., Chao, K. R., Kar, P., Panchal, R., Wilson, M. W., Laricchia, K. M., Rohlicek, G., Biba, D., Marten, D., He, Q., Darnowsky, P. W., Grant, R., Weisburd, B., Baxter, S. M., Nadeau, J., Lu, W., Jahl, S., Parsa, S., Lamane, A., DiTroia, S., Fu, J., Zhao, X., Alarmani, E., Tolonen, C., Novod, S., Bryant, S., Stevens, C., Chapman, S. B., Cusick, C., Vittal, C., Gauthier, L. D., Goldstein, J. I., Goldstein, D., King, D., Poterba, T., Tiao, G., gnomAD Project Consortium, Tranchero, M., Lotter, W., MacArthur, D. G., Brand, H., Seplyarskiy, V., Koch, E., Talkowski, M. E., Solomonson, M., Neale, B. M., O'Donnell-Luria, A., Finucane, H. K., Sunyaev, S. R., Daly, M. J., Rehm, H. L., Samocha, K. E.†, Karczewski, K. J.†
+           
+           
+          Integrating 730,947 exome sequences with clinical literature improves gene discovery.
+           
+          <em>
+            medRxiv [Preprint]
+          </em>
+          . Mar 25,  (2026).
+          <span>
+            <a
+              className="c4"
+              href="https://doi.org/10.64898/2026.03.23.26349081"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+               
+              https://doi.org/10.64898/2026.03.23.26349081
+            </a>
+             
+          </span>
+          PMID: 
+          41929314
+          <span>
+             PMCID: 
+            PMC13042128
+          </span>
+          <div>
+            <a
+              className="c4"
+              href="https://www.medrxiv.org/highwire/citation/1182884/reference-manager"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Download citation
+            </a>
+             
+          </div>
+        </cite>
+      </li>
+      * contributed equally
+      <br />
+      † contributed equally
+    </ul>
+  </p>
+   
+  <br />
+  <p>
+    Previous flagship papers:
+    <ul
+      className="c5"
+    >
+      <li
+        className="c6"
+      >
+        <cite
+          className="c7"
+        >
+          <b>
+            v3
+          </b>
+          :
+           
           Chen, S.*, Francioli, L. C.*, Goodrich, J. K., Collins, R. L., Kanai, M., Wang, Q., Alföldi, J., Watts, N. A., Vittal, C., Gauthier, L. D., Poterba, T., Wilson, M. W., Tarasova, Y., Phu, W., Grant, R., Yohannes, M. T., Koenig, Z., Farjoun, Y., Banks, E., Donnelly, S., Gabriel, S., Gupta, N., Ferriera, S., Tolonen, C., Novod, S., Bergelson, L., Roazen, D., Ruano-Rubio, V., Covarrubias, M., Llanwarne, C., Petrillo, N., Wade, G., Jeandet, T., Munshi, R., Tibbetts, K., Genome Aggregation Database (gnomAD) Consortium, O’Donnell-Luria, A., Solomonson, M., Seed, C., Martin, A. R., Talkowski, M. E., Rehm, H. L., Daly, M. J., Tiao, G., Neale, B. M.†, MacArthur, D. G.† & Karczewski, K. J.
            
            
@@ -167,10 +231,6 @@ exports[`Publications Page has no unexpected changes 1`] = `
       <br />
       † contributed equally
     </ul>
-  </p>
-   
-  <p>
-    Previous flagship papers:
     <ul
       className="c5"
     >
@@ -271,6 +331,7 @@ exports[`Publications Page has no unexpected changes 1`] = `
       * contributed equally
     </ul>
   </p>
+  <br />
   <p>
     Remaining publications:
     <ul

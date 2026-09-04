@@ -171,23 +171,27 @@ export const _fetchCoverageForGene = async (esClient: any, datasetId: any, gene:
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
 
-  const exomeCoverage = exomeCoverageIndex
-    ? await fetchCoverage(esClient, {
+  const exomeCoveragePromise = exomeCoverageIndex
+    ? fetchCoverage(esClient, {
         index: exomeCoverageIndex,
         contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
         regions: mergedExons,
         bucketSize,
       })
     : []
-
-  const genomeCoverage = genomeCoverageIndex
-    ? await fetchCoverage(esClient, {
+  const genomeCoveragePromise = genomeCoverageIndex
+    ? fetchCoverage(esClient, {
         index: genomeCoverageIndex,
         contig: gene.reference_genome === 'GRCh38' ? `chr${gene.chrom}` : gene.chrom,
         regions: mergedExons,
         bucketSize,
       })
     : []
+
+  const [exomeCoverage, genomeCoverage] = await Promise.all([
+    exomeCoveragePromise,
+    genomeCoveragePromise,
+  ])
 
   return {
     exome: exomeCoverage,
@@ -223,8 +227,8 @@ const _fetchCoverageForTranscript = async (esClient: any, datasetId: any, transc
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
 
-  const exomeCoverage = exomeCoverageIndex
-    ? await fetchCoverage(esClient, {
+  const exomeCoveragePromise = exomeCoverageIndex
+    ? fetchCoverage(esClient, {
         index: exomeCoverageIndex,
         contig:
           transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,
@@ -232,8 +236,7 @@ const _fetchCoverageForTranscript = async (esClient: any, datasetId: any, transc
         bucketSize,
       })
     : []
-
-  const genomeCoverage = genomeCoverageIndex
+  const genomeCoveragePromise = genomeCoverageIndex
     ? await fetchCoverage(esClient, {
         index: genomeCoverageIndex,
         contig:
@@ -242,6 +245,11 @@ const _fetchCoverageForTranscript = async (esClient: any, datasetId: any, transc
         bucketSize,
       })
     : []
+
+  const [exomeCoverage, genomeCoverage] = await Promise.all([
+    exomeCoveragePromise,
+    genomeCoveragePromise,
+  ])
 
   return {
     exome: exomeCoverage,

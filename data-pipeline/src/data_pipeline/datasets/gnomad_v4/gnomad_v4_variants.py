@@ -51,8 +51,7 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
     variants_by_locus = variants_by_locus.annotate(
         variant_ids=hl.struct(
             **{
-                subset
-                or "all": variants_by_locus.variants.filter(subset_filter(subset or "all")).map(
+                subset or "all": variants_by_locus.variants.filter(subset_filter(subset or "all")).map(
                     lambda variant: variant.variant_id
                 )
                 for subset in subsets
@@ -91,8 +90,7 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
         gnomad=hl.struct(
             freq=hl.struct(
                 **{
-                    subset
-                    or "all": hl.struct(
+                    subset or "all": hl.struct(
                         ac=freq(ds, subset=subset).AC,
                         ac_raw=freq(ds, subset=subset, raw=True).AC,
                         an=freq(ds, subset=subset).AN,
@@ -133,8 +131,7 @@ def prepare_gnomad_v4_variants_helper(input_path: str, exomes_or_genomes: str):
         gnomad=ds.gnomad.annotate(
             freq=ds.gnomad.freq.annotate(
                 **{
-                    subset
-                    or "all": ds.gnomad.freq[subset or "all"].annotate(
+                    subset or "all": ds.gnomad.freq[subset or "all"].annotate(
                         ancestry_groups=hl.if_else(
                             ds.gnomad.freq[subset or "all"].ac_raw == 0,
                             hl.empty_array(ds.gnomad.freq[subset or "all"].ancestry_groups.dtype.element_type),

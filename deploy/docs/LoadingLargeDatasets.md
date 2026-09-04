@@ -53,10 +53,28 @@ First, Look at the total size of all indices in Elasticsearch to see how much st
 curl -u "elastic:$ELASTICSEARCH_PASSWORD" 'http://localhost:9200/_cat/indices?v'
 ```
 
+Or this:
+
+```
+curl -u "elastic:$ELASTICSEARCH_PASSWORD" -X GET "http://localhost:9200/_cluster/stats?human&pretty&filter_path=indices.store.size"
+```
+
 Next, see how much total space is available on the persistent data nodes. Add up the values in the `disk.avail` column output from the [cat allocation API](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/cat-allocation.html)
 
 ```
 curl -u "elastic:$ELASTICSEARCH_PASSWORD" 'http://localhost:9200/_cat/allocation/gnomad-es-data*?v'
+```
+
+Available space left:
+
+```
+curl -s -u "elastic:$ELASTICSEARCH_PASSWORD" 'http://localhost:9200/_cat/allocation/gnomad-es-data*?h=disk.avail&bytes=b' | awk '{sum += $1} END {printf "%.2f TB available\n", sum / 1024 / 1024 / 1024 / 1024}'
+```
+
+Total space
+
+```
+curl -s -u "elastic:$ELASTICSEARCH_PASSWORD" 'http://localhost:9200/_cat/allocation/gnomad-es-data*?h=disk.total&bytes=b' | awk '{sum += $1} END {printf "%.2f TB available\n", sum / 1024 / 1024 / 1024 / 1024}'
 ```
 
 Depending on how much additional space you need, you can take one of three options:

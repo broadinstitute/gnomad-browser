@@ -50,8 +50,7 @@ def prepare_gnomad_v3_variants(path):
     variants_by_locus = variants_by_locus.annotate(
         variant_ids=hl.struct(
             **{
-                subset
-                or "all": variants_by_locus.variants.filter(subset_filter(subset or "all")).map(
+                subset or "all": variants_by_locus.variants.filter(subset_filter(subset or "all")).map(
                     lambda variant: variant.variant_id
                 )
                 for subset in subsets
@@ -88,8 +87,7 @@ def prepare_gnomad_v3_variants(path):
         genome=hl.struct(
             freq=hl.struct(
                 **{
-                    subset
-                    or "all": hl.struct(
+                    subset or "all": hl.struct(
                         ac=freq(ds, subset=subset).AC,
                         ac_raw=freq(ds, subset=subset, raw=True).AC,
                         an=freq(ds, subset=subset).AN,
@@ -130,8 +128,7 @@ def prepare_gnomad_v3_variants(path):
         genome=ds.genome.annotate(
             freq=ds.genome.freq.annotate(
                 **{
-                    subset
-                    or "all": ds.genome.freq[subset or "all"].annotate(
+                    subset or "all": ds.genome.freq[subset or "all"].annotate(
                         populations=hl.if_else(
                             ds.genome.freq[subset or "all"].ac_raw == 0,
                             hl.empty_array(ds.genome.freq[subset or "all"].populations.dtype.element_type),

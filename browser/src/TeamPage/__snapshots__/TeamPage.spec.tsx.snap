@@ -230,7 +230,38 @@ exports[`Team Page has no unexpected changes 1`] = `
                 className="c13"
               >
                  
-                (MPI) is an Institute Member of the Broad Institute, co-director of the Broad’s Program in Medical and Population Genetics and the chair of the Analytic and Translational Genetics Unit (ATGU) at Massachusetts General Hospital. He has developed many genomic analysis tools and has extensive leadership in large-scale data science and genomic sequencing consortia. He is a PI of gnomAD, co-chair of the gnomAD council and is responsible for jointly overseeing all activities.
+                (MPI) is an Institute Member of the Broad Institute, co-director of the Broad’s Program in Medical and Population Genetics and the chair of the Analytic and Translational Genetics Unit (ATGU) at Massachusetts General Hospital. He has developed many genomic analysis tools and has extensive leadership in large-scale data science and genomic sequencing consortia. He is a PI of gnomAD, co-chair of the gnomAD council, and as a gnomAD Co-Director, holds shared responsibity for overseeing all activities.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c7"
+        >
+          <div
+            className="c8"
+          >
+            <div
+              className="c9"
+            >
+              <img
+                alt="Headshot of Konrad Karczewski, Ph.D.,"
+                className="c10"
+              />
+            </div>
+            <div
+              className="c11"
+            >
+              <span
+                className="c12"
+              >
+                Konrad Karczewski, Ph.D.,
+              </span>
+              <span
+                className="c13"
+              >
+                 
+                (co-I) is a Senior Computational Biologist in the Program in Medical and Population Genetics at the Broad Institute and Instructor at Massachusetts General Hospital. He has extensive experience in handling and analyzing the world’s largest datasets: he has been involved in processing and analysis of ExAC since its inception, designed and built the browser frameworks, and has led the analytic activities of the gnomAD v2 and v3 datasets. He contributes expertise on scalable data analysis as well as variant annotation methods. As a gnomAD Co-Director, he holds shared responsibity for overseeing all activities.
               </span>
             </div>
           </div>
@@ -261,7 +292,38 @@ exports[`Team Page has no unexpected changes 1`] = `
                 className="c13"
               >
                  
-                (MPI) is Co-Director of Medical and Population Genetics at the Broad Institute, Chief Genomics Officer at Massachusetts General Hospital (MGH) and Professor of Pathology at Harvard Medical School (HMS). She brings long-standing experience in genomic resource management, clinical sequencing, variant interpretation and gene discovery for rare disease. She is a PI of gnomAD, co-chair of the gnomAD council and is responsible for jointly overseeing all activities.
+                (MPI) is Co-Director of Medical and Population Genetics at the Broad Institute, Chief Genomics Officer at Massachusetts General Hospital (MGH) and Professor of Pathology at Harvard Medical School (HMS). She brings long-standing experience in genomic resource management, clinical sequencing, variant interpretation and gene discovery for rare disease. She is a PI of gnomAD, co-chair of the gnomAD council, and as a gnomAD Co-Director, holds shared responsibility for overseeing all activities.
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c7"
+        >
+          <div
+            className="c8"
+          >
+            <div
+              className="c9"
+            >
+              <img
+                alt="Headshot of Kaitlin Samocha, Ph.D.,"
+                className="c10"
+              />
+            </div>
+            <div
+              className="c11"
+            >
+              <span
+                className="c12"
+              >
+                Kaitlin Samocha, Ph.D.,
+              </span>
+              <span
+                className="c13"
+              >
+                 
+                (co-I) is an Assistant Professor in the Center for Genomic Medicine of Massachusetts General Hospital and an Associated Scientist at the Broad Institute. The focus of her research career has been on developing methods and statistical tools to improve interpretation of genomic variation, particularly rare variation. She was involved in early stages of the creation and analysis of both ExAC and gnomAD, and contributes knowledge about modeling mutation rates and constraint metrics. As a gnomAD Co-Director, she holds shared responsibility for overseeing all activities.
               </span>
             </div>
           </div>
@@ -378,37 +440,6 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c9"
             >
               <img
-                alt="Headshot of Konrad Karczewski, Ph.D.,"
-                className="c10"
-              />
-            </div>
-            <div
-              className="c11"
-            >
-              <span
-                className="c12"
-              >
-                Konrad Karczewski, Ph.D.,
-              </span>
-              <span
-                className="c13"
-              >
-                 
-                (co-I) is a Senior Computational Biologist in the Program in Medical and Population Genetics at the Broad Institute and Instructor at Massachusetts General Hospital. He has extensive experience in handling and analyzing the world’s largest datasets: he has been involved in processing and analysis of ExAC since its inception, designed and built the browser frameworks, and has led the analytic activities of the gnomAD v2 and v3 datasets. He contributes expertise on scalable data analysis as well as variant annotation methods.
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          className="c7"
-        >
-          <div
-            className="c8"
-          >
-            <div
-              className="c9"
-            >
-              <img
                 alt="Headshot of Daniel G. MacArthur, Ph.D.,"
                 className="c10"
               />
@@ -488,37 +519,6 @@ exports[`Team Page has no unexpected changes 1`] = `
               >
                  
                 (co-I) is an Associate Member of the Broad Institute and Assistant Professor and Physician in the Division of Genetics and Genomics at Boston Children’s Hospital, Harvard Medical School. Her research focuses on rare disease variant and gene discovery. She has been a member of the gnomAD analysis team since January 2015, providing guidance in the development of gnomAD and browser features for clinical variant interpretation and use in medical genetics.
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          className="c7"
-        >
-          <div
-            className="c8"
-          >
-            <div
-              className="c9"
-            >
-              <img
-                alt="Headshot of Kaitlin Samocha, Ph.D.,"
-                className="c10"
-              />
-            </div>
-            <div
-              className="c11"
-            >
-              <span
-                className="c12"
-              >
-                Kaitlin Samocha, Ph.D.,
-              </span>
-              <span
-                className="c13"
-              >
-                 
-                (co-I) is an Assistant Professor in the Center for Genomic Medicine of Massachusetts General Hospital and an Associated Scientist at the Broad Institute. The focus of her research career has been on developing methods and statistical tools to improve interpretation of genomic variation, particularly rare variation. She was involved in early stages of the creation and analysis of both ExAC and gnomAD, and contributes knowledge about modeling mutation rates and constraint metrics.
               </span>
             </div>
           </div>
@@ -956,36 +956,6 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c9"
             >
               <img
-                alt="Headshot of Phil Darnowsky"
-                className="c10"
-              />
-            </div>
-            <div
-              className="c11"
-            >
-              <span
-                className="c12"
-              >
-                Phil Darnowsky
-              </span>
-              <span
-                className="c13"
-              >
-                 
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          className="c7"
-        >
-          <div
-            className="c8"
-          >
-            <div
-              className="c9"
-            >
-              <img
                 alt="Headshot of Josh Nadeau"
                 className="c10"
               />
@@ -1063,12 +1033,12 @@ exports[`Team Page has no unexpected changes 1`] = `
               <span
                 className="c13"
               >
-                , in addition to being a member of the
+                , in addition to being a
                 <a
                   className="c14"
-                  href="#steering-committee"
+                  href="#co-directors"
                 >
-                   gnomAD Steering Committee
+                   co-director of gnomAD
                 </a>
                 , 
               </span>
@@ -1445,23 +1415,13 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c17"
               dangerouslySetInnerHTML={
                 {
-                  "__html": "- **Eric Banks**
+                  "__html": "- **Lee Lichtenstein**
 - Sam Bryant
-- Louis Bergelson
 - Kristian Cibulskis
 - Miguel Covarrubias
-- Laura Gauthier
-- Trevyn Langsford
 - Christopher Llanwarne
-- Ruchi Munshi
 - Sam Novod
-- Nikelle Petrillo
-- David Roazen
-- Valentin Ruano-Rubio
-- Megan Shand
 - Jonn Smith
-- Kathleen Tibbetts
-- Charlotte Tolonen
 ",
                 }
               }
@@ -1477,8 +1437,7 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c17"
               dangerouslySetInnerHTML={
                 {
-                  "__html": "- **Stacey Gabriel**
-- Kristen Connolly
+                  "__html": "- Stacey Gabriel
 - Steven Ferriera
 ",
                 }
@@ -1527,18 +1486,13 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c17"
               dangerouslySetInnerHTML={
                 {
-                  "__html": "- **Sarah E. Calvo**
-- **Nicole Lake**
-- Eric Banks
+                  "__html": "- Sarah E. Calvo
+- Nicole Lake
 - David Benjamin
-- James Emery
 - Kiran Garimella
-- Laura Gauthier
-- Andrea Haessly
 - Monkol Lek
 - Vamsi K. Mootha
 - Sebastian Schoenherr
-- Megan Shand
 ",
                 }
               }
@@ -1557,40 +1511,32 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c17"
               dangerouslySetInnerHTML={
                 {
-                  "__html": "- Ryan Collins
-- Siwei Chen
-- Laura Gauthier
-- Sanna Gudmundsson
-- Dan King
-- Zan Koenig
-- Alicia Martin
+                  "__html": "- Jeremy Guez
+- Wenhan Lu
+- Jialan Ma
+- Ruchit Panchal
 - Patrick Schultz
-- Eleanor Seaby
 - Moriel Singer-Berk
-- James Ware
-- Nicola Whiffin
-- Mary Yohannes
+- Chris Vittal
 ",
                 }
               }
             />
             <br />
             <h3
-              id="ethics-contributors"
+              id="compliance-contributors"
             >
-              Ethics
+              Compliance
             </h3>
             <div
-              aria-labelledby="ethics-contributors"
+              aria-labelledby="compliance-contributors"
               className="c17"
               dangerouslySetInnerHTML={
                 {
-                  "__html": "- **Stacey Donnelly**
-- Kelly Flannagan
-- Namrata Gupta
-- Emily Lipscomb
-- Andrea Saltzman
-- Molly Schleicher
+                  "__html": "- **Susie Weisenburger**
+- Jack Shultz
+- Felecia Cerrato
+- Caroline Cusick
 ",
                 }
               }
@@ -1639,36 +1585,76 @@ exports[`Team Page has no unexpected changes 1`] = `
               className="c17"
               dangerouslySetInnerHTML={
                 {
-                  "__html": "- Jessica Alföldi (operations)
-- Irina Armean (production and analysis)
-- Sinéad Chapman (operations)
-- Beryl Cummings (production and analysis)
-- Eleina England (production and analysis)
-- Emily Evangelista (production and analysis)
-- Yossi Farjoun (data generation)
-- Laurent Francioli (production and analysis)
-- Jeff Gentry (data generation)
-- Qin He (production)
-- Thibault Jeandet (data generation)
-- Steve Jahl (browser)
-- Diane Kaplan (data generation)
-- Monkol Lek (production and analysis)
-- Eric Minikel (analysis)
-- William Phu (production and analysis)
-- Tim Poterba (production/Hail)
-- Dan Rhodes (production and analysis)
-- Nareh Sahakian (data generation)
-- Cotton Seed (production/Hail)
-- Rachel Son (production and analysis)
-- Jose Soto (data generation contributor)
-- Kat Tarasova (operations)
-- Grace Tiao (product owner, production and analysis)
-- Chris Vittal (production/Hail)
-- Gordon Wade (data generation, structural variants)
-- Arcturus Wang (production/Hail)
-- Qingbo Wang (production and analysis)
-- Lauren Witzgall (operations)
-- Nick Watts (browser)
+                  "__html": "- Elissa Alarmani (Browser)
+- Jessica Alföldi (Operations)
+- Irina Armean (Production and analysis)
+- Eric Banks (Data Generation, Structural variants / Copy number variants, Mitochondrial variants, Production and analysis)
+- Louis Bergelson (Data generation)
+- Ted Brookings (Structural variants / Copy number variants)
+- Sinéad Chapman (Operations)
+- Siwei Chen (Production and analysis)
+- Ryan Collins (Structural variants / Copy number variants, Production and analysis)
+- Kristen Connolly (Genomic platform)
+- Beryl Cummings (Production and analysis)
+- Stacey Donnelly (Compliance)
+- James Emery (Mitochondrial variants)
+- Eleina England (Production and analysis)
+- Emily Evangelista (Production and analysis)
+- Yossi Farjoun (Data generation)
+- Kelly Flannagan (Compliance)
+- Laurent Francioli (Production and analysis)
+- Jack Fu (Structural variants / Copy number variants)
+- Laura Gauthier (Data Generation, Structural variants / Copy number variants, Mitochondrial variants, Production and analysis)
+- Jeff Gentry (Data generation)
+- Sanna Gudmundsson (Production and analysis)
+- Namrata Gupta (Compliance)
+- Andrea Haessly (Mitochondrial variants)
+- Qin He (Production and analysis)
+- Steve Jahl (Browser)
+- Thibault Jeandet (Data generation)
+- Diane Kaplan (Data generation)
+- Dan King (Production - Hail)
+- Zan Koenig (Production and analysis)
+- Trevyn Langsford (Data generation)
+- Sam Lee (Data generation)
+- Monkol Lek (Production and analysis)
+- Emily Lipscomb (Compliance)
+- Chelsea Lowther (Structural variants / Copy number variants)
+- Tom Lyons (Structural variants / Copy number variants)
+- Alicia Martin (Production and analysis)
+- Eric Minikel (Production and analysis)
+- Ruchi Munshi (Data generation)
+- Nikelle Petrillo (Data generation)
+- William Phu (Production and analysis)
+- Tim Poterba (Production - Hail)
+- Dan Rhodes (Production and analysis)
+- David Roazen (Data Generation)
+- Valentin Ruano-Rubio (Data Generation)
+- Nareh Sahakian (Data generation)
+- Andrea Saltzman (Compliance)
+- Molly Schleicher (Compliance)
+- Eleanor Seaby (Production and analysis)
+- Cotton Seed (Production - Hail)
+- Megan Shand (Data Generation, Mitochondrial variants)
+- Ted Sharpe (Structural variants / Copy number variants)
+- Moriel Singer-Berk (Production and analysis)
+- Rachel Son (Production and analysis)
+- Jose Soto (Data generation)
+- Kat Tarasova (Operations)
+- Grace Tiao (Product owner, Production and analysis)
+- Kathleen Tibbetts (Data generation)
+- Charlotte Tolonen (Data generation)
+- Grace VanNoy (Tandem repeats)
+- Chris Vittal (Production - Hail)
+- Gordon Wade (Data generation, Structural variants)
+- Arcturus Wang (Production - Hail)
+- Qingbo Wang (Production and analysis)
+- Harold Wang (Structural variants / Copy number variants)
+- James Ware (Production and analysis)
+- Nick Watts (Browser, Tandem repeats)
+- Nicola Whiffin (Production and analysis)
+- Lauren Witzgall (Operations)
+- Mary Yohannes (Production and analysis)
 ",
                 }
               }

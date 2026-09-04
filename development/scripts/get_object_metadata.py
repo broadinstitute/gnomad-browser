@@ -90,7 +90,7 @@ def main():
         sorted_filenames = sorted(
             aggregated_info.keys(),
             key=lambda x: (
-                (int(x.split(".")[5][3:]) if x.split(".")[5][3:].isdigit() else float("inf")),
+                (int(x.split(".")[6][3:]) if x.split(".")[6][3:].isdigit() else float("inf")),
                 x.split(".")[3],
             ),
         )
@@ -99,7 +99,7 @@ def main():
         print("[")
         for i, filename in enumerate(sorted_filenames):
             if not filename.endswith(".tbi:"):
-                line = f"    {{ chrom: '{filename.split('.')[5][3:]}', size: {json.dumps(aggregated_info[filename]['size'])}, md5: {json.dumps(aggregated_info[filename]['md5'])} }}"
+                line = f"    {{ chrom: '{filename.split('.')[6][3:]}', size: {json.dumps(aggregated_info[filename]['size'])}, md5: {json.dumps(aggregated_info[filename]['md5'])} }}"
                 print(line + "," if i < len(sorted_filenames) - 1 else line)
         print("]")
 

@@ -1,24 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { Link, PageHeading } from '@gnomad/ui'
 
-// JSON containing information for all members with bios and headshots
 import teamMembers from './TeamMembers.json'
 
 // use Webpack Context to dynamically import all headshots
 import headshotImages from './headshotLoader'
 
-// Members of the "Contributors" section
 import dataGenerationContributors from '../../about/contributors/data-generation.md'
 import productionAndAnalysisContributors from '../../about/contributors/production-and-analysis.md'
 import structuralVariantsContributors from '../../about/contributors/structural-variation.md'
 import mitochondrialVariantsContributors from '../../about/contributors/mitochondrial-variation.md'
 import broadGenomicsPlatformContributors from '../../about/contributors/broad-genomics-platform.md'
-import ethicsContributors from '../../about/contributors/ethics.md'
+import complianceContributors from '../../about/contributors/compliance.md'
 import tandemRepeatContributors from '../../about/contributors/tandem-repeats.md'
-
-// Members of the 'Alumni' Section
 import alumni from '../../about/contributors/alumni.md'
 
 import DocumentTitle from '../DocumentTitle'
@@ -56,24 +51,26 @@ const ResponsiveColumn = styled.div`
   }
 `
 
-type Member = {
+type TeamMember = {
   name: string
   bio: string
-  headshotSource: string
+  headshotSource?: string
   alsoOnCommittee?: boolean
+  alsoCoDirector?: boolean
 }
 
-const renderTeamMembers = (members: Member[]) => {
+const renderTeamMembers = (members: TeamMember[]) => {
   return (
     <TeamSectionList>
-      {members.map((member: Member) => {
+      {members.map((member) => {
         return (
           <TeamCard
             key={member.name}
-            title={member.name}
-            description={member.bio}
+            name={member.name}
+            bio={member.bio}
             headshotSource={member.headshotSource}
-            alsoOnCommitteeHuh={member.alsoOnCommittee}
+            alsoCoDirector={member.alsoCoDirector}
+            alsoOnCommittee={member.alsoOnCommittee}
           />
         )
       })}
@@ -81,16 +78,20 @@ const renderTeamMembers = (members: Member[]) => {
   )
 }
 
-// Component to be used for a TeamCard, only used on this page
-// @ts-expect-error
-const TeamCard = ({ title, description, headshotSource, alsoOnCommitteeHuh }) => {
+const TeamCard = ({
+  name,
+  bio,
+  headshotSource = 'blank_profile.jpg',
+  alsoCoDirector = false,
+  alsoOnCommittee = false,
+}: TeamMember) => {
   return (
     <TeamHeadshotAndDescription>
       <Row>
         <ImageColumn>
           {headshotSource && (
             <Headshot
-              alt={`Headshot of ${title}`}
+              alt={`Headshot of ${name}`}
               src={
                 // @ts-expect-error
                 headshotImages[headshotSource]
@@ -99,31 +100,25 @@ const TeamCard = ({ title, description, headshotSource, alsoOnCommitteeHuh }) =>
           )}
         </ImageColumn>
         <TextColumn>
-          <TextTitle>{title}</TextTitle>
-          {alsoOnCommitteeHuh && (
+          <TextTitle>{name}</TextTitle>
+          {alsoCoDirector && (
+            <TextBlurb>
+              , in addition to being a<Link href="#co-directors"> co-director of gnomAD</Link>
+              {', '}
+            </TextBlurb>
+          )}
+          {alsoOnCommittee && (
             <TextBlurb>
               , in addition to being a member of the
               <Link href="#steering-committee"> gnomAD Steering Committee</Link>
               {', '}
             </TextBlurb>
           )}
-          <TextBlurb> {description}</TextBlurb>
+          <TextBlurb> {bio}</TextBlurb>
         </TextColumn>
       </Row>
     </TeamHeadshotAndDescription>
   )
-}
-
-TeamCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  headshotSource: PropTypes.string,
-  alsoOnCommitteeHuh: PropTypes.bool,
-}
-
-TeamCard.defaultProps = {
-  headshotSource: 'blank_profile.jpg',
-  alsoOnCommitteeHuh: false,
 }
 
 const TeamHeadshotAndDescription = styled.div`
@@ -225,7 +220,6 @@ const TeamPage = () => {
           {renderTeamMembers(teamMembers.scientificAdvisoryBoard)}
         </TeamSection>
 
-        {/* Section for Staff */}
         <br />
         <TeamSection>
           <h2 id="gnomad-staff">Staff</h2>
@@ -249,7 +243,6 @@ const TeamPage = () => {
           {renderTeamMembers(teamMembers.operations)}
         </TeamSection>
 
-        {/* Section for Contributors */}
         <TeamSection>
           <h2 id="gnomad-contributors">Contributors</h2>
           <TeamSectionList>
@@ -287,10 +280,10 @@ const TeamPage = () => {
                   dangerouslySetInnerHTML={{ __html: productionAndAnalysisContributors.html }}
                 />
                 <br />
-                <h3 id="ethics-contributors">Ethics</h3>
+                <h3 id="compliance-contributors">Compliance</h3>
                 <Contributors
-                  aria-labelledby="ethics-contributors"
-                  dangerouslySetInnerHTML={{ __html: ethicsContributors.html }}
+                  aria-labelledby="compliance-contributors"
+                  dangerouslySetInnerHTML={{ __html: complianceContributors.html }}
                 />
                 <br />
                 <h3 id="tandem-repeats-contributors">Tandem Repeats</h3>
@@ -303,7 +296,6 @@ const TeamPage = () => {
           </TeamSectionList>
         </TeamSection>
 
-        {/* Section for Alumni */}
         <TeamSection>
           <h2 id="gnomad-alumni">Alumni</h2>
           <TeamSectionList>

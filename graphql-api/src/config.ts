@@ -33,7 +33,7 @@ const config: Record<string, any> = {
   REDIS_USE_SENTINEL: env.REDIS_USE_SENTINEL,
   CACHE_REQUEST_TIMEOUT: JSON.parse(env.CACHE_REQUEST_TIMEOUT || '15') * 1000,
   // Web server
-  PORT: JSON.parse(env.PORT || '8000'),
+  PORT: JSON.parse(env.PORT || '8010'),
   TRUST_PROXY: parseProxyConfig(env.TRUST_PROXY || 'false'),
   // Rate limiting
   MAX_CONCURRENT_ELASTICSEARCH_REQUESTS: JSON.parse(env.MAX_CONCURRENT_ES_REQUESTS || '100'),
@@ -48,6 +48,9 @@ const config: Record<string, any> = {
   JSON_CACHE_LARGE_GENES: env.JSON_CACHE_LARGE_GENES === 'true' || false,
   JSON_CACHE_COMPRESSION: env.JSON_CACHE_COMPRESSION === 'true' || false,
   REDIS_CACHE_PREFIX: env.REDIS_CACHE_PREFIX || '',
+
+  // GCP
+  GCP_PROJECT: env.GCP_PROJECT,
 }
 
 const requiredConfig = ['ELASTICSEARCH_URL']
