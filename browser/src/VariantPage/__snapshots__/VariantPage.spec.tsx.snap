@@ -1632,12 +1632,10 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -9064,12 +9062,10 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -16499,12 +16495,10 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -23934,12 +23928,10 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -31369,12 +31361,10 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -38804,12 +38794,10 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -45908,12 +45896,10 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -52310,12 +52296,10 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -59863,12 +59847,10 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -67416,12 +67398,10 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -74969,12 +74949,10 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}
@@ -82522,12 +82500,10 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
         <span
           className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
         >
-          <h2
-            className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-          >
+          <h2>
             <a
-              aria-hidden="true"
-              className="AnchorLink-sc-77ly3x-0 isLygD"
+              aria-label="Copy link to Age Distribution"
+              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
               href="#age-distribution"
               id="age-distribution"
               onClick={[Function]}

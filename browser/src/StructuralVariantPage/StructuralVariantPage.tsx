@@ -17,7 +17,7 @@ import StructuralVariantConsequenceList from './StructuralVariantConsequenceList
 import StructuralVariantGenotypeQualityMetrics from './StructuralVariantGenotypeQualityMetrics'
 import StructuralVariantPopulationsTable from './StructuralVariantPopulationsTable'
 import SVReferenceList from './SVReferenceList'
-import { AnchoredSectionHeading } from '../AnchorLink'
+import { AgeDistributionHeading } from '../AnchorLink'
 import useScrollToHash from '../useScrollToHash'
 
 const Wrapper = styled.div`
@@ -163,9 +163,9 @@ const StructuralVariantPage = ({ datasetId, variant }: StructuralVariantPageProp
         </ResponsiveSection>
 
         <ResponsiveSection>
-          <AnchoredSectionHeading id="age-distribution">
+          <AgeDistributionHeading>
             Age Distribution <InfoButton topic="age" />
-          </AnchoredSectionHeading>
+          </AgeDistributionHeading>
           {variant.age_distribution ? (
             <React.Fragment>
               {datasetId !== 'gnomad_sv_r2_1' && (

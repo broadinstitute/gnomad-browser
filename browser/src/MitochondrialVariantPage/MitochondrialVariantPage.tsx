@@ -28,7 +28,7 @@ import MitochondrialVariantGenotypeQualityMetrics from './MitochondrialVariantGe
 import MitochondrialVariantHaplogroupFrequenciesTable from './MitochondrialVariantHaplogroupFrequenciesTable'
 import MitochondrialVariantHeteroplasmyDistribution from './MitochondrialVariantHeteroplasmyDistribution'
 import MitochondrialVariantPopulationFrequenciesTable from './MitochondrialVariantPopulationFrequenciesTable'
-import { AnchoredSectionHeading } from '../AnchorLink'
+import { AgeDistributionHeading } from '../AnchorLink'
 import useScrollToHash from '../useScrollToHash'
 import MitochondrialVariantReferenceList from './MitochondrialVariantReferenceList'
 import MitochondrialVariantSiteQualityMetrics from './MitochondrialVariantSiteQualityMetrics'
@@ -247,9 +247,9 @@ const MitochondrialVariantPage = ({ datasetId, variant }: MitochondrialVariantPa
           <MitochondrialVariantHeteroplasmyDistribution variant={variant} />
         </ResponsiveSection>
         <ResponsiveSection>
-          <AnchoredSectionHeading id="age-distribution">
+          <AgeDistributionHeading>
             Age Distribution <InfoButton topic="age" />
-          </AnchoredSectionHeading>
+          </AgeDistributionHeading>
           <MitochondrialVariantAgeDistribution variant={variant} />
         </ResponsiveSection>
       </Wrapper>

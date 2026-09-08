@@ -27,39 +27,11 @@ const AnchorWrapper = styled.span`
   }
 `
 
-// The link still navigates, so the address bar updates either way. Copying is a convenience on
-// top of that, and is skipped where the Clipboard API is unavailable.
-export const copyLinkToSection = (id: string) => {
-  if (!navigator.clipboard || !navigator.clipboard.writeText) {
-    return
-  }
-
-  const { origin, pathname, search } = window.location
-  navigator.clipboard.writeText(`${origin}${pathname}${search}#${id}`).then(
-    () => {
-      showNotification({ title: 'Link copied', status: 'success' })
-    },
-    () => {
-      showNotification({ title: 'Unable to copy link', status: 'error' })
-    }
-  )
-}
-
 export const withAnchor = (Component: any) => {
-  const ComposedComponent = ({ children, id, copyUrlOnClick, ...props }: any) => (
+  const ComposedComponent = ({ children, id, ...props }: any) => (
     <AnchorWrapper>
       <Component {...props}>
-        <AnchorLink
-          href={`#${id}`}
-          id={id}
-          onClick={
-            copyUrlOnClick
-              ? () => {
-                  copyLinkToSection(id)
-                }
-              : undefined
-          }
-        >
+        <AnchorLink href={`#${id}`} id={id}>
           <img src={LinkIcon} alt="" aria-hidden="true" height={12} width={12} />
         </AnchorLink>
         {children}
@@ -71,16 +43,87 @@ export const withAnchor = (Component: any) => {
   ComposedComponent.propTypes = {
     children: PropTypes.node.isRequired,
     id: PropTypes.string.isRequired,
-    copyUrlOnClick: PropTypes.bool,
-  }
-  ComposedComponent.defaultProps = {
-    copyUrlOnClick: false,
   }
   return ComposedComponent
 }
 
-const SectionHeadingWithAnchor = withAnchor(styled.h2``)
+const AGE_DISTRIBUTION_ID = 'age-distribution'
 
-export const AnchoredSectionHeading = (props: any) => (
-  <SectionHeadingWithAnchor {...props} copyUrlOnClick />
+const AgeDistributionLink = styled.a`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-29px, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  opacity: 0;
+  vertical-align: middle;
+
+  /* stylelint-disable selector-type-no-unknown */
+  :hover,
+  :focus,
+  :focus-visible,
+  ${AnchorWrapper}:hover &,
+  ${AnchorWrapper}:focus-within & {
+    opacity: 1;
+  }
+  /* stylelint-enable selector-type-no-unknown */
+
+  :focus,
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -8px;
+  }
+
+  @media (hover: none) {
+    opacity: 1;
+  }
+
+  /* Without the centered page's outer gutter, reserve inline space for the full target. */
+  @media (max-width: 1230px) {
+    position: static;
+    transform: none;
+    display: inline-flex;
+  }
+`
+
+// Clipboard failures must not suppress the link's default fragment navigation.
+const copyAgeDistributionLink = async () => {
+  try {
+    const clipboard = navigator.clipboard
+    if (!clipboard || !clipboard.writeText) {
+      throw new Error('Clipboard API unavailable')
+    }
+
+    const sectionUrl = new URL(window.location.href)
+    sectionUrl.hash = AGE_DISTRIBUTION_ID
+    await clipboard.writeText(sectionUrl.toString())
+    showNotification({ title: 'Link copied', status: 'success' })
+  } catch {
+    showNotification({ title: 'Unable to copy link', status: 'error' })
+  }
+}
+
+type AgeDistributionHeadingProps = Omit<React.ComponentPropsWithoutRef<'h2'>, 'id'>
+
+export const AgeDistributionHeading = ({ children, ...props }: AgeDistributionHeadingProps) => (
+  <AnchorWrapper>
+    <h2 {...props}>
+      <AgeDistributionLink
+        href={`#${AGE_DISTRIBUTION_ID}`}
+        id={AGE_DISTRIBUTION_ID}
+        aria-label="Copy link to Age Distribution"
+        onClick={() => {
+          copyAgeDistributionLink()
+        }}
+      >
+        <img src={LinkIcon} alt="" aria-hidden="true" height={12} width={12} />
+      </AgeDistributionLink>
+      {children}
+    </h2>
+  </AnchorWrapper>
 )
