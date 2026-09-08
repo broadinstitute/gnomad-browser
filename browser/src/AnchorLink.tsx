@@ -47,9 +47,11 @@ export const withAnchor = (Component: any) => {
   return ComposedComponent
 }
 
-const AGE_DISTRIBUTION_ID = 'age-distribution'
+const Heading = styled.h2`
+  position: relative;
+`
 
-const AgeDistributionLink = styled.a`
+const SectionLink = styled.a`
   position: absolute;
   top: 50%;
   left: 0;
@@ -67,8 +69,8 @@ const AgeDistributionLink = styled.a`
   :hover,
   :focus,
   :focus-visible,
-  ${AnchorWrapper}:hover &,
-  ${AnchorWrapper}:focus-within & {
+  ${Heading}:hover &,
+  ${Heading}:focus-within & {
     opacity: 1;
   }
   /* stylelint-enable selector-type-no-unknown */
@@ -92,7 +94,7 @@ const AgeDistributionLink = styled.a`
 `
 
 // Clipboard failures must not suppress the link's default fragment navigation.
-const copyAgeDistributionLink = async () => {
+const copySectionLink = async (id: string) => {
   try {
     const clipboard = navigator.clipboard
     if (!clipboard || !clipboard.writeText) {
@@ -100,7 +102,7 @@ const copyAgeDistributionLink = async () => {
     }
 
     const sectionUrl = new URL(window.location.href)
-    sectionUrl.hash = AGE_DISTRIBUTION_ID
+    sectionUrl.hash = id
     await clipboard.writeText(sectionUrl.toString())
     showNotification({ title: 'Link copied', status: 'success' })
   } catch {
@@ -108,22 +110,27 @@ const copyAgeDistributionLink = async () => {
   }
 }
 
-type AgeDistributionHeadingProps = Omit<React.ComponentPropsWithoutRef<'h2'>, 'id'>
+type SectionHeadingProps = Omit<
+  React.ComponentPropsWithoutRef<'h2'>,
+  'id' | 'title' | 'children'
+> & {
+  id: string
+  title: string
+  children?: React.ReactNode
+}
 
-export const AgeDistributionHeading = ({ children, ...props }: AgeDistributionHeadingProps) => (
-  <AnchorWrapper>
-    <h2 {...props}>
-      <AgeDistributionLink
-        href={`#${AGE_DISTRIBUTION_ID}`}
-        id={AGE_DISTRIBUTION_ID}
-        aria-label="Copy link to Age Distribution"
-        onClick={() => {
-          copyAgeDistributionLink()
-        }}
-      >
-        <img src={LinkIcon} alt="" aria-hidden="true" height={12} width={12} />
-      </AgeDistributionLink>
-      {children}
-    </h2>
-  </AnchorWrapper>
+export const SectionHeading = ({ id, title, children, ...props }: SectionHeadingProps) => (
+  <Heading {...props} id={id}>
+    <SectionLink
+      href={`#${id}`}
+      aria-label={`Copy link to ${title}`}
+      onClick={() => {
+        copySectionLink(id)
+      }}
+    >
+      <img src={LinkIcon} alt="" aria-hidden="true" height={12} width={12} />
+    </SectionLink>
+    {title}
+    {children && <> {children}</>}
+  </Heading>
 )

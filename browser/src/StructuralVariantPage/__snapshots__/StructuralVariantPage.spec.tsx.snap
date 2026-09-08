@@ -570,56 +570,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -1197,56 +1196,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -1824,56 +1822,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -2434,56 +2431,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -3044,56 +3040,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -3652,56 +3647,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -4262,56 +4256,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -5439,56 +5432,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -6067,56 +6059,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -6694,56 +6685,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -7321,56 +7311,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -7931,56 +7920,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -8541,56 +8529,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -9149,56 +9136,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -9759,56 +9745,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -10936,56 +10921,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -11564,56 +11548,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -12191,56 +12174,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -12818,56 +12800,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -13428,56 +13409,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -14038,56 +14018,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -14646,56 +14625,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -15256,56 +15234,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>
@@ -16433,56 +16410,55 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
     <section
       className="StructuralVariantPage__ResponsiveSection-sc-61jf9a-1 cevMXi"
     >
-      <span
-        className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
       >
-        <h2>
-          <a
-            aria-label="Copy link to Age Distribution"
-            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-            href="#age-distribution"
-            id="age-distribution"
-            onClick={[Function]}
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Age Distribution 
-          <button
-            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-            onClick={[Function]}
-            type="button"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              src="test-file-stub"
-            />
-            <span
-              style={
-                {
-                  "border": "0",
-                  "clip": "rect(0 0 0 0)",
-                  "height": "1px",
-                  "margin": "-1px",
-                  "overflow": "hidden",
-                  "padding": "0",
-                  "position": "absolute",
-                  "whiteSpace": "nowrap",
-                  "width": "1px",
-                }
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
               }
-            >
-              More information
-            </span>
-          </button>
-        </h2>
-      </span>
+            }
+          >
+            More information
+          </span>
+        </button>
+      </h2>
       <p>
         Age data is not available for this variant.
       </p>

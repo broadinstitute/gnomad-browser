@@ -6,7 +6,7 @@ import useScrollToHash from './useScrollToHash'
 
 const TestComponent = () => {
   useScrollToHash()
-  return <div id="age-distribution">Age Distribution</div>
+  return <h2 id="age-distribution">Age Distribution</h2>
 }
 
 // jsdom implements neither scrollIntoView nor layout, so both are stubbed.
