@@ -3,15 +3,9 @@ import { useEffect } from 'react'
 // How long to keep re-aligning after mount while the rest of the page renders.
 const SETTLE_TIMEOUT_MS = 2000
 
-// The app scrolls to the URL's hash when a page's code finishes loading (see App.tsx). Pages
-// whose content renders only after a query resolves are still showing a loading message at that
-// point, so their sections are not yet in the document and that scroll finds nothing. Such pages
-// call this hook from the component that renders once their data is available.
-//
-// A single scroll on mount is not enough: the sections below the target have not rendered yet,
-// so the document is often too short for the browser to bring the target all the way to the top
-// and the scroll is clamped to the bottom of the page. Keep re-aligning while the page grows,
-// stopping early if the reader takes over.
+// App.tsx scrolls before query-loaded sections exist. Data-loaded pages retry here while
+// layout settles: short documents can clamp scrolling, and later content can move an already
+// aligned target. Stop after the bounded window or as soon as the reader takes over.
 const useScrollToHash = () => {
   useEffect(() => {
     const { hash } = window.location
@@ -23,15 +17,32 @@ const useScrollToHash = () => {
     // the URL is not necessarily a valid selector.
     const id = hash.slice(1)
     const start = performance.now()
-    let animationFrame = 0
-    let readerTookOver = false
+    let animationFrame: number | undefined
+    let finished = false
 
-    const stopAligning = () => {
-      readerTookOver = true
+    const removeInputListeners = () => {
+      window.removeEventListener('wheel', finish)
+      window.removeEventListener('touchstart', finish)
+      window.removeEventListener('keydown', finish)
+      window.removeEventListener('mousedown', finish)
+    }
+
+    function finish() {
+      if (finished) {
+        return
+      }
+
+      finished = true
+      if (animationFrame !== undefined) {
+        cancelAnimationFrame(animationFrame)
+        animationFrame = undefined
+      }
+      removeInputListeners()
     }
 
     const align = () => {
-      if (readerTookOver) {
+      animationFrame = undefined
+      if (finished) {
         return
       }
 
@@ -42,24 +53,20 @@ const useScrollToHash = () => {
 
       if (performance.now() - start < SETTLE_TIMEOUT_MS) {
         animationFrame = requestAnimationFrame(align)
+      } else {
+        finish()
       }
     }
 
     // Deliberate input only. A plain 'scroll' listener would also catch our own scrolling.
-    window.addEventListener('wheel', stopAligning, { passive: true })
-    window.addEventListener('touchstart', stopAligning, { passive: true })
-    window.addEventListener('keydown', stopAligning)
-    window.addEventListener('mousedown', stopAligning)
+    window.addEventListener('wheel', finish, { passive: true })
+    window.addEventListener('touchstart', finish, { passive: true })
+    window.addEventListener('keydown', finish)
+    window.addEventListener('mousedown', finish)
 
     animationFrame = requestAnimationFrame(align)
 
-    return () => {
-      cancelAnimationFrame(animationFrame)
-      window.removeEventListener('wheel', stopAligning)
-      window.removeEventListener('touchstart', stopAligning)
-      window.removeEventListener('keydown', stopAligning)
-      window.removeEventListener('mousedown', stopAligning)
-    }
+    return finish
   }, [])
 }
 
