@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { Badge, Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
@@ -6,6 +6,7 @@ import { Badge, Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
 import CategoryFilterControl from '../CategoryFilterControl'
 import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import InfoButton from '../help/InfoButton'
+import useSearchHotkeys from '../useSearchHotkeys'
 
 const consequenceCategoryColors = {
   lof: '#FF583F',
@@ -80,7 +81,7 @@ type Props = {
 }
 
 const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) => {
-  const searchInput = useRef(null)
+  const { searchInputRef, searchHotkeys } = useSearchHotkeys()
 
   return (
     <SettingsWrapper>
@@ -188,7 +189,7 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
       <SearchWrapper>
         <SearchInput
           // @ts-expect-error TS(2322) FIXME: Type '{ ref: MutableRefObject<null>; placeholder: ... Remove this comment to see the full error message
-          ref={searchInput}
+          ref={searchInputRef}
           placeholder="Search variant table"
           style={{ width: '210px' }}
           value={value.searchText}
@@ -197,21 +198,10 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
             onChange({ ...value, searchText })
           }}
         />
-        <Badge level="info" tooltip="Press / to search the variant table">
+        <Badge level="info" tooltip="Press / or Ctrl+F (⌘F on Mac) to search the variant table">
           /
         </Badge>
-        <KeyboardShortcut
-          // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'string[]'... Remove this comment to see the full error message
-          keys="/"
-          // @ts-expect-error TS(2322) FIXME: Type '(e: any) => void' is not assignable to type ... Remove this comment to see the full error message
-          handler={(e: any) => {
-            // preventDefault to avoid typing a "/" in the search input
-            e.preventDefault()
-            if (searchInput.current) {
-              ;(searchInput.current as any).focus()
-            }
-          }}
-        />
+        {searchHotkeys}
       </SearchWrapper>
     </SettingsWrapper>
   )
