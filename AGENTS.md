@@ -151,6 +151,17 @@ Separate read-data (BAM/CRAM) API and scripts, deployed independently.
 - The variable name `ds` is the conventional name for a Hail Table in the pipeline (whitelisted in pylint).
 - CI runs per-package: `.github/workflows/{browser,graphql-api,data-pipeline,deploy-scripts}-ci.yml`.
 
+## Design Principles
+
+- Before building a new interactive mechanism, check whether an existing one already covers most of the
+  need and extend/wire it up rather than reimplementing outright. A change that reuses existing behavior
+  is smaller, easier to review, and less likely to regress or duplicate what's already there than a
+  parallel implementation of the same capability.
+- `@gnomad/ui` (a normal npm dependency in `browser/package.json`) is published from
+  `broadinstitute/gnomad-browser-toolkit` (`packages/ui`), a Broad-owned repo — it is not a true
+  third-party library. If it's missing a capability a feature needs, prefer adding that API there over
+  working around the gap in consuming code with internal coupling or other hacks.
+
 ## Agent Workflows & Skills
 
 When the user asks you to finish a feature, review code, or prep a branch for a Pull Request, you MUST execute the workflows defined in the `.agents/skills/` directory.
