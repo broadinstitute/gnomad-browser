@@ -28,6 +28,27 @@ const sections = [
         await page.waitForTimeout(2200)
         await expect(heading).toBeInViewport()
 
+        const titleLayout = await heading.evaluate((element) => {
+          const titleText = Array.from(element.childNodes).find(
+            (node) => node.nodeType === Node.TEXT_NODE
+          )!
+          const firstCharacter = document.createRange()
+          firstCharacter.setStart(titleText, 0)
+          firstCharacter.setEnd(titleText, 1)
+          const indent =
+            firstCharacter.getBoundingClientRect().left - element.getBoundingClientRect().left
+          const textRange = document.createRange()
+          textRange.selectNodeContents(titleText)
+          const textBox = textRange.getBoundingClientRect()
+          const iconBox = element.querySelector('img')!.getBoundingClientRect()
+          return {
+            indent,
+            verticalOffset: iconBox.y + iconBox.height / 2 - (textBox.y + textBox.height / 2),
+          }
+        })
+        expect(Math.abs(titleLayout.indent)).toBeLessThanOrEqual(1)
+        expect(Math.abs(titleLayout.verticalOffset)).toBeLessThanOrEqual(2)
+
         const link = heading.getByRole('link', { name: `Copy link to ${title}`, exact: true })
         await link.focus()
         await expect(link).toHaveCSS('opacity', '1')
@@ -37,6 +58,14 @@ const sections = [
         expect(box.height).toBeGreaterThanOrEqual(44)
         expect(box.x).toBeGreaterThanOrEqual(0)
         expect(box.x + box.width).toBeLessThanOrEqual(width)
+        const headingBox = (await heading.boundingBox())!
+        expect(box.x + box.width).toBeLessThanOrEqual(headingBox.x + 1)
+        if (path === '/help') {
+          const subheadingBox = (await page
+            .getByRole('heading', { name: 'General', exact: true })
+            .boundingBox())!
+          expect(Math.abs(headingBox.x - subheadingBox.x)).toBeLessThanOrEqual(1)
+        }
         expect(
           await link.evaluate((element) => {
             const bounds = element.getBoundingClientRect()

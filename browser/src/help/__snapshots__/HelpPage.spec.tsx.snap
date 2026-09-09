@@ -396,7 +396,7 @@ exports[`Help Page has no unexpected changes 1`] = `
   overflow: auto;
   box-sizing: border-box;
   width: 100%;
-  padding: 0 15px;
+  padding: 0 15px 0 44px;
 }
 
 .c6 {
@@ -1025,6 +1025,11 @@ exports[`Help Page has no unexpected changes 1`] = `
         <h2
           className="c11 c12"
           id="frequently-asked-questions"
+          style={
+            {
+              "padding": "8px 0",
+            }
+          }
         >
           <a
             aria-label="Copy link to Frequently asked questions"
@@ -1033,9 +1038,9 @@ exports[`Help Page has no unexpected changes 1`] = `
             onClick={[Function]}
             style={
               {
-                "display": "inline-flex",
-                "position": "static",
-                "transform": "none",
+                "display": "flex",
+                "position": "absolute",
+                "transform": "translate(-100%, -50%)",
               }
             }
           >

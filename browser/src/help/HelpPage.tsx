@@ -72,7 +72,7 @@ const HelpContentWrapper = styled.div`
   overflow: auto;
   box-sizing: border-box;
   width: 100%;
-  padding: 0 15px;
+  padding: 0 15px 0 44px;
 `
 
 const HelpContent = styled.div`
@@ -194,7 +194,7 @@ const HelpPage = () => {
             <SectionHeading
               id="frequently-asked-questions"
               title="Frequently asked questions"
-              inlineLink
+              linkInGutter
             />
             {helpPageTableOfContents.faq.map((section: FaqTopic) => (
               <div key={section.heading}>

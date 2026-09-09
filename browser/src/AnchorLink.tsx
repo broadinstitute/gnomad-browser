@@ -116,22 +116,28 @@ type SectionHeadingProps = Omit<
 > & {
   id: string
   title: string
-  // Reserve the full hit area when there is not enough space around the heading.
-  inlineLink?: boolean
+  // The container must reserve a 44px left gutter for the full link target.
+  linkInGutter?: boolean
   children?: React.ReactNode
 }
 
 export const SectionHeading = ({
   id,
   title,
-  inlineLink = false,
+  linkInGutter = false,
   children,
   ...props
 }: SectionHeadingProps) => (
-  <Heading {...props} id={id}>
+  <Heading
+    {...props}
+    id={id}
+    style={linkInGutter ? { padding: '8px 0', ...props.style } : props.style}
+  >
     <SectionLink
       style={
-        inlineLink ? { position: 'static', transform: 'none', display: 'inline-flex' } : undefined
+        linkInGutter
+          ? { position: 'absolute', transform: 'translate(-100%, -50%)', display: 'flex' }
+          : undefined
       }
       href={`#${id}`}
       aria-label={`Copy link to ${title}`}

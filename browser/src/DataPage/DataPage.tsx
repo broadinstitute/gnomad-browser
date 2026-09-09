@@ -57,7 +57,7 @@ const DataPage = () => {
   useScrollToHash()
 
   return (
-    <InfoPage>
+    <InfoPage $withSectionLinks>
       <DocumentTitle title="Data" />
       <PageHeading>Data</PageHeading>
 

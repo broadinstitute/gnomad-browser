@@ -14,7 +14,7 @@ export const FileList = styled(List)`
 
 type SectionTitleProps = { $subject?: 'release' | 'datasets' }
 
-export const SectionTitle = styled(SectionHeading).attrs({ inlineLink: true })<SectionTitleProps>`
+export const SectionTitle = styled(SectionHeading).attrs({ linkInGutter: true })<SectionTitleProps>`
   font-size: ${(props) => {
     if (props.$subject === 'release') {
       return '2.25rem'

@@ -170,6 +170,7 @@ exports[`Data Page has no unexpected changes 1`] = `
 }
 
 .c1 {
+  padding-left: 44px;
   font-size: 16px;
 }
 
@@ -414,6 +415,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c11"
         id="summary"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Summary"
@@ -422,9 +428,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -655,6 +661,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c15"
       id="v4"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to v4 Downloads"
@@ -663,9 +674,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -687,6 +698,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c11"
       id="v4-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to Core Dataset"
@@ -695,9 +711,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -722,6 +738,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Variants"
@@ -730,9 +751,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -3977,6 +3998,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-joint-freq-stats"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Joint Frequency"
@@ -3985,9 +4011,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -5599,6 +5625,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-all-sites-allele-number"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to All sites allele numbers"
@@ -5607,9 +5638,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -5788,6 +5819,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-browser-tables"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Browser Tables"
@@ -5796,9 +5832,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -5963,6 +5999,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-coverage"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Coverage"
@@ -5971,9 +6012,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -6064,6 +6105,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-genetic-ancestry-group-classification"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Genetic ancestry group classification"
@@ -6072,9 +6118,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -6205,6 +6251,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Constraint"
@@ -6213,9 +6264,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -6529,6 +6580,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-structural-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Structural variants"
@@ -6537,9 +6593,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -6783,6 +6839,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-copy-number-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Copy number variants"
@@ -6791,9 +6852,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -6946,6 +7007,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-pext"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Proportion expressed across transcripts (pext)"
@@ -6954,9 +7020,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -7117,6 +7183,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-de-novo"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to De novo variants (DNVs)"
@@ -7125,9 +7196,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -7252,6 +7323,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-clinvar-grch38"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to ClinVar"
@@ -7260,9 +7336,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -7317,6 +7393,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-resources"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Resources"
@@ -7325,9 +7406,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -7541,6 +7622,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c11"
       id="v4-secondary-analyses"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to Secondary Analyses"
@@ -7549,9 +7635,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -7576,6 +7662,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v4-lof-curation-results"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Loss-of-function curation results"
@@ -7584,9 +7675,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -7688,6 +7779,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c15"
       id="v3"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to v3 Downloads"
@@ -7696,9 +7792,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -7720,6 +7816,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c11"
       id="v3-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to Core Dataset"
@@ -7728,9 +7829,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -7755,6 +7856,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Variants"
@@ -7763,9 +7869,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -9402,6 +9508,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-coverage"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Coverage"
@@ -9410,9 +9521,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -9503,6 +9614,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-hgdp-1kg"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to HGDP + 1KG callset"
@@ -9511,9 +9627,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -11265,6 +11381,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-mitochondrial-dna"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Mitochondrial DNA (mtDNA)"
@@ -11273,9 +11394,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -11471,6 +11592,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-ancestry-classification"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Genetic ancestry group classification"
@@ -11479,9 +11605,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -11579,6 +11705,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-local-ancestry"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Local ancestry"
@@ -11587,9 +11718,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -11709,6 +11840,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-short-tandem-repeats"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Short tandem repeats"
@@ -11717,9 +11853,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -12094,6 +12230,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c11"
       id="v3-secondary-analyses"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to Secondary Analyses"
@@ -12102,9 +12243,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -12129,6 +12270,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-genomic-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Genomic constraint"
@@ -12137,9 +12283,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -12299,6 +12445,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-hgdp-1kg-tutorials"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to HGDP + 1KG tutorials"
@@ -12307,9 +12458,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -13381,6 +13532,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v3-mito-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Mitochondrial constraint"
@@ -13389,9 +13545,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -13561,6 +13717,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c15"
       id="v2-liftover"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to v2 Liftover Downloads"
@@ -13569,9 +13730,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -13593,6 +13754,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c11"
       id="v2-liftover-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to Core Dataset"
@@ -13601,9 +13767,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -13628,6 +13794,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-liftover-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Variants (GRCh38 liftover)"
@@ -13636,9 +13807,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -16927,6 +17098,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-liftover-structural-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Structural variants (GRCh38 liftover)"
@@ -16935,9 +17111,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -16980,6 +17156,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c15"
       id="v2"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to v2 Downloads"
@@ -16988,9 +17169,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -17012,6 +17193,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c11"
       id="v2-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to Core Dataset"
@@ -17020,9 +17206,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -17047,6 +17233,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Variants"
@@ -17055,9 +17246,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -20430,6 +20621,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-browser-tables"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Browser Tables"
@@ -20438,9 +20634,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -20516,6 +20712,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-coverage"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Coverage"
@@ -20524,9 +20725,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -20683,6 +20884,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-structural-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Structural variants"
@@ -20691,9 +20897,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -21087,6 +21293,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-linkage-disequilibrium"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Linkage disequilibrium"
@@ -21095,9 +21306,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -21366,6 +21577,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-ancestry-classification"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Ancestry classification"
@@ -21374,9 +21590,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -21474,6 +21690,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-regional-missense-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Regional Missense Constraint"
@@ -21482,9 +21703,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -21602,6 +21823,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-clinvar-grch37"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to ClinVar"
@@ -21610,9 +21836,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -21667,6 +21893,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-resources"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Resources"
@@ -21675,9 +21906,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -21852,6 +22083,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c11"
       id="v2-secondary-analyses"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to Secondary Analyses"
@@ -21860,9 +22096,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -21887,6 +22123,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Constraint"
@@ -21895,9 +22136,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -22076,6 +22317,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-multi-nucleotide-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Multi-nucleotide variants (MNVs)"
@@ -22084,9 +22330,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -22833,6 +23079,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-pext"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Proportion expressed across transcripts (pext)"
@@ -22841,9 +23092,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -23004,6 +23255,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-variant-cooccurrence"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Variant co-occurrence"
@@ -23012,9 +23268,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -23165,6 +23421,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="v2-lof-curation-results"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Loss-of-function curation results"
@@ -23173,9 +23434,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -23527,6 +23788,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c15"
       id="exac"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to ExAC Downloads"
@@ -23535,9 +23801,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -23559,6 +23825,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c11"
       id="exac-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to Core Dataset"
@@ -23567,9 +23838,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >
@@ -23594,6 +23865,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="exac-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Variants"
@@ -23602,9 +23878,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -23697,6 +23973,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="exac-coverage"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Coverage"
@@ -23705,9 +23986,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -24668,6 +24949,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="exac-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Constraint"
@@ -24676,9 +24962,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -24736,6 +25022,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="exac-regional-missense-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Regional Missense Constraint"
@@ -24744,9 +25035,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -24804,6 +25095,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="exac-resources"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Resources"
@@ -24812,9 +25108,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -24870,6 +25166,11 @@ exports[`Data Page has no unexpected changes 1`] = `
       <h2
         className="c9 c10 c17"
         id="exac-other"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Other"
@@ -24878,9 +25179,9 @@ exports[`Data Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -24983,6 +25284,11 @@ exports[`Data Page has no unexpected changes 1`] = `
     <h2
       className="c9 c10 c17"
       id="api"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
       <a
         aria-label="Copy link to gnomAD API"
@@ -24991,9 +25297,9 @@ exports[`Data Page has no unexpected changes 1`] = `
         onClick={[Function]}
         style={
           {
-            "display": "inline-flex",
-            "position": "static",
-            "transform": "none",
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
           }
         }
       >

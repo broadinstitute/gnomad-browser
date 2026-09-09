@@ -56,6 +56,9 @@ test.each([
     links.forEach((link) => {
       const heading = link.closest('h2')!
       expect(heading).not.toBeNull()
+      expect(heading.firstElementChild).toBe(link)
+      expect(getComputedStyle(link).position).toBe('absolute')
+      expect(getComputedStyle(link).transform).toBe('translate(-100%, -50%)')
       expect(link.getAttribute('href')).toBe(`#${heading.id}`)
       expect(link.getAttribute('aria-label')).toBe(`Copy link to ${heading.textContent}`)
       expect(container.querySelectorAll(`[id="${heading.id}"]`)).toHaveLength(1)
@@ -71,10 +74,6 @@ test.each([
     expect(window.location.hash).toBe(`#${id}`)
     expect(screen.getByRole('status').textContent).toContain('Link copied')
 
-    if (path === '/help') {
-      expect(getComputedStyle(link).position).toBe('static')
-      expect(getComputedStyle(link).display).toBe('inline-flex')
-    }
     if (path === '/data') {
       expect(getComputedStyle(document.getElementById('v4')!).fontSize).toBe('2.25rem')
       expect(getComputedStyle(document.getElementById('v4-core-dataset')!).fontSize).toBe('1.88rem')

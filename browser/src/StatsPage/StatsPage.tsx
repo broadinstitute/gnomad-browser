@@ -180,7 +180,7 @@ const barGraphTooltip = (row: any) => (
 const StatsPage = () => {
   useScrollToHash()
   return (
-    <InfoPage>
+    <InfoPage $withSectionLinks>
       <DocumentTitle title="Stats" />
       {/* @ts-expect-error */}
       <PageHeading id="gnomad-stats">What&apos;s in gnomAD</PageHeading>
@@ -232,7 +232,7 @@ const StatsPage = () => {
           <SectionHeading
             id="age-and-sex-distribution"
             title="What is the age and sex distribution in gnomAD?"
-            inlineLink
+            linkInGutter
           />
           <TwoColumnLayout>
             <ResponsiveGnomadSamplesContainer>
@@ -287,7 +287,7 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="samples" title="Where do gnomAD samples come from?" inlineLink />
+          <SectionHeading id="samples" title="Where do gnomAD samples come from?" linkInGutter />
           <div style={{ width: '100%' }}>
             <TwoColumnLayout>
               <StatsHighlightBlock color={gnomadBlue} title="308" text="Data Contributors" />
@@ -319,7 +319,7 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="diversity" title="Diversity in gnomAD" inlineLink />
+          <SectionHeading id="diversity" title="Diversity in gnomAD" linkInGutter />
 
           <h3 style={{ marginBottom: '2em' }}>Genetic ancestry groups in gnomAD by version</h3>
 
@@ -399,7 +399,7 @@ const StatsPage = () => {
           <SectionHeading
             id="study-provided-labels"
             title="Study-provided labels and genetic ancestry groups"
-            inlineLink
+            linkInGutter
           />
 
           <p>
@@ -421,7 +421,7 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="study-diseases" title="Study Diseases in gnomAD" inlineLink />
+          <SectionHeading id="study-diseases" title="Study Diseases in gnomAD" linkInGutter />
 
           <p style={{ marginBottom: '2em' }}>
             During the sample aggregation phase of v4 we began collecting study-disease of interest
@@ -438,7 +438,7 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="browser" title="gnomAD Browser Stats" inlineLink />
+          <SectionHeading id="browser" title="gnomAD Browser Stats" linkInGutter />
           <p>{`The gnomAD browser averages ~200,000 page views per week and had >377,000 unique users in the last year`}</p>
           <TwoColumnLayout>
             <ResponsiveHalfWidthColumn>

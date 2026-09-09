@@ -90,6 +90,7 @@ exports[`Stats Page has no unexpected changes 1`] = `
 }
 
 .c1 {
+  padding-left: 44px;
   font-size: 16px;
 }
 
@@ -1597,6 +1598,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <h2
         className="c23 c24"
         id="age-and-sex-distribution"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to What is the age and sex distribution in gnomAD?"
@@ -1605,9 +1611,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -4181,6 +4187,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <h2
         className="c23 c24"
         id="samples"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Where do gnomAD samples come from?"
@@ -4189,9 +4200,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -4283,6 +4294,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <h2
         className="c23 c24"
         id="diversity"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Diversity in gnomAD"
@@ -4291,9 +4307,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -8370,6 +8386,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <h2
         className="c23 c24"
         id="study-provided-labels"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Study-provided labels and genetic ancestry groups"
@@ -8378,9 +8399,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -8834,6 +8855,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <h2
         className="c23 c24"
         id="study-diseases"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to Study Diseases in gnomAD"
@@ -8842,9 +8868,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
@@ -9219,6 +9245,11 @@ exports[`Stats Page has no unexpected changes 1`] = `
       <h2
         className="c23 c24"
         id="browser"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
           aria-label="Copy link to gnomAD Browser Stats"
@@ -9227,9 +9258,9 @@ exports[`Stats Page has no unexpected changes 1`] = `
           onClick={[Function]}
           style={
             {
-              "display": "inline-flex",
-              "position": "static",
-              "transform": "none",
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
             }
           }
         >
