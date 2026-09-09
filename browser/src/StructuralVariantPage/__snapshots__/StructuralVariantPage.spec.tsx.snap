@@ -573,12 +573,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with a complex varian
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -1202,12 +1200,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -1831,12 +1827,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with interchromosomal
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -2443,12 +2437,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -3055,12 +3047,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -3665,12 +3655,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -4277,12 +4265,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -5456,12 +5442,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1 with non-interchromos
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -6086,12 +6070,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with a compl
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -6715,12 +6697,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -7344,12 +7324,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with interch
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -7956,12 +7934,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -8568,12 +8544,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -9178,12 +9152,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -9790,12 +9762,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -10969,12 +10939,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_controls with non-int
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -11599,12 +11567,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with a comp
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -12228,12 +12194,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -12857,12 +12821,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with interc
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -13469,12 +13431,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -14081,12 +14041,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -14691,12 +14649,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -15303,12 +15259,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -16482,12 +16436,10 @@ exports[`StructuralVariantPage with dataset gnomad_sv_r2_1_non_neuro with non-in
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
