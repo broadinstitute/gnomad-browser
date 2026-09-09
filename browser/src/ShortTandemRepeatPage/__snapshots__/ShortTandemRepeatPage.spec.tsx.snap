@@ -769,14 +769,12 @@ exports[`ShortTandemRepeatPage with "exac" dataset has no unexected changes 1`] 
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -1746,14 +1744,12 @@ exports[`ShortTandemRepeatPage with "gnomad_cnv_r4" dataset has no unexected cha
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -2723,14 +2719,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1" dataset has no unexected chang
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -3700,14 +3694,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_controls" dataset has no unexec
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -4677,14 +4669,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_cancer" dataset has no unex
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -5654,14 +5644,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_neuro" dataset has no unexe
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -6631,14 +6619,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r2_1_non_topmed" dataset has no unex
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -7608,14 +7594,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3" dataset has no unexected changes
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -8585,14 +8569,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_controls_and_biobanks" dataset ha
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -9562,14 +9544,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_cancer" dataset has no unexec
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -10539,14 +10519,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_neuro" dataset has no unexect
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -11516,14 +11494,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_topmed" dataset has no unexec
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -12493,14 +12469,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r3_non_v2" dataset has no unexected 
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -13470,14 +13444,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r4" dataset has no unexected changes
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -14447,14 +14419,12 @@ exports[`ShortTandemRepeatPage with "gnomad_r4_non_ukb" dataset has no unexected
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -15424,14 +15394,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1" dataset has no unexected ch
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -16401,14 +16369,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_controls" dataset has no une
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -17378,14 +17344,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r2_1_non_neuro" dataset has no un
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [
@@ -18355,14 +18319,12 @@ exports[`ShortTandemRepeatPage with "gnomad_sv_r4" dataset has no unexected chan
       }
     }
   >
-    <AnchoredSectionHeading
-      id="age-distribution"
-    >
+    <AgeDistributionHeading>
       Age Distribution 
       <InfoButton
         topic="str-age-distribution"
       />
-    </AnchoredSectionHeading>
+    </AgeDistributionHeading>
     <ShortTandemRepeatAgeDistributionPlot
       ageDistribution={
         [

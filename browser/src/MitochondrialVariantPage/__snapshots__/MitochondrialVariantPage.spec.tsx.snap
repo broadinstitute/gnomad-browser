@@ -1494,12 +1494,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -9444,12 +9442,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -17304,12 +17300,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -25164,12 +25158,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -33024,12 +33016,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -40884,12 +40874,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -48744,12 +48732,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -56604,12 +56590,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -64464,12 +64448,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4_non_ukb has no unexpect
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -72324,12 +72306,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -80184,12 +80164,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -88044,12 +88022,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
@@ -95904,12 +95880,10 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
       <span
         className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
       >
-        <h2
-          className="AnchorLink__SectionHeadingWithAnchor-sc-77ly3x-2"
-        >
+        <h2>
           <a
-            aria-hidden="true"
-            className="AnchorLink-sc-77ly3x-0 isLygD"
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
             href="#age-distribution"
             id="age-distribution"
             onClick={[Function]}
