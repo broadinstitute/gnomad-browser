@@ -1,14 +1,16 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import { Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
+import { Badge, Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
 
 import CategoryFilterControl from '../CategoryFilterControl'
 import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import InfoButton from '../help/InfoButton'
 
 const SearchWrapper = styled.div`
-  /* stylelint-ignore-line block-no-empty */
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
 `
 
 const SettingsWrapper = styled.div`
@@ -92,6 +94,9 @@ const MitochondrialVariantFilterControls = ({ onChange, value }: Props) => {
             onChange({ ...value, searchText })
           }}
         />
+        <Badge level="info" tooltip="Press / to search the variant table">
+          /
+        </Badge>
         <KeyboardShortcut
           // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'string[]'... Remove this comment to see the full error message
           keys="/"

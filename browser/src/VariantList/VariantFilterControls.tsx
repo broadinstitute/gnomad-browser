@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
 
-import { Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
+import { Badge, Checkbox, KeyboardShortcut, SearchInput } from '@gnomad/ui'
 
 import CategoryFilterControl from '../CategoryFilterControl'
 import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
@@ -45,7 +45,9 @@ const CheckboxSection = styled.div`
 `
 
 const SearchWrapper = styled.div`
-  width: 210px;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
   margin-bottom: 1em;
 `
 
@@ -188,13 +190,16 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
           // @ts-expect-error TS(2322) FIXME: Type '{ ref: MutableRefObject<null>; placeholder: ... Remove this comment to see the full error message
           ref={searchInput}
           placeholder="Search variant table"
-          style={{ marginBottom: '1em', width: '210px' }}
+          style={{ width: '210px' }}
           value={value.searchText}
           onChange={(searchText) => {
             jumpToRow(position)
             onChange({ ...value, searchText })
           }}
         />
+        <Badge level="info" tooltip="Press / to search the variant table">
+          /
+        </Badge>
         <KeyboardShortcut
           // @ts-expect-error TS(2322) FIXME: Type 'string' is not assignable to type 'string[]'... Remove this comment to see the full error message
           keys="/"
