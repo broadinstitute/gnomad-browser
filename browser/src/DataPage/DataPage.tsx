@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { Badge, ExternalLink, PageHeading } from '@gnomad/ui'
@@ -7,6 +7,7 @@ import Link from '../Link'
 
 import DocumentTitle from '../DocumentTitle'
 import InfoPage from '../InfoPage'
+import useScrollToHash from '../useScrollToHash'
 
 import { SectionTitle, StyledParagraph, CodeBlock } from './downloadsPageStyles'
 
@@ -53,15 +54,7 @@ const DataPage = () => {
   // Load stylesheet to make smooth scroll behavior active
   const _style = styles.html
 
-  useEffect(() => {
-    const hash = window.location.hash
-    if (hash !== '') {
-      const element = document.querySelector(`${hash}`)
-      if (element) {
-        element.scrollIntoView()
-      }
-    }
-  }, [])
+  useScrollToHash()
 
   return (
     <InfoPage>
@@ -89,9 +82,7 @@ const DataPage = () => {
           .
         </div>
         <div>
-          <SectionTitle id="summary" subject="datasets">
-            Summary
-          </SectionTitle>
+          <SectionTitle id="summary" $subject="datasets" title="Summary" />
           <StyledParagraph>
             gnomAD data is available for download through{' '}
             <ExternalLink href="https://cloud.google.com/public-datasets">

@@ -56,37 +56,37 @@ exports[`Stats Page has no unexpected changes 1`] = `
   fill: rgba(0,0,0,0.05);
 }
 
-.c25 {
-  position: absolute;
-  transform: translate(-15px,calc(50% - 0.5em));
-  display: flex;
-  align-items: center;
-  width: 15px;
-  height: 1em;
-  visibility: hidden;
-  vertical-align: middle;
-}
-
-.c23 {
+.c24 {
   position: relative;
 }
 
-.c23 :hover .c24 {
-  visibility: visible;
+.c25 {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-29px,-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  opacity: 0;
+  vertical-align: middle;
 }
 
-.c20 {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  padding: 0;
-  margin: 0 1em 0 0;
-  list-style-type: none;
+.c25 :hover,
+.c25 :focus,
+.c25 :focus-visible,
+.c23:hover .c25,
+.c23:focus-within .c25 {
+  opacity: 1;
 }
 
-.c21 {
-  display: flex;
-  margin: 0 1em 0.33em 0;
+.c25 :focus,
+.c25 :focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -8px;
 }
 
 .c1 {
@@ -117,6 +117,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
 
 .c6 li {
   margin-bottom: 0.5em;
+}
+
+.c20 {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  padding: 0;
+  margin: 0 1em 0 0;
+  list-style-type: none;
+}
+
+.c21 {
+  display: flex;
+  margin: 0 1em 0.33em 0;
 }
 
 .c13 {
@@ -346,6 +360,20 @@ exports[`Stats Page has no unexpected changes 1`] = `
     padding-bottom: 0.5em;
     border-bottom: 1px solid #ccc;
     margin-bottom: 0.5em;
+  }
+}
+
+@media (hover:none) {
+  .c25 {
+    opacity: 1;
+  }
+}
+
+@media (max-width:1230px) {
+  .c25 {
+    position: static;
+    transform: none;
+    display: inline-flex;
   }
 }
 
@@ -1566,29 +1594,33 @@ exports[`Stats Page has no unexpected changes 1`] = `
     <div
       className="c4"
     >
-      <span
-        className="c23"
+      <h2
+        className="c23 c24"
+        id="age-and-sex-distribution"
       >
-        <h2
-          className=""
+        <a
+          aria-label="Copy link to What is the age and sex distribution in gnomAD?"
+          className="c25"
+          href="#age-and-sex-distribution"
+          onClick={[Function]}
+          style={
+            {
+              "display": "inline-flex",
+              "position": "static",
+              "transform": "none",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c24 c25"
-            href="#age-and-sex-distribution"
-            id="age-and-sex-distribution"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          What is the age and sex distribution in gnomAD?
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        What is the age and sex distribution in gnomAD?
+      </h2>
       <div
         className="c5"
       >
@@ -4146,29 +4178,33 @@ exports[`Stats Page has no unexpected changes 1`] = `
     <div
       className="c4"
     >
-      <span
-        className="c23"
+      <h2
+        className="c23 c24"
+        id="samples"
       >
-        <h2
-          className=""
+        <a
+          aria-label="Copy link to Where do gnomAD samples come from?"
+          className="c25"
+          href="#samples"
+          onClick={[Function]}
+          style={
+            {
+              "display": "inline-flex",
+              "position": "static",
+              "transform": "none",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c24 c25"
-            href="#samples"
-            id="samples"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Where do gnomAD samples come from?
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Where do gnomAD samples come from?
+      </h2>
       <div
         style={
           {
@@ -4244,29 +4280,33 @@ exports[`Stats Page has no unexpected changes 1`] = `
     <div
       className="c4"
     >
-      <span
-        className="c23"
+      <h2
+        className="c23 c24"
+        id="diversity"
       >
-        <h2
-          className=""
+        <a
+          aria-label="Copy link to Diversity in gnomAD"
+          className="c25"
+          href="#diversity"
+          onClick={[Function]}
+          style={
+            {
+              "display": "inline-flex",
+              "position": "static",
+              "transform": "none",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c24 c25"
-            href="#diversity"
-            id="diversity"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Diversity in gnomAD
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Diversity in gnomAD
+      </h2>
       <h3
         style={
           {
@@ -8327,29 +8367,33 @@ exports[`Stats Page has no unexpected changes 1`] = `
     <div
       className="c4"
     >
-      <span
-        className="c23"
+      <h2
+        className="c23 c24"
+        id="study-provided-labels"
       >
-        <h2
-          className=""
+        <a
+          aria-label="Copy link to Study-provided labels and genetic ancestry groups"
+          className="c25"
+          href="#study-provided-labels"
+          onClick={[Function]}
+          style={
+            {
+              "display": "inline-flex",
+              "position": "static",
+              "transform": "none",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c24 c25"
-            href="#study-provided-labels"
-            id="study-provided-labels"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Study-provided labels and genetic ancestry groups
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Study-provided labels and genetic ancestry groups
+      </h2>
       <p>
         The following table is provided in order to present how our inferred genetic ancestry groups correspond to descriptors provided by each contributing
         <a
@@ -8787,29 +8831,33 @@ exports[`Stats Page has no unexpected changes 1`] = `
     <div
       className="c4"
     >
-      <span
-        className="c23"
+      <h2
+        className="c23 c24"
+        id="study-diseases"
       >
-        <h2
-          className=""
+        <a
+          aria-label="Copy link to Study Diseases in gnomAD"
+          className="c25"
+          href="#study-diseases"
+          onClick={[Function]}
+          style={
+            {
+              "display": "inline-flex",
+              "position": "static",
+              "transform": "none",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c24 c25"
-            href="#study-diseases"
-            id="study-diseases"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Study Diseases in gnomAD
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Study Diseases in gnomAD
+      </h2>
       <p
         style={
           {
@@ -9168,29 +9216,33 @@ exports[`Stats Page has no unexpected changes 1`] = `
     <div
       className="c4"
     >
-      <span
-        className="c23"
+      <h2
+        className="c23 c24"
+        id="browser"
       >
-        <h2
-          className=""
+        <a
+          aria-label="Copy link to gnomAD Browser Stats"
+          className="c25"
+          href="#browser"
+          onClick={[Function]}
+          style={
+            {
+              "display": "inline-flex",
+              "position": "static",
+              "transform": "none",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c24 c25"
-            href="#browser"
-            id="browser"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          gnomAD Browser Stats
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        gnomAD Browser Stats
+      </h2>
       <p>
         The gnomAD browser averages ~200,000 page views per week and had &gt;377,000 unique users in the last year
       </p>

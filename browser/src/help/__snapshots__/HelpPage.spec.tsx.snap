@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Help Page has no unexpected changes 1`] = `
-.c15 {
+.c18 {
   box-sizing: border-box;
   height: calc(2em + 2px);
   padding: 0.375em 0.75em;
@@ -17,21 +17,21 @@ exports[`Help Page has no unexpected changes 1`] = `
   user-select: none;
 }
 
-.c15:active,
-.c15:hover {
+.c18:active,
+.c18:hover {
   background-color: #cbd3da;
 }
 
-.c15:disabled {
+.c18:disabled {
   background-color: rgba(248,249,250,0.5);
   cursor: not-allowed;
 }
 
-.c15:focus {
+.c18:focus {
   box-shadow: 0 0 0 0.2em rgba(108,117,125,0.5);
 }
 
-.c15 svg {
+.c18 svg {
   position: relative;
   top: 0.11em;
   width: 0.9em;
@@ -105,7 +105,7 @@ exports[`Help Page has no unexpected changes 1`] = `
   background-image: none;
 }
 
-.c28 {
+.c31 {
   height: calc(2em + 2px);
   padding: 0.375em 1.5em 0.375em 0.75em;
   border: 1px solid #6c757d;
@@ -118,42 +118,42 @@ exports[`Help Page has no unexpected changes 1`] = `
   line-height: 1.25;
 }
 
-.c28:focus {
+.c31:focus {
   outline: none;
   border-color: rgb(70,130,180);
   box-shadow: 0 0 0 0.2em rgba(70,130,180,0.5);
 }
 
-.c21 {
+.c24 {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-.c21 td,
-.c21 th {
+.c24 td,
+.c24 th {
   padding: 0.5em 10px 0.5em 0;
   text-align: left;
 }
 
-.c21 thead td,
-.c21 thead th {
+.c24 thead td,
+.c24 thead th {
   border-bottom: 1px solid #000;
   background-position: center right;
   background-repeat: no-repeat;
 }
 
-.c21 thead td[aria-sort='ascending'],
-.c21 thead th[aria-sort='ascending'] {
+.c24 thead td[aria-sort='ascending'],
+.c24 thead th[aria-sort='ascending'] {
   background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7');
 }
 
-.c21 thead td[aria-sort='descending'],
-.c21 thead th[aria-sort='descending'] {
+.c24 thead td[aria-sort='descending'],
+.c24 thead th[aria-sort='descending'] {
   background-image: url('data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7');
 }
 
-.c21 thead td button,
-.c21 thead th button {
+.c24 thead td button,
+.c24 thead th button {
   padding: 0;
   border: none;
   background: none;
@@ -164,19 +164,19 @@ exports[`Help Page has no unexpected changes 1`] = `
   user-select: none;
 }
 
-.c21 tbody td,
-.c21 tbody th {
+.c24 tbody td,
+.c24 tbody th {
   border-bottom: 1px solid #ccc;
   font-weight: normal;
 }
 
-.c21 tfoot td,
-.c21 tfoot th {
+.c24 tfoot td,
+.c24 tfoot th {
   border-top: 1px solid #ccc;
   font-weight: bold;
 }
 
-.c13 {
+.c17 {
   position: absolute;
   transform: translate(-15px,calc(50% - 0.5em));
   display: flex;
@@ -187,21 +187,66 @@ exports[`Help Page has no unexpected changes 1`] = `
   vertical-align: middle;
 }
 
-.c11 {
+.c14 {
   position: relative;
 }
 
-.c11 :hover .c12 {
+.c14 :hover .c16 {
   visibility: visible;
 }
 
-.c20 {
+.c12 {
+  position: relative;
+}
+
+.c13 {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-29px,-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  opacity: 0;
+  vertical-align: middle;
+}
+
+.c13 :hover,
+.c13 :focus,
+.c13 :focus-visible,
+.c11:hover .c13,
+.c11:focus-within .c13 {
+  opacity: 1;
+}
+
+.c13 :focus,
+.c13 :focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -8px;
+}
+
+.c23 {
   overflow-x: auto;
   overflow-y: hidden;
 }
 
-.c30 {
+.c33 {
   margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.c33 td {
+  text-align: right;
+}
+
+.c32 {
+  margin: 1em 1em 0 0;
+}
+
+.c30 {
   margin-bottom: 1em;
 }
 
@@ -209,115 +254,103 @@ exports[`Help Page has no unexpected changes 1`] = `
   text-align: right;
 }
 
-.c29 {
-  margin: 1em 1em 0 0;
-}
-
-.c27 {
-  margin-bottom: 1em;
-}
-
-.c27 td {
+.c25 td {
   text-align: right;
 }
 
-.c22 td {
-  text-align: right;
-}
-
-.c22 tbody tr:last-child th,
-.c22 tbody tr:last-child td {
+.c25 tbody tr:last-child th,
+.c25 tbody tr:last-child td {
   border-bottom-color: #000;
 }
 
-.c25 {
+.c28 {
   overflow: hidden;
   width: 100%;
   height: 100%;
   margin-bottom: 1em;
 }
 
-.c26 {
+.c29 {
   pointer-events: visible;
   fill: none;
 }
 
-.c26:hover {
+.c29:hover {
   fill: rgba(0,0,0,0.05);
 }
 
-.c23 {
+.c26 {
   display: flex;
   flex-direction: row;
 }
 
-.c24 {
+.c27 {
   width: calc(50% - 15px);
 }
 
-.c19 {
+.c22 {
   font-size: 16px;
 }
 
-.c19 h1,
-.c19 h2,
-.c19 h3 {
+.c22 h1,
+.c22 h2,
+.c22 h3 {
   font-weight: bold;
 }
 
-.c19 h1 {
+.c22 h1 {
   font-size: 2em;
 }
 
-.c19 h2 {
+.c22 h2 {
   font-size: 1.5em;
 }
 
-.c19 p {
+.c22 p {
   margin-top: 15px;
   margin-bottom: 15px;
   line-height: 1.4;
 }
 
-.c19 a {
+.c22 a {
   color: #428bca;
   text-decoration: none;
 }
 
-.c19 img {
+.c22 img {
   max-width: 100%;
 }
 
-.c19 blockquote {
+.c22 blockquote {
   margin: 0 0 0 10px;
   font-size: 14px;
   font-style: italic;
   line-height: 1.4;
 }
 
-.c19 ol,
-.c19 ul {
+.c22 ol,
+.c22 ul {
   padding-left: 20px;
   margin: 1em 0;
 }
 
-.c19 li {
+.c22 li {
   margin-bottom: 0.5em;
 }
 
-.c19 table {
+.c22 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-.c19 td {
+.c22 td {
   padding: 0.5em 10px 0.5em 0;
   border-bottom: 1px solid #ccc;
   font-weight: normal;
   text-align: left;
 }
 
-.c19 th {
+.c22 th {
   padding: 0.5em 10px 0.5em 0;
   border-bottom: 1px solid #000;
   background-position: center right;
@@ -325,7 +358,7 @@ exports[`Help Page has no unexpected changes 1`] = `
   font-weight: bold;
 }
 
-.c14 {
+.c15 {
   margin-bottom: 0.5em;
 }
 
@@ -375,32 +408,32 @@ exports[`Help Page has no unexpected changes 1`] = `
   line-height: 1.4;
 }
 
-.c17 {
+.c20 {
   padding-left: 0;
   list-style-type: none;
   margin-bottom: 1em;
 }
 
-.c17 summary {
+.c20 summary {
   padding: 0.25em;
   cursor: pointer;
 }
 
-.c17 summary h4 {
+.c20 summary h4 {
   display: inline;
   font-weight: normal;
 }
 
-.c17 details[open] summary h4 {
+.c20 details[open] summary h4 {
   font-weight: bold;
 }
 
-.c18 {
+.c21 {
   padding-left: 10px;
   border-left: 1px solid #999;
 }
 
-.c16 {
+.c19 {
   font-size: 12px;
 }
 
@@ -423,14 +456,28 @@ exports[`Help Page has no unexpected changes 1`] = `
   }
 }
 
+@media (hover:none) {
+  .c13 {
+    opacity: 1;
+  }
+}
+
+@media (max-width:1230px) {
+  .c13 {
+    position: static;
+    transform: none;
+    display: inline-flex;
+  }
+}
+
 @media (max-width:700px) {
-  .c23 {
+  .c26 {
     flex-direction: column;
   }
 }
 
 @media (max-width:700px) {
-  .c24 {
+  .c27 {
     width: 100%;
   }
 }
@@ -975,39 +1022,43 @@ exports[`Help Page has no unexpected changes 1`] = `
         </ul>
       </section>
       <section>
-        <span
-          className="c11"
+        <h2
+          className="c11 c12"
+          id="frequently-asked-questions"
         >
-          <h2
-            className=""
+          <a
+            aria-label="Copy link to Frequently asked questions"
+            className="c13"
+            href="#frequently-asked-questions"
+            onClick={[Function]}
+            style={
+              {
+                "display": "inline-flex",
+                "position": "static",
+                "transform": "none",
+              }
+            }
           >
-            <a
+            <img
+              alt=""
               aria-hidden="true"
-              className="c12 c13"
-              href="#frequently-asked-questions"
-              id="frequently-asked-questions"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Frequently asked questions
-          </h2>
-        </span>
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Frequently asked questions
+        </h2>
         <div>
           <span
-            className="c11"
+            className="c14"
           >
             <h3
-              className="c14"
+              className="c15"
             >
               <a
                 aria-hidden="true"
-                className="c12 c13"
+                className="c16 c17"
                 href="#general"
                 id="general"
               >
@@ -1025,7 +1076,7 @@ exports[`Help Page has no unexpected changes 1`] = `
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
@@ -1035,14 +1086,14 @@ exports[`Help Page has no unexpected changes 1`] = `
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
             Hide all answers in this section
           </button>
           <ul
-            className="c17"
+            className="c20"
           >
             <li>
               <details>
@@ -1052,10 +1103,10 @@ exports[`Help Page has no unexpected changes 1`] = `
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1081,10 +1132,10 @@ The gnomAD v2.1 data set contained data from 125,748 exomes and 15,708 whole gen
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1120,10 +1171,10 @@ Below is a list of all features not included in the v4 MVP and where to find the
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1151,10 +1202,10 @@ Yes, we have a few different videos that cover how gnomAD is created as well as 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1178,10 +1229,10 @@ Please see our terms of use and other policies on our [policy page](/policies).
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1205,10 +1256,10 @@ The gnomAD resource does not currently have permission, access, or staffing to i
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1232,10 +1283,10 @@ question: 'Can I get access to individual-level genotype data from gnomAD?'
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1267,10 +1318,10 @@ All investigators who contribute data to gnomAD join the gnomAD Consortium. See 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1298,10 +1349,10 @@ Likely because of differences between the projects in sample inclusion and varia
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1332,10 +1383,10 @@ More details on our QC process can be found in our blog posts:
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1359,10 +1410,10 @@ With 730,947 exomes and 76,215 genomes, the gnomAD v4.1 call set is the largest 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1386,10 +1437,10 @@ Short read sequencing can produce mapping issues when a gene has a highly homolo
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1418,10 +1469,10 @@ question: 'How do you pronounce gnomAD?'
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1441,14 +1492,14 @@ Our policy is to release allele counts (AC) as they are observed in the database
         </div>
         <div>
           <span
-            className="c11"
+            className="c14"
           >
             <h3
-              className="c14"
+              className="c15"
             >
               <a
                 aria-hidden="true"
-                className="c12 c13"
+                className="c16 c17"
                 href="#constraint"
                 id="constraint"
               >
@@ -1466,7 +1517,7 @@ Our policy is to release allele counts (AC) as they are observed in the database
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
@@ -1476,14 +1527,14 @@ Our policy is to release allele counts (AC) as they are observed in the database
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
             Hide all answers in this section
           </button>
           <ul
-            className="c17"
+            className="c20"
           >
             <li>
               <details>
@@ -1493,10 +1544,10 @@ Our policy is to release allele counts (AC) as they are observed in the database
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1520,10 +1571,10 @@ We used a mutational model that accounts for local sequence context, CpG methyla
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1547,10 +1598,10 @@ Please review our [gene constraint](/help/constraint#methods) help text to learn
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1574,10 +1625,10 @@ We only included single nucleotide variants that were found in the MANE Select (
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1601,10 +1652,10 @@ Nonsense, splice acceptor, and splice donor variants caused by single nucleotide
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1640,10 +1691,10 @@ In addition, there are 19 MANE select transcripts that are missing constraint sc
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1669,10 +1720,10 @@ LOEUF stands for the "loss-of-function observed/expected upper bound fraction." 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1696,10 +1747,10 @@ LOEUF is pronounced like its French-inspired name "l'œuf". Another accepted pro
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1719,14 +1770,14 @@ Descriptions of the fields in these files can be found in the [README file](/dow
         </div>
         <div>
           <span
-            className="c11"
+            className="c14"
           >
             <h3
-              className="c14"
+              className="c15"
             >
               <a
                 aria-hidden="true"
-                className="c12 c13"
+                className="c16 c17"
                 href="#technical-details"
                 id="technical-details"
               >
@@ -1744,7 +1795,7 @@ Descriptions of the fields in these files can be found in the [README file](/dow
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
@@ -1754,14 +1805,14 @@ Descriptions of the fields in these files can be found in the [README file](/dow
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
             Hide all answers in this section
           </button>
           <ul
-            className="c17"
+            className="c20"
           >
             <li>
               <details>
@@ -1771,10 +1822,10 @@ Descriptions of the fields in these files can be found in the [README file](/dow
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1798,10 +1849,10 @@ gnomAD v4 and v3 are based on GRCh38, and gnomAD v2 and ExAC files are based on 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1825,10 +1876,10 @@ We use VEP to annotate variants on GENCODE transcripts. For details on the versi
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1852,10 +1903,10 @@ The majority of samples from the 1000 Genomes Project for which exome sequencing
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1879,10 +1930,10 @@ No. We were not given permission from NHLBI to include individuals from several 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1907,10 +1958,10 @@ All of the "cancer" samples in ExAC and v2 are blood ("germline") samples from T
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -1934,7 +1985,7 @@ See [ancestry documentation](/help/ancestry) and [blog post](https://gnomad.broa
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div>
                     <div>
@@ -1974,10 +2025,10 @@ See [ancestry documentation](/help/ancestry) and [blog post](https://gnomad.broa
                           gnomAD v3
                         </h4>
                         <div
-                          className="c20"
+                          className="c23"
                         >
                           <table
-                            className="c21 c22"
+                            className="c24 c25"
                           >
                             <thead>
                               <tr>
@@ -2356,10 +2407,10 @@ See [ancestry documentation](/help/ancestry) and [blog post](https://gnomad.broa
                           gnomAD v2
                         </h4>
                         <div
-                          className="c20"
+                          className="c23"
                         >
                           <table
-                            className="c21 c22"
+                            className="c24 c25"
                           >
                             <thead>
                               <tr>
@@ -2922,10 +2973,10 @@ See [ancestry documentation](/help/ancestry) and [blog post](https://gnomad.broa
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -2949,10 +3000,10 @@ Individuals were classified as "remaining individuals" if they did not unambiguo
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -3017,22 +3068,22 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <p>
                     For gnomAD v4, the age distribution is:
                   </p>
                   <div
-                    className="c23"
+                    className="c26"
                   >
                     <div
-                      className="c24"
+                      className="c27"
                     >
                       <p>
                         Exomes
                       </p>
                       <div
-                        className="c25"
+                        className="c28"
                       >
                         <svg
                           height={250}
@@ -4122,7 +4173,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={170.2124439358423}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4139,7 +4190,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={174.45670831872127}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4156,7 +4207,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={173.67762417172705}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4173,7 +4224,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={102.9653555805755}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4190,7 +4241,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={78.89846619538936}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4207,7 +4258,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={62.019417117333276}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4224,7 +4275,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={42.07718857860057}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4241,7 +4292,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={0}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4258,7 +4309,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={41.57717934993262}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4275,7 +4326,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={169.54797984458924}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4292,7 +4343,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={175.32549511803467}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4309,7 +4360,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={176.7607375551413}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -4322,13 +4373,13 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                       </div>
                     </div>
                     <div
-                      className="c24"
+                      className="c27"
                     >
                       <p>
                         Genomes
                       </p>
                       <div
-                        className="c25"
+                        className="c28"
                       >
                         <svg
                           height={250}
@@ -5332,7 +5383,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={21.979920616390384}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5349,7 +5400,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={124.02054634601916}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5366,7 +5417,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={121.12070978286248}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5383,7 +5434,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={110.99229512024282}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5400,7 +5451,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={56.06350688769553}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5417,7 +5468,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={0}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5434,7 +5485,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={28.66215269670792}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5451,7 +5502,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={42.06864347420032}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5468,7 +5519,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={57.744571561989254}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5485,7 +5536,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={97.83796404389446}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5502,7 +5553,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={129.48400653747373}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5519,7 +5570,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                               y={161.59234181648375}
                             />
                             <rect
-                              className="c26"
+                              className="c29"
                               height={180}
                               onMouseEnter={[Function]}
                               onMouseLeave={[Function]}
@@ -5543,13 +5594,13 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                       For gnomAD v3, the age distribution is:
                     </p>
                     <div
-                      className="c23"
+                      className="c26"
                     >
                       <div
-                        className="c24"
+                        className="c27"
                       >
                         <div
-                          className="c25"
+                          className="c28"
                         >
                           <svg
                             height={250}
@@ -6596,7 +6647,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={32.13021629888574}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6613,7 +6664,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={123.8409438496832}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6630,7 +6681,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={116.84072536596022}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6647,7 +6698,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={105.08193139611099}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6664,7 +6715,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={53.05221760978806}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6681,7 +6732,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={0}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6698,7 +6749,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={25.68057679702863}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6715,7 +6766,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={36.22023159274634}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6732,7 +6783,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={54.38933799431943}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6749,7 +6800,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={95.32881800305879}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6766,7 +6817,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={129.54336901900808}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6783,7 +6834,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={162.1455101594931}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -6800,16 +6851,16 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                       For gnomAD v2, the age distribution is:
                     </p>
                     <div
-                      className="c23"
+                      className="c26"
                     >
                       <div
-                        className="c24"
+                        className="c27"
                       >
                         <p>
                           Exomes
                         </p>
                         <div
-                          className="c25"
+                          className="c28"
                         >
                           <svg
                             height={250}
@@ -7985,7 +8036,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={143.88087922476956}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8002,7 +8053,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={131.4582840935949}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8019,7 +8070,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={115.53297092885843}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8036,7 +8087,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={59.64547388324272}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8053,7 +8104,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={33.155282439139675}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8070,7 +8121,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={0}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8087,7 +8138,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={10.777593949420945}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8104,7 +8155,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={30.61687544315764}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8121,7 +8172,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={54.043961238477905}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8138,7 +8189,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={95.04136138028835}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8155,7 +8206,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={121.34719924367762}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8172,7 +8223,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={152.55967856298747}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -8185,13 +8236,13 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                         </div>
                       </div>
                       <div
-                        className="c24"
+                        className="c27"
                       >
                         <p>
                           Genomes
                         </p>
                         <div
-                          className="c25"
+                          className="c28"
                         >
                           <svg
                             height={250}
@@ -9367,7 +9418,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={0}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9384,7 +9435,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={135.53528945281522}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9401,7 +9452,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={132.68041237113403}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9418,7 +9469,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={114.12371134020619}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9435,7 +9486,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={82.72006344171294}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9452,7 +9503,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={61.0943695479778}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9469,7 +9520,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={90.4996034892942}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9486,7 +9537,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={108.55670103092785}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9503,7 +9554,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={134.3219666931007}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9520,7 +9571,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={154.1633624107851}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9537,7 +9588,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={169.00872323552736}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9554,7 +9605,7 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                                 y={175.0039651070579}
                               />
                               <rect
-                                className="c26"
+                                className="c29"
                                 height={180}
                                 onMouseEnter={[Function]}
                                 onMouseLeave={[Function]}
@@ -9582,10 +9633,10 @@ Genetic ancestry group names in the VCF and Hail Table are abbreviated to 3 lett
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9664,10 +9715,10 @@ We used a combination of X-chromosome homozygosity (F-stat, [impute_sex function
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9691,10 +9742,10 @@ Sex for the v4 exomes and genomes was determined using normalized coverage on ch
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9718,10 +9769,10 @@ For information on how we handle related individuals please see our [Relatedness
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9745,10 +9796,10 @@ The gene page summarizes the most severe functional consequence and protein-leve
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9772,10 +9823,10 @@ Annotations may have changed depending on the version of GENCODE used (such as c
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9825,10 +9876,10 @@ Flags that will appear at the top of gene/transcript pages:
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9861,10 +9912,10 @@ Several other classes of problems relate to fundamental issues with dbSNP such a
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9888,10 +9939,10 @@ A gene search in the new browser will return variants in the CDS regions of the 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9917,10 +9968,10 @@ The issue is now fixed for new gVCFs generated by HaplotypeCaller moving forward
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9944,10 +9995,10 @@ Unfortunately, for many reasons (including consent and data usage restrictions) 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -9973,10 +10024,10 @@ You can also obtain information on all variants from the VCFs and Hail Tables av
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10000,10 +10051,10 @@ Please visit our [downloads page](/downloads).
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10023,14 +10074,14 @@ Please see our gnomAD Hail Table [help text](/help/v4-hts)
         </div>
         <div>
           <span
-            className="c11"
+            className="c14"
           >
             <h3
-              className="c14"
+              className="c15"
             >
               <a
                 aria-hidden="true"
-                className="c12 c13"
+                className="c16 c17"
                 href="#coverage"
                 id="coverage"
               >
@@ -10048,7 +10099,7 @@ Please see our gnomAD Hail Table [help text](/help/v4-hts)
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
@@ -10058,14 +10109,14 @@ Please see our gnomAD Hail Table [help text](/help/v4-hts)
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
             Hide all answers in this section
           </button>
           <ul
-            className="c17"
+            className="c20"
           >
             <li>
               <details>
@@ -10075,10 +10126,10 @@ Please see our gnomAD Hail Table [help text](/help/v4-hts)
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10156,10 +10207,10 @@ Coverage was calculated separately for exomes and genomes on a ~10% subset of th
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10183,10 +10234,10 @@ The best way to tell if a variant is missing because of a lack of coverage vs mi
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10210,10 +10261,10 @@ Sometimes a large apparent drop in AN can occur because a variant was called in 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10248,14 +10299,14 @@ The calling intervals for our exomes include the bait-covered regions ±50 bp. T
         </div>
         <div>
           <span
-            className="c11"
+            className="c14"
           >
             <h3
-              className="c14"
+              className="c15"
             >
               <a
                 aria-hidden="true"
-                className="c12 c13"
+                className="c16 c17"
                 href="#mitochondrial-dna"
                 id="mitochondrial-dna"
               >
@@ -10273,7 +10324,7 @@ The calling intervals for our exomes include the bait-covered regions ±50 bp. T
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
@@ -10283,14 +10334,14 @@ The calling intervals for our exomes include the bait-covered regions ±50 bp. T
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
             Hide all answers in this section
           </button>
           <ul
-            className="c17"
+            className="c20"
           >
             <li>
               <details>
@@ -10300,10 +10351,10 @@ The calling intervals for our exomes include the bait-covered regions ±50 bp. T
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10327,10 +10378,10 @@ Mitochondrial DNA variants are called using a specialized GATK pipeline that add
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10354,10 +10405,10 @@ The gnomAD v3.1 data set contains 76,156 whole genomes, of which 56,434 samples 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10381,10 +10432,10 @@ Nuclear sequences of mitochondrial origin (NUMTs) are derived from pieces of mtD
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10408,10 +10459,10 @@ In gnomAD v3.1 we chose to filter out variants with heteroplasmy below 10%, sinc
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10435,10 +10486,10 @@ mtDNA does not recombine and is inherited maternally. mtDNA sequences have histo
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10462,10 +10513,10 @@ Variants that are homoplasmic in any of the ~5000 haplogroups in the [Phylotree]
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10489,10 +10540,10 @@ For each variant, we report the overall population frequency across all gnomAD s
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -10516,13 +10567,13 @@ We report allele frequencies by mitochondrial haplogroup as well as by [inferred
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <h4>
                     N lineages ("Eurasian")
                   </h4>
                   <table
-                    className="c21 c27"
+                    className="c24 c30"
                   >
                     <thead>
                       <tr>
@@ -10812,7 +10863,7 @@ We report allele frequencies by mitochondrial haplogroup as well as by [inferred
                     L lineages ("African")
                   </h4>
                   <table
-                    className="c21 c27"
+                    className="c24 c30"
                   >
                     <thead>
                       <tr>
@@ -10946,7 +10997,7 @@ We report allele frequencies by mitochondrial haplogroup as well as by [inferred
                     M lineages ("Asian")
                   </h4>
                   <table
-                    className="c21 c27"
+                    className="c24 c30"
                   >
                     <thead>
                       <tr>
@@ -11087,10 +11138,10 @@ We report allele frequencies by mitochondrial haplogroup as well as by [inferred
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <select
-                    className="c28 c29"
+                    className="c31 c32"
                     id="haplogroup-selected"
                     onChange={[Function]}
                     value="All"
@@ -11251,7 +11302,7 @@ We report allele frequencies by mitochondrial haplogroup as well as by [inferred
                     </optgroup>
                   </select>
                   <select
-                    className="c28 c29"
+                    className="c31 c32"
                     id="ancestry-selected"
                     onChange={[Function]}
                     value="All"
@@ -11317,7 +11368,7 @@ We report allele frequencies by mitochondrial haplogroup as well as by [inferred
                     </optgroup>
                   </select>
                   <table
-                    className="c21 c30"
+                    className="c24 c33"
                   >
                     <thead>
                       <tr>
@@ -11370,10 +11421,10 @@ We report allele frequencies by mitochondrial haplogroup as well as by [inferred
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -11417,10 +11468,10 @@ Mitochondrial variants were subjected to mitochondrial-specific filters and flag
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -11440,14 +11491,14 @@ Homoplasmic and heteroplasmic counts for all sites can be downloaded in VCF form
         </div>
         <div>
           <span
-            className="c11"
+            className="c14"
           >
             <h3
-              className="c14"
+              className="c15"
             >
               <a
                 aria-hidden="true"
-                className="c12 c13"
+                className="c16 c17"
                 href="#variant-co-occurrence"
                 id="variant-co-occurrence"
               >
@@ -11465,7 +11516,7 @@ Homoplasmic and heteroplasmic counts for all sites can be downloaded in VCF form
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
@@ -11475,14 +11526,14 @@ Homoplasmic and heteroplasmic counts for all sites can be downloaded in VCF form
           <button
             backgroundColor="#f8f9fa"
             borderColor="#6c757d"
-            className="c15 c16"
+            className="c18 c19"
             onClick={[Function]}
             type="button"
           >
             Hide all answers in this section
           </button>
           <ul
-            className="c17"
+            className="c20"
           >
             <li>
               <details>
@@ -11492,10 +11543,10 @@ Homoplasmic and heteroplasmic counts for all sites can be downloaded in VCF form
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -11519,10 +11570,10 @@ We used the exome sequencing samples from gnomAD v2.1 (n = 125,748; GRCh37) to e
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -11550,10 +11601,10 @@ For more information, see our [publication](https://www.nature.com/articles/s415
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -11577,10 +11628,10 @@ When the probability of a pair of variants being in _trans_ (P<sub>trans</sub>) 
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -11604,10 +11655,10 @@ We suggest using the population-specific estimates, when available and when ance
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---
@@ -11637,10 +11688,10 @@ Finally, the likelihood that the variants are on different haplotypes is calcula
                   </h4>
                 </summary>
                 <div
-                  className="c18"
+                  className="c21"
                 >
                   <div
-                    className="c19"
+                    className="c22"
                     dangerouslySetInnerHTML={
                       {
                         "__html": "---

@@ -11,7 +11,8 @@ import SnvsPerBPAvg from '../../about/stats/snvs_per_bp_avg.png'
 
 import DocumentTitle from '../DocumentTitle'
 import Histogram from '../Histogram'
-import { SectionHeading } from '../help/HelpPage'
+import { SectionHeading } from '../AnchorLink'
+import useScrollToHash from '../useScrollToHash'
 import InfoPage from '../InfoPage'
 import Link from '../Link'
 
@@ -177,6 +178,7 @@ const barGraphTooltip = (row: any) => (
 )
 
 const StatsPage = () => {
+  useScrollToHash()
   return (
     <InfoPage>
       <DocumentTitle title="Stats" />
@@ -227,9 +229,11 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="age-and-sex-distribution">
-            What is the age and sex distribution in gnomAD?
-          </SectionHeading>
+          <SectionHeading
+            id="age-and-sex-distribution"
+            title="What is the age and sex distribution in gnomAD?"
+            inlineLink
+          />
           <TwoColumnLayout>
             <ResponsiveGnomadSamplesContainer>
               <h3>Age</h3>
@@ -283,7 +287,7 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="samples">Where do gnomAD samples come from?</SectionHeading>
+          <SectionHeading id="samples" title="Where do gnomAD samples come from?" inlineLink />
           <div style={{ width: '100%' }}>
             <TwoColumnLayout>
               <StatsHighlightBlock color={gnomadBlue} title="308" text="Data Contributors" />
@@ -315,7 +319,7 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="diversity">Diversity in gnomAD</SectionHeading>
+          <SectionHeading id="diversity" title="Diversity in gnomAD" inlineLink />
 
           <h3 style={{ marginBottom: '2em' }}>Genetic ancestry groups in gnomAD by version</h3>
 
@@ -392,9 +396,11 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="study-provided-labels">
-            Study-provided labels and genetic ancestry groups
-          </SectionHeading>
+          <SectionHeading
+            id="study-provided-labels"
+            title="Study-provided labels and genetic ancestry groups"
+            inlineLink
+          />
 
           <p>
             The following table is provided in order to present how our inferred genetic ancestry
@@ -415,7 +421,7 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="study-diseases">Study Diseases in gnomAD</SectionHeading>
+          <SectionHeading id="study-diseases" title="Study Diseases in gnomAD" inlineLink />
 
           <p style={{ marginBottom: '2em' }}>
             During the sample aggregation phase of v4 we began collecting study-disease of interest
@@ -432,7 +438,7 @@ const StatsPage = () => {
         </StatsSection>
 
         <StatsSection>
-          <SectionHeading id="browser">gnomAD Browser Stats</SectionHeading>
+          <SectionHeading id="browser" title="gnomAD Browser Stats" inlineLink />
           <p>{`The gnomAD browser averages ~200,000 page views per week and had >377,000 unique users in the last year`}</p>
           <TwoColumnLayout>
             <ResponsiveHalfWidthColumn>

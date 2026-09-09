@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 // How long to keep re-aligning after mount while the rest of the page renders.
 const SETTLE_TIMEOUT_MS = 2000
 
-// App.tsx scrolls before query-loaded sections exist. Data-loaded pages retry here while
+// App.tsx can scroll before lazy or query-loaded sections exist. Pages retry here while
 // layout settles: short documents can clamp scrolling, and later content can move an already
 // aligned target. Stop after the bounded window or as soon as the reader takes over.
 const useScrollToHash = () => {

@@ -116,12 +116,23 @@ type SectionHeadingProps = Omit<
 > & {
   id: string
   title: string
+  // Reserve the full hit area when there is not enough space around the heading.
+  inlineLink?: boolean
   children?: React.ReactNode
 }
 
-export const SectionHeading = ({ id, title, children, ...props }: SectionHeadingProps) => (
+export const SectionHeading = ({
+  id,
+  title,
+  inlineLink = false,
+  children,
+  ...props
+}: SectionHeadingProps) => (
   <Heading {...props} id={id}>
     <SectionLink
+      style={
+        inlineLink ? { position: 'static', transform: 'none', display: 'inline-flex' } : undefined
+      }
       href={`#${id}`}
       aria-label={`Copy link to ${title}`}
       onClick={() => {

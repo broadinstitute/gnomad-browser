@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { Button, ExternalLink, List, Modal, PrimaryButton, TextButton } from '@gnomad/ui'
 
-import { withAnchor } from '../AnchorLink'
+import { SectionHeading } from '../AnchorLink'
 import { logButtonClick } from '../analytics'
 
 export const FileList = styled(List)`
@@ -12,21 +12,19 @@ export const FileList = styled(List)`
   }
 `
 
-type BaseSectionTitleProps = { subject?: string }
+type SectionTitleProps = { $subject?: 'release' | 'datasets' }
 
-const BaseSectionTitle = styled.h2<BaseSectionTitleProps>`
+export const SectionTitle = styled(SectionHeading).attrs({ inlineLink: true })<SectionTitleProps>`
   font-size: ${(props) => {
-    if (props.subject === 'release') {
+    if (props.$subject === 'release') {
       return '2.25rem'
     }
-    if (props.subject === 'datasets') {
+    if (props.$subject === 'datasets') {
       return '1.88rem'
     }
     return '1.5rem'
   }};
 `
-
-export const SectionTitle = styled(withAnchor(BaseSectionTitle))``
 
 export const StyledParagraph = styled.p`
   padding-bottom: 1rem;
