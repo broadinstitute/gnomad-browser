@@ -20,6 +20,7 @@ const parseProxyConfig = (config: any) => {
 }
 
 const config: Record<string, any> = {
+  NODE_ENV: env.NODE_ENV || 'development',
   // Elasticsearch
   ELASTICSEARCH_URL: env.ELASTICSEARCH_URL,
   ELASTICSEARCH_USERNAME: env.ELASTICSEARCH_USERNAME,
