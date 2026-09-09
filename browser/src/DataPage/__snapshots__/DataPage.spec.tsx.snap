@@ -363,7 +363,8 @@ exports[`Data Page has no unexpected changes 1`] = `
   <div
     className="c4"
   >
-    <div
+    <nav
+      aria-label="Data sections"
       className="c5"
     />
   </div>

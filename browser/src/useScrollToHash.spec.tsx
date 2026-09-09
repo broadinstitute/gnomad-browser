@@ -45,11 +45,11 @@ describe('useScrollToHash', () => {
     jest.restoreAllMocks()
   })
 
-  test('scrolls to the element identified by the hash', async () => {
+  test('scrolls to the hash target without inheriting CSS smooth scrolling', async () => {
     window.location.hash = '#age-distribution'
     render(<TestComponent />)
     await flushAnimationFrames()
-    expect(scrollIntoView).toHaveBeenCalled()
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'instant' })
   })
 
   test('keeps re-aligning while the page is still growing', async () => {

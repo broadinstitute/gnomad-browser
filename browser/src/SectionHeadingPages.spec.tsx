@@ -75,6 +75,23 @@ test.each([
     expect(screen.getByRole('status').textContent).toContain('Link copied')
 
     if (path === '/data') {
+      const contents = screen.getByRole('navigation', { name: 'Data sections' })
+      expect(
+        within(contents)
+          .getAllByRole('link')
+          .map((item) => ({
+            text: item.textContent,
+            href: item.getAttribute('href'),
+          }))
+      ).toEqual([
+        { text: 'Summary', href: '#summary' },
+        { text: 'v4 Downloads', href: '#v4' },
+        { text: 'v3 Downloads', href: '#v3' },
+        { text: 'v2 Liftover Downloads', href: '#v2-liftover' },
+        { text: 'v2 Downloads', href: '#v2' },
+        { text: 'ExAC Downloads', href: '#exac' },
+        { text: 'gnomAD API', href: '#api' },
+      ])
       expect(getComputedStyle(document.getElementById('v4')!).fontSize).toBe('2.25rem')
       expect(getComputedStyle(document.getElementById('v4-core-dataset')!).fontSize).toBe('1.88rem')
       expect(getComputedStyle(heading).fontSize).toBe('1.5rem')

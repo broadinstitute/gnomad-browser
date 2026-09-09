@@ -48,7 +48,8 @@ const useScrollToHash = () => {
 
       const target = document.getElementById(id)
       if (target && Math.abs(target.getBoundingClientRect().top) > 1) {
-        target.scrollIntoView()
+        // Animated scrolling would restart on every frame on pages with smooth-scroll CSS.
+        target.scrollIntoView({ behavior: 'instant' })
       }
 
       if (performance.now() - start < SETTLE_TIMEOUT_MS) {
