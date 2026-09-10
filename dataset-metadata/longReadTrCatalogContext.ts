@@ -40,6 +40,21 @@ export type LongReadTrTableCatalogContext = Omit<LongReadTrCatalogContext, 'cata
     | null
 }
 
+/**
+ * Optional metadata carried by the dedicated gene query. Provenance fields are
+ * independent accepted-row projections, NOT aliases of the catalog response.
+ * Other entry points/REST rows may omit all fields and must fail admission closed.
+ */
+export type LongReadTrTableCatalogRow = {
+  tr_locus_id?: string | null
+  lr_cohort?: LongReadTrCatalogCohort | null
+  data_source?: string | null
+  reference_genome?: string | null
+  source_release?: string | null
+  source_run_id?: string | null
+  tr_locus_short_read_context?: LongReadTrTableCatalogContext | null
+}
+
 type CompleteExactContext<T extends LongReadTrCatalogContext> = T & {
   catalog_record: NonNullable<T['catalog_record']>
   matched_component_index: number
@@ -50,7 +65,7 @@ type CompleteExactContext<T extends LongReadTrCatalogContext> = T & {
 /**
  * Existing LR-page completeness gate, extracted without changing its behavior.
  * This consumes a resolver-validated response; it does not perform a catalog join
- * or independently validate a digest. Page wiring is intentionally separate.
+ * or independently validate a digest. Tables additionally bind row/source identity.
  */
 export const isCompleteExactContext = <T extends LongReadTrCatalogContext>(
   context: T | null | undefined,

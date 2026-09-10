@@ -140,6 +140,9 @@ type LongReadVariant {
   tr_locus_presentation: LongReadTrPresentation
   tr_locus_bounds: LongReadTrBounds
   tr_locus_component_summary: LongReadTrComponentSummary
+  # Optional frozen-catalog context, exact-only and bound to this row's accepted
+  # Y1 source run. Unavailable/stale/non-TR rows return null, never inferred matches.
+  tr_locus_short_read_context: LongReadTrShortReadContext
   tr_structure: String
   allele_size_distribution: [LongReadAlleleSizeDistribution!]
   genotype_distribution: [LongReadGenotypeDistribution!]

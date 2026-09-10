@@ -158,7 +158,9 @@ const graphQLApi = ({ context }: any) =>
   graphqlHTTP(async (request, response, requestParams) => ({
     schema,
     graphiql: true,
-    context,
+    // Resolver memoization/timing state belongs to this request, not the shared
+    // application context (in particular, not the long-lived Elasticsearch client).
+    context: { ...context },
 
     validationRules: [
       joinedPhasedMethylationSingleFieldRule,
