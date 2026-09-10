@@ -27,6 +27,7 @@ from data_pipeline.pipelines.gnomad_v3_mitochondrial_coverage import (
 from data_pipeline.pipelines.gnomad_v3_short_tandem_repeats import pipeline as gnomad_v3_short_tandem_repeats_pipeline
 from data_pipeline.pipelines.gnomad_v4_variants import pipeline as gnomad_v4_variants_pipeline
 from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_coverage_pipeline
+from data_pipeline.pipelines.gnomad_v4_allele_number import pipeline as gnomad_v4_allele_number_pipeline
 from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
 from data_pipeline.pipelines.gnomad_v4_lof_curation_results import pipeline as gnomad_v4_lof_curation_results_pipeline
 from data_pipeline.data_types.variant import compressed_variant_id
@@ -132,6 +133,21 @@ DATASETS_CONFIG = {
     #     ),
     #     "args": {"index": "gnomad_v4_genome_coverage", "id_field": "xpos", "num_shards": 2, "block_size": 10_000},
     # },
+    # Both allele number indices carry one document per base of the release, the
+    # same shape and scale as the coverage indices, so they are sharded the same
+    # way as gnomad_v4_exome_coverage and gnomad_v3_genome_coverage.
+    "gnomad_v4_exome_allele_number": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_allele_number_pipeline.get_output("exome_allele_number").get_output_path())
+        ),
+        "args": {"index": "gnomad_v4_exome_allele_number", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
+    },
+    "gnomad_v4_genome_allele_number": {
+        "get_table": lambda: subset_table(
+            hl.read_table(gnomad_v4_allele_number_pipeline.get_output("genome_allele_number").get_output_path())
+        ),
+        "args": {"index": "gnomad_v4_genome_allele_number", "id_field": "xpos", "num_shards": 48, "block_size": 10_000},
+    },
     "gnomad_v4_lof_curation_results": {
         "get_table": lambda: add_variant_document_id(
             hl.read_table(gnomad_v4_lof_curation_results_pipeline.get_output("lof_curation_results").get_output_path())
