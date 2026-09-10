@@ -19,6 +19,11 @@ type RegionCoverage {
   genome: [CoverageBin!]! @cost(value: 5)
 }
 
+type RegionAlleleNumber {
+  exome: [AlleleNumberBin!]! @cost(value: 5)
+  genome: [AlleleNumberBin!]! @cost(value: 5)
+}
+
 type Region {
   reference_genome: ReferenceGenomeId!
   chrom: String!
@@ -36,6 +41,7 @@ type Region {
   clinvar_variants: [ClinVarVariant!] @cost(value: 10)
 
   coverage(dataset: DatasetId!): RegionCoverage!
+  allele_number(dataset: DatasetId!): RegionAlleleNumber!
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
 
   short_tandem_repeats(dataset: DatasetId!): [ShortTandemRepeat!]! @cost(value: 5)
