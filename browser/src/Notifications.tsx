@@ -70,15 +70,40 @@ class Notifications extends Component<Record<string, never>, State> {
 
   nextNotificationId = 0
 
+  container = React.createRef<HTMLDivElement>()
+
+  viewport: VisualViewport | null = null
+
   componentDidMount() {
     notificationService.subscribe(this.addNotification)
   }
 
+  componentDidUpdate() {
+    if (this.state.notifications.length === 0) {
+      this.stopTrackingViewport()
+      return
+    }
+    if (!this.viewport && window.visualViewport) {
+      this.viewport = window.visualViewport
+      this.viewport.addEventListener('scroll', this.updateViewportPosition)
+      this.viewport.addEventListener('resize', this.updateViewportPosition)
+    }
+    this.updateViewportPosition()
+  }
+
   componentWillUnmount() {
+    this.stopTrackingViewport()
     notificationService.unsubscribe(this.addNotification)
     this.removeTimeouts.forEach((timeout: any) => {
       clearTimeout(timeout)
     })
+  }
+
+  updateViewportPosition = () => {
+    if (this.container.current && this.viewport) {
+      // Mobile panning can move the visible viewport below the fixed layout viewport origin.
+      this.container.current.style.top = `calc(${this.viewport.offsetTop}px + 1rem)`
+    }
   }
 
   addNotification = ({ title, message = null, status = 'info', duration = 3 }: any) => {
@@ -99,6 +124,15 @@ class Notifications extends Component<Record<string, never>, State> {
         this.removeNotification(id)
       }, duration * 1000)
     )
+  }
+
+  stopTrackingViewport() {
+    this.viewport?.removeEventListener('scroll', this.updateViewportPosition)
+    this.viewport?.removeEventListener('resize', this.updateViewportPosition)
+    this.viewport = null
+    if (this.container.current) {
+      this.container.current.style.top = ''
+    }
   }
 
   removeNotification(id: any) {
@@ -124,7 +158,7 @@ class Notifications extends Component<Record<string, never>, State> {
               </div>
             ))}
         </PoliteAnnouncements>
-        <NotificationsContainer>
+        <NotificationsContainer ref={this.container}>
           {notifications.map((notification) => {
             const { id, title, message, status } = notification
             return (

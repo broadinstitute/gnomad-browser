@@ -4,14 +4,27 @@ import { afterEach, beforeEach, describe, expect, jest, test } from '@jest/globa
 
 import Notifications, { showNotification } from './Notifications'
 
+const originalVisualViewport = Object.getOwnPropertyDescriptor(window, 'visualViewport')
+
 describe('Notifications', () => {
   beforeEach(() => {
     jest.useFakeTimers()
+    Object.defineProperty(window, 'visualViewport', {
+      value: undefined,
+      configurable: true,
+      writable: true,
+    })
   })
 
   afterEach(() => {
     jest.runOnlyPendingTimers()
     jest.useRealTimers()
+    jest.restoreAllMocks()
+    if (originalVisualViewport) {
+      Object.defineProperty(window, 'visualViewport', originalVisualViewport)
+    } else {
+      Reflect.deleteProperty(window, 'visualViewport')
+    }
   })
 
   test('positions feedback relative to the viewport with a narrow-screen width bound', () => {
@@ -100,6 +113,90 @@ describe('Notifications', () => {
     })
     expect(screen.queryByRole('alert')).toBeNull()
     unmount()
+  })
+
+  describe('mobile visual viewport', () => {
+    let viewport: EventTarget & { offsetTop: number }
+
+    beforeEach(() => {
+      viewport = Object.assign(new EventTarget(), { offsetTop: 462 })
+      Object.defineProperty(window, 'visualViewport', { value: viewport, configurable: true })
+      expect(window.visualViewport).toBe(viewport)
+    })
+
+    test.each([
+      { status: 'success', title: 'Link copied' },
+      { status: 'error', title: 'Unable to copy link' },
+    ])(
+      'keeps $status feedback below the visible top without re-rendering on pan',
+      ({ status, title }) => {
+        const renderSpy = jest.spyOn(Notifications.prototype, 'render')
+        const scrollSpy = jest.spyOn(window, 'scrollTo')
+        const { container, unmount } = render(<Notifications />)
+        const focused = document.activeElement
+        viewport.offsetTop = 500
+        act(() => {
+          showNotification({ title, status })
+        })
+        const stack = container.querySelector('strong')!.parentElement!.parentElement!
+        expect(stack.style.top).toBe('calc(500px + 1rem)')
+        viewport.offsetTop = 462
+        act(() => {
+          showNotification({ title, status })
+        })
+        expect(stack.style.top).toBe('calc(462px + 1rem)')
+        const renders = renderSpy.mock.calls.length
+
+        act(() => {
+          viewport.offsetTop = 300
+          viewport.dispatchEvent(new Event('scroll'))
+        })
+        expect(stack.style.top).toBe('calc(300px + 1rem)')
+        act(() => {
+          viewport.offsetTop = 0
+          viewport.dispatchEvent(new Event('resize'))
+        })
+        expect(stack.style.top).toBe('calc(0px + 1rem)')
+        expect(renderSpy).toHaveBeenCalledTimes(renders)
+        expect(document.activeElement).toBe(focused)
+        expect(scrollSpy).not.toHaveBeenCalled()
+        unmount()
+      }
+    )
+
+    test('listens only while notifications exist and re-reads the viewport for the next batch', () => {
+      const addListener = jest.spyOn(viewport, 'addEventListener')
+      const removeListener = jest.spyOn(viewport, 'removeEventListener')
+      const { container, unmount } = render(<Notifications />)
+      expect(addListener).not.toHaveBeenCalled()
+      act(() => {
+        showNotification({ title: 'First', duration: 1 })
+        showNotification({ title: 'Second', duration: 2 })
+      })
+      const stack = container.querySelector('strong')!.parentElement!.parentElement!
+      expect(addListener.mock.calls.map(([event]) => event)).toEqual(['scroll', 'resize'])
+      act(() => {
+        jest.advanceTimersByTime(1000)
+      })
+      expect(removeListener).not.toHaveBeenCalled()
+      act(() => {
+        jest.advanceTimersByTime(1000)
+      })
+      expect(removeListener.mock.calls).toEqual(addListener.mock.calls)
+      expect(stack.style.top).toBe('')
+      viewport.offsetTop = 200
+      viewport.dispatchEvent(new Event('scroll'))
+      expect(stack.style.top).toBe('')
+
+      act(() => {
+        showNotification({ title: 'Next batch' })
+      })
+      expect(stack.style.top).toBe('calc(200px + 1rem)')
+      expect(addListener).toHaveBeenCalledTimes(4)
+      unmount()
+      expect(removeListener.mock.calls).toEqual(addListener.mock.calls)
+      expect(jest.getTimerCount()).toBe(0)
+    })
   })
 
   test('unsubscribes and clears all removal timers on unmount', () => {
