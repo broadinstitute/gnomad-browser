@@ -13,7 +13,7 @@ port_output="$(
 )"
 grep -q '^mode=y1$' <<<"$port_output"
 grep -q '^LR_Y1_ENABLED=true$' <<<"$port_output"
-grep -q '^LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:9134$' <<<"$port_output"
+grep -Fxq 'LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:9134?request_timeout=120000' <<<"$port_output"
 grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_wrong_database$' <<<"$port_output"
 grep -q '^LR_Y1_GCP_CH_VM=gnomad-lr-y1-full-genome-clickhouse$' <<<"$port_output"
 if grep -Eq 'inherited-legacy|CHR22_MIXED|RUN_ID|published|candidate|accepted.*r2' <<<"$port_output"; then
@@ -27,9 +27,9 @@ gcp_only_output="$(
       "$ROOT_DIR/start_lr_dev.sh" --gcp-clickhouse
 )"
 grep -q '^mode=y1$' <<<"$gcp_only_output"
-grep -q '^CLICKHOUSE_URL=http://127.0.0.1:8126$' <<<"$gcp_only_output"
+grep -Fxq 'CLICKHOUSE_URL=http://127.0.0.1:8126?request_timeout=120000' <<<"$gcp_only_output"
 grep -q '^LR_Y1_ENABLED=true$' <<<"$gcp_only_output"
-grep -q '^LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:8126$' <<<"$gcp_only_output"
+grep -Fxq 'LR_Y1_CLICKHOUSE_URL=http://127.0.0.1:8126?request_timeout=120000' <<<"$gcp_only_output"
 grep -q '^LR_Y1_CLICKHOUSE_DATABASE=gnomad_lr_y1_scratch_demo_full_genome_20260803$' <<<"$gcp_only_output"
 grep -q '^LR_Y1_GCP_CH_VM=gnomad-lr-y1-full-genome-clickhouse$' <<<"$gcp_only_output"
 grep -q "^LR_Y1_PRIMARY_MANIFEST_PATH=$ROOT_DIR/graphql-api/config/y1-presentation-primary-manifests.json$" <<<"$gcp_only_output"

@@ -124,6 +124,12 @@ else
     Y1_CH_URL="${LR_Y1_CLICKHOUSE_URL:-}"
 fi
 
+# Full-genome admission can exceed the JS client's 30s socket default.
+# Keep this allowance local to the dev launcher; preserve all source checks.
+if [[ "$USE_GCP_CH" == true && "$USE_LEGACY_GCP_CH" != true ]]; then
+    Y1_CH_URL+="?request_timeout=120000"
+fi
+
 if [[ -n "$Y1_VM" && "$USE_GCP_CH" != true ]]; then
     die "--y1-clickhouse-vm requires --gcp-clickhouse"
 fi
