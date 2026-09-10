@@ -120,7 +120,7 @@ const queryComplexityCreateError = (max: any, actual: any) => {
 const graphQLApi = ({ context }: any) =>
   graphqlHTTP(async (request, response, requestParams) => ({
     schema,
-    graphiql: true,
+    graphiql: config.NODE_ENV !== 'production',
     context,
 
     validationRules: [

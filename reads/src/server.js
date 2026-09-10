@@ -25,6 +25,7 @@ const parseProxyConfig = (config) => {
 }
 
 const config = {
+  NODE_ENV: process.env.NODE_ENV || 'development',
   PORT: JSON.parse(process.env.PORT || '80'),
   TRUST_PROXY: parseProxyConfig(process.env.TRUST_PROXY || 'false'),
 }
@@ -42,7 +43,7 @@ app.use(
   '/reads',
   graphqlHTTP({
     schema,
-    graphiql: true,
+    graphiql: config.NODE_ENV !== 'production',
     customFormatErrorFn: formatError,
   })
 )
