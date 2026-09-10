@@ -4,6 +4,7 @@ import { mergeTypeDefs, mergeResolvers } from '@graphql-tools/merge'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 
 import aliasResolvers from './resolvers/aliases'
+import alleleNumberResolvers from './resolvers/allele-number'
 import browserMetadataResolvers from './resolvers/browser-metadata'
 import clinVarVariantResolvers from './resolvers/clinvar-variants'
 import clinVarVariantFieldResolvers from './resolvers/clinvar-variant-fields'
@@ -33,6 +34,7 @@ const typeDefs = mergeTypeDefs([
 
 const resolvers = mergeResolvers([
   aliasResolvers,
+  alleleNumberResolvers,
   browserMetadataResolvers,
   clinVarVariantResolvers,
   clinVarVariantFieldResolvers,
