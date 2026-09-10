@@ -1,0 +1,31 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: bash
+  args:
+    - -c
+    - |
+      set -euo pipefail
+
+      echo "Deploying Reads, image tag: ${_IMAGE_TAG}"
+
+      gcloud compute instance-groups managed all-instances-config update \
+        "${_MIG_NAME}" \
+        --zone="${_SERVICE_ZONE}" \
+        --metadata="image-tag=${_IMAGE_TAG}"
+
+      echo "Waiting for Reads MIG rollout to complete and become healthy..."
+
+      gcloud compute instance-groups managed wait-until \
+        "${_MIG_NAME}" \
+        --zone="${_SERVICE_ZONE}" \
+        --stable \
+        --timeout=1800
+
+      gcloud compute instance-groups managed list-instances \
+        "${_MIG_NAME}" \
+        --zone="${_SERVICE_ZONE}" \
+        --format="table(name,status,healthState,instanceTemplate,lastAttempt.errors)"
+
+      echo "MIG is stable. Deployment complete."
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
