@@ -79,5 +79,14 @@ spec:
               port: http
             initialDelaySeconds: 3
             periodSeconds: 10
+            timeoutSeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /health/ready
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 10
       nodeSelector:
         cloud.google.com/gke-nodepool: 'main-pool'
