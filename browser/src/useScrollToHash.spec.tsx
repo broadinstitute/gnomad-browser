@@ -105,6 +105,42 @@ describe('useScrollToHash', () => {
     }
   )
 
+  test.each(['#another-section', ''])(
+    'stops aligning and detaches listeners when the hash changes to "%s"',
+    (hash) => {
+      const frameCallbacks: FrameRequestCallback[] = []
+      const requestFrame = jest
+        .spyOn(window, 'requestAnimationFrame')
+        .mockImplementation((callback) => {
+          frameCallbacks.push(callback)
+          return frameCallbacks.length
+        })
+      const removeEventListener = jest.spyOn(window, 'removeEventListener')
+      jest.spyOn(performance, 'now').mockReturnValue(0)
+      window.location.hash = '#age-distribution'
+      render(<TestComponent />)
+
+      act(() => {
+        frameCallbacks.shift()!(0)
+      })
+      expect(scrollIntoView).toHaveBeenCalledTimes(1)
+      expect(frameCallbacks).toHaveLength(1)
+
+      window.location.hash = hash
+      act(() => {
+        frameCallbacks.shift()!(16)
+      })
+
+      expect(scrollIntoView).toHaveBeenCalledTimes(1)
+      expect(requestFrame).toHaveBeenCalledTimes(2)
+      expect(frameCallbacks).toHaveLength(0)
+      expect(removeEventListener).toHaveBeenCalledWith('wheel', expect.any(Function))
+      expect(removeEventListener).toHaveBeenCalledWith('touchstart', expect.any(Function))
+      expect(removeEventListener).toHaveBeenCalledWith('keydown', expect.any(Function))
+      expect(removeEventListener).toHaveBeenCalledWith('mousedown', expect.any(Function))
+    }
+  )
+
   test('stops scheduling frames and detaches listeners when the settle window expires', () => {
     const frameCallbacks: FrameRequestCallback[] = []
     const requestFrame = jest
