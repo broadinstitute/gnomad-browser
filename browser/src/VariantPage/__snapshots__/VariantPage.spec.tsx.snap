@@ -643,7 +643,24 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -674,7 +691,24 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -689,8 +723,26 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -1438,7 +1490,24 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -1465,7 +1534,24 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -1617,7 +1703,24 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="genomic-constraint"
+        >
+          <a
+            aria-label="Copy link to Genomic Constraint of Surrounding 1kb Region"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#genomic-constraint"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
           Genomic Constraint of Surrounding 1kb Region
         </h2>
         This variant does not have non coding constraint data for the surrounding region.
@@ -1629,56 +1732,55 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -3260,7 +3362,24 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -4803,7 +4922,24 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -7364,7 +7500,24 @@ exports[`VariantPage with the dataset "gnomad_r3" has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -8073,7 +8226,24 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -8104,7 +8274,24 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -8119,8 +8306,26 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -8868,7 +9073,24 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -8895,7 +9117,24 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -9047,7 +9286,24 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="genomic-constraint"
+        >
+          <a
+            aria-label="Copy link to Genomic Constraint of Surrounding 1kb Region"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#genomic-constraint"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
           Genomic Constraint of Surrounding 1kb Region
         </h2>
         This variant does not have non coding constraint data for the surrounding region.
@@ -9059,56 +9315,55 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -10693,7 +10948,24 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -12236,7 +12508,24 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -14797,7 +15086,24 @@ exports[`VariantPage with the dataset "gnomad_r3_controls_and_biobanks" has no u
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -15506,7 +15812,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -15537,7 +15860,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -15552,8 +15892,26 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -16301,7 +16659,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -16328,7 +16703,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -16480,7 +16872,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="genomic-constraint"
+        >
+          <a
+            aria-label="Copy link to Genomic Constraint of Surrounding 1kb Region"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#genomic-constraint"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
           Genomic Constraint of Surrounding 1kb Region
         </h2>
         This variant does not have non coding constraint data for the surrounding region.
@@ -16492,56 +16901,55 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -18126,7 +18534,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -19669,7 +20094,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -22230,7 +22672,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_cancer" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -22939,7 +23398,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -22970,7 +23446,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -22985,8 +23478,26 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -23734,7 +24245,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -23761,7 +24289,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -23913,7 +24458,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="genomic-constraint"
+        >
+          <a
+            aria-label="Copy link to Genomic Constraint of Surrounding 1kb Region"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#genomic-constraint"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
           Genomic Constraint of Surrounding 1kb Region
         </h2>
         This variant does not have non coding constraint data for the surrounding region.
@@ -23925,56 +24487,55 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -25559,7 +26120,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -27102,7 +27680,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -29663,7 +30258,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_neuro" has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -30372,7 +30984,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -30403,7 +31032,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -30418,8 +31064,26 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -31167,7 +31831,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -31194,7 +31875,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -31346,7 +32044,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="genomic-constraint"
+        >
+          <a
+            aria-label="Copy link to Genomic Constraint of Surrounding 1kb Region"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#genomic-constraint"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
           Genomic Constraint of Surrounding 1kb Region
         </h2>
         This variant does not have non coding constraint data for the surrounding region.
@@ -31358,56 +32073,55 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -32992,7 +33706,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -34535,7 +35266,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -37096,7 +37844,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_topmed" has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -37805,7 +38570,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -37836,7 +38618,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -37851,8 +38650,26 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -38600,7 +39417,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -38627,7 +39461,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -38779,7 +39630,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <h2>
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="genomic-constraint"
+        >
+          <a
+            aria-label="Copy link to Genomic Constraint of Surrounding 1kb Region"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#genomic-constraint"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
           Genomic Constraint of Surrounding 1kb Region
         </h2>
         This variant does not have non coding constraint data for the surrounding region.
@@ -38791,56 +39659,55 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <p>
           Age distribution is based on the full gnomAD dataset, not the selected subset.
         </p>
@@ -40425,7 +41292,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -41968,7 +42852,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -44529,7 +45430,24 @@ exports[`VariantPage with the dataset "gnomad_r3_non_v2" has no unexpected chang
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -45165,7 +46083,24 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -45184,7 +46119,24 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -45199,8 +46151,26 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -45711,7 +46681,24 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -45738,7 +46725,24 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -45893,56 +46897,55 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -46881,7 +47884,24 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -48405,7 +49425,24 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -50749,7 +51786,24 @@ exports[`VariantPage with the dataset exac has no unexpected changes 1`] = `
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -51521,7 +52575,24 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -51540,7 +52611,24 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -51555,8 +52643,26 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -52111,7 +53217,24 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -52138,7 +53261,24 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -52293,56 +53433,55 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -54053,7 +55192,24 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -55599,7 +56755,24 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -58300,7 +59473,24 @@ exports[`VariantPage with the dataset gnomad_r2_1 has no unexpected changes 1`] 
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -59072,7 +60262,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -59091,7 +60298,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -59106,8 +60330,26 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -59662,7 +60904,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -59689,7 +60948,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -59844,56 +61120,55 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -61604,7 +62879,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -63150,7 +64442,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -65851,7 +67160,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_controls has no unexpected cha
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -66623,7 +67949,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -66642,7 +67985,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -66657,8 +68017,26 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -67213,7 +68591,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -67240,7 +68635,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -67395,56 +68807,55 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -69155,7 +70566,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -70701,7 +72129,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -73402,7 +74847,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_cancer has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -74174,7 +75636,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -74193,7 +75672,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -74208,8 +75704,26 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -74764,7 +76278,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -74791,7 +76322,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -74946,56 +76494,55 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -76706,7 +78253,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -78252,7 +79816,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -80953,7 +82534,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_neuro has no unexpected ch
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div
@@ -81725,7 +83323,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="external-resources"
+      >
+        <a
+          aria-label="Copy link to External Resources"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#external-resources"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         External Resources
       </h2>
       <ul
@@ -81744,7 +83359,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
           </a>
         </li>
       </ul>
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="feedback"
+      >
+        <a
+          aria-label="Copy link to Feedback"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#feedback"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Feedback
       </h2>
       <a
@@ -81759,8 +83391,26 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
-        Genetic Ancestry Group Frequencies 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genetic-ancestry-group-frequencies"
+      >
+        <a
+          aria-label="Copy link to Genetic Ancestry Group Frequencies"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genetic-ancestry-group-frequencies"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic Ancestry Group Frequencies
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -82315,7 +83965,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="related-variants"
+      >
+        <a
+          aria-label="Copy link to Related Variants"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#related-variants"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Related Variants
       </h2>
       <div
@@ -82342,7 +84009,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="variant-effect-predictor"
+      >
+        <a
+          aria-label="Copy link to Ensembl Variant Effect Predictor"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#variant-effect-predictor"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Ensembl Variant Effect Predictor
       </h2>
       <div>
@@ -82497,56 +84181,55 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
       <section
         className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
       >
-        <span
-          className="AnchorLink__AnchorWrapper-sc-77ly3x-1 hREWuM"
+        <h2
+          className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+          id="age-distribution"
         >
-          <h2>
-            <a
-              aria-label="Copy link to Age Distribution"
-              className="AnchorLink__AgeDistributionLink-sc-77ly3x-2 bdmffh"
-              href="#age-distribution"
-              id="age-distribution"
-              onClick={[Function]}
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                height={12}
-                src="test-file-stub"
-                width={12}
-              />
-            </a>
-            Age Distribution 
-            <button
-              className="InfoButton__Button-sc-13t5e82-0 faZoWY"
-              onClick={[Function]}
-              type="button"
-            >
-              <img
-                alt=""
-                aria-hidden="true"
-                src="test-file-stub"
-              />
-              <span
-                style={
-                  {
-                    "border": "0",
-                    "clip": "rect(0 0 0 0)",
-                    "height": "1px",
-                    "margin": "-1px",
-                    "overflow": "hidden",
-                    "padding": "0",
-                    "position": "absolute",
-                    "whiteSpace": "nowrap",
-                    "width": "1px",
-                  }
+          <a
+            aria-label="Copy link to Age Distribution"
+            className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+            href="#age-distribution"
+            onClick={[Function]}
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Age Distribution
+           
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
                 }
-              >
-                More information
-              </span>
-            </button>
-          </h2>
-        </span>
+              }
+            >
+              More information
+            </span>
+          </button>
+        </h2>
         <div>
           <div
             className="GnomadAgeDistribution__LegendWrapper-sc-ty24oq-0 fPhNex"
@@ -84257,7 +85940,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="genotype-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Genotype Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#genotype-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Genotype Quality Metrics
       </h2>
       <div>
@@ -85803,7 +87503,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 VariantPage__ResponsiveSection-sc-hd87ur-1 kSTBwv hwrSDs"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="site-quality-metrics"
+      >
+        <a
+          aria-label="Copy link to Site Quality Metrics"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#site-quality-metrics"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Site Quality Metrics
       </h2>
       <div
@@ -88504,7 +90221,24 @@ exports[`VariantPage with the dataset gnomad_r2_1_non_topmed has no unexpected c
     <section
       className="VariantPage__Section-sc-hd87ur-0 kSTBwv"
     >
-      <h2>
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="read-data"
+      >
+        <a
+          aria-label="Copy link to Read Data"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#read-data"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
         Read Data
       </h2>
       <div

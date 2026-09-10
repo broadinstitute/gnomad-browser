@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import useHeadsObserver from './downloadsHooks'
 
-const TableOfContents = styled.div`
+const TableOfContents = styled.nav`
   margin-left: 1rem;
 `
 
@@ -24,8 +24,14 @@ const TableOfContentsStyledItem = styled.div<{
   }
 `
 
+type ContentItem = {
+  link: string
+  indent: string
+  text: string
+}
+
 const DataPageTableOfContents = () => {
-  const [headings, setHeadings] = useState([])
+  const [headings, setHeadings] = useState<ContentItem[]>([])
   const { activeId } = useHeadsObserver()
   const [activeSection, setActiveSection] = useState('')
 
@@ -39,15 +45,12 @@ const DataPageTableOfContents = () => {
     return '3.5rem'
   }
 
-  // useEffect to dynamically grab all the section titles on first page load
   useEffect(() => {
-    const elements = Array.from(document.querySelectorAll('a[id]')).map((el) => ({
-      // @ts-expect-error
-      text: el.nextSibling.data,
+    const elements = Array.from(document.querySelectorAll('h2[id]')).map((el) => ({
+      text: el.textContent ?? '',
       link: el.id,
       indent: checkIndent(el.id),
     }))
-    // @ts-expect-error
     setHeadings(elements)
   }, [])
 
@@ -89,15 +92,9 @@ const DataPageTableOfContents = () => {
     )
   }
 
-  type ContentItem = {
-    link: string
-    indent: string
-    text: string
-  }
-
   return (
     <>
-      <TableOfContents>
+      <TableOfContents aria-label="Data sections">
         {/* Filter to only the sections that should show, then render the ToC */}
         {headings
           .filter((item: ContentItem) => filterSection(item.link))

@@ -170,6 +170,7 @@ exports[`Data Page has no unexpected changes 1`] = `
 }
 
 .c1 {
+  padding-left: 44px;
   font-size: 16px;
 }
 
@@ -178,30 +179,44 @@ exports[`Data Page has no unexpected changes 1`] = `
   line-height: 1.4;
 }
 
-.c12 {
-  position: absolute;
-  transform: translate(-15px,calc(50% - 0.5em));
-  display: flex;
-  align-items: center;
-  width: 15px;
-  height: 1em;
-  visibility: hidden;
-  vertical-align: middle;
-}
-
-.c9 {
+.c10 {
   position: relative;
 }
 
-.c9 :hover .c11 {
-  visibility: visible;
+.c12 {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-29px,-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  opacity: 0;
+  vertical-align: middle;
+}
+
+.c12 :hover,
+.c12 :focus,
+.c12 :focus-visible,
+.c9:hover .c12,
+.c9:focus-within .c12 {
+  opacity: 1;
+}
+
+.c12 :focus,
+.c12 :focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -8px;
 }
 
 .c21 li {
   line-height: 1.25;
 }
 
-.c10 {
+.c11 {
   font-size: 1.88rem;
 }
 
@@ -301,6 +316,20 @@ exports[`Data Page has no unexpected changes 1`] = `
   }
 }
 
+@media (hover:none) {
+  .c12 {
+    opacity: 1;
+  }
+}
+
+@media (max-width:1230px) {
+  .c12 {
+    position: static;
+    transform: none;
+    display: inline-flex;
+  }
+}
+
 @media (max-width:900px) {
   .c19 {
     flex-basis: 100%;
@@ -334,7 +363,8 @@ exports[`Data Page has no unexpected changes 1`] = `
   <div
     className="c4"
   >
-    <div
+    <nav
+      aria-label="Data sections"
       className="c5"
     />
   </div>
@@ -383,30 +413,38 @@ exports[`Data Page has no unexpected changes 1`] = `
       .
     </div>
     <div>
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c11"
+        id="summary"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c10 "
-          subject="datasets"
+        <a
+          aria-label="Copy link to Summary"
+          className="c12"
+          href="#summary"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#summary"
-            id="summary"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Summary
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Summary
+      </h2>
       <p
         className="c13"
       >
@@ -621,59 +659,75 @@ exports[`Data Page has no unexpected changes 1`] = `
       </p>
     </div>
     <hr />
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c15"
+      id="v4"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c15 "
-        subject="release"
+      <a
+        aria-label="Copy link to v4 Downloads"
+        className="c12"
+        href="#v4"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#v4"
-          id="v4"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        v4 Downloads
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      v4 Downloads
+    </h2>
     <p
       className="c13"
     >
       The gnomAD v4.1.0 data set contains data from 730,947 exomes and 76,215 whole genomes, all mapped to the GRCh38 reference sequence.
     </p>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c11"
+      id="v4-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c10 "
-        subject="datasets"
+      <a
+        aria-label="Copy link to Core Dataset"
+        className="c12"
+        href="#v4-core-dataset"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#v4-core-dataset"
-          id="v4-core-dataset"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        Core Dataset
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Core Dataset
+    </h2>
     <p
       className="c13"
     >
@@ -682,29 +736,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Variants"
+          className="c12"
+          href="#v4-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-variants"
-            id="v4-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Variants
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Variants
+      </h2>
       <p>
         For more information, read the
          
@@ -3933,29 +3996,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-joint-freq-stats"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Joint Frequency"
+          className="c12"
+          href="#v4-joint-freq-stats"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-joint-freq-stats"
-            id="v4-joint-freq-stats"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Joint Frequency
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Joint Frequency
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -5551,29 +5623,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-all-sites-allele-number"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to All sites allele numbers"
+          className="c12"
+          href="#v4-all-sites-allele-number"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-all-sites-allele-number"
-            id="v4-all-sites-allele-number"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          All sites allele numbers
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        All sites allele numbers
+      </h2>
       <div
         className="c18"
       >
@@ -5736,29 +5817,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-browser-tables"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Browser Tables"
+          className="c12"
+          href="#v4-browser-tables"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-browser-tables"
-            id="v4-browser-tables"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Browser Tables
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Browser Tables
+      </h2>
       <p>
         For more information about these files, see our
          
@@ -5907,29 +5997,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-coverage"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Coverage"
+          className="c12"
+          href="#v4-coverage"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-coverage"
-            id="v4-coverage"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Coverage
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Coverage
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -6004,29 +6103,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-genetic-ancestry-group-classification"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Genetic ancestry group classification"
+          className="c12"
+          href="#v4-genetic-ancestry-group-classification"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-genetic-ancestry-group-classification"
-            id="v4-genetic-ancestry-group-classification"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Genetic ancestry group classification
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic ancestry group classification
+      </h2>
       <p>
         For more information about these files, see our blog post on
          
@@ -6141,29 +6249,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Constraint"
+          className="c12"
+          href="#v4-constraint"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-constraint"
-            id="v4-constraint"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Constraint
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Constraint
+      </h2>
       <p>
         For information on constraint, see our 
         <a
@@ -6461,29 +6578,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-structural-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Structural variants"
+          className="c12"
+          href="#v4-structural-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-structural-variants"
-            id="v4-structural-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Structural variants
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Structural variants
+      </h2>
       <p>
         For information on structural variants, see our
          
@@ -6711,29 +6837,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-copy-number-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Copy number variants"
+          className="c12"
+          href="#v4-copy-number-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-copy-number-variants"
-            id="v4-copy-number-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Copy number variants
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Copy number variants
+      </h2>
       <p>
         For information on copy number variants, see our
          
@@ -6870,29 +7005,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-pext"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Proportion expressed across transcripts (pext)"
+          className="c12"
+          href="#v4-pext"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-pext"
-            id="v4-pext"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Proportion expressed across transcripts (pext)
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Proportion expressed across transcripts (pext)
+      </h2>
       <p>
         For information on pext, see
          
@@ -7037,29 +7181,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-de-novo"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to De novo variants (DNVs)"
+          className="c12"
+          href="#v4-de-novo"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-de-novo"
-            id="v4-de-novo"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          De novo variants (DNVs)
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        De novo variants (DNVs)
+      </h2>
       <p>
         For more information on DNVs, see the
          
@@ -7168,29 +7321,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-clinvar-grch38"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to ClinVar"
+          className="c12"
+          href="#v4-clinvar-grch38"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-clinvar-grch38"
-            id="v4-clinvar-grch38"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          ClinVar
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        ClinVar
+      </h2>
       <p>
         For more information about these files, including how to download a specific previous version of the gnomAD browser ClinVar GRCh38 table, see the
          
@@ -7229,29 +7391,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v4-resources"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Resources"
+          className="c12"
+          href="#v4-resources"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v4-resources"
-            id="v4-resources"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Resources
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Resources
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -7449,18 +7620,67 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c11"
+      id="v4-secondary-analyses"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
+    >
+      <a
+        aria-label="Copy link to Secondary Analyses"
+        className="c12"
+        href="#v4-secondary-analyses"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Secondary Analyses
+    </h2>
+    <p
+      className="c13"
+    >
+      Additional research analyses created using the core gnomAD releases in collaboration with members of the gnomAD steering committee.
+    </p>
+    <section
+      className="c16"
     >
       <h2
-        className="c10 "
-        subject="datasets"
+        className="c9 c10 c17"
+        id="v4-lof-curation-results"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
-          aria-hidden="true"
-          className="c11 c12"
-          href="#v4-secondary-analyses"
-          id="v4-secondary-analyses"
+          aria-label="Copy link to Loss-of-function curation results"
+          className="c12"
+          href="#v4-lof-curation-results"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
           <img
             alt=""
@@ -7470,40 +7690,8 @@ exports[`Data Page has no unexpected changes 1`] = `
             width={12}
           />
         </a>
-        Secondary Analyses
+        Loss-of-function curation results
       </h2>
-    </span>
-    <p
-      className="c13"
-    >
-      Additional research analyses created using the core gnomAD releases in collaboration with members of the gnomAD steering committee.
-    </p>
-    <section
-      className="c16"
-    >
-      <span
-        className="c9"
-      >
-        <h2
-          className="c17 "
-        >
-          <a
-            aria-hidden="true"
-            className="c11 c12"
-            href="#v4-lof-curation-results"
-            id="v4-lof-curation-results"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Loss-of-function curation results
-        </h2>
-      </span>
       <p>
         For information on v4 loss-of-function curation results, see
          
@@ -7589,59 +7777,75 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c15"
+      id="v3"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c15 "
-        subject="release"
+      <a
+        aria-label="Copy link to v3 Downloads"
+        className="c12"
+        href="#v3"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#v3"
-          id="v3"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        v3 Downloads
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      v3 Downloads
+    </h2>
     <p
       className="c13"
     >
       The gnomAD v3.1.2 data set contains 76,156 whole genomes (and no exomes), all mapped to the GRCh38 reference sequence.
     </p>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c11"
+      id="v3-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c10 "
-        subject="datasets"
+      <a
+        aria-label="Copy link to Core Dataset"
+        className="c12"
+        href="#v3-core-dataset"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#v3-core-dataset"
-          id="v3-core-dataset"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        Core Dataset
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Core Dataset
+    </h2>
     <p
       className="c13"
     >
@@ -7650,29 +7854,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Variants"
+          className="c12"
+          href="#v3-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-variants"
-            id="v3-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Variants
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Variants
+      </h2>
       <p>
         <span
           className="c24"
@@ -9293,29 +9506,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-coverage"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Coverage"
+          className="c12"
+          href="#v3-coverage"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-coverage"
-            id="v3-coverage"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Coverage
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Coverage
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -9390,29 +9612,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-hgdp-1kg"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to HGDP + 1KG callset"
+          className="c12"
+          href="#v3-hgdp-1kg"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-hgdp-1kg"
-            id="v3-hgdp-1kg"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          HGDP + 1KG callset
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        HGDP + 1KG callset
+      </h2>
       <p>
         These files contain individual genotypes for all samples in the HGDP and 1KG subsets. For more information, see the
          
@@ -11148,29 +11379,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-mitochondrial-dna"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Mitochondrial DNA (mtDNA)"
+          className="c12"
+          href="#v3-mitochondrial-dna"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-mitochondrial-dna"
-            id="v3-mitochondrial-dna"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Mitochondrial DNA (mtDNA)
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Mitochondrial DNA (mtDNA)
+      </h2>
       <p>
         For details about these files, see the
          
@@ -11350,29 +11590,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-ancestry-classification"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Genetic ancestry group classification"
+          className="c12"
+          href="#v3-ancestry-classification"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-ancestry-classification"
-            id="v3-ancestry-classification"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Genetic ancestry group classification
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Genetic ancestry group classification
+      </h2>
       <p>
         For more information about these files, see our blog post on
          
@@ -11454,29 +11703,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-local-ancestry"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Local ancestry"
+          className="c12"
+          href="#v3-local-ancestry"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-local-ancestry"
-            id="v3-local-ancestry"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Local ancestry
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Local ancestry
+      </h2>
       <p>
         For more information about these files, see our blog posts on local ancestry inference for
          
@@ -11580,29 +11838,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-short-tandem-repeats"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Short tandem repeats"
+          className="c12"
+          href="#v3-short-tandem-repeats"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-short-tandem-repeats"
-            id="v3-short-tandem-repeats"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Short tandem repeats
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Short tandem repeats
+      </h2>
       <p>
         These files contain the data that underlies the
          
@@ -11961,18 +12228,67 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c11"
+      id="v3-secondary-analyses"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
+    >
+      <a
+        aria-label="Copy link to Secondary Analyses"
+        className="c12"
+        href="#v3-secondary-analyses"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Secondary Analyses
+    </h2>
+    <p
+      className="c13"
+    >
+      Additional research analyses created using the core gnomAD releases in collaboration with members of the gnomAD steering committee.
+    </p>
+    <section
+      className="c16"
     >
       <h2
-        className="c10 "
-        subject="datasets"
+        className="c9 c10 c17"
+        id="v3-genomic-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
-          aria-hidden="true"
-          className="c11 c12"
-          href="#v3-secondary-analyses"
-          id="v3-secondary-analyses"
+          aria-label="Copy link to Genomic constraint"
+          className="c12"
+          href="#v3-genomic-constraint"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
           <img
             alt=""
@@ -11982,40 +12298,8 @@ exports[`Data Page has no unexpected changes 1`] = `
             width={12}
           />
         </a>
-        Secondary Analyses
+        Genomic constraint
       </h2>
-    </span>
-    <p
-      className="c13"
-    >
-      Additional research analyses created using the core gnomAD releases in collaboration with members of the gnomAD steering committee.
-    </p>
-    <section
-      className="c16"
-    >
-      <span
-        className="c9"
-      >
-        <h2
-          className="c17 "
-        >
-          <a
-            aria-hidden="true"
-            className="c11 c12"
-            href="#v3-genomic-constraint"
-            id="v3-genomic-constraint"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Genomic constraint
-        </h2>
-      </span>
       <p>
         For more information about these files, see the README included in the download.
       </p>
@@ -12159,29 +12443,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-hgdp-1kg-tutorials"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to HGDP + 1KG tutorials"
+          className="c12"
+          href="#v3-hgdp-1kg-tutorials"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-hgdp-1kg-tutorials"
-            id="v3-hgdp-1kg-tutorials"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          HGDP + 1KG tutorials
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        HGDP + 1KG tutorials
+      </h2>
       <p>
         For more information about these files, see the
          
@@ -13237,29 +13530,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v3-mito-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Mitochondrial constraint"
+          className="c12"
+          href="#v3-mito-constraint"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v3-mito-constraint"
-            id="v3-mito-constraint"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Mitochondrial constraint
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Mitochondrial constraint
+      </h2>
       <p>
         For more information about mitochondrial constraint, see
          
@@ -13413,59 +13715,75 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c15"
+      id="v2-liftover"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c15 "
-        subject="release"
+      <a
+        aria-label="Copy link to v2 Liftover Downloads"
+        className="c12"
+        href="#v2-liftover"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#v2-liftover"
-          id="v2-liftover"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        v2 Liftover Downloads
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      v2 Liftover Downloads
+    </h2>
     <p
       className="c13"
     >
       The gnomAD v2.1.1 liftover data set contains data from 125,748 exomes and 15,708 whole genomes, lifted over from the GRCh37 to the GRCh38 reference sequence.
     </p>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c11"
+      id="v2-liftover-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c10 "
-        subject="datasets"
+      <a
+        aria-label="Copy link to Core Dataset"
+        className="c12"
+        href="#v2-liftover-core-dataset"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#v2-liftover-core-dataset"
-          id="v2-liftover-core-dataset"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        Core Dataset
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Core Dataset
+    </h2>
     <p
       className="c13"
     >
@@ -13474,29 +13792,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-liftover-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Variants (GRCh38 liftover)"
+          className="c12"
+          href="#v2-liftover-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-liftover-variants"
-            id="v2-liftover-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Variants (GRCh38 liftover)
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Variants (GRCh38 liftover)
+      </h2>
       <p>
         The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only, and non-TOPMed).
       </p>
@@ -16769,29 +17096,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-liftover-structural-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Structural variants (GRCh38 liftover)"
+          className="c12"
+          href="#v2-liftover-structural-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-liftover-structural-variants"
-            id="v2-liftover-structural-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Structural variants (GRCh38 liftover)
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Structural variants (GRCh38 liftover)
+      </h2>
       <p>
         <span
           className="c24"
@@ -16818,59 +17154,75 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c15"
+      id="v2"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c15 "
-        subject="release"
+      <a
+        aria-label="Copy link to v2 Downloads"
+        className="c12"
+        href="#v2"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#v2"
-          id="v2"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        v2 Downloads
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      v2 Downloads
+    </h2>
     <p
       className="c13"
     >
       The gnomAD v2.1.1 data set contains data from 125,748 exomes and 15,708 whole genomes, all mapped to the GRCh37/hg19 reference sequence.
     </p>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c11"
+      id="v2-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c10 "
-        subject="datasets"
+      <a
+        aria-label="Copy link to Core Dataset"
+        className="c12"
+        href="#v2-core-dataset"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#v2-core-dataset"
-          id="v2-core-dataset"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        Core Dataset
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Core Dataset
+    </h2>
     <p
       className="c13"
     >
@@ -16879,29 +17231,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Variants"
+          className="c12"
+          href="#v2-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-variants"
-            id="v2-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Variants
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Variants
+      </h2>
       <p>
         <span
           className="c24"
@@ -20258,29 +20619,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-browser-tables"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Browser Tables"
+          className="c12"
+          href="#v2-browser-tables"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-browser-tables"
-            id="v2-browser-tables"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Browser Tables
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Browser Tables
+      </h2>
       <p>
         For more information about these files, see our
          
@@ -20340,29 +20710,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-coverage"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Coverage"
+          className="c12"
+          href="#v2-coverage"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-coverage"
-            id="v2-coverage"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Coverage
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Coverage
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -20503,29 +20882,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-structural-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Structural variants"
+          className="c12"
+          href="#v2-structural-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-structural-variants"
-            id="v2-structural-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Structural variants
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Structural variants
+      </h2>
       <p>
         For information on gnomAD structural variants, see
          
@@ -20903,29 +21291,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-linkage-disequilibrium"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Linkage disequilibrium"
+          className="c12"
+          href="#v2-linkage-disequilibrium"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-linkage-disequilibrium"
-            id="v2-linkage-disequilibrium"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Linkage disequilibrium
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Linkage disequilibrium
+      </h2>
       <p>
         <label
           htmlFor="ld-files-population"
@@ -21178,29 +21575,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-ancestry-classification"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Ancestry classification"
+          className="c12"
+          href="#v2-ancestry-classification"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-ancestry-classification"
-            id="v2-ancestry-classification"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Ancestry classification
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Ancestry classification
+      </h2>
       <p>
         For more information about these files, see our blog post on
          
@@ -21282,29 +21688,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-regional-missense-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Regional Missense Constraint"
+          className="c12"
+          href="#v2-regional-missense-constraint"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-regional-missense-constraint"
-            id="v2-regional-missense-constraint"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Regional Missense Constraint
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Regional Missense Constraint
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -21406,29 +21821,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-clinvar-grch37"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to ClinVar"
+          className="c12"
+          href="#v2-clinvar-grch37"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-clinvar-grch37"
-            id="v2-clinvar-grch37"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          ClinVar
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        ClinVar
+      </h2>
       <p>
         For more information about these files, including how to download a specific previous version of the gnomAD browser ClinVar GRCh37 table, see the
          
@@ -21467,29 +21891,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-resources"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Resources"
+          className="c12"
+          href="#v2-resources"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-resources"
-            id="v2-resources"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Resources
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Resources
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -21648,18 +22081,67 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c11"
+      id="v2-secondary-analyses"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
+    >
+      <a
+        aria-label="Copy link to Secondary Analyses"
+        className="c12"
+        href="#v2-secondary-analyses"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
+      >
+        <img
+          alt=""
+          aria-hidden="true"
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Secondary Analyses
+    </h2>
+    <p
+      className="c13"
+    >
+      Additional research analyses created using the core gnomAD releases in collaboration with members of the gnomAD steering committee.
+    </p>
+    <section
+      className="c16"
     >
       <h2
-        className="c10 "
-        subject="datasets"
+        className="c9 c10 c17"
+        id="v2-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
         <a
-          aria-hidden="true"
-          className="c11 c12"
-          href="#v2-secondary-analyses"
-          id="v2-secondary-analyses"
+          aria-label="Copy link to Constraint"
+          className="c12"
+          href="#v2-constraint"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
           <img
             alt=""
@@ -21669,40 +22151,8 @@ exports[`Data Page has no unexpected changes 1`] = `
             width={12}
           />
         </a>
-        Secondary Analyses
+        Constraint
       </h2>
-    </span>
-    <p
-      className="c13"
-    >
-      Additional research analyses created using the core gnomAD releases in collaboration with members of the gnomAD steering committee.
-    </p>
-    <section
-      className="c16"
-    >
-      <span
-        className="c9"
-      >
-        <h2
-          className="c17 "
-        >
-          <a
-            aria-hidden="true"
-            className="c11 c12"
-            href="#v2-constraint"
-            id="v2-constraint"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Constraint
-        </h2>
-      </span>
       <p>
         For information on constraint, see
          
@@ -21865,29 +22315,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-multi-nucleotide-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Multi-nucleotide variants (MNVs)"
+          className="c12"
+          href="#v2-multi-nucleotide-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-multi-nucleotide-variants"
-            id="v2-multi-nucleotide-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Multi-nucleotide variants (MNVs)
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Multi-nucleotide variants (MNVs)
+      </h2>
       <p>
         For information on multi-nucleotide variants in gnomAD, see
          
@@ -22618,29 +23077,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-pext"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Proportion expressed across transcripts (pext)"
+          className="c12"
+          href="#v2-pext"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-pext"
-            id="v2-pext"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Proportion expressed across transcripts (pext)
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Proportion expressed across transcripts (pext)
+      </h2>
       <p>
         For information on pext, see
          
@@ -22785,29 +23253,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-variant-cooccurrence"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Variant co-occurrence"
+          className="c12"
+          href="#v2-variant-cooccurrence"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-variant-cooccurrence"
-            id="v2-variant-cooccurrence"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Variant co-occurrence
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Variant co-occurrence
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -22942,29 +23419,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="v2-lof-curation-results"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Loss-of-function curation results"
+          className="c12"
+          href="#v2-lof-curation-results"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#v2-lof-curation-results"
-            id="v2-lof-curation-results"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Loss-of-function curation results
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Loss-of-function curation results
+      </h2>
       <p>
         For information on loss-of-function curation results, see
          
@@ -23300,59 +23786,75 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c15"
+      id="exac"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c15 "
-        subject="release"
+      <a
+        aria-label="Copy link to ExAC Downloads"
+        className="c12"
+        href="#exac"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#exac"
-          id="exac"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        ExAC Downloads
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      ExAC Downloads
+    </h2>
     <p
       className="c13"
     >
       The ExAC data set contains data from 60,706 exomes, all mapped to the GRCh37/hg19 reference sequence.
     </p>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c11"
+      id="exac-core-dataset"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c10 "
-        subject="datasets"
+      <a
+        aria-label="Copy link to Core Dataset"
+        className="c12"
+        href="#exac-core-dataset"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#exac-core-dataset"
-          id="exac-core-dataset"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        Core Dataset
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      Core Dataset
+    </h2>
     <p
       className="c13"
     >
@@ -23361,29 +23863,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="exac-variants"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Variants"
+          className="c12"
+          href="#exac-variants"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#exac-variants"
-            id="exac-variants"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Variants
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Variants
+      </h2>
       <h3>
         Exomes
       </h3>
@@ -23460,29 +23971,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="exac-coverage"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Coverage"
+          className="c12"
+          href="#exac-coverage"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#exac-coverage"
-            id="exac-coverage"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Coverage
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Coverage
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -24427,29 +24947,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="exac-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Constraint"
+          className="c12"
+          href="#exac-constraint"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#exac-constraint"
-            id="exac-constraint"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Constraint
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Constraint
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -24491,29 +25020,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="exac-regional-missense-constraint"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Regional Missense Constraint"
+          className="c12"
+          href="#exac-regional-missense-constraint"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#exac-regional-missense-constraint"
-            id="exac-regional-missense-constraint"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Regional Missense Constraint
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Regional Missense Constraint
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -24555,29 +25093,38 @@ exports[`Data Page has no unexpected changes 1`] = `
     <section
       className="c16"
     >
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="exac-resources"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Resources"
+          className="c12"
+          href="#exac-resources"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#exac-resources"
-            id="exac-resources"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Resources
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Resources
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -24617,29 +25164,38 @@ exports[`Data Page has no unexpected changes 1`] = `
       </ul>
     </section>
     <section>
-      <span
-        className="c9"
+      <h2
+        className="c9 c10 c17"
+        id="exac-other"
+        style={
+          {
+            "padding": "8px 0",
+          }
+        }
       >
-        <h2
-          className="c17 "
+        <a
+          aria-label="Copy link to Other"
+          className="c12"
+          href="#exac-other"
+          onClick={[Function]}
+          style={
+            {
+              "display": "flex",
+              "position": "absolute",
+              "transform": "translate(-100%, -50%)",
+            }
+          }
         >
-          <a
+          <img
+            alt=""
             aria-hidden="true"
-            className="c11 c12"
-            href="#exac-other"
-            id="exac-other"
-          >
-            <img
-              alt=""
-              aria-hidden="true"
-              height={12}
-              src="test-file-stub"
-              width={12}
-            />
-          </a>
-          Other
-        </h2>
-      </span>
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Other
+      </h2>
       <ul
         className="c20 c21"
       >
@@ -24726,29 +25282,38 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
     </section>
-    <span
-      className="c9"
+    <h2
+      className="c9 c10 c17"
+      id="api"
+      style={
+        {
+          "padding": "8px 0",
+        }
+      }
     >
-      <h2
-        className="c17 "
+      <a
+        aria-label="Copy link to gnomAD API"
+        className="c12"
+        href="#api"
+        onClick={[Function]}
+        style={
+          {
+            "display": "flex",
+            "position": "absolute",
+            "transform": "translate(-100%, -50%)",
+          }
+        }
       >
-        <a
+        <img
+          alt=""
           aria-hidden="true"
-          className="c11 c12"
-          href="#api"
-          id="api"
-        >
-          <img
-            alt=""
-            aria-hidden="true"
-            height={12}
-            src="test-file-stub"
-            width={12}
-          />
-        </a>
-        gnomAD API
-      </h2>
-    </span>
+          height={12}
+          src="test-file-stub"
+          width={12}
+        />
+      </a>
+      gnomAD API
+    </h2>
     <p
       className="c13"
     >

@@ -98,23 +98,19 @@ const jointChromosomeVcfs = [
 const GnomadV4Downloads = () => {
   return (
     <>
-      <SectionTitle id="v4" subject="release">
-        v4 Downloads
-      </SectionTitle>
+      <SectionTitle id="v4" $subject="release" title="v4 Downloads" />
       <StyledParagraph>
         The gnomAD v4.1.0 data set contains data from 730,947 exomes and 76,215 whole genomes, all
         mapped to the GRCh38 reference sequence.
       </StyledParagraph>
 
-      <SectionTitle id="v4-core-dataset" subject="datasets">
-        Core Dataset
-      </SectionTitle>
+      <SectionTitle id="v4-core-dataset" $subject="datasets" title="Core Dataset" />
       <StyledParagraph>
         gnomAD database and features created and maintained by the gnomAD production team.
       </StyledParagraph>
 
       <DownloadsSection>
-        <SectionTitle id="v4-variants">Variants</SectionTitle>
+        <SectionTitle id="v4-variants" title="Variants" />
         <p>
           For more information, read the{' '}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2023-11-gnomad-v4-0">
@@ -176,7 +172,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-joint-freq-stats">Joint Frequency</SectionTitle>
+        <SectionTitle id="v4-joint-freq-stats" title="Joint Frequency" />
         <FileList>
           <ListItem>
             <GetUrlButtons
@@ -199,7 +195,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-all-sites-allele-number">All sites allele numbers</SectionTitle>
+        <SectionTitle id="v4-all-sites-allele-number" title="All sites allele numbers" />
         <ColumnsWrapper>
           <Column>
             <h3>Exomes</h3>
@@ -246,7 +242,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-browser-tables">Browser Tables</SectionTitle>
+        <SectionTitle id="v4-browser-tables" title="Browser Tables" />
 
         <p>
           For more information about these files, see our{' '}
@@ -290,7 +286,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-coverage">Coverage</SectionTitle>
+        <SectionTitle id="v4-coverage" title="Coverage" />
         <FileList>
           <ListItem>
             <GetUrlButtons
@@ -310,9 +306,10 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-genetic-ancestry-group-classification">
-          Genetic ancestry group classification
-        </SectionTitle>
+        <SectionTitle
+          id="v4-genetic-ancestry-group-classification"
+          title="Genetic ancestry group classification"
+        />
         <p>
           For more information about these files, see our blog post on{' '}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
@@ -344,7 +341,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-constraint">Constraint</SectionTitle>
+        <SectionTitle id="v4-constraint" title="Constraint" />
         <p>
           For information on constraint, see our <Link to="/help/constraint">help text</Link>
         </p>
@@ -408,7 +405,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-structural-variants">Structural variants</SectionTitle>
+        <SectionTitle id="v4-structural-variants" title="Structural variants" />
         <p>
           For information on structural variants, see our{' '}
           <Link to="/help/sv-overview">help text</Link>
@@ -452,7 +449,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-copy-number-variants">Copy number variants</SectionTitle>
+        <SectionTitle id="v4-copy-number-variants" title="Copy number variants" />
         <p>
           For information on copy number variants, see our{' '}
           <Link to="/help/sv-overview">help text</Link>
@@ -486,7 +483,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-pext">Proportion expressed across transcripts (pext)</SectionTitle>
+        <SectionTitle id="v4-pext" title="Proportion expressed across transcripts (pext)" />
         <p>
           For information on pext, see{' '}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
@@ -523,7 +520,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-de-novo">De novo variants (DNVs)</SectionTitle>
+        <SectionTitle id="v4-de-novo" title="De novo variants (DNVs)" />
         <p>
           For more information on DNVs, see the{' '}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2025-03-de-novo-variants-in-gnomad-v4-exomes">
@@ -553,7 +550,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-clinvar-grch38">ClinVar</SectionTitle>
+        <SectionTitle id="v4-clinvar-grch38" title="ClinVar" />
         <p>
           For more information about these files, including how to download a specific previous
           version of the gnomAD browser ClinVar GRCh38 table, see the{' '}
@@ -573,7 +570,7 @@ const GnomadV4Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v4-resources">Resources</SectionTitle>
+        <SectionTitle id="v4-resources" title="Resources" />
         <FileList>
           <ListItem>
             <DownloadLinks
@@ -614,16 +611,14 @@ const GnomadV4Downloads = () => {
         </FileList>
       </DownloadsSection>
 
-      <SectionTitle id="v4-secondary-analyses" subject="datasets">
-        Secondary Analyses
-      </SectionTitle>
+      <SectionTitle id="v4-secondary-analyses" $subject="datasets" title="Secondary Analyses" />
       <StyledParagraph>
         Additional research analyses created using the core gnomAD releases in collaboration with
         members of the gnomAD steering committee.
       </StyledParagraph>
 
       <DownloadsSection>
-        <SectionTitle id="v4-lof-curation-results">Loss-of-function curation results</SectionTitle>
+        <SectionTitle id="v4-lof-curation-results" title="Loss-of-function curation results" />
         <p>
           For information on v4 loss-of-function curation results, see{' '}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">

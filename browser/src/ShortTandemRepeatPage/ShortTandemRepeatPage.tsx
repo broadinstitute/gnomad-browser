@@ -33,7 +33,7 @@ import {
   genotypeRepunitPairs,
 } from './shortTandemRepeatHelpers'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
-import { AgeDistributionHeading } from '../AnchorLink'
+import { SectionHeading } from '../AnchorLink'
 import useScrollToHash from '../useScrollToHash'
 import { GenotypeQuality } from './qualityDescription'
 import { QScoreBin } from './qScore'
@@ -622,9 +622,9 @@ const ShortTandemRepeatPage = ({ datasetId, shortTandemRepeat }: ShortTandemRepe
       )}
 
       <section style={{ marginBottom: '3em' }}>
-        <AgeDistributionHeading>
-          Age Distribution <InfoButton topic="str-age-distribution" />
-        </AgeDistributionHeading>
+        <SectionHeading id="age-distribution" title="Age Distribution">
+          <InfoButton topic="str-age-distribution" />
+        </SectionHeading>
         <ShortTandemRepeatAgeDistributionPlot
           ageDistribution={shortTandemRepeat.age_distribution}
           maxRepeats={maxAlleleRepeats}

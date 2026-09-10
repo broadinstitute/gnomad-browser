@@ -19,7 +19,7 @@ const GraphQLCodeBlock = styled(CodeBlock)`
 
 const GraphQLDocs = () => (
   <>
-    <SectionTitle id="api">gnomAD API</SectionTitle>
+    <SectionTitle id="api" title="gnomAD API" />
     <StyledParagraph>
       The gnomAD browser gets its data through a{' '}
       <ExternalLink href="https://graphql.org">GraphQL</ExternalLink> API which is open to the

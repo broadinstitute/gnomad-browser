@@ -48,7 +48,7 @@ import {
   FullLocalAncestryPopulationId,
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { Filter } from '../QCFilter'
-import { AgeDistributionHeading } from '../AnchorLink'
+import { SectionHeading } from '../AnchorLink'
 import useScrollToHash from '../useScrollToHash'
 
 const Section = styled.section`
@@ -366,38 +366,41 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         )}
       </ResponsiveSection>
       <ResponsiveSection>
-        <h2>External Resources</h2>
+        <SectionHeading id="external-resources" title="External Resources" />
         {/* @ts-expect-error TS(2739) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
         <ReferenceList variant={variant} />
-        <h2>Feedback</h2>
+        <SectionHeading id="feedback" title="Feedback" />
         <ExternalLink href={variantFeedbackUrl(variant, datasetId)}>
           Report an issue with this variant
         </ExternalLink>
       </ResponsiveSection>
 
       <Section>
-        <h2>
-          Genetic Ancestry Group Frequencies <InfoButton topic="ancestry" />
-        </h2>
+        <SectionHeading
+          id="genetic-ancestry-group-frequencies"
+          title="Genetic Ancestry Group Frequencies"
+        >
+          <InfoButton topic="ancestry" />
+        </SectionHeading>
         <VariantPopulationFrequencies datasetId={datasetId} variant={variant} />
       </Section>
 
       <Section>
-        <h2>Related Variants</h2>
+        <SectionHeading id="related-variants" title="Related Variants" />
         <VariantRelatedVariants datasetId={datasetId} variant={variant} />
       </Section>
 
       <Section>
-        <h2>Ensembl Variant Effect Predictor</h2>
+        <SectionHeading id="variant-effect-predictor" title="Ensembl Variant Effect Predictor" />
         {/* @ts-expect-error TS(2741) FIXME: Property 'reference_genome' is missing in type '{ ... Remove this comment to see the full error message */}
         <VariantTranscriptConsequences variant={variant} />
       </Section>
 
       {variant.lof_curations && (
         <Section>
-          <h2>
-            LoF Curation <InfoButton topic="lof-curation" />
-          </h2>
+          <SectionHeading id="lof-curation" title="LoF Curation">
+            <InfoButton topic="lof-curation" />
+          </SectionHeading>
           {/* @ts-expect-error TS(2322) FIXME: Type '{ variant_id: string; chrom: string; flags: ... Remove this comment to see the full error message */}
           <VariantLoFCurationResults variant={variant} />
         </Section>
@@ -406,13 +409,16 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
       <FlexWrapper>
         {variant.in_silico_predictors && variant.in_silico_predictors.length && (
           <ResponsiveSection>
-            <h2>In Silico Predictors</h2>
+            <SectionHeading id="in-silico-predictors" title="In Silico Predictors" />
             <VariantInSilicoPredictors variant={variant} datasetId={datasetId} />
           </ResponsiveSection>
         )}
         {hasNonCodingConstraints(datasetId) && (
           <ResponsiveSection>
-            <h2>Genomic Constraint of Surrounding 1kb Region</h2>
+            <SectionHeading
+              id="genomic-constraint"
+              title="Genomic Constraint of Surrounding 1kb Region"
+            />
             <GnomadNonCodingConstraintTableVariant
               variantId={variant.variant_id}
               chrom={variant.chrom}
@@ -424,7 +430,7 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
 
       {variant.clinvar && (
         <Section>
-          <h2>ClinVar</h2>
+          <SectionHeading id="clinvar" title="ClinVar" />
           <VariantClinvarInfo clinvar={variant.clinvar} />
         </Section>
       )}
@@ -433,9 +439,9 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
         <ResponsiveSection>
           {((variant.exome || {}).age_distribution || (variant.genome || {}).age_distribution) && (
             <React.Fragment>
-              <AgeDistributionHeading>
-                Age Distribution <InfoButton topic="age" />
-              </AgeDistributionHeading>
+              <SectionHeading id="age-distribution" title="Age Distribution">
+                <InfoButton topic="age" />
+              </SectionHeading>
               {isV3Subset(datasetId) && (
                 <p>
                   Age distribution is based on the full gnomAD dataset, not the selected subset.
@@ -448,15 +454,15 @@ export const VariantPageContent = ({ datasetId, variant }: VariantPageContentPro
       </FlexWrapper>
 
       <ResponsiveSection>
-        <h2>Genotype Quality Metrics</h2>
+        <SectionHeading id="genotype-quality-metrics" title="Genotype Quality Metrics" />
         <VariantGenotypeQualityMetrics datasetId={datasetId} variant={variant} />
       </ResponsiveSection>
       <ResponsiveSection>
-        <h2>Site Quality Metrics</h2>
+        <SectionHeading id="site-quality-metrics" title="Site Quality Metrics" />
         <VariantSiteQualityMetrics datasetId={datasetId} variant={variant} />
       </ResponsiveSection>
       <Section>
-        <h2>Read Data</h2>
+        <SectionHeading id="read-data" title="Read Data" />
         <ReadData datasetId={datasetId} variantIds={[variant.variant_id]} />
       </Section>
     </FlexWrapper>

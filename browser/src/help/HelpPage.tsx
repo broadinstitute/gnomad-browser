@@ -8,15 +8,15 @@ import { Button, Link as BaseLink, List, ListItem, PageHeading, Searchbox } from
 
 import helpPageTableOfContents, { FaqTopic } from '../../help/helpPageTableOfContents'
 
-import { withAnchor } from '../AnchorLink'
+import { SectionHeading, withAnchor } from '../AnchorLink'
 import DocumentTitle from '../DocumentTitle'
 import Link from '../Link'
+import useScrollToHash from '../useScrollToHash'
 
 import helpTopics, { indexTexts } from './helpTopics' // eslint-disable-line import/no-unresolved,import/extensions
 import slugify from './slugify'
 
-export const SectionHeading = withAnchor(styled.h2``)
-export const SectionSubheading = withAnchor(styled.h3`
+const SectionSubheading = withAnchor(styled.h3`
   margin-bottom: 0.5em;
 `)
 
@@ -72,7 +72,7 @@ const HelpContentWrapper = styled.div`
   overflow: auto;
   box-sizing: border-box;
   width: 100%;
-  padding: 0 15px;
+  padding: 0 15px 0 44px;
 `
 
 const HelpContent = styled.div`
@@ -118,6 +118,7 @@ const ToggleButton = styled(Button)`
 `
 
 const HelpPage = () => {
+  useScrollToHash()
   const history = useHistory()
 
   return (
@@ -190,9 +191,11 @@ const HelpPage = () => {
           </section>
 
           <section>
-            <SectionHeading id="frequently-asked-questions">
-              Frequently asked questions
-            </SectionHeading>
+            <SectionHeading
+              id="frequently-asked-questions"
+              title="Frequently asked questions"
+              linkInGutter
+            />
             {helpPageTableOfContents.faq.map((section: FaqTopic) => (
               <div key={section.heading}>
                 <SectionSubheading id={slugify(section.heading)}>
