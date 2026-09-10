@@ -1,5 +1,9 @@
 import resolvers from './long_read_variants'
 
+jest.mock('./long_read_variant_tr_context', () => ({
+  resolveVariantTrShortReadContext: jest.fn(),
+}))
+
 jest.mock('../../queries/long_read_variants', () => ({
   fetchVariantById: jest.fn(),
   fetchVariantsByGene: jest.fn(),

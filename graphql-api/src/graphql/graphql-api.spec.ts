@@ -11,6 +11,9 @@ jest.mock('../config', () => ({
     JSON_CACHE_LARGE_GENES: false,
   },
 }))
+jest.mock('express-graphql', () => ({
+  graphqlHTTP: (options: unknown) => options,
+}))
 jest.mock('./schema', () => ({
   __esModule: true,
   default: {},
@@ -27,7 +30,7 @@ jest.mock('../logger', () => ({
 
 import { GraphQLError } from 'graphql'
 
-import { formatErrorAndSetNocache, recordGraphqlQueryCost } from './graphql-api'
+import graphQLApi, { formatErrorAndSetNocache, recordGraphqlQueryCost } from './graphql-api'
 import { joinedMethylationError } from './joined-phased-methylation-errors'
 
 const request = {
@@ -103,6 +106,20 @@ describe('production GraphQL joined methylation error formatting', () => {
       })
     )
     expect(JSON.stringify(mockLoggerError.mock.calls)).not.toContain('SELECT secret')
+  })
+
+  test('allocates separate request contexts while retaining shared dependency clients', async () => {
+    const applicationContext = { esClient: {} }
+    const optionsForRequest = graphQLApi({ context: applicationContext }) as any
+    const first = await optionsForRequest({}, {}, {})
+    const second = await optionsForRequest({}, {}, {})
+    expect(first.context).not.toBe(applicationContext)
+    expect(first.context).not.toBe(second.context)
+    expect(first.context.esClient).toBe(applicationContext.esClient)
+    expect(second.context.esClient).toBe(applicationContext.esClient)
+    first.context._lrTimings = ['request one only']
+    expect(second.context._lrTimings).toBeUndefined()
+    expect(applicationContext).not.toHaveProperty('_lrTimings')
   })
 
   test('records validated query cost on the request used by rate accounting', () => {

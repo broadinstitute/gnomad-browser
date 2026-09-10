@@ -24,6 +24,19 @@ const query = `
     region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
       long_read_variants(dataset: $datasetId, lr_cohort: $lrCohort) {
         variant_id source_variant_id alt_index alt_count lr_cohort chrom pos end length ref alt allele_type filters motifs tr_locus_id tr_structure rsids
+        data_source source_release source_run_id reference_genome
+        tr_locus_short_read_context {
+          status reason_code catalog_dataset catalog_source catalog_digest
+          catalog_record {
+            id reference_repeat_unit
+            main_reference_region { reference_genome chrom start stop }
+            repeat_units { repeat_unit classification }
+          }
+          matched_component_index
+          matched_component { chrom start0 end0 motif }
+          matched_reference_region_index
+          lr_database lr_release lr_run_id lr_cohort
+        }
         tr_locus_presentation {
           locus_type
         }
