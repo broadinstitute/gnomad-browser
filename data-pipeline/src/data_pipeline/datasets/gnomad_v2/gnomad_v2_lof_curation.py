@@ -2,6 +2,7 @@ import csv
 import re
 
 import hail as hl
+import hailtop.fs as hfs
 
 from data_pipeline.data_types.variant import variant_id
 
@@ -36,12 +37,12 @@ VERDICT_MAPPINGS_CLEAN = VERDICT_MAPPING.values()
 def import_gnomad_lof_curation_results(curation_result_paths, genes_path, reference_genome="GRCh37"):
     all_flags = set()
 
-    with hl.hadoop_open("/tmp/import_temp.tsv", "w") as temp_output_file:
+    with hfs.open("/tmp/import_temp.tsv", "w") as temp_output_file:
         writer = csv.writer(temp_output_file, delimiter="\t", quotechar='"')
         writer.writerow(["chrom", "position", "ref", "alt", "genes", "verdict", "flags", "project", "project_index"])
 
         for project_index, path in enumerate(curation_result_paths):
-            with hl.hadoop_open(path, "r") as input_file:
+            with hfs.open(path, "r") as input_file:
                 reader = csv.DictReader(input_file)
 
                 project = re.sub(r"(_curation_results)?\.csv$", "", path.split("/")[-1])
