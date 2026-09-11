@@ -1491,8 +1491,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_cnv_r4 has no unexpected c
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -9420,8 +9438,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3 has no unexpected chang
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -17259,8 +17295,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_controls_and_biobanks h
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -25098,8 +25152,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_cancer has no unexp
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -32937,8 +33009,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_neuro has no unexpe
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -40776,8 +40866,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_topmed has no unexp
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -48615,8 +48723,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_r3_non_v2 has no unexpecte
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -56454,8 +56580,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4 has no unexpected chang
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -64293,8 +64437,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_r4_non_ukb has no unexpect
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -72132,8 +72294,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1 has no unexpected 
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -79971,8 +80151,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_controls has no un
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -87810,8 +88008,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r2_1_non_neuro has no u
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}
@@ -95649,8 +95865,26 @@ exports[`MitochondrialVariantPage with dataset gnomad_sv_r4 has no unexpected ch
     <section
       className="MitochondrialVariantPage__ResponsiveSection-sc-1h2n2ff-2 eVwzkj"
     >
-      <h2>
-        Age Distribution 
+      <h2
+        className="AnchorLink__Heading-sc-77ly3x-2 yDsgU"
+        id="age-distribution"
+      >
+        <a
+          aria-label="Copy link to Age Distribution"
+          className="AnchorLink__SectionLink-sc-77ly3x-3 cUsKlo"
+          href="#age-distribution"
+          onClick={[Function]}
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Age Distribution
+         
         <button
           className="InfoButton__Button-sc-13t5e82-0 faZoWY"
           onClick={[Function]}

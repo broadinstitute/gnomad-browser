@@ -9,10 +9,22 @@ const NotificationsAnchor = styled.div`
 `
 
 const NotificationsContainer = styled.div`
-  position: absolute;
-  z-index: 2;
+  position: fixed;
+  z-index: 1000;
   top: 1rem;
-  right: 1rem;
+
+  /* Overflowing page content can widen the layout viewport beyond the screen. */
+  left: calc(100vw - 1rem);
+  transform: translateX(-100%);
+`
+
+const PoliteAnnouncements = styled.div`
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  white-space: nowrap;
 `
 
 const STATUS_COLOR = {
@@ -29,6 +41,7 @@ const Notification = styled.div<{ status: Status }>`
   flex-direction: column;
   box-sizing: border-box;
   width: 240px;
+  max-width: calc(100vw - 2rem);
   min-height: 30px;
   padding: 0.5rem 0.5rem 0.5rem calc(10px + 0.5rem);
   border: 1px solid #333;
@@ -57,15 +70,40 @@ class Notifications extends Component<Record<string, never>, State> {
 
   nextNotificationId = 0
 
+  container = React.createRef<HTMLDivElement>()
+
+  viewport: VisualViewport | null = null
+
   componentDidMount() {
     notificationService.subscribe(this.addNotification)
   }
 
+  componentDidUpdate() {
+    if (this.state.notifications.length === 0) {
+      this.stopTrackingViewport()
+      return
+    }
+    if (!this.viewport && window.visualViewport) {
+      this.viewport = window.visualViewport
+      this.viewport.addEventListener('scroll', this.updateViewportPosition)
+      this.viewport.addEventListener('resize', this.updateViewportPosition)
+    }
+    this.updateViewportPosition()
+  }
+
   componentWillUnmount() {
+    this.stopTrackingViewport()
     notificationService.unsubscribe(this.addNotification)
     this.removeTimeouts.forEach((timeout: any) => {
       clearTimeout(timeout)
     })
+  }
+
+  updateViewportPosition = () => {
+    if (this.container.current && this.viewport) {
+      // Mobile panning can move the visible viewport below the fixed layout viewport origin.
+      this.container.current.style.top = `calc(${this.viewport.offsetTop}px + 1rem)`
+    }
   }
 
   addNotification = ({ title, message = null, status = 'info', duration = 3 }: any) => {
@@ -88,6 +126,15 @@ class Notifications extends Component<Record<string, never>, State> {
     )
   }
 
+  stopTrackingViewport() {
+    this.viewport?.removeEventListener('scroll', this.updateViewportPosition)
+    this.viewport?.removeEventListener('resize', this.updateViewportPosition)
+    this.viewport = null
+    if (this.container.current) {
+      this.container.current.style.top = ''
+    }
+  }
+
   removeNotification(id: any) {
     this.setState((state: any) => ({
       notifications: state.notifications.filter((n: any) => n.id !== id),
@@ -100,11 +147,27 @@ class Notifications extends Component<Record<string, never>, State> {
 
     return (
       <NotificationsAnchor>
-        <NotificationsContainer>
+        {/* Keep the polite region mounted; announce additions, not the whole stack or removals. */}
+        <PoliteAnnouncements role="status" aria-atomic="false" aria-relevant="additions">
+          {notifications
+            .filter(({ status }) => status !== 'error')
+            .map(({ id, title, message }) => (
+              <div key={id} aria-atomic="true">
+                {title}
+                {message ? <> {message}</> : null}
+              </div>
+            ))}
+        </PoliteAnnouncements>
+        <NotificationsContainer ref={this.container}>
           {notifications.map((notification) => {
             const { id, title, message, status } = notification
             return (
-              <Notification key={id} status={status}>
+              <Notification
+                key={id}
+                status={status}
+                role={status === 'error' ? 'alert' : undefined}
+                aria-atomic={status === 'error' ? 'true' : undefined}
+              >
                 <strong>{title}</strong>
                 {message}
               </Notification>
