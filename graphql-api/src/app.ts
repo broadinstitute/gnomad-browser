@@ -45,6 +45,13 @@ app.set('trust proxy', config.TRUST_PROXY)
 // GCE load balancers require a 200 response from the health check endpoint, so this must be
 // registered before the HTTP=>HTTPS redirect middleware, which would return a 30x response.
 app.get('/health/ready', (_req: any, res: any) => {
+  const startAt = performance.now()
+  onFinished(res, () => {
+    logger.info({
+      event: 'healthCheck',
+      latencyMs: performance.now() - startAt
+    })
+  })
   res.send('ok')
 })
 
