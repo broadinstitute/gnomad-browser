@@ -49,7 +49,7 @@ app.get('/health/ready', (_req: any, res: any) => {
   onFinished(res, () => {
     logger.info({
       event: 'healthCheck',
-      latencyMs: performance.now() - startAt
+      latencyMs: performance.now() - startAt,
     })
   })
   res.send('ok')
