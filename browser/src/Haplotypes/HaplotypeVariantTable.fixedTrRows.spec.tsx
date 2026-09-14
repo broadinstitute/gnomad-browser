@@ -89,20 +89,13 @@ const compoundGroups = {
   ],
 }
 const reviewedPresentation = {
-  source_representation_kind: 'UNKNOWN',
-  presentation_layout: 'REPEAT_FOCUSED',
-  presentation_reason: 'REVIEWED_PRIMARY_REPEAT',
-  classification_source: null,
-  classification_release: null,
-  classification_digest: null,
-  reviewed_override_digest: 'a'.repeat(64),
+  locus_type: 'ISOLATED_REPEAT',
 }
 const compoundBounds = {
   component_envelope_start0: 100,
   component_envelope_end0: 130,
   component_envelope_length_bp: 30,
   component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
-  variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
 }
 const compoundSummary = {
   ordered_component_count: 2,
@@ -133,7 +126,7 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
     expect(link.textContent).toBe('4:39348424–39348479 TR locus (55bp): 11 x AAAAG')
   })
 
-  test('joins an exact reviewed-primary label and fails conflicting ALT contracts closed', () => {
+  test('labels a compound locus as a variation cluster regardless of ALT contracts', () => {
     const reviewed = render(
       <HaplotypeVariantTable
         mode="haplotype"
@@ -141,7 +134,6 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
         haplotypeGroups={compoundGroups as any}
       />
     )
-    expect(screen.getByText('HTT CAG tandem repeat · 2 source components')).not.toBeNull()
     reviewed.unmount()
 
     render(
@@ -152,7 +144,6 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
       />
     )
     expect(screen.getByText(/TR variation cluster \(\d+bp\): spans 2 TRs with /)).not.toBeNull()
-    expect(screen.queryByText(/HTT CAG tandem repeat/)).toBeNull()
   })
 
   test('never adds an inline expanded child row', () => {

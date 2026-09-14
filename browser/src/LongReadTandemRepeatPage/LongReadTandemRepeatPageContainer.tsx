@@ -45,14 +45,11 @@ query ${operationName}(
     id source_trid reference_genome chrom motifs structure lr_cohort source_release source_run_id
     accepted_task_attempt_digest
     presentation {
-      source_representation_kind presentation_layout presentation_reason classification_source
-      classification_release classification_digest reviewed_override_digest
+      locus_type
     }
     bounds {
       component_envelope_start0 component_envelope_end0 component_envelope_length_bp
       component_envelope_basis source_ref_span_start0 source_ref_span_end0 source_ref_span_status
-      variation_cluster_start0 variation_cluster_end0 variation_cluster_length_bp
-      variation_cluster_status bounds_source bounds_release bounds_digest
     }
     sequence_cardinality {
       source_alt_identity_count unique_alt_sequence_count all_source_alts_sequence_complete
@@ -87,9 +84,7 @@ query ${operationName}(
     selected_allele_unavailable_reason
     component_measurement_available component_measurement_unavailable_reason
     primary_repeat {
-      status reason_code motif component_index selection_basis biological_role
-      catalog_id catalog_digest registry_digest
-      component { chrom start0 end0 motif }
+      is_disease_associated_repeat motif component_index
     }
     primary_motif_measurement {
       status reason_code motif biological_role metric unit scope

@@ -61,6 +61,22 @@ const primaryRepeat = async (locus: any, ctx: any) => {
   return resolveLongReadTrPrimaryRepeat(locus, context)
 }
 
+/** True only when the locus component exactly matches the main reference region and stored
+ * motif of a catalog locus that lists at least one associated disease. */
+const primaryRepeatField = async (locus: any, ctx: any) => {
+  const context = await shortReadContext(locus, ctx)
+  const identity = resolveLongReadTrPrimaryRepeat(locus, context)
+  const diseases = context?.catalog_record?.associated_diseases
+  return {
+    ...identity,
+    // selection_basis is non-null only on an available identity, so it implies the status.
+    is_disease_associated_repeat:
+      identity.selection_basis === 'EXACT_MAIN_CATALOG_COMPONENT' &&
+      Array.isArray(diseases) &&
+      diseases.length >= 1,
+  }
+}
+
 export default {
   Query: {
     long_read_tandem_repeat_locus: resolveLongReadTandemRepeatLocus,
@@ -70,7 +86,7 @@ export default {
       resolveLongReadTrShortReadDistributions(args, ctx.esClient, getY1SourceSnapshot),
   },
   LongReadTandemRepeatLocus: {
-    primary_repeat: (locus: any, _args: any, ctx: any) => primaryRepeat(locus, ctx),
+    primary_repeat: (locus: any, _args: any, ctx: any) => primaryRepeatField(locus, ctx),
     primary_motif_measurement: async (locus: any, _args: any, ctx: any) => {
       let identity: any = null
       try {

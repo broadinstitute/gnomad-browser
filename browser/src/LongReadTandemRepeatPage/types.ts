@@ -180,32 +180,9 @@ export type LongReadTrShortReadContext = {
 }
 
 export type LongReadTrPrimaryRepeat = {
-  status: 'AVAILABLE' | 'UNAVAILABLE'
-  reason_code:
-    | 'IDENTITY_CONTEXT_UNAVAILABLE'
-    | 'WRONG_ASSEMBLY'
-    | 'INVALID_STORED_MOTIF'
-    | 'MAIN_REGION_NOT_EXACT_COMPONENT'
-    | 'STORED_MOTIF_NOT_EXACT_COMPONENT'
-    | 'NON_BIJECTIVE_COMPONENT'
-    | 'CATALOG_DIGEST_MISMATCH'
-    | 'REGISTRY_DIGEST_MISMATCH'
-    | 'REGISTRY_NOT_REVIEWED'
-    | 'REGISTRY_IDENTITY_MISMATCH'
-    | 'COMPOUND_PRIMARY_REPEAT_UNREVIEWED'
-    | null
+  is_disease_associated_repeat: boolean
   motif: string | null
   component_index: number | null
-  component: TrLocusComponent | null
-  selection_basis:
-    | 'EXACT_MAIN_CATALOG_COMPONENT'
-    | 'LR_SOLE_COMPONENT'
-    | 'REVIEWED_PRIMARY_REPEAT_REGISTRY'
-    | null
-  biological_role: string | null
-  catalog_id: string | null
-  catalog_digest: string | null
-  registry_digest: string | null
 }
 
 export type PrimaryMotifMeasurementData = {
@@ -269,17 +246,7 @@ export type PrimaryMotifMeasurementData = {
 }
 
 export type LongReadTrPresentation = {
-  source_representation_kind: 'ISOLATED_TR' | 'VARIATION_CLUSTER' | 'UNKNOWN'
-  presentation_layout: 'REPEAT_FOCUSED' | 'CLUSTER_FOCUSED'
-  presentation_reason:
-    | 'SOLE_EXACT_COMPONENT'
-    | 'REVIEWED_PRIMARY_REPEAT'
-    | 'SOURCE_VARIATION_CLUSTER'
-    | 'MULTI_COMPONENT_FALLBACK'
-  classification_source: string | null
-  classification_release: string | null
-  classification_digest: string | null
-  reviewed_override_digest: string | null
+  locus_type: 'ISOLATED_REPEAT' | 'VARIATION_CLUSTER'
 }
 
 export type LongReadTrBounds = {
@@ -290,13 +257,6 @@ export type LongReadTrBounds = {
   source_ref_span_start0: number | null
   source_ref_span_end0: number | null
   source_ref_span_status: 'AVAILABLE_EXACT' | 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT'
-  variation_cluster_start0: number | null
-  variation_cluster_end0: number | null
-  variation_cluster_length_bp: number | null
-  variation_cluster_status: 'AVAILABLE_EXACT' | 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION'
-  bounds_source: string | null
-  bounds_release: string | null
-  bounds_digest: string | null
 }
 
 export type LongReadTrSequenceCardinality = {

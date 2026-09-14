@@ -151,32 +151,17 @@ const CohortSelector = ({
   </CohortControl>
 )
 
-const immutableDigest = (value: string | null | undefined) =>
-  Boolean(value && /^[a-f0-9]{64}$/i.test(value))
-
-const variationClusterAuthorized = (locus: LongReadTrLocus) =>
-  locus.presentation?.presentation_layout === 'CLUSTER_FOCUSED' &&
-  locus.presentation.source_representation_kind === 'VARIATION_CLUSTER' &&
-  locus.presentation.presentation_reason === 'SOURCE_VARIATION_CLUSTER' &&
-  Boolean(
-    locus.presentation.classification_source &&
-      locus.presentation.classification_release &&
-      immutableDigest(locus.presentation.classification_digest)
-  )
-
 export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
-  if (locus.presentation?.presentation_layout === 'CLUSTER_FOCUSED') {
-    return variationClusterAuthorized(locus)
-      ? 'Repeat variation cluster'
-      : 'Multi-component TR locus'
+  if (locus.presentation?.locus_type === 'VARIATION_CLUSTER') {
+    return 'TR variation cluster'
   }
-  if (locus.primary_repeat?.status !== 'AVAILABLE' || !locus.primary_repeat.motif) {
+  if (!locus.primary_repeat?.motif) {
     const soleMotif = locus.components.length === 1 ? locus.components[0].motif : null
     return soleMotif ? `${soleMotif} tandem repeat` : 'Tandem-repeat locus'
   }
   const record =
-    locus.short_read_context?.status === 'EXACT_UNIQUE' &&
-    locus.short_read_context.catalog_record?.id === locus.primary_repeat.catalog_id
+    locus.primary_repeat.is_disease_associated_repeat &&
+    locus.short_read_context?.status === 'EXACT_UNIQUE'
       ? locus.short_read_context.catalog_record
       : null
   if (record) {
@@ -302,35 +287,15 @@ const LongReadTandemRepeatPage = ({
   // Retained story fixtures may predate the additive Phase 2 contracts. Live GraphQL always
   // supplies them; fixture fallbacks preserve the same fail-closed behavior.
   const rawPresentation = locus.presentation || {
-    source_representation_kind: 'UNKNOWN' as const,
-    presentation_layout:
-      locus.components.length === 1 ? ('REPEAT_FOCUSED' as const) : ('CLUSTER_FOCUSED' as const),
-    presentation_reason:
-      locus.components.length === 1
-        ? ('SOLE_EXACT_COMPONENT' as const)
-        : ('MULTI_COMPONENT_FALLBACK' as const),
-    classification_source: null,
-    classification_release: null,
-    classification_digest: null,
-    reviewed_override_digest: null,
+    locus_type:
+      locus.components.length === 1 ? ('ISOLATED_REPEAT' as const) : ('VARIATION_CLUSTER' as const),
   }
-  const reviewedCompoundAuthorized =
-    locus.components.length > 1 &&
-    rawPresentation.presentation_layout === 'REPEAT_FOCUSED' &&
-    rawPresentation.presentation_reason === 'REVIEWED_PRIMARY_REPEAT' &&
-    immutableDigest(rawPresentation.reviewed_override_digest)
+  // A multi-component locus is always cluster-focused: nothing can authorize a single primary
+  // repeat for it.
   const presentation =
-    locus.components.length > 1 &&
-    rawPresentation.presentation_layout === 'REPEAT_FOCUSED' &&
-    !reviewedCompoundAuthorized
+    locus.components.length > 1 && rawPresentation.locus_type === 'ISOLATED_REPEAT'
       ? {
-          source_representation_kind: 'UNKNOWN' as const,
-          presentation_layout: 'CLUSTER_FOCUSED' as const,
-          presentation_reason: 'MULTI_COMPONENT_FALLBACK' as const,
-          classification_source: null,
-          classification_release: null,
-          classification_digest: null,
-          reviewed_override_digest: null,
+          locus_type: 'VARIATION_CLUSTER' as const,
         }
       : rawPresentation
   const bounds = locus.bounds || {
@@ -341,13 +306,6 @@ const LongReadTandemRepeatPage = ({
     source_ref_span_start0: null,
     source_ref_span_end0: null,
     source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT' as const,
-    variation_cluster_start0: null,
-    variation_cluster_end0: null,
-    variation_cluster_length_bp: null,
-    variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION' as const,
-    bounds_source: null,
-    bounds_release: null,
-    bounds_digest: null,
   }
   const componentSummary = locus.component_summary || {
     ordered_component_count: locus.components.length,
@@ -377,45 +335,24 @@ const LongReadTandemRepeatPage = ({
     anchor_rule_digest: null,
     reconciliation_status: 'NOT_EVALUATED' as const,
   }
-  const clusterFocused = presentation.presentation_layout === 'CLUSTER_FOCUSED'
-  const authorizedVariationCluster = variationClusterAuthorized({ ...locus, presentation })
-  const exactVariationBoundsAuthorized =
-    authorizedVariationCluster &&
-    bounds.variation_cluster_status === 'AVAILABLE_EXACT' &&
-    Boolean(bounds.bounds_source && bounds.bounds_release) &&
-    immutableDigest(bounds.bounds_digest) &&
-    Number.isSafeInteger(bounds.variation_cluster_start0) &&
-    Number.isSafeInteger(bounds.variation_cluster_end0) &&
-    Number.isSafeInteger(bounds.variation_cluster_length_bp) &&
-    (bounds.variation_cluster_start0 as number) < (bounds.variation_cluster_end0 as number) &&
-    (bounds.variation_cluster_end0 as number) - (bounds.variation_cluster_start0 as number) ===
-      bounds.variation_cluster_length_bp
-  const displayStart1 = exactVariationBoundsAuthorized
-    ? (bounds.variation_cluster_start0 as number) + 1
-    : envelope.start1
-  const displayEnd1 = exactVariationBoundsAuthorized
-    ? (bounds.variation_cluster_end0 as number)
-    : envelope.end1
+  const clusterFocused = presentation.locus_type === 'VARIATION_CLUSTER'
+  const displayStart1 = envelope.start1
+  const displayEnd1 = envelope.end1
   const exactContext = locus.short_read_context
   const primaryComponentIndex = locus.primary_repeat.component_index
   const authorizedExactReferenceComponentIndex =
-    locus.primary_repeat.status === 'AVAILABLE' &&
-    locus.primary_repeat.selection_basis === 'EXACT_MAIN_CATALOG_COMPONENT' &&
+    locus.primary_repeat.is_disease_associated_repeat &&
     primaryComponentIndex != null &&
     exactContext?.status === 'EXACT_UNIQUE' &&
     exactContext.exact_reference_component_outline_authorized === true &&
     exactContext.matched_component_index === primaryComponentIndex &&
-    exactContext.catalog_record?.id === locus.primary_repeat.catalog_id &&
-    exactContext.catalog_digest === locus.primary_repeat.catalog_digest &&
-    exactComponent(locus.components[primaryComponentIndex], locus.primary_repeat.component) &&
-    exactComponent(exactContext.matched_component, locus.primary_repeat.component)
+    exactComponent(exactContext.matched_component, locus.components[primaryComponentIndex])
       ? primaryComponentIndex
       : null
   const title = longReadTrLocusTitle({ ...locus, presentation })
   const approvedCatalogRecord =
-    locus.primary_repeat.status === 'AVAILABLE' &&
-    locus.short_read_context?.status === 'EXACT_UNIQUE' &&
-    locus.short_read_context.catalog_record?.id === locus.primary_repeat.catalog_id
+    locus.primary_repeat.is_disease_associated_repeat &&
+    locus.short_read_context?.status === 'EXACT_UNIQUE'
       ? locus.short_read_context.catalog_record
       : null
   const absoluteRepresentedLengthAvailable =
@@ -489,16 +426,12 @@ const LongReadTandemRepeatPage = ({
 
   let spanLabel = 'Represented LR region length'
   if (clusterFocused) {
-    spanLabel = exactVariationBoundsAuthorized
-      ? 'Source variation-cluster length'
-      : 'Locus component-envelope length'
+    spanLabel = 'Locus component-envelope length'
   } else if (locus.components.length === 1) {
     spanLabel = 'Reference repeat length'
   }
   let spanValue = `${bounds.component_envelope_length_bp.toLocaleString()} bp`
-  if (exactVariationBoundsAuthorized && bounds.variation_cluster_length_bp != null) {
-    spanValue = `${bounds.variation_cluster_length_bp.toLocaleString()} bp`
-  } else if (!clusterFocused && locus.components.length > 1 && alleleLengthRange) {
+  if (!clusterFocused && locus.components.length > 1 && alleleLengthRange) {
     spanValue = alleleLengthRange
   }
 
@@ -541,9 +474,9 @@ const LongReadTandemRepeatPage = ({
               </AttributeListItem>
             </>
           )}
-          {!clusterFocused && (
+          {(locus.primary_repeat.motif || !clusterFocused) && (
             <AttributeListItem label="Primary repeat identity">
-              {locus.primary_repeat.status === 'AVAILABLE' && locus.primary_repeat.motif ? (
+              {locus.primary_repeat.motif ? (
                 <RepeatMotifBadges aria-label={`Primary repeat: ${locus.primary_repeat.motif}`}>
                   <RepeatMotifBadge
                     data-motif-badge={locus.primary_repeat.motif}
@@ -646,7 +579,7 @@ const LongReadTandemRepeatPage = ({
         alleles={locus.alleles.nodes}
         motifs={locus.motifs}
         primaryMotif={
-          locus.primary_repeat.status === 'AVAILABLE' ? locus.primary_repeat.motif : null
+          locus.primary_repeat.motif
         }
         exactAltCountComplete={
           locus.exact_alt_count_complete &&

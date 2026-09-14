@@ -16,9 +16,7 @@ describe('LongReadVariant tandem-repeat row contracts', () => {
   test('projects the same exact neutral fallback used by the canonical locus response', () => {
     const variant = { tr_locus_components: components }
     expect(resolvers.LongReadVariant.tr_locus_presentation(variant)).toMatchObject({
-      source_representation_kind: 'UNKNOWN',
-      presentation_layout: 'CLUSTER_FOCUSED',
-      presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+      locus_type: 'VARIATION_CLUSTER',
     })
     expect(resolvers.LongReadVariant.tr_locus_bounds(variant)).toMatchObject({
       component_envelope_start0: 100,
@@ -41,12 +39,7 @@ describe('LongReadVariant tandem-repeat row contracts', () => {
 
   test('passes future receipt-backed contracts through without inferring from count', () => {
     const presentation = {
-      source_representation_kind: 'VARIATION_CLUSTER',
-      presentation_layout: 'CLUSTER_FOCUSED',
-      presentation_reason: 'SOURCE_VARIATION_CLUSTER',
-      classification_source: 'catalog',
-      classification_release: 'v1',
-      classification_digest: 'sha256:catalog',
+      locus_type: 'VARIATION_CLUSTER',
     }
     expect(
       resolvers.LongReadVariant.tr_locus_presentation({

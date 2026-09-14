@@ -117,7 +117,7 @@ describe('long-read tandem-repeat resolvers', () => {
 
     await expect(
       resolvers.LongReadTandemRepeatLocus.primary_repeat(locus, null, { esClient: {} })
-    ).resolves.toBe(identity)
+    ).resolves.toEqual({ ...identity, is_disease_associated_repeat: false })
     expect(resolvePrimaryRepeat).toHaveBeenCalledWith(locus, context)
   })
 

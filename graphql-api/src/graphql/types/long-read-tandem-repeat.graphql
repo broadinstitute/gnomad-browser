@@ -12,46 +12,12 @@ type LongReadTrLocusRegion {
   size: Int!
 }
 
-enum LongReadTrPrimaryRepeatStatus {
-  AVAILABLE
-  UNAVAILABLE
-}
-
-enum LongReadTrPrimaryRepeatReason {
-  IDENTITY_CONTEXT_UNAVAILABLE
-  WRONG_ASSEMBLY
-  INVALID_STORED_MOTIF
-  MAIN_REGION_NOT_EXACT_COMPONENT
-  STORED_MOTIF_NOT_EXACT_COMPONENT
-  NON_BIJECTIVE_COMPONENT
-  CATALOG_DIGEST_MISMATCH
-  REGISTRY_DIGEST_MISMATCH
-  REGISTRY_NOT_REVIEWED
-  REGISTRY_IDENTITY_MISMATCH
-  COMPOUND_PRIMARY_REPEAT_UNREVIEWED
-}
-
-enum LongReadTrPrimaryRepeatSelectionBasis {
-  EXACT_MAIN_CATALOG_COMPONENT
-  LR_SOLE_COMPONENT
-  # Reserved for a future reviewed override registry. No current entries are available.
-  REVIEWED_PRIMARY_REPEAT_REGISTRY
-}
-
 type LongReadTrPrimaryRepeat {
-  status: LongReadTrPrimaryRepeatStatus!
-  reason_code: LongReadTrPrimaryRepeatReason
+  # True only when this locus exactly matches the main reference region and stored motif of a
+  # catalog locus listing at least one associated disease.
+  is_disease_associated_repeat: Boolean!
   motif: String
   component_index: Int
-  component: LongReadTrLocusComponent
-  selection_basis: LongReadTrPrimaryRepeatSelectionBasis
-  # Optional source-backed role; no coding role is inferred from motif or gene identity.
-  biological_role: String
-  catalog_id: String
-  # Present only for exact catalog authorization; null for sole-component and registry bases.
-  catalog_digest: String
-  # Present only for a future reviewed registry authorization; null for all current identities.
-  registry_digest: String
 }
 
 type LongReadTrSourceRecord {
@@ -604,34 +570,15 @@ type LongReadTrPrimaryMotifMeasurement {
   provenance: LongReadTrPrimaryMotifProvenance
 }
 
-enum LongReadTrSourceRepresentationKind {
-  ISOLATED_TR
+enum LongReadTrLocusType {
+  ISOLATED_REPEAT
   VARIATION_CLUSTER
-  UNKNOWN
-}
-
-enum LongReadTrPresentationLayout {
-  REPEAT_FOCUSED
-  CLUSTER_FOCUSED
-}
-
-enum LongReadTrPresentationReason {
-  SOLE_EXACT_COMPONENT
-  REVIEWED_PRIMARY_REPEAT
-  SOURCE_VARIATION_CLUSTER
-  MULTI_COMPONENT_FALLBACK
 }
 
 # Scientific source kind and visual layout are separate. Positive source kinds and
 # reviewed overrides require immutable receipts; missing receipts fail to UNKNOWN.
 type LongReadTrPresentation {
-  source_representation_kind: LongReadTrSourceRepresentationKind!
-  presentation_layout: LongReadTrPresentationLayout!
-  presentation_reason: LongReadTrPresentationReason!
-  classification_source: String
-  classification_release: String
-  classification_digest: String
-  reviewed_override_digest: String
+  locus_type: LongReadTrLocusType!
 }
 
 enum LongReadTrComponentEnvelopeBasis {
@@ -641,11 +588,6 @@ enum LongReadTrComponentEnvelopeBasis {
 enum LongReadTrSourceRefSpanStatus {
   AVAILABLE_EXACT
   UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT
-}
-
-enum LongReadTrVariationClusterBoundsStatus {
-  AVAILABLE_EXACT
-  UNAVAILABLE_NO_APPROVED_CLASSIFICATION
 }
 
 # Component geometry, source REF span, and source-declared cluster bounds are never
@@ -658,13 +600,6 @@ type LongReadTrBounds {
   source_ref_span_start0: Int
   source_ref_span_end0: Int
   source_ref_span_status: LongReadTrSourceRefSpanStatus!
-  variation_cluster_start0: Int
-  variation_cluster_end0: Int
-  variation_cluster_length_bp: Int
-  variation_cluster_status: LongReadTrVariationClusterBoundsStatus!
-  bounds_source: String
-  bounds_release: String
-  bounds_digest: String
 }
 
 type LongReadTrComponentSummary {
