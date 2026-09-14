@@ -166,7 +166,9 @@ const variationClusterAuthorized = (locus: LongReadTrLocus) =>
 
 export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
   if (locus.presentation?.presentation_layout === 'CLUSTER_FOCUSED') {
-    return variationClusterAuthorized(locus) ? 'Variation cluster' : 'Multi-component TR locus'
+    return variationClusterAuthorized(locus)
+      ? 'Repeat variation cluster'
+      : 'Multi-component TR locus'
   }
   if (locus.primary_repeat?.status !== 'AVAILABLE' || !locus.primary_repeat.motif) {
     const soleMotif = locus.components.length === 1 ? locus.components[0].motif : null

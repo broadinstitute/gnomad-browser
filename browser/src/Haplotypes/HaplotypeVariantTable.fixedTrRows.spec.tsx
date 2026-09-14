@@ -121,14 +121,16 @@ const summaryContractVariant = (altIndex: number, presentation: any = reviewedPr
 })
 
 describe('TR locus rows use the dedicated fixed-height experience', () => {
-  test('uses the authoritative locus for an explicit, bounded Details link', () => {
+  test('uses the authoritative locus for an explicit, bounded locus link', () => {
     renderTable()
-    const link = screen.getByRole('link', { name: /Details for AAAAG tandem repeat/ })
+    const link = screen.getByRole('link', {
+      name: /Details for 4:39348425–39348479 TR locus: 11 x AAAAG \(5bp motif\)/,
+    })
     expect(link.getAttribute('href')).toBe(
       `/tandem-repeat/${locusId}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
     expect(link.getAttribute('aria-label')).not.toContain(locusId)
-    expect(link.textContent).toBe('Details')
+    expect(link.textContent).toBe('4:39348425–39348479 TR locus: 11 x AAAAG (5bp motif)')
   })
 
   test('joins an exact reviewed-primary label and fails conflicting ALT contracts closed', () => {
@@ -149,7 +151,7 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
         haplotypeGroups={compoundGroups as any}
       />
     )
-    expect(screen.getByText(/Multi-component TR locus · 2 components \/ 2 motifs/)).not.toBeNull()
+    expect(screen.getByText(/TR variation cluster: spans 2 TRs with /)).not.toBeNull()
     expect(screen.queryByText(/HTT CAG tandem repeat/)).toBeNull()
   })
 
@@ -181,17 +183,20 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
 
   test('shows exact interval semantics and allows the bounded identity cell to wrap safely', () => {
     const { container } = renderTable()
-    expect(container.textContent).toContain('AAAAG tandem repeat · 4:39,348,425–39,348,479')
-    expect(container.textContent).toContain(
+    expect(container.textContent).toContain('4:39348425–39348479 TR locus: 11 x AAAAG (5bp motif)')
+    const locusLink = screen.getByRole('link', {
+      name: /Details for 4:39348425–39348479 TR locus: 11 x AAAAG \(5bp motif\)/,
+    })
+    expect(locusLink.getAttribute('title')).toContain(
       'GRCh38 exact component interval 4:[39,348,424, 39,348,479) · 55 bp'
     )
-    expect(container.textContent).toContain('1 component / 1 distinct stored motif')
+    expect(locusLink.getAttribute('title')).toContain('1 component / 1 distinct stored motif')
     expect(container.textContent).toContain('-5 bp')
     expect(container.textContent).not.toContain(sourceVariantId)
     expect(getComputedStyle(container.querySelector('tbody td')!).whiteSpace).toBe('normal')
     expect(getComputedStyle(container.querySelector('tbody td')!).overflowWrap).toBe('anywhere')
     const summaryScroller = screen.getByRole('region', {
-      name: 'Scrollable locus label, interval, and component summary',
+      name: 'Scrollable locus label',
     })
     expect(summaryScroller.getAttribute('tabindex')).toBe('0')
     expect(getComputedStyle(summaryScroller).overflow).toBe('auto')
