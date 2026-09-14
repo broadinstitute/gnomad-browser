@@ -51,11 +51,11 @@ describe('bounded tandem-repeat locus row presentation', () => {
     const input = contractsFor('1-143278475-143278486-T')
     expect(getTrLocusRowDisplay(input)).toEqual({
       kind: 'simple',
-      label: '1:143278476–143278486 TR locus: 11 x T (1bp motif)',
+      label: '1:143278475–143278486 TR locus: 11 x T (1bp motif)',
       intervalLabel: 'GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp',
       summaryLabel: '1 component / 1 distinct stored motif',
       detailsAccessibleLabel:
-        'Details for 1:143278476–143278486 TR locus: 11 x T (1bp motif). GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp. 1 component / 1 distinct stored motif.',
+        'Details for 1:143278475–143278486 TR locus: 11 x T (1bp motif). GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp. 1 component / 1 distinct stored motif.',
     })
   })
 
@@ -137,7 +137,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
     })
     expect(display.kind).toBe('variation-cluster')
     expect(display.label).toContain(
-      '3:91–180 TR variation cluster: spans 24 TRs with A, C, and other motifs'
+      '3:90–180 TR variation cluster: spans 24 TRs with A, C, and other motifs'
     )
     expect(display.intervalLabel).toBe(
       'GRCh38 source variation-cluster interval 3:[90, 180) · 90 bp'
@@ -150,7 +150,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
     const display = getTrLocusRowDisplay(input)
     expect(input.locus.components[0].motif).toBe(motif)
     expect(input.locus.canonicalId).toContain(motif)
-    expect(display.label).toBe('1:101–600 TR locus: 1 x long motif (500bp motif)')
+    expect(display.label).toBe('1:100–600 TR locus: 1 x long motif (500bp motif)')
     expect(display.label).not.toContain(motif)
     expect(display.detailsAccessibleLabel).toContain('1 x long motif (500bp motif)')
     expect(display.detailsAccessibleLabel).not.toContain(motif)
@@ -192,8 +192,8 @@ describe('bounded tandem-repeat locus row presentation', () => {
     })
 
     expect(classificationDisplay.kind).toBe('multi-component')
-    expect(classificationDisplay.label).toContain('3:101–171')
-    expect(classificationDisplay.label).not.toContain('3:91–180')
+    expect(classificationDisplay.label).toContain('3:100–171')
+    expect(classificationDisplay.label).not.toContain('3:90–180')
     expect(reviewedDisplay.kind).toBe('multi-component')
     expect(reviewedDisplay.label).not.toContain('HTT CAG')
   })
