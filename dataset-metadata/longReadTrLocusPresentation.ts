@@ -60,13 +60,13 @@ const simpleMotifContext = (motif: string) => (motif.length <= 80 ? motif : 'lon
 // Motifs named inline stay short so a row cannot grow with the stored sequence.
 const boundedMotif = (motif: string) => (motif.length <= 20 ? motif : `${motif.length}bp motif`)
 
-// Distinct stored motifs in first-appearance order. At most two are named; the rest are
-// summarized so the row stays bounded no matter how many components a cluster spans.
+// Distinct stored motifs, shortest first and alphabetical within a length. At most two are
+// named; the rest are summarized so the row stays bounded no matter how many components a
+// cluster spans.
 const motifPhrase = (motifs: string[]) => {
-  const distinct: string[] = []
-  motifs.forEach((motif) => {
-    if (!distinct.includes(motif)) distinct.push(motif)
-  })
+  const distinct = Array.from(new Set(motifs)).sort((a, b) =>
+    a.length === b.length ? a.localeCompare(b) : a.length - b.length
+  )
   if (distinct.length === 0) return 'no stored motifs'
   if (distinct.length === 1) return `a ${boundedMotif(distinct[0])} motif`
   if (distinct.length === 2) {
@@ -153,8 +153,9 @@ const exactVariationClusterBounds = (bounds?: TrLocusBoundsContract | null) => {
   }
 }
 
+// Zero-based half-open bounds, matching the canonical locus id rather than 1-based display.
 const formatPlainInterval = (chrom: string, start0: number, end0: number) =>
-  `${chrom}:${start0 + 1}–${end0}`
+  `${chrom}:${start0}–${end0}`
 
 /**
  * Build bounded row copy from the presentation contract without changing locus identity.
