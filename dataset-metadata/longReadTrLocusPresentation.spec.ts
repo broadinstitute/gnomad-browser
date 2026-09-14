@@ -51,11 +51,11 @@ describe('bounded tandem-repeat locus row presentation', () => {
     const input = contractsFor('1-143278475-143278486-T')
     expect(getTrLocusRowDisplay(input)).toEqual({
       kind: 'simple',
-      label: '1:143278475–143278486 TR locus: 11 x T (1bp motif)',
+      label: '1:143278475–143278486 TR locus (11bp): 11 x T',
       intervalLabel: 'GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp',
       summaryLabel: '1 component / 1 distinct stored motif',
       detailsAccessibleLabel:
-        'Details for 1:143278475–143278486 TR locus: 11 x T (1bp motif). GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp. 1 component / 1 distinct stored motif.',
+        'Details for 1:143278475–143278486 TR locus (11bp): 11 x T. GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp. 1 component / 1 distinct stored motif.',
     })
   })
 
@@ -72,7 +72,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
     expect(display.kind).toBe('multi-component')
     expect(display.label).toMatch(
       new RegExp(
-        `^3:\\d+–\\d+ TR variation cluster: spans ${componentCount} TRs with `
+        `^3:\\d+–\\d+ TR variation cluster \\(\\d+bp\\): spans ${componentCount} TRs with `
       )
     )
     expect(display.label).not.toContain(id)
@@ -108,7 +108,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
       },
     })
     expect(display.kind).toBe('multi-component')
-    expect(display.label).toMatch(/^3:\d+–\d+ TR variation cluster: spans 24 TRs with /)
+    expect(display.label).toMatch(/^3:\d+–\d+ TR variation cluster \(\d+bp\): spans 24 TRs with /)
     expect(display.label).not.toContain('HTT CAG')
   })
 
@@ -137,11 +137,35 @@ describe('bounded tandem-repeat locus row presentation', () => {
     })
     expect(display.kind).toBe('variation-cluster')
     expect(display.label).toContain(
-      '3:90–180 TR variation cluster: spans 24 TRs with A, C, and other motifs'
+      '3:90–180 TR variation cluster (90bp): spans 24 TRs with A, C, and other motifs'
     )
     expect(display.intervalLabel).toBe(
       'GRCh38 source variation-cluster interval 3:[90, 180) · 90 bp'
     )
+  })
+
+  test('treats a record that varies beyond its repeat as a variation cluster', () => {
+    // chr4-3094523-TRV-164: a 9 bp GGC repeat inside a record varying over 3094523-3094687.
+    const input = contractsFor('4-3094523-3094532-GGC')
+    const display = getTrLocusRowDisplay({
+      ...input,
+      sourceRecordSpan: { start0: 3094523, end0: 3094687 },
+    })
+    expect(display.kind).toBe('variation-cluster')
+    expect(display.label).toBe(
+      '4:3094523–3094687 TR variation cluster (164bp): spans 1 TR with a GGC motif'
+    )
+  })
+
+  test('leaves a record that varies only over its repeat as a plain locus', () => {
+    // chr4-3068956-TRV-9: the record's post-anchor span equals the repeat envelope.
+    const input = contractsFor('4-3068956-3068965-TG')
+    const display = getTrLocusRowDisplay({
+      ...input,
+      sourceRecordSpan: { start0: 3068956, end0: 3068965 },
+    })
+    expect(display.kind).toBe('simple')
+    expect(display.label).toBe('4:3068956–3068965 TR locus (9bp): 4.5 x TG')
   })
 
   test('uses a bounded semantic label for a long motif while preserving exact identity', () => {
@@ -150,7 +174,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
     const display = getTrLocusRowDisplay(input)
     expect(input.locus.components[0].motif).toBe(motif)
     expect(input.locus.canonicalId).toContain(motif)
-    expect(display.label).toBe('1:100–600 TR locus: 1 x long motif (500bp motif)')
+    expect(display.label).toBe('1:100–600 TR locus (500bp): 1 x long motif (500bp motif)')
     expect(display.label).not.toContain(motif)
     expect(display.detailsAccessibleLabel).toContain('1 x long motif (500bp motif)')
     expect(display.detailsAccessibleLabel).not.toContain(motif)
@@ -213,6 +237,6 @@ describe('bounded tandem-repeat locus row presentation', () => {
       },
     })
     expect(display.kind).toBe('multi-component')
-    expect(display.label).toMatch(/^3:\d+–\d+ TR variation cluster: spans /)
+    expect(display.label).toMatch(/^3:\d+–\d+ TR variation cluster \(\d+bp\): spans /)
   })
 })

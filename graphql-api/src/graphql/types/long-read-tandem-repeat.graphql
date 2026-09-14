@@ -605,7 +605,7 @@ type LongReadTrPrimaryMotifMeasurement {
 }
 
 enum LongReadTrSourceRepresentationKind {
-  STANDALONE_TR
+  ISOLATED_TR
   VARIATION_CLUSTER
   UNKNOWN
 }

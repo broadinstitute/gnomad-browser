@@ -289,6 +289,20 @@ const exactSharedContract = <T>(values: Array<T | null | undefined>): T | null =
   return serialized.size === 1 ? values[0]! : null
 }
 
+/** Zero-based half-open span the source records vary over, excluding the VCF anchor base.
+ * `pos` is the 1-based anchor, so the first varying base is `pos` in zero-based coordinates.
+ * Records that disagree fail closed rather than reporting their union, which would otherwise
+ * stretch a locus across everything between two unrelated records. */
+const sourceRecordSpanOf = (variants: RawLongReadVariant[]) => {
+  const spans = variants.filter(
+    (variant) => Number.isSafeInteger(variant.pos) && Number.isSafeInteger(variant.end)
+  )
+  if (!spans.length) return null
+  const distinct = new Set(spans.map((variant) => `${variant.pos}:${variant.end}`))
+  if (distinct.size !== 1) return null
+  return { start0: spans[0].pos!, end0: spans[0].end! }
+}
+
 const trLocusDisplay = (group: TrLocusGroup) =>
   getTrLocusRowDisplay({
     locus: group.locus,
@@ -296,12 +310,10 @@ const trLocusDisplay = (group: TrLocusGroup) =>
       group.variants.map((variant) => variant.tr_locus_presentation)
     ),
     bounds: exactSharedContract(group.variants.map((variant) => variant.tr_locus_bounds)),
-    componentSummary: exactSharedContract(
-      group.variants.map((variant) => variant.tr_locus_component_summary)
-    ),
     reviewedPrimaryLabel: exactSharedLabel(
       group.variants.map((variant) => variant.gnomad_str)
     ),
+    sourceRecordSpan: sourceRecordSpanOf(group.variants),
   })
 
 const formatSignedDelta = (value: number) => (value > 0 ? `+${value}` : String(value))

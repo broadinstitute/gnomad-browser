@@ -54,7 +54,6 @@ query ${operationName}(
       variation_cluster_start0 variation_cluster_end0 variation_cluster_length_bp
       variation_cluster_status bounds_source bounds_release bounds_digest
     }
-    component_summary { ordered_component_count distinct_stored_motif_count }
     sequence_cardinality {
       source_alt_identity_count unique_alt_sequence_count all_source_alts_sequence_complete
       status reason algorithm_version

@@ -1,7 +1,7 @@
 import { TrLocusId, trLocusDisplayEnvelope } from './longReadTrLocusId'
 
 export type TrLocusPresentationContract = {
-  source_representation_kind: 'STANDALONE_TR' | 'VARIATION_CLUSTER' | 'UNKNOWN'
+  source_representation_kind: 'ISOLATED_TR' | 'VARIATION_CLUSTER' | 'UNKNOWN'
   presentation_layout: 'REPEAT_FOCUSED' | 'CLUSTER_FOCUSED'
   presentation_reason:
     | 'SOLE_EXACT_COMPONENT'
@@ -19,6 +19,9 @@ export type TrLocusBoundsContract = {
   component_envelope_end0: number
   component_envelope_length_bp: number
   component_envelope_basis?: 'EXACT_ORDERED_COMPONENTS' | null
+  source_ref_span_start0?: number | null
+  source_ref_span_end0?: number | null
+  source_ref_span_status?: 'AVAILABLE_EXACT' | 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT' | null
   variation_cluster_start0?: number | null
   variation_cluster_end0?: number | null
   variation_cluster_length_bp?: number | null
@@ -168,24 +171,53 @@ export const getTrLocusRowDisplay = ({
   bounds,
   componentSummary,
   reviewedPrimaryLabel,
+  sourceRecordSpan,
 }: {
   locus: TrLocusId
   presentation?: TrLocusPresentationContract | null
   bounds?: TrLocusBoundsContract | null
   componentSummary?: TrLocusComponentSummaryContract | null
   reviewedPrimaryLabel?: string | null
+  /** Zero-based half-open span of the source VCF record, excluding its anchor base. */
+  sourceRecordSpan?: { start0: number; end0: number } | null
 }): TrLocusRowDisplay => {
   const facts = exactComponentFacts(locus)
-  const contractsMatch = contractMatchesIdentity(facts, bounds, componentSummary)
+  // Both counts are fully determined by the locus components, so derive them rather than
+  // requiring every caller to fetch a copy of what the locus id already encodes.
+  const summary = componentSummary || {
+    ordered_component_count: facts.componentCount,
+    distinct_stored_motif_count: facts.motifCount,
+  }
+  const contractsMatch = contractMatchesIdentity(facts, bounds, summary)
   const sourceLabel = boundedContext(reviewedPrimaryLabel)
   const reviewedPrimary =
     contractsMatch && hasReviewedPrimaryReceipt(presentation) && sourceLabel !== null
   const sourceVariationCluster = contractsMatch && hasSourceVariationClusterReceipt(presentation)
   const variationBounds = sourceVariationCluster ? exactVariationClusterBounds(bounds) : null
 
+  // A source record that varies beyond its repeat is a variation cluster: the repeat is only
+  // part of what the record changes, so the record's span is the interval worth showing.
+  // The bounds contract carries this span, but is currently unpopulated, so fall back to the
+  // span derived from the source records themselves.
+  const contractRefSpan =
+    bounds?.source_ref_span_status === 'AVAILABLE_EXACT' &&
+    Number.isSafeInteger(bounds.source_ref_span_start0) &&
+    Number.isSafeInteger(bounds.source_ref_span_end0)
+      ? { start0: bounds.source_ref_span_start0!, end0: bounds.source_ref_span_end0! }
+      : null
+  const refSpan =
+    contractRefSpan ||
+    (sourceRecordSpan &&
+    Number.isSafeInteger(sourceRecordSpan.start0) &&
+    Number.isSafeInteger(sourceRecordSpan.end0)
+      ? sourceRecordSpan
+      : null)
+  const recordSpansBeyondRepeat = Boolean(refSpan && refSpan.end0 - refSpan.start0 > facts.length)
+
   let kind: TrLocusRowKind
   if (reviewedPrimary) kind = 'reviewed-primary'
   else if (sourceVariationCluster) kind = 'variation-cluster'
+  else if (recordSpansBeyondRepeat) kind = 'variation-cluster'
   else if (facts.componentCount === 1) kind = 'simple'
   else kind = 'multi-component'
 
@@ -200,22 +232,27 @@ export const getTrLocusRowDisplay = ({
     const motif = locus.components[0].motif
     const copyText = repeatCopyText(facts.length, motif.length)
     const plainEnvelope = formatPlainInterval(locus.components[0].chrom, facts.start0, facts.end0)
-    label = `${plainEnvelope} TR locus: ${copyText ? `${copyText} x ` : ''}${simpleMotifContext(
-      motif
-    )} (${motif.length}bp motif)`
+    const motifSize = motif.length >= 7 ? ` (${motif.length}bp motif)` : ''
+    label = `${plainEnvelope} TR locus (${facts.length}bp): ${
+      copyText ? `${copyText} x ` : ''
+    }${simpleMotifContext(motif)}${motifSize}`
   } else if (kind === 'reviewed-primary') {
     label = `${
       sourceLabel ? `${sourceLabel} ` : ''
     }tandem repeat · ${facts.componentCount.toLocaleString('en-US')} source components`
   } else {
-    const clusterStart0 = kind === 'variation-cluster' ? variationBounds?.start0 : undefined
-    const clusterEnd0 = kind === 'variation-cluster' ? variationBounds?.end0 : undefined
+    const recordSpan = recordSpansBeyondRepeat ? refSpan : null
+    const clusterStart0 =
+      recordSpan?.start0 ?? (kind === 'variation-cluster' ? variationBounds?.start0 : undefined)
+    const clusterEnd0 =
+      recordSpan?.end0 ?? (kind === 'variation-cluster' ? variationBounds?.end0 : undefined)
     const clusterEnvelope = formatPlainInterval(
       locus.components[0].chrom,
       clusterStart0 ?? facts.start0,
       clusterEnd0 ?? facts.end0
     )
-    label = `${clusterEnvelope} TR variation cluster: spans ${facts.componentCount.toLocaleString(
+    const clusterLength = (clusterEnd0 ?? facts.end0) - (clusterStart0 ?? facts.start0)
+    label = `${clusterEnvelope} TR variation cluster (${clusterLength}bp): spans ${facts.componentCount.toLocaleString(
       'en-US'
     )} TR${facts.componentCount === 1 ? '' : 's'} with ${motifPhrase(
       locus.components.map((component) => component.motif)

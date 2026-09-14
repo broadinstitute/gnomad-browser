@@ -61,7 +61,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       long_read_tr_source_variant_ids: [httSource],
       long_read_tr_alt_count: 72,
       long_read_tr_label:
-        '4:3074876–3075040 TR variation cluster: spans 6 TRs with CAA, CAG, and other motifs',
+        '4:3074876–3075040 TR variation cluster (164bp): spans 6 TRs with CAA, CAG, and other motifs',
       long_read_tr_interval_label: 'GRCh38 component envelope 4:[3,074,876, 3,075,040) · 164 bp',
       long_read_tr_component_summary_label: '6 components / 5 distinct stored motifs',
       long_read_tr_delta_min: -24,
@@ -87,7 +87,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
     expect(container.querySelectorAll('a')).toHaveLength(1)
     expect(container.querySelector('div, br')).toBeNull()
     expect(container.textContent).toBe(
-      '4:3074876–3075040 TR variation cluster: spans 6 TRs with CAA, CAG, and other motifsΔbp -24..+48 bpTR'
+      '4:3074876–3075040 TR variation cluster (164bp): spans 6 TRs with CAA, CAG, and other motifsΔbp -24..+48 bpTR'
     )
     expect(link.getAttribute('aria-label')).not.toContain(httLocus)
     expect(link.getAttribute('title')).not.toContain(httLocus)
@@ -121,7 +121,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
         }),
       ]
     )[0]
-    expect(row.long_read_tr_label).toBe('4:3208719–3208734 TR locus: 15 x A (1bp motif)')
+    expect(row.long_read_tr_label).toBe('4:3208719–3208734 TR locus (15bp): 15 x A')
 
     render(<>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>)
     expect(screen.getByRole('link').getAttribute('href')).toBe(
@@ -146,6 +146,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
             tr_locus_id: locus,
             chrom: '3',
             pos: 1000,
+            end: 1000 + componentCount * 3 - 1,
           }),
         ]
       )[0]
@@ -153,12 +154,13 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       const { container } = render(
         <>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>
       )
+      expect(container.textContent).toContain('TR variation cluster (')
       expect(container.textContent).toContain(
-        `TR variation cluster: spans ${componentCount} TRs with A, C, and other motifs`
+        `spans ${componentCount} TRs with A, C, and other motifs`
       )
       expect(container.textContent).not.toContain('A + C + G')
       const details = screen.getByRole('link', {
-        name: new RegExp(`TR variation cluster: spans ${componentCount} TRs`),
+        name: new RegExp(`TR variation cluster \\(\\d+bp\\): spans ${componentCount} TRs`),
       })
       expect(details.textContent).toBe(row.long_read_tr_label)
       expect(details.getAttribute('aria-label')).not.toContain(locus)
@@ -305,7 +307,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       expect.arrayContaining([
         httLocus,
         httSource,
-        '4:3074876–3075040 TR variation cluster: spans 6 TRs with CAA, CAG, and other motifs',
+        '4:3074876–3075040 TR variation cluster (164bp): spans 6 TRs with CAA, CAG, and other motifs',
         `${httSource}~2`,
       ])
     )
@@ -340,7 +342,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
       expect(csv).toContain('Long-read TR locus ID')
       expect(csv).toContain('Long-read TR locus loaded ALT count')
       expect(csv).toContain(
-        '4:3074876–3075040 TR variation cluster: spans 6 TRs with CAA, CAG, and other motifs'
+        '4:3074876–3075040 TR variation cluster (164bp): spans 6 TRs with CAA, CAG, and other motifs'
       )
       expect(csv).toContain(httLocus)
       expect(csv).toContain(`${httSource}~1;${httSource}~2`)

@@ -206,10 +206,10 @@ const longReadVariantFields = `
       }
       tr_locus_bounds {
         component_envelope_start0 component_envelope_end0 component_envelope_length_bp component_envelope_basis
+          source_ref_span_start0 source_ref_span_end0 source_ref_span_status
         variation_cluster_start0 variation_cluster_end0 variation_cluster_length_bp variation_cluster_status
         bounds_source bounds_release bounds_digest
       }
-      tr_locus_component_summary { ordered_component_count distinct_stored_motif_count }
       tr_structure
       main_reference_region {
         chrom
@@ -340,10 +340,10 @@ const ConnectedVariantsInRegion = ({
                 }
                 tr_locus_bounds {
                   component_envelope_start0 component_envelope_end0 component_envelope_length_bp component_envelope_basis
+          source_ref_span_start0 source_ref_span_end0 source_ref_span_status
                   variation_cluster_start0 variation_cluster_end0 variation_cluster_length_bp variation_cluster_status
                   bounds_source bounds_release bounds_digest
                 }
-                tr_locus_component_summary { ordered_component_count distinct_stored_motif_count }
                 main_reference_region { chrom start stop }
                 sv_consequences major_consequence cadd_phred phylop
                 freq { all { ac an af homozygote_ref_count homozygote_alt_count heterozygote_count } populations { id ac an af } }

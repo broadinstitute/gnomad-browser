@@ -269,7 +269,7 @@ export type PrimaryMotifMeasurementData = {
 }
 
 export type LongReadTrPresentation = {
-  source_representation_kind: 'STANDALONE_TR' | 'VARIATION_CLUSTER' | 'UNKNOWN'
+  source_representation_kind: 'ISOLATED_TR' | 'VARIATION_CLUSTER' | 'UNKNOWN'
   presentation_layout: 'REPEAT_FOCUSED' | 'CLUSTER_FOCUSED'
   presentation_reason:
     | 'SOLE_EXACT_COMPONENT'
