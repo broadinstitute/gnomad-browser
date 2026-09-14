@@ -42,9 +42,7 @@ const longReadTrLocusQuery = `
       sequences_available sequences_unavailable_reason
       component_measurement_available component_measurement_unavailable_reason
       primary_repeat {
-        status reason_code motif component_index selection_basis biological_role
-        catalog_id catalog_digest registry_digest
-        component { chrom start0 end0 motif }
+        is_disease_associated_repeat motif component_index
       }
       primary_motif_measurement {
         status reason_code motif biological_role metric unit scope called_alleles
@@ -67,14 +65,12 @@ const longReadTrLocusQuery = `
         source_variant_id task_id attempt_id alt_count non_reference_ac an non_reference_af
       }
       presentation {
-        source_representation_kind presentation_layout presentation_reason classification_source
-        classification_release classification_digest reviewed_override_digest
+         locus_type
       }
       bounds {
         component_envelope_start0 component_envelope_end0 component_envelope_length_bp
         component_envelope_basis source_ref_span_start0 source_ref_span_end0 source_ref_span_status
-        variation_cluster_start0 variation_cluster_end0 variation_cluster_length_bp
-        variation_cluster_status bounds_source bounds_release bounds_digest
+
       }
       component_summary { ordered_component_count distinct_stored_motif_count }
       sequence_cardinality {
@@ -310,9 +306,7 @@ describe('assembled LR identity GraphQL contract', () => {
             type: locusType,
             resolve: () => ({
               presentation: {
-                source_representation_kind: 'UNKNOWN',
-                presentation_layout: 'CLUSTER_FOCUSED',
-                presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+                locus_type: 'VARIATION_CLUSTER',
               },
               bounds: {
                 component_envelope_start0: 100,
@@ -320,7 +314,6 @@ describe('assembled LR identity GraphQL contract', () => {
                 component_envelope_length_bp: 20,
                 component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
                 source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
-                variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
               },
               component_summary: {
                 ordered_component_count: 2,
@@ -348,8 +341,8 @@ describe('assembled LR identity GraphQL contract', () => {
       schema: executionSchema,
       source: `{
         locus {
-          presentation { source_representation_kind presentation_layout presentation_reason }
-          bounds { component_envelope_basis source_ref_span_status variation_cluster_status }
+          presentation {  locus_type }
+          bounds { component_envelope_basis source_ref_span_status  }
           sequence_cardinality { status reason }
           represented_length { status reason source_delta_provenance reconciliation_status }
         }
@@ -359,14 +352,11 @@ describe('assembled LR identity GraphQL contract', () => {
     expect(result.data).toEqual({
       locus: {
         presentation: {
-          source_representation_kind: 'UNKNOWN',
-          presentation_layout: 'CLUSTER_FOCUSED',
-          presentation_reason: 'MULTI_COMPONENT_FALLBACK',
+          locus_type: 'VARIATION_CLUSTER',
         },
         bounds: {
           component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
           source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
-          variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
         },
         sequence_cardinality: { status: 'AVAILABLE_EXACT', reason: null },
         represented_length: {
@@ -607,18 +597,7 @@ describe('assembled LR identity GraphQL contract', () => {
 
     const primaryRepeatType = types.find((type: any) => type.name === 'LongReadTrPrimaryRepeat')
     expect(primaryRepeatType.fields.map((field: any) => field.name)).toEqual(
-      expect.arrayContaining([
-        'status',
-        'reason_code',
-        'motif',
-        'component_index',
-        'component',
-        'selection_basis',
-        'biological_role',
-        'catalog_id',
-        'catalog_digest',
-        'registry_digest',
-      ])
+      expect.arrayContaining(['is_disease_associated_repeat', 'motif', 'component_index'])
     )
 
     const contextType = types.find((type: any) => type.name === 'LongReadTrShortReadContext')

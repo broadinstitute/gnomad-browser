@@ -306,13 +306,7 @@ const sourceRecordSpanOf = (variants: RawLongReadVariant[]) => {
 const trLocusDisplay = (group: TrLocusGroup) =>
   getTrLocusRowDisplay({
     locus: group.locus,
-    presentation: exactSharedContract(
-      group.variants.map((variant) => variant.tr_locus_presentation)
-    ),
     bounds: exactSharedContract(group.variants.map((variant) => variant.tr_locus_bounds)),
-    reviewedPrimaryLabel: exactSharedLabel(
-      group.variants.map((variant) => variant.gnomad_str)
-    ),
     sourceRecordSpan: sourceRecordSpanOf(group.variants),
   })
 

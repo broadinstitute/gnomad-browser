@@ -275,11 +275,7 @@ describe('long-read TR locus query contract', () => {
       represented_allele_length_max: null,
       represented_allele_length_unavailable_reason: 'ANCHOR_RULE_NOT_APPROVED',
       presentation: {
-        source_representation_kind: 'UNKNOWN',
-        presentation_layout: 'CLUSTER_FOCUSED',
-        presentation_reason: 'MULTI_COMPONENT_FALLBACK',
-        classification_digest: null,
-        reviewed_override_digest: null,
+        locus_type: 'VARIATION_CLUSTER',
       },
       bounds: {
         component_envelope_start0: 3074876,
@@ -287,9 +283,6 @@ describe('long-read TR locus query contract', () => {
         component_envelope_length_bp: 164,
         component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
         source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
-        variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
-        variation_cluster_start0: null,
-        bounds_digest: null,
       },
       component_summary: {
         ordered_component_count: 6,
@@ -773,13 +766,6 @@ describe('round-two Phase 2A contracts', () => {
         source_ref_span_start0: null,
         source_ref_span_end0: null,
         source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
-        variation_cluster_start0: null,
-        variation_cluster_end0: null,
-        variation_cluster_length_bp: null,
-        variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
-        bounds_source: null,
-        bounds_release: null,
-        bounds_digest: null,
       },
       component_summary: {
         ordered_component_count: 180,
@@ -791,24 +777,9 @@ describe('round-two Phase 2A contracts', () => {
     )
   })
 
-  test('uses only exact component count for the receipt-free presentation fallback', () => {
-    expect(buildLongReadTrPresentation(1)).toEqual({
-      source_representation_kind: 'UNKNOWN',
-      presentation_layout: 'REPEAT_FOCUSED',
-      presentation_reason: 'SOLE_EXACT_COMPONENT',
-      classification_source: null,
-      classification_release: null,
-      classification_digest: null,
-      reviewed_override_digest: null,
-    })
-    expect(buildLongReadTrPresentation(6)).toMatchObject({
-      source_representation_kind: 'UNKNOWN',
-      presentation_layout: 'CLUSTER_FOCUSED',
-      presentation_reason: 'MULTI_COMPONENT_FALLBACK',
-      classification_digest: null,
-      reviewed_override_digest: null,
-    })
-    expect(JSON.stringify(buildLongReadTrPresentation(6))).not.toContain('VARIATION_CLUSTER')
+  test('derives locus type from the exact component count alone', () => {
+    expect(buildLongReadTrPresentation(1)).toEqual({ locus_type: 'ISOLATED_REPEAT' })
+    expect(buildLongReadTrPresentation(6)).toEqual({ locus_type: 'VARIATION_CLUSTER' })
   })
 
   test('counts exact ALT bytes without coalescing source identities', () => {

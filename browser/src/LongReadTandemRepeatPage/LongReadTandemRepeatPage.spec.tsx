@@ -152,13 +152,7 @@ const makeLocus = (count = 72) => {
     source_run_id: 'run-hgsvc',
     accepted_task_attempt_digest: 'a'.repeat(64),
     presentation: {
-      source_representation_kind: 'UNKNOWN' as const,
-      presentation_layout: 'REPEAT_FOCUSED' as const,
-      presentation_reason: 'REVIEWED_PRIMARY_REPEAT' as const,
-      classification_source: null,
-      classification_release: null,
-      classification_digest: null,
-      reviewed_override_digest: 'b'.repeat(64),
+      locus_type: 'VARIATION_CLUSTER' as const,
     },
     bounds: {
       component_envelope_start0: 3074876,
@@ -168,13 +162,6 @@ const makeLocus = (count = 72) => {
       source_ref_span_start0: null,
       source_ref_span_end0: null,
       source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT' as const,
-      variation_cluster_start0: null,
-      variation_cluster_end0: null,
-      variation_cluster_length_bp: null,
-      variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION' as const,
-      bounds_source: null,
-      bounds_release: null,
-      bounds_digest: null,
     },
     component_summary: {
       ordered_component_count: 6,
@@ -301,16 +288,9 @@ const makeLocus = (count = 72) => {
     component_measurement_unavailable_reason:
       'Compound loci lack an admitted mapping from whole-record sequence to LR reference components',
     primary_repeat: {
-      status: 'AVAILABLE' as const,
-      reason_code: null,
+      is_disease_associated_repeat: true,
       motif: 'CAG',
       component_index: 0,
-      component: components[0],
-      selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT' as const,
-      biological_role: null,
-      catalog_id: 'HTT',
-      catalog_digest: 'catalog-test-digest',
-      registry_digest: null,
     },
     components,
     source_records: [
@@ -493,9 +473,7 @@ const makeLocus = (count = 72) => {
 const makeSimpleLocus = () => ({
   ...makeLocus(),
   presentation: {
-    ...makeLocus().presentation,
-    presentation_reason: 'SOLE_EXACT_COMPONENT' as const,
-    reviewed_override_digest: null,
+    locus_type: 'ISOLATED_REPEAT' as const,
   },
   bounds: {
     ...makeLocus().bounds,
@@ -508,7 +486,6 @@ const makeSimpleLocus = () => ({
   components: [{ chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' }],
   primary_repeat: {
     ...makeLocus().primary_repeat,
-    component: { chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' },
   },
   motifs: ['CAG'],
   repeat_count_plots: {
@@ -622,7 +599,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('renders grounded source attributes without technical component provenance', () => {
     renderPage()
-    expect(screen.getByRole('heading', { name: 'HTT CAG tandem repeat' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
     expect(screen.queryByLabelText('Primary repeat CAG', { exact: true })).toBeNull()
     expect(screen.getByLabelText('Primary repeat: CAG', { exact: true })).not.toBeNull()
     expect(screen.queryByText(/Compound source representation/)).toBeNull()
@@ -637,7 +614,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByText('Allele copies with a genotype call')).toBeNull()
     expect(screen.getByRole('link', { name: 'TRExplorer' })).not.toBeNull()
     expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
-    expect(screen.queryByRole('img', { name: /ordered LR reference components/ })).toBeNull()
+    // A variation cluster renders the ordered component track; the assertions below
+    // still guard that no classifying or provenance detail comes with it.
+    expect(screen.queryByRole('img', { name: /ordered LR reference components/ })).not.toBeNull()
     expect(screen.queryByText('Full ordered component table (6)')).toBeNull()
     expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
   })
@@ -655,7 +634,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
       biological_role: null,
       catalog_id: null,
       catalog_digest: null,
-      registry_digest: null,
     }
     renderPage({ locus, selectedAllele: undefined })
 
@@ -684,7 +662,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
         motif: 'TGC',
         component: atxn1Component,
         biological_role: null,
-        catalog_id: 'ATXN1',
       },
       short_read_context: {
         ...atxn1.short_read_context,
@@ -743,7 +720,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
         motif: 'AAAAG',
         component: rfc1Component,
         biological_role: 'benign reference motif',
-        catalog_id: 'RFC1',
       },
       short_read_context: {
         ...rfc1.short_read_context,
@@ -794,13 +770,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const locus = makeLocus()
     ;(locus as any).presentation = {
       ...locus.presentation,
-      presentation_layout: 'CLUSTER_FOCUSED',
-      presentation_reason: 'MULTI_COMPONENT_FALLBACK',
-      reviewed_override_digest: null,
+      locus_type: 'VARIATION_CLUSTER',
     }
     ;(locus as any).primary_repeat = {
       status: 'UNAVAILABLE',
-      reason_code: 'REGISTRY_DIGEST_MISMATCH',
       motif: null,
       component_index: null,
       component: null,
@@ -808,85 +781,24 @@ describe('canonical long-read tandem-repeat locus page', () => {
       biological_role: null,
       catalog_id: null,
       catalog_digest: null,
-      registry_digest: null,
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'Multi-component TR locus' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
     expect(screen.queryByText(/Primary repeat unavailable/)).toBeNull()
     expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
     expect(screen.queryByText(/All ordered source components and provenance/)).toBeNull()
     expect(screen.queryByRole('heading', { name: /Long-read exact CAG units/ })).toBeNull()
   })
 
-  test('uses positive cluster wording and source bounds only with complete API provenance', () => {
-    const locus = makeLocus()
-    ;(locus as any).presentation = {
-      source_representation_kind: 'VARIATION_CLUSTER',
-      presentation_layout: 'CLUSTER_FOCUSED',
-      presentation_reason: 'SOURCE_VARIATION_CLUSTER',
-      classification_source: 'source-catalog',
-      classification_release: 'catalog-v1',
-      classification_digest: '1'.repeat(64),
-      reviewed_override_digest: null,
-    }
-    ;(locus as any).bounds = {
-      ...locus.bounds,
-      variation_cluster_start0: 3074800,
-      variation_cluster_end0: 3075100,
-      variation_cluster_length_bp: 300,
-      variation_cluster_status: 'AVAILABLE_EXACT',
-      bounds_source: 'source-catalog',
-      bounds_release: 'catalog-v1',
-      bounds_digest: '2'.repeat(64),
-    }
-    renderPage({ locus, selectedAllele: undefined })
-
-    expect(screen.getByRole('heading', { name: 'Repeat variation cluster' })).not.toBeNull()
-    expect(screen.getByText('Source variation-cluster length')).not.toBeNull()
-    expect(screen.getByText('300 bp')).not.toBeNull()
-    expect(screen.getByText(/chr4:3,074,801–3,075,100/)).not.toBeNull()
-  })
-
-  test('falls back to envelope bounds when a classified cluster lacks a bounds receipt', () => {
-    const locus = makeLocus()
-    ;(locus as any).presentation = {
-      source_representation_kind: 'VARIATION_CLUSTER',
-      presentation_layout: 'CLUSTER_FOCUSED',
-      presentation_reason: 'SOURCE_VARIATION_CLUSTER',
-      classification_source: 'source-catalog',
-      classification_release: 'catalog-v1',
-      classification_digest: '1'.repeat(64),
-      reviewed_override_digest: null,
-    }
-    ;(locus as any).bounds = {
-      ...locus.bounds,
-      variation_cluster_start0: 3074800,
-      variation_cluster_end0: 3075100,
-      variation_cluster_length_bp: 300,
-      variation_cluster_status: 'AVAILABLE_EXACT',
-      bounds_source: 'source-catalog',
-      bounds_release: 'catalog-v1',
-      bounds_digest: null,
-    }
-    renderPage({ locus, selectedAllele: undefined })
-
-    expect(screen.getByRole('heading', { name: 'Repeat variation cluster' })).not.toBeNull()
-    expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
-    expect(screen.getByText('164 bp')).not.toBeNull()
-    expect(screen.getByText(/chr4:3,074,877–3,075,040/)).not.toBeNull()
-    expect(screen.queryByText('300 bp')).toBeNull()
-  })
-
   test('falls back from an unreceipted reviewed compound presentation', () => {
     const locus = makeLocus()
     ;(locus as any).presentation = {
       ...locus.presentation,
-      reviewed_override_digest: null,
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'Multi-component TR locus' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
     expect(screen.queryByText(/Compound source representation/)).toBeNull()
     expect(screen.getByText('Ordered source components')).not.toBeNull()
   })
@@ -1144,7 +1056,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     expect(
       screen.queryByRole('region', { name: 'Scrollable LR reference component track' })
-    ).toBeNull()
+    ).not.toBeNull()
   })
 
   test('renders complete non-classifying disease context with a fixed dataset link', () => {
@@ -1199,7 +1111,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       within(help).getByText(/do not classify, filter, or select any LR allele/)
     ).not.toBeNull()
-    expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
+    const exactMatch = document.querySelector('[data-exact-reference-component-match="true"]')
+    expect(exactMatch).not.toBeNull()
+    expect(exactMatch!.querySelector('title')!.textContent).toContain(
+      'no clinical classification'
+    )
   })
 
   test.each([
@@ -1288,7 +1204,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
         ...locus.primary_repeat,
         motif: 'GCA',
         component: gcaComponent,
-        catalog_id: 'ATXN7',
       },
       short_read_context: {
         ...locus.short_read_context,
@@ -1761,7 +1676,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       (within(retainedFrame).getByLabelText('Long-read cohort') as HTMLSelectElement).value
     ).toBe('hgsvc_hprc')
-    expect(screen.getByRole('heading', { name: 'HTT CAG tandem repeat' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
   })
 
   test('container pushes exact selection while preserving unrelated parameters', () => {
@@ -1857,7 +1772,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(longReadTandemRepeatLocusQuery).toContain('repeat_count_plots')
     expect(longReadTandemRepeatLocusQuery).toContain('interaction { interaction_status reason }')
     expect(longReadTandemRepeatLocusQuery).toContain('primary_repeat {')
-    expect(longReadTandemRepeatLocusQuery).toContain('catalog_id catalog_digest registry_digest')
+    expect(longReadTandemRepeatLocusQuery).toContain('is_disease_associated_repeat')
     expect(longReadTandemRepeatLocusQuery).toContain('short_read_context {')
     expect(longReadTandemRepeatLocusQuery).toContain('exact_reference_component_outline_authorized')
     expect(longReadTandemRepeatLocusQuery).not.toContain('repeat_units {')

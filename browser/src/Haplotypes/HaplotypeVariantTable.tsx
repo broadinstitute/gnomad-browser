@@ -362,9 +362,7 @@ const getTrLocusDisplay = (v: DerivedVariant): TrLocusRowDisplay | null => {
   if (!locus) return null
   return getTrLocusRowDisplay({
     locus,
-    presentation: v.tr_locus_presentation,
     bounds: v.tr_locus_bounds,
-    reviewedPrimaryLabel: v.gnomad_str,
     sourceRecordSpan:
       Number.isSafeInteger(v.pos) && Number.isSafeInteger(v.end)
         ? { start0: v.pos as number, end0: v.end as number }

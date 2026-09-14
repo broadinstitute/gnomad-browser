@@ -1,17 +1,7 @@
 import { TrLocusId, trLocusDisplayEnvelope } from './longReadTrLocusId'
 
 export type TrLocusPresentationContract = {
-  source_representation_kind: 'ISOLATED_TR' | 'VARIATION_CLUSTER' | 'UNKNOWN'
-  presentation_layout: 'REPEAT_FOCUSED' | 'CLUSTER_FOCUSED'
-  presentation_reason:
-    | 'SOLE_EXACT_COMPONENT'
-    | 'REVIEWED_PRIMARY_REPEAT'
-    | 'SOURCE_VARIATION_CLUSTER'
-    | 'MULTI_COMPONENT_FALLBACK'
-  classification_source?: string | null
-  classification_release?: string | null
-  classification_digest?: string | null
-  reviewed_override_digest?: string | null
+  locus_type: 'ISOLATED_REPEAT' | 'VARIATION_CLUSTER'
 }
 
 export type TrLocusBoundsContract = {
@@ -22,13 +12,6 @@ export type TrLocusBoundsContract = {
   source_ref_span_start0?: number | null
   source_ref_span_end0?: number | null
   source_ref_span_status?: 'AVAILABLE_EXACT' | 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT' | null
-  variation_cluster_start0?: number | null
-  variation_cluster_end0?: number | null
-  variation_cluster_length_bp?: number | null
-  variation_cluster_status?: 'AVAILABLE_EXACT' | 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION' | null
-  bounds_source?: string | null
-  bounds_release?: string | null
-  bounds_digest?: string | null
 }
 
 export type TrLocusComponentSummaryContract = {
@@ -36,7 +19,7 @@ export type TrLocusComponentSummaryContract = {
   distinct_stored_motif_count: number
 }
 
-export type TrLocusRowKind = 'simple' | 'reviewed-primary' | 'variation-cluster' | 'multi-component'
+export type TrLocusRowKind = 'simple' | 'variation-cluster'
 
 export type TrLocusRowDisplay = {
   kind: TrLocusRowKind
@@ -45,18 +28,6 @@ export type TrLocusRowDisplay = {
   summaryLabel: string
   detailsAccessibleLabel: string
 }
-
-const boundedContext = (value?: string | null) => {
-  const normalized = value?.trim().replace(/\s+/g, ' ')
-  if (!normalized) return null
-  return normalized.length <= 80 ? normalized : `${normalized.slice(0, 79)}…`
-}
-
-const hasText = (value?: string | null): value is string =>
-  typeof value === 'string' && value.trim().length > 0
-
-const isCanonicalSha256Digest = (value?: string | null): value is string =>
-  typeof value === 'string' && /^[a-f0-9]{64}$/.test(value)
 
 const simpleMotifContext = (motif: string) => (motif.length <= 80 ? motif : 'long motif')
 
@@ -87,6 +58,10 @@ const repeatCopyText = (lengthBp: number, motifLength: number) => {
   return Number.isInteger(copies) ? String(copies) : copies.toFixed(1)
 }
 
+// Zero-based half-open bounds, matching the canonical locus id rather than 1-based display.
+const formatPlainInterval = (chrom: string, start0: number, end0: number) =>
+  `${chrom}:${start0}–${end0}`
+
 const exactComponentFacts = (locus: TrLocusId) => {
   const envelope = trLocusDisplayEnvelope(locus)
   const start0 = envelope.start1 - 1
@@ -100,100 +75,21 @@ const exactComponentFacts = (locus: TrLocusId) => {
   }
 }
 
-const contractMatchesIdentity = (
-  facts: ReturnType<typeof exactComponentFacts>,
-  bounds?: TrLocusBoundsContract | null,
-  summary?: TrLocusComponentSummaryContract | null
-) =>
-  Boolean(
-    bounds &&
-      summary &&
-      bounds.component_envelope_basis === 'EXACT_ORDERED_COMPONENTS' &&
-      bounds.component_envelope_start0 === facts.start0 &&
-      bounds.component_envelope_end0 === facts.end0 &&
-      bounds.component_envelope_length_bp === facts.length &&
-      summary.ordered_component_count === facts.componentCount &&
-      summary.distinct_stored_motif_count === facts.motifCount
-  )
-
-const hasReviewedPrimaryReceipt = (presentation?: TrLocusPresentationContract | null) =>
-  Boolean(
-    presentation?.presentation_layout === 'REPEAT_FOCUSED' &&
-      presentation.presentation_reason === 'REVIEWED_PRIMARY_REPEAT' &&
-      isCanonicalSha256Digest(presentation.reviewed_override_digest)
-  )
-
-const hasSourceVariationClusterReceipt = (presentation?: TrLocusPresentationContract | null) =>
-  Boolean(
-    presentation?.source_representation_kind === 'VARIATION_CLUSTER' &&
-      presentation.presentation_layout === 'CLUSTER_FOCUSED' &&
-      presentation.presentation_reason === 'SOURCE_VARIATION_CLUSTER' &&
-      hasText(presentation.classification_source) &&
-      hasText(presentation.classification_release) &&
-      isCanonicalSha256Digest(presentation.classification_digest)
-  )
-
-const exactVariationClusterBounds = (bounds?: TrLocusBoundsContract | null) => {
-  if (
-    bounds?.variation_cluster_status !== 'AVAILABLE_EXACT' ||
-    !hasText(bounds.bounds_source) ||
-    !hasText(bounds.bounds_release) ||
-    !hasText(bounds.bounds_digest) ||
-    !Number.isSafeInteger(bounds.variation_cluster_start0) ||
-    !Number.isSafeInteger(bounds.variation_cluster_end0) ||
-    !Number.isSafeInteger(bounds.variation_cluster_length_bp) ||
-    bounds.variation_cluster_start0! < 0 ||
-    bounds.variation_cluster_end0! <= bounds.variation_cluster_start0! ||
-    bounds.variation_cluster_length_bp !==
-      bounds.variation_cluster_end0! - bounds.variation_cluster_start0!
-  ) {
-    return null
-  }
-  return {
-    start0: bounds.variation_cluster_start0!,
-    end0: bounds.variation_cluster_end0!,
-    length: bounds.variation_cluster_length_bp!,
-  }
-}
-
-// Zero-based half-open bounds, matching the canonical locus id rather than 1-based display.
-const formatPlainInterval = (chrom: string, start0: number, end0: number) =>
-  `${chrom}:${start0}–${end0}`
-
 /**
- * Build bounded row copy from the presentation contract without changing locus identity.
- * Positive variation-cluster and reviewed-primary language requires its corresponding
- * receipt. Component count can select only the neutral fallback, never scientific kind.
+ * Build bounded row copy without changing locus identity. A locus reads as a variation cluster
+ * when its source record varies beyond the repeat, or when it holds more than one component.
  */
 export const getTrLocusRowDisplay = ({
   locus,
-  presentation,
   bounds,
-  componentSummary,
-  reviewedPrimaryLabel,
   sourceRecordSpan,
 }: {
   locus: TrLocusId
-  presentation?: TrLocusPresentationContract | null
   bounds?: TrLocusBoundsContract | null
-  componentSummary?: TrLocusComponentSummaryContract | null
-  reviewedPrimaryLabel?: string | null
   /** Zero-based half-open span of the source VCF record, excluding its anchor base. */
   sourceRecordSpan?: { start0: number; end0: number } | null
 }): TrLocusRowDisplay => {
   const facts = exactComponentFacts(locus)
-  // Both counts are fully determined by the locus components, so derive them rather than
-  // requiring every caller to fetch a copy of what the locus id already encodes.
-  const summary = componentSummary || {
-    ordered_component_count: facts.componentCount,
-    distinct_stored_motif_count: facts.motifCount,
-  }
-  const contractsMatch = contractMatchesIdentity(facts, bounds, summary)
-  const sourceLabel = boundedContext(reviewedPrimaryLabel)
-  const reviewedPrimary =
-    contractsMatch && hasReviewedPrimaryReceipt(presentation) && sourceLabel !== null
-  const sourceVariationCluster = contractsMatch && hasSourceVariationClusterReceipt(presentation)
-  const variationBounds = sourceVariationCluster ? exactVariationClusterBounds(bounds) : null
 
   // A source record that varies beyond its repeat is a variation cluster: the repeat is only
   // part of what the record changes, so the record's span is the interval worth showing.
@@ -214,12 +110,8 @@ export const getTrLocusRowDisplay = ({
       : null)
   const recordSpansBeyondRepeat = Boolean(refSpan && refSpan.end0 - refSpan.start0 > facts.length)
 
-  let kind: TrLocusRowKind
-  if (reviewedPrimary) kind = 'reviewed-primary'
-  else if (sourceVariationCluster) kind = 'variation-cluster'
-  else if (recordSpansBeyondRepeat) kind = 'variation-cluster'
-  else if (facts.componentCount === 1) kind = 'simple'
-  else kind = 'multi-component'
+  const kind: TrLocusRowKind =
+    !recordSpansBeyondRepeat && facts.componentCount === 1 ? 'simple' : 'variation-cluster'
 
   const componentSummaryText = `${facts.componentCount.toLocaleString('en-US')} component${
     facts.componentCount === 1 ? '' : 's'
@@ -236,16 +128,10 @@ export const getTrLocusRowDisplay = ({
     label = `${plainEnvelope} TR locus (${facts.length}bp): ${
       copyText ? `${copyText} x ` : ''
     }${simpleMotifContext(motif)}${motifSize}`
-  } else if (kind === 'reviewed-primary') {
-    label = `${
-      sourceLabel ? `${sourceLabel} ` : ''
-    }tandem repeat · ${facts.componentCount.toLocaleString('en-US')} source components`
   } else {
     const recordSpan = recordSpansBeyondRepeat ? refSpan : null
-    const clusterStart0 =
-      recordSpan?.start0 ?? (kind === 'variation-cluster' ? variationBounds?.start0 : undefined)
-    const clusterEnd0 =
-      recordSpan?.end0 ?? (kind === 'variation-cluster' ? variationBounds?.end0 : undefined)
+    const clusterStart0 = recordSpan?.start0
+    const clusterEnd0 = recordSpan?.end0
     const clusterEnvelope = formatPlainInterval(
       locus.components[0].chrom,
       clusterStart0 ?? facts.start0,
@@ -261,10 +147,8 @@ export const getTrLocusRowDisplay = ({
 
   const accessibleLabel = label
 
-  const interval = variationBounds || facts
-  let intervalKind = 'component envelope'
-  if (variationBounds) intervalKind = 'source variation-cluster interval'
-  else if (facts.componentCount === 1) intervalKind = 'exact component interval'
+  const interval = facts
+  const intervalKind = facts.componentCount === 1 ? 'exact component interval' : 'component envelope'
   const intervalLabel = `GRCh38 ${intervalKind} ${
     locus.components[0].chrom
   }:[${interval.start0.toLocaleString('en-US')}, ${interval.end0.toLocaleString(

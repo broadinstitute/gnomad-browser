@@ -27,13 +27,6 @@ export const buildLongReadTrComponentContract = (components: TrLocusComponent[])
       source_ref_span_start0: null,
       source_ref_span_end0: null,
       source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
-      variation_cluster_start0: null,
-      variation_cluster_end0: null,
-      variation_cluster_length_bp: null,
-      variation_cluster_status: 'UNAVAILABLE_NO_APPROVED_CLASSIFICATION',
-      bounds_source: null,
-      bounds_release: null,
-      bounds_digest: null,
     },
     component_summary: {
       ordered_component_count: components.length,
@@ -47,22 +40,6 @@ export const buildLongReadTrPresentation = (orderedComponentCount: number) => {
     throw new Error('TR_LOCUS_INVARIANT')
   }
   return orderedComponentCount === 1
-    ? {
-        source_representation_kind: 'UNKNOWN',
-        presentation_layout: 'REPEAT_FOCUSED',
-        presentation_reason: 'SOLE_EXACT_COMPONENT',
-        classification_source: null,
-        classification_release: null,
-        classification_digest: null,
-        reviewed_override_digest: null,
-      }
-    : {
-        source_representation_kind: 'UNKNOWN',
-        presentation_layout: 'CLUSTER_FOCUSED',
-        presentation_reason: 'MULTI_COMPONENT_FALLBACK',
-        classification_source: null,
-        classification_release: null,
-        classification_digest: null,
-        reviewed_override_digest: null,
-      }
+    ? { locus_type: 'ISOLATED_REPEAT' }
+    : { locus_type: 'VARIATION_CLUSTER' }
 }
