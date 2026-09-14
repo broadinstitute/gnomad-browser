@@ -250,7 +250,7 @@ const TrLocusIdentity = styled.span`
   display: grid;
   min-width: 0;
   max-width: 100%;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   gap: 0.75ch;
   white-space: normal;
@@ -260,17 +260,11 @@ const TrLocusIdentity = styled.span`
 const TrLocusCopy = styled.span`
   display: block;
   min-width: 0;
-  max-height: 1.2em;
+  max-height: 2.4em;
   overflow: auto;
   line-height: 1.2;
   overflow-wrap: anywhere;
   scrollbar-width: thin;
-`
-
-const TrLocusMetadata = styled.span`
-  color: #555;
-  font-size: 0.9em;
-  overflow-wrap: anywhere;
 `
 
 const PredictorDot = styled.span<{ $color: string }>`
@@ -592,24 +586,20 @@ const TableRow = React.memo(function TableRow({
         {v.is_tr && locusId && locusDisplay ? (
           <TrLocusIdentity>
             <TrLocusCopy
-              aria-label="Scrollable locus label, interval, and component summary"
+              aria-label="Scrollable locus label"
               role="region"
               tabIndex={0}
             >
-              <span>{locusDisplay.label}</span>{' '}
-              <TrLocusMetadata>
-                {locusDisplay.intervalLabel} · {locusDisplay.summaryLabel}
-              </TrLocusMetadata>
+              <Link
+                to={trLocusUrl(locusId, v.lr_cohort || lrCohort)}
+                preserveSelectedDataset={false}
+                onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                title={locusDisplay.detailsAccessibleLabel}
+                aria-label={locusDisplay.detailsAccessibleLabel}
+              >
+                {locusDisplay.label}
+              </Link>
             </TrLocusCopy>
-            <Link
-              to={trLocusUrl(locusId, v.lr_cohort || lrCohort)}
-              preserveSelectedDataset={false}
-              onClick={(e: React.MouseEvent) => e.stopPropagation()}
-              title={locusDisplay.detailsAccessibleLabel}
-              aria-label={locusDisplay.detailsAccessibleLabel}
-            >
-              Details
-            </Link>
           </TrLocusIdentity>
         ) : (
           <Link

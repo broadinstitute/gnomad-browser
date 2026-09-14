@@ -77,9 +77,9 @@ const LRUniqueDensityTrack = ({
                 <strong style={{ color: '#d4880e' }}>Amber bars</strong> show the density of
                 LR-unique variants per genomic bin.{' '}
                 <strong style={{ color: '#c8b894' }}>Faint bars</strong> behind them show total
-                variant density (matched + unique) for context. Regions where amber dominates are
-                &ldquo;blind spots&rdquo; where short-read sequencing systematically misses
-                variants.
+                variant density (matched + unique) for context. The bars are shown overlaid one on
+                top of the other rather than stacked. Regions where amber dominates are &ldquo;blind
+                spots&rdquo; where short-read sequencing systematically misses variants.
               </p>
               <h4 style={{ margin: '12px 0 6px' }}>Variant type filter</h4>
               <p>

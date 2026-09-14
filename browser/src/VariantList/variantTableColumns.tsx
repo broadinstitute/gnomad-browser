@@ -26,7 +26,7 @@ const TrLocusIdentity = styled.span`
   display: grid;
   min-width: 0;
   max-width: 100%;
-  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 0.75ch;
   white-space: normal;
@@ -45,12 +45,6 @@ const TrLocusCopy = styled.span`
 
 const TrLocusLabel = styled.span`
   min-width: 0;
-  overflow-wrap: anywhere;
-`
-
-const TrLocusMetadata = styled.span`
-  color: #555;
-  font-size: 0.9em;
   overflow-wrap: anywhere;
 `
 
@@ -470,30 +464,26 @@ const variantTableColumns: VariantTableColumn[] = [
           <Cell title={row.long_read_tr_tooltip}>
             <TrLocusIdentity>
               <TrLocusCopy
-                aria-label="Scrollable locus label, interval, and component summary"
+                aria-label="Scrollable locus label"
                 role="region"
                 tabIndex={0}
               >
-                <TrLocusLabel>
-                  <Highlighter
-                    autoEscape
-                    searchWords={highlightWords}
-                    textToHighlight={row.long_read_tr_label}
-                  />
-                </TrLocusLabel>{' '}
-                <TrLocusMetadata>
-                  {row.long_read_tr_interval_label} · {row.long_read_tr_component_summary_label}
-                </TrLocusMetadata>
+                <Link
+                  target="_blank"
+                  to={trLocusUrl(row.long_read_tr_locus_id, row.lr_cohort)}
+                  preserveSelectedDataset={false}
+                  title={row.long_read_tr_details_accessible_label}
+                  aria-label={row.long_read_tr_details_accessible_label}
+                >
+                  <TrLocusLabel>
+                    <Highlighter
+                      autoEscape
+                      searchWords={highlightWords}
+                      textToHighlight={row.long_read_tr_label}
+                    />
+                  </TrLocusLabel>
+                </Link>
               </TrLocusCopy>
-              <Link
-                target="_blank"
-                to={trLocusUrl(row.long_read_tr_locus_id, row.lr_cohort)}
-                preserveSelectedDataset={false}
-                title={row.long_read_tr_details_accessible_label}
-                aria-label={row.long_read_tr_details_accessible_label}
-              >
-                Details
-              </Link>
               <span
                 style={{ whiteSpace: 'nowrap' }}
                 title={

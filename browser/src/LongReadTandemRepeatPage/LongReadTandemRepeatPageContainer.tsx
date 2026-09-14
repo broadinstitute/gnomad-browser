@@ -293,7 +293,7 @@ const LongReadTandemRepeatPageContainer = ({
           first: LONG_READ_TR_ALLELE_INDEX_LIMIT,
           allele: selectedAllele || null,
         }}
-        loadingMessage="Loading tandem-repeat locus"
+        loadingMessage="Loading tandem repeat locus"
         errorMessage="Unable to load tandem-repeat locus"
         rejectGraphQLErrors
         retainPreviousData

@@ -55,7 +55,34 @@ const hasText = (value?: string | null): value is string =>
 const isCanonicalSha256Digest = (value?: string | null): value is string =>
   typeof value === 'string' && /^[a-f0-9]{64}$/.test(value)
 
-const simpleMotifContext = (motif: string) => (motif.length <= 80 ? motif : 'Long stored-motif')
+const simpleMotifContext = (motif: string) => (motif.length <= 80 ? motif : 'long motif')
+
+// Motifs named inline stay short so a row cannot grow with the stored sequence.
+const boundedMotif = (motif: string) => (motif.length <= 20 ? motif : `${motif.length}bp motif`)
+
+// Distinct stored motifs in first-appearance order. At most two are named; the rest are
+// summarized so the row stays bounded no matter how many components a cluster spans.
+const motifPhrase = (motifs: string[]) => {
+  const distinct: string[] = []
+  motifs.forEach((motif) => {
+    if (!distinct.includes(motif)) distinct.push(motif)
+  })
+  if (distinct.length === 0) return 'no stored motifs'
+  if (distinct.length === 1) return `a ${boundedMotif(distinct[0])} motif`
+  if (distinct.length === 2) {
+    return `${boundedMotif(distinct[0])} and ${boundedMotif(distinct[1])} motifs`
+  }
+  return `${boundedMotif(distinct[0])}, ${boundedMotif(distinct[1])}, and other motifs`
+}
+
+// Repeat copies implied by the exact component envelope. Envelopes that are not a whole
+// multiple of the motif keep one decimal rather than rounding to a count the coordinates
+// do not support.
+const repeatCopyText = (lengthBp: number, motifLength: number) => {
+  if (motifLength <= 0) return null
+  const copies = lengthBp / motifLength
+  return Number.isInteger(copies) ? String(copies) : copies.toFixed(1)
+}
 
 const exactComponentFacts = (locus: TrLocusId) => {
   const envelope = trLocusDisplayEnvelope(locus)
@@ -126,8 +153,8 @@ const exactVariationClusterBounds = (bounds?: TrLocusBoundsContract | null) => {
   }
 }
 
-const formatDisplayInterval = (chrom: string, start0: number, end0: number) =>
-  `${chrom}:${(start0 + 1).toLocaleString('en-US')}–${end0.toLocaleString('en-US')}`
+const formatPlainInterval = (chrom: string, start0: number, end0: number) =>
+  `${chrom}:${start0 + 1}–${end0}`
 
 /**
  * Build bounded row copy from the presentation contract without changing locus identity.
@@ -166,27 +193,32 @@ export const getTrLocusRowDisplay = ({
   } / ${facts.motifCount.toLocaleString('en-US')} distinct stored motif${
     facts.motifCount === 1 ? '' : 's'
   }`
-  const envelopeDisplay = formatDisplayInterval(locus.components[0].chrom, facts.start0, facts.end0)
 
   let label: string
   if (kind === 'simple') {
-    label = `${simpleMotifContext(locus.components[0].motif)} tandem repeat · ${envelopeDisplay}`
+    const motif = locus.components[0].motif
+    const copyText = repeatCopyText(facts.length, motif.length)
+    const plainEnvelope = formatPlainInterval(locus.components[0].chrom, facts.start0, facts.end0)
+    label = `${plainEnvelope} TR locus: ${copyText ? `${copyText} x ` : ''}${simpleMotifContext(
+      motif
+    )} (${motif.length}bp motif)`
   } else if (kind === 'reviewed-primary') {
     label = `${
       sourceLabel ? `${sourceLabel} ` : ''
     }tandem repeat · ${facts.componentCount.toLocaleString('en-US')} source components`
-  } else if (kind === 'variation-cluster') {
-    label = `Variation cluster · ${facts.componentCount.toLocaleString(
-      'en-US'
-    )} components / ${facts.motifCount.toLocaleString('en-US')} motifs · ${formatDisplayInterval(
-      locus.components[0].chrom,
-      variationBounds?.start0 ?? facts.start0,
-      variationBounds?.end0 ?? facts.end0
-    )}`
   } else {
-    label = `Multi-component TR locus · ${facts.componentCount.toLocaleString(
+    const clusterStart0 = kind === 'variation-cluster' ? variationBounds?.start0 : undefined
+    const clusterEnd0 = kind === 'variation-cluster' ? variationBounds?.end0 : undefined
+    const clusterEnvelope = formatPlainInterval(
+      locus.components[0].chrom,
+      clusterStart0 ?? facts.start0,
+      clusterEnd0 ?? facts.end0
+    )
+    label = `${clusterEnvelope} TR variation cluster: spans ${facts.componentCount.toLocaleString(
       'en-US'
-    )} components / ${facts.motifCount.toLocaleString('en-US')} motifs · ${envelopeDisplay}`
+    )} TR${facts.componentCount === 1 ? '' : 's'} with ${motifPhrase(
+      locus.components.map((component) => component.motif)
+    )}`
   }
 
   const accessibleLabel = label

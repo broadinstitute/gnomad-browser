@@ -842,7 +842,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'Variation cluster' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Repeat variation cluster' })).not.toBeNull()
     expect(screen.getByText('Source variation-cluster length')).not.toBeNull()
     expect(screen.getByText('300 bp')).not.toBeNull()
     expect(screen.getByText(/chr4:3,074,801–3,075,100/)).not.toBeNull()
@@ -871,7 +871,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'Variation cluster' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Repeat variation cluster' })).not.toBeNull()
     expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
     expect(screen.getByText('164 bp')).not.toBeNull()
     expect(screen.getByText(/chr4:3,074,877–3,075,040/)).not.toBeNull()
