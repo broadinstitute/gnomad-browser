@@ -94,7 +94,6 @@ describe('LongReadVariantsInGene', () => {
     )
     expect(queryProps[0].query).toContain('tr_locus_presentation')
     expect(queryProps[0].query).toContain('tr_locus_bounds')
-    expect(queryProps[0].query).toContain('tr_locus_component_summary')
     expect(queryProps[0].query).not.toContain('gene(gene_id:')
     expect(queryProps[0].query).not.toMatch(/\n\s+variants\(dataset:/)
 

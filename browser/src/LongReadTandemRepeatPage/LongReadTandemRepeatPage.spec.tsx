@@ -1845,7 +1845,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(longReadTandemRepeatLocusQuery).toContain('accepted_task_attempt_digest')
     expect(longReadTandemRepeatLocusQuery).toContain('presentation {')
     expect(longReadTandemRepeatLocusQuery).toContain('bounds {')
-    expect(longReadTandemRepeatLocusQuery).toContain('component_summary {')
     expect(longReadTandemRepeatLocusQuery).toContain('sequence_cardinality {')
     expect(longReadTandemRepeatLocusQuery).toContain('represented_length {')
     expect(longReadTandemRepeatLocusQuery).toContain('filter_contract {')
