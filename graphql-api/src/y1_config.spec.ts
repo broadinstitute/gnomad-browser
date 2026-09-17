@@ -3,8 +3,74 @@ import {
   resolveY1AncillaryRoutes,
   resolveY1ClickHouseConfig,
   resolveY1ClickHouseConfigForTests,
+  resolveY1ClickHouseRequestOptions,
   resolveY1PrimaryRunMap,
 } from './y1_config'
+
+describe('Y1 ClickHouse request timeout', () => {
+  const url = 'http://y1.test:8126'
+
+  test('defaults to 120s and accepts finite env overrides in milliseconds', () => {
+    expect(resolveY1ClickHouseRequestOptions(url, {})).toEqual({
+      url,
+      request_timeout: 120_000,
+    })
+    for (const value of ['1', '30000', '150000', '180000']) {
+      expect(
+        resolveY1ClickHouseRequestOptions(url, { LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS: value })
+          .request_timeout
+      ).toBe(Number(value))
+    }
+  })
+
+  test('supports launcher URL timeouts; env wins without losing other URL settings', () => {
+    const configuredUrl = `${url}/?request_timeout=120000&application=my-lr-api`
+    const fromUrl = resolveY1ClickHouseRequestOptions(configuredUrl, {})
+    expect(fromUrl.request_timeout).toBe(120_000)
+    expect(new URL(fromUrl.url).searchParams.has('request_timeout')).toBe(false)
+    expect(new URL(fromUrl.url).searchParams.get('application')).toBe('my-lr-api')
+    expect(
+      resolveY1ClickHouseRequestOptions(configuredUrl, {
+        LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS: '150000',
+      })
+    ).toEqual({ url: fromUrl.url, request_timeout: 150_000 })
+  })
+
+  test.each([
+    '',
+    ' ',
+    '0',
+    '-1',
+    '1.5',
+    'NaN',
+    'Infinity',
+    '1e5',
+    '120000ms',
+    '180001',
+    '999999999999999999999',
+  ])(
+    'rejects invalid/unbounded timeout %j in env or URL, including overridden URL values',
+    (value) => {
+      expect(() =>
+        resolveY1ClickHouseRequestOptions(url, { LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS: value })
+      ).toThrow('LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS must be an integer')
+      for (const env of [{}, { LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS: '120000' }]) {
+        expect(() =>
+          resolveY1ClickHouseRequestOptions(
+            `${url}/?request_timeout=${encodeURIComponent(value)}`,
+            env
+          )
+        ).toThrow('LR_Y1_CLICKHOUSE_URL request_timeout must be an integer')
+      }
+    }
+  )
+
+  test('rejects ambiguous duplicate URL timeouts', () => {
+    expect(() =>
+      resolveY1ClickHouseRequestOptions(`${url}/?request_timeout=120000&request_timeout=0`, {})
+    ).toThrow('must not repeat request_timeout')
+  })
+})
 
 describe('Y1 ClickHouse configuration', () => {
   test('preserves the current database and requires the explicit Y1 server URL by default', () => {
