@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import styled from 'styled-components'
-import { ExternalLink, PageHeading, Select } from '@gnomad/ui'
+import { ExternalLink, List, ListItem, PageHeading, Select } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
@@ -11,7 +11,6 @@ import { isExperimentalFeatureEnabled } from '../experimentalFeatures'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   LongReadTrComponentTrack,
-  motifColor,
   SelectedExactAlleleDetail,
   WholeRecordAlleleLandscape,
   signed,
@@ -23,7 +22,7 @@ import LocalHaplotypeBackgroundsSection from './LocalHaplotypeBackgroundsSection
 import {
   strchiveLocusUrl,
   stripyLocusUrl,
-  trExplorerGeneUrl,
+  trExplorerRegionUrl,
 } from '../ShortTandemRepeatPage/externalResourceUrls'
 import { AlleleNavigation, LongReadTrLocus } from './types'
 
@@ -72,30 +71,20 @@ const SourceAttributes = styled.div`
   margin-top: 1em;
 `
 
-const InlineResources = styled.span`
-  a:not(:last-child) {
-    margin-right: 1em;
+const HeaderColumns = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 3em;
+`
+
+const HeaderColumn = styled.section`
+  width: calc(50% - 15px);
+
+  @media (max-width: 992px) {
+    width: 100%;
   }
-`
-
-const RepeatMotifBadges = styled.span`
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: 0.35em;
-`
-
-const RepeatMotifBadge = styled.span`
-  display: inline-block;
-  box-sizing: border-box;
-  max-width: 100%;
-  padding: 0.12em 0.48em;
-  border: 1px solid rgb(0 0 0 / 18%);
-  border-radius: 0.3em;
-  font-family: monospace;
-  font-weight: bold;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-  word-break: break-word;
 `
 
 const LocusOverviewHelp = () => (
@@ -170,18 +159,6 @@ export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
     return `${identity} ${locus.primary_repeat.motif} tandem repeat`
   }
   return `${locus.primary_repeat.motif} tandem repeat`
-}
-
-const badgeTextColor = (background: string) => {
-  const channels = background
-    .slice(1)
-    .match(/.{2}/g)!
-    .map((channel) => parseInt(channel, 16) / 255)
-    .map((channel) => (channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4))
-  const luminance = 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
-  const whiteContrast = 1.05 / (luminance + 0.05)
-  const blackContrast = (luminance + 0.05) / 0.05
-  return whiteContrast >= blackContrast ? '#fff' : '#111'
 }
 
 const LongReadTandemRepeatPage = ({
@@ -428,11 +405,14 @@ const LongReadTandemRepeatPage = ({
   if (clusterFocused) {
     spanLabel = 'Locus component-envelope length'
   } else if (locus.components.length === 1) {
-    spanLabel = 'Reference repeat length'
+    spanLabel = 'Reference interval size'
   }
   let spanValue = `${bounds.component_envelope_length_bp.toLocaleString()} bp`
   if (!clusterFocused && locus.components.length > 1 && alleleLengthRange) {
     spanValue = alleleLengthRange
+  } else if (!clusterFocused && locus.components.length === 1 && locus.primary_repeat.motif) {
+    const referenceRepeats = bounds.component_envelope_length_bp / locus.primary_repeat.motif.length
+    spanValue = `${referenceRepeats.toFixed(1)} repeats (${spanValue})`
   }
 
   return (
@@ -461,98 +441,64 @@ const LongReadTandemRepeatPage = ({
         <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
       </Header>
 
-      <SourceAttributes>
-        <AttributeList>
-          <AttributeListItem label={spanLabel}>{spanValue}</AttributeListItem>
-          {clusterFocused && (
-            <>
-              <AttributeListItem label="Ordered source components">
-                {componentSummary.ordered_component_count.toLocaleString()}
-              </AttributeListItem>
-              <AttributeListItem label="Distinct stored motifs">
-                {componentSummary.distinct_stored_motif_count.toLocaleString()}
-              </AttributeListItem>
-            </>
-          )}
-          {(locus.primary_repeat.motif || !clusterFocused) && (
-            <AttributeListItem label="Primary repeat identity">
-              {locus.primary_repeat.motif ? (
-                <RepeatMotifBadges aria-label={`Primary repeat: ${locus.primary_repeat.motif}`}>
-                  <RepeatMotifBadge
-                    data-motif-badge={locus.primary_repeat.motif}
-                    data-motif-color={motifColor(locus.primary_repeat.motif, locus.motifs)}
-                    style={{
-                      backgroundColor: motifColor(locus.primary_repeat.motif, locus.motifs),
-                      color: badgeTextColor(motifColor(locus.primary_repeat.motif, locus.motifs)),
-                    }}
-                  >
-                    {locus.primary_repeat.motif}
-                  </RepeatMotifBadge>
-                </RepeatMotifBadges>
-              ) : (
-                'Unavailable — source components remain in the disclosure below'
+      <HeaderColumns>
+        <HeaderColumn>
+          <SourceAttributes>
+            <AttributeList>
+              {(locus.primary_repeat.motif || !clusterFocused) && (
+                <AttributeListItem label="Motif">
+                  {locus.primary_repeat.motif
+                    ? `${locus.primary_repeat.motif} (${locus.primary_repeat.motif.length} bp)`
+                    : 'Unavailable — source components remain in the disclosure below'}
+                </AttributeListItem>
               )}
-            </AttributeListItem>
-          )}
-          <AttributeListItem
-            label={
-              sequenceCardinality.status === 'AVAILABLE_EXACT' &&
-              sequenceCardinality.all_source_alts_sequence_complete
-                ? 'Observed unique alternate sequences'
-                : 'Source ALT alleles'
-            }
-            tooltip="Source ALT identities remain distinct even when complete ALT byte strings are equal. Byte uniqueness excludes REF and is shown only when the API proves all source ALT sequences complete."
-          >
-            {sequenceCardinality.status === 'AVAILABLE_EXACT' &&
-            sequenceCardinality.all_source_alts_sequence_complete &&
-            sequenceCardinality.unique_alt_sequence_count != null ? (
-              <>
-                {sequenceCardinality.unique_alt_sequence_count.toLocaleString()} observed unique
-                alternate sequences
-                {sequenceCardinality.unique_alt_sequence_count !==
-                  sequenceCardinality.source_alt_identity_count && (
-                  <>
-                    {' '}
-                    · {sequenceCardinality.source_alt_identity_count.toLocaleString()} source ALT
-                    identities
-                  </>
-                )}
-              </>
-            ) : (
-              `${sequenceCardinality.source_alt_identity_count.toLocaleString()} source ALT alleles`
+              <AttributeListItem label={spanLabel}>{spanValue}</AttributeListItem>
+              {clusterFocused && (
+                <>
+                  <AttributeListItem label="Ordered source components">
+                    {componentSummary.ordered_component_count.toLocaleString()}
+                  </AttributeListItem>
+                  <AttributeListItem label="Distinct stored motifs">
+                    {componentSummary.distinct_stored_motif_count.toLocaleString()}
+                  </AttributeListItem>
+                </>
+              )}
+              {alleleLengthRange && (
+                <AttributeListItem
+                  label="Allele lengths"
+                  tooltip="Represented absolute length is shown only when the API admits complete sequence-length provenance, padding rule, and reconciliation. Signed source delta remains a separate measurement."
+                >
+                  {alleleLengthRange}
+                </AttributeListItem>
+              )}
+            </AttributeList>
+          </SourceAttributes>
+        </HeaderColumn>
+        <HeaderColumn>
+          <h2>External Resources</h2>
+          <List>
+            {approvedCatalogRecord?.strchive_id && (
+              <ListItem>
+                <ExternalLink href={strchiveLocusUrl(approvedCatalogRecord.strchive_id)}>
+                  STRchive
+                </ExternalLink>
+              </ListItem>
             )}
-          </AttributeListItem>
-          {alleleLengthRange && (
-            <AttributeListItem
-              label="Represented allele length / change from REF"
-              tooltip="Represented absolute length is shown only when the API admits complete sequence-length provenance, padding rule, and reconciliation. Signed source delta remains a separate measurement."
-            >
-              {alleleLengthRange}
-            </AttributeListItem>
-          )}
-          {approvedCatalogRecord && (
-            <AttributeListItem label="External resources">
-              <InlineResources>
-                {approvedCatalogRecord.strchive_id && (
-                  <ExternalLink href={strchiveLocusUrl(approvedCatalogRecord.strchive_id)}>
-                    STRchive
-                  </ExternalLink>
-                )}
-                {approvedCatalogRecord.stripy_id && (
-                  <ExternalLink href={stripyLocusUrl(approvedCatalogRecord.stripy_id)}>
-                    STRipy
-                  </ExternalLink>
-                )}
-                {approvedCatalogRecord.gene?.symbol && (
-                  <ExternalLink href={trExplorerGeneUrl(approvedCatalogRecord.gene.symbol)}>
-                    TRExplorer
-                  </ExternalLink>
-                )}
-              </InlineResources>
-            </AttributeListItem>
-          )}
-        </AttributeList>
-      </SourceAttributes>
+            {approvedCatalogRecord?.stripy_id && (
+              <ListItem>
+                <ExternalLink href={stripyLocusUrl(approvedCatalogRecord.stripy_id)}>
+                  STRipy
+                </ExternalLink>
+              </ListItem>
+            )}
+            <ListItem>
+              <ExternalLink href={trExplorerRegionUrl(envelope.chrom, displayStart1, displayEnd1)}>
+                TRExplorer
+              </ExternalLink>
+            </ListItem>
+          </List>
+        </HeaderColumn>
+      </HeaderColumns>
 
       {clusterFocused && (
         <LongReadTrComponentTrack
@@ -578,9 +524,7 @@ const LongReadTandemRepeatPage = ({
         }}
         alleles={locus.alleles.nodes}
         motifs={locus.motifs}
-        primaryMotif={
-          locus.primary_repeat.motif
-        }
+        primaryMotif={locus.primary_repeat.motif}
         exactAltCountComplete={
           locus.exact_alt_count_complete &&
           !locus.alleles.page_info.has_next_page &&
