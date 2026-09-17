@@ -22,7 +22,7 @@ if (config.REDIS_HOST && config.REDIS_USE_SENTINEL) {
   logger.warn('No redis configured for rate-limiting')
 }
 
-const increaseRateLimitCounter = (key: any, value: any): Promise<number> => {
+const increaseRateLimitCounter = (key: string, value: number): Promise<number> => {
   if (!rateLimitDb) {
     return Promise.resolve(0)
   }
@@ -32,12 +32,26 @@ const increaseRateLimitCounter = (key: any, value: any): Promise<number> => {
         .multi()
         .set(key, 0, 'EX', 59, 'NX')
         .incrby(key, value)
-        .exec((err: any, replies: any) => {
+        .exec((err, replies) => {
           if (err) {
             reject(err)
-          } else {
-            resolve(replies[1])
+            return
           }
+          if (!replies || replies.length !== 2) {
+            reject(new Error('Invalid Redis rate limit transaction result'))
+            return
+          }
+          const commandError = replies.find(([error]) => error)?.[0]
+          if (commandError) {
+            reject(commandError)
+            return
+          }
+          const [, count] = replies[1]
+          if (typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) {
+            reject(new Error('Invalid Redis rate limit counter'))
+            return
+          }
+          resolve(count)
         })
     }),
     new Promise<number>((_resolve, reject) => {
