@@ -34,7 +34,7 @@ describe('merged long-read variant ID display', () => {
     const { container } = render(<>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>)
 
     const link = screen.getByRole('link', {
-      name: '22:50715763 tandem duplication +49 bp',
+      name: '22-50715763-DUP_TANDEM-(+49bp)',
     })
     expect(link.getAttribute('href')).toBe(
       `/variant/${canonicalId}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
@@ -89,7 +89,7 @@ describe('merged long-read variant ID display', () => {
     })
 
     const compactLinks = screen.getAllByRole('link', {
-      name: '1:55039879 tandem-repeat allele +27 bp',
+      name: '1-55039879-TRV-(+27bp)',
     })
     rawLongReadIds.forEach((rawId, index) => {
       expect(compactLinks[index].getAttribute('href')).toBe(

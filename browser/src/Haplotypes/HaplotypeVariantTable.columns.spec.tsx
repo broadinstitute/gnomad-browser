@@ -140,7 +140,7 @@ describe('long-read variant table identity columns', () => {
       />
     )
 
-    const link = screen.getByRole('link', { name: '22:100 SNV 0 bp' })
+    const link = screen.getByRole('link', { name: '22-100-SNV-(0bp)' })
     expect(link.textContent).not.toContain(ref)
     expect(link.textContent).not.toContain(alt)
     expect(link.getAttribute('title')).toContain(`Exact REF sequence: ${ref}`)

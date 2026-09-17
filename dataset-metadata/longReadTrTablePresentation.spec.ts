@@ -14,7 +14,9 @@ describe('TR table-only presentation', () => {
       storedMotifs: { label: 'Stored: CAG', motifs: ['CAG'] },
     })
     expect(getTrLocusRowDisplay({ locus })).toEqual(fullDisplay)
-    expect(fullDisplay.label).toBe('CAG tandem repeat · 22:101–130')
+    // The retained compact helper is one-based; active descriptive rows use
+    // upstream's zero-based interval and explicit reference-region width.
+    expect(fullDisplay.label).toBe('22:100–130 TR locus (30bp): 10 x CAG')
   })
 
   test('retains unsorted tuples, duplicate components, gaps, overlaps, and exact route', () => {
@@ -33,7 +35,7 @@ describe('TR table-only presentation', () => {
     expect(route).toContain(
       `/${locus.canonicalId}?dataset=gnomad_r4_lr&lr_cohort=aou&allele=source%7E2`
     )
-    expect(getTrLocusRowDisplay({ locus }).kind).toBe('multi-component')
+    expect(getTrLocusRowDisplay({ locus }).kind).toBe('variation-cluster')
   })
 
   test('bounds a long safe-integer envelope while retaining its full copy', () => {
