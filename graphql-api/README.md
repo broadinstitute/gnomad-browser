@@ -144,6 +144,36 @@ Select a different Y1 instance explicitly without changing the existing default:
 
 Advanced use may set `LR_Y1_CLICKHOUSE_URL` and the identifier-validated `LR_Y1_CLICKHOUSE_DATABASE`. With no presentation routing, startup preserves the existing behavior: it resolves one terminal `accepted_frozen` run per present cohort and verifies canonical rows. A presentation process may provide both `LR_Y1_RUN_MAP` (JSON `cohort -> chromosome -> exact run ID`) and `LR_Y1_PRIMARY_MANIFEST_PATH`. The latter must name the bundled, checked manifest projection at `config/y1-presentation-primary-manifests.json`; its 48 entries are pinned to the exact original manifest SHA-256 values. Startup requires one exact manifest entry per route, validates unique gapless one-based intervals through the canonical GRCh38 contig end, and binds every current accepted ledger attempt to the exact task ID, bounds, source/index URI, generation, checksum, and size from that entry. It also requires zero rejects and reconciles accepted receipt counts to canonical physical counts. This presentation path does not require primary finalization. A manifest may explicitly mark an aggregate-only HGSVC/HPRC chromosome as `carrier_loading_status=unavailable_not_loaded`; primary variants remain available while carrier/haplotype capability fails closed.
 
+#### Y1 ClickHouse request and startup budgets
+
+Y1 primary, ancillary, and source-phased methylation clients use a **120000 ms**
+request timeout by default, including mandatory startup admission queries. A cold
+full-genome source-identity scan has taken 33.5s, exceeding the SDK's 30s default.
+Set `LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS` to override this allowance. Values must
+be decimal integers from **1 through 180000 ms**; empty, zero, fractional,
+nonfinite, and out-of-range values fail startup rather than disabling timeouts.
+
+Precedence is explicit env setting, then `request_timeout` in
+`LR_Y1_CLICKHOUSE_URL` (supported for the existing dev launcher), then 120000.
+URL timeout values are also validated, even when overridden; duplicates fail.
+Only the timeout URL parameter is removed before constructing the SDK client,
+so it cannot silently override the validated env setting. Disabled Y1 ignores
+this setting. Generic/short-read and retained evaluation clients are unchanged.
+
+In `@clickhouse/client` 1.18.2 this is a socket inactivity timeout, **not** a
+server query execution limit or total startup deadline. All receipt, source
+identity, physical reconciliation, and readiness gates still apply; failures
+still prevent the API from listening. The Cloud Run startup probe has its own
+budget: the failed 2026-09-17 candidate used `failureThreshold=60` and
+`periodSeconds=2` (120s total), with `/health/ready` on port 8000. Its 300s service
+request timeout does not extend that startup budget. Before another full-genome
+candidate, review increasing the probe budget to 240s (e.g. threshold 120,
+period 2, retaining path/port and timeout 1s) to leave room beyond one 120s
+request. Measure the **entire cold preflight**, including queued primary scans
+and subsequent ancillary checks, on a no-traffic candidate before cutover.
+Even 240s is not proof those checks fit; if they do not, stop for query/startup
+performance work, never skip admission or warm data manually to force readiness.
+
 Exact represented TR allele lengths are separately enabled by `LR_Y1_REPRESENTED_LENGTH_RULE_PATH`. The checked `config/y1-represented-length-source-contract.json` is canonical-digest bound to the complete primary manifest bundle and admits only `VCF_SHARED_LEFT_PADDING_BASE_V1`: remove exactly one shared left-padding byte from complete non-symbolic REF/ALT strings. Runtime still requires one source record, one matching accepted task/attempt, identical first REF/ALT bytes, agreement across all source REF bytes, response bounds, and exact reconciliation of every sequence-derived delta to the stored whole-record delta. Any failure leaves represented absolute length unavailable while signed change from REF remains independent. This is an engineering representation length, not a clinical or component-repeat measurement.
 
 The GraphQL `lr_cohort` argument defaults to `hgsvc_hprc`. Queries select primary runs by cohort and requested chromosome; an absent mapping remains unavailable and never falls back across cohorts. Every Y1 variant cache key includes cohort, run ID, and chromosome. ALT-expanded browser IDs use `<exact-source-id>~<alt-index>`, while `source_variant_id` preserves the source ID byte-for-byte.

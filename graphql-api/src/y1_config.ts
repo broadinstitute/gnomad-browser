@@ -1,6 +1,40 @@
 import { readY1AncillaryReceipt, type Y1AncillaryReceipt } from './y1_admission_config'
 
 export const DEFAULT_Y1_CLICKHOUSE_DATABASE = 'gnomad_lr_y1_scratch_v5_current'
+export const DEFAULT_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS = 120_000
+
+// Full-genome admission scans can exceed the SDK's 30s socket timeout. Keep
+// this finite allowance Y1-only; it is not a total startup/probe deadline.
+export const resolveY1ClickHouseRequestOptions = (
+  url: string,
+  env: NodeJS.ProcessEnv = process.env
+): { url: string; request_timeout: number } => {
+  const parsedUrl = new URL(url)
+  const urlTimeouts = parsedUrl.searchParams.getAll('request_timeout')
+  if (urlTimeouts.length > 1) {
+    throw new Error('LR_Y1_CLICKHOUSE_URL must not repeat request_timeout')
+  }
+  const parseTimeout = (raw: string, label: string) => {
+    if (!/^\d+$/.test(raw) || Number(raw) < 1 || Number(raw) > 180_000) {
+      throw new Error(`${label} must be an integer from 1 to 180000 milliseconds`)
+    }
+    return Number(raw)
+  }
+  // Retain the dev launcher's URL option, but validate it even if env wins.
+  const urlTimeout = urlTimeouts.length
+    ? parseTimeout(urlTimeouts[0], 'LR_Y1_CLICKHOUSE_URL request_timeout')
+    : undefined
+  const envTimeout = env.LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS
+  const request_timeout =
+    envTimeout !== undefined
+      ? parseTimeout(envTimeout, 'LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS')
+      : urlTimeout ?? DEFAULT_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS
+
+  // The SDK gives URL parameters priority over constructor options. Remove
+  // only this parameter so the validated env > URL > default policy holds.
+  parsedUrl.searchParams.delete('request_timeout')
+  return { url: urlTimeouts.length ? parsedUrl.toString() : url, request_timeout }
+}
 
 export type Y1Cohort = 'hgsvc_hprc' | 'aou'
 export type Y1AncillaryModality = 'coverage' | 'str_histogram' | 'methylation'

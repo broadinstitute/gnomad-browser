@@ -3,6 +3,7 @@ import {
   DEFAULT_Y1_CLICKHOUSE_DATABASE,
   resolveY1AncillaryRoutes,
   resolveY1ClickHouseConfig,
+  resolveY1ClickHouseRequestOptions,
   resolveY1PrimaryRunMap,
   type Y1AncillaryRoute,
 } from './y1_config'
@@ -54,10 +55,17 @@ export const joinedPhasedMethylationRoute = isY1PilotEnabled
   ? resolveJoinedPhasedMethylationRoute()
   : null
 
-export const y1ClickhouseClient = createClient({
-  url: y1ClickhouseConfig.url,
-  database: y1ClickhouseConfig.database,
+const y1ClientOptions = {
   ...readonlyClientOptions,
+  ...resolveY1ClickHouseRequestOptions(
+    y1ClickhouseConfig.url,
+    isY1PilotEnabled ? process.env : {}
+  ),
+}
+
+export const y1ClickhouseClient = createClient({
+  ...y1ClientOptions,
+  database: y1ClickhouseConfig.database,
 })
 
 const y1AncillaryClients = new Map<string, ReturnType<typeof createClient>>()
@@ -65,9 +73,8 @@ export const getY1AncillaryClickhouseClient = (route: Y1AncillaryRoute) => {
   let client = y1AncillaryClients.get(route.database)
   if (!client) {
     client = createClient({
-      url: y1ClickhouseConfig.url,
+      ...y1ClientOptions,
       database: route.database,
-      ...readonlyClientOptions,
     })
     y1AncillaryClients.set(route.database, client)
   }
@@ -79,9 +86,8 @@ export const getSourcePhasedMethylationClickhouseClient = (route: SourcePhasedMe
   let client = sourcePhasedMethylationClients.get(route.database)
   if (!client) {
     client = createClient({
-      url: y1ClickhouseConfig.url,
+      ...y1ClientOptions,
       database: route.database,
-      ...readonlyClientOptions,
     })
     sourcePhasedMethylationClients.set(route.database, client)
   }
