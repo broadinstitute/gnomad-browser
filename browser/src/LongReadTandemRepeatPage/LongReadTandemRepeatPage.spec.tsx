@@ -629,6 +629,30 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
   })
 
+  test('reports reference sequence purity directly below the reference interval size', () => {
+    const locus = makeSimpleLocus()
+    // Padding base, then 12 bases of CAG carrying two substitutions: 10 of 12.
+    ;(locus as any).source_records = [{ ...locus.source_records[0], ref: 'ACAGCAGCTGCAT' }]
+
+    renderPage({ locus, selectedAllele: undefined })
+
+    const term = screen
+      .getAllByText('Reference sequence purity')
+      .find((element) => element.tagName === 'DT')!
+    expect(term.nextElementSibling!.textContent).toBe('0.83')
+
+    const intervalTerm = screen
+      .getAllByText('Reference interval size')
+      .find((element) => element.tagName === 'DT')!
+    expect(intervalTerm.parentElement!.nextElementSibling).toBe(term.parentElement)
+  })
+
+  test('omits reference sequence purity when the locus spans more than one component', () => {
+    renderPage()
+
+    expect(screen.queryByText('Reference sequence purity')).toBeNull()
+  })
+
   test('uses motif identity rather than an interval as the anonymous-locus title', () => {
     const locus = makeSimpleLocus()
     ;(locus as any).short_read_context = {

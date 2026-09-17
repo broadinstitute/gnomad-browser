@@ -18,6 +18,7 @@ import {
 } from './LongReadTrVisualizations'
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
 import PrimaryMotifMeasurementSection from './PrimaryMotifMeasurementSection'
+import { referenceRepeatSequence, referenceSequencePurity } from './referenceSequencePurity'
 import LocalHaplotypeBackgroundsSection from './LocalHaplotypeBackgroundsSection'
 import {
   strchiveLocusUrl,
@@ -415,6 +416,18 @@ const LongReadTandemRepeatPage = ({
     spanValue = `${referenceRepeats.toFixed(1)} repeats (${spanValue})`
   }
 
+  // Purity is only meaningful against one motif, so it follows the same
+  // single-component condition as the reference interval size above. Every
+  // source record for a locus carries the same REF bytes; the API rejects the
+  // locus as SOURCE_REF_BYTES_INCONSISTENT otherwise.
+  const referencePurity =
+    !clusterFocused && locus.components.length === 1
+      ? referenceSequencePurity(
+          referenceRepeatSequence(locus.source_records[0]?.ref),
+          locus.primary_repeat.motif
+        )
+      : null
+
   return (
     <>
       <DocumentTitle title={title} />
@@ -453,6 +466,14 @@ const LongReadTandemRepeatPage = ({
                 </AttributeListItem>
               )}
               <AttributeListItem label={spanLabel}>{spanValue}</AttributeListItem>
+              {referencePurity != null && (
+                <AttributeListItem
+                  label="Reference sequence purity"
+                  tooltip="Fraction of bases in the reference interval that match a pure repeat of the motif, phased to the interval's first base."
+                >
+                  {referencePurity.toFixed(2)}
+                </AttributeListItem>
+              )}
               {clusterFocused && (
                 <>
                   <AttributeListItem label="Ordered source components">
