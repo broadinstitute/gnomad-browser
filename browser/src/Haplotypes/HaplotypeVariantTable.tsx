@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState, useRef, forwardRef, u
 import styled from 'styled-components'
 import { Badge, Button } from '@gnomad/ui'
 import { parseTrLocusId, trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
+import { abbreviateLongReadTableLabel } from '@gnomad/dataset-metadata/longReadTablePresentation'
 import {
   getTrLocusRowDisplay,
   TrLocusBoundsContract,
@@ -657,7 +658,7 @@ const TableRow = React.memo(function TableRow({
           case 'group_af':
             return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : <PopAfBar variant={v} />}</td>
           case 'short_read_match_id':
-            return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : v.short_read_match_id ? <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false}>{v.short_read_match_id}</Link> : <Dash title="No short-read match" />}</td>
+            return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : v.short_read_match_id ? <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false} title={v.short_read_match_id}>{abbreviateLongReadTableLabel(v.short_read_match_id)}</Link> : <Dash title="No short-read match" />}</td>
           case 'cadd_phred':
             return <td key={columnKey} className="numeric">{v.is_tr ? <Dash title={unavailable} /> : renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
           case 'phylop':
