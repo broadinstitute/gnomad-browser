@@ -360,8 +360,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(page.getByText('Gene context')).toHaveCount(0)
     await expect(page.getByText('Allele copies with a genotype call')).toHaveCount(0)
     await expect(page.getByText('−9 bp')).toBeVisible()
-    await expect(page.getByText('+25 bp')).toBeVisible()
-    await expect(page.getByText('ARX — coding: polyalanine')).toBeVisible()
+    await expect(page.getByText('+25 bp', { exact: true })).toBeVisible()
+    await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
+      'NGC (3 bp)'
+    )
+    await expect(page.getByRole('heading', { name: 'External Resources' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'TRExplorer' })).toBeVisible()
 
     const responsePromise = waitForLocusResponse(page)
     await page.getByLabel('Long-read cohort').selectOption('hgsvc_hprc')
@@ -519,7 +523,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const index = await openLocus(page, GCA_LOCUS, 16)
     await expect(page.getByRole('heading', { name: 'ATXN7 GCA tandem repeat' })).toBeVisible()
     await expect(page.getByLabel('Primary repeat GCA', { exact: true })).toHaveCount(0)
-    await expect(page.getByLabel('Primary repeat: GCA', { exact: true })).toBeVisible()
+    await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
+      'GCA (3 bp)'
+    )
     const selected = await selectExactAllele(page, GCA_LOCUS, 15, 16)
     expect(selected).toBe(GCA_ALT)
 
@@ -669,10 +675,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const cases = [
       {
         locus: COMPOUND_LOCUS,
-        title: 'Multi-component TR locus',
+        title: 'TR variation cluster',
         catalogId: 'HTT',
         motif: 'CAG',
-        role: null,
         components: 6,
         disease: /Huntington/i,
         omim: '143100',
@@ -684,7 +689,6 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         title: 'ATXN1 TGC tandem repeat',
         catalogId: 'ATXN1',
         motif: 'TGC',
-        role: null,
         components: 1,
         disease: /Spinocerebellar ataxia 1/i,
         omim: '164400',
@@ -696,7 +700,6 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         title: 'RFC1 AAAAG tandem repeat',
         catalogId: 'RFC1',
         motif: 'AAAAG',
-        role: 'benign reference motif',
         components: 1,
         disease: /CANVAS|Cerebellar ataxia/i,
         omim: '614575',
@@ -712,23 +715,31 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       const payload = await response.json()
       expect(response.status()).toBe(200)
       expect(payload.errors).toBeUndefined()
-      expect(payload.data.long_read_tandem_repeat_locus.primary_repeat).toMatchObject({
-        status: 'AVAILABLE',
-        reason_code: null,
+      const locus = payload.data.long_read_tandem_repeat_locus
+      expect(locus.primary_repeat).toEqual({
+        is_disease_associated_repeat: true,
         motif: item.motif,
         component_index: 0,
-        selection_basis: 'EXACT_MAIN_CATALOG_COMPONENT',
-        biological_role: item.role,
-        registry_digest: null,
       })
+      // Identity/provenance remain source-bound in short_read_context; the public
+      // primary_repeat now exposes disease association, not backend selection receipts.
+      expect(locus.components).toHaveLength(item.components)
+      expect(locus.short_read_context).toMatchObject({
+        status: 'EXACT_UNIQUE',
+        catalog_record: { id: item.catalogId },
+        matched_component_index: 0,
+        matched_component: locus.components[0],
+        lr_cohort: 'hgsvc_hprc',
+      })
+      expect(locus.short_read_context.catalog_digest).toMatch(/^[a-f0-9]{64}$/)
+      expect(locus.short_read_context.lr_run_id).toBeTruthy()
+      expect(locus.short_read_context.lr_release).toBeTruthy()
       await expect(page.getByRole('heading', { name: item.title })).toBeVisible()
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
       await expect(page.getByLabel(`Primary repeat ${item.motif}`, { exact: true })).toHaveCount(0)
-      if (item.components === 1) {
-        await expect(
-          page.getByLabel(`Primary repeat: ${item.motif}`, { exact: true })
-        ).toBeVisible()
-      }
+      await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
+        `${item.motif} (${item.motif.length} bp)`
+      )
       await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
       const diseaseSection = page
         .getByRole('heading', { name: /Known disease-associated TR locus/ })
@@ -821,7 +832,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     test.setTimeout(120_000)
 
     const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
-    await expect(page.getByRole('heading', { name: 'Multi-component TR locus' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'TR variation cluster' })).toBeVisible()
     await expect(page.getByLabel(/Primary repeat CAG/)).toHaveCount(0)
     await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
     await page.setViewportSize({ width: 390, height: 844 })
