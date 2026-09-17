@@ -2,16 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
-import { Panel } from './LongReadTrVisualizations'
 import { PrimaryMotifMeasurementData } from './types'
-
-const Boundary = styled.p`
-  max-width: 78em;
-  padding: 0.75em 0.9em;
-  border-left: 4px solid #6f3c8f;
-  background: #f7f2fa;
-  color: #3e2850;
-`
 
 const PlotScroller = styled.div`
   overflow-x: auto;
@@ -20,18 +11,6 @@ const PlotScroller = styled.div`
   &:focus-visible {
     outline: 3px solid #111;
   }
-`
-
-const MeasurementGrid = styled.div`
-  /* stylelint-disable unit-whitelist -- fractional tracks preserve readable cards. */
-  display: grid;
-  grid-template-columns: minmax(420px, 1.35fr) minmax(320px, 1fr);
-  gap: 1.5em;
-
-  @media (max-width: 900px) {
-    grid-template-columns: minmax(280px, 1fr);
-  }
-  /* stylelint-enable unit-whitelist */
 `
 
 const PlotCard = styled.div`
@@ -46,27 +25,6 @@ const PlotCard = styled.div`
   }
 `
 
-const Summary = styled.dl`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em 1.5em;
-  margin: 0.75em 0 1em;
-
-  div {
-    min-width: 10em;
-  }
-
-  dt {
-    color: #596a75;
-    font-size: 0.88em;
-  }
-
-  dd {
-    margin-left: 0;
-    font-weight: bold;
-  }
-`
-
 const dimensions = {
   top: 18,
   right: 18,
@@ -78,7 +36,7 @@ const dimensions = {
 const linearPosition = (value: number, minimum: number, maximum: number, size: number) =>
   minimum === maximum ? size / 2 : ((value - minimum) / (maximum - minimum)) * size
 
-const PrimaryMotifAlleleHistogram = ({
+export const PrimaryMotifAlleleHistogram = ({
   measurement,
 }: {
   measurement: PrimaryMotifMeasurementData
@@ -200,7 +158,7 @@ const PrimaryMotifAlleleHistogram = ({
   )
 }
 
-const PrimaryMotifGenotypeCells = ({
+export const PrimaryMotifGenotypeCells = ({
   measurement,
 }: {
   measurement: PrimaryMotifMeasurementData
@@ -214,7 +172,7 @@ const PrimaryMotifGenotypeCells = ({
         : 'Source-complete anonymous genotype pairing is unavailable for this product.'
     return (
       <PlotCard data-testid="primary-motif-genotype-unavailable">
-        <h3>Anonymous diploid genotype cells</h3>
+        <h3>Genotype exact-motif distribution</h3>
         <p role="status">{reason}</p>
       </PlotCard>
     )
@@ -231,8 +189,8 @@ const PrimaryMotifGenotypeCells = ({
   const inner = size - padding * 2
 
   return (
-    <PlotCard data-testid="primary-motif-genotype-cells">
-      <h3>Anonymous diploid genotype cells</h3>
+    <PlotCard data-testid="primary-motif-genotype-cells" data-plot-card="genotype-exact-motif">
+      <h3>Genotype exact-motif distribution</h3>
       <p>
         HGSVC / HPRC only: {genotype.called_diploid_people!.toLocaleString()} people with
         source-complete diploid calls
@@ -242,7 +200,7 @@ const PrimaryMotifGenotypeCells = ({
         viewBox={`0 0 ${size} ${size}`}
         style={{ display: 'block', width: '100%', maxWidth: size }}
         role="img"
-        aria-label={`Anonymous genotype cells by shorter and longer exact ${motif} units`}
+        aria-label={`Anonymous genotype cells by longer and shorter exact ${motif} units`}
         data-source-complete="true"
         data-exact-alt-interaction="none"
       >
@@ -255,9 +213,9 @@ const PrimaryMotifGenotypeCells = ({
         />
         <line x1={padding} y1={padding} x2={padding} y2={size - padding} stroke="#566168" />
         {cells.map((cell) => {
-          const x = padding + linearPosition(cell.shorter_exact_units, minimum, maximum, inner)
+          const x = padding + linearPosition(cell.longer_exact_units, minimum, maximum, inner)
           const y =
-            size - padding - linearPosition(cell.longer_exact_units, minimum, maximum, inner)
+            size - padding - linearPosition(cell.shorter_exact_units, minimum, maximum, inner)
           const side = 5 + Math.sqrt(cell.people / largest) * 19
           return (
             <rect
@@ -266,6 +224,8 @@ const PrimaryMotifGenotypeCells = ({
               y={y - side / 2}
               width={side}
               height={side}
+              data-longer-exact-units={cell.longer_exact_units}
+              data-shorter-exact-units={cell.shorter_exact_units}
               fill={LONG_READ_PRIMARY_PLOT_COLOR}
               opacity={0.82}
             >
@@ -277,7 +237,7 @@ const PrimaryMotifGenotypeCells = ({
           )
         })}
         <text x={size / 2} y={size - 9} textAnchor="middle" fill="#38434a" fontSize={10}>
-          Shorter allele — exact {motif} units
+          Longer allele — exact {motif} units
         </text>
         <text
           x={12}
@@ -287,93 +247,29 @@ const PrimaryMotifGenotypeCells = ({
           fill="#38434a"
           fontSize={10}
         >
-          Longer allele — exact {motif} units
+          Shorter allele — exact {motif} units
         </text>
       </svg>
     </PlotCard>
   )
 }
 
-const PrimaryMotifMeasurementSection = ({
+export const primaryMotifMeasurementAvailable = (measurement?: PrimaryMotifMeasurementData) =>
+  measurement?.status === 'AVAILABLE' &&
+  Boolean(measurement.motif) &&
+  measurement.scope === 'WHOLE_REPRESENTED_ALLELE' &&
+  measurement.unit === 'EXACT_PRIMARY_MOTIF_UNITS'
+
+export const primaryMotifGenotypeAvailable = (measurement?: PrimaryMotifMeasurementData) =>
+  primaryMotifMeasurementAvailable(measurement) && measurement?.genotype.status === 'AVAILABLE'
+
+export const PrimaryMotifAllelePlotCard = ({
   measurement,
 }: {
   measurement: PrimaryMotifMeasurementData
-}) => {
-  if (
-    measurement.status !== 'AVAILABLE' ||
-    !measurement.motif ||
-    measurement.scope !== 'WHOLE_REPRESENTED_ALLELE' ||
-    measurement.unit !== 'EXACT_PRIMARY_MOTIF_UNITS'
-  ) {
-    return null
-  }
-
-  const motif = measurement.motif
-  return (
-    <Panel aria-labelledby="lr-tr-primary-motif-heading" data-testid="primary-motif-measurement">
-      <h2 id="lr-tr-primary-motif-heading">
-        Long-read exact {motif} units across the represented allele
-      </h2>
-      <Boundary data-testid="primary-motif-boundary">
-        <strong>Whole-record, non-clinical measurement.</strong> Each value counts exact,
-        non-overlapping {motif} units across the complete represented REF or ALT allele. It is an
-        aggregate research measurement, not a component repeat count, total length change, source
-        MC/LPS value, short-read estimate, diagnostic result, or clinical classification.
-      </Boundary>
-      <Summary>
-        <div>
-          <dt>Allele copies</dt>
-          <dd>{measurement.called_alleles!.toLocaleString()}</dd>
-        </div>
-        <div>
-          <dt>Complete source ALT identities checked</dt>
-          <dd>{measurement.alternate_identities_checked!.toLocaleString()}</dd>
-        </div>
-        {measurement.biological_role && (
-          <div>
-            <dt>Source-backed motif role</dt>
-            <dd>{measurement.biological_role}</dd>
-          </div>
-        )}
-      </Summary>
-      <MeasurementGrid>
-        <PlotCard>
-          <h3>Allele-copy distribution</h3>
-          <PrimaryMotifAlleleHistogram measurement={measurement} />
-        </PlotCard>
-        <PrimaryMotifGenotypeCells measurement={measurement} />
-      </MeasurementGrid>
-      {measurement.provenance && (
-        <details>
-          <summary>Exact primary-motif product provenance</summary>
-          <dl>
-            <dt>Product run</dt>
-            <dd>
-              <code>{measurement.provenance.product_run_id}</code>
-            </dd>
-            <dt>Source record</dt>
-            <dd>
-              <code>{measurement.provenance.source_variant_id}</code>
-            </dd>
-            <dt>Reviewed registry digest</dt>
-            <dd>
-              <code>{measurement.provenance.registry_digest}</code>
-            </dd>
-            <dt>Algorithm</dt>
-            <dd>
-              <code>{measurement.provenance.algorithm_version}</code>
-            </dd>
-            <dt>Anchor rule</dt>
-            <dd>
-              <code>{measurement.provenance.anchor_rule}</code>
-            </dd>
-            <dt>Bounds status</dt>
-            <dd>{measurement.provenance.bounds_status}</dd>
-          </dl>
-        </details>
-      )}
-    </Panel>
-  )
-}
-
-export default PrimaryMotifMeasurementSection
+}) => (
+  <PlotCard data-testid="primary-motif-allele-copies" data-plot-card="allele-exact-motif">
+    <h3>Allele exact-motif distribution</h3>
+    <PrimaryMotifAlleleHistogram measurement={measurement} />
+  </PlotCard>
+)
