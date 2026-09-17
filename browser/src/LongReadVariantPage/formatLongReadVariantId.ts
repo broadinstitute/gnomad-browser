@@ -140,10 +140,12 @@ const formatSignedLength = (length: number | null) => {
  * Formats the canonical ID alone when allele fields have not been loaded yet.
  * The opaque `~N` transport suffix is never shown. A non-default ALT retains a
  * human `Allele N` marker so legacy payloads do not collapse visible options.
+ * A long allele is abbreviated on the same budget as a table label, so that one
+ * ID cannot run off the row; link targets and queries keep the full ID.
  */
 export const formatLongReadVariantId = (variantId: string): string => {
   const { sourceId, altIndex } = parseAltSpecificId(variantId)
-  const sourceLabel = withoutChr(sourceId)
+  const sourceLabel = abbreviateLongReadTableLabel(withoutChr(sourceId))
   return altIndex != null && altIndex > 1 ? `${sourceLabel} (Allele ${altIndex})` : sourceLabel
 }
 

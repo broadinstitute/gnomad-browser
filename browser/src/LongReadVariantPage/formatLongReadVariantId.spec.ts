@@ -10,6 +10,29 @@ describe('formatLongReadVariantId', () => {
   ])('formats legacy/canonical %s as %s', (rawId, displayId) => {
     expect(formatLongReadVariantId(rawId)).toBe(displayId)
   })
+
+  test.each([
+    [
+      'a long ALT',
+      'chr15-90871538-G-GCGGCGGGCGGACGAGCCGGAGCCGGCGGTGGTGGCGGCGGCGGCGGCCGGGGAAGCGCGGAGGTGGCGCC',
+      '15-90871538-G-GCGGCGGGCGGAC…GGAGGTGGCGCC',
+    ],
+    [
+      'a long tandem repeat motif',
+      'chr4-3113748-3113861-CAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG',
+      '4-3113748-3113861-CAGCAGCAG…CAGCAGCAGCAG',
+    ],
+  ])('abbreviates %s on the shared table-label budget', (_description, rawId, displayId) => {
+    expect(formatLongReadVariantId(rawId)).toBe(displayId)
+  })
+
+  test('keeps the ALT-record marker after abbreviating a long allele', () => {
+    expect(
+      formatLongReadVariantId(
+        'chr15-90871538-G-GCGGCGGGCGGACGAGCCGGAGCCGGCGGTGGTGGCGGCGGCGGCGGCCGGGGAAGCGCGGAGGTGGCGCC~2'
+      )
+    ).toBe('15-90871538-G-GCGGCGGGCGGAC…GGAGGTGGCGCC (Allele 2)')
+  })
 })
 
 describe('formatLongReadAlleleDisplay', () => {
