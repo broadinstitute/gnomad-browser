@@ -528,6 +528,58 @@ const makeSimpleLocus = () => ({
   },
 })
 
+const makePrimaryMotifLocus = () => ({
+  ...makeSimpleLocus(),
+  primary_motif_measurement: {
+    status: 'AVAILABLE' as const,
+    reason_code: null,
+    motif: 'CAG',
+    biological_role: 'coding polyglutamine repeat',
+    metric: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1' as const,
+    unit: 'EXACT_PRIMARY_MOTIF_UNITS' as const,
+    scope: 'WHOLE_REPRESENTED_ALLELE' as const,
+    called_alleles: 584,
+    reference_alleles: 400,
+    alternate_alleles: 184,
+    alternate_identities_checked: 72,
+    bins: [
+      { exact_units: 17, allele_copies: 12 },
+      { exact_units: 24, allele_copies: 420 },
+      { exact_units: 42, allele_copies: 2 },
+    ],
+    genotype: {
+      status: 'AVAILABLE' as const,
+      reason_code: null,
+      called_diploid_people: 292,
+      no_call_people: 0,
+      cells: [
+        { shorter_exact_units: 17, longer_exact_units: 24, people: 3 },
+        { shorter_exact_units: 17, longer_exact_units: 42, people: 1 },
+      ],
+    },
+    provenance: {
+      product_run_id: 'primary-motif-hgsvc-htt',
+      primary_database: 'gnomad_lr_y1_product',
+      primary_run_id: 'primary-hgsvc-chr4',
+      primary_task_id: 'task-1',
+      primary_attempt_id: 'attempt-1',
+      source_variant_id: sourceVariantId,
+      registry_digest: 'a'.repeat(64),
+      registry_approval_state: 'REVIEWED' as const,
+      algorithm_version: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1',
+      algorithm_sha256: 'b'.repeat(64),
+      anchor_rule: 'TRID_ENVELOPE_LEFT_PADDING_BASE_V1',
+      source_record_sha256: 'c'.repeat(64),
+      allele_receipt_sha256: 'd'.repeat(64),
+      genotype_receipt_sha256: 'e'.repeat(64),
+      bounds_status: 'complete_no_truncation',
+      serialized_bytes: 1000,
+      returned_bins: 3,
+      returned_cells: 2,
+    },
+  },
+})
+
 const navigation = {
   hrefForAllele: (id: string) => `/tandem-repeat/locus?dataset=gnomad_r4_lr&keep=1&allele=${id}`,
   onSelectAllele: jest.fn(),
@@ -621,7 +673,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByText('Gene context')).toBeNull()
     expect(screen.queryByText('Allele copies with a genotype call')).toBeNull()
     expect(screen.getByRole('link', { name: 'TRExplorer' })).not.toBeNull()
-    expect(screen.getAllByText(sourceVariantId, { selector: 'code' }).length).toBeGreaterThan(0)
+    expect(screen.getByTitle(`${sourceVariantId}~1`)).not.toBeNull()
     // A variation cluster renders the ordered component track; the assertions below
     // still guard that no classifying or provenance detail comes with it.
     expect(screen.queryByRole('img', { name: /ordered LR reference components/ })).not.toBeNull()
@@ -833,7 +885,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByText('Allele lengths')).toBeNull()
     expect(screen.queryByText(/Absolute represented length unavailable/)).toBeNull()
     expect(screen.queryByText(/Represented length unavailable/)).toBeNull()
-    expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()
     expect(screen.queryByText(/nfe = EUR/)).toBeNull()
     expect(screen.queryByLabelText('Genetic ancestry group')).toBeNull()
     expect(screen.queryByLabelText('Sex')).toBeNull()
@@ -896,6 +948,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
     expect(within(help).getByText('Repeat-count distributions (simple loci only)')).not.toBeNull()
     expect(within(help).getByText('Total allele length change (ALT − REF, bp)')).not.toBeNull()
+    expect(within(help).getByText('Motif occurrences')).not.toBeNull()
+    expect(
+      within(help).getByText(/not component repeat counts, genotypes, or a clinical measure/)
+    ).not.toBeNull()
     expect(within(help).getByText('Length change × motif purity')).not.toBeNull()
     expect(within(help).getByText('Genotype length distribution')).not.toBeNull()
     expect(within(help).getByText(/Only index row selection changes the URL/)).not.toBeNull()
@@ -904,7 +960,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).toBeNull()
     expect(within(help).queryByText(/Repeat-count controls are card-local/)).toBeNull()
     expect(
-      within(help).getByText(/The length-axis control switches all total-length plots/)
+      within(help).getByText(/The length-axis control switches visible length plots/)
     ).not.toBeNull()
     expect(
       within(help).getByText(
@@ -945,59 +1001,115 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('alert')).toBeNull()
   })
 
-  test('keeps genotype length and identity-backed motif occurrences alongside simple-locus plots', () => {
+  test('uses local stable allele and genotype slots for every admitted simple-locus measurement', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
     const grid = screen.getByTestId('whole-record-allele-plot-grid')
-    const headings = within(grid).getAllByRole('heading', { level: 3 })
+    const alleleChoices = screen.getByRole('radiogroup', {
+      name: 'Allele distribution measurement',
+    })
+    const genotypeChoices = screen.getByRole('radiogroup', {
+      name: 'Genotype distribution measurement',
+    })
 
-    expect(headings.map((heading) => heading.textContent)).toEqual([
-      expect.stringContaining('Allele repeat-count distribution'),
-      expect.stringContaining('Genotype repeat-count distribution'),
-      'Exact literal motif occurrences among source ALT copies',
-      'Change from REF (bp)',
-      'Change from REF × motif purity',
-      'Genotype length distribution',
-    ])
-    expect(grid.getAttribute('data-plot-count')).toBe('6')
-    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(6)
+    expect(grid.getAttribute('data-plot-count')).toBe('3')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+    expect(within(alleleChoices).getByRole('radio', { name: 'Length' })).toBeChecked()
+    expect(within(genotypeChoices).getByRole('radio', { name: 'Length' })).toBeChecked()
+    expect(within(alleleChoices).getByRole('radio', { name: 'Repeat count' })).not.toBeNull()
+    expect(within(alleleChoices).getByRole('radio', { name: 'Exact motif' })).not.toBeNull()
+    expect(within(genotypeChoices).getByRole('radio', { name: 'Repeat count' })).not.toBeNull()
+
+    const alleleRepeatCount = within(alleleChoices).getByRole('radio', {
+      name: 'Repeat count',
+    })
+    alleleRepeatCount.focus()
+    fireEvent.click(alleleRepeatCount)
+    fireEvent.click(within(genotypeChoices).getByRole('radio', { name: 'Repeat count' }))
+    expect(
+      within(screen.getByRole('radiogroup', { name: 'Allele distribution measurement' })).getByRole(
+        'radio',
+        { name: 'Repeat count' }
+      )
+    ).toBe(alleleRepeatCount)
+    expect(document.activeElement).toBe(alleleRepeatCount)
     expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
-    expect(within(grid).getByTestId('motif-occurrence-card')).not.toBeNull()
-    expect(
-      (
-        within(grid).getByLabelText(
-          'Stored motif for source ALT occurrence distribution'
-        ) as HTMLSelectElement
-      ).value
-    ).toBe('0')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
     expect(
       screen.getByTestId('allele-repeat-count-card').getAttribute('data-interaction-status')
     ).toBe('UNAVAILABLE_SOURCE_IDENTITIES')
-    expect(
-      screen.getByTestId('genotype-repeat-count-card').getAttribute('data-interaction-status')
-    ).toBe('UNAVAILABLE_SOURCE_IDENTITIES')
-    expect(screen.queryByRole('heading', { name: 'Simple-locus repeat counts' })).toBeNull()
-    expect(screen.queryByRole('button', { name: 'More information' })).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
-    const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
-    expect(
-      within(help).getByText(
-        /These marks are read-only when the source does not identify the contributing exact ALT sequences or allele pairs/
+
+    fireEvent.click(
+      within(screen.getByRole('radiogroup', { name: 'Allele distribution measurement' })).getByRole(
+        'radio',
+        { name: 'Exact motif' }
       )
-    ).not.toBeNull()
-    expect(within(grid).getByTestId('genotype-length-card')).not.toBeNull()
-    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat( 2,minmax(280px,1fr) )')
-    expect(grid).toHaveStyleRule('gap', 'clamp(24px,2vw,32px)')
-    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(280px,1fr))', {
-      media: '(max-width:1199px)',
-    })
-    expect(grid).toHaveStyleRule('grid-template-columns', 'minmax(280px,1fr)', {
-      media: '(max-width:700px)',
-    })
+    )
+    expect(within(grid).getByTestId('motif-occurrence-card')).not.toBeNull()
+    expect(within(grid).getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue(
+      '0'
+    )
+    expect(within(grid).queryByTestId('allele-repeat-count-card')).toBeNull()
+    expect(screen.queryByRole('heading', { name: 'Simple-locus repeat counts' })).toBeNull()
+    expect(grid).toHaveStyleRule('grid-template-columns', 'repeat( 3,minmax(280px,1fr) )')
     expect(grid.compareDocumentPosition(screen.getByTestId('lr-tr-exact-allele-browser'))).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
+  })
+
+  test('integrates the reviewed exact-primary-motif boundary and established genotype orientation', () => {
+    renderPage({ locus: makePrimaryMotifLocus(), selectedAllele: undefined })
+
+    expect(screen.queryByText(/Whole-record, non-clinical measurement/)).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
+    const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
+    expect(within(help).getByText('Reviewed exact primary-motif product')).not.toBeNull()
+    expect(
+      within(help).getByText(/exact, non-overlapping primary-motif units across the complete/)
+    ).not.toBeNull()
+    expect(
+      within(help).getByText(/not a component repeat count, total length change, source MC\/LPS/)
+    ).not.toBeNull()
+    expect(help.textContent).toMatch(/allele Exact motif plot is different/)
+    expect(within(help).getByText('584')).not.toBeNull()
+    expect(within(help).getByText('72')).not.toBeNull()
+    expect(within(help).getByText('primary-motif-hgsvc-htt')).not.toBeNull()
+    expect(within(help).getByText('complete_no_truncation')).not.toBeNull()
+
+    const genotypeChoices = screen.getByRole('radiogroup', {
+      name: 'Genotype distribution measurement',
+    })
+    const exactMotif = within(genotypeChoices).getByRole('radio', { name: 'Exact motif' })
+    exactMotif.focus()
+    fireEvent.click(exactMotif)
+    expect(
+      within(
+        screen.getByRole('radiogroup', { name: 'Genotype distribution measurement' })
+      ).getByRole('radio', { name: 'Exact motif' })
+    ).toBe(exactMotif)
+    expect(document.activeElement).toBe(exactMotif)
+
+    const card = screen.getByTestId('primary-motif-genotype-cells')
+    expect(
+      within(card).getByRole('img', {
+        name: 'Anonymous genotype cells by longer and shorter exact CAG units',
+      })
+    ).not.toBeNull()
+    expect(card.textContent).toContain('Longer allele — exact CAG units')
+    expect(card.textContent).toContain('Shorter allele — exact CAG units')
+    const lowerLonger = card.querySelector(
+      'rect[data-shorter-exact-units="17"][data-longer-exact-units="24"]'
+    )!
+    const higherLonger = card.querySelector(
+      'rect[data-shorter-exact-units="17"][data-longer-exact-units="42"]'
+    )!
+    expect(Number(higherLonger.getAttribute('x'))).toBeGreaterThan(
+      Number(lowerLonger.getAttribute('x'))
+    )
+    const centerY = (cell: Element) =>
+      Number(cell.getAttribute('y')) + Number(cell.getAttribute('height')) / 2
+    expect(centerY(higherLonger)).toBeCloseTo(centerY(lowerLonger))
   })
 
   test('renders one responsive allele table with selected detail immediately below it', () => {
@@ -1021,26 +1133,31 @@ describe('canonical long-read tandem-repeat locus page', () => {
         .getAllByRole('heading', { level: 3 })
         .map((heading) => heading.textContent)
     ).toEqual([
-      'Exact literal motif occurrences among source ALT copies',
-      'Change from REF (bp)',
-      'Change from REF × motif purity',
+      'Allele length distribution',
       'Genotype length distribution',
+      'Length × motif purity',
     ])
     expect(plotGrid.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(genotypeCard.compareDocumentPosition(genotypeDetail)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
     expect(genotypeDetail.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(plotGrid.getAttribute('data-plot-count')).toBe('4')
-    expect(plotGrid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(4)
+    expect(plotGrid.getAttribute('data-plot-count')).toBe('3')
+    expect(plotGrid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+    expect(within(plotGrid).queryByTestId('motif-occurrence-card')).toBeNull()
+    fireEvent.click(
+      screen
+        .getByRole('radiogroup', { name: 'Allele distribution measurement' })
+        .querySelector('input[value="exact-motif"]')!
+    )
     expect(
       (
         within(plotGrid).getByLabelText(
-          'Stored motif for source ALT occurrence distribution'
+          'Motif for source ALT occurrence distribution'
         ) as HTMLSelectElement
       ).value
     ).toBe('0')
-    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat( 2,minmax(280px,1fr) )')
+    expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat( 3,minmax(280px,1fr) )')
     expect(plotGrid).toHaveStyleRule('gap', 'clamp(24px,2vw,32px)')
     expect(plotGrid).toHaveStyleRule('grid-template-columns', 'repeat(2,minmax(280px,1fr))', {
       media: '(max-width:1199px)',
@@ -1322,7 +1439,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const detail = screen.getByTestId('lr-tr-selected-detail')
     expect(detail).toBe(document.activeElement)
     expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
-    expect(within(detail).queryByText(exactId)).toBeNull()
+    expect(within(detail).getByRole('heading', { name: exactId })).not.toBeNull()
     expect(within(detail).queryByText(/source_ap_allele/)).toBeNull()
     expect(within(detail).queryByText(/shown neutrally because no admitted projection/)).toBeNull()
     expect(
@@ -1386,15 +1503,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('distinguishes reference identity from a zero-delta exact ALT in genotype pair detail', () => {
     renderPage()
+    fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
     expect(
-      screen.getByText(
-        (_text, element) =>
-          Boolean(
-            element?.textContent?.includes(
-              'Reference remains distinct from a zero-change source ALT identity in either axis mode'
-            )
-          ),
-        { selector: 'p' }
+      within(screen.getByRole('dialog', { name: 'About the allelic landscape' })).getByText(
+        /Reference remains distinct from a zero-change source ALT/
       )
     ).not.toBeNull()
     expect(screen.getAllByRole('link', { name: 'Sequence 1' }).length).toBeGreaterThan(0)
@@ -1434,7 +1546,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       const finalRow = screen.getByTitle(`${sourceVariantId}~${count}`)
       expect(finalRow.getAttribute('aria-rowindex')).toBe(String(count + 1))
       const cells = within(finalRow).getAllByRole('cell')
-      expect(cells[0].textContent).toBe(sourceVariantId)
+      expect(cells[0].textContent).toBe(`${sourceVariantId}~${count}`)
       expect(
         within(finalRow).getByRole('link', { name: `Details for Sequence ${count}` })
       ).not.toBeNull()
@@ -1447,7 +1559,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       ).not.toBeNull()
       expect(finalRow.getAttribute('aria-label')).toMatch(
         new RegExp(
-          `Source ALT ${count}; source ID ${sourceVariantId}; represented length .+; change from REF .+; purity .+; AC .+; AF .+`
+          `Source ALT ${count}; source ID ${sourceVariantId}~${count}; represented length .+; change from REF .+; purity .+; AC .+; AF .+`
         )
       )
       expect(
@@ -1462,7 +1574,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus, selectedAllele: undefined })
     const row = screen.getByTitle(`${sourceVariantId}~1`)
     const cells = within(row).getAllByRole('cell')
-    expect(cells[0].textContent).toBe(sourceVariantId)
+    expect(cells[0].textContent).toBe(`${sourceVariantId}~1`)
     expect(within(row).queryByText(/Source ALT 1 of 72/)).toBeNull()
     expect(within(row).getByText('20')).not.toBeNull()
     expect(within(row).queryByText('20.00342')).toBeNull()
@@ -1523,7 +1635,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       selectedAllele: exactId,
     })
 
-    expect(screen.getByRole('heading', { name: 'Sequence 2', exact: true })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: exactId, exact: true })).not.toBeNull()
     expect(
       screen.getByText(
         /Motif previews are unavailable because the allele sequences are too large to preview safely/
@@ -1564,13 +1676,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     } as any
     renderPage({ locus })
     expect(
-      screen.getByText(/Total allele length change plot unavailable: the result is too large/)
+      screen.getByText(/Allele distribution unavailable: the result is too large/)
     ).not.toBeNull()
-    expect(
-      screen.getByText(
-        /Genotype length distribution is unavailable: the source does not include the required metadata/
-      )
-    ).not.toBeNull()
+    expect(screen.queryByText(/Genotype length distribution is unavailable/)).toBeNull()
   })
 
   test('container makes retained data inert during exact-ALT revalidation', () => {
@@ -1618,14 +1726,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
         /retain their loaded cohort and allele identity/i.test(element.textContent || '')
       )!
     expect(revalidationStatus).toBeDefined()
-    expect(screen.getByRole('heading', { name: 'Sequence 2', exact: true })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: exactId, exact: true })).not.toBeNull()
     expect(screen.getByRole('heading', { name: '72 source ALT alleles' })).not.toBeNull()
     const retainedFrame = revalidationStatus.nextElementSibling as HTMLElement
     expect(retainedFrame.hasAttribute('inert')).toBe(true)
     expect(retainedFrame.getAttribute('aria-busy')).toBe('true')
     expect(
       within(retainedFrame).queryByRole('heading', {
-        name: 'Sequence 3',
+        name: `${sourceVariantId}~3`,
         exact: true,
       })
     ).toBeNull()
@@ -1636,7 +1744,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     rendered.rerender(React.cloneElement(page))
 
-    expect(screen.getByRole('heading', { name: 'Sequence 1', exact: true })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: nextAlleleId, exact: true })).not.toBeNull()
     expect(screen.getByTestId('lr-tr-selected-detail')).not.toBe(document.activeElement)
     expect(scrollIntoView).not.toHaveBeenCalled()
   })

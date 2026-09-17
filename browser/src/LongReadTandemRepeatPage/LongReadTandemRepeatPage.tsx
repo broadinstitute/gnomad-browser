@@ -17,7 +17,6 @@ import {
   unavailableReason,
 } from './LongReadTrVisualizations'
 import ShortReadKnownLocusContext from './ShortReadKnownLocusContext'
-import PrimaryMotifMeasurementSection from './PrimaryMotifMeasurementSection'
 import LocalHaplotypeBackgroundsSection from './LocalHaplotypeBackgroundsSection'
 import {
   strchiveLocusUrl,
@@ -510,12 +509,11 @@ const LongReadTandemRepeatPage = ({
 
       <ShortReadKnownLocusContext lrCohort={locus.lr_cohort} context={locus.short_read_context} />
 
-      <PrimaryMotifMeasurementSection measurement={primaryMotifMeasurement} />
-
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}
         genotypeLandscape={locus.whole_record_genotype_landscape}
         repeatCountPlots={repeatPlotsAvailable ? locus.repeat_count_plots : undefined}
+        primaryMotifMeasurement={primaryMotifMeasurement}
         variantId={locus.id}
         markFilterScope={{
           locusId: locus.id,
