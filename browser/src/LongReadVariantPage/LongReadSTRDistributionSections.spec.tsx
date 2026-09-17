@@ -218,7 +218,6 @@ describe('long-read STR allele-size distribution', () => {
       <LongReadGenotypeDistributionSection
         variantId="heatmap-test"
         genotypeDistribution={distribution}
-        repeatUnit="T"
         focusObservedDomain
         explainGenotypes
       />

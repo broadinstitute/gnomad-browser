@@ -87,6 +87,8 @@ jest.mock('@gnomad/ui', () => ({
     </button>
   ),
   ExternalLink: ({ children, href }: any) => <a href={href}>{children}</a>,
+  List: ({ children, ...props }: any) => <ul {...props}>{children}</ul>,
+  ListItem: ({ children, ...props }: any) => <li {...props}>{children}</li>,
   Modal: ({ children, title }: any) => (
     <div role="dialog" aria-label={title}>
       {children}
@@ -553,6 +555,10 @@ const renderPage = ({
     </ThemeProvider>
   )
 
+const motifAttributeValue = () =>
+  screen.getAllByText('Motif').find((element) => element.tagName === 'DT')!.nextElementSibling!
+    .textContent
+
 const originalScrollIntoView = HTMLElement.prototype.scrollIntoView
 const originalWindowScrollTo = window.scrollTo
 const scrollIntoView = jest.fn()
@@ -600,10 +606,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('renders grounded source attributes without technical component provenance', () => {
     renderPage()
     expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
-    expect(screen.queryByLabelText('Primary repeat CAG', { exact: true })).toBeNull()
-    expect(screen.getByLabelText('Primary repeat: CAG', { exact: true })).not.toBeNull()
+    expect(motifAttributeValue()).toBe('CAG (3 bp)')
     expect(screen.queryByText(/Compound source representation/)).toBeNull()
     expect(screen.getByText('chr4:3,074,877–3,075,040 (GRCh38)')).not.toBeNull()
+    expect(screen.getByRole('link', { name: 'TRExplorer' }).getAttribute('href')).toBe(
+      'https://trexplorer.broadinstitute.org/#igvLoc=chr4%3A3%2C074%2C877-3%2C075%2C040&showRs=1&q=chr4%3A3%2C074%2C877%E2%80%933%2C075%2C040&source='
+    )
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
     expect(screen.queryByText('GRCh38 / hg38')).toBeNull()
     expect(screen.getAllByText('72 source ALT alleles')).toHaveLength(1)
@@ -696,8 +704,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     const rendered = renderPage({ locus: atxn1, selectedAllele: undefined })
     expect(screen.getByRole('heading', { name: 'ATXN1 TGC tandem repeat' })).not.toBeNull()
-    expect(screen.queryByLabelText('Primary repeat TGC', { exact: true })).toBeNull()
-    expect(screen.getByLabelText('Primary repeat: TGC', { exact: true })).not.toBeNull()
+    expect(motifAttributeValue()).toBe('TGC (3 bp)')
     expect(screen.queryByRole('heading', { name: /ATXN1 CAG/ })).toBeNull()
     const atxn1Disease = screen.getByRole('rowheader', { name: 'Spinocerebellar ataxia 1' })
     expect(atxn1Disease.closest('tr')?.textContent).toContain('164400')
@@ -753,8 +760,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     renderPage({ locus: rfc1, selectedAllele: undefined })
     expect(screen.getByRole('heading', { name: 'RFC1 AAAAG tandem repeat' })).not.toBeNull()
-    expect(screen.queryByLabelText('Primary repeat AAAAG', { exact: true })).toBeNull()
-    expect(screen.getByLabelText('Primary repeat: AAAAG', { exact: true })).not.toBeNull()
+    expect(motifAttributeValue()).toBe('AAAAG (5 bp)')
     expect(rfc1.primary_repeat.biological_role).toBe('benign reference motif')
     const rfc1Disease = screen.getByRole('rowheader', {
       name: 'Cerebellar ataxia, neuropathy, vestibular areflexia syndrome',
@@ -803,7 +809,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByText('Ordered source components')).not.toBeNull()
   })
 
-  test('keeps duplicate source identities visible and hides unavailable controls', () => {
+  test('hides unavailable controls when represented length is unavailable', () => {
     const locus = makeLocus()
     ;(locus as any).sequence_cardinality = {
       ...locus.sequence_cardinality,
@@ -821,13 +827,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByText(/71 observed unique alternate sequences/).textContent).toContain(
-      '72 source ALT identities'
-    )
     expect(screen.queryByLabelText('Length axis')).toBeNull()
     expect(screen.queryByRole('option', { name: 'Represented allele length' })).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
-    expect(screen.queryByText('Represented allele length / change from REF')).toBeNull()
+    expect(screen.queryByText('Allele lengths')).toBeNull()
     expect(screen.queryByText(/Absolute represented length unavailable/)).toBeNull()
     expect(screen.queryByText(/Represented length unavailable/)).toBeNull()
     expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
@@ -1113,9 +1116,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     const exactMatch = document.querySelector('[data-exact-reference-component-match="true"]')
     expect(exactMatch).not.toBeNull()
-    expect(exactMatch!.querySelector('title')!.textContent).toContain(
-      'no clinical classification'
-    )
+    expect(exactMatch!.querySelector('title')!.textContent).toContain('no clinical classification')
   })
 
   test.each([
@@ -1264,8 +1265,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus, selectedAllele: gcaId })
 
     expect(screen.getByRole('heading', { name: 'ATXN7 GCA tandem repeat' })).not.toBeNull()
-    expect(screen.queryByLabelText('Primary repeat GCA', { exact: true })).toBeNull()
-    expect(screen.getByLabelText('Primary repeat: GCA', { exact: true })).not.toBeNull()
+    expect(motifAttributeValue()).toBe('GCA (3 bp)')
 
     const detail = screen.getByTestId('lr-tr-selected-detail')
     expect(within(detail).getByText('Source ALT sequence', { exact: true })).not.toBeNull()

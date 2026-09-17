@@ -1530,7 +1530,6 @@ const RepeatCountPlotCards = ({
         <LongReadGenotypeDistributionSection
           variantId={variantId}
           genotypeDistribution={repeatCountPlots.genotype_distribution}
-          repeatUnit={repeatCountPlots.repeat_unit || undefined}
           headingLevel="h3"
           heading="Genotype repeat-count distribution"
           compact

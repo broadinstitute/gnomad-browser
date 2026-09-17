@@ -277,7 +277,6 @@ export const selectGenotypeDistribution = (
 export const LongReadGenotypeDistributionSection = ({
   variantId,
   genotypeDistribution,
-  repeatUnit,
   headingLevel = 'h2',
   heading = 'Genotype Distribution',
   compact = false,
@@ -288,7 +287,6 @@ export const LongReadGenotypeDistributionSection = ({
 }: {
   variantId: string
   genotypeDistribution: GenotypeDistributionCohort[]
-  repeatUnit?: string
   headingLevel?: HeadingLevel
   heading?: string
   compact?: boolean
@@ -336,11 +334,7 @@ export const LongReadGenotypeDistributionSection = ({
         }}
       >
         <ShortTandemRepeatGenotypeDistributionPlot
-          axisLabels={
-            repeatUnit
-              ? [`longer ${repeatUnit} allele`, `shorter ${repeatUnit} allele`]
-              : ['longer allele', 'shorter allele']
-          }
+          axisLabels={['longer allele', 'shorter allele']}
           minRepeats={focusObservedDomain ? [longDomain[0], shortDomain[0]] : [0, 0]}
           maxRepeats={
             focusObservedDomain ? [longDomain[1], shortDomain[1]] : [maxLongAllele, maxShortAllele]
