@@ -21,6 +21,15 @@ const clickhouseUrl = process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123'
 const readonlyClientOptions = {
   clickhouse_settings: { readonly: '1' as const },
   keep_alive: { enabled: true, idle_socket_ttl: 2000 },
+  // The startup preflight fans out one accepted-task count per configured run
+  // (48 of them) at once. Each takes ~3s alone but ~35s when they compete for
+  // the server's 32 threads, which overruns the client's 30s default.
+  request_timeout: 120_000,
+  // Coverage and frequency results are large and highly repetitive: a per-base
+  // coverage query over a 200kb gene is ~37MB of JSON that gzips to ~1.2MB.
+  // Worth it anywhere, and the difference between a working and an unusable
+  // page when ClickHouse is reached over a tunnel.
+  compression: { response: true },
 }
 
 export const clickhouseClient = createClient({
