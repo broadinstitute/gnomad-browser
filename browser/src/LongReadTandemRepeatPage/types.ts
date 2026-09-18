@@ -375,7 +375,6 @@ export type LongReadTrLocus = {
     attempt_id: string | null
     position: number
     alt_count: number
-    ref: string | null
     non_reference_ac: number
     an: number
     non_reference_af: number

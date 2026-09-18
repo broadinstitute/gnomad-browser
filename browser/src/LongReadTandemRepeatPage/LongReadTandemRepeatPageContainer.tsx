@@ -104,7 +104,7 @@ query ${operationName}(
     region { chrom start0 end0 size }
     components { chrom start0 end0 motif }
     source_records {
-      record_index source_variant_id task_id attempt_id position alt_count ref
+      record_index source_variant_id task_id attempt_id position alt_count
       non_reference_ac an non_reference_af source region
     }
     short_read_context {

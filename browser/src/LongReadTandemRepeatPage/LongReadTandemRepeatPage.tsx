@@ -417,13 +417,15 @@ const LongReadTandemRepeatPage = ({
   }
 
   // Purity is only meaningful against one motif, so it follows the same
-  // single-component condition as the reference interval size above. Every
-  // source record for a locus carries the same REF bytes; the API rejects the
-  // locus as SOURCE_REF_BYTES_INCONSISTENT otherwise.
+  // single-component condition as the reference interval size above. The REF
+  // bytes come from the allele index nodes, which every other exact-sequence
+  // reader on this page uses too. They all carry the same REF for a locus, and
+  // are absent together when the locus sequence index exceeds the response
+  // bound, in which case purity is simply not shown.
   const referencePurity =
     !clusterFocused && locus.components.length === 1
       ? referenceSequencePurity(
-          referenceRepeatSequence(locus.source_records[0]?.ref),
+          referenceRepeatSequence(locus.alleles.nodes[0]?.ref),
           locus.primary_repeat.motif
         )
       : null

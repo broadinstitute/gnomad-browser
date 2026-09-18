@@ -632,7 +632,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('reports reference sequence purity directly below the reference interval size', () => {
     const locus = makeSimpleLocus()
     // Padding base, then 12 bases of CAG carrying two substitutions: 10 of 12.
-    ;(locus as any).source_records = [{ ...locus.source_records[0], ref: 'ACAGCAGCTGCAT' }]
+    // Only the first allele node carries it, so the assertion below fails if the
+    // page reads REF from any other node.
+    ;(locus as any).alleles = {
+      ...locus.alleles,
+      nodes: locus.alleles.nodes.map((allele, index) =>
+        index === 0 ? { ...allele, ref: 'ACAGCAGCTGCAT' } : allele
+      ),
+    }
 
     renderPage({ locus, selectedAllele: undefined })
 
