@@ -1,3 +1,4 @@
+import { abbreviateLongReadTableLabel } from '../../../dataset-metadata/longReadTablePresentation'
 import { normalizeLongReadAlleleType } from './variantUtils'
 
 export type LongReadAlleleIdentity = {
@@ -17,8 +18,10 @@ export type LongReadAlleleIdentity = {
 export type LongReadAlleleDisplay = {
   /** Friendly biological/locus label. Never use this value as a query key. */
   primaryLabel: string
-  /** Single-line table label; richer sequence/event text belongs in the tooltip. */
+  /** Bounded table copy only; never an exact identity or export value. */
   compactLabel: string
+  /** Unabridged table copy for full-text disclosure. */
+  fullCompactLabel: string
   /** Explicit ALT-record designation when the source record is multiallelic. */
   alleleLabel: string | null
   /** Complete visible text, suitable for tables, titles, and copied display text. */
@@ -65,34 +68,35 @@ const abbreviatedSequence = (sequence: string) => {
   )}#${stableSequenceDigest(sequence)}`
 }
 
+const ALLELE_TYPE_LABELS: Record<string, string> = {
+  snv: 'SNV',
+  ins: 'insertion',
+  insertion: 'insertion',
+  del: 'deletion',
+  deletion: 'deletion',
+  dup: 'duplication',
+  duplication: 'duplication',
+  dup_tandem: 'tandem duplication',
+  dup_interspersed: 'interspersed duplication',
+  inv: 'inversion',
+  inversion: 'inversion',
+  trv: 'tandem-repeat allele',
+  alu_ins: 'Alu insertion',
+  line1_ins: 'LINE-1 insertion',
+  line_ins: 'LINE insertion',
+  sva_ins: 'SVA insertion',
+  numt: 'NUMT insertion',
+  bnd: 'breakend',
+  ctx: 'translocation',
+  cpx: 'complex variant',
+  complex: 'complex variant',
+  complex_dup: 'complex duplication',
+  inv_dup: 'inverted duplication',
+}
+
 export const formatLongReadAlleleTypeLabel = (alleleType: string | null | undefined): string => {
   const normalized = normalizeLongReadAlleleType(alleleType || 'variant')
-  const labels: Record<string, string> = {
-    snv: 'SNV',
-    ins: 'insertion',
-    insertion: 'insertion',
-    del: 'deletion',
-    deletion: 'deletion',
-    dup: 'duplication',
-    duplication: 'duplication',
-    dup_tandem: 'tandem duplication',
-    dup_interspersed: 'interspersed duplication',
-    inv: 'inversion',
-    inversion: 'inversion',
-    trv: 'tandem-repeat allele',
-    alu_ins: 'Alu insertion',
-    line1_ins: 'LINE-1 insertion',
-    line_ins: 'LINE insertion',
-    sva_ins: 'SVA insertion',
-    numt: 'NUMT insertion',
-    bnd: 'breakend',
-    ctx: 'translocation',
-    cpx: 'complex variant',
-    complex: 'complex variant',
-    complex_dup: 'complex duplication',
-    inv_dup: 'inverted duplication',
-  }
-  return labels[normalized] || normalized.replace(/_/g, ' ')
+  return ALLELE_TYPE_LABELS[normalized] || normalized.replace(/_/g, ' ')
 }
 
 const isConventionalSequenceType = (alleleType: string | null | undefined) =>
@@ -136,10 +140,12 @@ const formatSignedLength = (length: number | null) => {
  * Formats the canonical ID alone when allele fields have not been loaded yet.
  * The opaque `~N` transport suffix is never shown. A non-default ALT retains a
  * human `Allele N` marker so legacy payloads do not collapse visible options.
+ * A long allele is abbreviated on the same budget as a table label, so that one
+ * ID cannot run off the row; link targets and queries keep the full ID.
  */
 export const formatLongReadVariantId = (variantId: string): string => {
   const { sourceId, altIndex } = parseAltSpecificId(variantId)
-  const sourceLabel = withoutChr(sourceId)
+  const sourceLabel = abbreviateLongReadTableLabel(withoutChr(sourceId))
   return altIndex != null && altIndex > 1 ? `${sourceLabel} (Allele ${altIndex})` : sourceLabel
 }
 
@@ -194,12 +200,18 @@ export const formatLongReadAlleleDisplay = (
   } else if (altIndex != null && (altIndex > 1 || (altCount != null && altCount > 1))) {
     alleleLabel = `Allele ${altIndex}`
   }
-  let compactLabel = primaryLabel
+  let fullCompactLabel = primaryLabel
   if (!canUseConventionalId && chrom != null && allele.pos != null) {
-    compactLabel = `${chrom}:${allele.pos} ${formatLongReadAlleleTypeLabel(
-      allele.allele_type
-    )} ${formatSignedLength(lengthResolution.value)}`
+    const normalizedType = normalizeLongReadAlleleType(allele.allele_type || '')
+    const type = Object.prototype.hasOwnProperty.call(ALLELE_TYPE_LABELS, normalizedType)
+      ? normalizedType.toUpperCase()
+      : 'VARIANT'
+    const length = lengthResolution.value
+    const lengthLabel =
+      length == null ? 'length-unavailable' : `${length > 0 ? '+' : ''}${length}bp`
+    fullCompactLabel = `${chrom}-${allele.pos}-${type}-(${lengthLabel})`
   }
+  const compactLabel = abbreviateLongReadTableLabel(fullCompactLabel)
   const label = alleleLabel ? `${primaryLabel} — ${alleleLabel}` : primaryLabel
   const accessibleDetails = [label]
   if (ref && isLiteralSequence(ref)) accessibleDetails.push(`Exact REF sequence: ${ref}`)
@@ -222,7 +234,15 @@ export const formatLongReadAlleleDisplay = (
   if (canonicalId) accessibleDetails.push(`Canonical long-read ID: ${canonicalId}`)
   const accessibleLabel = accessibleDetails.join('. ')
 
-  return { primaryLabel, compactLabel, alleleLabel, label, accessibleLabel, canonicalId }
+  return {
+    primaryLabel,
+    compactLabel,
+    fullCompactLabel,
+    alleleLabel,
+    label,
+    accessibleLabel,
+    canonicalId,
+  }
 }
 
 export default formatLongReadVariantId

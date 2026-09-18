@@ -30,6 +30,7 @@ import {
   LongReadTrAllele,
   LongReadTrFilterContract,
   LongReadTrLocus,
+  PrimaryMotifMeasurementData,
   WholeRecordAlleleLandscapeData,
   WholeRecordGenotypeLandscapeData,
 } from './types'
@@ -326,7 +327,7 @@ describe('long-read TR visualization fidelity', () => {
       within(firstRow)
         .getAllByRole('cell')
         .map((cell) => cell.textContent)
-    ).toEqual([sourceId, 'Unavailable', '94', '−6', '0.9900', '100', '0.5000', 'Details'])
+    ).toEqual([`${sourceId}~1`, 'Unavailable', '94', '−6', '0.9900', '100', '0.5000', 'Details'])
     expect(
       within(firstRow).queryByText(/Sequence 1|Source ALT 1 of|bp represented|bp vs REF/)
     ).toBeNull()
@@ -499,10 +500,50 @@ describe('long-read TR visualization fidelity', () => {
       Number(shortest.getAttribute('data-height-percent'))
     )
     expect(
-      screen.getByText(
-        'Bar height: called non-reference allele copies. Number above: source ALT identities.'
+      screen.queryByText(
+        /Bar height: called non-reference allele copies. Number above: source ALT identities./
       )
-    ).not.toBeNull()
+    ).toBeNull()
+  })
+
+  test('selects and replaces accessible histogram ranges in both directions, then clears with Escape', () => {
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+    const negative = screen.getByRole('button', { name: /−6 bp vs REF; 100 called/ })
+    const zero = screen.getByRole('button', { name: /0 bp vs REF; 25 called/ })
+    const positive = screen.getByRole('button', { name: /\+12 bp vs REF; 5 called/ })
+
+    fireEvent.click(negative)
+    fireEvent.keyDown(negative, { key: 'ArrowRight', shiftKey: true })
+    expect(negative.getAttribute('aria-pressed')).toBe('true')
+    expect(zero.getAttribute('aria-pressed')).toBe('true')
+    expect(positive.getAttribute('aria-pressed')).toBe('false')
+    expect(screen.getAllByTestId('total-length-selection-boundary')).toHaveLength(2)
+    expect(
+      screen.getByRole('heading', {
+        name: '2 of 3 source ALT alleles — −6 to 0 bp vs REF',
+      })
+    ).toBe(document.activeElement)
+
+    fireEvent.click(positive)
+    expect(negative.getAttribute('aria-pressed')).toBe('false')
+    expect(positive.getAttribute('aria-pressed')).toBe('true')
+    expect(
+      screen.getByRole('heading', { name: '1 of 3 source ALT alleles at +12 bp vs REF' })
+    ).toBe(document.activeElement)
+
+    fireEvent.keyDown(positive, { key: 'ArrowLeft', shiftKey: true })
+    expect(zero.getAttribute('aria-pressed')).toBe('true')
+    expect(positive.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.keyDown(positive, { key: 'Escape' })
+    expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).toBe(
+      document.activeElement
+    )
   })
 
   test('renders repeat-count and genotype-length cards together with a dynamic plot count', () => {
@@ -569,11 +610,111 @@ describe('long-read TR visualization fidelity', () => {
     )
 
     const grid = screen.getByTestId('whole-record-allele-plot-grid')
-    expect(grid.getAttribute('data-plot-count')).toBe('5')
-    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(5)
+    expect(grid.getAttribute('data-plot-count')).toBe('3')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+    const alleleChoices = screen.getByRole('radiogroup', {
+      name: 'Allele distribution measurement',
+    })
+    const genotypeChoices = screen.getByRole('radiogroup', {
+      name: 'Genotype distribution measurement',
+    })
+    expect(within(grid).getByTestId('genotype-length-card')).not.toBeNull()
+    const alleleRepeatCount = within(alleleChoices).getByRole('radio', {
+      name: 'Repeat count',
+    })
+    alleleRepeatCount.focus()
+    fireEvent.click(alleleRepeatCount)
+    fireEvent.click(within(genotypeChoices).getByRole('radio', { name: 'Repeat count' }))
+    expect(
+      within(screen.getByRole('radiogroup', { name: 'Allele distribution measurement' })).getByRole(
+        'radio',
+        { name: 'Repeat count' }
+      )
+    ).toBe(alleleRepeatCount)
+    expect(document.activeElement).toBe(alleleRepeatCount)
     expect(within(grid).getByTestId('allele-repeat-count-card')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-card')).not.toBeNull()
-    expect(within(grid).getByTestId('genotype-length-card')).not.toBeNull()
+    expect(within(grid).queryByTestId('genotype-length-card')).toBeNull()
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+  })
+
+  test('admits exact-motif genotype choice only for source-complete paired product data', () => {
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: '__REFERENCE__',
+      called_samples: 1,
+      called_alleles: 2,
+      ancestry_groups: [],
+      sexes: [],
+      cells: [
+        {
+          shorter_delta: -6,
+          longer_delta: 0,
+          people: 1,
+          pairs: [duplicatePairs[0]],
+        },
+      ],
+    }
+    const primaryMotifMeasurement: PrimaryMotifMeasurementData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      motif: 'CAG',
+      biological_role: 'reviewed primary repeat',
+      metric: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1',
+      scope: 'WHOLE_REPRESENTED_ALLELE',
+      unit: 'EXACT_PRIMARY_MOTIF_UNITS',
+      called_alleles: 2,
+      reference_alleles: 1,
+      alternate_alleles: 1,
+      alternate_identities_checked: 1,
+      bins: [{ exact_units: 10, allele_copies: 2 }],
+      genotype: {
+        status: 'AVAILABLE',
+        reason_code: null,
+        called_diploid_people: 1,
+        no_call_people: 0,
+        cells: [{ shorter_exact_units: 10, longer_exact_units: 11, people: 1 }],
+      },
+      provenance: null,
+    }
+    const rendered = render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        genotypeLandscape={genotypeLandscape}
+        primaryMotifMeasurement={primaryMotifMeasurement}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+
+    const choices = screen.getByRole('radiogroup', {
+      name: 'Genotype distribution measurement',
+    })
+    expect(within(choices).getByRole('radio', { name: 'Length' })).toBeChecked()
+    fireEvent.click(within(choices).getByRole('radio', { name: 'Exact motif' }))
+    expect(screen.getByTestId('primary-motif-genotype-cells')).not.toBeNull()
+    expect(screen.queryByTestId('genotype-length-card')).toBeNull()
+
+    rendered.rerender(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        genotypeLandscape={genotypeLandscape}
+        primaryMotifMeasurement={{
+          ...primaryMotifMeasurement,
+          genotype: { ...primaryMotifMeasurement.genotype, status: 'UNAVAILABLE' },
+        }}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+    const lengthOnlyChoices = screen.getByRole('radiogroup', {
+      name: 'Genotype distribution measurement',
+    })
+    expect(within(lengthOnlyChoices).queryByRole('radio', { name: 'Exact motif' })).toBeNull()
+    expect(within(lengthOnlyChoices).getByRole('radio', { name: 'Length' })).toBeChecked()
+    expect(screen.getByTestId('genotype-length-card')).not.toBeNull()
   })
 
   test('renders an identity-backed motif selector, defaults to the admitted primary motif, and filters without navigation', () => {
@@ -591,20 +732,35 @@ describe('long-read TR visualization fidelity', () => {
     )
 
     const grid = screen.getByTestId('whole-record-allele-plot-grid')
-    expect(grid.getAttribute('data-plot-count')).toBe('3')
-    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+    expect(grid.getAttribute('data-plot-count')).toBe('2')
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(2)
+    expect(within(grid).getByTestId('whole-record-delta-histogram')).not.toBeNull()
+    expect(within(grid).queryByTestId('motif-occurrence-card')).toBeNull()
+    const distribution = screen.getByRole('radiogroup', {
+      name: 'Allele distribution measurement',
+    })
+    const lengthRadio = within(distribution).getByRole('radio', { name: 'Length' })
+    const motifRadio = within(distribution).getByRole('radio', { name: 'Exact motif' })
+    expect((lengthRadio as HTMLInputElement).checked).toBe(true)
+    fireEvent.click(motifRadio)
+    expect(
+      screen
+        .getByRole('radiogroup', { name: 'Allele distribution measurement' })
+        .querySelector('input[value="exact-motif"]')
+    ).toBeChecked()
+    expect(within(grid).queryByTestId('whole-record-delta-histogram')).toBeNull()
     const card = within(grid).getByTestId('motif-occurrence-card')
     expect(
       within(card).getByRole('heading', {
-        name: 'Exact literal motif occurrences among source ALT copies',
+        name: 'Allele exact-motif distribution',
       })
     ).not.toBeNull()
-    expect(within(card).getByText(/Whole represented source ALT alleles only/)).not.toBeNull()
+    expect(within(card).queryByText(/Whole represented source ALT alleles only/)).toBeNull()
     expect(
-      within(card).getByText(/not component repeat count, genotype, or a clinical measure/)
-    ).not.toBeNull()
+      within(card).queryByText(/not component repeat count, genotype, or a clinical measure/)
+    ).toBeNull()
     const selector = within(card).getByLabelText(
-      'Stored motif for source ALT occurrence distribution'
+      'Motif for source ALT occurrence distribution'
     ) as HTMLSelectElement
     expect(selector.value).toBe('1')
     expect(within(card).queryByText(/pathogenic/i)).toBeNull()
@@ -614,6 +770,7 @@ describe('long-read TR visualization fidelity', () => {
     })
     fireEvent.click(selectedBin)
     expect(selectedBin.getAttribute('aria-pressed')).toBe('true')
+    expect(within(card).getAllByTestId('motif-occurrence-selection-boundary')).toHaveLength(1)
     expect(
       screen.getByRole('heading', {
         name: '2 of 3 source ALT alleles — CAA: 1 exact literal occurrence in each whole represented source ALT',
@@ -624,12 +781,44 @@ describe('long-read TR visualization fidelity', () => {
       within(screen.getByRole('table', { name: 'Source ALT allele index' })).getAllByRole('row')
     ).toHaveLength(3)
 
-    fireEvent.click(selectedBin)
+    const zeroBin = within(card).getByRole('button', {
+      name: /CAA; 0 exact literal occurrences in each whole represented source ALT/,
+    })
+    fireEvent.keyDown(selectedBin, { key: 'ArrowLeft', shiftKey: true })
+    expect(selectedBin.getAttribute('aria-pressed')).toBe('true')
+    expect(zeroBin.getAttribute('aria-pressed')).toBe('true')
+    expect(within(card).getAllByTestId('motif-occurrence-selection-boundary')).toHaveLength(2)
+    expect(
+      screen.getByRole('heading', {
+        name: '3 of 3 source ALT alleles — CAA: 0 through 1 exact literal occurrences in each whole represented source ALT',
+      })
+    ).toBe(document.activeElement)
+
+    fireEvent.keyDown(selectedBin, { key: 'Escape' })
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).toBe(
       document.activeElement
     )
     fireEvent.change(selector, { target: { value: '0' } })
     expect(selector.value).toBe('0')
+    fireEvent.click(
+      within(card).getByRole('button', {
+        name: /CAG; 1 exact literal occurrence in each whole represented source ALT/,
+      })
+    )
+    fireEvent.click(
+      screen
+        .getByRole('radiogroup', { name: 'Allele distribution measurement' })
+        .querySelector('input[value="length"]')!
+    )
+    expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
+    expect(within(grid).queryByTestId('motif-occurrence-card')).toBeNull()
+    expect(within(grid).getByTestId('whole-record-delta-histogram')).not.toBeNull()
+    fireEvent.click(
+      screen
+        .getByRole('radiogroup', { name: 'Allele distribution measurement' })
+        .querySelector('input[value="exact-motif"]')!
+    )
+    expect(screen.getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue('0')
   })
 
   test('falls back to the first motif, follows active-slice AC, and omits the whole plot on one missing ALT', () => {
@@ -662,8 +851,15 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
+    fireEvent.click(screen.getByRole('radio', { name: 'Exact motif' }))
+    expect(
+      screen.getByRole('group', {
+        name: 'Shared ancestry and sex filters for visible allelic-landscape plots',
+      })
+    ).not.toBeNull()
+    expect(screen.getByText('Filter visible allelic-landscape plots:')).not.toBeNull()
     const selector = screen.getByLabelText(
-      'Stored motif for source ALT occurrence distribution'
+      'Motif for source ALT occurrence distribution'
     ) as HTMLSelectElement
     expect(selector.value).toBe('0')
     fireEvent.change(screen.getByLabelText('Genetic ancestry group'), { target: { value: 'afr' } })
@@ -673,6 +869,16 @@ describe('long-read TR visualization fidelity', () => {
       })
     ).not.toBeNull()
     expect(screen.queryByRole('button', { name: /CAG; 1 exact literal occurrence/ })).toBeNull()
+    fireEvent.click(screen.getByRole('radio', { name: 'Length' }))
+    expect(screen.getByLabelText('Genetic ancestry group')).toHaveValue('afr')
+    fireEvent.click(screen.getByRole('radio', { name: 'Exact motif' }))
+    expect(screen.getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue('0')
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /CAG; 0 exact literal occurrences.*2 called source ALT copies.*1 source ALT allele; filter/,
+      })
+    )
+    expect(screen.getByRole('heading', { name: /1 of 3 source ALT alleles/ })).not.toBeNull()
 
     rendered.rerender(
       <WholeRecordAlleleLandscape
@@ -689,6 +895,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     expect(screen.queryByTestId('motif-occurrence-card')).toBeNull()
+    expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
     expect(
       screen.getByTestId('whole-record-allele-plot-grid').getAttribute('data-plot-count')
     ).toBe('2')
@@ -735,6 +942,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
+    expect(screen.getByRole('heading', { name: 'chr4-test~1', exact: true })).not.toBeNull()
     expect(screen.getByText('Source ALT sequence', { exact: true })).not.toBeNull()
     expect(screen.getByText('Stored-motif matches', { exact: true })).not.toBeNull()
     expect(screen.getByLabelText('Exact copyable source sequence for Sequence 1').textContent).toBe(
@@ -858,7 +1066,16 @@ describe('long-read TR visualization fidelity', () => {
     expect(document.activeElement).toBe(
       screen.getByRole('heading', { name: '1 of 3 source ALT alleles — Sequence 3' })
     )
-    fireEvent.click(point)
+    fireEvent.keyDown(point, { key: 'ArrowLeft', shiftKey: true })
+    expect(points.every((candidate) => candidate.getAttribute('aria-pressed') === 'true')).toBe(
+      true
+    )
+    expect(
+      screen.getByRole('heading', {
+        name: /3 of 3 source ALT alleles — purity region −6 bp vs REF through \+12 bp vs REF/,
+      })
+    ).toBe(document.activeElement)
+    fireEvent.keyDown(point, { key: 'Escape' })
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
   })
 
@@ -973,6 +1190,96 @@ describe('long-read TR visualization fidelity', () => {
     )
   })
 
+  test('unions genotype-region contributors, bypasses frequency AC, and excludes the reference sentinel', () => {
+    const referenceId = '__REFERENCE__'
+    const genotypeAlleles = alleles.map((allele) => ({
+      ...allele,
+      freq: { ...allele.freq, all: { ...allele.freq.all, ac: 0, af: 0 } },
+    }))
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: referenceId,
+      called_samples: 2,
+      called_alleles: 4,
+      ancestry_groups: [],
+      sexes: [],
+      cells: [
+        {
+          shorter_delta: -6,
+          longer_delta: 0,
+          people: 1,
+          pairs: [
+            {
+              shorter_allele_id: referenceId,
+              longer_allele_id: alleles[0].variant_id,
+              ancestry_group: 'unknown',
+              sex: 'unknown',
+              people: 1,
+              phased_people: 0,
+              unphased_people: 1,
+            },
+          ],
+        },
+        {
+          shorter_delta: 0,
+          longer_delta: 12,
+          people: 1,
+          pairs: [
+            {
+              shorter_allele_id: alleles[1].variant_id,
+              longer_allele_id: alleles[2].variant_id,
+              ancestry_group: 'unknown',
+              sex: 'unknown',
+              people: 1,
+              phased_people: 1,
+              unphased_people: 0,
+            },
+          ],
+        },
+      ],
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        genotypeLandscape={genotypeLandscape}
+        alleles={genotypeAlleles}
+        navigation={navigation}
+      />
+    )
+    const cells = screen.getAllByTestId('genotype-length-cell-target')
+    const firstCell = screen.getByRole('button', {
+      name: /0 bp vs REF longer allele, −6 bp vs REF shorter allele/,
+    })
+    fireEvent.click(firstCell)
+    fireEvent.keyDown(firstCell, { key: 'ArrowRight', shiftKey: true })
+    expect(cells.every((cell) => cell.getAttribute('aria-pressed') === 'true')).toBe(true)
+    expect(screen.getAllByTestId('genotype-length-selection-boundary')).toHaveLength(1)
+    const selectedCells = screen
+      .getByTestId('genotype-length-card')
+      .querySelectorAll('rect[fill="#e9781c"]')
+    expect(selectedCells).toHaveLength(2)
+    expect(
+      Array.from(selectedCells).every(
+        (cell) =>
+          cell.getAttribute('stroke') === '#6f3508' && cell.getAttribute('stroke-width') === '2'
+      )
+    ).toBe(true)
+    expect(
+      screen.getByTestId('genotype-length-card').querySelectorAll('text[fill="#111"]').length
+    ).toBeGreaterThanOrEqual(2)
+    expect(screen.getByTestId('genotype-length-selection-boundary').getAttribute('stroke')).toBe(
+      '#6f3508'
+    )
+    expect(
+      screen.getByRole('heading', {
+        name: /3 of 3 source ALT alleles — genotype region longer 0 bp vs REF through \+12 bp vs REF; shorter −6 bp vs REF through 0 bp vs REF/,
+      })
+    ).toBe(document.activeElement)
+    expect(screen.queryByTitle(referenceId)).toBeNull()
+  })
+
   test('reconciles one controlled ancestry and sex filter across all three plots', async () => {
     const stratifiedAlleles = alleles.map((allele) => ({
       ...allele,
@@ -1033,7 +1340,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     const filters = screen.getByRole('group', {
-      name: 'Shared ancestry and sex filters for total-length plots',
+      name: 'Shared ancestry and sex filters for visible allelic-landscape plots',
     })
     expect(
       screen.getByRole('group', { name: 'Total-length histogram display controls' })
@@ -1299,7 +1606,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     const heading = screen.getByRole('heading', { name: 'Allelic landscape' })
     expect(heading.parentElement?.nextElementSibling?.getAttribute('aria-live')).toBe('polite')
-    expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
     const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
@@ -1491,7 +1798,7 @@ describe('long-read TR visualization fidelity', () => {
     const controls = screen.getByRole('group', { name: 'Allelic landscape controls' })
     expect(Array.from(controls.children).every((child) => child.childElementCount > 0)).toBe(true)
     const group = screen.getByRole('group', {
-      name: 'API-admitted ancestry and sex filters for total-length plots',
+      name: 'API-admitted ancestry and sex filters for visible allelic-landscape plots',
     })
     expect(group).toHaveStyleRule('min-width', '0')
     expect(group).toHaveStyleRule('max-width', '100%')
@@ -1564,12 +1871,20 @@ describe('long-read TR visualization fidelity', () => {
       ).disabled
     ).toBe(false)
     fireEvent.change(axis, { target: { value: 'absolute' } })
-    expect(screen.getByRole('heading', { name: 'Represented allele length (bp)' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()
     expect(screen.queryByText('94 bp represented (−6 bp vs REF)')).toBeNull()
     expect(screen.getAllByLabelText(/94 bp represented \(−6 bp vs REF\)/).length).toBeGreaterThan(0)
     const representedRow = screen.getByTitle(`${sourceId}~1`)
     expect(within(representedRow).getAllByRole('cell')[2].textContent).toBe('94')
     expect(within(representedRow).getAllByRole('cell')[3].textContent).toBe('−6')
+    const firstBar = screen.getByRole('button', { name: /94 bp represented \(−6 bp vs REF\)/ })
+    fireEvent.click(firstBar)
+    fireEvent.keyDown(firstBar, { key: 'ArrowRight', shiftKey: true })
+    expect(
+      screen.getByRole('heading', {
+        name: '2 of 3 source ALT alleles — 94 to 100 bp represented',
+      })
+    ).not.toBeNull()
 
     rendered.rerender(
       <WholeRecordAlleleLandscape
@@ -1590,7 +1905,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByLabelText('Length axis')).toBeNull()
     expect(screen.queryByRole('option', { name: 'Represented allele length' })).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
-    expect(screen.getByRole('heading', { name: 'Change from REF (bp)' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()
     expect(screen.queryByText(/bp represented \(−6 bp vs REF\)/)).toBeNull()
     expect(within(screen.getByTitle(`${sourceId}~1`)).getAllByRole('cell')[2].textContent).toBe('—')
   })

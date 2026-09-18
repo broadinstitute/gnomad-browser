@@ -1,6 +1,7 @@
 import { isRsId } from '@gnomad/identifiers'
 import { isLongReadVariantId } from '../../../../dataset-metadata/longReadVariantId'
 import { UserVisibleError } from '../../errors'
+import { resolveVariantTrShortReadContext } from './long_read_variant_tr_context'
 import {
   fetchVariantById,
   fetchVariantsByGene,
@@ -81,6 +82,8 @@ const resolvers = {
     long_read_variants: resolveVariantsInRegion,
   },
   LongReadVariant: {
+    tr_locus_short_read_context: (variant: any, _args: any, ctx: any) =>
+      resolveVariantTrShortReadContext(variant, ctx),
     tr_locus_presentation: (variant: any) => {
       if (variant.tr_locus_presentation) return variant.tr_locus_presentation
       const components = trLocusComponents(variant)

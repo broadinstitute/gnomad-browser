@@ -357,6 +357,31 @@ describe('Y1 checked-manifest presentation routing', () => {
     expect(await getY1SourceSnapshot('aou', 'chr2')).toBeNull()
   })
 
+  test.each(['request', 'response'])(
+    'canonical identity scan %s timeout rejects preflight without publishing any source',
+    async (stage) => {
+      installFixture()
+      const fixtureQuery = mockQuery.getMockImplementation()!
+      const timeout = new Error('Timeout error.')
+      mockQuery.mockImplementation((params: any) => {
+        if (params.query.includes('AS table_name') && params.query_params.runId === 'hgsvc-chr2') {
+          return stage === 'request'
+            ? Promise.reject(timeout)
+            : Promise.resolve({
+                json: async () => {
+                  throw timeout
+                },
+              })
+        }
+        return fixtureQuery(params)
+      })
+      await expect(preflightY1AcceptedSources()).rejects.toBe(timeout)
+      expect(await getY1SourceSnapshot('hgsvc_hprc', 'chr1')).toBeNull()
+      expect(await getY1SourceSnapshot('hgsvc_hprc', 'chr2')).toBeNull()
+      expect(await getY1SourceSnapshot('aou', 'chr1')).toBeNull()
+    }
+  )
+
   test('admits an unfinalized presentation campaign from exact terminal task attempts', async () => {
     installFixture({ emptyRunLedger: true })
     await expect(preflightY1AcceptedSources()).resolves.toBeUndefined()

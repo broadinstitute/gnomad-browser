@@ -130,6 +130,28 @@ describe('long-read variant table identity columns', () => {
     )
   })
 
+  test('abbreviates a long short-read match ID but links and hovers the full one', () => {
+    render(
+      <HaplotypeVariantTable
+        mode="summary"
+        summaryVariants={[
+          variant({
+            short_read_match_id:
+              '15-90871538-G-GCGGCGGGCGGACGAGCCGGAGCCGGCGGTGGTGGCGGCGGCGGCGGCCGGGGAAGCGCGGAGGTGGCGCC',
+          }),
+        ]}
+      />
+    )
+
+    const link = screen.getByRole('link', { name: '15-90871538-G-GCGGCGGGCGGAC…GGAGGTGGCGCC' })
+    expect(link.getAttribute('title')).toBe(
+      '15-90871538-G-GCGGCGGGCGGACGAGCCGGAGCCGGCGGTGGTGGCGGCGGCGGCGGCCGGGGAAGCGCGGAGGTGGCGCC'
+    )
+    expect(link.getAttribute('href')).toBe(
+      '/variant/15-90871538-G-GCGGCGGGCGGACGAGCCGGAGCCGGCGGTGGTGGCGGCGGCGGCGGCCGGGGAAGCGCGGAGGTGGCGCC?dataset=gnomad_r4'
+    )
+  })
+
   test('keeps full over-30-base REF and ALT sequences in the Variant tooltip only', () => {
     const ref = `G${'T'.repeat(30)}`
     const alt = `A${'C'.repeat(30)}`
@@ -140,7 +162,7 @@ describe('long-read variant table identity columns', () => {
       />
     )
 
-    const link = screen.getByRole('link', { name: '22:100 SNV 0 bp' })
+    const link = screen.getByRole('link', { name: '22-100-SNV-(0bp)' })
     expect(link.textContent).not.toContain(ref)
     expect(link.textContent).not.toContain(alt)
     expect(link.getAttribute('title')).toContain(`Exact REF sequence: ${ref}`)

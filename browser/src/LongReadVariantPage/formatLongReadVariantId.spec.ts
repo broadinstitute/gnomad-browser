@@ -10,9 +10,135 @@ describe('formatLongReadVariantId', () => {
   ])('formats legacy/canonical %s as %s', (rawId, displayId) => {
     expect(formatLongReadVariantId(rawId)).toBe(displayId)
   })
+
+  test.each([
+    [
+      'a long ALT',
+      'chr15-90871538-G-GCGGCGGGCGGACGAGCCGGAGCCGGCGGTGGTGGCGGCGGCGGCGGCCGGGGAAGCGCGGAGGTGGCGCC',
+      '15-90871538-G-GCGGCGGGCGGAC…GGAGGTGGCGCC',
+    ],
+    [
+      'a long tandem repeat motif',
+      'chr4-3113748-3113861-CAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAGCAG',
+      '4-3113748-3113861-CAGCAGCAG…CAGCAGCAGCAG',
+    ],
+  ])('abbreviates %s on the shared table-label budget', (_description, rawId, displayId) => {
+    expect(formatLongReadVariantId(rawId)).toBe(displayId)
+  })
+
+  test('keeps the ALT-record marker after abbreviating a long allele', () => {
+    expect(
+      formatLongReadVariantId(
+        'chr15-90871538-G-GCGGCGGGCGGACGAGCCGGAGCCGGCGGTGGTGGCGGCGGCGGCGGCCGGGGAAGCGCGGAGGTGGCGCC~2'
+      )
+    ).toBe('15-90871538-G-GCGGCGGGCGGAC…GGAGGTGGCGCC (Allele 2)')
+  })
 })
 
 describe('formatLongReadAlleleDisplay', () => {
+  test.each([
+    [null, 'length-unavailable'],
+    [undefined, 'length-unavailable'],
+    [NaN, 'length-unavailable'],
+    [Infinity, 'length-unavailable'],
+    [0, '0bp'],
+    [-125, '-125bp'],
+    [12500, '+12500bp'],
+  ])('keeps event signed length %s distinct from missing', (length, expected) => {
+    const display = formatLongReadAlleleDisplay({
+      chrom: 'chr5',
+      pos: 500,
+      allele_type: 'bnd',
+      allele_length: length,
+      ref: 'A',
+      alt: 'AC',
+    })
+    expect(display.compactLabel).toBe(`5-500-BND-(${expected})`)
+  })
+
+  test.each([null, '', '  ', 'unknown', 'not_a_type', 'constructor'])(
+    'does not infer unknown type %s from symbolic ALT or opaque identity',
+    (type) => {
+      const display = formatLongReadAlleleDisplay({
+        variant_id: 'misleading-DEL~2',
+        chrom: '3',
+        pos: 300,
+        allele_type: type,
+        alt: '<DEL>',
+        length: -125,
+      })
+      expect(display.compactLabel).toBe('3-300-VARIANT-(-125bp)')
+      expect(display.canonicalId).toBe('misleading-DEL~2')
+    }
+  )
+
+  test('normalizes the source token and keeps symbolic deletion source length', () => {
+    expect(
+      formatLongReadAlleleDisplay({
+        chrom: '3',
+        pos: 300,
+        allele_type: ' DEL ',
+        ref: 'N',
+        alt: '<DEL>',
+        length: -125,
+      }).compactLabel
+    ).toBe('3-300-DEL-(-125bp)')
+    expect(
+      formatLongReadAlleleDisplay({ chrom: '1', pos: 9, allele_type: 'SNP', ref: 'A', alt: 'G' })
+        .compactLabel
+    ).toBe('1-9-A-G')
+  })
+
+  test('bounds long conventional IDs without changing eligibility or exact sequences', () => {
+    const ref = 'A'.repeat(30)
+    const alt = 'C'.repeat(30)
+    const full = `22-12345678-${ref}-${alt}`
+    const display = formatLongReadAlleleDisplay({
+      variant_id: 'exact~1',
+      chrom: '22',
+      pos: 12345678,
+      ref,
+      alt,
+      allele_type: 'ins',
+      alt_count: 2,
+    })
+    expect(display.primaryLabel).toBe(full)
+    expect(display.fullCompactLabel).toBe(full)
+    expect(display.compactLabel).toBe(`${full.slice(0, 27)}…${full.slice(-12)}`)
+    expect(display.compactLabel).toHaveLength(40)
+    expect(display.alleleLabel).toBe('Allele 1 of 2')
+    expect(display.accessibleLabel).toContain(`Exact REF sequence: ${ref}`)
+    expect(display.accessibleLabel).toContain(`Exact ALT sequence: ${alt}`)
+    expect(display.canonicalId).toBe('exact~1')
+  })
+
+  test.each([40, 41])(
+    'bounds opaque %s-character fallback without rewriting delimiters',
+    (length) => {
+      const source = `opaque:source_${'x'.repeat(length - 14)}`
+      expect(source).toHaveLength(length)
+      const display = formatLongReadAlleleDisplay({ variant_id: `${source}~2` })
+      expect(display.fullCompactLabel).toBe(source)
+      expect(display.compactLabel).toBe(
+        length === 40 ? source : `${source.slice(0, 27)}…${source.slice(-12)}`
+      )
+      expect(display.canonicalId).toBe(`${source}~2`)
+      expect(display.alleleLabel).toBe('Allele 2')
+    }
+  )
+
+  test('abbreviation collisions leave exact identities and full labels distinct', () => {
+    const first = formatLongReadAlleleDisplay({
+      variant_id: `${'a'.repeat(27)}ONE${'z'.repeat(12)}~1`,
+    })
+    const second = formatLongReadAlleleDisplay({
+      variant_id: `${'a'.repeat(27)}TWO${'z'.repeat(12)}~2`,
+    })
+    expect(first.compactLabel).toBe(second.compactLabel)
+    expect(first.canonicalId).not.toBe(second.canonicalId)
+    expect(first.fullCompactLabel).not.toBe(second.fullCompactLabel)
+  })
+
   test('uses the actual allele for a single-ALT SNV', () => {
     expect(
       formatLongReadAlleleDisplay({
@@ -80,7 +206,7 @@ describe('formatLongReadAlleleDisplay', () => {
       alt: thirtyOneBaseAlt,
       allele_type: 'snv',
     })
-    expect(display.compactLabel).toBe('1:55039880 SNV 0 bp')
+    expect(display.compactLabel).toBe('1-55039880-SNV-(0bp)')
     expect(display.compactLabel).not.toContain(thirtyOneBaseRef)
     expect(display.compactLabel).not.toContain(thirtyOneBaseAlt)
     expect(display.accessibleLabel).toContain(`Exact REF sequence: ${thirtyOneBaseRef}`)
@@ -103,7 +229,7 @@ describe('formatLongReadAlleleDisplay', () => {
     })
 
     expect(alt).toHaveLength(50)
-    expect(display.compactLabel).toBe('22:50715763 tandem duplication +49 bp')
+    expect(display.compactLabel).toBe('22-50715763-DUP_TANDEM-(+49bp)')
     expect(display.primaryLabel).toMatch(
       /^22:50715763 tandem duplication \(\+49 bp; ALT CGCTGTGG…ATGGCTGG#[0-9a-f]{8}\)$/
     )
@@ -122,22 +248,19 @@ describe('formatLongReadAlleleDisplay', () => {
     ['bnd', 'breakend'],
     ['ctx', 'translocation'],
     ['cpx', 'complex variant'],
-  ])(
-    'keeps literal structural/event type %s compact below the sequence threshold',
-    (type, label) => {
-      const display = formatLongReadAlleleDisplay({
-        variant_id: `source-${type}~1`,
-        chrom: 'chr5',
-        pos: 500,
-        ref: 'A',
-        alt: 'AC',
-        allele_type: type,
-        allele_length: 1,
-      })
-      expect(display.compactLabel).toBe(`5:500 ${label} +1 bp`)
-      expect(display.primaryLabel).not.toBe('5-500-A-AC')
-    }
-  )
+  ])('keeps literal structural/event type %s compact below the sequence threshold', (type) => {
+    const display = formatLongReadAlleleDisplay({
+      variant_id: `source-${type}~1`,
+      chrom: 'chr5',
+      pos: 500,
+      ref: 'A',
+      alt: 'AC',
+      allele_type: type,
+      allele_length: 1,
+    })
+    expect(display.compactLabel).toBe(`5-500-${type.toUpperCase()}-(+1bp)`)
+    expect(display.primaryLabel).not.toBe('5-500-A-AC')
+  })
 
   test('gives long insertions concise sequence-bearing collision-safe labels', () => {
     const makeLabel = (alt: string) =>
@@ -165,7 +288,7 @@ describe('formatLongReadAlleleDisplay', () => {
         allele_type: 'ins',
         allele_length: 60,
       }).compactLabel
-    ).toBe('2:200 insertion +65 bp')
+    ).toBe('2-200-INS-(+65bp)')
     expect(
       formatLongReadAlleleDisplay({
         variant_id: 'source-A~1',
@@ -190,7 +313,7 @@ describe('formatLongReadAlleleDisplay', () => {
         allele_type: 'dup',
         allele_length: 123,
       }).compactLabel
-    ).toBe('2:250 duplication +123 bp')
+    ).toBe('2-250-DUP-(+123bp)')
   })
 
   test('keeps same-length structural alleles collision-safe outside compact tables', () => {

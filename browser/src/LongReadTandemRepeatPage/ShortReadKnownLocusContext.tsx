@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { isCompleteExactContext } from '@gnomad/dataset-metadata/longReadTrCatalogContext'
 
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import Link from '../Link'
@@ -32,32 +33,6 @@ type Props = {
   lrCohort: LongReadCohort
   context: LongReadTrShortReadContext | null
 }
-
-const isCompleteExactContext = (
-  context: LongReadTrShortReadContext | null,
-  lrCohort: LongReadCohort
-): context is LongReadTrShortReadContext & {
-  catalog_record: NonNullable<LongReadTrShortReadContext['catalog_record']>
-  matched_component_index: number
-  matched_component: NonNullable<LongReadTrShortReadContext['matched_component']>
-  matched_reference_region_index: number
-} =>
-  Boolean(
-    context?.status === 'EXACT_UNIQUE' &&
-      context.catalog_dataset &&
-      context.catalog_source &&
-      context.catalog_digest &&
-      context.catalog_record?.id &&
-      context.catalog_record.reference_repeat_unit &&
-      context.catalog_record.main_reference_region &&
-      context.matched_component_index != null &&
-      context.matched_component &&
-      context.matched_reference_region_index != null &&
-      context.lr_database &&
-      context.lr_release &&
-      context.lr_run_id &&
-      context.lr_cohort === lrCohort
-  )
 
 const ShortReadKnownLocusContext = ({ lrCohort, context }: Props) => {
   if (!isCompleteExactContext(context, lrCohort)) return null
