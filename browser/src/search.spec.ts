@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, jest, it, test } from '@jest/globals'
 
-import { fetchSearchResults } from './search'
+import { fetchSearchResults, fetchVariantSearchResults } from './search'
 
 describe('fetchSearchResults', () => {
   beforeEach(() => {
@@ -94,6 +94,52 @@ describe('fetchSearchResults', () => {
         value: '/gene/ENSG00000169174?dataset=gnomad_r3',
       },
     ])
+  })
+
+  it('marks gene search API requests as browser requests', async () => {
+    jest.mocked(global.fetch).mockResolvedValue({
+      json: () =>
+        Promise.resolve({
+          data: {
+            gene_search: [],
+          },
+        }),
+    } as Response)
+
+    await fetchSearchResults('gnomad_r4', 'PCSK9')
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/',
+      expect.objectContaining({
+        headers: {
+          'Content-Type': 'application/json',
+          'X-GnomAD-Client': 'browser',
+        },
+      })
+    )
+  })
+
+  it('marks variant search API requests as browser requests', async () => {
+    jest.mocked(global.fetch).mockResolvedValue({
+      json: () =>
+        Promise.resolve({
+          data: {
+            variant_search: [],
+          },
+        }),
+    } as Response)
+
+    await fetchVariantSearchResults('gnomad_r4', 'PCSK9')
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/',
+      expect.objectContaining({
+        headers: {
+          'Content-Type': 'application/json',
+          'X-GnomAD-Client': 'browser',
+        },
+      })
+    )
   })
 
   it("sorts gene search results with genes that start with the query ahead of those that don't", async () => {

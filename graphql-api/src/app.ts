@@ -35,6 +35,9 @@ const getGcpTraceId = (request: any) => {
   return cloudTraceMatch?.[1]
 }
 
+const getRequestSource = (request: any) =>
+  request.get('X-GnomAD-Client') === 'browser' ? 'browser' : 'direct-api'
+
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -64,6 +67,7 @@ app.use((req: any, res: any, next: any) => {
     logger.info({
       requestId: store.requestId,
       event: 'requestStart',
+      requestSource: getRequestSource(req),
       httpRequest: {
         requestMethod: req.method,
         requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
@@ -102,6 +106,7 @@ app.use((req: any, res: any, next: any) => {
       logger.info({
         requestId: ctx.requestId,
         event: 'requestEnd',
+        requestSource: getRequestSource(req),
         latencyMs: performance.now() - ctx.startAt,
         cpuUserMicros: cpu.user,
         cpuSystemMicros: cpu.system,

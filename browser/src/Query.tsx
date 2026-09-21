@@ -94,6 +94,13 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
       this.currentRequest.cancel()
     }
 
+    const requestHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+    }
+    if (url === '/api' || url === '/api/') {
+      requestHeaders['X-GnomAD-Client'] = 'browser'
+    }
+
     this.currentRequest = cancelable(
       fetch(url, {
         body: JSON.stringify({
@@ -102,9 +109,7 @@ export class BaseQuery extends Component<BaseQueryProps, BaseQueryState> {
           variables,
         }),
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: requestHeaders,
       }).then((response) => response.json())
     )
     this.currentRequest.promise.then(
