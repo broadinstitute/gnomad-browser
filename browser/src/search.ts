@@ -27,7 +27,7 @@ const fetchGeneSymbolSearchResults = (query: string, referenceGenome: ReferenceG
       variables: { query, referenceGenome },
     }),
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'X-GnomAD-Client': 'browser' },
   }).then((response) => response.json())
 }
 
@@ -260,7 +260,7 @@ export const fetchVariantSearchResults = (datasetId: any, query: any) => {
       variables: { datasetId, query },
     }),
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'X-GnomAD-Client': 'browser' },
   })
     .then((response) => response.json())
     .then((response) => {
