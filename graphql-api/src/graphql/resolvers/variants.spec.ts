@@ -11,7 +11,10 @@ jest.mock('../../queries/clinvar-variant-queries', () => ({
 }))
 
 describe('Region.variants', () => {
-  test('rejects a v3 region with too many variants before searching', async () => {
+  test.each([
+    ['v3', 'gnomad_r3'],
+    ['v4', 'gnomad_r4'],
+  ])('rejects a %s region with too many variants before searching', async (_version, dataset) => {
     const count = jest.fn((_request: unknown) => Promise.resolve({ body: { count: 30001 } }))
     const search = jest.fn()
     const scroll = jest.fn()
@@ -23,11 +26,7 @@ describe('Region.variants', () => {
     }
 
     await expect(
-      resolvers.Region.variants(
-        region,
-        { dataset: 'gnomad_r3' },
-        { esClient: { count, search, scroll } }
-      )
+      resolvers.Region.variants(region, { dataset }, { esClient: { count, search, scroll } })
     ).rejects.toThrow(
       'This region has too many variants to display. Select a smaller region to view variants.'
     )
