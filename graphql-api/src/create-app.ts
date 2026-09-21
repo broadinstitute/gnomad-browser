@@ -6,7 +6,7 @@ import { performance } from 'perf_hooks'
 
 import config from './config'
 import logger from './logger'
-import { requestStore } from './request-context'
+import { cancelRequest, RequestContext, requestStore } from './request-context'
 
 interface CreateAppDependencies {
   elasticsearchClient: unknown
@@ -59,16 +59,43 @@ const createApp = ({ elasticsearchClient, graphQLApi }: CreateAppDependencies): 
   app.use((req: any, res: any, next: any) => {
     const traceId = config.GCP_PROJECT ? getGcpTraceId(req) : null
 
-    const store = {
+    const store: RequestContext = {
       requestId: randomUUID(),
       startAt: performance.now(),
       startCpu: process.cpuUsage(),
       startHeapUsed: process.memoryUsage().heapUsed,
       trace: traceId ? `projects/${config.GCP_PROJECT}/traces/${traceId}` : null,
+      abortController: new AbortController(),
+      cancellationReason: null,
+      canceledAt: null,
     }
 
     res.setHeader('x-request-id', store.requestId)
     requestStore.run(store, () => {
+      res.once('close', () => {
+        const hasServerFinishedWritingResponse = res.writableFinished
+
+        if (!hasServerFinishedWritingResponse) {
+          requestStore.run(store, () => {
+            if (!cancelRequest('client-disconnected')) return
+
+            logger.info({
+              requestId: store.requestId,
+              event: 'requestClientDisconnected',
+              reason: store.cancellationReason,
+              latencyMs: (store.canceledAt ?? performance.now()) - store.startAt,
+              requestSource: getRequestSource(req),
+              httpRequest: {
+                requestMethod: req.method,
+                requestUrl: `${req.protocol}://${req.hostname}${req.originalUrl || req.url}`,
+                userAgent: req.headers['user-agent'],
+                remoteIp: req.ip,
+              },
+            })
+          })
+        }
+      })
+
       logger.info({
         requestId: store.requestId,
         event: 'requestStart',
