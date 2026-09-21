@@ -27,7 +27,7 @@ const countVariantsInRegion = async (esClient: any, region: any, _subset: any) =
       query: {
         bool: {
           filter: [
-            { term: { 'locus.contig': region.chrom } },
+            { term: { 'locus.contig': `chr${region.chrom}` } },
             {
               range: {
                 'locus.position': {
