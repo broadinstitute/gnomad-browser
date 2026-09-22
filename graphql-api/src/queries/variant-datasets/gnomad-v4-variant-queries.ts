@@ -1,5 +1,3 @@
-import { omit } from 'lodash'
-
 import { isRsId } from '@gnomad/identifiers'
 
 import { UserVisibleError } from '../../errors'
@@ -325,8 +323,23 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
 
     const inSilicoPredictorsList = createInSilicoPredictorsList(variant)
 
+    // Destructure to drop fields we don't want to cache. Cheaper than lodash.omit, which adds
+    // per-call overhead (path parsing, copying every key then deleting the omitted ones).
+    const {
+      transcript_consequences: _tc,
+      locus: _locus,
+      alleles: _alleles,
+      ...variantRest
+    } = variant
+    const { freq: _exomeFreq, ...exomeRest } = variant.exome
+    const { ancestry_groups: _exomeAncestryGroups, ...exomeFreqRest } = variant.exome.freq[subset]
+    const { freq: _genomeFreq, ...genomeRest } = variant.genome
+    const { ancestry_groups: _genomeAncestryGroups, ...genomeFreqRest } = subsetGenomeFreq
+    const { freq: _jointFreq, ...jointRest } = variant.joint
+    const { ancestry_groups: _jointAncestryGroups, ...jointFreqRest } = subsetJointFreq
+
     return {
-      ...omit(variant, 'transcript_consequences', 'locus', 'alleles'), // Omit full transcript consequences list to avoid caching it
+      ...variantRest, // Omit full transcript consequences list to avoid caching it
       reference_genome: 'GRCh38',
       chrom: variant.locus.contig.slice(3), // Remove "chr" prefix
       pos: variant.locus.position,
@@ -334,8 +347,8 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
       alt: variant.alleles[1],
       exome: hasExomeVariant
         ? {
-            ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-            ...omit(variant.exome.freq[subset], 'ancestry_groups'),
+            ...exomeRest, // Omit freq field to avoid caching extra copy of frequency information
+            ...exomeFreqRest,
             populations: variant.exome.freq[subset].ancestry_groups.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
@@ -346,8 +359,8 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
         : null,
       genome: hasGenomeVariant
         ? {
-            ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
-            ...omit(subsetGenomeFreq, 'ancestry_groups'),
+            ...genomeRest, // Omit freq field to avoid caching extra copy of frequency information
+            ...genomeFreqRest,
             populations: variant.genome.freq.all.ancestry_groups.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),
@@ -356,8 +369,8 @@ const shapeVariantSummary = (subset: Subset, context: any) => {
         : null,
       joint: hasJointVariant
         ? {
-            ...omit(variant.joint, 'freq'),
-            ...omit(variant.joint.freq[subset], 'ancestry_groups'),
+            ...jointRest,
+            ...jointFreqRest,
             populations: variant.joint.freq[subset].ancestry_groups.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
             ),

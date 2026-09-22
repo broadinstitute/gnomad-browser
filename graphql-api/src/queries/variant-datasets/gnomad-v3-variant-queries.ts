@@ -1,5 +1,3 @@
-import { omit } from 'lodash'
-
 import { isRsId } from '@gnomad/identifiers'
 
 import { UserVisibleError } from '../../errors'
@@ -209,8 +207,18 @@ const shapeVariantSummary = (subset: any, context: any) => {
       filters.push('AC0')
     }
 
+    // Destructure to drop fields we don't want to cache. Cheaper than lodash.omit, which adds
+    // per-call overhead (path parsing, copying every key then deleting the omitted ones).
+    const {
+      transcript_consequences: _tc,
+      locus: _locus,
+      alleles: _alleles,
+      ...variantRest
+    } = variant
+    const { freq: _genomeFreq, ...genomeRest } = variant.genome
+
     return {
-      ...omit(variant, 'transcript_consequences', 'locus', 'alleles'), // Omit full transcript consequences list to avoid caching it
+      ...variantRest, // Omit full transcript consequences list to avoid caching it
       reference_genome: 'GRCh38',
       chrom: variant.locus.contig.slice(3), // Remove "chr" prefix
       pos: variant.locus.position,
@@ -218,7 +226,7 @@ const shapeVariantSummary = (subset: any, context: any) => {
       alt: variant.alleles[1],
       exome: null,
       genome: {
-        ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+        ...genomeRest, // Omit freq field to avoid caching extra copy of frequency information
         ...variant.genome.freq[subset],
         populations: variant.genome.freq[subset].populations.filter(
           (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
