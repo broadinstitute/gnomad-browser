@@ -1,5 +1,3 @@
-import { omit } from 'lodash'
-
 import { isRsId } from '@gnomad/identifiers'
 
 import { UserVisibleError } from '../../errors'
@@ -176,12 +174,18 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
       genomeFilters.push('AC0')
     }
 
+    // Destructure to drop fields we don't want to cache. Cheaper than lodash.omit, which adds
+    // per-call overhead (path parsing, copying every key then deleting the omitted ones).
+    const { transcript_consequences: _tc, ...variantRest } = variant
+    const { freq: _exomeFreq, ...exomeRest } = variant.exome
+    const { freq: _genomeFreq, ...genomeRest } = variant.genome
+
     return {
-      ...omit(variant, 'transcript_consequences'), // Omit full transcript consequences list to avoid caching it
+      ...variantRest, // Omit full transcript consequences list to avoid caching it
       reference_genome: 'GRCh37',
       exome: variant.exome.freq[exomeSubset].ac_raw
         ? {
-            ...omit(variant.exome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+            ...exomeRest, // Omit freq field to avoid caching extra copy of frequency information
             ...variant.exome.freq[exomeSubset],
             populations: variant.exome.freq[exomeSubset].populations.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
@@ -192,7 +196,7 @@ const shapeVariantSummary = (exomeSubset: any, genomeSubset: any, context: any) 
         : null,
       genome: variant.genome.freq[genomeSubset].ac_raw
         ? {
-            ...omit(variant.genome, 'freq'), // Omit freq field to avoid caching extra copy of frequency information
+            ...genomeRest, // Omit freq field to avoid caching extra copy of frequency information
             ...variant.genome.freq[genomeSubset],
             populations: variant.genome.freq[genomeSubset].populations.filter(
               (pop: any) => !(pop.id.includes('_') || pop.id === 'XX' || pop.id === 'XY')
