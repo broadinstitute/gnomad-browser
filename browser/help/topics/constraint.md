@@ -92,8 +92,10 @@ It is very important to note that `oe` (and thereby `LOEUF`) score is very diffe
 
 The rank-based bin columns in the constraint metrics files (e.g., `lof.oe_ci.upper_bin_decile`) and the LOEUF percentile thresholds TSV answer different questions, and small differences between them are expected.
 
-The bin columns are computed by ranking all transcripts with defined constraint values (18,256 in v4.1.2). The threshold file is computed over a different transcript set (MANE Select transcripts only, excluding constraint-flagged genes [17,063 in v4.1.2]), so that the cutoffs can be applied to any gene rather than only the ranked set. In addition, the thresholds are derived from approximate quantiles, and rank-based binning splits tied LOEUF values across bins where fixed thresholds cannot.
+Most of the difference comes from how the two are computed. The thresholds are derived from approximate quantiles, so they sit slightly off the exact decile boundaries. Because the LOEUF distribution is dense around those boundaries, even these small offsets move some transcripts into a neighboring bin. Rank-based binning also splits the few tied LOEUF values across bins where fixed thresholds cannot.
 
-In practice, applying the v4.1.2 thresholds to v4.1.2 LOEUF values assigns 885 of 18,256 genes (4.8%) a different decile than the bin column. All differences are exactly ±1 decile, and none occur in decile 0 or 9.
+The two are also computed over different transcript sets. The bin columns rank canonical transcripts with defined constraint values (18,256 in v4.1.2). The threshold file is computed over MANE Select transcripts only, excluding constraint-flagged genes (17,063 in v4.1.2), so that the cutoffs can be applied to any transcript rather than only the ranked set. This has little effect on the differences: transcripts in both sets change deciles at about the same rate as transcripts that are only in the ranked set.
 
-Use the bin columns when you want a transcript's decile within the released constraint metrics. Use the percentile thresholds when you need to place a gene or transcript that is not in the ranked set.
+In practice, applying the v4.1.2 thresholds to v4.1.2 LOEUF values assigns 885 of 18,256 transcripts (4.8%) a different decile than the bin column. All differences are exactly ±1 decile, and none occur in decile 0 or 9.
+
+The bin columns have close to equal numbers of transcripts in each bin but only cover the ranked set. The thresholds can place any transcript, but their bins are not exactly equal in size. Use the bin columns when you want a transcript's decile within the released constraint metrics. Use the percentile thresholds when you need to place a gene or transcript that is not in the ranked set.
