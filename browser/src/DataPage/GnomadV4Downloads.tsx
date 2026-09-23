@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ExternalLink, ListItem } from '@gnomad/ui'
+import { Badge, ExternalLink, ListItem } from '@gnomad/ui'
 
 import {
   Column,
@@ -100,7 +100,7 @@ const GnomadV4Downloads = () => {
     <>
       <SectionTitle id="v4" $subject="release" title="v4 Downloads" />
       <StyledParagraph>
-        The gnomAD v4.1.0 data set contains data from 730,947 exomes and 76,215 whole genomes, all
+        The gnomAD v4 data set contains data from 730,947 exomes and 76,215 whole genomes, all
         mapped to the GRCh38 reference sequence.
       </StyledParagraph>
 
@@ -345,6 +345,16 @@ const GnomadV4Downloads = () => {
         <p>
           For information on constraint, see our <Link to="/help/constraint">help text</Link>
         </p>
+
+        <p>
+          <Badge level="info">Note</Badge> v4.1.2 updates only the gene constraint metrics Hail
+          Table and TSV. For more information about this release, see our{' '}
+          <Link to="https://gnomad.broadinstitute.org/news/2026-09-gnomad-v4-1-2/">
+            changelog entry
+          </Link>
+          .
+        </p>
+
         <FileList>
           <ListItem>
             <DownloadLinks
@@ -356,13 +366,13 @@ const GnomadV4Downloads = () => {
           <ListItem>
             <GetUrlButtons
               label="Constraint metrics Hail Table"
-              path="/release/4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.ht"
+              path="/release/4.1.2/constraint/gnomad.v4.1.2.constraint_metrics.ht"
             />
           </ListItem>
           <ListItem>
             <DownloadLinks
               label="Constraint metrics TSV"
-              path="/release/4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.tsv.bgz"
+              path="/release/4.1.2/constraint/gnomad.v4.1.2.constraint_metrics.tsv.bgz"
             />
           </ListItem>
           <ListItem>
