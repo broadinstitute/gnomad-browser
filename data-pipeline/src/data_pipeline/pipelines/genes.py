@@ -299,7 +299,7 @@ pipeline.add_task(
     prepare_gnomad_v4_constraint,
     f"/{constraint_subdir}/gnomad_v4_constraint.ht",
     # TK: TODO: change this to the public 'gcp-public-data--gnomad/...' path when released
-    {"path": "gs://gnomad-v4-data-pipeline/inputs/v4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.ht"},
+    {"path": "gs://gnomad-v4-data-pipeline/inputs/v4.1.2/constraint/gnomad.v4.1.2.constraint_metrics.ht"},
 )
 
 pipeline.add_task(
