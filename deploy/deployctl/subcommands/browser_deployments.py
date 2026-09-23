@@ -58,6 +58,19 @@ patches:
                 env:
                   - name: JSON_CACHE_PATH
                     value: 'gs://{cluster_name}-gene-cache/2024-04-24'
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-browser
+      spec:
+        template:
+          spec:
+            containers:
+              - name: web
+                env:
+                  - name: GCP_PROJECT
+                    value: '{project}'
 """
 
 DEMO_DEPLOYMENT_KUSTOMIZATION = """

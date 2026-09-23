@@ -46,22 +46,8 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/gnomad-browser:${_BUILD_TAG}']
 
-  # Note: You can find a definition for the deploykit image in https://github.com/broadinstitute/tgg-sre/tree/main/dockerfiles/deployment-toolkit
-  - name: 'us-docker.pkg.dev/${PROJECT_ID}/gnomad/tgg-deploykit:v1.0.0'
-    entrypoint: 'bash'
-    args: ['./bluegreen-update.sh']
-    dir: '.cloudbuild'
-    env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-east1-c'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=gnomad-v4'
-      - 'REPO_PROJECT=$PROJECT_ID'
-      - 'DOCKER_TAG=$SHORT_SHA'
-    secretEnv:
-      - 'DEPLOY_KEY'
 availableSecrets:
   secretManager:
-    - versionName: projects/$PROJECT_ID/secrets/GITHUB_DEPLOY_KEY/versions/latest
-      env: 'DEPLOY_KEY'
     - versionName: projects/$PROJECT_ID/secrets/GNOMAD_BUILD_ENV/versions/1
       env: 'GNOMAD_BUILD_ENV'
 options:
