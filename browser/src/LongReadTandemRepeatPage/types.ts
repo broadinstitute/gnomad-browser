@@ -338,10 +338,6 @@ export type LongReadTrLocus = {
   accepted_task_attempt_digest: string
   presentation: LongReadTrPresentation
   bounds: LongReadTrBounds
-  component_summary: {
-    ordered_component_count: number
-    distinct_stored_motif_count: number
-  }
   sequence_cardinality: LongReadTrSequenceCardinality
   represented_length: LongReadTrRepresentedLength
   filter_contract: LongReadTrFilterContract

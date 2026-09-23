@@ -284,10 +284,6 @@ const LongReadTandemRepeatPage = ({
     source_ref_span_end0: null,
     source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT' as const,
   }
-  const componentSummary = locus.component_summary || {
-    ordered_component_count: locus.components.length,
-    distinct_stored_motif_count: new Set(locus.components.map((component) => component.motif)).size,
-  }
   const sequenceCardinality = locus.sequence_cardinality || {
     source_alt_identity_count: locus.exact_alt_count,
     unique_alt_sequence_count: null,
@@ -474,16 +470,6 @@ const LongReadTandemRepeatPage = ({
                 >
                   {referencePurity.toFixed(2)}
                 </AttributeListItem>
-              )}
-              {clusterFocused && (
-                <>
-                  <AttributeListItem label="Ordered source components">
-                    {componentSummary.ordered_component_count.toLocaleString()}
-                  </AttributeListItem>
-                  <AttributeListItem label="Distinct stored motifs">
-                    {componentSummary.distinct_stored_motif_count.toLocaleString()}
-                  </AttributeListItem>
-                </>
               )}
               {alleleLengthRange && (
                 <AttributeListItem

@@ -165,10 +165,6 @@ const makeLocus = (count = 72) => {
       source_ref_span_end0: null,
       source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT' as const,
     },
-    component_summary: {
-      ordered_component_count: 6,
-      distinct_stored_motif_count: 5,
-    },
     sequence_cardinality: {
       source_alt_identity_count: count,
       unique_alt_sequence_count: count,
@@ -482,7 +478,6 @@ const makeSimpleLocus = () => ({
     component_envelope_end0: 3074933,
     component_envelope_length_bp: 57,
   },
-  component_summary: { ordered_component_count: 1, distinct_stored_motif_count: 1 },
   component_measurement_available: true,
   component_measurement_unavailable_reason: null,
   components: [{ chrom: '4', start0: 3074876, end0: 3074933, motif: 'CAG' }],
@@ -889,7 +884,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
     expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
     expect(screen.queryByText(/Compound source representation/)).toBeNull()
-    expect(screen.getByText('Ordered source components')).not.toBeNull()
+    expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
   })
 
   test('hides unavailable controls when represented length is unavailable', () => {
