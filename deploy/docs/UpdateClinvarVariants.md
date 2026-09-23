@@ -27,7 +27,7 @@
 
 2. Run data pipelines
 
-   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.1.1 (GRCh38) ClinVar variants should be annotated with VEP 105 (although in the browser, RNU4ATAC displays VEP 115 variants, and in the release file all variants also have VEP 115, v4.1.1 by and large still uses VEP 105).
+   ClinVar pipelines use VEP and thus must be run on clusters with VEP installed and configured. To match gnomAD v2.1.1 (GRCh37) ClinVar variants should be annotated with VEP 85. To match gnomAD v4.1.2 (GRCh38) ClinVar variants should be annotated with VEP 105 (although in the browser, RNU4ATAC displays VEP 115 variants, and in the release file all variants also have VEP 115, v4.1.2 by and large still uses VEP 105).
 
    The first step, in which the pipeline(s) parse the input ClinVar XML produces an intermediate Hail table that is used by both pipelines. Thus, the `clinvar-parse-xml` pipeline should be run before either `clinvar_grch38` or `clinvar_grch37`.
 
