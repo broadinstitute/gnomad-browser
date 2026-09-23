@@ -694,7 +694,7 @@ exports[`Data Page has no unexpected changes 1`] = `
     <p
       className="c13"
     >
-      The gnomAD v4.1.0 data set contains data from 730,947 exomes and 76,215 whole genomes, all mapped to the GRCh38 reference sequence.
+      The gnomAD v4 data set contains data from 730,947 exomes and 76,215 whole genomes, all mapped to the GRCh38 reference sequence.
     </p>
     <h2
       className="c9 c10 c11"
@@ -6291,6 +6291,24 @@ exports[`Data Page has no unexpected changes 1`] = `
           help text
         </a>
       </p>
+      <p>
+        <span
+          className="c24"
+          level="info"
+        >
+          Note
+        </span>
+         v4.1.2 updates only the gene constraint metrics Hail Table and TSV. For more information about this release, see our
+         
+        <a
+          className="c8"
+          href="https://gnomad.broadinstitute.org/news/2026-09-gnomad-v4-1-2/"
+          onClick={[Function]}
+        >
+          changelog entry
+        </a>
+        .
+      </p>
       <ul
         className="c20 c21"
       >
@@ -6367,7 +6385,7 @@ exports[`Data Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Constraint metrics TSV from Google"
               className="c8"
-              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.tsv.bgz"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.2/constraint/gnomad.v4.1.2.constraint_metrics.tsv.bgz"
               onClick={[Function]}
               rel="noopener noreferrer"
               target="_blank"
@@ -6378,7 +6396,7 @@ exports[`Data Page has no unexpected changes 1`] = `
             <a
               aria-label="Download Constraint metrics TSV from Amazon"
               className="c8"
-              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.1/constraint/gnomad.v4.1.1.constraint_metrics.tsv.bgz"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.1.2/constraint/gnomad.v4.1.2.constraint_metrics.tsv.bgz"
               onClick={[Function]}
               rel="noopener noreferrer"
               target="_blank"

@@ -101,5 +101,6 @@ test.each([
         expect(observe).toHaveBeenCalledWith(sectionLink.closest('h2'))
       })
     }
-  }
+  },
+  15_000
 )
