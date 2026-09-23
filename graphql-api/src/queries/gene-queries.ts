@@ -5,7 +5,7 @@ import { catchNotFound } from '../elasticsearch'
 
 const GENE_INDICES = {
   GRCh37: 'genes_grch37',
-  GRCh38: 'genes_grch38',
+  GRCh38: 'genes_grch38-2026-09-22--21-40',
 }
 
 const _fetchGeneById = async (esClient: any, geneId: any, referenceGenome: any) => {
