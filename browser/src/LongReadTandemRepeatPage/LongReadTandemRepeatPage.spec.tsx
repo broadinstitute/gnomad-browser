@@ -655,7 +655,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
     expect(motifAttributeValue()).toBe('CAG (3 bp)')
     expect(screen.queryByText(/Compound source representation/)).toBeNull()
-    expect(screen.getByText('chr4:3,074,877–3,075,040 (GRCh38)')).not.toBeNull()
+    expect(screen.getByText('chr4:3,074,876–3,075,040 (GRCh38)')).not.toBeNull()
     expect(screen.getByRole('link', { name: 'TRExplorer' }).getAttribute('href')).toBe(
       'https://trexplorer.broadinstitute.org/#igvLoc=chr4%3A3%2C074%2C877-3%2C075%2C040&showRs=1&q=chr4%3A3%2C074%2C877%E2%80%933%2C075%2C040&source='
     )
@@ -724,7 +724,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus, selectedAllele: undefined })
 
     expect(screen.getByRole('heading', { name: 'CAG tandem repeat' })).not.toBeNull()
-    expect(screen.getByText('chr4:3,074,877–3,074,933 (GRCh38)')).not.toBeNull()
+    expect(screen.getByText('chr4:3,074,876–3,074,933 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('HTT — exon')).toBeNull()
     expect(
       screen.queryByText('Exact short-read catalog reference match (identity only)')
@@ -937,7 +937,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('gives every canonical page help dialog the task-first structure', () => {
     renderPage()
     const helpTitles = [
-      'About this tandem-repeat locus',
       'About known disease-associated TR locus',
       'About the allelic landscape',
       'About the source-ALT index',

@@ -6,7 +6,6 @@ import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocus
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import DocumentTitle from '../DocumentTitle'
-import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import { isExperimentalFeatureEnabled } from '../experimentalFeatures'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
@@ -86,23 +85,6 @@ const HeaderColumn = styled.section`
     width: 100%;
   }
 `
-
-const LocusOverviewHelp = () => (
-  <HaplotypeHelpButton title="About this tandem-repeat locus">
-    <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> The canonical long-read locus, observed exact ALT sequences,
-      aggregate plots, and any exact short-read catalog context.
-    </p>
-    <p>
-      <strong>How to use it.</strong> Choose a long-read cohort, review the available plots, then
-      filter or select an exact ALT sequence in the Allelic landscape.
-    </p>
-    <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> Short-read catalog labels and ranges do not classify
-      long-read alleles, genotypes, components, people, or total allele length change.
-    </p>
-  </HaplotypeHelpButton>
-)
 
 const cohortName = (cohort: LongReadCohort) =>
   cohort === 'hgsvc_hprc' ? 'HGSVC / HPRC' : 'All of Us'
@@ -311,6 +293,11 @@ const LongReadTandemRepeatPage = ({
   const clusterFocused = presentation.locus_type === 'VARIATION_CLUSTER'
   const displayStart1 = envelope.start1
   const displayEnd1 = envelope.end1
+  // The heading shows the interval zero-based half-open, matching the locus id and
+  // the tandem repeat rows. The envelope's end1 is already the exclusive end0, so
+  // only the start moves. displayStart1 stays one-based for the TRExplorer link,
+  // whose search box expects one-based inclusive.
+  const displayStart0 = displayStart1 - 1
   const exactContext = locus.short_read_context
   const primaryComponentIndex = locus.primary_repeat.component_index
   const authorizedExactReferenceComponentIndex =
@@ -438,12 +425,9 @@ const LongReadTandemRepeatPage = ({
       <Header>
         <HeadingWithHelp>
           <div>
-            <HeadingWithHelp>
-              <PageHeading>{title}</PageHeading>
-              <LocusOverviewHelp />
-            </HeadingWithHelp>
+            <PageHeading>{title}</PageHeading>
             <CoordinateContext>
-              chr{envelope.chrom}:{displayStart1.toLocaleString()}–{displayEnd1.toLocaleString()}{' '}
+              chr{envelope.chrom}:{displayStart0.toLocaleString()}–{displayEnd1.toLocaleString()}{' '}
               (GRCh38)
             </CoordinateContext>
           </div>
@@ -455,18 +439,11 @@ const LongReadTandemRepeatPage = ({
         <HeaderColumn>
           <SourceAttributes>
             <AttributeList>
-              {(locus.primary_repeat.motif || !clusterFocused) && (
-                <AttributeListItem label="Motif">
-                  {locus.primary_repeat.motif
-                    ? `${locus.primary_repeat.motif} (${locus.primary_repeat.motif.length} bp)`
-                    : 'Unavailable — source components remain in the disclosure below'}
-                </AttributeListItem>
-              )}
               <AttributeListItem label={spanLabel}>{spanValue}</AttributeListItem>
               {referencePurity != null && (
                 <AttributeListItem
                   label="Reference sequence purity"
-                  tooltip="Fraction of bases in the reference interval that match a pure repeat of the motif, phased to the interval's first base."
+                  tooltip="Fraction of bases in the reference interval that match a pure repeat of the motif."
                 >
                   {referencePurity.toFixed(2)}
                 </AttributeListItem>
@@ -477,6 +454,13 @@ const LongReadTandemRepeatPage = ({
                   tooltip="Represented absolute length is shown only when the API admits complete sequence-length provenance, padding rule, and reconciliation. Signed source delta remains a separate measurement."
                 >
                   {alleleLengthRange}
+                </AttributeListItem>
+              )}
+              {(locus.primary_repeat.motif || !clusterFocused) && (
+                <AttributeListItem label="Motif">
+                  {locus.primary_repeat.motif
+                    ? `${locus.primary_repeat.motif} (${locus.primary_repeat.motif.length} bp)`
+                    : 'Unavailable — source components remain in the disclosure below'}
                 </AttributeListItem>
               )}
             </AttributeList>
