@@ -25,6 +25,10 @@ import ShortTandemRepeatColorBySelect from '../ShortTandemRepeatPage/ShortTandem
 import ShortTandemRepeatScaleSelect from '../ShortTandemRepeatPage/ShortTandemRepeatScaleSelect'
 import ShortTandemRepeatPopulationOptions from '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions'
 import { longReadAncestryGroupDisplayName } from './longReadAncestryGroups'
+import {
+  sourcePairExplanation,
+  sourceSexLabels,
+} from '../ShortTandemRepeatPage/sourceHistogramLabels'
 
 export type GenotypeDistributionCohort = {
   ancestry_group: string
@@ -149,6 +153,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   focusObservedDomain = false,
   showHelp = true,
   yAxisLabel,
+  sourceContext = false,
 }: {
   variantId: string
   alleleSizeDistribution: AlleleSizeDistributionCohort[]
@@ -161,6 +166,7 @@ export const LongReadAlleleSizeDistributionSection = ({
   focusObservedDomain?: boolean
   showHelp?: boolean
   yAxisLabel?: string
+  sourceContext?: boolean
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -211,6 +217,7 @@ export const LongReadAlleleSizeDistributionSection = ({
           populationDisplayConfig={longReadPopulationDisplayConfig}
           baseColor={LONG_READ_PRIMARY_PLOT_COLOR}
           yAxisLabel={yAxisLabel}
+          sourceContext={sourceContext}
         />
       </div>
       <ControlSection
@@ -228,6 +235,8 @@ export const LongReadAlleleSizeDistributionSection = ({
       >
         <ShortTandemRepeatPopulationOptions
           id={`${variantId}-repeat-counts`}
+          sexLabels={sourceContext ? sourceSexLabels : undefined}
+          sourceMetadata={sourceContext}
           populations={populations}
           selectedPopulation={selectedPopulation}
           selectedSex={selectedSex}
@@ -241,6 +250,7 @@ export const LongReadAlleleSizeDistributionSection = ({
           setSelectedColorBy={setSelectedColorBy}
           setSelectedScaleType={setSelectedScaleType}
           allowedColorBys={['sex', 'population']}
+          sourceMetadata={sourceContext}
         />
         <ShortTandemRepeatScaleSelect
           id={variantId}
@@ -249,7 +259,17 @@ export const LongReadAlleleSizeDistributionSection = ({
           selectedColorBy={selectedColorBy}
         />
       </ControlSection>
-      {calledCountDistributions && (
+      {sourceContext && (
+        <p aria-live="polite">
+          {selectedCalledCounts(
+            { alleleSizeDistribution, genotypeDistribution: [] },
+            selectedPopulation,
+            selectedSex
+          ).calledAlleles.toLocaleString()}{' '}
+          measured allele observations in this view.
+        </p>
+      )}
+      {calledCountDistributions && !sourceContext && (
         <CalledDenominators
           {...calledCountDistributions}
           selectedPopulation={selectedPopulation}
@@ -284,6 +304,7 @@ export const LongReadGenotypeDistributionSection = ({
   focusObservedDomain = false,
   explainGenotypes = false,
   showHelp = true,
+  sourceContext = false,
 }: {
   variantId: string
   genotypeDistribution: GenotypeDistributionCohort[]
@@ -294,6 +315,7 @@ export const LongReadGenotypeDistributionSection = ({
   focusObservedDomain?: boolean
   explainGenotypes?: boolean
   showHelp?: boolean
+  sourceContext?: boolean
 }) => {
   const [selectedPopulation, setSelectedPopulation] = useState<PopulationId | null>(null)
   const [selectedSex, setSelectedSex] = useState<Sex | null>(null)
@@ -318,7 +340,8 @@ export const LongReadGenotypeDistributionSection = ({
       <Heading>
         {heading} {showHelp && <InfoButton topic="str-genotype-distribution" />}
       </Heading>
-      {explainGenotypes && (
+      {sourceContext && <p>{sourcePairExplanation}</p>}
+      {explainGenotypes && !sourceContext && (
         <p>
           Each square is a shorter/longer allele pair. Its count is the number of people with a
           complete called genotype containing both plotted alleles; darker squares represent more
@@ -335,6 +358,7 @@ export const LongReadGenotypeDistributionSection = ({
       >
         <ShortTandemRepeatGenotypeDistributionPlot
           axisLabels={['longer allele', 'shorter allele']}
+          sourceContext={sourceContext}
           minRepeats={focusObservedDomain ? [longDomain[0], shortDomain[0]] : [0, 0]}
           maxRepeats={
             focusObservedDomain ? [longDomain[1], shortDomain[1]] : [maxLongAllele, maxShortAllele]
@@ -347,7 +371,15 @@ export const LongReadGenotypeDistributionSection = ({
           baseColor={LONG_READ_PRIMARY_PLOT_COLOR}
         />
       </div>
-      {explainGenotypes && maximumCount > 0 && (
+      {sourceContext && (
+        <p aria-live="polite">
+          {selectedDistribution.reduce((sum, bin) => sum + bin.frequency, 0).toLocaleString()}{' '}
+          source pair entries in this view.
+          {maximumCount > 0 &&
+            ` Count intensity: lighter = ${minimumCount.toLocaleString()}, darker = ${maximumCount.toLocaleString()} source pair entries.`}
+        </p>
+      )}
+      {explainGenotypes && !sourceContext && maximumCount > 0 && (
         <p
           aria-label={`Genotype count legend: ${minimumCount.toLocaleString()} to ${maximumCount.toLocaleString()} individuals`}
         >
@@ -371,6 +403,8 @@ export const LongReadGenotypeDistributionSection = ({
       >
         <ShortTandemRepeatPopulationOptions
           id={`${variantId}-genotype-distribution`}
+          sexLabels={sourceContext ? sourceSexLabels : undefined}
+          sourceMetadata={sourceContext}
           populations={populations}
           selectedPopulation={selectedPopulation}
           selectedSex={selectedSex}
@@ -379,7 +413,7 @@ export const LongReadGenotypeDistributionSection = ({
           ancestryGroupName={longReadAncestryGroupDisplayName}
         />
       </ControlSection>
-      {calledCountDistributions && (
+      {calledCountDistributions && !sourceContext && (
         <CalledDenominators
           {...calledCountDistributions}
           selectedPopulation={selectedPopulation}

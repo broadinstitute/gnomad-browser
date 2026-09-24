@@ -1,6 +1,13 @@
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 
+import {
+  resolveSourceLabelledCompatibilityRoute,
+  type SourceLabelledCompatibilityReceipt,
+} from './source_labelled_methylation_compatibility'
+
+export { validateSourceLabelledCompatibilityReceipt } from './source_labelled_methylation_compatibility'
+
 export const SOURCE_PHASED_METHYLATION_DATABASE =
   'gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3'
 export const SOURCE_PHASED_METHYLATION_RUN_ID =
@@ -58,16 +65,18 @@ export type SourcePhasedMethylationRoute = {
   run_id: typeof SOURCE_PHASED_METHYLATION_RUN_ID
   receipt_path: string
   receipt: SourcePhasedMethylationServingReceipt
+  // This is additional compatibility evidence, NOT a replacement/orientation receipt.
+  compatibility?: SourceLabelledCompatibilityReceipt
 }
 
-const object = (value: unknown, label: string): Record<string, unknown> => {
+export const object = (value: unknown, label: string): Record<string, unknown> => {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
     throw new Error(`${label} must be an object`)
   }
   return value as Record<string, unknown>
 }
 
-const exactKeys = (value: Record<string, unknown>, keys: string[], label: string) => {
+export const exactKeys = (value: Record<string, unknown>, keys: string[], label: string) => {
   const unknown = Object.keys(value).filter((key) => !keys.includes(key))
   const missing = keys.filter((key) => !(key in value))
   if (unknown.length || missing.length) {
@@ -79,7 +88,7 @@ const exactKeys = (value: Record<string, unknown>, keys: string[], label: string
   }
 }
 
-const nonemptyString = (value: unknown, label: string) => {
+export const nonemptyString = (value: unknown, label: string) => {
   if (typeof value !== 'string' || !value.trim()) throw new Error(`${label} must be nonempty`)
   return value
 }
@@ -107,7 +116,7 @@ const safeRunId = (value: unknown) => {
   return runId
 }
 
-const sha256File = (path: string, label: string) => {
+export const sha256File = (path: string, label: string) => {
   try {
     return createHash('sha256').update(readFileSync(path)).digest('hex')
   } catch (error: any) {
@@ -264,6 +273,11 @@ export const resolveSourcePhasedMethylationRoute = (
   env: NodeJS.ProcessEnv = process.env
 ): SourcePhasedMethylationRoute | null => {
   const raw = (env.LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE || '').trim()
+  const candidate = (env.LR_Y1_SOURCE_LABELLED_COMPATIBILITY_ROUTE || '').trim()
+  if (candidate) {
+    if (raw) throw new Error('Source-labelled legacy and candidate routes are mutually exclusive')
+    return resolveSourceLabelledCompatibilityRoute(candidate, env, readSourcePhasedMethylationServingReceipt)
+  }
   if (!raw) return null
   let parsed: unknown
   try {

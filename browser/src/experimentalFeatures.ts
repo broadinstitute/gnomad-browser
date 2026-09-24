@@ -7,6 +7,7 @@ export type ExperimentalFeature =
   | 'haplotype_plot'
   | 'expanded_variants'
   | 'methylation_context'
+  | 'source_labelled_methylation'
   | 'compound_het_annotations'
   | 'tr_haplotype_backgrounds'
 

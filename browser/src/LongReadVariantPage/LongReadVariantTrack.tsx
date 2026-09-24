@@ -6,6 +6,7 @@ import { Track, RegionViewerContext } from '@gnomad/region-viewer'
 import { trLocusUrl } from '@gnomad/dataset-metadata/longReadTrLocusId'
 
 import Link from '../Link'
+import { getLongReadAf, formatLongReadFrequency } from './longReadFrequency'
 import { getAlleleTypeColor, getVariantCategory, VARIANT_CATEGORY_COLORS, assignBand as sharedAssignBand, type LodVisibility } from './variantUtils'
 import { getVariantCssColor } from './variantColorUtils'
 import { passesLongReadVariantTypeFilters } from './longReadVariantTypes'
@@ -78,7 +79,9 @@ export const getTrReferenceBarGeometry = (
 /** Map variant AF to opacity: rare variants are fainter, common are bolder.
  *  Uses log scale: AF 0.1% → 0.25, AF 1% → 0.5, AF 10% → 0.75, AF 50%+ → 1.0 */
 const afToOpacity = (v: any): number => {
-  const af = v.freq?.all?.af ?? v.freq?.af ?? 0
+  const af = getLongReadAf(v)
+  // Unavailable is a neutral, visible mark, not an inferred rare/zero allele.
+  if (af == null) return 1
   if (af <= 0) return 0.2
   // log10 scale: -3 (0.1%) → 0.25, -2 (1%) → 0.5, -1 (10%) → 0.75, 0 (100%) → 1.0
   const logAf = Math.log10(Math.max(af, 0.0001))
@@ -220,7 +223,7 @@ export const VariantTooltip = ({ hovered }: { hovered: HoveredVariant }) => {
       <div><strong>Ref:</strong> {truncate((v as any).ref, 10)}</div>
       <div><strong>Alt:</strong> {truncate((v as any).alt, 10)}</div>
       {(v as any).freq && (
-        <div><strong>AF:</strong> {((v as any).freq?.all?.af ?? (v as any).freq?.af)?.toFixed(4)}</div>
+        <div><strong>AF:</strong> {formatLongReadFrequency(getLongReadAf(v), 4)}</div>
       )}
       {v.variant_id && <div><strong>Allele:</strong> {identity.label}</div>}
       {v.allele_type && <div><strong>Type:</strong> {v.allele_type}</div>}

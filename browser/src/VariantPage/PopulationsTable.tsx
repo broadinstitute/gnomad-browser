@@ -68,7 +68,8 @@ const calculatePopAF = (ac: number, an: number): number => {
 // When rendering AFs, the sentinel value of -1 denotes grps with an AN of 0
 //   in this case, render a '-' character to communicate to users that
 //   there is no data to be displayed
-const renderPopAF = (af: number) => {
+const renderPopAF = (af: number | null) => {
+  if (af == null) return 'Unavailable'
   if (af === -1) {
     return '-'
   }
@@ -81,12 +82,14 @@ type Population = {
   name: string
   ac: number
   an: number
+  af?: number | null
   ac_hemi?: number
   ac_hom?: number
   subpopulations?: {
     name: string
     ac: number
     an: number
+    af?: number | null
     ac_hemi?: number
     ac_hom?: number
   }[]
@@ -99,6 +102,12 @@ type PopulationsTableProps = {
     af?: string
   }
   populations: Population[]
+  /** Long-read source AF is authoritative, including null; never derive it from counts. */
+  useSuppliedAf?: boolean
+  suppliedTotalAf?: number | null
+  /** Cohort counts must accompany source AF; subdivisions may be absent or incomplete. */
+  suppliedTotalAc?: number | null
+  suppliedTotalAn?: number | null
   showHemizygotes?: boolean
   showHomozygotes?: boolean
   initiallyExpandRows?: boolean
@@ -197,17 +206,17 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
 
   render() {
     // Hack to support alternate column labels for MCNV structural variants
-    const { columnLabels, populations } = this.props
+    const { columnLabels, populations, useSuppliedAf, suppliedTotalAf, suppliedTotalAc, suppliedTotalAn } = this.props
     const { expandedPopulations, sortAscending, sortBy } = this.state
 
     const renderedPopulations = populations
       .map((pop) => ({
         ...pop,
-        af: calculatePopAF(pop.ac, pop.an),
+        af: useSuppliedAf ? pop.af ?? null : calculatePopAF(pop.ac, pop.an),
         subpopulations: (pop.subpopulations || [])
           .map((subPop) => ({
             ...subPop,
-            af: calculatePopAF(subPop.ac, subPop.an),
+            af: useSuppliedAf ? subPop.af ?? null : calculatePopAF(subPop.ac, subPop.an),
           }))
           .sort((a, b) => {
             // Sort XX/XY subpopulations to bottom of list
@@ -218,6 +227,9 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
               return -1
             }
 
+            if (sortBy === 'af' && (a.af == null || b.af == null)) {
+              return a.af == null ? (b.af == null ? 0 : 1) : -1
+            }
             const [subPop1, subPop2] = sortAscending ? [a, b] : [b, a]
 
             return sortBy === 'name'
@@ -240,22 +252,28 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
           return a.name.localeCompare(b.name)
         }
 
+        if (sortBy === 'af' && (a.af == null || b.af == null)) {
+          return a.af == null ? (b.af == null ? 0 : 1) : -1
+        }
         const [pop1, pop2] = sortAscending ? [a, b] : [b, a]
 
         // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         return sortBy === 'name' ? pop1.name.localeCompare(pop2.name) : pop1[sortBy] - pop2[sortBy]
       })
 
-    // XX/XY numbers are included in the ancestry populations.
-    const totalAlleleCount = renderedPopulations
+    // Short-read totals sum ancestry groups; LR totals use the authoritative cohort scope.
+    // Never substitute an incomplete subdivision sum for missing cohort counts.
+    const totalAlleleCount = useSuppliedAf ? suppliedTotalAc ?? null : renderedPopulations
       .filter((pop) => !isSexSpecificPopulation(pop))
       .map((pop) => pop.ac)
       .reduce((acc, n) => acc + n, 0)
-    const totalAlleleNumber = renderedPopulations
+    const totalAlleleNumber = useSuppliedAf ? suppliedTotalAn ?? null : renderedPopulations
       .filter((pop) => !isSexSpecificPopulation(pop))
       .map((pop) => pop.an)
       .reduce((acc, n) => acc + n, 0)
-    const totalAlleleFrequency = totalAlleleNumber !== 0 ? totalAlleleCount / totalAlleleNumber : 0
+    const totalAlleleFrequency = useSuppliedAf
+      ? suppliedTotalAf ?? null
+      : totalAlleleNumber ? (totalAlleleCount ?? 0) / totalAlleleNumber : 0
 
     const totalHemizygotes = renderedPopulations
       .filter((pop) => !isSexSpecificPopulation(pop))
@@ -383,11 +401,11 @@ export class PopulationsTable extends Component<PopulationsTableProps, Populatio
             <th colSpan={2} scope="row">
               Total
             </th>
-            <td className="right-align">{totalAlleleCount}</td>
-            <td className="right-align">{totalAlleleNumber}</td>
+            <td className="right-align">{totalAlleleCount ?? 'Unavailable'}</td>
+            <td className="right-align">{totalAlleleNumber ?? 'Unavailable'}</td>
             {showHomozygotes && <td className="right-align">{totalHomozygotes}</td>}
             {showHemizygotes && <td className="right-align">{totalHemizygotes}</td>}
-            <td style={{ paddingLeft: '25px' }}>{totalAlleleFrequency.toPrecision(4)}</td>
+            <td style={{ paddingLeft: '25px' }}>{renderPopAF(totalAlleleFrequency)}</td>
           </tr>
         </tfoot>
       </Table>

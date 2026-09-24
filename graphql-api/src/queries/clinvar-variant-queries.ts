@@ -36,7 +36,12 @@ const _fetchClinvarReleaseDate = async (esClient: any) => {
   return releaseDates[0]
 }
 
-export const fetchClinvarReleaseDate = throttle(_fetchClinvarReleaseDate, 300000)
+// A trailing async invocation has no caller to observe its rejected promise.
+// Refresh only on a request so ES failures propagate through GraphQL, not the
+// process-level unhandledRejection handler. Keep the five-minute reuse window.
+export const fetchClinvarReleaseDate = throttle(_fetchClinvarReleaseDate, 300000, {
+  trailing: false,
+})
 
 // ================================================================================================
 // Count query

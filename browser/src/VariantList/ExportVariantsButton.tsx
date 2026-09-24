@@ -1,3 +1,4 @@
+import { exportLongReadAf } from '../LongReadVariantPage/longReadFrequency'
 import React from 'react'
 
 import { Button } from '@gnomad/ui'
@@ -426,6 +427,11 @@ export const exportVariantsToCsv = (
         variant.af == null ? 'NA' : JSON.stringify(variant.af),
     },
     {
+      label: 'Long-read allele frequency',
+      // Keep source AF distinct from any matched short-read cohort's aggregate AF.
+      getValue: (variant: VariantTableVariant) => exportLongReadAf(variant.long_read),
+    },
+    {
       label: 'Homozygote Count',
       getValue: (variant: VariantTableVariant) =>
         variant.ac_hom == null ? 'NA' : JSON.stringify(variant.ac_hom),
@@ -488,7 +494,7 @@ export type VariantTableVariant = {
   ac_hemi: number
   ac_hom: number
   an: number
-  af: number
+  af: number | null
   clinical_significance: string
   clinvar_variation_id: string
   consequence?: string
@@ -543,6 +549,7 @@ export type VariantTableVariant = {
     filters: string[]
   } | null
   long_read?: {
+    af?: number | null
     filters: string[]
   } | null
 }

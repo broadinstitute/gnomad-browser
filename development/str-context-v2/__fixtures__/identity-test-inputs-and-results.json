@@ -1,0 +1,275 @@
+{
+  "kind": "READ_ONLY_IDENTITY_CONTRACT_DIAGNOSIS_NOT_SERVING_RECEIPT",
+  "source_snapshots": {
+    "development/str-context-v2/README.md": {
+      "sha256": "1f14a3876fea0fd638bb91b6cf582ede00caf51cb32d23e0742cb85fc634bbda",
+      "snapshot": "browser-source-snapshots/development__str-context-v2__README.md"
+    },
+    "development/str-context-v2/contract.json": {
+      "sha256": "e3ad4bcf184726d4cd1335d540c1911087fa5e8d1a1f5b7fad21db6071d24bd1",
+      "snapshot": "browser-source-snapshots/development__str-context-v2__contract.json"
+    },
+    "development/str-context-v2/generate.ts": {
+      "sha256": "9afb4e0517da786f9b2ad92205969b538a2ce0891e68c0ff136e2e50ac6beb98",
+      "snapshot": "browser-source-snapshots/development__str-context-v2__generate.ts"
+    },
+    "graphql-api/src/str_context_admission.ts": {
+      "sha256": "5da62c1878e3dfec80a60ef7c108b4b2f110547306b06972fe820407e99d1419",
+      "snapshot": "browser-source-snapshots/graphql-api__src__str_context_admission.ts"
+    },
+    "graphql-api/src/graphql/resolvers/str-context-preflight.ts": {
+      "sha256": "abe8b6ed170deefcaf0173c82f0b6ce189a7c2d4d4d4abd32905772092c2cb49",
+      "snapshot": "browser-source-snapshots/graphql-api__src__graphql__resolvers__str-context-preflight.ts"
+    },
+    "graphql-api/src/queries/long_read_tr_histograms.ts": {
+      "sha256": "f6c8ba0b96715354de245a4ffddb89047fddadd6d9f610055d0ca2576a63b0ea",
+      "snapshot": "browser-source-snapshots/graphql-api__src__queries__long_read_tr_histograms.ts"
+    },
+    "graphql-api/src/queries/long_read_tr_histograms_v2.ts": {
+      "sha256": "44b79d877dcfb25035ea901dca95ef4b96f10811fc06657cfa5596ce18274fe4",
+      "snapshot": "browser-source-snapshots/graphql-api__src__queries__long_read_tr_histograms_v2.ts"
+    }
+  },
+  "results": [
+    {
+      "cohort": "hgsvc_hprc",
+      "source": {
+        "uri": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+        "generation": "1789761285157516",
+        "byte_size": 3010278628,
+        "md5_base64": "Djg0d9C9w4cEByhnAeH44w==",
+        "runtime_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+        "runtime_generation": "1790187157452251",
+        "runtime_byte_size": 3010278628,
+        "runtime_md5_base64": "Djg0d9C9w4cEByhnAeH44w=="
+      },
+      "physical_sample_file": "hgsvc_hprc-sample-row.json",
+      "capture_receipt": {
+        "bytes_read": 3010278628,
+        "cohort": "hgsvc_hprc",
+        "complete_body_identity_verified": true,
+        "completeness": "full",
+        "computed_md5_base64": "Djg0d9C9w4cEByhnAeH44w==",
+        "contract": "updated_histogram_source_v1",
+        "data_rows_examined": 2765551,
+        "database": "gnomad_lr_y1_scratch_histogram_hgsvc_hprc_refresh_20260923_r1",
+        "diagnostic": "",
+        "eof_observed": true,
+        "gcs_metadata_verified": true,
+        "partial_writes_possible": false,
+        "rows_insert_acknowledged": 2765551,
+        "rows_insert_attempted": 2765551,
+        "run_id": "refresh_20260923_r1",
+        "source_generation": "1790187157452251",
+        "source_md5_base64": "Djg0d9C9w4cEByhnAeH44w==",
+        "source_size_bytes": 3010278628,
+        "source_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+        "status": "complete_success",
+        "task_id": "custom_0",
+        "validated_rows": 2765551,
+        "zero_called_rows": 0
+      },
+      "current_guard_evaluations": [
+        {
+          "property": "source_uri",
+          "expression": "source.uri",
+          "line": 174,
+          "expected": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+          "actual": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+          "current_guard_passes": false
+        },
+        {
+          "property": "source_generation",
+          "expression": "source.generation",
+          "line": 175,
+          "expected": "1789761285157516",
+          "actual": "1790187157452251",
+          "current_guard_passes": false
+        },
+        {
+          "property": "source_uri",
+          "expression": "manifest.source.uri",
+          "line": 335,
+          "expected": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+          "actual": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+          "current_guard_passes": false
+        },
+        {
+          "property": "source_generation",
+          "expression": "manifest.source.generation",
+          "line": 336,
+          "expected": "1789761285157516",
+          "actual": "1790187157452251",
+          "current_guard_passes": false
+        }
+      ],
+      "proposed_tests": [
+        {
+          "case": "actual mirror capture + original logical envelope + verified mapping",
+          "physical_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+          "physical_generation": "1790187157452251",
+          "expect_current": "REJECT",
+          "expect_proposed_identity_only": "PASS"
+        },
+        {
+          "case": "physical original URI in mirrored campaign",
+          "physical_uri": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+          "physical_generation": "1789761285157516",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "runtime URI with original generation",
+          "physical_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+          "physical_generation": "1789761285157516",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "different runtime generation",
+          "physical_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+          "physical_generation": "1790187157452252",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "source.uri relabeled to mirror",
+          "mutate": "source.uri/source.generation=runtime identity while pinned original sourceMap unchanged",
+          "expect_proposed_identity_only": "REJECT against pinned sourceMap"
+        },
+        {
+          "case": "size/MD5 mismatch or mapping evidence missing",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "same bytes but other cohort/task/run",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "original==runtime genuinely direct-read campaign",
+          "fixture_kind": "future synthetic separate fixture, not this capture",
+          "expect_proposed_identity_only": "PASS only with original==runtime attested mapping"
+        }
+      ],
+      "serving_admission": false
+    },
+    {
+      "cohort": "aou",
+      "source": {
+        "uri": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv",
+        "generation": "1790116043533826",
+        "byte_size": 4248882818,
+        "md5_base64": "rvQJhVZP3eLWzsvTOGp3nw==",
+        "runtime_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+        "runtime_generation": "1790187267088059",
+        "runtime_byte_size": 4248882818,
+        "runtime_md5_base64": "rvQJhVZP3eLWzsvTOGp3nw=="
+      },
+      "physical_sample_file": "aou-sample-row.json",
+      "capture_receipt": {
+        "bytes_read": 4248882818,
+        "cohort": "aou",
+        "complete_body_identity_verified": true,
+        "completeness": "full",
+        "computed_md5_base64": "rvQJhVZP3eLWzsvTOGp3nw==",
+        "contract": "updated_histogram_source_v1",
+        "data_rows_examined": 4917681,
+        "database": "gnomad_lr_y1_scratch_histogram_aou_refresh_20260923_r1",
+        "diagnostic": "",
+        "eof_observed": true,
+        "gcs_metadata_verified": true,
+        "partial_writes_possible": false,
+        "rows_insert_acknowledged": 4917681,
+        "rows_insert_attempted": 4917681,
+        "run_id": "refresh_20260923_r1",
+        "source_generation": "1790187267088059",
+        "source_md5_base64": "rvQJhVZP3eLWzsvTOGp3nw==",
+        "source_size_bytes": 4248882818,
+        "source_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+        "status": "complete_success",
+        "task_id": "custom_1",
+        "validated_rows": 4917681,
+        "zero_called_rows": 0
+      },
+      "current_guard_evaluations": [
+        {
+          "property": "source_uri",
+          "expression": "source.uri",
+          "line": 174,
+          "expected": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv",
+          "actual": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+          "current_guard_passes": false
+        },
+        {
+          "property": "source_generation",
+          "expression": "source.generation",
+          "line": 175,
+          "expected": "1790116043533826",
+          "actual": "1790187267088059",
+          "current_guard_passes": false
+        },
+        {
+          "property": "source_uri",
+          "expression": "manifest.source.uri",
+          "line": 335,
+          "expected": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv",
+          "actual": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+          "current_guard_passes": false
+        },
+        {
+          "property": "source_generation",
+          "expression": "manifest.source.generation",
+          "line": 336,
+          "expected": "1790116043533826",
+          "actual": "1790187267088059",
+          "current_guard_passes": false
+        }
+      ],
+      "proposed_tests": [
+        {
+          "case": "actual mirror capture + original logical envelope + verified mapping",
+          "physical_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+          "physical_generation": "1790187267088059",
+          "expect_current": "REJECT",
+          "expect_proposed_identity_only": "PASS"
+        },
+        {
+          "case": "physical original URI in mirrored campaign",
+          "physical_uri": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv",
+          "physical_generation": "1790116043533826",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "runtime URI with original generation",
+          "physical_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+          "physical_generation": "1790116043533826",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "different runtime generation",
+          "physical_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+          "physical_generation": "1790187267088060",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "source.uri relabeled to mirror",
+          "mutate": "source.uri/source.generation=runtime identity while pinned original sourceMap unchanged",
+          "expect_proposed_identity_only": "REJECT against pinned sourceMap"
+        },
+        {
+          "case": "size/MD5 mismatch or mapping evidence missing",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "same bytes but other cohort/task/run",
+          "expect_proposed_identity_only": "REJECT"
+        },
+        {
+          "case": "original==runtime genuinely direct-read campaign",
+          "fixture_kind": "future synthetic separate fixture, not this capture",
+          "expect_proposed_identity_only": "PASS only with original==runtime attested mapping"
+        }
+      ],
+      "serving_admission": false
+    }
+  ],
+  "conclusion": "REAL_INTEGRATION_DEFECT_ORIGINAL_VS_RUNTIME_PHYSICAL_IDENTITY",
+  "scope": "8 exact generator identity guards evaluated; API route/preflight/query cross-checked by source inspection, not executed; no full projection or API admission test"
+}

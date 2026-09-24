@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 
 import { MotifHighlightedSequence } from '../Haplotypes/TrAlleleStructure'
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
+import { sourceContextHistogram } from './__fixtures__/sourceContextHistogram'
 import {
   aggregateGenotypePairs,
   ExactAlleleIndex,
@@ -636,6 +637,39 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(grid).getByTestId('genotype-repeat-count-card')).not.toBeNull()
     expect(within(grid).queryByTestId('genotype-length-card')).toBeNull()
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+  })
+
+  test('source-context allele and pair choices are independent and remain static', () => {
+    const plots = sourceContextHistogram({
+      pair_status: 'UNAVAILABLE_MISSING',
+      genotype_distribution: [],
+    })
+    const view = render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        repeatCountPlots={plots}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+    expect(screen.queryByRole('radio', { name: 'Size-pair distribution' })).toBeNull()
+    fireEvent.click(screen.getByRole('radio', { name: 'Repeat-size distribution' }))
+    expect(screen.getByTestId('allele-repeat-count-card')).not.toBeNull()
+    expect(screen.getByText(/Size-pair distribution unavailable/)).not.toBeNull()
+    view.rerender(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        repeatCountPlots={sourceContextHistogram()}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+    expect(screen.getByRole('radiogroup', { name: 'Pair distribution measurement' })).not.toBeNull()
+    expect(screen.queryByRole('radiogroup', { name: 'Genotype distribution measurement' })).toBeNull()
+    fireEvent.click(screen.getByRole('radio', { name: 'Size-pair distribution' }))
+    const card = screen.getByTestId('genotype-repeat-count-card')
+    expect(within(card).queryByRole('button', { name: /Filter/ })).toBeNull()
+    expect(card.getAttribute('aria-label')).toContain('does not filter the source-ALT index')
   })
 
   test('admits exact-motif genotype choice only for source-complete paired product data', () => {

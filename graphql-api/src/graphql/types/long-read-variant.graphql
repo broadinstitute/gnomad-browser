@@ -29,7 +29,8 @@ type LongReadTranscriptConsequence {
 type LongReadVariantAllFrequencies {
   ac: Int!
   an: Int!
-  af: Float!
+  # Null means source AF is unavailable; counts must not be used to infer it.
+  af: Float
   homozygote_ref_count: Int
   homozygote_alt_count: Int
   heterozygote_count: Int
@@ -42,7 +43,8 @@ type LongReadVariantPopulationFrequencies {
   id: String!
   ac: Int!
   an: Int!
-  af: Float!
+  # Null means source AF is unavailable, not zero.
+  af: Float
   homozygote_ref_count: Int
   homozygote_alt_count: Int
   heterozygote_count: Int

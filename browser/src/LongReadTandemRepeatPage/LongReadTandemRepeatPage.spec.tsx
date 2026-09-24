@@ -641,6 +641,32 @@ beforeEach(() => {
 })
 
 describe('canonical long-read tandem-repeat locus page', () => {
+  test.each(['UNAVAILABLE_COMPOUND_LOCUS', 'UNAVAILABLE_AMBIGUOUS_CONTEXT'])(
+    'exposes v2 %s without removing the primary landscape',
+    (status) => {
+      const locus = makeLocus()
+      renderPage({
+        locus: {
+          ...locus,
+          repeat_count_plots: {
+            ...locus.repeat_count_plots,
+            status,
+            allele_status: 'UNAVAILABLE',
+            pair_status: 'UNAVAILABLE',
+            reason_code:
+              status === 'UNAVAILABLE_COMPOUND_LOCUS'
+                ? 'NO_DEFENSIBLE_SINGLE_REPEAT_COUNT'
+                : 'MULTIPLE_SOURCE_CONTEXTS',
+          },
+        },
+      })
+      expect(screen.getByLabelText('Source-context distributions').textContent).toContain(status)
+      expect(screen.getByRole('heading', { name: 'Allelic landscape' })).not.toBeNull()
+      expect(screen.queryByRole('radio', { name: 'Repeat-size distribution' })).toBeNull()
+      expect(screen.queryByRole('radio', { name: 'Size-pair distribution' })).toBeNull()
+    }
+  )
+
   test('hides local haplotype backgrounds unless their experimental feature is enabled', () => {
     renderPage()
 

@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import { jest } from '@jest/globals'
+import { y1PrimaryColumnRows, y1PrimarySchemaContracts } from '../y1_primary_schema'
 
 const mockQuery = jest.fn()
 
@@ -131,6 +132,13 @@ const requiredSchema: Record<string, string[]> = {
   ],
 }
 
+// Complete the historical minimal fixture with the checked v5 column order/types.
+for (const table of new Set(y1PrimaryColumnRows(5).map((row) => row.table))) {
+  requiredSchema[table] = y1PrimaryColumnRows(5)
+    .filter((row) => row.table === table)
+    .map((row) => row.name)
+}
+
 const metadataSchema = {
   lr_y1_metadata_runs: [
     'metadata_run_id',
@@ -197,11 +205,31 @@ const installFixture = ({
   physicalAttemptId?: string
 }) => {
   mockQuery.mockImplementation(({ query, query_params = {} }: any) => {
+    if (query.includes('FROM lr_y1_schema_versions AS ledger')) {
+      return Promise.resolve({
+        json: async () => [
+          {
+            schema_scope: 'y1_full',
+            schema_version: 5,
+            state: 'applied',
+            contract: y1PrimarySchemaContracts[5],
+          },
+        ],
+      })
+    }
     if (query.includes('FROM system.columns')) {
       return Promise.resolve({
         json: async () =>
           Object.entries(schema).flatMap(([table, columns]) =>
-            columns.map((name) => ({ table, name }))
+            columns.map(
+              (name) =>
+                y1PrimaryColumnRows(5).find((row) => row.table === table && row.name === name) || {
+                  table,
+                  name,
+                  type: 'String',
+                  default_kind: '',
+                }
+            )
           ),
       })
     }

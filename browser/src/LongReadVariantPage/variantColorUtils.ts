@@ -5,6 +5,7 @@
  */
 
 import { scaleLinear, scaleLog } from 'd3-scale'
+import { getLongReadAf } from './longReadFrequency'
 import { getAlleleTypeColor } from './variantUtils'
 import { SUPERPOPULATION_COLORS } from '../Haplotypes/colors'
 
@@ -97,7 +98,8 @@ export function getColorByPositionCSS(
   return `hsl(${hue}, 100%, 50%)`
 }
 
-export function getColorByAfCSS(af: number): string {
+export function getColorByAfCSS(af: number | null): string {
+  if (af == null) return '#8c6bb1' // Unavailable AF: distinct from the numeric frequency scale.
   const afScale = scaleLog<string>().domain([0.1, 1]).range(['#d3d3d3', '#424242']).clamp(true)
   return afScale(af)
 }
@@ -136,7 +138,7 @@ export function getColorByPositionRGBA(
   return hslToRgba(getColorByPositionCSS(position, minPos, maxPos))
 }
 
-export function getColorByAfRGBA(af: number): [number, number, number, number] {
+export function getColorByAfRGBA(af: number | null): [number, number, number, number] {
   return cssColorToRgba(getColorByAfCSS(af))
 }
 
@@ -179,8 +181,7 @@ export function getVariantCssColor(
     case 'position':
       return getColorByPositionCSS(variant.pos, options.start, options.stop)
     case 'af': {
-      const af = variant.freq?.all?.af ?? variant.freq?.af ?? 0
-      return getColorByAfCSS(af)
+      return getColorByAfCSS(getLongReadAf(variant))
     }
     case 'haplotype_count':
       return getColorByHaplotypeCountCSS(options.locusCount ?? 0, options.totalGroups ?? 1)
@@ -221,8 +222,7 @@ export function getVariantRgbaColor(
     case 'position':
       return getColorByPositionRGBA(variant.pos, options.start, options.stop)
     case 'af': {
-      const af = variant.freq?.all?.af ?? variant.freq?.af ?? 0
-      return getColorByAfRGBA(af)
+      return getColorByAfRGBA(getLongReadAf(variant))
     }
     case 'haplotype_count':
       return getColorByHaplotypeCountRGBA(options.locusCount ?? 0, options.totalGroups ?? 1)

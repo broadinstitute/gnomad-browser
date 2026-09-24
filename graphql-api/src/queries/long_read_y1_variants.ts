@@ -104,7 +104,8 @@ export const mapY1RowToGraphQL = (
       all: {
         ac: Number(row.ac),
         an: Number(row.an),
-        af: Number(row.af),
+        // Missing source AF is unavailable, even when AC and AN are known.
+        af: optionalNumber(row.af),
       },
       populations,
     },
@@ -133,7 +134,9 @@ const fetchPopulationFrequencies = async (
         AND chrom = {chrom:String}
         AND (${rangeConditions})
         AND division != 'all'
-        AND values_available = 1
+        -- values_available describes the complete AC/AN/AF tuple, not whether
+        -- counts exist. Keep count-bearing divisions when source AF is absent.
+        AND (values_available = 1 OR (ac IS NOT NULL AND an IS NOT NULL))
     `,
     query_params: { runId, chrom, cohort, ...rangeParams },
     format: 'JSONEachRow',
@@ -147,7 +150,7 @@ const fetchPopulationFrequencies = async (
       id: row.id,
       ac: Number(row.ac),
       an: Number(row.an),
-      af: Number(row.af),
+      af: optionalNumber(row.af),
     })
     byAllele.set(key, frequencies)
   })

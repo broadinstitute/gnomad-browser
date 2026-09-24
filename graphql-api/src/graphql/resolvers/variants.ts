@@ -108,7 +108,7 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
         long_read: {
           ac: lrVariant.freq?.all?.ac || 0,
           an: lrVariant.freq?.all?.an || 0,
-          af: lrVariant.freq?.all?.af || 0,
+          af: lrVariant.freq?.all?.af ?? null,
           homozygote_ref_count: lrVariant.freq?.all?.homozygote_ref_count ?? null,
           homozygote_alt_count: lrVariant.freq?.all?.homozygote_alt_count ?? null,
           heterozygote_count: lrVariant.freq?.all?.heterozygote_count ?? null,

@@ -149,6 +149,7 @@ enum MethylationMappingScope {
 
 enum JoinedPhasedMethylationCapabilityStatus {
   AVAILABLE_CONFIRMED
+  AVAILABLE_OPERATOR_ASSUMPTION
   UNAVAILABLE_NOT_CONFIGURED
   UNAVAILABLE_PRIMARY_CARRIERS
   UNAVAILABLE_ORIENTATION_EXCLUDED_CONTIG
@@ -161,6 +162,8 @@ enum JoinedPhasedMethylationSampleStatus {
 }
 
 type JoinedPhasedMethylationIdentity {
+  approval_basis: String!
+  independently_machine_verified_lineage: Boolean!
   source_run_id: String!
   source_completion_receipt_sha256: String!
   source_manifest_sha256: String!
@@ -174,6 +177,7 @@ type JoinedPhasedMethylationIdentity {
 }
 
 type JoinedPhasedMethylationCapability {
+  max_span_bp: Int
   available: Boolean!
   joinable_to_vcf: Boolean!
   status: JoinedPhasedMethylationCapabilityStatus!

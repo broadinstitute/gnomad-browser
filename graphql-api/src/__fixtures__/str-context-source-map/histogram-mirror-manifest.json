@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "objects": [
+    {
+      "cohort": "hgsvc_hprc",
+      "original": {
+        "uri": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+        "generation": "1789761285157516",
+        "size_bytes": 3010278628,
+        "md5_base64": "Djg0d9C9w4cEByhnAeH44w==",
+        "crc32c_base64": "viRFNA==",
+        "immutable_uri": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv#1789761285157516"
+      },
+      "runtime": {
+        "uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+        "generation": "1790187157452251",
+        "size_bytes": 3010278628,
+        "md5_base64": "Djg0d9C9w4cEByhnAeH44w==",
+        "crc32c_base64": "viRFNA==",
+        "immutable_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv#1790187157452251"
+      },
+      "expected_source_rows": 2765551,
+      "verification": "Exact source generation and GCS metadata size/MD5/CRC match; server-side create-only copy; no body redownload"
+    },
+    {
+      "cohort": "aou",
+      "original": {
+        "uri": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv",
+        "generation": "1790116043533826",
+        "size_bytes": 4248882818,
+        "md5_base64": "rvQJhVZP3eLWzsvTOGp3nw==",
+        "crc32c_base64": "8TtYUA==",
+        "immutable_uri": "gs://fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv#1790116043533826"
+      },
+      "runtime": {
+        "uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+        "generation": "1790187267088059",
+        "size_bytes": 4248882818,
+        "md5_base64": "rvQJhVZP3eLWzsvTOGp3nw==",
+        "crc32c_base64": "8TtYUA==",
+        "immutable_uri": "gs://gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv#1790187267088059"
+      },
+      "expected_source_rows": 4917681,
+      "verification": "Exact source generation and GCS metadata size/MD5/CRC match; server-side create-only copy; no body redownload"
+    }
+  ],
+  "observed_at": "2026-09-23T18:14:29.456001+00:00",
+  "actual_pool_sa_read_proof": "deferred"
+}

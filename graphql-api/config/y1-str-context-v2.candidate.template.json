@@ -1,0 +1,32 @@
+{
+  "LR_Y1_ENABLED": "true",
+  "LR_Y1_STR_CONTEXT_CANDIDATE_ENABLED": "false",
+  "LR_Y1_CLICKHOUSE_URL": "<EXPLICIT_AUTHORIZED_CANDIDATE_ENDPOINT>",
+  "LR_Y1_CLICKHOUSE_DATABASE": "gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af",
+  "LR_Y1_RUN_MAP": "<JSON_MAP_OF_ACTUALLY_ACCEPTED_PRIMARY_RUNS_NOT_PLANNED_RUNS>",
+  "LR_Y1_PRIMARY_MANIFEST_PATH": "<ACCEPTED_PRIMARY_MANIFEST_BUNDLE_PATH>",
+  "LR_Y1_ANCILLARY_ROUTES": {
+    "str_histogram": {
+      "hgsvc_hprc": {
+        "database": "gnomad_lr_y1_scratch_histogram_projection_hgsvc_hprc_<NEW_PROJECTION_INSTANCE>",
+        "run_id": "<ACCEPTED_CAPTURE_RUN>",
+        "receipt_path": "<INDEPENDENTLY_RECONCILED_CONTEXT_V2_3_RECEIPT_PATH>",
+        "source_map_artifacts": {
+          "sourceMapPath": "<PINNED_LOCAL_UNCHANGED_RAW_SOURCEMAP_PATH>",
+          "verificationPath": "<NEW_TRUSTED_OPERATOR_V2_EVIDENCE_WITH_UNCHANGED_BACKEND_RECEIPTS_PATH>",
+          "verificationSha256": "<SHA256_OF_RAW_OPERATOR_VERIFICATION_FILE>"
+        }
+      },
+      "aou": {
+        "database": "gnomad_lr_y1_scratch_histogram_projection_aou_<NEW_PROJECTION_INSTANCE>",
+        "run_id": "<ACCEPTED_CAPTURE_RUN>",
+        "receipt_path": "<INDEPENDENTLY_RECONCILED_AOU_CONTEXT_V2_3_RECEIPT_PATH>",
+        "source_map_artifacts": {
+          "sourceMapPath": "<PINNED_LOCAL_UNCHANGED_RAW_SOURCEMAP_PATH>",
+          "verificationPath": "<NEW_TRUSTED_OPERATOR_V2_EVIDENCE_WITH_UNCHANGED_BACKEND_RECEIPTS_PATH>",
+          "verificationSha256": "<SHA256_OF_RAW_OPERATOR_VERIFICATION_FILE>"
+        }
+      }
+    }
+  }
+}

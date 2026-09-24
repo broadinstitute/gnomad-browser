@@ -22,6 +22,7 @@ import HaplotypeTrack, {
   type SelectableHaplotypeGroupingMode,
 } from '../Haplotypes'
 import type { MethylationSampleAvailability } from '../Haplotypes/MethylationHelp'
+import SourceLabelledMethylation from './SourceLabelledMethylation'
 import {
   carrierMetadataFromPayload,
   computeHaplotypeView,
@@ -91,7 +92,8 @@ import {
   joinedMethylationUsabilityForRegion,
   joinedMethylationRequestScope,
   perCopyLoadingProgress,
-  validateJoinedMethylationBatch,
+  withSourceAbsentSampleStates,
+  loadJoinedMethylationChunks,
   type JoinedPhasedMethylationCapability,
   type JoinedPhasedMethylationRecord,
   type PerCopyMethylationSampleState,
@@ -116,11 +118,12 @@ const METHYLATION_AVAILABILITY_QUERY = `
 const JOINED_PHASED_METHYLATION_CAPABILITY_QUERY = `
   query RegionJoinedPhasedMethylationCapability($chrom: String!, $lr_cohort: LongReadCohort!) {
     joined_phased_methylation_capability(chrom: $chrom, lr_cohort: $lr_cohort) {
-      available joinable_to_vcf status source_sample_ids max_samples max_records reason
+      available joinable_to_vcf status source_sample_ids max_samples max_records max_span_bp reason
       identity {
         source_run_id source_completion_receipt_sha256 source_manifest_sha256
         browser_vcf_manifest_bundle_sha256 browser_vcf_manifest_sha256 browser_vcf_run_id
         orientation_receipt_id orientation_receipt_sha256 mapping_artifact_sha256 mapping_scope
+        approval_basis independently_machine_verified_lineage
       }
     }
   }
@@ -140,6 +143,7 @@ const JOINED_PHASED_METHYLATION_REGION_QUERY = `
         source_run_id source_completion_receipt_sha256 source_manifest_sha256
         browser_vcf_manifest_bundle_sha256 browser_vcf_manifest_sha256 browser_vcf_run_id
         orientation_receipt_id orientation_receipt_sha256 mapping_artifact_sha256 mapping_scope
+        approval_basis independently_machine_verified_lineage
       }
       requested_sample_ids completed_sample_ids
       unavailable_samples { sample_id status reason }
@@ -666,6 +670,7 @@ const LongReadUnifiedView = ({
     useState<JoinedMethylationViewState>(emptyJoinedMethylationViewState(joinedMethylationScope))
   const joinedMethylationRequestGateRef = useRef(new MethylationRequestGate())
   const joinedMethylationInFlightRef = useRef<Map<string, number>>(new Map())
+  const joinedMethylationBudgetRef = useRef({ requests: 0, records: 0 })
   const joinedMethylationStateIsCurrent =
     joinedMethylationViewState.scope === joinedMethylationScope
   const perCopyMethylationRecords = useMemo(
@@ -675,9 +680,6 @@ const LongReadUnifiedView = ({
         : [],
     [joinedMethylationStateIsCurrent, joinedMethylationViewState.recordsByIdentity]
   )
-  const perCopyMethylationSampleStates = joinedMethylationStateIsCurrent
-    ? joinedMethylationViewState.sampleStates
-    : new Map<string, PerCopyMethylationSampleState>()
   const availableMethylationIds = useMemo(
     () =>
       new Set(
@@ -1396,6 +1398,17 @@ const LongReadUnifiedView = ({
     [confirmedJoinedMethylationCapability]
   )
   const sourceSampleIdSet = useMemo(() => new Set(sourceSampleIds), [sourceSampleIds])
+  const perCopyMethylationSampleStates = useMemo(() => {
+    const states = joinedMethylationStateIsCurrent
+      ? joinedMethylationViewState.sampleStates
+      : new Map<string, PerCopyMethylationSampleState>()
+    return confirmedJoinedMethylationCapability
+      ? withSourceAbsentSampleStates(states,
+          unfilteredHaplotypeGroups.groups.flatMap(group => group.samples.map(sample => sample.sample_id)),
+          sourceSampleIds)
+      : states
+  }, [joinedMethylationStateIsCurrent, joinedMethylationViewState.sampleStates,
+    confirmedJoinedMethylationCapability, unfilteredHaplotypeGroups.groups, sourceSampleIds])
   const haplotypeGroups: HaplotypeGroups = useMemo(
     () =>
       methylationSamplesOnly && isDiploidView && confirmedJoinedMethylationCapability
@@ -1588,6 +1601,7 @@ const LongReadUnifiedView = ({
     // the claim here prevents a recreated scope from silently resurrecting bulk demand.
     setLoadAllJoinedMethylationScope(null)
     joinedMethylationInFlightRef.current.clear()
+    joinedMethylationBudgetRef.current = { requests: 0, records: 0 }
     setJoinedMethylationViewState(emptyJoinedMethylationViewState(joinedMethylationScope))
     return () => gate.invalidate()
   }, [joinedMethylationScope])
@@ -1645,36 +1659,35 @@ const LongReadUnifiedView = ({
 
     const fetchBatch = async () => {
       try {
-        const result = await responseForCurrentMethylationRequest(gate, token, (signal) =>
-          fetchGraphQL(
-            JOINED_PHASED_METHYLATION_REGION_QUERY,
-            {
-              chrom,
-              start,
-              stop,
-              sample_ids: requestedSampleIds,
-              expected_orientation_receipt_sha256:
-                confirmedJoinedMethylationCapability.identity.orientation_receipt_sha256,
-              lr_cohort: lrCohort,
-            },
-            signal
-          )
-        )
-        if (!result || !gate.isCurrent(token)) return
-        if (result.errors?.length) {
-          const graphQLError = result.errors[0]
-          const error = new Error(graphQLError.message) as Error & { code?: string }
-          error.code = graphQLError.extensions?.code || 'JOINED_METHYLATION_QUERY_ERROR'
-          throw error
-        }
-        const region = validateJoinedMethylationBatch(
-          result.data?.joined_phased_methylation_region,
-          {
-            requestedSampleIds,
-            identity: confirmedJoinedMethylationCapability.identity,
-            chrom,
-            start,
-            stop,
+        const region = await loadJoinedMethylationChunks(
+          { requestedSampleIds, identity: confirmedJoinedMethylationCapability.identity, chrom, start, stop },
+          confirmedJoinedMethylationCapability,
+          joinedMethylationBudgetRef.current,
+          token.controller.signal,
+          async (chunk) => {
+            const result = await responseForCurrentMethylationRequest(gate, token, (signal) =>
+              fetchGraphQL(
+                JOINED_PHASED_METHYLATION_REGION_QUERY,
+                {
+                  chrom,
+                  ...chunk,
+                  sample_ids: requestedSampleIds,
+                  expected_orientation_receipt_sha256:
+                    confirmedJoinedMethylationCapability.identity.orientation_receipt_sha256,
+                  lr_cohort: lrCohort,
+                },
+                signal
+              )
+            )
+            if (!result || !gate.isCurrent(token))
+              throw Object.assign(new Error('Canceled'), { name: 'AbortError' })
+            if (result.errors?.length) {
+              const graphQLError = result.errors[0]
+              const error = new Error(graphQLError.message) as Error & { code?: string }
+              error.code = graphQLError.extensions?.code || 'JOINED_METHYLATION_QUERY_ERROR'
+              throw error
+            }
+            return result.data?.joined_phased_methylation_region
           }
         )
         if (!gate.isCurrent(token)) return
@@ -2240,6 +2253,11 @@ const LongReadUnifiedView = ({
       {outOfScope && (
         <TrackPageSection as="p">
           <strong>Prototype data unavailable outside chr22.</strong> This request was not routed to legacy primary data.
+        </TrackPageSection>
+      )}
+      {y1Mode && isExperimentalFeatureEnabled('source_labelled_methylation') && (
+        <TrackPageSection>
+          <SourceLabelledMethylation chrom={chrom} start={start} stop={stop} cohort={lrCohort} />
         </TrackPageSection>
       )}
       {/* Controls precede the visualization they govern and keep a stable document position. */}

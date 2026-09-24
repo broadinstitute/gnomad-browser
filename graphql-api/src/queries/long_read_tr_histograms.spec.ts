@@ -383,6 +383,7 @@ describe('exact long-read TR locus histogram contract', () => {
       { primaryTaskId: 'other-task' },
       { primaryAttemptId: 'other-attempt' },
       { sourceVariantId: 'other-source' },
+      { sourceAn: 999 },
       { component: { ...component, motif: 'CAA' } },
     ]) {
       expect(longReadTrHistogramCacheKey({ ...base, ...changed })).not.toBe(original)

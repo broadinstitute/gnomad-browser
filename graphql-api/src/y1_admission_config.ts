@@ -1,4 +1,5 @@
 import crypto from 'node:crypto'
+import { normalizeStrContextReceipt, parseStrContextReceipt } from './str_context_admission'
 import { readFileSync } from 'node:fs'
 import nodePath from 'node:path'
 import type { Y1AncillaryModality, Y1Cohort, Y1PrimaryRunMap } from './y1_config'
@@ -23,6 +24,8 @@ export type Y1PrimaryManifest = {
   chrom: string
   run_id: string
   manifest_sha256: string
+  expected_backend_revision?: string
+  expected_worker_build_version?: string
   primary_load_mode: 'standard' | 'aggregate_only_no_carriers'
   carrier_loading_status: 'available' | 'unavailable_not_loaded'
   source: {
@@ -59,6 +62,7 @@ export type Y1AncillaryReceipt = {
     | 'sample_total_completion'
     | 'coverage_view_completion'
     | 'str_completion'
+    | 'str_context_completion_v2'
   job_uuid: string | null
   receipts: {
     expected: number
@@ -267,12 +271,40 @@ const parsePrimaryManifest = (value: unknown, index: number): Y1PrimaryManifest 
       'manifest_sha256',
       'source',
       'tasks',
+      ...(entry.expected_backend_revision === undefined &&
+      entry.expected_worker_build_version === undefined
+        ? []
+        : ['expected_backend_revision', 'expected_worker_build_version']),
       ...(entry.primary_load_mode === undefined && entry.carrier_loading_status === undefined
         ? []
         : ['primary_load_mode', 'carrier_loading_status']),
     ],
     label
   )
+  let expectedBuild: Pick<
+    Y1PrimaryManifest,
+    'expected_backend_revision' | 'expected_worker_build_version'
+  > = {}
+  if (
+    entry.expected_backend_revision !== undefined ||
+    entry.expected_worker_build_version !== undefined
+  ) {
+    const revision = string(entry.expected_backend_revision, `${label}.expected_backend_revision`)
+    const build = string(
+      entry.expected_worker_build_version,
+      `${label}.expected_worker_build_version`
+    )
+    if (
+      !/^[0-9a-f]{40}$(?![\s\S])/.test(revision) ||
+      ![
+        `gnomad-lr/${revision}/host-release/features-clickhouse`,
+        `gnomad-lr/${revision}/x86_64-linux-release/features-clickhouse`,
+      ].includes(build)
+    ) {
+      throw new Error(`${label} requires a clean revision-bound expected worker build`)
+    }
+    expectedBuild = { expected_backend_revision: revision, expected_worker_build_version: build }
+  }
   const aggregateOnly =
     entry.primary_load_mode === 'aggregate_only_no_carriers' &&
     entry.carrier_loading_status === 'unavailable_not_loaded'
@@ -312,14 +344,22 @@ const parsePrimaryManifest = (value: unknown, index: number): Y1PrimaryManifest 
     throw new Error(`${label} tasks do not cover ${chrom}:1-${contigLength}`)
   }
   const source = parseSource(entry.source, `${label}.source`)
-  const expectedSourceUri = `gs://gnomad-lr-data/y1/sources/${cohort}/vcfs/gnomAD_LR_Y1.${cohort}.${chrom}.vcf.gz`
+  // Mirror backend y1/contig.rs's closed refresh namespace. Compare the full
+  // string (not a URL-normalized path) so traversal, query and fragment fail.
+  const refresh = source.source_uri.match(
+    /^gs:\/\/gnomad-lr-data\/y1\/refreshes\/([0-9]{8}-[0-9a-f]{12})\/sources\//
+  )
+  const root = refresh
+    ? `gs://gnomad-lr-data/y1/refreshes/${refresh[1]}/sources`
+    : 'gs://gnomad-lr-data/y1/sources'
+  const expectedSourceUri = `${root}/${cohort}/vcfs/gnomAD_LR_Y1.${cohort}.${chrom}.vcf.gz`
   if (
     source.source_uri !== expectedSourceUri ||
     source.source_index_uri !== `${expectedSourceUri}.tbi` ||
     source.source_checksum_algorithm !== 'md5_base64' ||
     source.source_index_checksum_algorithm !== 'md5_base64' ||
-    !/^[1-9][0-9]*$/.test(source.source_generation) ||
-    !/^[1-9][0-9]*$/.test(source.source_index_generation)
+    !/^[1-9][0-9]*$(?![\s\S])/.test(source.source_generation) ||
+    !/^[1-9][0-9]*$(?![\s\S])/.test(source.source_index_generation)
   ) {
     throw new Error(`${label} has invalid immutable canonical source identity`)
   }
@@ -328,6 +368,7 @@ const parsePrimaryManifest = (value: unknown, index: number): Y1PrimaryManifest 
     chrom,
     run_id: string(entry.run_id, `${label}.run_id`),
     manifest_sha256: hash,
+    ...expectedBuild,
     primary_load_mode: aggregateOnly ? 'aggregate_only_no_carriers' : 'standard',
     carrier_loading_status: aggregateOnly ? 'unavailable_not_loaded' : 'available',
     source,
@@ -551,6 +592,10 @@ export const readY1AncillaryReceipt = (
 ): Y1AncillaryReceipt => {
   const label = `ancillary receipt ${expected.modality}/${expected.cohort}`
   const receipt = object(readJson(path, label), label)
+  // Explicit discriminator: v2 cannot fall through to either legacy STR reader.
+  if (receipt.source_format === 'str_context_completion_v2' || receipt.schema_version === 2) {
+    return normalizeStrContextReceipt(parseStrContextReceipt(receipt, expected))
+  }
   if (expected.modality === 'methylation' && receipt.status === 'validated_success') {
     exactKeys(
       receipt,

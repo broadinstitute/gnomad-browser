@@ -84,13 +84,13 @@ export type LongReadVariant = {
     all: {
       ac: number
       an: number
-      af: number
+      af: number | null
     }
     populations: {
       id: string
       ac: number
       an: number
-      af: number
+      af: number | null
     }[]
   }
   reference_genome: ReferenceGenome

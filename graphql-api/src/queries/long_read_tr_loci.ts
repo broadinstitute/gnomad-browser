@@ -52,7 +52,7 @@ type CompactAllele = {
   length_provenance?: string | null
   ac: number
   an: number
-  af: number
+  af: number | null
 }
 
 type SourceRecordContract = {
@@ -120,13 +120,49 @@ const exactComponentsEqual = (left: TrLocusId, right: TrLocusId) =>
   left.canonicalId === right.canonicalId
 
 const queryRows = async (query: string, query_params: Record<string, unknown>) => {
-  const result = await y1ClickhouseClient.query({
-    query,
-    query_params,
-    format: 'JSONEachRow',
-    clickhouse_settings: { max_execution_time: 5 },
+  const request = { query, query_params, format: 'JSONEachRow' as const }
+  if (process.env.LR_Y1_TR_READONLY_QUERY_COMPAT !== 'true') {
+    const result = await y1ClickhouseClient.query({
+      ...request,
+      clickhouse_settings: { max_execution_time: 5 },
+    })
+    return (await result.json()) as any[]
+  }
+
+  // Explicit opt-in for servers whose readonly=1 policy forbids query settings.
+  // This bounds client wait, NOT server execution: the unchanged server profile
+  // remains the compute limit, and disconnect cancellation is server-dependent.
+  const timeoutMs = Number(process.env.LR_Y1_TR_READONLY_QUERY_TIMEOUT_MS || '5000')
+  if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000) {
+    throw new Error('LR_Y1_TR_READONLY_QUERY_TIMEOUT_MS must be an integer from 1 to 30000')
+  }
+  const controller = new AbortController()
+  let result: Awaited<ReturnType<typeof y1ClickhouseClient.query>> | undefined
+  let timer: ReturnType<typeof setTimeout> | undefined
+  const deadline = new Promise<never>((_resolve, reject) => {
+    timer = setTimeout(() => {
+      reject(new Error('TR_LOCUS_QUERY_TIMEOUT'))
+      controller.abort()
+      // @clickhouse/client 1.18.2 detaches abort_signal after response headers.
+      // Close the result too, so a stalled body cannot outlive this deadline.
+      result?.close()
+    }, timeoutMs)
   })
-  return (await result.json()) as any[]
+  try {
+    return await Promise.race([
+      (async () => {
+        result = await y1ClickhouseClient.query({ ...request, abort_signal: controller.signal })
+        if (controller.signal.aborted) {
+          result.close()
+          throw new Error('TR_LOCUS_QUERY_TIMEOUT')
+        }
+        return (await result.json()) as any[]
+      })(),
+      deadline,
+    ])
+  } finally {
+    clearTimeout(timer)
+  }
 }
 
 const unavailable = (reason_code: string) => ({
@@ -218,7 +254,7 @@ const parseCompactAllele = (row: any): CompactAllele | null => {
     length_provenance: typeof row.length_provenance === 'string' ? row.length_provenance : null,
     ac: Number(row.ac),
     an: Number(row.an),
-    af: Number(row.af),
+    af: finiteNumber(row.af),
   }
 }
 
@@ -273,7 +309,11 @@ const validateCompleteAlleles = (
     }
     if (!Number.isInteger(row.ac) || row.ac < 0 || !Number.isInteger(row.an) || row.an < 0)
       return 'MALFORMED_ALLELE_COUNTS'
-    if (!Number.isFinite(row.af) || row.af < 0 || row.af > 1 || row.ac > row.an)
+    // Missing source AF does not invalidate known counts or exact ALT identity.
+    if (
+      (row.af != null && (!Number.isFinite(row.af) || row.af < 0 || row.af > 1)) ||
+      row.ac > row.an
+    )
       return 'MALFORMED_ALLELE_COUNTS'
   }
   return null
@@ -529,6 +569,18 @@ const sourceGroupLabel = (key: string, product: 'frequency' | 'metadata') =>
 const frequencySexId = (key: string) => `frequency-sex:${key}`
 const metadataSexId = (key: string) => `metadata-sex:${key}`
 
+// Match backend source-AF rounding tolerance. Counts drive these views; absent AF
+// is not a count-validation failure and is never derived or written back.
+const SOURCE_AF_COUNT_TOLERANCE = 5e-6
+const validOptionalSourceAf = (rawAf: unknown, ac: number, an: number) => {
+  if (rawAf == null) return true
+  if (typeof rawAf !== 'number' && typeof rawAf !== 'string') return false
+  if (typeof rawAf === 'string' && !rawAf.trim()) return false
+  const af = finiteNumber(rawAf)
+  return af != null && af >= 0 && af <= 1 &&
+    (an === 0 ? af === 0 : Math.abs(af - ac / an) <= SOURCE_AF_COUNT_TOLERANCE)
+}
+
 const validatedFrequencySlice = (
   alleles: CompactAllele[],
   frequencyRows: any[],
@@ -559,19 +611,17 @@ const validatedFrequencySlice = (
     const altIndex = integer(row.alt_index)
     const ac = integer(row.ac)
     const an = integer(row.an)
-    const af = finiteNumber(row.af)
     const key = compactAlleleKey(String(row.source_variant_id || ''), altIndex || 0)
     if (
       !expected.delete(key) ||
+      row.ac == null || row.ac === '' ||
+      row.an == null || row.an === '' ||
       ac == null ||
       ac < 0 ||
       an == null ||
       an < 0 ||
       ac > an ||
-      af == null ||
-      af < 0 ||
-      af > 1 ||
-      Math.abs(af - (an ? ac / an : 0)) > 1e-9 ||
+      !validOptionalSourceAf(row.af, ac, an) ||
       (denominator != null && denominator !== an)
     ) {
       return { reason: 'MISSING_OR_DUPLICATE_STRATUM_OBSERVATION' as const }
@@ -579,7 +629,8 @@ const validatedFrequencySlice = (
     denominator = an
     counts.set(key, ac)
   }
-  if (expected.size || denominator == null) {
+  if (expected.size || denominator == null ||
+      [...counts.values()].reduce((sum, ac) => sum + ac, 0) > denominator) {
     return { reason: 'MISSING_OR_DUPLICATE_STRATUM_OBSERVATION' as const }
   }
   return { counts, denominator }
@@ -1035,7 +1086,6 @@ export const buildWholeRecordAlleleLandscape = ({
       const altIndex = integer(row.alt_index)
       const ac = integer(row.ac)
       const an = integer(row.an)
-      const af = finiteNumber(row.af)
       const alleleKey = compactAlleleKey(String(row.source_variant_id || ''), altIndex || 0)
       const allele = alleleByKey.get(alleleKey)
       const division = String(row.division || '')
@@ -1043,14 +1093,14 @@ export const buildWholeRecordAlleleLandscape = ({
       if (
         !parsedDivision ||
         !allele ||
+        row.ac == null || row.ac === '' ||
+        row.an == null || row.an === '' ||
         ac == null ||
         ac < 0 ||
         an == null ||
         an < 0 ||
         ac > an ||
-        af == null ||
-        af < 0 ||
-        af > 1 ||
+        !validOptionalSourceAf(row.af, ac, an) ||
         seenFrequencyRows.has(frequencyKey) ||
         (stratumAn.has(division) && stratumAn.get(division) !== an)
       ) {
@@ -1507,7 +1557,7 @@ const fetchLongReadTrLocusUncached = async ({
   const compactAlleles = rawAlleleRows.map(parseCompactAllele).filter(Boolean) as CompactAllele[]
   const sourceRecords = summaries.map(({ row, info, alt_count: altCount }, recordIndex) => {
     const ac = Array.isArray(row.ac) ? row.ac.map(Number) : []
-    const af = Array.isArray(row.af) ? row.af.map(Number) : []
+    const af: (number | null)[] = Array.isArray(row.af) ? row.af.map(finiteNumber) : []
     return {
       record_index: recordIndex + 1,
       source_variant_id: row.source_variant_id,
@@ -1517,7 +1567,11 @@ const fetchLongReadTrLocusUncached = async ({
       alt_count: altCount,
       non_reference_ac: ac.reduce((sum: number, value: number) => sum + value, 0),
       an: Number(row.an),
-      non_reference_af: af.reduce((sum: number, value: number) => sum + value, 0),
+      // A partial/missing source array is not a zero or a sum of only known ALTs.
+      non_reference_af:
+        af.length === altCount && af.every((value) => value != null)
+          ? af.reduce<number>((sum, value) => sum + value!, 0)
+          : null,
       source: info.SOURCE || null,
       region: info.REGION || null,
     }
@@ -1567,7 +1621,8 @@ const fetchLongReadTrLocusUncached = async ({
             AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
             AND chrom = {chrom:String} AND source_variant_id IN {sourceIds:Array(String)}
             ${sourceRecordAttemptQuery}
-            AND values_available = 1
+            -- Retain known counts even when the source AC/AN/AF tuple is incomplete.
+            AND (values_available = 1 OR (ac IS NOT NULL AND an IS NOT NULL))
           ORDER BY source_variant_id, alt_index, division
           LIMIT {limit:UInt32}
         `,
@@ -1602,7 +1657,12 @@ const fetchLongReadTrLocusUncached = async ({
   for (const row of frequencyRows) {
     const key = compactAlleleKey(row.source_variant_id, Number(row.alt_index))
     const values = frequencies.get(key) || []
-    values.push({ id: row.division, ac: Number(row.ac), an: Number(row.an), af: Number(row.af) })
+    values.push({
+      id: row.division,
+      ac: Number(row.ac),
+      an: Number(row.an),
+      af: finiteNumber(row.af),
+    })
     frequencies.set(key, values)
   }
 
@@ -1830,7 +1890,7 @@ const fetchLongReadTrLocusUncached = async ({
           ? 'No admitted source decomposition is available for this exact allele'
           : 'Observed sequence tokens cannot be assigned to coordinate-defined LR reference components',
       freq: {
-        all: { ac: Number(row.ac), an: Number(row.an), af: Number(row.af) },
+        all: { ac: Number(row.ac), an: Number(row.an), af: finiteNumber(row.af) },
         populations: frequencies.get(compactAlleleKey(row.source_variant_id, altIndex)) || [],
       },
       rsids: Array.isArray(row.rsids) ? row.rsids : [],
@@ -2023,7 +2083,7 @@ export const longReadTrLocusCacheKey = ({
     'G_DATA_ANCESTRY_PENDING',
     'REMAINDER_COMPATIBILITY_UNAVAILABLE',
   ]
-  return `lr_tr_locus:v9:${crypto
+  return `lr_tr_locus:v11:${crypto
     .createHash('sha256')
     .update(JSON.stringify(identity))
     .digest('hex')}`

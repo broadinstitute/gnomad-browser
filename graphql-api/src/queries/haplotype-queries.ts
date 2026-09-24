@@ -3,6 +3,7 @@ import {
   getSourcePhasedMethylationClickhouseClient,
   getY1AncillaryClickhouseClient,
   isY1PilotEnabled,
+  joinedPhasedMethylationRoute,
   y1ClickhouseClient,
 } from '../clickhouse'
 import {
@@ -11,6 +12,7 @@ import {
 } from '../graphql/resolvers/ancillary-availability'
 import { joinedMethylationError } from '../graphql/joined-phased-methylation-errors'
 import type { SourcePhasedMethylationRoute } from '../source_phased_methylation_config'
+import { LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 } from '../joined_phased_methylation_config'
 
 /**
  * Fetch haplotype variants pre-grouped by (sample_id, strand) in ClickHouse.
@@ -346,6 +348,9 @@ export const fetchSTRHistogram = async (
 ) => {
   const route = isY1PilotEnabled ? getY1AncillaryRoute(cohort, 'str_histogram') : null
   if (isY1PilotEnabled && !route) return null
+  // This compatibility endpoint has only a position and legacy biological labels.
+  // A source-context association cannot safely enrich it (and must not fall back).
+  if (route?.receipt?.source_format === 'str_context_completion_v2') return null
   const strictStrRoute = route?.receipt?.source_format === 'str_completion'
   const y1Position = strictStrRoute ? 'position' : 'source_start'
   const normalizedChrom = isY1PilotEnabled && !chrom.startsWith('chr') ? `chr${chrom}` : chrom
@@ -535,6 +540,15 @@ export const fetchJoinedPhasedMethylationForRegion = async (
         stop,
       }
     )
+  // The separately admitted local clone uses readonly=1 CONST: per-request
+  // settings are forbidden. Bound that path more tightly in SQL/input instead;
+  // the deadline is client-side, not a claim of server cancellation.
+  const localReadonly = joinedPhasedMethylationRoute?.orientation_receipt_sha256 ===
+    LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256
+  if (localReadonly && (!Number.isSafeInteger(start) || !Number.isSafeInteger(stop) ||
+      start < 1 || stop < start || stop - start + 1 > 10_000 || sampleIds.length > 25 ||
+      !/^chr(?:[1-9]|1[0-9]|2[0-2])$/.test(chrom)))
+    throw joinedMethylationError('BAD_USER_INPUT', 'Local joined methylation requires 1–25 samples and an autosomal region of at most 10,000 bases')
   // Joined GraphQL coordinates are inclusive and one-based. The source table
   // intentionally preserves raw BED 0-based half-open coordinates.
   const rawStart0 = start - 1
@@ -553,14 +567,16 @@ export const fetchJoinedPhasedMethylationForRegion = async (
       LIMIT 250001
     `,
     query_params: { chrom, rawStart0, rawStop0, sampleIds },
-    clickhouse_settings: {
-      max_execution_time: 30,
-      max_result_rows: '250001',
-      result_overflow_mode: 'throw',
-      max_rows_to_read: '10000000',
-      read_overflow_mode: 'throw',
-      max_bytes_to_read: '1073741824',
-    },
+    ...(localReadonly ? { abort_signal: AbortSignal.timeout(15_000) } : {
+      clickhouse_settings: {
+        max_execution_time: 30,
+        max_result_rows: '250001',
+        result_overflow_mode: 'throw',
+        max_rows_to_read: '10000000',
+        read_overflow_mode: 'throw',
+        max_bytes_to_read: '1073741824',
+      },
+    }),
     format: 'JSONEachRow',
   })
   return result.json()

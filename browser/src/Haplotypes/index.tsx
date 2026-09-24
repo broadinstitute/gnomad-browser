@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo, forwardRef, useRef, useEffect } from 'react'
+import { formatLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
 import styled from 'styled-components'
 import { Track } from '@gnomad/region-viewer'
 import { TooltipAnchor, SegmentedControl, Select } from '@gnomad/ui'
@@ -9,7 +10,8 @@ import AlluvialTrack from './AlluvialTrack'
 import HeatmapTrack from './HeatmapTrack'
 import BubbleTrack from './BubbleTrack'
 import HaplotypeHelpButton from './HelpButton'
-import MethylationHelp, { PerCopyMethylationHelp, type MethylationSampleAvailability } from './MethylationHelp'
+import MethylationHelp, { type MethylationSampleAvailability } from './MethylationHelp'
+import MethylationToggle from './MethylationToggle'
 import MethylationSummaryTrack from './MethylationSummaryTrack'
 import MethylationViewControls from './MethylationViewControls'
 import { filterGroupsToRegionalDeviationSamples } from './methylationOutlierFilter'
@@ -509,9 +511,6 @@ export const Legend = ({
   const selectableGroupingMode = normalizeSelectableGroupingMode(groupingMode)
   const isDiploidView = selectableGroupingMode === 'diploid'
   const isClusteredView = selectableGroupingMode === 'similarity'
-  const perCopyMethylationReason = joinedMethylationUnavailableReason
-    ?? joinedMethylationCapability?.reason
-    ?? 'Per-copy methylation capability is loading'
   const visibleMethylationProgressLabel = visibleMethylationProgressText(visibleMethylationProgress)
   const allMethylationProgressLabel = allMethylationProgressText(allMethylationProgress)
   const methylationRetryAvailable =
@@ -744,27 +743,13 @@ export const Legend = ({
               <>
                 <LayerControlRow>
                   <LayerToggle>
-                    <label
-                      title={perCopyMethylationReason}
-                      style={{
-                        display: 'flex', alignItems: 'center', gap: '3px',
-                        cursor: joinedMethylationUsableForRegion ? 'pointer' : 'not-allowed',
-                      }}
-                    >
-                      <input
-                        type='checkbox'
-                        checked={showPerCopyMethylation && joinedMethylationUsableForRegion}
-                        disabled={!joinedMethylationUsableForRegion}
-                        onChange={(event) => onShowPerCopyMethylationChange(event.target.checked)}
-                      />
-                      Methylation
-                    </label>
-                    <HaplotypeHelpButton title="Methylation">
-                      <PerCopyMethylationHelp
-                        capability={joinedMethylationCapability}
-                        unavailableReason={joinedMethylationUsableForRegion ? null : perCopyMethylationReason}
-                      />
-                    </HaplotypeHelpButton>
+                    <MethylationToggle
+                      capability={joinedMethylationCapability}
+                      usable={joinedMethylationUsableForRegion}
+                      unavailableReason={joinedMethylationUnavailableReason}
+                      checked={showPerCopyMethylation}
+                      onChange={onShowPerCopyMethylationChange}
+                    />
                   </LayerToggle>
                   {methylationContextEnabled && showPerCopyMethylation &&
                     joinedMethylationUsableForRegion && methylationAvailable && (
@@ -784,11 +769,6 @@ export const Legend = ({
                     </LayerToggle>
                   )}
                 </LayerControlRow>
-                {!joinedMethylationUsableForRegion && perCopyMethylationReason && (
-                  <span role='status' style={{ color: '#8a4b08', fontSize: '11px' }}>
-                    {perCopyMethylationReason}
-                  </span>
-                )}
                 {showPerCopyMethylation && joinedMethylationUsableForRegion && (
                   <NestedLayerControls aria-label="Methylation options">
                     <LayerControlRow>
@@ -894,11 +874,11 @@ export type LRVariant = {
   allele_type: string
   allele_length: number
   freq: {
-    af: number
+    af: number | null
     ac: number
     an: number
   }
-  populations: Array<{ id: string; af: number }>
+  populations: Array<{ id: string; af: number | null }>
   rsid: string
   major_consequence?: string | null
   cadd_phred?: number | null
@@ -1080,12 +1060,12 @@ const getDominantPop = (composition: Record<string, number>): string => {
 
 /** Genetic ancestry group AF mini bar chart for variant tooltip. */
 const PopulationAfBars = ({ variant }: { variant: LRVariant }) => {
-  const pops = (variant.populations || []).map((p) => ({
+  const pops = (variant.populations || []).flatMap((p) => p.af == null ? [] : [{
     key: p.id,
     colorKey: p.id.toUpperCase() === 'NFE' ? 'EUR' : p.id.toUpperCase(),
     displayId: longReadAncestryGroupDisplayId(p.id),
     value: p.af,
-  }))
+  }])
 
   if (pops.length === 0) return null
 
@@ -1160,7 +1140,7 @@ const VariantTooltip = ({ variant }: { variant: LRVariant }) => (
     )}
     <div>
       <dt>Allele Frequency:</dt>
-      <dd>{variant.freq.af.toFixed(4)}</dd>
+      <dd>{formatLongReadFrequency(variant.freq.af, 4)}</dd>
     </div>
     <div>
       <dt>Allele Count:</dt>
@@ -1627,7 +1607,9 @@ const AutoTunedHelp = () => (
       The threshold is then fine-tuned jointly with Min AF.
     </p>
     <p>
-      The allele-frequency threshold remains automatically managed. Adjusting cluster resolution
+      Unavailable AF does not pass an active minimum-frequency threshold; it remains context,
+      not a measured zero. A disabled threshold (0) retains all variants. The allele-frequency
+      threshold remains automatically managed. Adjusting cluster resolution
       changes only the visible cluster cut.
     </p>
   </>

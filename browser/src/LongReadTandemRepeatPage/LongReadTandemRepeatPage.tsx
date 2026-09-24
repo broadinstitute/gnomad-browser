@@ -24,6 +24,7 @@ import {
   trExplorerRegionUrl,
 } from '../ShortTandemRepeatPage/externalResourceUrls'
 import { AlleleNavigation, LongReadTrLocus } from './types'
+import { repeatPlotAvailable, SourceContextHistogramMetadata } from './SourceContextHistogram'
 
 const Header = styled.header`
   display: flex;
@@ -341,7 +342,9 @@ const LongReadTandemRepeatPage = ({
           locus.delta_min
         )} to ${signed(locus.delta_max)} bp versus REF)`
       : null
-  const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
+  const repeatPlotsAvailable =
+    repeatPlotAvailable(locus.repeat_count_plots, 'allele') ||
+    repeatPlotAvailable(locus.repeat_count_plots, 'genotype')
   // Compatibility for retained Phase 4–6 story fixtures. Live GraphQL always supplies
   // this non-null typed product field; an omitted fixture must remain fail-closed.
   const primaryMotifMeasurement = locus.primary_motif_measurement || {
@@ -508,6 +511,16 @@ const LongReadTandemRepeatPage = ({
       )}
 
       <ShortReadKnownLocusContext lrCohort={locus.lr_cohort} context={locus.short_read_context} />
+
+      {!repeatPlotsAvailable && locus.repeat_count_plots.allele_status != null && (
+        <section aria-label="Source-context distributions">
+          <p>
+            Source-context distributions unavailable: {locus.repeat_count_plots.status};{' '}
+            {locus.repeat_count_plots.reason_code || 'No available observations'}.
+          </p>
+          <SourceContextHistogramMetadata plots={locus.repeat_count_plots} />
+        </section>
+      )}
 
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}

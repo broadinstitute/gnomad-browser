@@ -15,14 +15,17 @@ const LongReadFrequenciesTable = ({ longRead }: Props) => {
     id: pop.id,
     ac: pop.ac,
     an: pop.an,
+    af: pop.af,
     ac_hom: pop.homozygote_alt_count ?? 0,
   }))
 
   const namedPopulations = addPopulationNames(mappedPopulations)
   const populations = nestPopulations(namedPopulations)
   const groupMax = longRead.populations.reduce<(typeof longRead.populations)[number] | null>(
-    (maxPopulation, population) =>
-      maxPopulation === null || population.af > maxPopulation.af ? population : maxPopulation,
+    (maxPopulation, population) => {
+      if (population.af == null) return maxPopulation
+      return maxPopulation?.af == null || population.af > maxPopulation.af ? population : maxPopulation
+    },
     null
   )
   const groupMaxName = groupMax
@@ -31,14 +34,19 @@ const LongReadFrequenciesTable = ({ longRead }: Props) => {
 
   return (
     <>
-      {groupMax && groupMaxName && (
-        <p>
-          <strong>Ancestry group maximum AF:</strong> {groupMax.af.toPrecision(4)} ({groupMaxName})
-        </p>
-      )}
+      <p>
+        <strong>Ancestry group maximum AF:</strong>{' '}
+        {groupMax?.af != null && groupMaxName
+          ? `${groupMax.af.toPrecision(4)} (${groupMaxName})`
+          : 'Unavailable'}
+      </p>
       <TableWrapper>
         <PopulationsTable
           populations={populations}
+          useSuppliedAf
+          suppliedTotalAf={longRead.af}
+          suppliedTotalAc={longRead.ac}
+          suppliedTotalAn={longRead.an}
           showHomozygotes={true}
           showHemizygotes={false}
         />

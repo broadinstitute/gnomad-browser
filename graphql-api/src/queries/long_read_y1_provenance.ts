@@ -1,4 +1,9 @@
 import crypto from 'node:crypto'
+import {
+  requireY1PrimaryColumnTypes,
+  requireY1PrimarySchemaReceipt,
+  type Y1ColumnRow,
+} from '../y1_primary_schema'
 
 import {
   isY1PilotEnabled,
@@ -163,7 +168,7 @@ const rows = async (query: string, query_params: Record<string, unknown> = {}) =
 
 const loadTableColumns = async (): Promise<TableColumns> => {
   const schemaRows = await rows(`
-    SELECT table, name
+    SELECT table, name, type, default_kind
     FROM system.columns
     WHERE database = currentDatabase() AND startsWith(table, 'lr_y1_')
     ORDER BY table, position
@@ -173,6 +178,39 @@ const loadTableColumns = async (): Promise<TableColumns> => {
     const names = columns.get(String(row.table)) || new Set<string>()
     names.add(String(row.name))
     columns.set(String(row.table), names)
+  }
+  requirePrimarySchema(columns)
+  const version = requireY1PrimaryColumnTypes(schemaRows as Y1ColumnRow[])
+  const receipts = await rows(`
+    SELECT ledger.schema_scope, ledger.schema_version, ledger.state, ledger.contract
+    FROM lr_y1_schema_versions AS ledger
+    INNER JOIN (
+      SELECT schema_scope, schema_version, max(revision) AS revision
+      FROM lr_y1_schema_versions WHERE schema_scope = 'y1_full'
+      GROUP BY schema_scope, schema_version
+    ) AS latest
+    ON ledger.schema_scope = latest.schema_scope AND ledger.schema_version = latest.schema_version
+      AND ledger.revision = latest.revision
+    WHERE ledger.schema_scope = 'y1_full'
+  `)
+  requireY1PrimarySchemaReceipt(version, receipts)
+  if (
+    version === 6 &&
+    (!y1ClickhouseConfig.database.includes('_v6_') || y1ClickhouseConfig.database.includes('_v5_'))
+  ) {
+    throw new Error(
+      'Y1 nullable primary schema requires a distinct _v6_ database, never a relabeled _v5_ target'
+    )
+  }
+  if (
+    version === 6 &&
+    (!y1PrimaryManifests?.size ||
+      !y1PrimaryRunMap?.size ||
+      [...y1PrimaryManifests.values()].some(
+        (manifest) => !manifest.expected_backend_revision || !manifest.expected_worker_build_version
+      ))
+  ) {
+    throw new Error('Y1 v6 requires explicit selected manifests with an expected build per run')
   }
   return columns
 }
@@ -553,6 +591,12 @@ const requireAcceptedTaskReceipts = async (
       state: row.state,
       ...(manifest
         ? {
+            ...(manifest.expected_backend_revision
+              ? {
+                  backend_revision: manifest.expected_backend_revision,
+                  worker_build_version: manifest.expected_worker_build_version!,
+                }
+              : {}),
             source_uri: manifest.source.source_uri,
             source_generation: manifest.source.source_generation,
             source_checksum_algorithm: manifest.source.source_checksum_algorithm,
@@ -836,7 +880,6 @@ export const preflightY1AcceptedSources = async () => {
   if (!isY1PilotEnabled) return
 
   const columns = await loadTableColumns()
-  requirePrimarySchema(columns)
   const runRows = await discoverRunRows()
   const presentationRuns = await configuredRuns(runRows)
 

@@ -310,14 +310,14 @@ export type LongReadPopulation = {
   id: string
   ac: number
   an: number
-  af: number
+  af: number | null
   homozygote_alt_count: number | null
 }
 
 export type LongReadSequencingType = {
   ac: number
   an: number
-  af: number
+  af: number | null
   homozygote_ref_count: number | null
   homozygote_alt_count: number | null
   heterozygote_count: number | null
@@ -351,7 +351,7 @@ export type LongReadDetails = {
         ac: number | null
         an: number | null
         af: number | null
-        populations: { id: string; ac: number; an: number; af: number }[]
+        populations: { id: string; ac: number; an: number; af: number | null }[]
       }[]
     | null
   main_reference_region: {

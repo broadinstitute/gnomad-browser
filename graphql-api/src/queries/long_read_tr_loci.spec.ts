@@ -1,4 +1,8 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
 import { jest } from '@jest/globals'
+import { buildSchema, graphql } from 'graphql'
 
 const mockQuery = jest.fn()
 jest.mock('../clickhouse', () => ({
@@ -166,13 +170,241 @@ describe('long-read TR locus query contract', () => {
     expect(longReadTrLocusCacheKey(base)).not.toBe(
       longReadTrLocusCacheKey({ ...base, source: source('hgsvc_hprc', { attemptId: 'attempt-2' }) })
     )
-    expect(longReadTrLocusCacheKey(base)).toMatch(/^lr_tr_locus:v9:/)
+    expect(longReadTrLocusCacheKey(base)).toMatch(/^lr_tr_locus:v11:/)
     expect(() =>
       longReadTrLocusCacheKey({
         ...base,
         source: { ...base.source, accepted_task_attempt_digest: '0'.repeat(64) },
       })
     ).toThrow('TR_LOCUS_ACCEPTED_ATTEMPT_AUTHORITY_INVALID')
+  })
+
+  test.each([
+    [null, null],
+    [undefined, null],
+    [0, 0],
+    ['0', 0],
+    [0.25, 0.25],
+    ['0.25', 0.25],
+  ])('preserves source AF %p as %p throughout the locus response', async (af, expectedAf) => {
+    const allele = { ...compactAlleles(1, 4)[0], af }
+    mockQuery
+      .mockImplementationOnce(() => result([{ ...summary(1, 4), af: [af] }]))
+      .mockImplementationOnce(() => result([allele]))
+      .mockImplementationOnce(() =>
+        result([{ ...allele, division: 'afr', values_available: af == null ? 0 : 1 }])
+      )
+      .mockImplementationOnce(() => result([allele]))
+
+    const locus = await fetchLongReadTrLocus({
+      id: httLocusId,
+      cohort: 'aou',
+      selectedAllele: `${sourceVariantId}~1`,
+      source: source('aou'),
+    })
+
+    expect(locus).toMatchObject({
+      exact_alt_count: 1,
+      exact_alt_count_complete: true,
+      sequences_available: true,
+      source_records: [{ non_reference_ac: 1, an: 4, non_reference_af: expectedAf }],
+      selected_allele: {
+        alt_index: 1,
+        freq: {
+          all: { ac: 1, an: 4, af: expectedAf },
+          populations: [{ id: 'afr', ac: 1, an: 4, af: expectedAf }],
+        },
+      },
+      alleles: {
+        nodes: [{ alt_index: 1, freq: { all: { ac: 1, an: 4, af: expectedAf } } }],
+      },
+    })
+    // Counts remain source counts even for numeric zero AF: do not derive AF from 1/4.
+    const frequencyRequest = mockQuery.mock.calls[2][0] as any
+    expect(frequencyRequest.query).toContain(
+      '(values_available = 1 OR (ac IS NOT NULL AND an IS NOT NULL))'
+    )
+    expect(frequencyRequest.query).toContain('sourceRecordAttemptIds:Array(String)')
+    expect(frequencyRequest.query_params).toMatchObject({
+      runId: 'run-aou',
+      sourceRecordTaskIds: ['task-1'],
+      sourceRecordAttemptIds: ['attempt-1'],
+    })
+  })
+
+  test.each([
+    [null, null],
+    [undefined, null],
+    [[], null],
+    [[0.25], null],
+    [[0.25, null], null],
+    [[null, 0.25], null],
+    [[null, null], null],
+    [[0, '0'], 0],
+    [[0.25, '0.25'], 0.5],
+  ])('only sums complete source AF arrays: %p -> %p', async (af, expectedAf) => {
+    mockQuery
+      .mockImplementationOnce(() => result([{ ...summary(2, 4), af }]))
+      .mockImplementationOnce(() => result(compactAlleles(2, 4)))
+      .mockImplementationOnce(() => result([]))
+
+    const locus = await fetchLongReadTrLocus({
+      id: httLocusId,
+      cohort: 'aou',
+      source: source('aou'),
+    })
+    expect(locus?.source_records).toEqual([
+      expect.objectContaining({ non_reference_ac: 2, an: 4, non_reference_af: expectedAf }),
+    ])
+    expect(locus?.alleles.nodes).toHaveLength(2)
+  })
+
+  test.each([0, 4])('retains null AF with zero AC and AN=%p across cursor pages', async (an) => {
+    const rows = compactAlleles(2, an).map((allele) => ({ ...allele, ac: 0, af: null }))
+    const nodes: any[] = []
+    let after: string | null = null
+    for (let page = 0; page < 2; page += 1) {
+      mockQuery
+        .mockImplementationOnce(() => result([{ ...summary(2, an), ac: [0, 0], af: [null, null] }]))
+        .mockImplementationOnce(() => result(rows))
+        .mockImplementationOnce(() =>
+          result(rows.map((row) => ({ ...row, division: 'afr', values_available: 0 })))
+        )
+      const locus = await fetchLongReadTrLocus({
+        id: httLocusId,
+        cohort: 'aou',
+        first: 1,
+        after,
+        source: source('aou'),
+      })
+      expect(locus?.source_records[0]).toMatchObject({
+        non_reference_ac: 0,
+        an,
+        non_reference_af: null,
+      })
+      expect(locus?.alleles.page_info.has_next_page).toBe(page === 0)
+      after = locus!.alleles.page_info.end_cursor
+      nodes.push(...locus!.alleles.nodes)
+    }
+    expect(nodes.map(({ alt_index }) => alt_index)).toEqual([1, 2])
+    nodes.forEach(({ freq }) => {
+      expect(freq).toEqual({
+        all: { ac: 0, an, af: null },
+        populations: [{ id: 'afr', ac: 0, an, af: null }],
+      })
+    })
+  })
+
+  test('retains 149 synthetic HTT ALTs and count-bearing populations with missing AF', async () => {
+    // Representative locus coordinates, synthetic 149-ALT/894-frequency fixture, not a DB receipt.
+    const rows = compactAlleles(149, 1000).map((allele) => ({
+      ...allele,
+      ac: allele.alt_index === 2 ? 0 : allele.ac,
+      af: allele.alt_index === 2 ? 0 : null,
+    }))
+    const divisions = ['all', 'afr', 'nfe', 'XX', 'XY', 'afr_XX']
+    const frequencyRows = rows.flatMap((allele) =>
+      divisions.map((division) => ({
+        ...allele,
+        division,
+        values_available: allele.af == null ? 0 : 1,
+      }))
+    )
+    expect(frequencyRows).toHaveLength(894)
+    mockQuery
+      .mockImplementationOnce(() =>
+        result([
+          { ...summary(149, 1000), ac: rows.map(({ ac }) => ac), af: rows.map(({ af }) => af) },
+        ])
+      )
+      .mockImplementationOnce(() => result(rows))
+      .mockImplementationOnce(() => result(frequencyRows))
+      .mockImplementationOnce(() => result([rows[71]]))
+
+    const locus = await fetchLongReadTrLocus({
+      id: httLocusId,
+      cohort: 'aou',
+      first: 600,
+      selectedAllele: `${sourceVariantId}~72`,
+      source: source('aou'),
+    })
+    expect(locus).toMatchObject({
+      exact_alt_count: 149,
+      exact_alt_count_complete: true,
+      sequences_available: true,
+      selected_allele_valid: true,
+      source_records: [{ non_reference_ac: 148, an: 1000, non_reference_af: null }],
+      selected_allele: { alt_index: 72, freq: { all: { ac: 1, an: 1000, af: null } } },
+      alleles: { page_info: { has_next_page: false, end_cursor: null } },
+      whole_record_allele_landscape: {
+        status: 'AVAILABLE',
+        // This is a count-only product; missing AF must not suppress valid counts.
+        stratified_available: true,
+        stratified_unavailable_reason: null,
+      },
+    })
+    expect(locus?.alleles.nodes).toHaveLength(149)
+    expect(locus?.alleles.nodes.map(({ alt_index }: any) => alt_index)).toEqual(
+      rows.map(({ alt_index }) => alt_index)
+    )
+    locus?.alleles.nodes.forEach((node: any, index: number) => {
+      const expected = { ac: rows[index].ac, an: 1000, af: rows[index].af }
+      expect(node.freq.all).toEqual(expected)
+      expect(node.freq.populations).toEqual(
+        divisions.slice(1).map((division) => ({ id: division, ...expected }))
+      )
+    })
+    const landscape = locus?.whole_record_allele_landscape as any
+    expect(landscape.bins.reduce((sum: number, bin: any) => sum + bin.called_alleles, 0)).toBe(148)
+    expect(landscape.bins.reduce((sum: number, bin: any) => sum + bin.exact_alt_count, 0)).toBe(149)
+    expect(landscape.bins.some((bin: any) => bin.stacks.length > 0)).toBe(true)
+
+    // Execute the affected actual SDL types, including the non-null allele/list wrappers.
+    const trSdl = fs.readFileSync(
+      path.join(__dirname, '../graphql/types/long-read-tandem-repeat.graphql'),
+      'utf8'
+    )
+    const variantSdl = fs.readFileSync(
+      path.join(__dirname, '../graphql/types/long-read-variant.graphql'),
+      'utf8'
+    )
+    const extract = (sdl: string, name: string) =>
+      sdl.match(new RegExp(`type ${name} \\{[^}]+\\}`))![0]
+    const schema = buildSchema(
+      [
+        ...['LongReadTrSourceRecord', 'LongReadTrAllele', 'LongReadTrSelectedAllele'].map((name) =>
+          extract(trSdl, name)
+        ),
+        ...[
+          'LongReadVariantFrequencies',
+          'LongReadVariantAllFrequencies',
+          'LongReadVariantPopulationFrequencies',
+        ].map((name) => extract(variantSdl, name)),
+        'type Query { source_records: [LongReadTrSourceRecord!]! nodes: [LongReadTrAllele!]! selected: LongReadTrSelectedAllele! }',
+      ].join('\n')
+    )
+    const response = await graphql({
+      schema,
+      source: `{
+        source_records { non_reference_ac an non_reference_af }
+        nodes { alt_index freq { all { ac an af } populations { id ac an af } } }
+        selected { alt_index freq { all { ac an af } } }
+      }`,
+      rootValue: {
+        source_records: locus?.source_records,
+        nodes: locus?.alleles.nodes,
+        selected: locus?.selected_allele,
+      },
+    })
+    expect(response.errors).toBeUndefined()
+    expect(response.data?.source_records).toEqual([
+      { non_reference_ac: 148, an: 1000, non_reference_af: null },
+    ])
+    expect(response.data?.nodes).toHaveLength(149)
+    expect(response.data?.selected).toEqual({
+      alt_index: 72,
+      freq: { all: { ac: 1, an: 1000, af: null } },
+    })
   })
 
   test('returns complete, privacy-safe HTT whole-record aggregates and selected detail', async () => {

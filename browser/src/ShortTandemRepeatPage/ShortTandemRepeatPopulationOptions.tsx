@@ -58,6 +58,8 @@ type Props = {
   setSelectedPopulation: Dispatch<SetStateAction<PopulationId | null>>
   setSelectedSex: Dispatch<SetStateAction<Sex | null>>
   ancestryGroupName?: (id: PopulationId) => string
+  sexLabels?: Record<Sex, string>
+  sourceMetadata?: boolean
 }
 
 const ShortTandemRepeatPopulationOptions = ({
@@ -68,6 +70,8 @@ const ShortTandemRepeatPopulationOptions = ({
   setSelectedPopulation,
   setSelectedSex,
   ancestryGroupName = (group) => GNOMAD_POPULATION_NAMES[group],
+  sexLabels = { XX: 'XX', XY: 'XY', unknown: 'Unknown' },
+  sourceMetadata = false,
 }: Props) => {
   const populationsSortedByName = [...populations].sort((group1, group2) =>
     ancestryGroupName(group1).localeCompare(ancestryGroupName(group2))
@@ -76,7 +80,7 @@ const ShortTandemRepeatPopulationOptions = ({
   return (
     <Wrapper>
       <Label htmlFor={`short-tandem-repeat-${id}-population-options-population`}>
-        Genetic ancestry group: &nbsp;
+        {sourceMetadata ? 'Population (source metadata)' : 'Genetic ancestry group'}: &nbsp;
         <Select
           id={`short-tandem-repeat-${id}-population-options-population`}
           value={selectedPopulation || ''}
@@ -84,7 +88,7 @@ const ShortTandemRepeatPopulationOptions = ({
             setSelectedPopulation(e.target.value === '' ? null : e.target.value)
           }
         >
-          <option value="">Global</option>
+          <option value="">{sourceMetadata ? 'All source observations' : 'Global'}</option>
           {populationsSortedByName.map((population) => (
             <option key={population} value={population}>
               {ancestryGroupName(population)}
@@ -94,7 +98,7 @@ const ShortTandemRepeatPopulationOptions = ({
       </Label>
 
       <Label htmlFor={`short-tandem-repeat-${id}-population-options-sex`}>
-        Sex: &nbsp;
+        {sourceMetadata ? 'Sex (source metadata)' : 'Sex'}: &nbsp;
         <Select
           id={`short-tandem-repeat-${id}-population-options-sex`}
           value={selectedSex || ''}
@@ -103,9 +107,9 @@ const ShortTandemRepeatPopulationOptions = ({
           }
         >
           <option value="">All</option>
-          <option value="XX">XX</option>
-          <option value="XY">XY</option>
-          <option value="unknown">Unknown</option>
+          <option value="XX">{sexLabels.XX}</option>
+          <option value="XY">{sexLabels.XY}</option>
+          <option value="unknown">{sexLabels.unknown}</option>
         </Select>
       </Label>
     </Wrapper>

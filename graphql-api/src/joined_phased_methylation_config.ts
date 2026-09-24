@@ -23,6 +23,15 @@ const JOINED_PHASED_APPROVAL_STATEMENT_SHA256 =
   '108dbe49d6305f34fe9559b821912613c1748ecff65850261f0e2051023de6e1'
 const JOINED_PHASED_APPROVAL_ARTIFACT_SHA256 =
   'ac8224a72ae98298e55be7debde87bd40c39840cd691a4fa169ce653d5a61df6'
+// A separate local-only decision, never a revalidation of the July receipt.
+export const LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 =
+  '929843f396c396d6dcd0190f6442cd865bebb6db76489ef9dd0902552a662283'
+export const LOCAL_JOINED_BROWSER_BUNDLE_SHA256 =
+  '29cb1dc73670bdcfa993983931219bb0e6798a200152dffab890f702b464a57b'
+const LOCAL_JOINED_APPROVAL_ARTIFACT_SHA256 =
+  '6935dd8b80ba640ee91738567c8333404028120480666dc792b8d835578ba111'
+const LOCAL_JOINED_APPROVAL_REF =
+  'flow://rolling/enable-local-joined-methylation-under-explicit-unc-f1615509/operator-approval.json'
 export const JOINED_PHASED_MAX_SAMPLES = 25
 export const JOINED_PHASED_MAX_RECORDS = 250_000
 
@@ -63,7 +72,7 @@ export type JoinedPhasedMethylationOrientationReceipt = {
     approved_role: 'gnomAD-LR operator'
     approved_at: string
     decision_artifact_ref: string
-    decision_artifact_sha256: typeof JOINED_PHASED_APPROVAL_ARTIFACT_SHA256
+    decision_artifact_sha256: string
     operator_instructed_assume_yes: true
     independently_machine_verified_lineage: false
     intermediate_objects_available_for_verification: false
@@ -89,7 +98,7 @@ export type JoinedPhasedMethylationOrientationReceipt = {
     source_present_samples: 231
   }
   browser_product: {
-    primary_manifest_bundle_sha256: typeof SOURCE_PHASED_BROWSER_VCF_BUNDLE_SHA256
+    primary_manifest_bundle_sha256: string
     cohort: 'hgsvc_hprc'
     reference_genome: 'GRCh38'
     entries: JoinedBrowserEntry[]
@@ -126,7 +135,7 @@ export type JoinedPhasedMethylationRoute = {
   run_id: typeof SOURCE_PHASED_METHYLATION_RUN_ID
   raw_receipt_path: string
   orientation_receipt_path: string
-  orientation_receipt_sha256: typeof JOINED_PHASED_ORIENTATION_RECEIPT_SHA256
+  orientation_receipt_sha256: string
   receipt: JoinedPhasedMethylationOrientationReceipt
   source_route: SourcePhasedMethylationRoute
 }
@@ -274,6 +283,11 @@ export const readJoinedPhasedMethylationOrientationReceipt = (
     'receipt.integrity'
   )
 
+  const localAssumption =
+    browser.primary_manifest_bundle_sha256 === LOCAL_JOINED_BROWSER_BUNDLE_SHA256
+  const expectedBundle = localAssumption
+    ? LOCAL_JOINED_BROWSER_BUNDLE_SHA256
+    : SOURCE_PHASED_BROWSER_VCF_BUNDLE_SHA256
   if (
     receipt.schema_version !== 1 ||
     receipt.status !== 'operator_assumption_approved' ||
@@ -285,7 +299,8 @@ export const readJoinedPhasedMethylationOrientationReceipt = (
     approval.approved_role !== 'gnomAD-LR operator' ||
     approval.statement !== JOINED_PHASED_APPROVAL_STATEMENT ||
     approval.statement_sha256 !== JOINED_PHASED_APPROVAL_STATEMENT_SHA256 ||
-    approval.decision_artifact_sha256 !== JOINED_PHASED_APPROVAL_ARTIFACT_SHA256
+    approval.decision_artifact_sha256 !== (localAssumption
+      ? LOCAL_JOINED_APPROVAL_ARTIFACT_SHA256 : JOINED_PHASED_APPROVAL_ARTIFACT_SHA256)
   )
     throw new Error('Joined methylation receipt lacks the exact operator-assumption approval basis')
   string(receipt.receipt_id, 'receipt.receipt_id')
@@ -296,10 +311,10 @@ export const readJoinedPhasedMethylationOrientationReceipt = (
   string(approval.decision_artifact_ref, 'receipt.approval_basis.decision_artifact_ref')
   string(approval.production_release_gate, 'receipt.approval_basis.production_release_gate')
   if (
-    !approval.scope.includes(SOURCE_PHASED_BROWSER_VCF_BUNDLE_SHA256) ||
-    approval.decision_artifact_ref !==
-      'flow://rolling/implement-operator-approved-direct-methylation-ori-ecf9c6ce/briefing-1786042659.xml' ||
-    approval.approved_at !== '2026-08-06T14:57:45.89893-04:00'
+    !approval.scope.includes(expectedBundle) ||
+    approval.decision_artifact_ref !== (localAssumption ? LOCAL_JOINED_APPROVAL_REF :
+      'flow://rolling/implement-operator-approved-direct-methylation-ori-ecf9c6ce/briefing-1786042659.xml') ||
+    approval.approved_at !== (localAssumption ? '2026-09-24' : '2026-08-06T14:57:45.89893-04:00')
   )
     throw new Error(
       'Joined methylation receipt approval provenance is not the exact recorded decision'
@@ -325,7 +340,7 @@ export const readJoinedPhasedMethylationOrientationReceipt = (
     'task_request_sha256',
   ].forEach((key) => sha(source[key], `receipt.source_product.${key}`))
   if (
-    browser.primary_manifest_bundle_sha256 !== SOURCE_PHASED_BROWSER_VCF_BUNDLE_SHA256 ||
+    browser.primary_manifest_bundle_sha256 !== expectedBundle ||
     browser.cohort !== 'hgsvc_hprc' ||
     browser.reference_genome !== 'GRCh38'
   )
@@ -494,19 +509,31 @@ export const resolveJoinedPhasedMethylationRoute = (
     route.orientation_receipt_path,
     'joined methylation orientation receipt path'
   )
+  const localAssumption =
+    route.expected_orientation_receipt_sha256 === LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256
+  if (localAssumption) {
+    let hostname = ''
+    try { hostname = new URL(env.LR_Y1_CLICKHOUSE_URL || '').hostname } catch { /* fail closed */ }
+    if (env.LR_Y1_LOCAL_JOINED_MAPPING_ASSUMPTION_ENABLED !== 'true' ||
+        env.NODE_ENV !== 'development' || !['127.0.0.1', 'localhost', '[::1]'].includes(hostname) ||
+        env.LR_Y1_CLICKHOUSE_DATABASE !== 'gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af')
+      throw new Error('Refreshed joined mapping assumption requires explicit local development clone opt-in')
+  }
+  const expectedReceipt = localAssumption
+    ? LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 : JOINED_PHASED_ORIENTATION_RECEIPT_SHA256
+  const expectedBundle = localAssumption
+    ? LOCAL_JOINED_BROWSER_BUNDLE_SHA256 : SOURCE_PHASED_BROWSER_VCF_BUNDLE_SHA256
   if (
     database !== SOURCE_PHASED_METHYLATION_DATABASE ||
     run_id !== SOURCE_PHASED_METHYLATION_RUN_ID ||
-    route.expected_orientation_receipt_sha256 !== JOINED_PHASED_ORIENTATION_RECEIPT_SHA256 ||
+    route.expected_orientation_receipt_sha256 !== expectedReceipt ||
     sha256File(raw_receipt_path, 'raw serving receipt') !== SOURCE_PHASED_SERVING_RECEIPT_SHA256 ||
-    sha256File(orientation_receipt_path, 'orientation receipt') !==
-      JOINED_PHASED_ORIENTATION_RECEIPT_SHA256
+    sha256File(orientation_receipt_path, 'orientation receipt') !== expectedReceipt
   )
     throw new Error('Joined methylation route is not the exact approved receipt/product')
   const primaryPath = string(env.LR_Y1_PRIMARY_MANIFEST_PATH, 'LR_Y1_PRIMARY_MANIFEST_PATH')
   if (
-    sha256File(primaryPath, 'LR Y1 primary manifest bundle') !==
-    SOURCE_PHASED_BROWSER_VCF_BUNDLE_SHA256
+    sha256File(primaryPath, 'LR Y1 primary manifest bundle') !== expectedBundle
   )
     throw new Error('Joined methylation route does not bind the configured browser VCF bundle')
   const sourceReceipt = readSourcePhasedMethylationServingReceipt(raw_receipt_path)
@@ -517,7 +544,7 @@ export const resolveJoinedPhasedMethylationRoute = (
     run_id: run_id as any,
     raw_receipt_path,
     orientation_receipt_path,
-    orientation_receipt_sha256: JOINED_PHASED_ORIENTATION_RECEIPT_SHA256,
+    orientation_receipt_sha256: expectedReceipt,
     receipt,
     source_route: {
       database: database as any,

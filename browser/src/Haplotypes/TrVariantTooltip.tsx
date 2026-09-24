@@ -1,4 +1,5 @@
 import React from 'react'
+import { formatLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
 
 import { formatLongReadAlleleDisplay } from '../LongReadVariantPage/formatLongReadVariantId'
 
@@ -14,7 +15,7 @@ export type TrTooltipVariant = {
   alt: string
   allele_type: string
   allele_length: number
-  freq: { af: number }
+  freq: { af: number | null }
   rsid?: string | null
 }
 
@@ -73,7 +74,7 @@ export const HaplotypeVariantTooltipContent = ({
         </>
       )}
       <div>
-        <strong>AF:</strong> {variant.freq.af.toFixed(4)}
+        <strong>AF:</strong> {formatLongReadFrequency(variant.freq.af, 4)}
       </div>
       {variant.rsid && (
         <div>

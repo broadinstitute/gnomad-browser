@@ -1,6 +1,8 @@
 import type { DiplotypeSample } from '../Haplotypes/haplotypeCompute'
 
 export type JoinedPhasedMethylationIdentity = {
+  approval_basis?: 'operator_direct_mapping_assumption'
+  independently_machine_verified_lineage?: false
   source_run_id: string
   source_completion_receipt_sha256: string
   source_manifest_sha256: string
@@ -18,12 +20,14 @@ export type JoinedPhasedMethylationCapability = {
   joinable_to_vcf: boolean
   status:
     | 'AVAILABLE_CONFIRMED'
+    | 'AVAILABLE_OPERATOR_ASSUMPTION'
     | 'UNAVAILABLE_NOT_CONFIGURED'
     | 'UNAVAILABLE_PRIMARY_CARRIERS'
     | 'UNAVAILABLE_ORIENTATION_EXCLUDED_CONTIG'
     | 'UNAVAILABLE_AOU_SUMMARY_ONLY'
   identity: JoinedPhasedMethylationIdentity | null
   source_sample_ids: string[]
+  max_span_bp?: number | null
   max_samples: number
   max_records: number
   reason: string
@@ -137,7 +141,10 @@ export const joinedCapabilityConfirmed = (
 } =>
   capability?.available === true &&
   capability.joinable_to_vcf === true &&
-  capability.status === 'AVAILABLE_CONFIRMED' &&
+  (capability.status === 'AVAILABLE_CONFIRMED' ||
+    (capability.status === 'AVAILABLE_OPERATOR_ASSUMPTION' &&
+      capability.identity?.approval_basis === 'operator_direct_mapping_assumption' &&
+      capability.identity?.independently_machine_verified_lineage === false)) &&
   admittedIdentityComplete(capability.identity) &&
   admittedSourceRosterComplete(capability.source_sample_ids)
 
@@ -153,6 +160,29 @@ export type JoinedMethylationRegionUsability =
 
 export const inclusiveRegionSpanBp = (start: number, stop: number) => stop - start + 1
 
+// NEW local batching guard, not a historical/public viewport limit. A capability
+// with a per-query span cap permits at most six coordinate chunks (60 kb locally).
+// Uncapped ordinary routes retain their existing single-coordinate-request behavior.
+export const JOINED_MAX_COORDINATE_CHUNKS = 6
+export const JOINED_MAX_VIEWPORT_REQUESTS = 72 // 60 for all 231 samples + bounded retries
+export const JOINED_MAX_VIEWPORT_RECORDS = 250_000
+export const JOINED_ZOOM_NEEDED = 'Region too large. Zoom in for methylation.'
+
+export const joinedMethylationCoordinateChunks = (start: number, stop: number, maxSpanBp?: number | null) => {
+  const span = inclusiveRegionSpanBp(start, stop)
+  const chunkSize = maxSpanBp ?? span
+  if (!Number.isSafeInteger(start) || !Number.isSafeInteger(stop) || start < 1 || span < 1 ||
+      !Number.isSafeInteger(chunkSize) || chunkSize < 1) throw new Error('JOINED_REQUEST_REGION_MISMATCH')
+  if (Math.ceil(span / chunkSize) > JOINED_MAX_COORDINATE_CHUNKS)
+    throw new Error(JOINED_ZOOM_NEEDED)
+  const chunks: { start: number; stop: number }[] = []
+  for (let from = start; from <= stop; from += chunkSize) {
+    // Browser/API coordinates stay one-based inclusive. Only the backend converts to BED.
+    chunks.push({ start: from, stop: Math.min(stop, from + chunkSize - 1) })
+  }
+  return chunks
+}
+
 export const joinedMethylationUsabilityForRegion = (
   capability: JoinedPhasedMethylationCapability | null | undefined,
   regionSpanBp: number,
@@ -166,7 +196,7 @@ export const joinedMethylationUsabilityForRegion = (
     const claimsAvailability =
       capability.available === true &&
       capability.joinable_to_vcf === true &&
-      capability.status === 'AVAILABLE_CONFIRMED'
+      ['AVAILABLE_CONFIRMED', 'AVAILABLE_OPERATOR_ASSUMPTION'].includes(capability.status)
     return {
       usable: false,
       reason: claimsAvailability
@@ -182,8 +212,13 @@ export const joinedMethylationUsabilityForRegion = (
   ) {
     return { usable: false, reason: 'Unavailable: capability limits are malformed' }
   }
-  if (!Number.isFinite(regionSpanBp) || regionSpanBp < 0) {
+  if (!Number.isSafeInteger(regionSpanBp) || regionSpanBp < 1) {
     return { usable: false, reason: 'Unavailable: current region span is invalid' }
+  }
+  try {
+    joinedMethylationCoordinateChunks(1, regionSpanBp, capability.max_span_bp)
+  } catch (error: any) {
+    return { usable: false, reason: error.message }
   }
   return { usable: true, capability, reason: null }
 }
@@ -223,6 +258,8 @@ export const joinedMethylationRequestScope = ({
     identity?.browser_vcf_run_id ?? null,
     identity?.mapping_artifact_sha256 ?? null,
     identity?.mapping_scope ?? null,
+    identity?.approval_basis ?? null,
+    identity?.independently_machine_verified_lineage ?? null,
   ])
 
 export const filterGroupsToSourceSamples = <T extends { samples: Array<{ sample_id: string }> }>(
@@ -236,6 +273,22 @@ export const filterGroupsToSourceSamples = <T extends { samples: Array<{ sample_
       samples: group.samples.filter((sample) => admitted.has(sample.sample_id)),
     }))
     .filter((group) => group.samples.length > 0) as T[]
+}
+
+// Visible rows may include primary samples outside the complete admitted source
+// roster. They are explicitly unavailable, not requests that are still loading.
+export const withSourceAbsentSampleStates = (
+  states: ReadonlyMap<string, PerCopyMethylationSampleState>,
+  representedSampleIds: readonly string[],
+  sourceSampleIds: readonly string[]
+): ReadonlyMap<string, PerCopyMethylationSampleState> => {
+  const result = new Map(states)
+  const source = new Set(sourceSampleIds)
+  for (const id of representedSampleIds) {
+    if (!source.has(id) && !result.has(id))
+      result.set(id, { status: 'unavailable', reason: 'No source-haplotype methylation is available for this sample' })
+  }
+  return result
 }
 
 export type PerCopyLoadingProgress = {
@@ -314,6 +367,8 @@ const identityFields: (keyof JoinedPhasedMethylationIdentity)[] = [
   'orientation_receipt_sha256',
   'mapping_artifact_sha256',
   'mapping_scope',
+  'approval_basis',
+  'independently_machine_verified_lineage',
 ]
 
 const canonicalChromosome = (chrom: string) => {
@@ -431,6 +486,52 @@ export const validateJoinedMethylationBatch = (
     biologicalObservations.add(biologicalObservation)
   }
   return region
+}
+
+// A logical sample batch is atomic across coordinates. No partial sample/cluster
+// percentages escape on failure, cancellation, changed source status, or overflow.
+// Sequential requests deliberately keep current-view concurrency at one: client
+// cancellation cannot guarantee cancellation of the read-only server query.
+export const loadJoinedMethylationChunks = async (
+  expectation: JoinedMethylationBatchExpectation,
+  limits: { max_span_bp?: number | null; max_records: number },
+  budget: { requests: number; records: number },
+  signal: AbortSignal,
+  request: (chunk: { start: number; stop: number }) => Promise<JoinedPhasedMethylationRegion>
+): Promise<JoinedPhasedMethylationRegion> => {
+  const chunks = joinedMethylationCoordinateChunks(expectation.start, expectation.stop, limits.max_span_bp)
+  const bounded = limits.max_span_bp != null
+  const maxRecords = JOINED_MAX_VIEWPORT_RECORDS
+  const assertActive = () => {
+    if (signal.aborted) throw Object.assign(new Error('Canceled'), { name: 'AbortError' })
+  }
+  assertActive()
+  if (bounded && budget.requests + chunks.length > JOINED_MAX_VIEWPORT_REQUESTS)
+    throw new Error('Methylation request limit reached. Zoom in.')
+  let combined: JoinedPhasedMethylationRegion | undefined
+  for (const chunk of chunks) {
+    assertActive()
+    budget.requests += 1 // Failed/aborted requests also consume this viewport's budget.
+    const region = await request(chunk)
+    assertActive()
+    validateJoinedMethylationBatch(region, { ...expectation, ...chunk })
+    budget.records += region.records.length
+    if (region.records.length > limits.max_records || (bounded && budget.records > maxRecords))
+      throw new Error('Methylation point limit reached. Zoom in.')
+    if (!combined) {
+      combined = { ...region, records: [...region.records] }
+    } else {
+      const statuses = (value: JoinedPhasedMethylationRegion) => JSON.stringify([
+        [...value.completed_sample_ids].sort(),
+        value.unavailable_samples.map((s) => [s.sample_id, s.status]).sort(),
+      ])
+      if (statuses(combined) !== statuses(region)) throw new Error('JOINED_COMPLETION_ACCOUNTING_MISMATCH')
+      combined.records.push(...region.records)
+    }
+  }
+  // Non-overlapping chunks must not share a source row or biological observation.
+  // Reject duplicates rather than silently collapsing scientific measurements.
+  return validateJoinedMethylationBatch(combined!, expectation)
 }
 
 export const joinedMethylationRecordIdentity = (record: JoinedPhasedMethylationRecord) =>

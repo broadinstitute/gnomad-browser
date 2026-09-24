@@ -109,7 +109,8 @@ type Fafmax {
 type LongReadSequencingTypeData {
   ac: Int!
   an: Int!
-  af: Float!
+  # Source AF may be unavailable even when counts are known.
+  af: Float
   homozygote_ref_count: Int
   homozygote_alt_count: Int
   heterozygote_count: Int

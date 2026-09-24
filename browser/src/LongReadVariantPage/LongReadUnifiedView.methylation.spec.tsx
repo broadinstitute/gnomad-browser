@@ -814,6 +814,70 @@ describe('LongReadUnifiedView haplotype request ownership', () => {
   })
 })
 
+describe('LongReadUnifiedView bounded coordinate completion', () => {
+  test('sample batches × chunks remain incomplete on failure and retry atomically', async () => {
+    const sampleIds = mockSourceSampleIds.slice(0, 27)
+    mockVisibleSampleIds = sampleIds
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = sampleIds.map(sample_id => ({ sample_id,
+      strand_mapping: { strandA: 2, strandB: 1 }, phase_set_mapping: { phaseSetA: null, phaseSetB: null } }))
+    mockJoinedCapability = confirmedCapability({ max_span_bp: 10000 })
+    renderView({ chrom: 'chr22', start: 100, stop: 10100 })
+    await enablePerCopyMethylation()
+    const requestAt = async (i: number) => {
+      await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(i + 1))
+      return requestsNamed('RegionJoinedPhasedMethylation')[i]
+    }
+    const succeed = async (r: DeferredGraphQLRequest) => resolveRequest(r, { data: {
+      joined_phased_methylation_region: joinedRegion(r.variables.sample_ids, r.variables.sample_ids, [],
+        r.variables.sample_ids.map((id: string) => ({ ...joinedRecord(id, r.variables.start),
+          pos1: r.variables.start, pos2: r.variables.start + 1 }))) } })
+    const first = await requestAt(0)
+    expect(first.variables).toMatchObject({ start: 100, stop: 10099 })
+    expect(first.variables.sample_ids).toHaveLength(25)
+    await succeed(first)
+    const second = await requestAt(1)
+    expect(second.variables).toMatchObject({ start: 10100, stop: 10100, sample_ids: first.variables.sample_ids })
+    expect(mockHaplotypeTrackProps.at(-1).perCopyMethylationRecords).toHaveLength(0)
+    await resolveRequest(second, { errors: [{ message: 'chunk failed', extensions: { code: 'FAILED_CHUNK' } }] })
+    const otherFirst = await requestAt(2)
+    expect(otherFirst.variables.sample_ids).toHaveLength(2)
+    await succeed(otherFirst)
+    await succeed(await requestAt(3))
+    await waitFor(() => expect(mockHaplotypeTrackProps.at(-1).perCopyMethylationRecords).toHaveLength(4))
+    let props = mockHaplotypeTrackProps.at(-1)
+    expect(perCopyMethylationForReadyRow(props.perCopyMethylationRecords, workerDataOverride.groups[0].samples, props.perCopyMethylationSampleStates).readiness).toBe('error')
+    fireEvent.click(await screen.findByRole('button', { name: 'Retry methylation' }))
+    const retry = await requestAt(4)
+    expect(retry.variables).toEqual(first.variables)
+    await succeed(retry)
+    expect(mockHaplotypeTrackProps.at(-1).perCopyMethylationRecords).toHaveLength(4)
+    await succeed(await requestAt(5))
+    await waitFor(() => expect(mockHaplotypeTrackProps.at(-1).perCopyMethylationRecords).toHaveLength(54))
+    props = mockHaplotypeTrackProps.at(-1)
+    const ready = perCopyMethylationForReadyRow(props.perCopyMethylationRecords, workerDataOverride.groups[0].samples, props.perCopyMethylationSampleStates)
+    expect(ready.readiness).toBe('ready')
+    expect(ready.points.B).toHaveLength(2)
+    expect(ready.points.B[0].sampleCount).toBe(27)
+  })
+
+  test('changing viewport between chunks aborts and discards all partial coverage', async () => {
+    mockJoinedCapability = confirmedCapability({ max_span_bp: 10000 })
+    const view = renderView({ chrom: 'chr22', start: 100, stop: 50100 })
+    await enablePerCopyMethylation()
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(1))
+    const first = requestsNamed('RegionJoinedPhasedMethylation')[0]
+    await resolveRequest(first, { data: { joined_phased_methylation_region: joinedRegion(first.variables.sample_ids, first.variables.sample_ids, [], [joinedRecord(first.variables.sample_ids[0], 0)]) } })
+    await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(2))
+    const stale = requestsNamed('RegionJoinedPhasedMethylation')[1]
+    view.rerender(<MemoryRouter><LongReadUnifiedView datasetId={'gnomad_r4' as any} gene={{ chrom: 'chr22', start: 20000, stop: 20100 }} variants={[]} lrCohort="hgsvc_hprc" /></MemoryRouter>)
+    await waitFor(() => expect(stale.signal?.aborted).toBe(true))
+    await resolveRequest(stale, { data: { joined_phased_methylation_region: joinedRegion(stale.variables.sample_ids, stale.variables.sample_ids) } })
+    expect(mockHaplotypeTrackProps.at(-1).perCopyMethylationRecords).toHaveLength(0)
+    expect(requestsNamed('RegionJoinedPhasedMethylation').some(r => r.variables.start === 20100 && r.variables.stop === 30099)).toBe(false)
+  })
+})
+
 describe('LongReadUnifiedView joined methylation cancellation ownership', () => {
   test('reclaims a canceled visible-row claim when the row is revisited', async () => {
     mockVisibleSampleIds = ['carrier-a']
@@ -937,10 +1001,7 @@ describe('LongReadUnifiedView methylation detail ownership', () => {
   })
 
   test('retries only failed visible samples while preserving completed records and bulk intent', async () => {
-    const sampleIds = Array.from(
-      { length: 27 },
-      (_, index) => `carrier-${String(index).padStart(2, '0')}`
-    )
+    const sampleIds = mockSourceSampleIds.slice(0, 27)
     mockVisibleSampleIds = sampleIds
     workerDataOverride = workerData()
     workerDataOverride.groups[0].samples = sampleIds.map((sampleId) => ({

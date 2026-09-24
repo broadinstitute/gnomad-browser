@@ -1,7 +1,9 @@
 /* eslint-disable import/first */
 import { jest } from '@jest/globals'
+import { y1PrimaryColumnRows, y1PrimarySchemaContracts } from '../y1_primary_schema'
 
 const mockQuery = jest.fn()
+const mockConfig = { url: 'http://127.0.0.1:9999', database: 'gnomad_lr_y1_demo' }
 const configuredMap = new Map([
   [
     'hgsvc_hprc',
@@ -29,6 +31,10 @@ const manifestFor = (cohort: string, chrom: string, run_id: string) => ({
   chrom,
   run_id,
   manifest_sha256: 'a'.repeat(64),
+  expected_backend_revision: (cohort === 'aou' ? 'b' : 'a').repeat(40),
+  expected_worker_build_version: `gnomad-lr/${(cohort === 'aou' ? 'b' : 'a').repeat(
+    40
+  )}/x86_64-linux-release/features-clickhouse`,
   primary_load_mode: 'standard',
   carrier_loading_status: 'available',
   source,
@@ -45,7 +51,7 @@ const configuredManifests = new Map([
 
 jest.mock('../clickhouse', () => ({
   isY1PilotEnabled: true,
-  y1ClickhouseConfig: { url: 'http://127.0.0.1:9999', database: 'gnomad_lr_y1_demo' },
+  y1ClickhouseConfig: mockConfig,
   y1PrimaryRunMap: configuredMap,
   y1PrimaryManifests: configuredManifests,
   y1ClickhouseClient: { query: (...args: any[]) => mockQuery(...args) },
@@ -167,6 +173,12 @@ const schema: Record<string, string[]> = {
   ],
 }
 
+for (const table of new Set(y1PrimaryColumnRows(5).map((row) => row.table))) {
+  schema[table] = y1PrimaryColumnRows(5)
+    .filter((row) => row.table === table)
+    .map((row) => row.name)
+}
+
 const runs = [
   { run_id: 'hgsvc-chr1', cohort: 'hgsvc_hprc', chrom: 'chr1' },
   { run_id: 'hgsvc-chr2', cohort: 'hgsvc_hprc', chrom: 'chr2' },
@@ -188,6 +200,9 @@ const runs = [
 }))
 
 type FixtureOptions = {
+  schemaVersion?: 5 | 6
+  mixedBuild?: boolean
+  quarantinedRun?: boolean
   omitSecond?: boolean
   substituteTask?: boolean
   duplicateBounds?: boolean
@@ -202,17 +217,53 @@ type FixtureOptions = {
 }
 
 const installFixture = (options: FixtureOptions = {}) => {
+  mockConfig.database =
+    options.schemaVersion === 6 ? 'gnomad_lr_y1_scratch_v6_test' : 'gnomad_lr_y1_demo'
   mockQuery.mockImplementation(({ query, query_params = {} }: any) => {
+    if (query.includes('FROM lr_y1_schema_versions AS ledger')) {
+      const version = options.schemaVersion || 5
+      return Promise.resolve({
+        json: async () => [
+          {
+            schema_scope: 'y1_full',
+            schema_version: version,
+            state: 'applied',
+            contract: y1PrimarySchemaContracts[version],
+          },
+        ],
+      })
+    }
     if (query.includes('FROM system.columns')) {
       return Promise.resolve({
         json: async () =>
           Object.entries(schema).flatMap(([table, columns]) =>
-            columns.map((name) => ({ table, name }))
+            columns.map((name) =>
+              y1PrimaryColumnRows(options.schemaVersion || 5).find(
+                (row) => row.table === table && row.name === name
+              )
+            )
           ),
       })
     }
     if (query.includes('FROM lr_y1_load_runs AS ledger')) {
-      return Promise.resolve({ json: async () => (options.emptyRunLedger ? [] : runs) })
+      return Promise.resolve({
+        json: async () =>
+          options.emptyRunLedger
+            ? []
+            : [
+                ...runs,
+                ...(options.quarantinedRun
+                  ? [
+                      {
+                        ...runs[2],
+                        run_id: 'aou-chr1-r1-quarantined',
+                        state: 'quarantined',
+                        latest_revision_rows: 2,
+                      },
+                    ]
+                  : []),
+              ],
+      })
     }
     if (query.includes('FROM lr_y1_task_attempts')) {
       const runId = String(query_params.runId)
@@ -250,6 +301,11 @@ const installFixture = (options: FixtureOptions = {}) => {
             run_id: runId,
             task_id: taskId,
             attempt_id: `accepted-${index}`,
+            backend_revision:
+              options.mixedBuild && index === 1
+                ? 'c'.repeat(40)
+                : manifest.expected_backend_revision,
+            worker_build_version: manifest.expected_worker_build_version,
             cohort: manifest.cohort,
             chrom: manifest.chrom,
             start,
@@ -273,6 +329,8 @@ const installFixture = (options: FixtureOptions = {}) => {
             run_id: runId,
             task_id: task.task_id,
             attempt_id: 'failed-0',
+            backend_revision: manifest.expected_backend_revision,
+            worker_build_version: manifest.expected_worker_build_version,
             cohort: manifest.cohort,
             chrom: manifest.chrom,
             start: task.start,
@@ -355,6 +413,52 @@ describe('Y1 checked-manifest presentation routing', () => {
     expect(hgsvc?.primary_manifest_sha256).toBe('a'.repeat(64))
     expect((await getY1SourceSnapshot('aou', 'chr1'))?.run_id).toBe('aou-chr1')
     expect(await getY1SourceSnapshot('aou', 'chr2')).toBeNull()
+  })
+
+  test('v6 admits distinct expected builds across runs and ignores unselected quarantine ledger conflicts', async () => {
+    installFixture({ schemaVersion: 6, quarantinedRun: true })
+    await expect(preflightY1AcceptedSources()).resolves.toBeUndefined()
+    expect((await getY1SourceSnapshot('aou', 'chr1'))?.run_id).toBe('aou-chr1')
+    expect((await getY1SourceSnapshot('hgsvc_hprc', 'chr1'))?.run_id).toBe('hgsvc-chr1')
+    const runQueries = mockQuery.mock.calls
+      .map(([params]: any) => params)
+      .filter((params: any) => params.query_params?.runId)
+    expect(runQueries.length).toBeGreaterThan(0)
+    expect(
+      runQueries.every((params: any) => params.query_params.runId !== 'aou-chr1-r1-quarantined')
+    ).toBe(true)
+    expect(
+      runQueries
+        .filter(
+          (params: any) =>
+            params.query.includes('FROM lr_y1_task_attempts') ||
+            params.query.includes('FROM lr_y1_rejects_staging')
+        )
+        .every((params: any) => params.query.includes('WHERE run_id = {runId:String}'))
+    ).toBe(true)
+  })
+
+  test('v6 refuses nullable types/receipt relabeled onto an old v5 database', async () => {
+    installFixture({ schemaVersion: 6 })
+    mockConfig.database = 'gnomad_lr_y1_scratch_v5_test'
+    await expect(preflightY1AcceptedSources()).rejects.toThrow('distinct _v6_ database')
+  })
+
+  test('v6 rejects a mixed build within a selected run', async () => {
+    installFixture({ schemaVersion: 6, mixedBuild: true })
+    await expect(preflightY1AcceptedSources()).rejects.toThrow('report backend_revision')
+  })
+
+  test('v6 rejects selected manifests without per-run expected build', async () => {
+    const manifest = configuredManifests.get('aou\u0000chr1')!
+    const original = manifest.expected_backend_revision
+    manifest.expected_backend_revision = ''
+    try {
+      installFixture({ schemaVersion: 6 })
+      await expect(preflightY1AcceptedSources()).rejects.toThrow('expected build per run')
+    } finally {
+      manifest.expected_backend_revision = original
+    }
   })
 
   test.each(['request', 'response'])(

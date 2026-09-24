@@ -401,7 +401,7 @@ export const GnomadVariantOccurrenceTable = ({
               </td>
             )}
             {showTotal && <td>{totalAlleleFrequency.toPrecision(4)}</td>}
-            {showLongReads && <td>{variant.long_read!.af.toPrecision(4)}</td>}
+            {showLongReads && <td>{variant.long_read!.af == null ? 'Unavailable' : variant.long_read!.af.toPrecision(4)}</td>}
           </tr>
           <tr>
             <th scope="row">

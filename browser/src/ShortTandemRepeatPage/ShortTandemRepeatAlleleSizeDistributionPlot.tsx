@@ -22,6 +22,7 @@ import {
 } from './qualityDescription'
 import { qScoreLabels, QScoreBin, qScoreKeys } from './qScore'
 import { Sex } from './ShortTandemRepeatPage'
+import { sourceSexLabels } from './sourceHistogramLabels'
 
 export type AlleleSizeDistributionCohort = {
   ancestry_group: PopulationId
@@ -155,6 +156,7 @@ type Props = {
   populationDisplayConfig?: PopulationDisplayConfig
   baseColor?: string
   yAxisLabel?: string
+  sourceContext?: boolean
   onSelectBin?: (bin: AlleleSizeBin) => void
   isBinSelected?: (bin: AlleleSizeBin) => boolean
   size: { width: number }
@@ -189,9 +191,12 @@ const displayKeys = (
 const displayLabel = (
   colorBy: ColorBy,
   key: string,
-  populationDisplayConfig?: PopulationDisplayConfig
+  populationDisplayConfig?: PopulationDisplayConfig,
+  sourceContext = false
 ) =>
-  (colorBy === 'population' && populationDisplayConfig?.labels?.[key]) || legendLabel(colorBy, key)
+  (sourceContext && colorBy === 'sex' && sourceSexLabels[key as Sex]) ||
+  (colorBy === 'population' && populationDisplayConfig?.labels?.[key]) ||
+  legendLabel(colorBy, key)
 
 const displayColor = (
   colorBy: ColorBy,
@@ -205,16 +210,20 @@ const displayColor = (
 const LegendFromColorBy = ({
   colorBy,
   populationDisplayConfig,
+  sourceContext = false,
 }: {
   colorBy: ColorBy | null
   populationDisplayConfig?: PopulationDisplayConfig
+  sourceContext?: boolean
 }) => {
   if (colorBy === null) {
     return null
   }
 
   const keys = displayKeys(colorBy, populationDisplayConfig)
-  const labels = keys.map((key) => displayLabel(colorBy, key, populationDisplayConfig))
+  const labels = keys.map((key) =>
+    displayLabel(colorBy, key, populationDisplayConfig, sourceContext)
+  )
   const colors = keys.map((key) => displayColor(colorBy, key, populationDisplayConfig))
   const scale = scaleOrdinal().domain(labels).range(colors)
   return (
@@ -231,7 +240,8 @@ const tooltipContent = (
   data: AlleleSizeBin,
   colorBy: ColorBy | null,
   key: ColorByValue | '',
-  populationDisplayConfig?: PopulationDisplayConfig
+  populationDisplayConfig?: PopulationDisplayConfig,
+  sourceContext = false
 ): string => {
   const repeatText = data.label === '1' ? '1 repeat' : `${data.label} repeats`
   const alleles = data[key] || 0
@@ -239,8 +249,14 @@ const tooltipContent = (
   const colorByText =
     colorBy === null
       ? ''
-      : `, ${colorByLabels[colorBy]} is ${displayLabel(colorBy, key, populationDisplayConfig)}`
-  return `${repeatText}${colorByText}: ${alleleText}`
+      : `, ${
+          sourceContext && colorBy === 'population'
+            ? 'Population (source metadata)'
+            : colorByLabels[colorBy]
+        } is ${displayLabel(colorBy, key, populationDisplayConfig, sourceContext)}`
+  return sourceContext
+    ? `Source size ${data.label} (source units)${colorByText}: ${alleles} measured allele observations`
+    : `${repeatText}${colorByText}: ${alleleText}`
 }
 
 const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
@@ -257,6 +273,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
     populationDisplayConfig,
     baseColor = defaultColor,
     yAxisLabel = 'Alleles',
+    sourceContext = false,
     onSelectBin,
     isBinSelected,
   }: Props) => {
@@ -313,17 +330,27 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
       return Object.values(binsByColorByValue)
     }, [alleleSizeDistribution, binSize, domainMin, emptyBins])
 
-    const staticDistributionLabel = `Allele repeat-count distribution. ${data
-      .filter((bin) => bin.fullFrequency > 0)
-      .map(
-        (bin) =>
-          `${bin.label} ${
-            bin.label === '1' ? 'repeat' : 'repeats'
-          }: ${bin.fullFrequency.toLocaleString()} allele ${
-            bin.fullFrequency === 1 ? 'copy' : 'copies'
-          }`
-      )
-      .join('; ')}`
+    const staticDistributionLabel = sourceContext
+      ? `Repeat-size distribution (source units). ${data
+          .filter((bin) => bin.fullFrequency > 0)
+          .map(
+            (bin) =>
+              `Source size ${
+                bin.label
+              }: ${bin.fullFrequency.toLocaleString()} measured allele observations`
+          )
+          .join('; ')}`
+      : `Allele repeat-count distribution. ${data
+          .filter((bin) => bin.fullFrequency > 0)
+          .map(
+            (bin) =>
+              `${bin.label} ${
+                bin.label === '1' ? 'repeat' : 'repeats'
+              }: ${bin.fullFrequency.toLocaleString()} allele ${
+                bin.fullFrequency === 1 ? 'copy' : 'copies'
+              }`
+          )
+          .join('; ')}`
 
     const keys = useMemo(() => {
       const presentKeys: Record<string, boolean> = data
@@ -378,9 +405,15 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
       }
     }
 
+    const repeatAxisLabel = repeatUnit ? `Repeats of ${repeatUnit}` : 'Repeats'
+
     return (
       <GraphWrapper>
-        <LegendFromColorBy colorBy={colorBy} populationDisplayConfig={populationDisplayConfig} />
+        <LegendFromColorBy
+          colorBy={colorBy}
+          populationDisplayConfig={populationDisplayConfig}
+          sourceContext={sourceContext}
+        />
         <svg
           height={binSize === 1 ? height - 20 : height}
           width={width}
@@ -388,7 +421,7 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
           aria-label={onSelectBin ? undefined : staticDistributionLabel}
         >
           <AxisBottom
-            label={repeatUnit ? `Repeats of ${repeatUnit}` : 'Repeats'}
+            label={sourceContext ? 'Source-reported size (source units)' : repeatAxisLabel}
             labelOffset={binSize === 1 ? 10 : 30}
             labelProps={labelProps}
             left={margin.left}
@@ -476,7 +509,8 @@ const ShortTandemRepeatAlleleSizeDistributionPlot = withSize()(
                       bar.bar.data,
                       colorBy,
                       bar.key as ColorByValue | '',
-                      populationDisplayConfig
+                      populationDisplayConfig,
+                      sourceContext
                     )
                     return (
                       <React.Fragment key={`bar-stack-${bar.x}-${bar.y}`}>

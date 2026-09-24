@@ -129,6 +129,118 @@ describe('Y1 startup admission artifacts', () => {
     }
   })
 
+  test.each(['aou', 'hgsvc_hprc'])(
+    'admits exact legacy and refresh pairs for %s on every contig',
+    (cohort) => {
+      for (const [chrom, stop] of canonicalY1ContigLengths) {
+        for (const root of ['sources', 'refreshes/20260923-012345abcdef/sources']) {
+          const uri = `gs://gnomad-lr-data/y1/${root}/${cohort}/vcfs/gnomAD_LR_Y1.${cohort}.${chrom}.vcf.gz`
+          const entry = {
+            ...primaryEntry(),
+            cohort,
+            chrom,
+            tasks: [{ task_id: 'whole', start: 1, stop }],
+          }
+          entry.source.source_uri = uri
+          entry.source.source_index_uri = `${uri}.tbi`
+          const file = tempJson({ schema_version: 1, entries: [entry] })
+          try {
+            const manifests = resolveY1PrimaryManifests(
+              new Map<any, any>([[cohort, new Map([[chrom, entry.run_id]])]]),
+              { LR_Y1_PRIMARY_MANIFEST_PATH: file.path }
+            )!
+            expect(manifests.get(`${cohort}\u0000${chrom}`)?.source.source_uri).toBe(uri)
+          } finally {
+            file.cleanup()
+          }
+        }
+      }
+    }
+  )
+
+  test('admits paired clean expected builds and rejects missing/malformed build fields', () => {
+    const revision = 'a'.repeat(40)
+    const valid = {
+      expected_backend_revision: revision,
+      expected_worker_build_version: `gnomad-lr/${revision}/x86_64-linux-release/features-clickhouse`,
+    }
+    const invalid = [
+      { expected_backend_revision: revision },
+      { expected_worker_build_version: valid.expected_worker_build_version },
+      { ...valid, expected_backend_revision: `${revision}\n` },
+      { ...valid, expected_backend_revision: 'a'.repeat(39) },
+      { ...valid, expected_worker_build_version: 'arbitrary-build' },
+      {
+        ...valid,
+        expected_worker_build_version: valid.expected_worker_build_version.replace(
+          revision,
+          'b'.repeat(40)
+        ),
+      },
+    ]
+    for (const fields of [valid, ...invalid]) {
+      const file = tempJson({ schema_version: 1, entries: [{ ...primaryEntry(), ...fields }] })
+      try {
+        const load = () =>
+          resolveY1PrimaryManifests(new Map<any, any>([['aou', new Map([['chrY', 'aou-chrY']])]]), {
+            LR_Y1_PRIMARY_MANIFEST_PATH: file.path,
+          })
+        if (fields === valid) expect(load()!.get('aou\u0000chrY')).toMatchObject(valid)
+        else expect(load).toThrow()
+      } finally {
+        file.cleanup()
+      }
+    }
+  })
+
+  test('rejects malformed, cross-release, cross-cohort and cross-contig mirror pairs', () => {
+    const uri = primaryEntry().source.source_uri.replace(
+      '/y1/sources/',
+      '/y1/refreshes/20260923-012345abcdef/sources/'
+    )
+    const badUris = [
+      uri.replace('gnomad-lr-data/', 'other-bucket/'),
+      uri.replace('012345abcdef', '012345ABCDEf'),
+      uri.replace('012345abcdef', '012345abcde'),
+      uri.replace('20260923-', '2026092-'),
+      uri.replace('20260923-', '２０２６０９２３-'),
+      uri.replace('/sources/', '/sources/../sources/'),
+      uri.replace('/vcfs/', '/vcfs/%2e%2e/'),
+      uri.replace('.chrY.', '.chr1.'),
+      uri.replace('/aou/', '/hgsvc_hprc/'),
+      uri.replace('.aou.', '.hgsvc_hprc.'),
+      `${uri}?generation=123`,
+      `${uri}#123`,
+      `${uri}\n`,
+      `${uri}/`,
+    ]
+    const mutations = [
+      ...badUris.map((bad) => ({ source_uri: bad, source_index_uri: `${bad}.tbi` })),
+      { source_uri: uri, source_index_uri: `${uri.replace('012345abcdef', 'abcdef012345')}.tbi` },
+      { source_uri: uri, source_index_uri: primaryEntry().source.source_index_uri },
+      { source_uri: uri, source_index_uri: `${uri}.csi` },
+      ...['0', '-1', '1.2', '123#x', '123\n', ''].flatMap((generation) => [
+        { source_generation: generation },
+        { source_index_generation: generation },
+      ]),
+    ]
+    for (const mutation of mutations) {
+      const entry = primaryEntry()
+      entry.source = { ...entry.source, ...mutation }
+      const file = tempJson({ schema_version: 1, entries: [entry] })
+      try {
+        expect(() =>
+          resolveY1PrimaryManifests(
+            new Map<any, any>([['aou', new Map([['chrY', entry.run_id]])]]),
+            { LR_Y1_PRIMARY_MANIFEST_PATH: file.path }
+          )
+        ).toThrow()
+      } finally {
+        file.cleanup()
+      }
+    }
+  })
+
   test.each([
     [
       [

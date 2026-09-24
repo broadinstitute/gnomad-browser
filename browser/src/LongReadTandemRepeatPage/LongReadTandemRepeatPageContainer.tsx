@@ -157,6 +157,14 @@ query ${operationName}(
     }
     repeat_count_plots {
       status reason_code unit repeat_unit max_repunits
+      allele_status pair_status pair_encoding pair_observations
+      source_context {
+        source_uri source_generation source_md5_base64 source_row_ordinal
+        source_locus_id interval_raw vc_raw context_relation
+        measurement_kind unit semantics_evidence_status projection_version receipt_digest
+      }
+      primary_binding { status an_concordance }
+      primary_an_comparison
       interaction { interaction_status reason }
       allele_size_distribution {
         ancestry_group sex repunit distribution { repunit_count frequency }

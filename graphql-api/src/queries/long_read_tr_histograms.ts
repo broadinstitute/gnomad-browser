@@ -3,6 +3,9 @@ import { getY1AncillaryClickhouseClient } from '../clickhouse'
 import { withCache } from '../cache'
 import type { Y1AncillaryRoute } from '../y1_config'
 import type { LongReadCohort } from './long_read_y1_variants'
+import { contextReceipt, runtimeSourceIdentity } from '../str_context_admission'
+import { getY1SourceSnapshot } from './long_read_y1_provenance'
+import { fetchSourceContextHistogram, unavailableSourceContext } from './long_read_tr_histograms_v2'
 
 export const MAX_LONG_READ_TR_HISTOGRAM_BYTES = 200 * 1024
 
@@ -408,6 +411,7 @@ export const longReadTrHistogramCacheKey = (identity: ExactHistogramIdentity) =>
     identity.primaryTaskId,
     identity.primaryAttemptId,
     identity.sourceVariantId,
+    identity.sourceAn,
     identity.component.chrom,
     identity.component.start0,
     identity.component.end0,
@@ -511,6 +515,62 @@ export const fetchLongReadTrRepeatCountPlots = async (
   locus: LocusHistogramRequest,
   route: Y1AncillaryRoute | null
 ) => {
+  // Explicitly admitted candidate v2 never enters or falls back to the exact-v1 path.
+  if (route?.receipt.source_format === 'str_context_completion_v2') {
+    if (locus.components.length !== 1) {
+      return unavailableSourceContext(
+        'UNAVAILABLE_COMPOUND_LOCUS',
+        'NO_DEFENSIBLE_SINGLE_REPEAT_COUNT'
+      )
+    }
+    if (locus.reference_genome !== 'GRCh38' || route.cohort !== locus.lr_cohort) {
+      invariant('v2 route/reference does not match caller')
+    }
+    const receipt = contextReceipt(route)
+    const component = locus.components[0]
+    const selected = receipt.primary_snapshot.runs.find(
+      (run) => run.chrom === `chr${component.chrom}`
+    )
+    const snapshot = await getY1SourceSnapshot(locus.lr_cohort, component.chrom)
+    if (
+      !snapshot ||
+      !selected ||
+      receipt.primary_snapshot.database !== locus.primary_database ||
+      snapshot.database !== locus.primary_database ||
+      snapshot.run_id !== locus.source_run_id ||
+      snapshot.run_id !== selected.run_id ||
+      snapshot.cohort !== locus.lr_cohort ||
+      snapshot.reference_genome !== locus.reference_genome ||
+      snapshot.chrom !== selected.chrom ||
+      snapshot.primary_manifest_sha256 !== selected.manifest_sha256 ||
+      snapshot.accepted_task_attempt_digest !== selected.accepted_task_attempt_digest
+    ) {
+      return unavailableSourceContext('UNAVAILABLE_ANCILLARY', 'PRIMARY_SNAPSHOT_MISMATCH')
+    }
+    return fetchSourceContextHistogram(
+      {
+        cohort: locus.lr_cohort,
+        ancillaryDatabase: route.database,
+        ancillaryRunId: receipt.capture.run_id,
+        captureDatabase: receipt.capture.database,
+        projectionInstanceId: receipt.projection.instance_id,
+        source: runtimeSourceIdentity(receipt.source),
+        projectionVersion: receipt.projection.version,
+        receiptDigest: receipt.receipt_digest,
+        receiptIdentity: {
+          receipt,
+          sourceMapVerificationSha256: route.source_map_artifacts?.verificationSha256,
+        },
+        captureTaskId: receipt.capture.task_id,
+        primaryDatabase: locus.primary_database,
+        primarySnapshotDigest: receipt.primary_snapshot.bundle_digest,
+        primaryRunId: locus.source_run_id,
+        sourceRecords: locus.source_records,
+        component,
+      },
+      route
+    )
+  }
   if (!route || route.receipt.source_format !== 'str_completion') {
     return unavailable('UNAVAILABLE_ANCILLARY', 'NO_ADMITTED_STR_HISTOGRAM_ROUTE')
   }

@@ -1,0 +1,102 @@
+[
+  {
+    "cohort": "hgsvc_hprc",
+    "kind": "original",
+    "metadata": {
+      "kind": "storage#object",
+      "id": "fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv/1789761285157516",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/o/gnomAD_LR_vcfs%2Fhgsvc_hprc%2Fdata%2Fhgsvc_hprc.af_histograms.tsv",
+      "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/o/gnomAD_LR_vcfs%2Fhgsvc_hprc%2Fdata%2Fhgsvc_hprc.af_histograms.tsv?generation=1789761285157516&alt=media",
+      "name": "gnomAD_LR_vcfs/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+      "bucket": "fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8",
+      "generation": "1789761285157516",
+      "metageneration": "1",
+      "contentType": "text/tab-separated-values",
+      "storageClass": "STANDARD",
+      "size": "3010278628",
+      "md5Hash": "Djg0d9C9w4cEByhnAeH44w==",
+      "crc32c": "viRFNA==",
+      "etag": "CIzlia30+JYDEAE=",
+      "timeCreated": "2026-09-18T19:54:45.185Z",
+      "updated": "2026-09-18T19:54:45.185Z",
+      "timeStorageClassUpdated": "2026-09-18T19:54:45.185Z",
+      "timeFinalized": "2026-09-18T19:54:45.185Z"
+    },
+    "pinned_generation_verified": true
+  },
+  {
+    "cohort": "hgsvc_hprc",
+    "kind": "runtime",
+    "metadata": {
+      "kind": "storage#object",
+      "id": "gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv/1790187157452251",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/gnomad-lr-data/o/y1%2Frefreshes%2F20260923-3b137820bfbf%2Fsources%2Fhgsvc_hprc%2Fdata%2Fhgsvc_hprc.af_histograms.tsv",
+      "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/gnomad-lr-data/o/y1%2Frefreshes%2F20260923-3b137820bfbf%2Fsources%2Fhgsvc_hprc%2Fdata%2Fhgsvc_hprc.af_histograms.tsv?generation=1790187157452251&alt=media",
+      "name": "y1/refreshes/20260923-3b137820bfbf/sources/hgsvc_hprc/data/hgsvc_hprc.af_histograms.tsv",
+      "bucket": "gnomad-lr-data",
+      "generation": "1790187157452251",
+      "metageneration": "1",
+      "contentType": "text/tab-separated-values",
+      "storageClass": "STANDARD",
+      "size": "3010278628",
+      "md5Hash": "Djg0d9C9w4cEByhnAeH44w==",
+      "crc32c": "viRFNA==",
+      "etag": "CNvr5+ymhZcDEAE=",
+      "timeCreated": "2026-09-23T18:12:37.475Z",
+      "updated": "2026-09-23T18:12:37.475Z",
+      "timeStorageClassUpdated": "2026-09-23T18:12:37.475Z",
+      "timeFinalized": "2026-09-23T18:12:37.475Z"
+    },
+    "pinned_generation_verified": true
+  },
+  {
+    "cohort": "aou",
+    "kind": "original",
+    "metadata": {
+      "kind": "storage#object",
+      "id": "fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv/1790116043533826",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/o/gnomAD_LR_vcfs%2Faou%2Fdata%2Faou_phase1.af_histograms.tsv",
+      "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8/o/gnomAD_LR_vcfs%2Faou%2Fdata%2Faou_phase1.af_histograms.tsv?generation=1790116043533826&alt=media",
+      "name": "gnomAD_LR_vcfs/aou/data/aou_phase1.af_histograms.tsv",
+      "bucket": "fc-a22a385b-ed3b-45ba-9d6c-87ca01c1e6b8",
+      "generation": "1790116043533826",
+      "metageneration": "1",
+      "contentType": "text/tab-separated-values",
+      "storageClass": "STANDARD",
+      "size": "4248882818",
+      "md5Hash": "rvQJhVZP3eLWzsvTOGp3nw==",
+      "crc32c": "8TtYUA==",
+      "etag": "CILchvedg5cDEAE=",
+      "timeCreated": "2026-09-22T22:27:23.580Z",
+      "updated": "2026-09-22T22:27:23.580Z",
+      "timeStorageClassUpdated": "2026-09-22T22:27:23.580Z",
+      "timeFinalized": "2026-09-22T22:27:23.580Z"
+    },
+    "pinned_generation_verified": true
+  },
+  {
+    "cohort": "aou",
+    "kind": "runtime",
+    "metadata": {
+      "kind": "storage#object",
+      "id": "gnomad-lr-data/y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv/1790187267088059",
+      "selfLink": "https://www.googleapis.com/storage/v1/b/gnomad-lr-data/o/y1%2Frefreshes%2F20260923-3b137820bfbf%2Fsources%2Faou%2Fdata%2Faou_phase1.af_histograms.tsv",
+      "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/gnomad-lr-data/o/y1%2Frefreshes%2F20260923-3b137820bfbf%2Fsources%2Faou%2Fdata%2Faou_phase1.af_histograms.tsv?generation=1790187267088059&alt=media",
+      "name": "y1/refreshes/20260923-3b137820bfbf/sources/aou/data/aou_phase1.af_histograms.tsv",
+      "bucket": "gnomad-lr-data",
+      "generation": "1790187267088059",
+      "metageneration": "1",
+      "contentType": "text/tab-separated-values",
+      "storageClass": "STANDARD",
+      "size": "4248882818",
+      "md5Hash": "rvQJhVZP3eLWzsvTOGp3nw==",
+      "crc32c": "8TtYUA==",
+      "etag": "CLu9i6GnhZcDEAE=",
+      "timeCreated": "2026-09-23T18:14:27.114Z",
+      "updated": "2026-09-23T18:14:27.114Z",
+      "timeStorageClassUpdated": "2026-09-23T18:14:27.114Z",
+      "timeFinalized": "2026-09-23T18:14:27.114Z"
+    },
+    "pinned_generation_verified": true
+  }
+]

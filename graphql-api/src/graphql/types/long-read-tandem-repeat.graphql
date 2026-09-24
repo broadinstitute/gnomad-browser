@@ -30,7 +30,8 @@ type LongReadTrSourceRecord {
   ref: String
   non_reference_ac: Int!
   an: Int!
-  non_reference_af: Float!
+  # Unavailable when any source ALT frequency is missing; never derived from AC/AN.
+  non_reference_af: Float
   source: String
   region: String
 }
@@ -330,6 +331,9 @@ type LongReadTrShortReadDistributions {
 
 enum LongReadTrPlotStatus {
   AVAILABLE_EXACT
+  AVAILABLE_SOURCE_CONTEXT
+  UNAVAILABLE_NO_SOURCE_CONTEXT
+  UNAVAILABLE_AMBIGUOUS_CONTEXT
   UNAVAILABLE_ANCILLARY
   UNAVAILABLE_COMPOUND_LOCUS
   UNAVAILABLE_MULTIPLE_SOURCE_RECORDS
@@ -338,6 +342,37 @@ enum LongReadTrPlotStatus {
 
 enum LongReadTrHistogramUnit {
   MOTIF_REPEAT_COUNT
+  SOURCE_REPORTED_UNIT
+}
+
+# Source-native bounds and original context are independent of the named page.
+# Unknown producer version/units never imply total allele length or ploidy.
+type LongReadTrHistogramSourceContext {
+  source_uri: String!
+  source_generation: String!
+  source_md5_base64: String!
+  source_row_ordinal: String!
+  source_locus_id: String!
+  interval_raw: String!
+  vc_raw: String!
+  context_relation: String!
+  measurement_kind: String!
+  unit: LongReadTrHistogramUnit!
+  semantics_evidence_status: String!
+  projection_version: String!
+  receipt_digest: String!
+}
+
+type LongReadTrHistogramPageMatch {
+  canonical_locus_id: String!
+  component_index: Int!
+  component: LongReadTrLocusComponent!
+  status: String!
+}
+
+type LongReadTrHistogramPrimaryBinding {
+  status: String!
+  an_concordance: String!
 }
 
 type LongReadTrHistogramIdentity {
@@ -382,6 +417,15 @@ type LongReadTrRepeatCountPlots {
   status: LongReadTrPlotStatus!
   reason_code: String
   identity: LongReadTrHistogramIdentity
+  source_context: LongReadTrHistogramSourceContext
+  page_match: LongReadTrHistogramPageMatch
+  primary_binding: LongReadTrHistogramPrimaryBinding
+  # Numeric caller/source comparison only, never proof of primary binding.
+  primary_an_comparison: String
+  allele_status: String
+  pair_status: String
+  pair_encoding: String
+  pair_observations: Int
   unit: LongReadTrHistogramUnit
   repeat_unit: String
   overall: LongReadTrPlotCallability
