@@ -602,6 +602,11 @@ const renderPage = ({
     </ThemeProvider>
   )
 
+// The length axis defaults to represented ALT allele size. Tests that assert signed
+// change-from-REF labels switch the axis back to that mode first.
+const selectChangeFromRefAxis = () =>
+  fireEvent.change(screen.getByLabelText('Length axis'), { target: { value: 'bp-delta' } })
+
 const motifAttributeValue = () =>
   screen.getAllByText('Motif').find((element) => element.tagName === 'DT')!.nextElementSibling!
     .textContent
@@ -906,7 +911,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus, selectedAllele: undefined })
 
     expect(screen.queryByLabelText('Length axis')).toBeNull()
-    expect(screen.queryByRole('option', { name: 'Represented allele length' })).toBeNull()
+    expect(screen.queryByRole('option', { name: 'ALT allele size (bp)' })).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     expect(screen.queryByText('Allele lengths')).toBeNull()
     expect(screen.queryByText(/Absolute represented length unavailable/)).toBeNull()
@@ -966,6 +971,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('states compound measurement limits and signed total-length semantics', () => {
     renderPage()
+    selectChangeFromRefAxis()
     expect(
       screen.queryByText(/compound loci do not have one unambiguous component repeat count/)
     ).toBeNull()
@@ -985,7 +991,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).toBeNull()
     expect(within(help).queryByText(/Repeat-count controls are card-local/)).toBeNull()
     expect(
-      within(help).getByText(/The length-axis control switches visible length plots/)
+      within(help).getByText(/The length-axis control switches both landscape plots/)
     ).not.toBeNull()
     expect(
       within(help).getByText(
@@ -1030,52 +1036,35 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
     const grid = screen.getByTestId('whole-record-allele-plot-grid')
-    const alleleChoices = screen.getByRole('radiogroup', {
-      name: 'Allele distribution measurement',
-    })
-    const genotypeChoices = screen.getByRole('radiogroup', {
-      name: 'Genotype distribution measurement',
-    })
+    const lengthAxis = screen.getByLabelText('Length axis') as HTMLSelectElement
 
     expect(grid.getAttribute('data-plot-count')).toBe('3')
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
-    expect(within(alleleChoices).getByRole('radio', { name: 'Length' })).toBeChecked()
-    expect(within(genotypeChoices).getByRole('radio', { name: 'Length' })).toBeChecked()
-    expect(within(alleleChoices).getByRole('radio', { name: 'Repeat count' })).not.toBeNull()
-    expect(within(alleleChoices).getByRole('radio', { name: 'Exact motif' })).not.toBeNull()
-    expect(within(genotypeChoices).getByRole('radio', { name: 'Repeat count' })).not.toBeNull()
+    expect(lengthAxis.value).toBe('bp-absolute')
+    // No ALT − REF repeat measure here: the admitted reference length (164 bp) is not a
+    // whole number of CAG units, so the browser will not derive a reference unit count.
+    expect(Array.from(lengthAxis.options).map((option) => option.value)).toEqual([
+      'bp-absolute',
+      'bp-delta',
+      'repeats-absolute',
+    ])
 
-    const alleleRepeatCount = within(alleleChoices).getByRole('radio', {
-      name: 'Repeat count',
-    })
-    alleleRepeatCount.focus()
-    fireEvent.click(alleleRepeatCount)
-    fireEvent.click(within(genotypeChoices).getByRole('radio', { name: 'Repeat count' }))
-    expect(
-      within(screen.getByRole('radiogroup', { name: 'Allele distribution measurement' })).getByRole(
-        'radio',
-        { name: 'Repeat count' }
-      )
-    ).toBe(alleleRepeatCount)
-    expect(document.activeElement).toBe(alleleRepeatCount)
-    expect(within(grid).getByTestId('allele-repeat-count-plot')).not.toBeNull()
-    expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
-    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
-    expect(
-      screen.getByTestId('allele-repeat-count-card').getAttribute('data-interaction-status')
-    ).toBe('UNAVAILABLE_SOURCE_IDENTITIES')
-
-    fireEvent.click(
-      within(screen.getByRole('radiogroup', { name: 'Allele distribution measurement' })).getByRole(
-        'radio',
-        { name: 'Exact motif' }
-      )
-    )
+    lengthAxis.focus()
+    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
+    expect(screen.getByLabelText('Length axis')).toBe(lengthAxis)
+    expect(document.activeElement).toBe(lengthAxis)
+    // Each plot takes its own admitted unit product: the allele slot has the reviewed
+    // exact-motif distribution, and the genotype slot falls back to exact repeat counts.
     expect(within(grid).getByTestId('motif-occurrence-card')).not.toBeNull()
     expect(within(grid).getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue(
       '0'
     )
+    expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
     expect(within(grid).queryByTestId('allele-repeat-count-card')).toBeNull()
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+    expect(
+      screen.getByTestId('genotype-repeat-count-card').getAttribute('data-interaction-status')
+    ).toBe('UNAVAILABLE_SOURCE_IDENTITIES')
     expect(screen.queryByRole('heading', { name: 'Simple-locus repeat counts' })).toBeNull()
     expect(grid).toHaveStyleRule('grid-template-columns', 'repeat( 3,minmax(280px,1fr) )')
     expect(grid.compareDocumentPosition(screen.getByTestId('lr-tr-exact-allele-browser'))).toBe(
@@ -1102,18 +1091,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(help).getByText('primary-motif-hgsvc-htt')).not.toBeNull()
     expect(within(help).getByText('complete_no_truncation')).not.toBeNull()
 
-    const genotypeChoices = screen.getByRole('radiogroup', {
-      name: 'Genotype distribution measurement',
-    })
-    const exactMotif = within(genotypeChoices).getByRole('radio', { name: 'Exact motif' })
-    exactMotif.focus()
-    fireEvent.click(exactMotif)
-    expect(
-      within(
-        screen.getByRole('radiogroup', { name: 'Genotype distribution measurement' })
-      ).getByRole('radio', { name: 'Exact motif' })
-    ).toBe(exactMotif)
-    expect(document.activeElement).toBe(exactMotif)
+    const lengthAxis = screen.getByLabelText('Length axis')
+    lengthAxis.focus()
+    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
+    expect(screen.getByLabelText('Length axis')).toBe(lengthAxis)
+    expect(document.activeElement).toBe(lengthAxis)
 
     const card = screen.getByTestId('primary-motif-genotype-cells')
     expect(
@@ -1170,11 +1152,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(plotGrid.getAttribute('data-plot-count')).toBe('3')
     expect(plotGrid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
     expect(within(plotGrid).queryByTestId('motif-occurrence-card')).toBeNull()
-    fireEvent.click(
-      screen
-        .getByRole('radiogroup', { name: 'Allele distribution measurement' })
-        .querySelector('input[value="exact-motif"]')!
-    )
+    fireEvent.change(screen.getByLabelText('Length axis'), {
+      target: { value: 'repeats-absolute' },
+    })
     expect(
       (
         within(plotGrid).getByLabelText(
@@ -1293,6 +1273,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('filters the primary index to every same-length identity and clears back to all', () => {
     renderPage()
+    selectChangeFromRefAxis()
     const table = screen.getByRole('table', { name: 'Source ALT allele index' })
     const allAllelesHeading = screen.getByRole('heading', {
       name: '72 source ALT alleles',
@@ -1461,6 +1442,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('links purity and renders compound literal motif detail without component projection', () => {
     renderPage()
+    selectChangeFromRefAxis()
     const detail = screen.getByTestId('lr-tr-selected-detail')
     expect(detail).toBe(document.activeElement)
     expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
@@ -1528,6 +1510,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('distinguishes reference identity from a zero-delta exact ALT in genotype pair detail', () => {
     renderPage()
+    selectChangeFromRefAxis()
     fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
     expect(
       within(screen.getByRole('dialog', { name: 'About the allelic landscape' })).getByText(

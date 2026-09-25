@@ -1,6 +1,8 @@
 import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
+import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
+import { Select } from '@gnomad/ui'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
 import Link from '../Link'
@@ -150,7 +152,7 @@ const PlotGrid = styled.div<{ $plotCount: number }>`
     ${(props) => desktopColumnCount(props.$plotCount)},
     minmax(280px, 1fr)
   );
-  align-items: start;
+  align-items: stretch;
   gap: clamp(24px, 2vw, 32px);
 
   @media (max-width: 1199px) {
@@ -238,10 +240,6 @@ const LengthAxisControl = styled.label`
   align-items: center;
   gap: 0.5em;
   font-weight: bold;
-
-  select {
-    min-height: 44px;
-  }
 `
 
 const ContractControlGroup = styled.div`
@@ -289,47 +287,34 @@ const ControlGroupLabel = styled.strong`
 
 type DistributionView = 'length' | 'repeat-count' | 'exact-motif'
 
-const distributionViewLabel = (choice: DistributionView) => {
-  if (choice === 'length') return 'Length'
-  if (choice === 'repeat-count') return 'Repeat count'
-  return 'Exact motif'
+export type LengthAxisMode = 'delta' | 'absolute'
+
+// One control drives both landscape plots. The bp measures use the exact source length
+// products; the repeat measures use whichever admitted repeat-unit product a plot has.
+export type LandscapeMeasure = 'bp-absolute' | 'bp-delta' | 'repeats-absolute' | 'repeats-delta'
+
+const landscapeMeasureLabel = (measure: LandscapeMeasure) => {
+  if (measure === 'bp-absolute') return 'ALT allele size (bp)'
+  if (measure === 'bp-delta') return 'ALT − REF allele size (bp)'
+  if (measure === 'repeats-absolute') return 'ALT allele size (repeats)'
+  return 'ALT − REF allele size (repeats)'
 }
 
-const DistributionChoiceControl = ({
-  label,
-  name,
-  value,
-  choices,
-  onChange,
-}: {
-  label: string
-  name: string
-  value: DistributionView
-  choices: DistributionView[]
-  onChange: (view: DistributionView) => void
-}) => (
-  <div
-    role="radiogroup"
-    aria-label={label}
-    style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5em 1em', marginBottom: '0.8em' }}
-  >
-    {choices.map((choice) => (
-      <label key={choice}>
-        <input
-          type="radio"
-          name={name}
-          value={choice}
-          aria-label={distributionViewLabel(choice)}
-          checked={value === choice}
-          onChange={() => onChange(choice)}
-        />{' '}
-        {distributionViewLabel(choice)}
-      </label>
-    ))}
-  </div>
-)
+const measuresLength = (measure: LandscapeMeasure) =>
+  measure === 'bp-absolute' || measure === 'bp-delta'
 
-export type LengthAxisMode = 'delta' | 'absolute'
+// Reference repeat units for the change-from-REF repeat measure. The browser divides the
+// represented reference length by the primary motif length, which is only defensible for
+// a single-component locus with one admitted primary motif.
+const referenceRepeatUnits = (
+  isolatedRepeat: boolean,
+  primaryMotif: string | null,
+  representedRefLength: number | null
+) => {
+  if (!isolatedRepeat || !primaryMotif || !representedRefLength) return null
+  const units = representedRefLength / primaryMotif.length
+  return Number.isInteger(units) ? units : null
+}
 
 const signed = (value: number) => {
   if (value > 0) return `+${value}`
@@ -516,7 +501,7 @@ const AllelicLandscapeHelp = ({
       showRepeatCountControls) && (
       <p>
         {showLengthAxisControl &&
-          'The length-axis control switches visible length plots between change from REF and API-admitted represented allele length. '}
+          'The length-axis control switches both landscape plots between the API-admitted ALT allele size and its change from REF, in base pairs or in repeat units. Repeat units come from the exact repeat-count product; change from REF in repeat units divides the represented reference length by the primary motif length, so it is offered only for a single-component locus. '}
         {(showAncestryControl || showSexControl) &&
           `The shared ${[showAncestryControl ? 'ancestry' : null, showSexControl ? 'sex' : null]
             .filter(Boolean)
@@ -915,12 +900,52 @@ export const LongReadTrComponentTrack = ({
   )
 }
 
+// The first column holds the rotated axis title and the y tick labels, so it is wide
+// enough to keep the title inside the plot card rather than in the card's padding.
+const HISTOGRAM_Y_COLUMN_WIDTH = 64
+const HISTOGRAM_COLUMN_GAP = 8
+const HISTOGRAM_SIDE_PADDING = 20
+
 const HistogramChart = styled.div`
   display: grid;
-  grid-template-columns: 48px calc(100% - 56px);
-  gap: 8px;
+  grid-template-columns:
+    ${HISTOGRAM_Y_COLUMN_WIDTH}px
+    calc(100% - ${HISTOGRAM_Y_COLUMN_WIDTH + HISTOGRAM_COLUMN_GAP}px);
+  gap: ${HISTOGRAM_COLUMN_GAP}px;
   margin: 1.8em 0 1.2em;
 `
+
+const HistogramSizer = styled.div`
+  width: 100%;
+`
+
+// react-sizeme's SizeMe render-prop export does not resolve under this project's jest
+// transform, so the measurement uses the withSize HOC that the other plots here use.
+const MeasuredWidth = withSize({ monitorWidth: true, noPlaceholder: true })(
+  ({
+    size,
+    children,
+  }: {
+    size: { width: number | null }
+    children: (width: number) => React.ReactElement
+  }) => children(size.width || 0)
+)
+
+type HistogramLayout = { barWidth: number; gap: number; height: number }
+
+// Bars widen to fill the plot when the natural layout leaves room. When the bins do not
+// fit, they keep their natural width and the plot scrolls horizontally as before. A
+// measured width of 0 (the initial render, and jsdom) keeps the natural width.
+const filledBarWidth = (measuredWidth: number, binCount: number, layout: HistogramLayout) => {
+  if (!measuredWidth || !binCount) return layout.barWidth
+  const usableWidth =
+    measuredWidth -
+    HISTOGRAM_Y_COLUMN_WIDTH -
+    HISTOGRAM_COLUMN_GAP -
+    HISTOGRAM_SIDE_PADDING * 2 -
+    (binCount - 1) * layout.gap
+  return Math.max(layout.barWidth, Math.floor(usableWidth / binCount))
+}
 
 const HistogramYScale = styled.div<{ $height: number }>`
   position: relative;
@@ -960,7 +985,7 @@ const AxisTick = styled.span`
 const AxisTitle = styled.span`
   position: absolute;
   top: 50%;
-  left: -23px;
+  left: 8px;
   width: 170px;
   transform: translate(-50%, -50%) rotate(-90deg);
   color: #566168;
@@ -977,7 +1002,7 @@ const BarButton = styled.button<{
   position: relative;
   flex: 0 0 ${(props) => props.$width}px;
   min-width: 24px;
-  max-width: 48px;
+  max-width: ${(props) => Math.max(48, props.$width)}px;
   height: ${(props) => props.$height}%;
   min-height: ${(props) => (props.$hasValue ? '3px' : '1px')};
   padding: 0;
@@ -1958,6 +1983,7 @@ export const WholeRecordAlleleLandscape = ({
   selectedAlleleDetail,
   sequencesAvailable = true,
   sequencesUnavailableReason,
+  presentation,
   sequenceCardinality,
   representedLength,
   filterContract,
@@ -2001,7 +2027,7 @@ export const WholeRecordAlleleLandscape = ({
   const [selectedContractSexId, setSelectedContractSexId] = useState<string | null>(null)
   const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | null>(null)
   const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
-  const [requestedLengthAxisMode, setLengthAxisMode] = useState<LengthAxisMode>('delta')
+  const [requestedMeasure, setRequestedMeasure] = useState<LandscapeMeasure>('bp-absolute')
   const representedRefLength = representedLength?.represented_ref_length_bp ?? null
   const absoluteLengthAvailable =
     representedLength?.status === 'AVAILABLE_EXACT' &&
@@ -2014,19 +2040,7 @@ export const WholeRecordAlleleLandscape = ({
   const defaultMotifIndex = Math.max(0, primaryMotif ? motifs.indexOf(primaryMotif) : 0)
   const motifVocabularyKey = `${motifs.join('\u0000')}\u0001${primaryMotif || ''}`
   const [selectedMotifIndex, setSelectedMotifIndex] = useState(defaultMotifIndex)
-  const [alleleDistributionView, setAlleleDistributionView] = useState<DistributionView>('length')
-  const [genotypeDistributionView, setGenotypeDistributionView] =
-    useState<DistributionView>('length')
   useEffect(() => setSelectedMotifIndex(defaultMotifIndex), [defaultMotifIndex, motifVocabularyKey])
-  const lengthAxisMode: LengthAxisMode =
-    absoluteLengthAvailable && requestedLengthAxisMode === 'absolute' ? 'absolute' : 'delta'
-  const lengthAxisName =
-    lengthAxisMode === 'absolute' ? 'Represented allele length (bp)' : 'Change from REF (bp)'
-  useEffect(() => {
-    if (!absoluteLengthAvailable && requestedLengthAxisMode === 'absolute') {
-      setLengthAxisMode('delta')
-    }
-  }, [absoluteLengthAvailable, requestedLengthAxisMode])
   const filterOptions = useMemo(
     () => reconciledFilterOptions(landscape, admittedGenotypeLandscape),
     [admittedGenotypeLandscape, landscape]
@@ -2069,11 +2083,6 @@ export const WholeRecordAlleleLandscape = ({
   ]
   const showLegacyFilterControls = landscape.stratified_available && !filterContract
   const showHistogramDisplayControl = showLegacyFilterControls || contractColorBys.length > 0
-  const showControlSection =
-    absoluteLengthAvailable ||
-    showLegacyFilterControls ||
-    showContractAncestryControl ||
-    showContractSexControl
   const bins = landscape.bins || []
   useEffect(() => {
     if (selectedPopulation && !filterOptions.ancestries.includes(selectedPopulation)) {
@@ -2209,27 +2218,110 @@ export const WholeRecordAlleleLandscape = ({
     if (admittedPrimaryMotifGenotype) choices.push('exact-motif')
     return choices
   }, [admittedGenotypeLandscape, admittedPrimaryMotifGenotype, admittedRepeatCountPlots])
-  useEffect(() => {
-    if (!alleleDistributionChoices.includes(alleleDistributionView)) {
-      setAlleleDistributionView(alleleDistributionChoices[0] || 'length')
-    }
-    if (!genotypeDistributionChoices.includes(genotypeDistributionView)) {
-      setGenotypeDistributionView(genotypeDistributionChoices[0] || 'length')
-    }
-  }, [
-    alleleDistributionChoices,
-    alleleDistributionView,
-    genotypeDistributionChoices,
-    genotypeDistributionView,
-  ])
-  const selectedAlleleDistributionView = alleleDistributionChoices.includes(alleleDistributionView)
-    ? alleleDistributionView
-    : alleleDistributionChoices[0]
-  const selectedGenotypeDistributionView = genotypeDistributionChoices.includes(
-    genotypeDistributionView
+  // A repeat measure uses the reviewed exact-motif product when a plot admits one, and the
+  // exact repeat-count product otherwise.
+  const repeatViewFor = (choices: DistributionView[]) => {
+    if (choices.includes('exact-motif')) return 'exact-motif' as const
+    if (choices.includes('repeat-count')) return 'repeat-count' as const
+    return null
+  }
+  const repeatsAvailable = Boolean(
+    repeatViewFor(alleleDistributionChoices) || repeatViewFor(genotypeDistributionChoices)
   )
-    ? genotypeDistributionView
-    : genotypeDistributionChoices[0]
+  const referenceUnits = referenceRepeatUnits(
+    presentation?.locus_type === 'ISOLATED_REPEAT',
+    primaryMotif,
+    representedRefLength
+  )
+  const measureChoices = useMemo(() => {
+    const choices: LandscapeMeasure[] = []
+    if (absoluteLengthAvailable) choices.push('bp-absolute')
+    choices.push('bp-delta')
+    if (repeatsAvailable) choices.push('repeats-absolute')
+    if (repeatsAvailable && referenceUnits != null) choices.push('repeats-delta')
+    return choices
+  }, [absoluteLengthAvailable, referenceUnits, repeatsAvailable])
+  const selectedMeasure = measureChoices.includes(requestedMeasure)
+    ? requestedMeasure
+    : measureChoices[0]
+  const showControlSection =
+    measureChoices.length > 1 ||
+    showLegacyFilterControls ||
+    showContractAncestryControl ||
+    showContractSexControl
+  const lengthAxisMode: LengthAxisMode = selectedMeasure === 'bp-absolute' ? 'absolute' : 'delta'
+  const lengthAxisName =
+    lengthAxisMode === 'absolute' ? 'Represented allele length (bp)' : 'Change from REF (bp)'
+  // Each plot honours the selected measure when it admits a matching product, and keeps
+  // its own first admitted view otherwise.
+  const viewForMeasure = (choices: DistributionView[]) => {
+    if (!choices.length) return undefined
+    if (measuresLength(selectedMeasure)) {
+      return choices.includes('length') ? ('length' as const) : choices[0]
+    }
+    return repeatViewFor(choices) || choices[0]
+  }
+  const selectedAlleleDistributionView = viewForMeasure(alleleDistributionChoices)
+  const selectedGenotypeDistributionView = viewForMeasure(genotypeDistributionChoices)
+  // The change-from-REF repeat measure reuses the admitted unit products with every count
+  // expressed relative to the reference unit count.
+  const shiftRepeatUnits = selectedMeasure === 'repeats-delta' && referenceUnits != null
+  const shiftedPrimaryMotifMeasurement = useMemo(() => {
+    if (!admittedPrimaryMotifMeasurement || !shiftRepeatUnits || referenceUnits == null) {
+      return admittedPrimaryMotifMeasurement
+    }
+    return {
+      ...admittedPrimaryMotifMeasurement,
+      bins: admittedPrimaryMotifMeasurement.bins.map((bin) => ({
+        ...bin,
+        exact_units: bin.exact_units - referenceUnits,
+      })),
+      genotype: {
+        ...admittedPrimaryMotifMeasurement.genotype,
+        cells: admittedPrimaryMotifMeasurement.genotype.cells.map((cell) => ({
+          ...cell,
+          shorter_exact_units: cell.shorter_exact_units - referenceUnits,
+          longer_exact_units: cell.longer_exact_units - referenceUnits,
+        })),
+      },
+    }
+  }, [admittedPrimaryMotifMeasurement, referenceUnits, shiftRepeatUnits])
+  const shiftedPrimaryMotifGenotype = admittedPrimaryMotifGenotype
+    ? shiftedPrimaryMotifMeasurement
+    : undefined
+  const shiftedRepeatCountPlots = useMemo(() => {
+    if (
+      !admittedRepeatCountPlots ||
+      selectedMeasure !== 'repeats-delta' ||
+      referenceUnits == null
+    ) {
+      return admittedRepeatCountPlots
+    }
+    return {
+      ...admittedRepeatCountPlots,
+      max_repunits:
+        admittedRepeatCountPlots.max_repunits == null
+          ? null
+          : admittedRepeatCountPlots.max_repunits - referenceUnits,
+      allele_size_distribution: admittedRepeatCountPlots.allele_size_distribution.map(
+        (cohort: any) => ({
+          ...cohort,
+          distribution: cohort.distribution.map((item: any) => ({
+            ...item,
+            repunit_count: item.repunit_count - referenceUnits,
+          })),
+        })
+      ),
+      genotype_distribution: admittedRepeatCountPlots.genotype_distribution.map((cohort: any) => ({
+        ...cohort,
+        distribution: cohort.distribution.map((item: any) => ({
+          ...item,
+          short_allele_repunit_count: item.short_allele_repunit_count - referenceUnits,
+          long_allele_repunit_count: item.long_allele_repunit_count - referenceUnits,
+        })),
+      })),
+    }
+  }, [admittedRepeatCountPlots, referenceUnits, selectedMeasure])
   const visiblePlotCount = 2 + (genotypeDistributionChoices.length ? 1 : 0)
   const filteredPurityPoints = (landscape.purity_points || []).flatMap((point) => {
     const frequencyCount = frequencyCountFor(alleleById.get(point.allele_id))
@@ -2383,11 +2475,12 @@ export const WholeRecordAlleleLandscape = ({
     setSelectedMotifIndex(motifIndex)
     if (activeIndexSelection?.origin === 'motif-occurrence') setIndexSelection(null)
   }
-  const selectAlleleDistributionView = (view: DistributionView) => {
-    setAlleleDistributionView(view)
+  const selectMeasure = (measure: LandscapeMeasure) => {
+    setRequestedMeasure(measure)
+    const alleleView = measuresLength(measure) ? 'length' : repeatViewFor(alleleDistributionChoices)
     let visibleOrigin: ExactIndexSelectionOrigin | null = null
-    if (view === 'length') visibleOrigin = 'total-length'
-    if (view === 'exact-motif') visibleOrigin = 'motif-occurrence'
+    if (alleleView === 'length') visibleOrigin = 'total-length'
+    if (alleleView === 'exact-motif') visibleOrigin = 'motif-occurrence'
     if (
       activeIndexSelection &&
       ['total-length', 'motif-occurrence'].includes(activeIndexSelection.origin) &&
@@ -2395,10 +2488,7 @@ export const WholeRecordAlleleLandscape = ({
     ) {
       setIndexSelection(null)
     }
-  }
-  const selectGenotypeDistributionView = (view: DistributionView) => {
-    setGenotypeDistributionView(view)
-    if (view !== 'length' && activeIndexSelection?.origin === 'genotype-length') {
+    if (!measuresLength(measure) && activeIndexSelection?.origin === 'genotype-length') {
       setIndexSelection(null)
     }
   }
@@ -2503,26 +2593,24 @@ export const WholeRecordAlleleLandscape = ({
       activeMarkIds.has(mark.id) || totalLengthBrush.previewMarkIds.has(mark.id) ? index : -1
     )
     .filter((index) => index >= 0)
-  const alleleChoiceControl = alleleDistributionChoices.length > 0 &&
-    selectedAlleleDistributionView && (
-      <DistributionChoiceControl
-        label="Allele distribution measurement"
-        name="lr-tr-allele-distribution-measurement"
-        value={selectedAlleleDistributionView}
-        choices={alleleDistributionChoices}
-        onChange={selectAlleleDistributionView}
-      />
-    )
-  const genotypeChoiceControl = genotypeDistributionChoices.length > 0 &&
-    selectedGenotypeDistributionView && (
-      <DistributionChoiceControl
-        label="Genotype distribution measurement"
-        name="lr-tr-genotype-distribution-measurement"
-        value={selectedGenotypeDistributionView}
-        choices={genotypeDistributionChoices}
-        onChange={selectGenotypeDistributionView}
-      />
-    )
+  const measureControl = measureChoices.length > 1 && (
+    <LengthAxisControl>
+      Length axis
+      <Select
+        aria-label="Length axis"
+        value={selectedMeasure}
+        onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+          selectMeasure(event.target.value as LandscapeMeasure)
+        }
+      >
+        {measureChoices.map((measure) => (
+          <option key={measure} value={measure}>
+            {landscapeMeasureLabel(measure)}
+          </option>
+        ))}
+      </Select>
+    </LengthAxisControl>
+  )
 
   if (landscape.status !== 'AVAILABLE') {
     return (
@@ -2535,8 +2623,7 @@ export const WholeRecordAlleleLandscape = ({
           />
         </HeadingWithHelp>
         <DistributionControls aria-label="Allelic landscape measurement controls">
-          {alleleChoiceControl}
-          {genotypeChoiceControl}
+          {measureControl}
         </DistributionControls>
         <PlotGrid
           $plotCount={visiblePlotCount}
@@ -2546,12 +2633,12 @@ export const WholeRecordAlleleLandscape = ({
           {selectedAlleleDistributionView === 'repeat-count' && admittedRepeatCountPlots && (
             <RepeatCountPlotCard
               variantId={repeatCountVariantId}
-              repeatCountPlots={admittedRepeatCountPlots}
+              repeatCountPlots={shiftedRepeatCountPlots}
               kind="allele"
             />
           )}
           {selectedAlleleDistributionView === 'exact-motif' && admittedPrimaryMotifMeasurement && (
-            <PrimaryMotifAllelePlotCard measurement={admittedPrimaryMotifMeasurement} />
+            <PrimaryMotifAllelePlotCard measurement={shiftedPrimaryMotifMeasurement} />
           )}
           {!selectedAlleleDistributionView && (
             <PlotCard data-plot-card="total-length-histogram">
@@ -2572,12 +2659,12 @@ export const WholeRecordAlleleLandscape = ({
           {selectedGenotypeDistributionView === 'repeat-count' && admittedRepeatCountPlots && (
             <RepeatCountPlotCard
               variantId={repeatCountVariantId}
-              repeatCountPlots={admittedRepeatCountPlots}
+              repeatCountPlots={shiftedRepeatCountPlots}
               kind="genotype"
             />
           )}
           {selectedGenotypeDistributionView === 'exact-motif' && admittedPrimaryMotifGenotype && (
-            <PrimaryMotifGenotypeCells measurement={admittedPrimaryMotifGenotype} />
+            <PrimaryMotifGenotypeCells measurement={shiftedPrimaryMotifGenotype} />
           )}
           <PlotCard data-plot-card="motif-purity">
             <h3>Length × motif purity</h3>
@@ -2685,17 +2772,6 @@ export const WholeRecordAlleleLandscape = ({
   if (bins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
   else if (bins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
   else if (bins.length <= 40) histogramLayout = { barWidth: 24, gap: 3, height: 240 }
-  const histogramContentWidth =
-    bins.length * histogramLayout.barWidth + Math.max(0, bins.length - 1) * histogramLayout.gap
-  const histogramSidePadding = 20
-  const histogramScrollableWidth = histogramContentWidth + histogramSidePadding * 2
-  const deltaAxisTicks = histogramDeltaAxisTicks(
-    bins.map((bin) => bin.delta),
-    histogramLayout.barWidth,
-    histogramLayout.gap,
-    selectedBin?.delta ?? null
-  )
-  const deltaAxisHeight = 25 + Math.max(0, ...deltaAxisTicks.map((tick) => tick.lane)) * 15
   const activeFilterDescription = selectedDelta == null ? activeIndexSelection?.label : undefined
 
   return (
@@ -2704,7 +2780,7 @@ export const WholeRecordAlleleLandscape = ({
         <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
         <AllelicLandscapeHelp
           showRepeatCountControls={Boolean(admittedRepeatCountPlots)}
-          showLengthAxisControl={absoluteLengthAvailable}
+          showLengthAxisControl={measureChoices.length > 1}
           showAncestryControl={showLegacyFilterControls || showContractAncestryControl}
           showSexControl={showLegacyFilterControls || showContractSexControl}
           showHistogramDisplayControl={showHistogramDisplayControl}
@@ -2713,19 +2789,7 @@ export const WholeRecordAlleleLandscape = ({
       </HeadingWithHelp>
       {showControlSection && (
         <LandscapeControls role="group" aria-label="Allelic landscape controls">
-          {absoluteLengthAvailable && (
-            <LengthAxisControl>
-              Length axis
-              <select
-                aria-label="Length axis"
-                value={lengthAxisMode}
-                onChange={(event) => setLengthAxisMode(event.target.value as LengthAxisMode)}
-              >
-                <option value="delta">Change from REF</option>
-                <option value="absolute">Represented allele length</option>
-              </select>
-            </LengthAxisControl>
-          )}
+          {measureControl}
           {showLegacyFilterControls && (
             <>
               <div
@@ -2881,10 +2945,6 @@ export const WholeRecordAlleleLandscape = ({
             labels and tables.
           </p>
         )}
-      <DistributionControls aria-label="Allelic landscape measurement controls">
-        {alleleChoiceControl}
-        {genotypeChoiceControl}
-      </DistributionControls>
       <PlotGrid
         $plotCount={visiblePlotCount}
         data-plot-count={visiblePlotCount}
@@ -2893,7 +2953,7 @@ export const WholeRecordAlleleLandscape = ({
         {selectedAlleleDistributionView === 'repeat-count' && admittedRepeatCountPlots && (
           <RepeatCountPlotCard
             variantId={repeatCountVariantId}
-            repeatCountPlots={admittedRepeatCountPlots}
+            repeatCountPlots={shiftedRepeatCountPlots}
             kind="allele"
           />
         )}
@@ -2915,141 +2975,173 @@ export const WholeRecordAlleleLandscape = ({
         {selectedAlleleDistributionView === 'exact-motif' &&
           !admittedMotifDistribution &&
           admittedPrimaryMotifMeasurement && (
-            <PrimaryMotifAllelePlotCard measurement={admittedPrimaryMotifMeasurement} />
+            <PrimaryMotifAllelePlotCard measurement={shiftedPrimaryMotifMeasurement} />
           )}
         {selectedAlleleDistributionView === 'length' && (
           <PlotCard data-plot-card="total-length-histogram">
             <h3>Allele length distribution</h3>
-            <HistogramChart data-bin-count={bins.length} data-bar-width={histogramLayout.barWidth}>
-              <HistogramYScale aria-hidden="true" $height={histogramLayout.height}>
-                <AxisTitle>Called allele copies</AxisTitle>
-                {yTicks.map((tick) => (
-                  <AxisTick
-                    key={tick}
-                    style={{
-                      bottom: `${histogramHeightPercent(tick, maxCount, selectedScaleType)}%`,
-                    }}
-                  >
-                    {tick.toLocaleString()}
-                  </AxisTick>
-                ))}
-              </HistogramYScale>
-              <HistogramScroller
-                role="region"
-                aria-label={`Scrollable ${lengthAxisName.toLowerCase()} histogram`}
-                tabIndex={0}
-                data-testid="whole-record-delta-histogram-scroller"
-              >
-                <HistogramScrollContent style={{ width: histogramScrollableWidth }}>
-                  <Histogram
-                    aria-label={`${lengthAxisName} histogram`}
-                    data-testid="whole-record-delta-histogram"
-                    $height={histogramLayout.height}
-                    $gap={histogramLayout.gap}
-                    {...totalLengthBrush.containerProps}
-                  >
-                    {bins.map((bin, index) => {
-                      const count = counts[index]
-                      const height = histogramHeightPercent(count, maxCount, selectedScaleType)
-                      const mark = totalLengthBrushMarks[index]
-                      const markProps = totalLengthBrush.markProps(mark)
-                      const selected =
-                        activeMarkIds.has(mark.id) || totalLengthBrush.previewMarkIds.has(mark.id)
-                      return (
-                        <BarButton
-                          key={bin.delta}
-                          data-discrete-brush-id={markProps['data-discrete-brush-id']}
-                          type="button"
-                          $height={height}
-                          $hasValue={count > 0}
-                          $width={histogramLayout.barWidth}
-                          data-height-percent={height.toFixed(3)}
-                          data-bar-width={histogramLayout.barWidth}
-                          $selected={selected}
-                          aria-pressed={selected}
-                          aria-label={`${lengthAxisLabel(
-                            bin.delta,
-                            lengthAxisMode,
-                            representedRefLength
-                          )}; ${calledAlleleCopies(count, true)} in this view; ${exactAltSequences(
-                            bin.exact_alt_count
-                          )}; filter the source-ALT index to this length bin`}
-                          title={`${lengthAxisLabel(
-                            bin.delta,
-                            lengthAxisMode,
-                            representedRefLength
-                          )} · ${calledAlleleCopies(count, true)} · ${exactAltSequences(
-                            bin.exact_alt_count
-                          )}`}
-                          onClick={(event) => {
-                            if (!markProps.onClick(event)) filterIndexToLengthBins([bin])
-                          }}
-                          onKeyDown={(event) => markProps.onKeyDown(event)}
-                        >
-                          {selectedColorBy && count > 0 && (
-                            <BarSegments aria-hidden="true">
-                              {segmentsForBin(bin).map((segment) => (
-                                <span
-                                  key={segment.category}
-                                  style={{
-                                    flexGrow: segment.count,
-                                    background: segment.color,
-                                    display: segment.count ? 'block' : 'none',
-                                  }}
-                                />
-                              ))}
-                            </BarSegments>
-                          )}
-                          <BarExactCount title={exactAltSequences(bin.exact_alt_count)}>
-                            {bin.exact_alt_count}
-                          </BarExactCount>
-                          {(index === Math.min(...selectedLengthMarkIndices) ||
-                            index === Math.max(...selectedLengthMarkIndices)) && (
-                            <HistogramSelectionBoundary
-                              aria-hidden="true"
-                              data-testid="total-length-selection-boundary"
-                              $height={histogramLayout.height}
-                              $start={index === Math.min(...selectedLengthMarkIndices)}
-                              $stop={index === Math.max(...selectedLengthMarkIndices)}
-                            />
-                          )}
-                        </BarButton>
-                      )
-                    })}
-                  </Histogram>
-                  <HistogramXAxis
-                    role="group"
-                    aria-label={`${lengthAxisName} axis`}
-                    data-testid="whole-record-delta-axis"
-                    $height={deltaAxisHeight}
-                    $width={histogramScrollableWidth}
-                  >
-                    {deltaAxisTicks.map((tick) => (
-                      <HistogramXTick
-                        key={tick.delta}
-                        aria-label={`${lengthAxisValue(
-                          tick.delta,
-                          lengthAxisMode,
-                          representedRefLength
-                        ).toLocaleString()} bp tick`}
-                        data-delta={tick.delta}
-                        data-testid="whole-record-delta-axis-tick"
-                        $lane={tick.lane}
-                        $left={tick.left + histogramSidePadding}
+            <MeasuredWidth>
+              {(measuredWidth) => {
+                const barWidth = filledBarWidth(measuredWidth, bins.length, histogramLayout)
+                const histogramContentWidth =
+                  bins.length * barWidth + Math.max(0, bins.length - 1) * histogramLayout.gap
+                const histogramScrollableWidth = histogramContentWidth + HISTOGRAM_SIDE_PADDING * 2
+                const deltaAxisTicks = histogramDeltaAxisTicks(
+                  bins.map((bin) => bin.delta),
+                  barWidth,
+                  histogramLayout.gap,
+                  selectedBin?.delta ?? null
+                )
+                const deltaAxisHeight =
+                  25 + Math.max(0, ...deltaAxisTicks.map((tick) => tick.lane)) * 15
+                return (
+                  <HistogramSizer>
+                    <HistogramChart data-bin-count={bins.length} data-bar-width={barWidth}>
+                      <HistogramYScale aria-hidden="true" $height={histogramLayout.height}>
+                        <AxisTitle>Called allele copies</AxisTitle>
+                        {yTicks.map((tick) => (
+                          <AxisTick
+                            key={tick}
+                            style={{
+                              bottom: `${histogramHeightPercent(
+                                tick,
+                                maxCount,
+                                selectedScaleType
+                              )}%`,
+                            }}
+                          >
+                            {tick.toLocaleString()}
+                          </AxisTick>
+                        ))}
+                      </HistogramYScale>
+                      <HistogramScroller
+                        role="region"
+                        aria-label={`Scrollable ${lengthAxisName.toLowerCase()} histogram`}
+                        tabIndex={0}
+                        data-testid="whole-record-delta-histogram-scroller"
                       >
-                        {lengthAxisMode === 'absolute'
-                          ? `${tick.delta === 0 ? 'R · ' : ''}${lengthAxisValue(
-                              tick.delta,
-                              lengthAxisMode,
-                              representedRefLength
-                            ).toLocaleString()}`
-                          : signed(tick.delta)}
-                      </HistogramXTick>
-                    ))}
-                  </HistogramXAxis>
-                </HistogramScrollContent>
-              </HistogramScroller>
-            </HistogramChart>
+                        <HistogramScrollContent style={{ width: histogramScrollableWidth }}>
+                          <Histogram
+                            aria-label={`${lengthAxisName} histogram`}
+                            data-testid="whole-record-delta-histogram"
+                            $height={histogramLayout.height}
+                            $gap={histogramLayout.gap}
+                            {...totalLengthBrush.containerProps}
+                          >
+                            {bins.map((bin, index) => {
+                              const count = counts[index]
+                              const height = histogramHeightPercent(
+                                count,
+                                maxCount,
+                                selectedScaleType
+                              )
+                              const mark = totalLengthBrushMarks[index]
+                              const markProps = totalLengthBrush.markProps(mark)
+                              const selected =
+                                activeMarkIds.has(mark.id) ||
+                                totalLengthBrush.previewMarkIds.has(mark.id)
+                              return (
+                                <BarButton
+                                  key={bin.delta}
+                                  data-discrete-brush-id={markProps['data-discrete-brush-id']}
+                                  type="button"
+                                  $height={height}
+                                  $hasValue={count > 0}
+                                  $width={barWidth}
+                                  data-height-percent={height.toFixed(3)}
+                                  data-bar-width={barWidth}
+                                  $selected={selected}
+                                  aria-pressed={selected}
+                                  aria-label={`${lengthAxisLabel(
+                                    bin.delta,
+                                    lengthAxisMode,
+                                    representedRefLength
+                                  )}; ${calledAlleleCopies(
+                                    count,
+                                    true
+                                  )} in this view; ${exactAltSequences(
+                                    bin.exact_alt_count
+                                  )}; filter the source-ALT index to this length bin`}
+                                  title={`${lengthAxisLabel(
+                                    bin.delta,
+                                    lengthAxisMode,
+                                    representedRefLength
+                                  )} · ${calledAlleleCopies(count, true)} · ${exactAltSequences(
+                                    bin.exact_alt_count
+                                  )}`}
+                                  onClick={(event) => {
+                                    if (!markProps.onClick(event)) filterIndexToLengthBins([bin])
+                                  }}
+                                  onKeyDown={(event) => markProps.onKeyDown(event)}
+                                >
+                                  {selectedColorBy && count > 0 && (
+                                    <BarSegments aria-hidden="true">
+                                      {segmentsForBin(bin).map((segment) => (
+                                        <span
+                                          key={segment.category}
+                                          style={{
+                                            flexGrow: segment.count,
+                                            background: segment.color,
+                                            display: segment.count ? 'block' : 'none',
+                                          }}
+                                        />
+                                      ))}
+                                    </BarSegments>
+                                  )}
+                                  <BarExactCount title={exactAltSequences(bin.exact_alt_count)}>
+                                    {bin.exact_alt_count}
+                                  </BarExactCount>
+                                  {(index === Math.min(...selectedLengthMarkIndices) ||
+                                    index === Math.max(...selectedLengthMarkIndices)) && (
+                                    <HistogramSelectionBoundary
+                                      aria-hidden="true"
+                                      data-testid="total-length-selection-boundary"
+                                      $height={histogramLayout.height}
+                                      $start={index === Math.min(...selectedLengthMarkIndices)}
+                                      $stop={index === Math.max(...selectedLengthMarkIndices)}
+                                    />
+                                  )}
+                                </BarButton>
+                              )
+                            })}
+                          </Histogram>
+                          <HistogramXAxis
+                            role="group"
+                            aria-label={`${lengthAxisName} axis`}
+                            data-testid="whole-record-delta-axis"
+                            $height={deltaAxisHeight}
+                            $width={histogramScrollableWidth}
+                          >
+                            {deltaAxisTicks.map((tick) => (
+                              <HistogramXTick
+                                key={tick.delta}
+                                aria-label={`${lengthAxisValue(
+                                  tick.delta,
+                                  lengthAxisMode,
+                                  representedRefLength
+                                ).toLocaleString()} bp tick`}
+                                data-delta={tick.delta}
+                                data-testid="whole-record-delta-axis-tick"
+                                $lane={tick.lane}
+                                $left={tick.left + HISTOGRAM_SIDE_PADDING}
+                              >
+                                {lengthAxisMode === 'absolute'
+                                  ? `${tick.delta === 0 ? 'R · ' : ''}${lengthAxisValue(
+                                      tick.delta,
+                                      lengthAxisMode,
+                                      representedRefLength
+                                    ).toLocaleString()}`
+                                  : signed(tick.delta)}
+                              </HistogramXTick>
+                            ))}
+                          </HistogramXAxis>
+                        </HistogramScrollContent>
+                      </HistogramScroller>
+                    </HistogramChart>
+                  </HistogramSizer>
+                )
+              }}
+            </MeasuredWidth>
           </PlotCard>
         )}
         {selectedGenotypeDistributionView === 'length' && admittedGenotypeLandscape && (
@@ -3070,12 +3162,12 @@ export const WholeRecordAlleleLandscape = ({
         {selectedGenotypeDistributionView === 'repeat-count' && admittedRepeatCountPlots && (
           <RepeatCountPlotCard
             variantId={repeatCountVariantId}
-            repeatCountPlots={admittedRepeatCountPlots}
+            repeatCountPlots={shiftedRepeatCountPlots}
             kind="genotype"
           />
         )}
         {selectedGenotypeDistributionView === 'exact-motif' && admittedPrimaryMotifGenotype && (
-          <PrimaryMotifGenotypeCells measurement={admittedPrimaryMotifGenotype} />
+          <PrimaryMotifGenotypeCells measurement={shiftedPrimaryMotifGenotype} />
         )}
         <PlotCard data-plot-card="motif-purity">
           <h3>Length × motif purity</h3>

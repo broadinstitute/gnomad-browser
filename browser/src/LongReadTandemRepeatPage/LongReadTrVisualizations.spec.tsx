@@ -612,26 +612,12 @@ describe('long-read TR visualization fidelity', () => {
     const grid = screen.getByTestId('whole-record-allele-plot-grid')
     expect(grid.getAttribute('data-plot-count')).toBe('3')
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
-    const alleleChoices = screen.getByRole('radiogroup', {
-      name: 'Allele distribution measurement',
-    })
-    const genotypeChoices = screen.getByRole('radiogroup', {
-      name: 'Genotype distribution measurement',
-    })
     expect(within(grid).getByTestId('genotype-length-card')).not.toBeNull()
-    const alleleRepeatCount = within(alleleChoices).getByRole('radio', {
-      name: 'Repeat count',
-    })
-    alleleRepeatCount.focus()
-    fireEvent.click(alleleRepeatCount)
-    fireEvent.click(within(genotypeChoices).getByRole('radio', { name: 'Repeat count' }))
-    expect(
-      within(screen.getByRole('radiogroup', { name: 'Allele distribution measurement' })).getByRole(
-        'radio',
-        { name: 'Repeat count' }
-      )
-    ).toBe(alleleRepeatCount)
-    expect(document.activeElement).toBe(alleleRepeatCount)
+    const lengthAxis = screen.getByLabelText('Length axis')
+    lengthAxis.focus()
+    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
+    expect(screen.getByLabelText('Length axis')).toBe(lengthAxis)
+    expect(document.activeElement).toBe(lengthAxis)
     expect(within(grid).getByTestId('allele-repeat-count-card')).not.toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-card')).not.toBeNull()
     expect(within(grid).queryByTestId('genotype-length-card')).toBeNull()
@@ -689,11 +675,9 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    const choices = screen.getByRole('radiogroup', {
-      name: 'Genotype distribution measurement',
-    })
-    expect(within(choices).getByRole('radio', { name: 'Length' })).toBeChecked()
-    fireEvent.click(within(choices).getByRole('radio', { name: 'Exact motif' }))
+    const lengthAxis = screen.getByLabelText('Length axis') as HTMLSelectElement
+    expect(lengthAxis.value).toBe('bp-delta')
+    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
     expect(screen.getByTestId('primary-motif-genotype-cells')).not.toBeNull()
     expect(screen.queryByTestId('genotype-length-card')).toBeNull()
 
@@ -709,11 +693,9 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    const lengthOnlyChoices = screen.getByRole('radiogroup', {
-      name: 'Genotype distribution measurement',
-    })
-    expect(within(lengthOnlyChoices).queryByRole('radio', { name: 'Exact motif' })).toBeNull()
-    expect(within(lengthOnlyChoices).getByRole('radio', { name: 'Length' })).toBeChecked()
+    // The genotype plot no longer admits a repeat-unit product, so it falls back to its
+    // own length card while the repeat measure stays selected for the allele plot.
+    expect(screen.queryByTestId('primary-motif-genotype-cells')).toBeNull()
     expect(screen.getByTestId('genotype-length-card')).not.toBeNull()
   })
 
@@ -736,18 +718,12 @@ describe('long-read TR visualization fidelity', () => {
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(2)
     expect(within(grid).getByTestId('whole-record-delta-histogram')).not.toBeNull()
     expect(within(grid).queryByTestId('motif-occurrence-card')).toBeNull()
-    const distribution = screen.getByRole('radiogroup', {
-      name: 'Allele distribution measurement',
-    })
-    const lengthRadio = within(distribution).getByRole('radio', { name: 'Length' })
-    const motifRadio = within(distribution).getByRole('radio', { name: 'Exact motif' })
-    expect((lengthRadio as HTMLInputElement).checked).toBe(true)
-    fireEvent.click(motifRadio)
-    expect(
-      screen
-        .getByRole('radiogroup', { name: 'Allele distribution measurement' })
-        .querySelector('input[value="exact-motif"]')
-    ).toBeChecked()
+    const lengthAxis = screen.getByLabelText('Length axis') as HTMLSelectElement
+    expect(lengthAxis.value).toBe('bp-absolute')
+    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
+    expect((screen.getByLabelText('Length axis') as HTMLSelectElement).value).toBe(
+      'repeats-absolute'
+    )
     expect(within(grid).queryByTestId('whole-record-delta-histogram')).toBeNull()
     const card = within(grid).getByTestId('motif-occurrence-card')
     expect(
@@ -805,19 +781,13 @@ describe('long-read TR visualization fidelity', () => {
         name: /CAG; 1 exact literal occurrence in each whole represented source ALT/,
       })
     )
-    fireEvent.click(
-      screen
-        .getByRole('radiogroup', { name: 'Allele distribution measurement' })
-        .querySelector('input[value="length"]')!
-    )
+    fireEvent.change(screen.getByLabelText('Length axis'), { target: { value: 'bp-delta' } })
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
     expect(within(grid).queryByTestId('motif-occurrence-card')).toBeNull()
     expect(within(grid).getByTestId('whole-record-delta-histogram')).not.toBeNull()
-    fireEvent.click(
-      screen
-        .getByRole('radiogroup', { name: 'Allele distribution measurement' })
-        .querySelector('input[value="exact-motif"]')!
-    )
+    fireEvent.change(screen.getByLabelText('Length axis'), {
+      target: { value: 'repeats-absolute' },
+    })
     expect(screen.getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue('0')
   })
 
@@ -851,7 +821,9 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    fireEvent.click(screen.getByRole('radio', { name: 'Exact motif' }))
+    fireEvent.change(screen.getByLabelText('Length axis'), {
+      target: { value: 'repeats-absolute' },
+    })
     expect(
       screen.getByRole('group', {
         name: 'Shared ancestry and sex filters for visible allelic-landscape plots',
@@ -869,9 +841,11 @@ describe('long-read TR visualization fidelity', () => {
       })
     ).not.toBeNull()
     expect(screen.queryByRole('button', { name: /CAG; 1 exact literal occurrence/ })).toBeNull()
-    fireEvent.click(screen.getByRole('radio', { name: 'Length' }))
+    fireEvent.change(screen.getByLabelText('Length axis'), { target: { value: 'bp-absolute' } })
     expect(screen.getByLabelText('Genetic ancestry group')).toHaveValue('afr')
-    fireEvent.click(screen.getByRole('radio', { name: 'Exact motif' }))
+    fireEvent.change(screen.getByLabelText('Length axis'), {
+      target: { value: 'repeats-absolute' },
+    })
     expect(screen.getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue('0')
     fireEvent.click(
       screen.getByRole('button', {
@@ -1866,7 +1840,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       (
         within(axis).getByRole('option', {
-          name: 'Represented allele length',
+          name: 'ALT allele size (bp)',
         }) as HTMLOptionElement
       ).disabled
     ).toBe(false)
@@ -1903,7 +1877,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     expect(screen.queryByLabelText('Length axis')).toBeNull()
-    expect(screen.queryByRole('option', { name: 'Represented allele length' })).toBeNull()
+    expect(screen.queryByRole('option', { name: 'ALT allele size (bp)' })).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()
     expect(screen.queryByText(/bp represented \(−6 bp vs REF\)/)).toBeNull()
