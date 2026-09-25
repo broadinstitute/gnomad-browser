@@ -142,7 +142,6 @@ const LongReadHomePage = () => (
     <Hero>
       <GnomadLogo width="180px" />
       <Beta>LONG READ · BETA</Beta>
-      <h1>A longer view of human genetic variation</h1>
       <p>
         Explore long-read variants, tandem repeats, and local haplotypes in gnomAD. This beta
         browser is a preview; data and features are under active development.
@@ -155,8 +154,7 @@ const LongReadHomePage = () => (
     </Hero>
 
     <Examples aria-labelledby="lr-examples-heading">
-      <h2 id="lr-examples-heading">Start with a region</h2>
-      <p>A few entry points from our existing long-read example regions. Coordinates use GRCh38.</p>
+      <h2 id="lr-examples-heading">example regions</h2>
       <Grid>
         {featuredRegions.map((example) => (
           <Card key={example.region}>

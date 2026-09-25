@@ -61,6 +61,14 @@ test('LR featured regions link directly to existing curated examples with matchi
       <HomePage />
     </BrowserRouter>
   )
+  expect(screen.getByRole('heading', { level: 2, name: 'example regions' })).toBeTruthy()
+  expect(screen.queryByRole('heading', { level: 1 })).toBeNull()
+  expect(screen.queryByText('A longer view of human genetic variation')).toBeNull()
+  expect(
+    screen.queryByText(
+      'A few entry points from our existing long-read example regions. Coordinates use GRCh38.'
+    )
+  ).toBeNull()
   const links = ['MHC region', 'Subtelomeric repeats', 'AMY1A / AMY1B / AMY2A'].map((name) =>
     screen.getByRole('link', { name }).getAttribute('href')
   )
