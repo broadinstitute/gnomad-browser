@@ -17,7 +17,8 @@ import { getAlleleTypeColor, getVariantCategory } from '../LongReadVariantPage/v
 import {
   allLongReadVariantTypesSelected,
   getLongReadVariantTypeColor,
-  LONG_READ_VARIANT_TYPE_OPTIONS,
+  LONG_READ_DEMO_VARIANT_TYPE_OPTIONS,
+  completeLongReadDemoTypeFilters,
   passesLongReadVariantTypeFilters,
   type LongReadVariantTypeFilters,
 } from '../LongReadVariantPage/longReadVariantTypes'
@@ -110,7 +111,7 @@ export const LONG_READ_VARIANT_TABLE_COLUMNS = [
   { key: 'an', heading: 'AN', description: 'Long-read allele number (summary view)' },
   { key: 'group_count', heading: 'Groups / Clusters', description: 'Displayed haplotype groups or active clusters containing the variant' },
   { key: 'carrier_count', heading: 'Carriers', description: 'Unique individuals containing the variant' },
-  { key: 'group_af', heading: 'Grp AF', description: 'Long-read allele frequency by genetic ancestry group' },
+  { key: 'group_af', heading: 'Ancestry AF', description: 'Ancestry-specific allele frequencies, normalized to the sum of available AFs for bar widths; not carrier counts or proportions of carriers.' },
   { key: 'short_read_match_id', heading: 'SR Match', description: 'Matching gnomAD v4 short-read variant' },
   { key: 'cadd_phred', heading: 'CADD', description: 'CADD PHRED score' },
   { key: 'phylop', heading: 'phyloP', description: 'phyloP conservation score' },
@@ -295,7 +296,7 @@ const renderPredictor = (value: number | null | undefined, warnThreshold: number
   )
 }
 
-// --- Mini group AF bar ---
+// --- Mini ancestry AF bar (relative AF weights, NOT carrier counts) ---
 
 const PopAfBar = ({ variant }: { variant: DerivedVariant }) => {
   const pops = (variant.populations || []).flatMap((p) => p.af == null ? [] : [{
@@ -308,8 +309,10 @@ const PopAfBar = ({ variant }: { variant: DerivedVariant }) => {
   const total = pops.reduce((s, p) => s + p.value, 0)
   if (total === 0) return <span style={{ color: '#ccc' }}>—</span>
 
+  const description = `Ancestry allele frequencies: ${pops.map((p) => `${p.key}: ${p.value}`).join('; ')}. Bar widths are AF divided by the sum of available ancestry AFs, not carrier counts or proportions of carriers. Missing ancestry AFs are omitted.`
   return (
-    <svg width={60} height={12} style={{ verticalAlign: 'middle' }}>
+    <svg width={60} height={12} role="img" aria-label={description} style={{ verticalAlign: 'middle' }}>
+      <title>{description}</title>
       {(() => {
         let x = 0
         return pops.map((p) => {
@@ -658,7 +661,7 @@ const TableRow = React.memo(function TableRow({
           case 'group_af':
             return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : <PopAfBar variant={v} />}</td>
           case 'short_read_match_id':
-            return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : v.short_read_match_id ? <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false} title={v.short_read_match_id}>{abbreviateLongReadTableLabel(v.short_read_match_id)}</Link> : <Dash title="No short-read match" />}</td>
+            return <td key={columnKey}>{v.is_tr ? <Dash title={unavailable} /> : v.short_read_match_id ? <Link to={`/variant/${v.short_read_match_id}?dataset=gnomad_r4`} preserveSelectedDataset={false} title={v.short_read_match_id} aria-label={v.short_read_match_id} style={{ display: 'inline-block', maxWidth: '20ch', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', verticalAlign: 'middle' }} onClick={(e: React.MouseEvent) => e.stopPropagation()}>{abbreviateLongReadTableLabel(v.short_read_match_id)}</Link> : <Dash title="No short-read match" />}</td>
           case 'cadd_phred':
             return <td key={columnKey} className="numeric">{v.is_tr ? <Dash title={unavailable} /> : renderPredictor(v.cadd_phred, 25.3, 28.1)}</td>
           case 'phylop':
@@ -1198,7 +1201,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     other: '#757575',
   }
 
-  const variantTypeCategories = LONG_READ_VARIANT_TYPE_OPTIONS
+  const variantTypeCategories = LONG_READ_DEMO_VARIANT_TYPE_OPTIONS
     .filter((option) => option.id !== 'all')
     .map((option) => ({
       id: option.id,
@@ -1307,7 +1310,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
           categories={variantTypeCategories}
           categorySelections={typeFilters}
           id="lr-variant-type-filter"
-          onChange={setTypeFilters}
+          onChange={(selections) => setTypeFilters(completeLongReadDemoTypeFilters(selections))}
         />
         <CategoryFilterControl
           categories={consequenceCategories}
@@ -1375,7 +1378,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
                     case 'carrier_count':
                       return <th key={columnKey} className="numeric" onClick={() => handleSort('carrier_count')}>Carriers{sortIndicator('carrier_count')}</th>
                     case 'group_af':
-                      return <th key={columnKey}>Grp AF</th>
+                      return <th key={columnKey} title="Ancestry-specific allele frequencies, normalized to the sum of available AFs for bar widths; not carrier counts or proportions of carriers.">Ancestry AF</th>
                     case 'short_read_match_id':
                       return mode === 'summary' ? <th key={columnKey} onClick={() => handleSort('short_read_match_id')}>SR Match ID{sortIndicator('short_read_match_id')}</th> : <th key={columnKey}>SR Match</th>
                     case 'cadd_phred':

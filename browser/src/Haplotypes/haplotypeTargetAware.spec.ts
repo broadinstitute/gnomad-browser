@@ -158,6 +158,23 @@ describe('target-aware haplotype computation', () => {
     })
   })
 
+  test('demo exclusion also removes target assignments without rewriting source AC to reconcile', () => {
+    const { 'copy-2:1': excludedIndices, ...otherCarriers } = baselineCarriers
+    const carriers = { ...otherCarriers, 'HG00272:1': excludedIndices }
+    const before = JSON.stringify({ carriers, variants })
+    const result = compute(carriers)
+    expect(result.target_display_sidecar!.by_carrier['HG00272:1']).toBeUndefined()
+    expect(result.groups.flatMap((group) => group.samples.map((sample) => sample.sample_id)))
+      .not.toContain('HG00272')
+    expect(result.target_display_sidecar!.counts).toMatchObject({
+      represented_copy_count: 5,
+      selected_exact_allele_source_ac: 3,
+      selected_exact_allele_assigned_copy_count: 2,
+      selected_exact_allele_ac_reconciled: false,
+    })
+    expect(JSON.stringify({ carriers, variants })).toBe(before)
+  })
+
   test('joins selected alleles only by source_variant_id~alt_index and never calls sparse absence REF', () => {
     const result = compute(baselineCarriers)
     const sidecar = result.target_display_sidecar!

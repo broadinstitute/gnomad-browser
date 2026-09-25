@@ -63,7 +63,8 @@ export const getSearchDatasetForSelectedDataset = (selectedDataset: unknown): Da
       return 'gnomad_cnv_r4'
     }
   }
-  return 'gnomad_r4'
+  // The LR demo opts in at build time; other deployments retain the standard default.
+  return process.env.LR_Y1_ENABLED === 'true' ? 'gnomad_r4_lr' : 'gnomad_r4'
 }
 
 const searchResultUrl = (

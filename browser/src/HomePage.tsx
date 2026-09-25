@@ -9,6 +9,7 @@ import InfoPage from './InfoPage'
 import Link from './Link'
 import Searchbox from './Searchbox'
 import GnomadLogo from './GnomadLogo'
+import LongReadHomePage from './LongReadHomePage'
 
 const HomePage = styled(InfoPage)`
   max-width: 740px;
@@ -32,7 +33,7 @@ const Heading = styled.h1`
   text-align: center;
 `
 
-export default () => (
+const StandardHomePage = () => (
   <HomePage>
     <DocumentTitle />
     <HeadingContainer>
@@ -90,26 +91,11 @@ export default () => (
       </ListItem>
     </List>
 
-    <h2 style={{ fontSize: '1em' }}>Temporary long-read exploration links</h2>
+    <h2 style={{ fontSize: '1em' }}>Long-read exploration</h2>
     <List style={{ marginBottom: '2em' }}>
       <ListItem>
         <Link preserveSelectedDataset={false} to="/long-read-examples">
           Long-read example regions
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link preserveSelectedDataset={false} to="/long-read-examples-22">
-          Chromosome 22 long-read examples
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link preserveSelectedDataset={false} to="/long-read-literature-examples">
-          Long-read literature workflows
-        </Link>
-      </ListItem>
-      <ListItem>
-        <Link preserveSelectedDataset={false} to="/reference-sequence-context">
-          Chromosome 22 reference sequence-context regions
         </Link>
       </ListItem>
     </List>
@@ -307,3 +293,6 @@ export default () => (
     </p>
   </HomePage>
 )
+
+export default () =>
+  process.env.LR_Y1_ENABLED === 'true' ? <LongReadHomePage /> : <StandardHomePage />

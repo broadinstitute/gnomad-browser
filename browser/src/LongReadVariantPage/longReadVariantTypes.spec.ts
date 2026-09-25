@@ -4,6 +4,8 @@ import {
   filtersForLongReadVariantType,
   getLongReadVariantType,
   LONG_READ_VARIANT_TYPE_OPTIONS,
+  LONG_READ_DEMO_VARIANT_TYPE_OPTIONS,
+  completeLongReadDemoTypeFilters,
   passesHaplotypeVariantTypeAndSnvLodFilters,
   passesLongReadVariantTypeFilters,
   selectedLongReadVariantType,
@@ -41,6 +43,19 @@ describe('long-read variant type filters', () => {
       { id: 'cpx', label: 'CPX' },
       { id: 'oth', label: 'Other / BND / CTX' },
     ])
+  })
+
+  test('limits demo controls without removing hidden types from All or the source type model', () => {
+    expect(LONG_READ_DEMO_VARIANT_TYPE_OPTIONS.map(({ label }) => label))
+      .toEqual(['All', 'SNV', 'INS', 'DEL', 'DUP', 'TR'])
+    const all = completeLongReadDemoTypeFilters({ snv: true, ins: true, del: true, dup: true, tr: true })
+    const only = completeLongReadDemoTypeFilters({ snv: true, ins: false, del: false, dup: false, tr: false })
+    for (const type of ['INV', 'MCNV', 'CPX', 'CTX', 'BND', 'OTH']) {
+      expect(passesLongReadVariantTypeFilters(type, all)).toBe(true)
+      expect(passesLongReadVariantTypeFilters(type, only)).toBe(false)
+    }
+    expect(selectedLongReadVariantType(all)).toBe('all')
+    expect(selectedLongReadVariantType(only)).toBe('snv')
   })
 
   test('classifies every documented LR allele type', () => {

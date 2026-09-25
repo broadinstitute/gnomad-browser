@@ -165,7 +165,7 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
 
     expect(value('Type')).toBe('TR')
     expect(value('Length')).toBe('-5 bp')
-    ;['LR AF', 'Grp AF', 'SR Match', 'CADD', 'phyloP', 'Consequence', 'rsID'].forEach((heading) =>
+    ;['LR AF', 'Ancestry AF', 'SR Match', 'CADD', 'phyloP', 'Consequence', 'rsID'].forEach((heading) =>
       expect(value(heading)).toBe('—')
     )
     expect(value('Groups')).toBe('1 / 1')

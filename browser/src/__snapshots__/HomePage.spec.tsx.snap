@@ -94,7 +94,10 @@ exports[`Home Page has no unexpected changes 1`] = `
 .c5 {
   display: flex;
   align-items: stretch;
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .c5 select {
@@ -165,6 +168,7 @@ exports[`Home Page has no unexpected changes 1`] = `
     width="100%"
   >
     <select
+      aria-label="Search dataset"
       className="c6"
       onChange={[Function]}
       value="gnomad_r4"
@@ -346,7 +350,7 @@ exports[`Home Page has no unexpected changes 1`] = `
       }
     }
   >
-    Temporary long-read exploration links
+    Long-read exploration
   </h2>
   <ul
     className="c9"
@@ -365,39 +369,6 @@ exports[`Home Page has no unexpected changes 1`] = `
         onClick={[Function]}
       >
         Long-read example regions
-      </a>
-    </li>
-    <li
-      className="c10"
-    >
-      <a
-        className="c11"
-        href="/long-read-examples-22"
-        onClick={[Function]}
-      >
-        Chromosome 22 long-read examples
-      </a>
-    </li>
-    <li
-      className="c10"
-    >
-      <a
-        className="c11"
-        href="/long-read-literature-examples"
-        onClick={[Function]}
-      >
-        Long-read literature workflows
-      </a>
-    </li>
-    <li
-      className="c10"
-    >
-      <a
-        className="c11"
-        href="/reference-sequence-context"
-        onClick={[Function]}
-      >
-        Chromosome 22 reference sequence-context regions
       </a>
     </li>
   </ul>

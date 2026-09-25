@@ -7,11 +7,9 @@ import Delayed from './Delayed'
 import InfoPage from './InfoPage'
 import StatusMessage from './StatusMessage'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
-import { fetchSearchResults } from './search'
+import { fetchSearchResults, getSearchDatasetForSelectedDataset } from './search'
 import useRequest from './useRequest'
 import type { LongReadCohort } from './LongReadVariantPage/longReadCohort'
-
-const defaultSearchDataset: DatasetId = 'gnomad_r4'
 
 type SearchRedirectProps = {
   query: string
@@ -61,7 +59,7 @@ type SearchRedirectPageProps = {
 
 const SearchRedirectPage = ({
   query,
-  datasetId = defaultSearchDataset,
+  datasetId = getSearchDatasetForSelectedDataset(undefined),
   lrCohort,
 }: SearchRedirectPageProps) => {
   return (

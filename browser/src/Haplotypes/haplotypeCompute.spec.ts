@@ -150,6 +150,32 @@ const haplotypeVariant = (id: string, pos: number, af: number) => ({
   rsid: '',
 })
 
+describe('LR demo sample visibility', () => {
+  test.each([
+    [false, false], [true, false], [false, true],
+  ])('excludes HG00272 before grouping (clustered=%s, diploid=%s) without changing source data', (clustered, diploid) => {
+    const variants = [haplotypeVariant('shared', 100, 0.5), haplotypeVariant('private', 200, 0.1)]
+    const indices = { 'HG00272:1': [0, 1], 'HG00272:2': [1], 'HG00272_extra:1': [0], 'other:2': [1] }
+    const metadata = carrierMetadataFromPayload(Object.entries(indices).map(([id, variant_indices]) => ({
+      sample_id: id.split(':')[0], vcf_strand: Number(id.split(':')[1]), phase_set: null, variant_indices,
+    })))
+    const before = JSON.stringify({ variants, indices, metadata })
+    const compute = (structured: boolean) => computeHaplotypeView(
+      variants as any, indices, 0, 'sample_count', clustered, 0.5,
+      undefined, diploid, 'auto', 1000, structured ? metadata : undefined
+    )
+    for (const structured of [true, false]) {
+      const result = compute(structured)
+      expect(result.groups.flatMap((group) => group.samples.map((sample) => sample.sample_id)).sort())
+        .toEqual(['HG00272_extra', 'other'])
+      expect(Object.keys(result.phase_set_sidecar!.by_carrier)).not.toContain('HG00272:1')
+      expect(Object.keys(result.phase_set_sidecar!.by_carrier)).not.toContain('HG00272:2')
+      expect(JSON.stringify(result)).not.toContain('"HG00272"')
+    }
+    expect(JSON.stringify({ variants, indices, metadata })).toBe(before)
+  })
+})
+
 describe('VCF carrier identity', () => {
   const variants = [
     haplotypeVariant('above', 100, 0.5),

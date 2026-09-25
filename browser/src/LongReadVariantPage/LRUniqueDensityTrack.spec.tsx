@@ -31,6 +31,9 @@ describe('LRUniqueDensityTrack layout', () => {
       </RegionViewerContext.Provider>
     ).root
 
+    expect(tree.findAllByType('option').map((option) => option.children.join('')))
+      .toEqual(['All', 'SNV', 'INS', 'DEL', 'DUP', 'TR'])
+
     const svg = tree.findByType('svg')
     expect(svg.props).toMatchObject({ height: 45, width: 100 })
 

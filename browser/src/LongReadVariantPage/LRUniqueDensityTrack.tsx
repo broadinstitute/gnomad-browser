@@ -4,7 +4,7 @@ import { Track } from '@gnomad/region-viewer'
 import HaplotypeHelpButton from '../Haplotypes/HelpButton'
 import {
   filtersForLongReadVariantType,
-  LONG_READ_VARIANT_TYPE_OPTIONS,
+  LONG_READ_DEMO_VARIANT_TYPE_OPTIONS,
   passesLongReadVariantTypeFilters,
   selectedLongReadVariantType,
   type LongReadVariantTypeFilters,
@@ -84,8 +84,8 @@ const LRUniqueDensityTrack = ({
               <h4 style={{ margin: '12px 0 6px' }}>Variant type filter</h4>
               <p>
                 Select a long-read variant class to filter this density track, the summary tracks,
-                and the haplotype variants together. Breakends and translocations are grouped under{' '}
-                <strong>Other / BND / CTX</strong>, matching their shared display category.
+                and the haplotype variants together. The demo offers SNV, INS, DEL, DUP, and TR
+                controls; All still includes every variant class in the source data.
               </p>
               <h4 style={{ margin: '12px 0 6px' }}>What causes LR-unique variants?</h4>
               <ul style={{ margin: '0 0 0 20px', lineHeight: 1.8 }}>
@@ -128,7 +128,7 @@ const LRUniqueDensityTrack = ({
                 Custom
               </option>
             )}
-            {LONG_READ_VARIANT_TYPE_OPTIONS.map((option) => (
+            {LONG_READ_DEMO_VARIANT_TYPE_OPTIONS.map((option) => (
               <option key={option.id} value={option.id}>
                 {option.label}
               </option>

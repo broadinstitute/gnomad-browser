@@ -41,6 +41,34 @@ const variants = {
 }
 
 describe('haplotype worker VCF carrier identity', () => {
+  test('keeps HG00272 out of INIT and subsequent diploid/clustered updates', () => {
+    jest.resetModules()
+    const postMessage = jest.fn()
+    Object.defineProperty(globalThis, 'postMessage', { value: postMessage, configurable: true, writable: true })
+    // eslint-disable-next-line global-require
+    require('./haplotypeWorker')
+    const send = (data: any) => (globalThis as any).onmessage({ data })
+    send({
+      type: 'INIT', minAf: 0,
+      rawData: { variants, carrier_variant_indices: {
+        'HG00272:1': [0], 'HG00272:2': [1], 'kept:1': [0], 'kept:2': [1],
+      } },
+    })
+    for (const isDiploidView of [true, false]) {
+      send({ type: 'UPDATE_AF', minAf: 0, isClusteredView: !isDiploidView,
+        clusterThreshold: 0.5, sortBy: 'sample_id', isDiploidView })
+    }
+    send({ type: 'UPDATE_THRESHOLD', clusterThreshold: 0.2 })
+    const results = postMessage.mock.calls.map(([message]) => message as any)
+      .filter(({ type }) => type === 'READY' || type === 'UPDATED')
+    expect(results).toHaveLength(4)
+    for (const { data } of results) {
+      expect(new Set(data.groups.flatMap((group: any) => group.samples.map((sample: any) => sample.sample_id))))
+        .toEqual(new Set(['kept']))
+      expect(JSON.stringify(data)).not.toContain('HG00272')
+    }
+  })
+
   test('retains and re-freezes two phase sets across READY and diploid UPDATE', async () => {
     jest.resetModules()
     const postMessage = jest.fn()

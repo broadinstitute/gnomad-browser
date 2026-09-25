@@ -1438,7 +1438,7 @@ export function sortDiplotypes(
 
 export function computeHaplotypeView(
   variants: LRVariant[],
-  carrierVariantIndices: Record<string, number[]>,
+  sourceCarrierVariantIndices: Record<string, number[]>,
   minAf: number,
   sortBy: string,
   isClusteredView: boolean,
@@ -1447,10 +1447,21 @@ export function computeHaplotypeView(
   isDiploidView: boolean = false,
   distanceMetric: DistanceMetric = 'auto',
   regionSize?: number,
-  carrierMetadata: CarrierMetadata = {},
+  sourceCarrierMetadata: CarrierMetadata = {},
   targetDescriptor?: HaplotypeTargetDescriptor,
   onProgress?: (status: string) => void
 ): ComputedHaplotypeData {
+  // LR demo presentation policy, applied before grouping in both worker and
+  // main-thread paths (including diplotypes and local TR backgrounds). Keep
+  // source variants, cohort AF/AC/AN, and caller-owned carrier data unchanged.
+  const isVisibleCarrier = (carrierId: string) =>
+    identityForCarrier(carrierId, sourceCarrierMetadata).sample_id !== 'HG00272'
+  const carrierVariantIndices = Object.fromEntries(
+    Object.entries(sourceCarrierVariantIndices).filter(([id]) => isVisibleCarrier(id))
+  )
+  const carrierMetadata: CarrierMetadata = Object.fromEntries(
+    Object.entries(sourceCarrierMetadata).filter(([id]) => isVisibleCarrier(id))
+  )
   const phase_set_sidecar = phaseSetSidecarFor(variants, carrierMetadata)
   const targetVariantIndices = targetDescriptor == null
     ? new Set<number>()

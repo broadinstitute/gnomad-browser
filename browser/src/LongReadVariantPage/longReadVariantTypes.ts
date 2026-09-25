@@ -38,6 +38,12 @@ export const LONG_READ_VARIANT_TYPE_OPTIONS: ReadonlyArray<{
   { id: 'oth', label: 'Other / BND / CTX' },
 ]
 
+/** LR demo controls only. Retain every type in the model so hiding a button
+ * neither drops source records nor silently excludes them from the All view. */
+export const LONG_READ_DEMO_VARIANT_TYPE_OPTIONS = LONG_READ_VARIANT_TYPE_OPTIONS.filter(
+  ({ id }) => !['inv', 'mcnv', 'cpx', 'oth'].includes(id)
+)
+
 const FILTER_TYPE_TO_ALLELE_TYPE: Record<LongReadVariantType, string> = {
   snv: 'snv',
   ins: 'ins',
@@ -61,6 +67,18 @@ export const allLongReadVariantTypesSelected = (): LongReadVariantTypeFilters =>
   Object.fromEntries(
     LONG_READ_VARIANT_TYPES.map((type) => [type, true])
   ) as LongReadVariantTypeFilters
+
+/** CategoryFilterControl's only/all actions return just the visible keys. */
+export const completeLongReadDemoTypeFilters = (
+  selections: Partial<LongReadVariantTypeFilters>
+): LongReadVariantTypeFilters => {
+  const allVisibleSelected = LONG_READ_DEMO_VARIANT_TYPE_OPTIONS
+    .filter(({ id }) => id !== 'all')
+    .every(({ id }) => selections[id as LongReadVariantType] === true)
+  return Object.fromEntries(LONG_READ_VARIANT_TYPES.map((type) => [
+    type, selections[type] ?? allVisibleSelected,
+  ])) as LongReadVariantTypeFilters
+}
 
 export const filtersForLongReadVariantType = (
   selection: LongReadVariantTypeSelection

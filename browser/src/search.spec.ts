@@ -1,6 +1,39 @@
 import { beforeEach, describe, expect, jest, it, test } from '@jest/globals'
 
-import { fetchSearchResults } from './search'
+import { fetchSearchResults, getSearchDatasetForSelectedDataset } from './search'
+
+const originalLrMode = process.env.LR_Y1_ENABLED
+
+test.each(['true', 'false', undefined])(
+  'search fallback respects deployment mode %s and explicit datasets',
+  (mode) => {
+    try {
+      if (mode === undefined) delete process.env.LR_Y1_ENABLED
+      else process.env.LR_Y1_ENABLED = mode
+      const expected = mode === 'true' ? 'gnomad_r4_lr' : 'gnomad_r4'
+      const missingOrInvalidDatasets = [undefined, null, '', 'unknown', ['gnomad_r4_lr']]
+      missingOrInvalidDatasets.forEach((missingOrInvalid) => {
+        expect(getSearchDatasetForSelectedDataset(missingOrInvalid)).toBe(expected)
+      })
+      const explicitDatasets = [
+        'gnomad_r4_lr',
+        'gnomad_r4',
+        'gnomad_r3',
+        'gnomad_r2_1',
+        'gnomad_sv_r4',
+        'gnomad_cnv_r4',
+        'exac',
+      ]
+      explicitDatasets.forEach((dataset) => {
+        expect(getSearchDatasetForSelectedDataset(dataset)).toBe(dataset)
+      })
+      expect(getSearchDatasetForSelectedDataset('gnomad_r4_non_ukb')).toBe('gnomad_r4')
+    } finally {
+      if (originalLrMode === undefined) delete process.env.LR_Y1_ENABLED
+      else process.env.LR_Y1_ENABLED = originalLrMode
+    }
+  }
+)
 
 describe('fetchSearchResults', () => {
   beforeEach(() => {
@@ -101,9 +134,7 @@ describe('fetchSearchResults', () => {
   it('canonicalizes source-style compound TRID search aliases without losing order', async () => {
     const sourceId = '4-1-10-CAG,4-8-12-CAA,4-12-15-CAG'
     const canonicalId = '4-1-10-CAG+4-8-12-CAA+4-12-15-CAG'
-    expect(
-      await fetchSearchResults('gnomad_r4_lr', sourceId, { lrCohort: 'hgsvc_hprc' })
-    ).toEqual([
+    expect(await fetchSearchResults('gnomad_r4_lr', sourceId, { lrCohort: 'hgsvc_hprc' })).toEqual([
       {
         label: `Tandem-repeat locus ${canonicalId}`,
         value: `/tandem-repeat/${canonicalId}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`,

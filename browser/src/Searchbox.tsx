@@ -71,6 +71,7 @@ export default withRouter((props: any) => {
     // @ts-expect-error TS(2769) FIXME: No overload matches this call.
     <Wrapper width={width}>
       <Select
+        aria-label="Search dataset"
         value={searchDataset}
         onChange={(e: any) => {
           setSearchDataset(e.target.value)
