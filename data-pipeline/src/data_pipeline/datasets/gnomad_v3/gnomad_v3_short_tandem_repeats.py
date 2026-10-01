@@ -1,6 +1,7 @@
 import json
 
 import hail as hl
+import hailtop.fs as hfs
 
 
 def _parse_region_id(region_id):
@@ -125,7 +126,7 @@ def _parse_reference_regions(regions):
 
 
 def prepare_gnomad_v3_short_tandem_repeats(path):
-    with hl.hadoop_open(path) as input_file:
+    with hfs.open(path) as input_file:
         data = json.load(input_file)
 
     ds = [
