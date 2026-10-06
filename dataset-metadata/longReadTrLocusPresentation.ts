@@ -31,8 +31,9 @@ export type TrLocusRowDisplay = {
 
 const simpleMotifContext = (motif: string) => (motif.length <= 80 ? motif : 'long motif')
 
-// Motifs named inline stay short so a row cannot grow with the stored sequence.
-const boundedMotif = (motif: string) => (motif.length <= 20 ? motif : `${motif.length}bp motif`)
+// Motifs named inline stay short so a row cannot grow with the stored sequence. A long motif
+// becomes its size alone, since every phrase that names motifs already supplies the word "motif".
+const boundedMotif = (motif: string) => (motif.length <= 20 ? motif : `${motif.length}bp`)
 
 // Distinct stored motifs, shortest first and alphabetical within a length. At most two are
 // named; the rest are summarized so the row stays bounded no matter how many components a
@@ -125,9 +126,9 @@ export const getTrLocusRowDisplay = ({
     const copyText = repeatCopyText(facts.length, motif.length)
     const plainEnvelope = formatPlainInterval(locus.components[0].chrom, facts.start0, facts.end0)
     const motifSize = motif.length >= 7 ? ` (${motif.length}bp motif)` : ''
-    label = `${plainEnvelope} TR locus (${facts.length}bp): ${
-      copyText ? `${copyText} x ` : ''
-    }${simpleMotifContext(motif)}${motifSize}`
+    label = `${plainEnvelope} TR locus (${facts.length}bp): ${simpleMotifContext(
+      motif
+    )}${motifSize}${copyText ? ` x ${copyText}` : ''}`
   } else {
     const recordSpan = recordSpansBeyondRepeat ? refSpan : null
     const clusterStart0 = recordSpan?.start0
@@ -148,7 +149,8 @@ export const getTrLocusRowDisplay = ({
   const accessibleLabel = label
 
   const interval = facts
-  const intervalKind = facts.componentCount === 1 ? 'exact component interval' : 'component envelope'
+  const intervalKind =
+    facts.componentCount === 1 ? 'exact component interval' : 'component envelope'
   const intervalLabel = `GRCh38 ${intervalKind} ${
     locus.components[0].chrom
   }:[${interval.start0.toLocaleString('en-US')}, ${interval.end0.toLocaleString(

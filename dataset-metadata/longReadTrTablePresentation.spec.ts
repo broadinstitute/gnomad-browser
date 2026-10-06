@@ -16,7 +16,7 @@ describe('TR table-only presentation', () => {
     expect(getTrLocusRowDisplay({ locus })).toEqual(fullDisplay)
     // The retained compact helper is one-based; active descriptive rows use
     // upstream's zero-based interval and explicit reference-region width.
-    expect(fullDisplay.label).toBe('22:100–130 TR locus (30bp): 10 x CAG')
+    expect(fullDisplay.label).toBe('22:100–130 TR locus (30bp): CAG x 10')
   })
 
   test('retains unsorted tuples, duplicate components, gaps, overlaps, and exact route', () => {

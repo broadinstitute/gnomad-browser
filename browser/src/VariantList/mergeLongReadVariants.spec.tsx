@@ -121,7 +121,7 @@ describe('exact LR tandem-repeat loci in standard variant tables', () => {
         }),
       ]
     )[0]
-    expect(row.long_read_tr_label).toBe('4:3208719–3208734 TR locus (15bp): 15 x A')
+    expect(row.long_read_tr_label).toBe('4:3208719–3208734 TR locus (15bp): A x 15')
 
     render(<>{idColumn.render(row, 'variant_id', { highlightWords: [] })}</>)
     expect(screen.getByRole('link').getAttribute('href')).toBe(

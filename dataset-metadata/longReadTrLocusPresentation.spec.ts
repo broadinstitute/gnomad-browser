@@ -31,11 +31,11 @@ describe('bounded tandem-repeat locus row presentation', () => {
     const input = contractsFor('1-143278475-143278486-T')
     expect(getTrLocusRowDisplay(input)).toEqual({
       kind: 'simple',
-      label: '1:143278475–143278486 TR locus (11bp): 11 x T',
+      label: '1:143278475–143278486 TR locus (11bp): T x 11',
       intervalLabel: 'GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp',
       summaryLabel: '1 component / 1 distinct stored motif',
       detailsAccessibleLabel:
-        'Details for 1:143278475–143278486 TR locus (11bp): 11 x T. GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp. 1 component / 1 distinct stored motif.',
+        'Details for 1:143278475–143278486 TR locus (11bp): T x 11. GRCh38 exact component interval 1:[143,278,475, 143,278,486) · 11 bp. 1 component / 1 distinct stored motif.',
     })
   })
 
@@ -69,6 +69,20 @@ describe('bounded tandem-repeat locus row presentation', () => {
     )
   })
 
+  test('names a long cluster motif by size without repeating the word motif', () => {
+    const longMotif = 'CCACGCCCCCGCATCGCCACGCCCCCGCATCGCC'
+    const display = getTrLocusRowDisplay({
+      ...contractsFor(`4-3227300-3227334-${longMotif}`),
+      sourceRecordSpan: { start0: 3227238, end0: 3227843 },
+    })
+    expect(display.label).toBe(
+      '4:3227238–3227843 TR variation cluster (605bp): spans 1 TR with a 34bp motif'
+    )
+    expect(getTrLocusRowDisplay(contractsFor(`3-100-102-AC+3-102-136-${longMotif}`)).label).toMatch(
+      /spans 2 TRs with AC and 34bp motifs$/
+    )
+  })
+
   test('prefers the bounds contract reference span over the derived one', () => {
     const input = contractsFor('4-3094523-3094532-GGC')
     const display = getTrLocusRowDisplay({
@@ -91,7 +105,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
       sourceRecordSpan: { start0: 3068956, end0: 3068965 },
     })
     expect(display.kind).toBe('simple')
-    expect(display.label).toBe('4:3068956–3068965 TR locus (9bp): 4.5 x TG')
+    expect(display.label).toBe('4:3068956–3068965 TR locus (9bp): TG x 4.5')
   })
 
   test('names a long motif by size rather than printing the stored sequence', () => {
@@ -100,7 +114,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
     const display = getTrLocusRowDisplay(input)
     expect(input.locus.components[0].motif).toBe(motif)
     expect(input.locus.canonicalId).toContain(motif)
-    expect(display.label).toBe('1:100–600 TR locus (500bp): 1 x long motif (500bp motif)')
+    expect(display.label).toBe('1:100–600 TR locus (500bp): long motif (500bp motif) x 1')
     expect(display.label).not.toContain(motif)
     expect(display.detailsAccessibleLabel).not.toContain(motif)
     expect(display.label.length).toBeLessThan(130)
@@ -109,10 +123,10 @@ describe('bounded tandem-repeat locus row presentation', () => {
 
   test('omits the motif size for motifs shorter than 7 bp', () => {
     expect(getTrLocusRowDisplay(contractsFor('4-3208719-3208734-A')).label).toBe(
-      '4:3208719–3208734 TR locus (15bp): 15 x A'
+      '4:3208719–3208734 TR locus (15bp): A x 15'
     )
     expect(getTrLocusRowDisplay(contractsFor('4-3074307-3074341-CCACGCCCCCGCATCG')).label).toBe(
-      '4:3074307–3074341 TR locus (34bp): 2.1 x CCACGCCCCCGCATCG (16bp motif)'
+      '4:3074307–3074341 TR locus (34bp): CCACGCCCCCGCATCG (16bp motif) x 2.1'
     )
   })
 })
