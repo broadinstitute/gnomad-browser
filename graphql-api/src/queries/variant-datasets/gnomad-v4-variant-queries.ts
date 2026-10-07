@@ -500,6 +500,9 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
 
     return shapedHitsWithLof
   } catch (error) {
+    if (error instanceof UserVisibleError) {
+      throw error
+    }
     throw new Error(`'Error fetching variants by gene:', ${error}`)
   }
 }
