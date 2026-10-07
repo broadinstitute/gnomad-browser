@@ -18,5 +18,5 @@ type ExacConstraint {
   pli: Float
 
   # Deprecated fields
-  pLI: Float!
+  pLI: Float
 }
