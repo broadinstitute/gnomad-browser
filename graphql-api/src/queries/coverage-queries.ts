@@ -95,6 +95,9 @@ const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize
       ],
     }))
   } catch (error) {
+    if (error instanceof UserVisibleError) {
+      throw error
+    }
     throw new Error(`Couldn't fetch coverage, ${error}`)
   }
 }
