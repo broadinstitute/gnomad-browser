@@ -1277,6 +1277,37 @@ describe('whole-record aggregate integrity', () => {
     })
   })
 
+  test('reports REF copies per stratum as called alleles minus ALT copies', () => {
+    const alleles = [
+      { ...compact[0], ac: 3, an: 10 },
+      { ...compact[0], alt_index: 2, allele_length: 6, ac: 1, an: 10 },
+    ]
+    const frequencyRow = (altIndex: number, division: string, ac: number, an: number) => ({
+      source_variant_id: alleles[0].source_variant_id,
+      alt_index: altIndex,
+      division,
+      ac,
+      an,
+      af: ac / an,
+    })
+    const landscape: any = buildWholeRecordAlleleLandscape({
+      alleles,
+      frequencyRows: [
+        frequencyRow(1, 'afr_XX', 2, 6),
+        frequencyRow(2, 'afr_XX', 1, 6),
+        frequencyRow(1, 'XX', 3, 10),
+        frequencyRow(2, 'XX', 1, 10),
+      ],
+      sourceRecordCount: 1,
+      purityByAllele: new Map(),
+    })
+    expect(landscape.reference_called_alleles).toBe(6)
+    expect(landscape.reference_stacks).toEqual([
+      { ancestry_group: null, sex: 'XX', called_alleles: 6 },
+      { ancestry_group: 'afr', sex: 'XX', called_alleles: 3 },
+    ])
+  })
+
   test('fails stratified controls closed when stratum counts do not reconcile', () => {
     const alleles = [
       { ...compact[0], ac: 1 },

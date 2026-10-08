@@ -130,6 +130,7 @@ query ${operationName}(
     }
     whole_record_allele_landscape {
       status reason_code unit called_alleles non_reference_called_alleles reference_called_alleles
+      reference_stacks { ancestry_group sex called_alleles }
       exact_alt_count stratified_available stratified_unavailable_reason ancestry_groups sexes
       bins {
         delta called_alleles exact_alt_count allele_ids

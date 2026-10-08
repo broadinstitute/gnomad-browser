@@ -429,6 +429,8 @@ type LongReadTrWholeRecordAlleleLandscape {
   called_alleles: Int
   non_reference_called_alleles: Int
   reference_called_alleles: Int
+  # REF allele copies per ancestry and sex stratum, in the same shape as each bin's ALT stacks.
+  reference_stacks: [LongReadTrAlleleStack!]
   exact_alt_count: Int
   stratified_available: Boolean
   stratified_unavailable_reason: String

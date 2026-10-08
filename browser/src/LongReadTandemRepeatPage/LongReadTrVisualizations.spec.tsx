@@ -424,6 +424,38 @@ describe('long-read TR visualization fidelity', () => {
     )
   })
 
+  test('gives REF copies an orange bar of their own when no ALT allele has the REF length', () => {
+    const altAllelesOffReferenceLength = [alleles[0], alleles[2]]
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={{
+          ...alleleLandscape,
+          non_reference_called_alleles: 105,
+          reference_called_alleles: 95,
+          exact_alt_count: 2,
+          bins: (alleleLandscape.bins || []).filter((bin) => bin.delta !== 0),
+        }}
+        alleles={altAllelesOffReferenceLength}
+        navigation={navigation}
+      />
+    )
+
+    const referenceBar = screen.getByRole('button', {
+      name: '0 bp vs REF; 95 REF allele copies in this view',
+    }) as HTMLButtonElement
+    expect(referenceBar.disabled).toBe(true)
+    expect(window.getComputedStyle(referenceBar).backgroundColor).toBe('rgb(230, 159, 0)')
+    expect(referenceBar.textContent).toBe('REF')
+    expect(
+      screen
+        .getByTestId('whole-record-delta-histogram')
+        .closest('[data-bin-count]')
+        ?.getAttribute('data-bin-count')
+    ).toBe('3')
+    // 100 + 5 ALT copies plus the 95 REF copies.
+    expect(screen.getByText(/^Sizes of 200 alleles/)).not.toBeNull()
+  })
+
   test('keeps sparse bars compact and filters the single exact index only on request', () => {
     const rendered = render(
       <WholeRecordAlleleLandscape
@@ -449,12 +481,23 @@ describe('long-read TR visualization fidelity', () => {
     const negativeBar = screen.getByRole('button', {
       name: /−6 bp vs REF; 100 called non-reference allele copies/,
     })
-    expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(156, 39, 176)')
+    // ALT allele size bars are blue; the 70 REF copies stack in orange on the 0 bp bar.
+    expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(0, 114, 178)')
     expect(histogram.closest('[data-bin-count]')?.getAttribute('data-bin-count')).toBe('3')
     expect(negativeBar.getAttribute('data-bar-width')).toBe('48')
+    const zeroBar = screen.getByRole('button', {
+      name: /0 bp vs REF; 70 REF allele copies; 25 called non-reference allele copies/,
+    })
+    expect(within(zeroBar).getByTestId('reference-allele-segment').style.background).toBe(
+      'rgb(230, 159, 0)'
+    )
+    expect(screen.getByLabelText('Allele length histogram colors').textContent).toBe(
+      'REF allele, ALT alleles'
+    )
 
+    // A selected bar turns dark navy so it never reads as the orange REF allele.
     fireEvent.click(negativeBar)
-    expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(233, 120, 28)')
+    expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(0, 63, 99)')
     expect(document.activeElement).toBe(
       screen.getByRole('heading', { name: '1 of 3 source ALT alleles at −6 bp vs REF' })
     )
@@ -473,7 +516,9 @@ describe('long-read TR visualization fidelity', () => {
     ).not.toBeNull()
 
     fireEvent.click(
-      screen.getByRole('button', { name: /0 bp vs REF; 25 called non-reference allele copies/ })
+      screen.getByRole('button', {
+        name: /0 bp vs REF; 70 REF allele copies; 25 called non-reference allele copies/,
+      })
     )
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
     expect(document.activeElement).toBe(
@@ -515,7 +560,9 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
     const negative = screen.getByRole('button', { name: /−6 bp vs REF; 100 called/ })
-    const zero = screen.getByRole('button', { name: /0 bp vs REF; 25 called/ })
+    const zero = screen.getByRole('button', {
+      name: /0 bp vs REF; 70 REF allele copies; 25 called/,
+    })
     const positive = screen.getByRole('button', { name: /\+12 bp vs REF; 5 called/ })
 
     fireEvent.click(negative)
@@ -1323,7 +1370,7 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.change(within(filters).getByLabelText('Genetic ancestry group'), {
       target: { value: 'afr' },
     })
-    expect(screen.getByText(/6 people with complete called genotypes/)).not.toBeNull()
+    expect(screen.getByText(/Biallelic genotypes for 6 individuals/)).not.toBeNull()
     expect(
       screen.getByRole('button', {
         name: /\+12 bp vs REF longer allele, −6 bp vs REF shorter allele: 6 people; filter the source-ALT index/,
@@ -1341,7 +1388,7 @@ describe('long-read TR visualization fidelity', () => {
         name: /−6 bp vs REF; 1 called non-reference allele copy in this view; 1 source ALT allele/,
       })
     ).not.toBeNull()
-    expect(screen.getByText(/6 people with complete called genotypes/)).not.toBeNull()
+    expect(screen.getByText(/Biallelic genotypes for 6 individuals/)).not.toBeNull()
 
     rendered.rerender(
       <WholeRecordAlleleLandscape
@@ -1361,7 +1408,7 @@ describe('long-read TR visualization fidelity', () => {
       ).toBe('')
       expect((within(filters).getByLabelText('Sex') as HTMLSelectElement).value).toBe('')
     })
-    expect(screen.getByText(/12 people with complete called genotypes/)).not.toBeNull()
+    expect(screen.getByText(/Biallelic genotypes for 12 individuals/)).not.toBeNull()
   })
 
   test('intersects bin contributors with positive stratum AC and clears a stale source scope', async () => {
@@ -1578,9 +1625,17 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByLabelText('Color by')).toBeNull()
     expect(screen.queryByText(/Unavailable pending exact shared vocabulary/)).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
-    const heading = screen.getByRole('heading', { name: 'Allelic landscape' })
-    expect(heading.parentElement?.nextElementSibling?.getAttribute('aria-live')).toBe('polite')
-    expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()
+    const heading = screen.getByRole('heading', { name: 'Allelic Landscape' })
+    expect(heading.parentElement?.nextElementSibling?.getAttribute('data-testid')).toBe(
+      'whole-record-allele-plot-grid'
+    )
+    // The called allele copy count sits under the allele card heading, as the genotype card's
+    // people count does.
+    const alleleHeading = screen.getByRole('heading', { name: 'Allele length distribution' })
+    expect(alleleHeading.nextElementSibling?.getAttribute('aria-live')).toBe('polite')
+    expect(alleleHeading.nextElementSibling?.textContent).toMatch(
+      /^Sizes of [\d,]+ alleles( from [\d,]+ individuals)?\.$/
+    )
 
     fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
     const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
@@ -1769,7 +1824,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    const controls = screen.getByRole('group', { name: 'Allelic landscape controls' })
+    const controls = screen.getByRole('group', { name: 'Allelic Landscape controls' })
     expect(Array.from(controls.children).every((child) => child.childElementCount > 0)).toBe(true)
     const group = screen.getByRole('group', {
       name: 'API-admitted ancestry and sex filters for visible allelic-landscape plots',
@@ -1789,21 +1844,17 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByText((_text, element) =>
         Boolean(
           element?.getAttribute('aria-live') === 'polite' &&
-            element.textContent?.includes(
-              '6 called non-reference allele copies in the current filters.'
-            )
+            element.textContent?.startsWith('Sizes of 6 alleles from 4 individuals.')
         )
       )
     ).not.toBeNull()
-    expect(screen.getByText(/4 people with complete called genotypes/)).not.toBeNull()
+    expect(screen.getByText(/Biallelic genotypes for 4 individuals/)).not.toBeNull()
     fireEvent.change(sex, { target: { value: 'approved-source-sex-a' } })
     expect(
       screen.getByText((_text, element) =>
         Boolean(
           element?.getAttribute('aria-live') === 'polite' &&
-            element.textContent?.includes(
-              '6 called non-reference allele copies in the current filters.'
-            )
+            element.textContent?.startsWith('Sizes of 6 alleles from 4 individuals.')
         )
       )
     ).not.toBeNull()

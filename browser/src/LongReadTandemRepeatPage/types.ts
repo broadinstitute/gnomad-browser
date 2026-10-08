@@ -68,6 +68,8 @@ export type WholeRecordAlleleLandscapeData = {
   called_alleles: number | null
   non_reference_called_alleles: number | null
   reference_called_alleles: number | null
+  // REF allele copies per ancestry and sex stratum, shaped like each bin's ALT stacks.
+  reference_stacks?: AlleleStack[] | null
   exact_alt_count: number | null
   stratified_available: boolean | null
   stratified_unavailable_reason: string | null

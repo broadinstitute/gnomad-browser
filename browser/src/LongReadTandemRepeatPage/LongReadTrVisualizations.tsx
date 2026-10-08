@@ -227,7 +227,7 @@ const LandscapeControls = styled.div`
   align-items: center;
   min-width: 0;
   max-width: 100%;
-  margin-top: 1em;
+  margin: 1em 0 1.5em;
   gap: 10px 22px;
 
   @media (max-width: 600px) {
@@ -402,10 +402,12 @@ const AllelicLandscapeHelp = ({
     </p>
     <h4>Total allele length change (ALT − REF, bp)</h4>
     <p>
-      Bar height shows called non-reference allele copies; the number above each bar shows source
-      ALT identities in that bin. Choose a bar to filter the index, drag between bars, or activate
-      one bar then use Shift+Arrow to select a contiguous range. Choose a single selected bar again,
-      press Escape, or use <strong>Show all source ALT alleles</strong> to clear.
+      Bar height shows called allele copies: ALT copies in blue and REF copies in orange at the
+      reference length. The number above each bar shows source ALT identities in that bin, and a bar
+      holding only REF copies is labeled REF. Choose a bar to filter the index, drag between bars,
+      or activate one bar then use Shift+Arrow to select a contiguous range. Choose a single
+      selected bar again, press Escape, or use <strong>Show all source ALT alleles</strong> to
+      clear.
     </p>
     <h4>Motif occurrences</h4>
     <p>
@@ -999,6 +1001,8 @@ const BarButton = styled.button<{
   $selected: boolean
   $hasValue: boolean
   $width: number
+  $fill?: string
+  $selectedFill?: string
 }>`
   position: relative;
   flex: 0 0 ${(props) => props.$width}px;
@@ -1009,18 +1013,26 @@ const BarButton = styled.button<{
   padding: 0;
   border: ${(props) => {
     if (props.$selected) return '3px solid #222'
-    return props.$hasValue ? `1px solid ${LONG_READ_PRIMARY_PLOT_COLOR}` : '0'
+    return props.$hasValue ? `1px solid ${props.$fill || LONG_READ_PRIMARY_PLOT_COLOR}` : '0'
   }};
   border-bottom: ${(props) => {
     if (props.$selected) return '3px solid #222'
-    return props.$hasValue ? `1px solid ${LONG_READ_PRIMARY_PLOT_COLOR}` : '1px solid #89939a'
+    return props.$hasValue
+      ? `1px solid ${props.$fill || LONG_READ_PRIMARY_PLOT_COLOR}`
+      : '1px solid #89939a'
   }};
   border-radius: 2px 2px 0 0;
   background: ${(props) => {
     if (!props.$hasValue) return 'transparent'
-    return props.$selected ? '#e9781c' : LONG_READ_PRIMARY_PLOT_COLOR
+    return props.$selected
+      ? props.$selectedFill || '#e9781c'
+      : props.$fill || LONG_READ_PRIMARY_PLOT_COLOR
   }};
   cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+  }
 
   &::after {
     content: '';
@@ -1181,6 +1193,31 @@ const binCount = (bin: AlleleBin, ancestry: PopulationId | null, sex: Sex | null
     .filter((stack) => stack.ancestry_group === (ancestry || null) && stack.sex === (sex || null))
     .reduce((sum, stack) => sum + stack.called_alleles, 0)
 }
+
+// Colorblind-safe (Okabe-Ito) pair for the allele length histogram: ALT allele sizes in blue and
+// the REF allele size in orange, with a dark navy for selected bars so selection never reads as REF.
+const ALT_ALLELE_SIZE_BAR_COLOR = '#0072b2'
+const REF_ALLELE_SIZE_BAR_COLOR = '#e69f00'
+const SELECTED_ALLELE_SIZE_BAR_COLOR = '#003f63'
+
+const AlleleSizeColorSwatch = styled.span<{ $color: string }>`
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 3px;
+  border-radius: 2px;
+  background: ${(props) => props.$color};
+`
+
+// REF copies sit at 0 bp change. When no ALT allele has the REF length, an ALT-free bin at 0 gives
+// them a bar of their own.
+const withReferenceSizeBin = (bins: AlleleBin[], referenceCalledAlleles: number | null) =>
+  !referenceCalledAlleles || bins.some((bin) => bin.delta === 0)
+    ? bins
+    : [
+        ...bins,
+        { delta: 0, called_alleles: 0, exact_alt_count: 0, allele_ids: [], stacks: [] },
+      ].sort((left, right) => left.delta - right.delta)
 
 const groupSupportsVisiblePlots = (
   group: LongReadTrFilterGroup,
@@ -2089,7 +2126,15 @@ export const WholeRecordAlleleLandscape = ({
   ]
   const showLegacyFilterControls = landscape.stratified_available && !filterContract
   const showHistogramDisplayControl = showLegacyFilterControls || contractColorBys.length > 0
-  const bins = landscape.bins || []
+  const bins = withReferenceSizeBin(landscape.bins || [], landscape.reference_called_alleles)
+  // The REF allele as a bin of its own, so the same ancestry and sex filtering counts its copies.
+  const referenceBin: AlleleBin = {
+    delta: 0,
+    called_alleles: landscape.reference_called_alleles || 0,
+    exact_alt_count: 0,
+    allele_ids: [],
+    stacks: landscape.reference_stacks || [],
+  }
   useEffect(() => {
     if (selectedPopulation && !filterOptions.ancestries.includes(selectedPopulation)) {
       setSelectedPopulation(null)
@@ -2594,7 +2639,9 @@ export const WholeRecordAlleleLandscape = ({
   const totalLengthBrush = useDiscretePlotBrush({
     marks: totalLengthBrushMarks,
     axis: 'x',
-    onSelect: (selection) => filterIndexToLengthBins(selection.marks),
+    // A bar holding only REF copies has no ALT alleles to filter the index to.
+    onSelect: (selection) =>
+      filterIndexToLengthBins(selection.marks.filter((bin) => bin.allele_ids.length > 0)),
     onClear: clearIndexFilter,
   })
   const selectedLengthMarkIndices = totalLengthBrushMarks
@@ -2625,13 +2672,13 @@ export const WholeRecordAlleleLandscape = ({
     return (
       <Panel aria-labelledby="lr-tr-allele-landscape-heading">
         <HeadingWithHelp>
-          <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
+          <h2 id="lr-tr-allele-landscape-heading">Allelic Landscape</h2>
           <AllelicLandscapeHelp
             showRepeatCountControls={Boolean(admittedRepeatCountPlots)}
             primaryMotifMeasurement={admittedPrimaryMotifMeasurement}
           />
         </HeadingWithHelp>
-        <DistributionControls aria-label="Allelic landscape measurement controls">
+        <DistributionControls aria-label="Allelic Landscape measurement controls">
           {measureControl}
         </DistributionControls>
         <PlotGrid
@@ -2704,14 +2751,19 @@ export const WholeRecordAlleleLandscape = ({
     if (selectedScaleType === 'log' && !logScaleAllowed(colorBy)) setSelectedScaleType('linear')
     rawSetSelectedColorBy(colorBy)
   }
-  const counts = bins.map((bin) => {
+  const alleleCopiesInView = (bin: AlleleBin) => {
     if (!filterContract) return binCount(bin, selectedPopulation, selectedSex)
     if (!contractSelectionActive) return bin.called_alleles
     return bin.stacks
       .filter(matchingContractFrequencyKeys)
       .reduce((sum, stack) => sum + stack.called_alleles, 0)
-  })
-  const maxCount = Math.max(0, ...counts)
+  }
+  const counts = bins.map(alleleCopiesInView)
+  // REF copies join the bar at 0 bp change, stacked above any ALT copies of the same length.
+  const referenceCopiesInView = alleleCopiesInView(referenceBin)
+  const referenceCounts = bins.map((bin) => (bin.delta === 0 ? referenceCopiesInView : 0))
+  const barTotals = counts.map((count, index) => count + referenceCounts[index])
+  const maxCount = Math.max(0, ...barTotals)
   const yTicks = histogramTicks(maxCount, selectedScaleType)
   let colorCategories: { id: string; label: string; group?: LongReadTrFilterGroup }[] = []
   if (filterContract) {
@@ -2776,7 +2828,17 @@ export const WholeRecordAlleleLandscape = ({
       }
     })
   const clippedAt = scaleCap(selectedScaleType)
-  const totalInView = counts.reduce((sum, count) => sum + count, 0)
+  const totalInView = barTotals.reduce((sum, count) => sum + count, 0)
+  // Taken from the genotype plot under the same ancestry and sex filters. At loci where people
+  // carry REF alleles or have only one allele called, these people contribute more allele copies
+  // than the histogram plots.
+  const genotypePeopleInView = admittedGenotypeLandscape
+    ? genotypeLandscapePeopleCount(
+        admittedGenotypeLandscape.cells || [],
+        selectedPopulation ? [selectedPopulation] : [],
+        selectedSex ? [selectedSex] : []
+      )
+    : null
   let histogramLayout = { barWidth: 24, gap: 2, height: 260 }
   if (bins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
   else if (bins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
@@ -2786,7 +2848,7 @@ export const WholeRecordAlleleLandscape = ({
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
       <HeadingWithHelp>
-        <h2 id="lr-tr-allele-landscape-heading">Allelic landscape</h2>
+        <h2 id="lr-tr-allele-landscape-heading">Allelic Landscape</h2>
         <AllelicLandscapeHelp
           showRepeatCountControls={Boolean(admittedRepeatCountPlots)}
           showLengthAxisControl={measureChoices.length > 1}
@@ -2797,7 +2859,7 @@ export const WholeRecordAlleleLandscape = ({
         />
       </HeadingWithHelp>
       {showControlSection && (
-        <LandscapeControls role="group" aria-label="Allelic landscape controls">
+        <LandscapeControls role="group" aria-label="Allelic Landscape controls">
           {measureControl}
           {showLegacyFilterControls && (
             <>
@@ -2913,9 +2975,6 @@ export const WholeRecordAlleleLandscape = ({
           {unavailableReason(landscape.stratified_unavailable_reason)}.
         </p>
       )}
-      <p aria-live="polite">
-        <strong>{calledAlleleCopies(totalInView, true)}</strong> in the current filters.
-      </p>
       {selectedColorBy && selectedAlleleDistributionView === 'length' && (
         <p aria-label="Stack color legend">
           <strong>Stack colors:</strong>{' '}
@@ -2948,7 +3007,7 @@ export const WholeRecordAlleleLandscape = ({
       )}
       {selectedAlleleDistributionView === 'length' &&
         clippedAt &&
-        counts.some((count) => count > clippedAt) && (
+        barTotals.some((count) => count > clippedAt) && (
           <p role="status">
             Bars above {clippedAt.toLocaleString()} copies are clipped; exact counts remain in
             labels and tables.
@@ -2989,6 +3048,27 @@ export const WholeRecordAlleleLandscape = ({
         {selectedAlleleDistributionView === 'length' && (
           <PlotCard data-plot-card="total-length-histogram">
             <h3>Allele length distribution</h3>
+            <p aria-live="polite">
+              <strong>
+                Sizes of {counted(totalInView, 'allele', 'alleles')}
+                {genotypePeopleInView != null &&
+                  ` from ${counted(genotypePeopleInView, 'individual', 'individuals')}`}
+                .
+              </strong>
+            </p>
+            {referenceBin.called_alleles > 0 && (
+              <p aria-label="Allele length histogram colors">
+                <AlleleSizeColorSwatch aria-hidden="true" $color={REF_ALLELE_SIZE_BAR_COLOR} />
+                REF allele
+                {!selectedColorBy && (
+                  <>
+                    ,{' '}
+                    <AlleleSizeColorSwatch aria-hidden="true" $color={ALT_ALLELE_SIZE_BAR_COLOR} />
+                    ALT alleles
+                  </>
+                )}
+              </p>
+            )}
             <MeasuredWidth>
               {(measuredWidth) => {
                 const barWidth = filledBarWidth(measuredWidth, bins.length, histogramLayout)
@@ -3039,8 +3119,12 @@ export const WholeRecordAlleleLandscape = ({
                           >
                             {bins.map((bin, index) => {
                               const count = counts[index]
+                              const referenceCount = referenceCounts[index]
+                              const barTotal = barTotals[index]
+                              // Only the bar holding the REF allele and no ALT allele has no ids.
+                              const referenceOnly = bin.allele_ids.length === 0
                               const height = histogramHeightPercent(
-                                count,
+                                barTotal,
                                 maxCount,
                                 selectedScaleType
                               )
@@ -3049,56 +3133,107 @@ export const WholeRecordAlleleLandscape = ({
                               const selected =
                                 activeMarkIds.has(mark.id) ||
                                 totalLengthBrush.previewMarkIds.has(mark.id)
+                              const lengthLabel = lengthAxisLabel(
+                                bin.delta,
+                                lengthAxisMode,
+                                representedRefLength
+                              )
+                              const referenceCopiesText = counted(
+                                referenceCount,
+                                'REF allele copy',
+                                'REF allele copies'
+                              )
+                              const altSummary = `${calledAlleleCopies(
+                                count,
+                                true
+                              )} in this view; ${exactAltSequences(bin.exact_alt_count)}`
+                              let ariaLabel = `${lengthLabel}; ${referenceCopiesText} in this view`
+                              if (!referenceOnly) {
+                                ariaLabel = `${lengthLabel}; ${
+                                  referenceCount > 0 ? `${referenceCopiesText}; ` : ''
+                                }${altSummary}; filter the source-ALT index to this length bin`
+                              }
+                              const barTitle = [
+                                lengthLabel,
+                                referenceOnly || referenceCount > 0 ? referenceCopiesText : null,
+                                referenceOnly ? null : calledAlleleCopies(count, true),
+                                referenceOnly ? null : exactAltSequences(bin.exact_alt_count),
+                              ]
+                                .filter(Boolean)
+                                .join(' · ')
                               return (
                                 <BarButton
                                   key={bin.delta}
                                   data-discrete-brush-id={markProps['data-discrete-brush-id']}
                                   type="button"
+                                  disabled={referenceOnly}
                                   $height={height}
-                                  $hasValue={count > 0}
+                                  $hasValue={barTotal > 0}
                                   $width={barWidth}
+                                  $fill={
+                                    referenceOnly
+                                      ? REF_ALLELE_SIZE_BAR_COLOR
+                                      : ALT_ALLELE_SIZE_BAR_COLOR
+                                  }
+                                  $selectedFill={SELECTED_ALLELE_SIZE_BAR_COLOR}
                                   data-height-percent={height.toFixed(3)}
                                   data-bar-width={barWidth}
                                   $selected={selected}
                                   aria-pressed={selected}
-                                  aria-label={`${lengthAxisLabel(
-                                    bin.delta,
-                                    lengthAxisMode,
-                                    representedRefLength
-                                  )}; ${calledAlleleCopies(
-                                    count,
-                                    true
-                                  )} in this view; ${exactAltSequences(
-                                    bin.exact_alt_count
-                                  )}; filter the source-ALT index to this length bin`}
-                                  title={`${lengthAxisLabel(
-                                    bin.delta,
-                                    lengthAxisMode,
-                                    representedRefLength
-                                  )} · ${calledAlleleCopies(count, true)} · ${exactAltSequences(
-                                    bin.exact_alt_count
-                                  )}`}
+                                  aria-label={ariaLabel}
+                                  title={barTitle}
                                   onClick={(event) => {
                                     if (!markProps.onClick(event)) filterIndexToLengthBins([bin])
                                   }}
                                   onKeyDown={(event) => markProps.onKeyDown(event)}
                                 >
-                                  {selectedColorBy && count > 0 && (
-                                    <BarSegments aria-hidden="true">
-                                      {segmentsForBin(bin).map((segment) => (
-                                        <span
-                                          key={segment.category}
-                                          style={{
-                                            flexGrow: segment.count,
-                                            background: segment.color,
-                                            display: segment.count ? 'block' : 'none',
-                                          }}
-                                        />
-                                      ))}
-                                    </BarSegments>
-                                  )}
-                                  <BarExactCount title={exactAltSequences(bin.exact_alt_count)}>
-                                    {bin.exact_alt_count}
+                                  {/* A bar with both kinds of copies stacks orange REF above
+                                      the ALT copies, which keep the colors of the other bars. */}
+                                  {!referenceOnly &&
+                                    barTotal > 0 &&
+                                    (selectedColorBy || referenceCount > 0) && (
+                                      <BarSegments aria-hidden="true">
+                                        {selectedColorBy ? (
+                                          segmentsForBin(bin).map((segment) => (
+                                            <span
+                                              key={segment.category}
+                                              style={{
+                                                flexGrow: segment.count,
+                                                background: segment.color,
+                                                display: segment.count ? 'block' : 'none',
+                                              }}
+                                            />
+                                          ))
+                                        ) : (
+                                          <span
+                                            style={{
+                                              flexGrow: count,
+                                              background: selected
+                                                ? SELECTED_ALLELE_SIZE_BAR_COLOR
+                                                : ALT_ALLELE_SIZE_BAR_COLOR,
+                                              display: count ? 'block' : 'none',
+                                            }}
+                                          />
+                                        )}
+                                        {referenceCount > 0 && (
+                                          <span
+                                            data-testid="reference-allele-segment"
+                                            style={{
+                                              flexGrow: referenceCount,
+                                              background: REF_ALLELE_SIZE_BAR_COLOR,
+                                            }}
+                                          />
+                                        )}
+                                      </BarSegments>
+                                    )}
+                                  <BarExactCount
+                                    title={
+                                      referenceOnly
+                                        ? 'REF allele'
+                                        : exactAltSequences(bin.exact_alt_count)
+                                    }
+                                  >
+                                    {referenceOnly ? 'REF' : bin.exact_alt_count}
                                   </BarExactCount>
                                   {(index === Math.min(...selectedLengthMarkIndices) ||
                                     index === Math.max(...selectedLengthMarkIndices)) && (
@@ -3278,6 +3413,20 @@ const filteredPairs = (
       pair.people > 0
   )
 
+// People in the genotype plot under the given filters. The allele card reuses this so both cards
+// report the same number of individuals.
+const genotypeLandscapePeopleCount = (
+  cells: GenotypeCell[],
+  populations: readonly string[],
+  sexes: readonly string[]
+) =>
+  cells.reduce(
+    (total, cell) =>
+      total +
+      filteredPairs(cell.pairs, populations, sexes).reduce((sum, pair) => sum + pair.people, 0),
+    0
+  )
+
 export type ExactGenotypePair = Pick<
   GenotypePair,
   'shorter_allele_id' | 'longer_allele_id' | 'people' | 'phased_people' | 'unphased_people'
@@ -3399,7 +3548,7 @@ export const WholeRecordGenotypeLandscape = ({
   const maxPeople = Math.max(1, ...cells.map((cell) => cell.selectedPeople))
   const keyFor = (cell: GenotypeCell) => `${cell.shorter_delta}/${cell.longer_delta}`
   const selectedCell = cells.find((cell) => keyFor(cell) === selectedKey) || cells[0]
-  const totalPeople = cells.reduce((sum, cell) => sum + cell.selectedPeople, 0)
+  const totalPeople = genotypeLandscapePeopleCount(sourceCells, activePopulations, activeSexes)
   const byCoordinate = new Map(cells.map((cell) => [keyFor(cell), cell]))
   const heatmapWidth = 720
   const heatmapHeight = 650
@@ -3454,10 +3603,8 @@ export const WholeRecordGenotypeLandscape = ({
         <h3>Genotype length distribution</h3>
         <p aria-live="polite">
           <strong>
-            {counted(totalPeople, 'person', 'people')} with complete called genotypes containing
-            both plotted alleles
-          </strong>{' '}
-          in this view.
+            Biallelic genotypes for {counted(totalPeople, 'individual', 'individuals')}
+          </strong>
         </p>
         <HeatmapFigure role="region" aria-label="Genotype length distribution plot" tabIndex={0}>
           <HeatmapSvg

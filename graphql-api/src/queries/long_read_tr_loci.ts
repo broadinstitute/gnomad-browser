@@ -1074,12 +1074,34 @@ export const buildWholeRecordAlleleLandscape = ({
     }
     if (malformedStratifiedFrequencies) {
       stackCounts.clear()
+      stratumAn.clear()
       ancestryGroups.clear()
       sexes.clear()
     }
   }
 
   const activeCanonicalProjection = Boolean(ancestryFilterId || sexFilterId || colorBy)
+  const compareStacksByGroup = (
+    left: { ancestry_group: string | null; sex: string | null },
+    right: { ancestry_group: string | null; sex: string | null }
+  ) =>
+    `${left.ancestry_group || ''}:${left.sex || ''}`.localeCompare(
+      `${right.ancestry_group || ''}:${right.sex || ''}`
+    )
+  // REF copies per stratum: the stratum's called alleles (AN) minus its ALT copies. The
+  // reconciliation check above guarantees the difference is never negative.
+  const referenceStacks = activeCanonicalProjection
+    ? []
+    : [...stratumAn]
+        .map(([division, an]) => {
+          const parsedDivision = parseDivision(division)!
+          return {
+            ancestry_group: parsedDivision.ancestry_group,
+            sex: parsedDivision.sex,
+            called_alleles: an - (stratumAc.get(division) || 0),
+          }
+        })
+        .sort(compareStacksByGroup)
   const bins = [...byDelta]
     .sort(([left], [right]) => left - right)
     .map(([delta, members]) => ({
@@ -1099,11 +1121,7 @@ export const buildWholeRecordAlleleLandscape = ({
             called_alleles: count,
           }
         })
-        .sort((left, right) =>
-          `${left.ancestry_group || ''}:${left.sex || ''}`.localeCompare(
-            `${right.ancestry_group || ''}:${right.sex || ''}`
-          )
-        ),
+        .sort(compareStacksByGroup),
     }))
   if (bins.reduce((sum, bin) => sum + bin.called_alleles, 0) !== nonReferenceCalledAlleles) {
     return unavailable('ALLELE_BINS_DO_NOT_RECONCILE')
@@ -1153,6 +1171,7 @@ export const buildWholeRecordAlleleLandscape = ({
     called_alleles: calledAlleles,
     non_reference_called_alleles: nonReferenceCalledAlleles,
     reference_called_alleles: calledAlleles - nonReferenceCalledAlleles,
+    reference_stacks: referenceStacks,
     exact_alt_count: alleles.length,
     stratified_available: stratifiedAvailable,
     stratified_unavailable_reason: stratifiedUnavailableReason,

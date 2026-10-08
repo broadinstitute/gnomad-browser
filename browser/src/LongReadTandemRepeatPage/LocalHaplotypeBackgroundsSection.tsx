@@ -546,7 +546,7 @@ const LocalHaplotypeBackgroundsSection = ({
   if (!selected) {
     return statusPanel(
       <p role="status">
-        Select an exact ALT sequence in the Allelic landscape to explore its local haplotype
+        Select an exact ALT sequence in the Allelic Landscape to explore its local haplotype
         backgrounds.
       </p>
     )

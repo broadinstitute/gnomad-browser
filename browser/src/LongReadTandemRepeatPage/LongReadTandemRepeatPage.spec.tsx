@@ -1146,7 +1146,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('renders one responsive allele table with selected detail immediately below it', () => {
     renderPage()
-    const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')
+    const landscape = screen.getByRole('heading', { name: 'Allelic Landscape' }).closest('section')
     const browser = screen.getByTestId('lr-tr-exact-allele-browser')
     const alleleTables = screen.getAllByRole('table', { name: 'Source ALT allele index' })
     const index = alleleTables[0]
@@ -1238,7 +1238,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const diseaseTable = within(section).getByRole('region', {
       name: 'Known disease-associated TR locus disease table',
     })
-    const landscape = screen.getByRole('heading', { name: 'Allelic landscape' }).closest('section')!
+    const landscape = screen.getByRole('heading', { name: 'Allelic Landscape' }).closest('section')!
     expect(diseaseTable.compareDocumentPosition(shortReadLink)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
