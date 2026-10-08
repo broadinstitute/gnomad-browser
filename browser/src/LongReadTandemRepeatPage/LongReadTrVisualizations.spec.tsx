@@ -445,7 +445,14 @@ describe('long-read TR visualization fidelity', () => {
     }) as HTMLButtonElement
     expect(referenceBar.disabled).toBe(true)
     expect(window.getComputedStyle(referenceBar).backgroundColor).toBe('rgb(230, 159, 0)')
-    expect(referenceBar.textContent).toBe('REF')
+    expect(referenceBar.textContent).toBe('REF95')
+    // Every bar is labeled with its height: the number of alleles in it.
+    expect(
+      within(screen.getByTestId('whole-record-delta-histogram'))
+        .getAllByRole('button')
+        .map((bar) => bar.textContent)
+        .sort()
+    ).toEqual(['100', '5', 'REF95'])
     expect(
       screen
         .getByTestId('whole-record-delta-histogram')
@@ -471,7 +478,10 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByRole('table', { name: /Exact ALTs at/ })).toBeNull()
 
     const histogram = screen.getByLabelText('Change from REF (bp) histogram')
-    expect(window.getComputedStyle(histogram).paddingTop).toBe('18px')
+    // Bar label headroom sits above the bar area, not inside it, so bar heights match the y ticks.
+    expect(window.getComputedStyle(histogram).paddingTop).toBe('')
+    // The headroom fits one line of the bar labels: 9px (the minimum size) at 1.2 line height + 6px.
+    expect(window.getComputedStyle(histogram.parentElement!).paddingTop).toBe('17px')
     const deltaAxis = screen.getByTestId('whole-record-delta-axis')
     expect(within(deltaAxis).getByLabelText('-6 bp tick').textContent).toBe('−6')
     expect(within(deltaAxis).getByLabelText('0 bp tick').textContent).toBe('0')
@@ -1502,7 +1512,9 @@ describe('long-read TR visualization fidelity', () => {
     })
     expect(heatmap.tagName.toLowerCase()).toBe('svg')
     expect(heatmap).toHaveStyleRule('width', '100%')
-    expect(heatmap).toHaveStyleRule('width', '520px', { media: '(max-width:700px)' })
+    // The narrow-screen width sits on the box the SVG fills, which is what gets measured to size
+    // the axis text.
+    expect(heatmap.parentElement).toHaveStyleRule('width', '520px', { media: '(max-width:700px)' })
     const heatmapScroller = screen.getByRole('region', {
       name: 'Genotype length distribution plot',
     })
@@ -1518,8 +1530,8 @@ describe('long-read TR visualization fidelity', () => {
     expect(cell.getAttribute('width')).toBe('48')
     expect(cell.getAttribute('height')).toBe('48')
     expect(heatmap.querySelector(`rect[fill="${LONG_READ_PRIMARY_PLOT_COLOR}"]`)).not.toBeNull()
-    expect(within(heatmap).getByText('Longer allele: change from REF (bp)')).not.toBeNull()
-    expect(within(heatmap).getByText('Shorter allele: change from REF (bp)')).not.toBeNull()
+    expect(within(heatmap).getByText('Long Allele (bp minus REF)')).not.toBeNull()
+    expect(within(heatmap).getByText('Short Allele (bp minus REF)')).not.toBeNull()
     expect(screen.getByLabelText('Logarithmic people intensity legend')).not.toBeNull()
     expect(cell.getAttribute('aria-pressed')).toBe('false')
     expect(

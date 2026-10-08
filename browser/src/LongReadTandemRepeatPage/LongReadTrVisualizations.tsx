@@ -340,6 +340,10 @@ const lengthAxisLabel = (
       )} bp vs REF)`
     : `${signed(delta)} bp vs REF`
 
+// Axis title for an allele length axis, e.g. "Long Allele (bp)" or "Allele (bp minus REF)".
+const lengthAxisTitle = (allele: string, mode: LengthAxisMode) =>
+  `${allele} (${mode === 'absolute' ? 'bp' : 'bp minus REF'})`
+
 const counted = (count: number, singular: string, plural: string) =>
   `${count.toLocaleString()} ${count === 1 ? singular : plural}`
 
@@ -403,9 +407,10 @@ const AllelicLandscapeHelp = ({
     <h4>Total allele length change (ALT − REF, bp)</h4>
     <p>
       Bar height shows called allele copies: ALT copies in blue and REF copies in orange at the
-      reference length. The number above each bar shows source ALT identities in that bin, and a bar
-      holding only REF copies is labeled REF. Choose a bar to filter the index, drag between bars,
-      or activate one bar then use Shift+Arrow to select a contiguous range. Choose a single
+      reference length. The number above each bar is its height, the number of alleles in that bin,
+      and a bar holding only REF copies is also labeled REF. Hover over the number to see how many
+      distinct source ALT sequences the bin holds. Choose a bar to filter the index, drag between
+      bars, or activate one bar then use Shift+Arrow to select a contiguous range. Choose a single
       selected bar again, press Escape, or use <strong>Show all source ALT alleles</strong> to
       clear.
     </p>
@@ -905,9 +910,28 @@ export const LongReadTrComponentTrack = ({
 
 // The first column holds the rotated axis title and the y tick labels, so it is wide
 // enough to keep the title inside the plot card rather than in the card's padding.
-const HISTOGRAM_Y_COLUMN_WIDTH = 64
+const HISTOGRAM_Y_COLUMN_WIDTH = 76
 const HISTOGRAM_COLUMN_GAP = 8
 const HISTOGRAM_SIDE_PADDING = 20
+
+// On-screen size, in CSS pixels, of the axis tick labels and axis titles in the allele length
+// histograms and the genotype length heatmap, so both plots read at the same size.
+const AXIS_LABEL_FONT_PX = 14
+// Room above the tallest bar for its label, which can be two lines (REF and its copy count).
+const HISTOGRAM_BAR_LABEL_HEADROOM = 28
+
+// Count labels on the allele length bars and in the genotype heatmap squares use one font size
+// per plot, chosen so the widest label fills about 1/3 of a bar or square, within these bounds.
+const COUNT_LABEL_MIN_FONT_PX = 9
+const COUNT_LABEL_MAX_FONT_PX = 28
+// Digits are about 0.6em wide.
+const countLabelFontPx = (availableWidthPx: number, longestLabelLength: number) =>
+  Math.min(
+    COUNT_LABEL_MAX_FONT_PX,
+    Math.max(COUNT_LABEL_MIN_FONT_PX, availableWidthPx / 3 / (longestLabelLength * 0.6))
+  )
+// Vertical spacing between the stacked lanes of x tick labels under the histogram.
+const HISTOGRAM_X_TICK_LANE_HEIGHT = AXIS_LABEL_FONT_PX + 5
 
 const HistogramChart = styled.div`
   display: grid;
@@ -953,6 +977,7 @@ const filledBarWidth = (measuredWidth: number, binCount: number, layout: Histogr
 const HistogramYScale = styled.div<{ $height: number }>`
   position: relative;
   height: ${(props) => props.$height}px;
+  margin-top: ${HISTOGRAM_BAR_LABEL_HEADROOM}px;
   border-right: 1px solid #89939a;
 `
 
@@ -961,8 +986,12 @@ const HistogramScroller = styled.div`
   min-width: 0;
 `
 
+// The headroom for the labels above the bars sits outside the bar area (here and as the
+// y scale's top margin), so a full-height bar lines up with the top y tick and labels are not
+// clipped by the scroller.
 const HistogramScrollContent = styled.div`
   min-width: 100%;
+  padding-top: ${HISTOGRAM_BAR_LABEL_HEADROOM}px;
 `
 
 const Histogram = styled.div<{ $height: number; $gap: number }>`
@@ -972,7 +1001,6 @@ const Histogram = styled.div<{ $height: number; $gap: number }>`
   box-sizing: border-box;
   gap: ${(props) => props.$gap}px;
   height: ${(props) => props.$height}px;
-  padding-top: 18px;
 `
 
 const AxisTick = styled.span`
@@ -980,7 +1008,7 @@ const AxisTick = styled.span`
   right: 5px;
   transform: translateY(50%);
   color: #566168;
-  font-size: 10px;
+  font-size: ${AXIS_LABEL_FONT_PX}px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 `
@@ -988,11 +1016,11 @@ const AxisTick = styled.span`
 const AxisTitle = styled.span`
   position: absolute;
   top: 50%;
-  left: 8px;
+  left: ${AXIS_LABEL_FONT_PX / 2 + 2}px;
   width: 170px;
   transform: translate(-50%, -50%) rotate(-90deg);
   color: #566168;
-  font-size: 10px;
+  font-size: ${AXIS_LABEL_FONT_PX}px;
   text-align: center;
 `
 
@@ -1051,14 +1079,17 @@ const BarButton = styled.button<{
   }
 `
 
+// Anchored to the bar's top edge, so a two-line label (REF and its copy count) grows upward.
 const BarExactCount = styled.span`
   position: absolute;
-  top: -1.5em;
+  bottom: calc(100% + 3px);
   left: 50%;
   transform: translateX(-50%);
   color: #525d64;
   font-size: 9px;
   font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  text-align: center;
   white-space: nowrap;
 `
 
@@ -1087,13 +1118,27 @@ const HistogramXAxis = styled.div<{ $height: number; $width: number }>`
   border-top: 1px solid #566168;
   margin: 0 auto;
   color: #3f484d;
-  font-size: 10px;
+  font-size: ${AXIS_LABEL_FONT_PX}px;
   font-variant-numeric: tabular-nums;
+`
+
+// The x axis title supplies the space below the plot, so the chart above it drops its own.
+const HistogramChartWithXAxisTitle = styled(HistogramChart)`
+  margin-bottom: 0;
+`
+
+// Sits under the scrolling plot column, outside the scroller, so it stays centered and visible.
+const HistogramXAxisTitle = styled.div`
+  margin: 2px 0 1.2em;
+  padding-left: ${HISTOGRAM_Y_COLUMN_WIDTH + HISTOGRAM_COLUMN_GAP}px;
+  color: #566168;
+  font-size: ${AXIS_LABEL_FONT_PX}px;
+  text-align: center;
 `
 
 const HistogramXTick = styled.span<{ $lane: number; $left: number }>`
   position: absolute;
-  top: ${(props) => 7 + props.$lane * 15}px;
+  top: ${(props) => 7 + props.$lane * HISTOGRAM_X_TICK_LANE_HEIGHT}px;
   left: ${(props) => props.$left}px;
   transform: translateX(-50%);
   white-space: nowrap;
@@ -1101,10 +1146,10 @@ const HistogramXTick = styled.span<{ $lane: number; $left: number }>`
   &::before {
     content: '';
     position: absolute;
-    top: ${(props) => -7 - props.$lane * 15}px;
+    top: ${(props) => -7 - props.$lane * HISTOGRAM_X_TICK_LANE_HEIGHT}px;
     left: 50%;
     width: 1px;
-    height: ${(props) => 5 + props.$lane * 15}px;
+    height: ${(props) => 5 + props.$lane * HISTOGRAM_X_TICK_LANE_HEIGHT}px;
     background: #566168;
   }
 `
@@ -1286,7 +1331,8 @@ type HistogramDeltaTick = {
   left: number
 }
 
-const deltaTickWidth = (delta: number) => Math.max(20, signed(delta).length * 7 + 6)
+const deltaTickWidth = (delta: number) =>
+  Math.max(20, signed(delta).length * AXIS_LABEL_FONT_PX * 0.7 + 6)
 
 export const histogramDeltaAxisTicks = (
   deltas: number[],
@@ -1817,7 +1863,7 @@ const MotifOccurrenceAxis = styled.div<{ $gap: number; $width: number }>`
   border-top: 1px solid #566168;
   margin: 0 auto;
   color: #3f484d;
-  font-size: 10px;
+  font-size: ${AXIS_LABEL_FONT_PX}px;
   font-variant-numeric: tabular-nums;
   text-align: center;
 `
@@ -3082,12 +3128,36 @@ export const WholeRecordAlleleLandscape = ({
                   selectedBin?.delta ?? null
                 )
                 const deltaAxisHeight =
-                  25 + Math.max(0, ...deltaAxisTicks.map((tick) => tick.lane)) * 15
+                  AXIS_LABEL_FONT_PX +
+                  15 +
+                  Math.max(0, ...deltaAxisTicks.map((tick) => tick.lane)) *
+                    HISTOGRAM_X_TICK_LANE_HEIGHT
+                // A bar holding only REF copies is labeled "REF" above its count.
+                const referenceOnlyBarShown = bins.some(
+                  (bin, index) => bin.allele_ids.length === 0 && barTotals[index] > 0
+                )
+                const barLabelFontPx = countLabelFontPx(
+                  barWidth,
+                  Math.max(
+                    referenceOnlyBarShown ? 'REF'.length : 1,
+                    ...barTotals.map((total) => total.toLocaleString().length)
+                  )
+                )
+                const barLabelHeadroom = Math.ceil(
+                  (referenceOnlyBarShown ? 2 : 1) * 1.2 * barLabelFontPx + 6
+                )
                 return (
                   <HistogramSizer>
-                    <HistogramChart data-bin-count={bins.length} data-bar-width={barWidth}>
-                      <HistogramYScale aria-hidden="true" $height={histogramLayout.height}>
-                        <AxisTitle>Called allele copies</AxisTitle>
+                    <HistogramChartWithXAxisTitle
+                      data-bin-count={bins.length}
+                      data-bar-width={barWidth}
+                    >
+                      <HistogramYScale
+                        aria-hidden="true"
+                        $height={histogramLayout.height}
+                        style={{ marginTop: barLabelHeadroom }}
+                      >
+                        <AxisTitle># of alleles</AxisTitle>
                         {yTicks.map((tick) => (
                           <AxisTick
                             key={tick}
@@ -3109,7 +3179,9 @@ export const WholeRecordAlleleLandscape = ({
                         tabIndex={0}
                         data-testid="whole-record-delta-histogram-scroller"
                       >
-                        <HistogramScrollContent style={{ width: histogramScrollableWidth }}>
+                        <HistogramScrollContent
+                          style={{ width: histogramScrollableWidth, paddingTop: barLabelHeadroom }}
+                        >
                           <Histogram
                             aria-label={`${lengthAxisName} histogram`}
                             data-testid="whole-record-delta-histogram"
@@ -3227,13 +3299,25 @@ export const WholeRecordAlleleLandscape = ({
                                       </BarSegments>
                                     )}
                                   <BarExactCount
+                                    style={{ fontSize: barLabelFontPx }}
                                     title={
                                       referenceOnly
-                                        ? 'REF allele'
-                                        : exactAltSequences(bin.exact_alt_count)
+                                        ? referenceCopiesText
+                                        : `${counted(
+                                            barTotal,
+                                            'allele',
+                                            'alleles'
+                                          )} · ${exactAltSequences(bin.exact_alt_count)}`
                                     }
                                   >
-                                    {referenceOnly ? 'REF' : bin.exact_alt_count}
+                                    {/* The label is the bar height: alleles in this view. */}
+                                    {referenceOnly && (
+                                      <>
+                                        REF
+                                        <br />
+                                      </>
+                                    )}
+                                    {barTotal.toLocaleString()}
                                   </BarExactCount>
                                   {(index === Math.min(...selectedLengthMarkIndices) ||
                                     index === Math.max(...selectedLengthMarkIndices)) && (
@@ -3281,7 +3365,10 @@ export const WholeRecordAlleleLandscape = ({
                           </HistogramXAxis>
                         </HistogramScrollContent>
                       </HistogramScroller>
-                    </HistogramChart>
+                    </HistogramChartWithXAxisTitle>
+                    <HistogramXAxisTitle aria-hidden="true">
+                      {lengthAxisTitle('Allele', lengthAxisMode)}
+                    </HistogramXAxisTitle>
                   </HistogramSizer>
                 )
               }}
@@ -3371,6 +3458,16 @@ const HeatmapFigure = styled.figure`
   }
 `
 
+// The heatmap SVG fills this box, so measuring the box gives the SVG's on-screen width.
+const HeatmapSizer = styled.div`
+  width: 100%;
+
+  @media (max-width: 700px) {
+    width: 520px;
+    min-width: 520px;
+  }
+`
+
 const HeatmapSvg = styled.svg`
   display: block;
   width: 100%;
@@ -3378,11 +3475,6 @@ const HeatmapSvg = styled.svg`
   height: auto;
   min-height: 300px;
   margin: 0 auto;
-
-  @media (max-width: 700px) {
-    width: 520px;
-    min-width: 520px;
-  }
 
   [role='button']:focus-visible {
     outline: none;
@@ -3398,7 +3490,7 @@ const IntensityKey = styled.div`
   gap: 8px;
   margin-top: 0.5em;
   color: #566168;
-  font-size: 11px;
+  font-size: ${AXIS_LABEL_FONT_PX}px;
 `
 
 const filteredPairs = (
@@ -3552,27 +3644,30 @@ export const WholeRecordGenotypeLandscape = ({
   const byCoordinate = new Map(cells.map((cell) => [keyFor(cell), cell]))
   const heatmapWidth = 720
   const heatmapHeight = 650
-  const heatmapLeft = 78
   const heatmapTop = 18
-  const heatmapBottom = 86
   const heatmapRight = 18
-  const plotSize = Math.min(
-    heatmapWidth - heatmapLeft - heatmapRight,
-    heatmapHeight - heatmapTop - heatmapBottom
-  )
-  const band = plotSize / Math.max(1, values.length)
   const valueIndex = new Map(values.map((value, index) => [value, index]))
-  const xFor = (value: number) => heatmapLeft + (valueIndex.get(value) || 0) * band
-  const yFor = (value: number) =>
-    heatmapTop + (values.length - 1 - (valueIndex.get(value) || 0)) * band
-  const axisStep = Math.max(1, Math.ceil(values.length / 12))
-  const axisValues = values.filter(
-    (value, index) =>
-      index % axisStep === 0 ||
-      index === values.length - 1 ||
-      value === 0 ||
-      value === selectedCell?.shorter_delta ||
-      value === selectedCell?.longer_delta
+  // Tick candidates in priority order: REF, the selected square, the two ends, then the rest.
+  // A tick is drawn only if it clears the labels already placed, so labels never overlap.
+  const axisValueCandidates = [
+    ...new Set(
+      [
+        0,
+        selectedCell?.shorter_delta,
+        selectedCell?.longer_delta,
+        values[0],
+        values[values.length - 1],
+        ...values,
+      ].filter((value): value is number => value != null && valueIndex.has(value))
+    ),
+  ]
+  const axisValueLabel = (value: number) =>
+    lengthAxisMode === 'absolute'
+      ? lengthAxisValue(value, lengthAxisMode, representedRefLength).toLocaleString()
+      : signed(value)
+  const longestAxisValueLabelLength = Math.max(
+    1,
+    ...values.map((value) => axisValueLabel(value).length)
   )
   const selectedBrushCells = brushCells.filter(
     (cell) => activeMarkIds.has(cell.markId) || brush.previewMarkIds.has(cell.markId)
@@ -3607,218 +3702,297 @@ export const WholeRecordGenotypeLandscape = ({
           </strong>
         </p>
         <HeatmapFigure role="region" aria-label="Genotype length distribution plot" tabIndex={0}>
-          <HeatmapSvg
-            viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
-            {...brush.containerProps}
-            role="group"
-            aria-label={`Genotype distribution by ${
-              lengthAxisMode === 'absolute' ? 'represented allele length' : 'change from REF'
-            }`}
-          >
-            <title>
-              Genotype distribution by longer and shorter{' '}
-              {lengthAxisMode === 'absolute' ? 'represented allele length' : 'change from REF'}
-            </title>
-            {valueIndex.has(0) && (
-              <>
-                <line
-                  x1={xFor(0)}
-                  y1={heatmapTop}
-                  x2={xFor(0)}
-                  y2={heatmapTop + plotSize}
-                  stroke="#89939a"
-                  strokeDasharray="4 4"
-                />
-                <line
-                  x1={heatmapLeft}
-                  y1={yFor(0) + band}
-                  x2={heatmapLeft + plotSize}
-                  y2={yFor(0) + band}
-                  stroke="#89939a"
-                  strokeDasharray="4 4"
-                />
-              </>
-            )}
-            {[...values].reverse().map((shorter) => (
-              <g key={shorter}>
-                {values.map((longer) => {
-                  const cell = byCoordinate.get(`${shorter}/${longer}`)
-                  const key = `${shorter}/${longer}`
-                  const markId = `genotype-length:${key}`
-                  const mark = brushMarks.find((candidate) => candidate.id === markId)
-                  const selected = Boolean(
-                    cell && (activeMarkIds.has(markId) || brush.previewMarkIds.has(markId))
-                  )
-                  const intensity = cell
-                    ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
-                    : 0
-                  let cellFill = cell ? LONG_READ_PRIMARY_PLOT_COLOR : '#f5f7f8'
-                  let cellFillOpacity = cell ? 0.15 + 0.85 * intensity : 1
-                  if (selected) {
-                    cellFill = '#e9781c'
-                    cellFillOpacity = 1
-                  }
-                  const cellTextFill = !selected && intensity > 0.78 ? '#fff' : '#111'
-                  return (
-                    <React.Fragment key={key}>
+          <MeasuredWidth>
+            {(svgWidth) => {
+              // The SVG scales with the card, so axis text is sized in SVG units that render at
+              // AXIS_LABEL_FONT_PX on screen. A measured width of 0 (first render, jsdom) uses 1:1.
+              const svgUnitsPerPixel = svgWidth > 0 ? heatmapWidth / svgWidth : 1
+              const axisFontSize = AXIS_LABEL_FONT_PX * svgUnitsPerPixel
+              // Tabular digits are about 0.62em wide.
+              const longestAxisValueLabelWidth = longestAxisValueLabelLength * 0.62 * axisFontSize
+              const yAxisTitleX = 0.8 * axisFontSize + 4 * svgUnitsPerPixel
+              const yTickLabelGap = 7 * svgUnitsPerPixel
+              const heatmapLeft =
+                yAxisTitleX +
+                0.25 * axisFontSize +
+                8 * svgUnitsPerPixel +
+                longestAxisValueLabelWidth +
+                yTickLabelGap
+              const xTickLabelOffset = axisFontSize + 5 * svgUnitsPerPixel
+              // x tick labels are rotated 48 degrees and end at their anchor point, so they reach
+              // width * sin(48) below it, plus a little for the glyphs' descent.
+              const heatmapBottom =
+                xTickLabelOffset +
+                longestAxisValueLabelWidth * 0.74 +
+                axisFontSize * 0.25 +
+                4 * svgUnitsPerPixel +
+                axisFontSize +
+                8 * svgUnitsPerPixel
+              const plotSize = Math.min(
+                heatmapWidth - heatmapLeft - heatmapRight,
+                heatmapHeight - heatmapTop - heatmapBottom
+              )
+              const band = plotSize / Math.max(1, values.length)
+              const xFor = (value: number) => heatmapLeft + (valueIndex.get(value) || 0) * band
+              const yFor = (value: number) =>
+                heatmapTop + (values.length - 1 - (valueIndex.get(value) || 0)) * band
+              // Neighboring x labels are rotated 48 degrees, so they need about 1.5 font sizes of
+              // horizontal room to clear each other; the y labels need less, so one spacing fits both.
+              const minimumAxisLabelSpacing = 1.5 * axisFontSize
+              // People counts in the squares: one size for the plot, also short enough to fit the
+              // square's height. When squares are too small even for the minimum size, the counts
+              // are left to the squares' tooltips.
+              const bandPx = band / svgUnitsPerPixel
+              const longestCellLabelLength = Math.max(
+                1,
+                ...cells.map((cell) => String(cell.selectedPeople).length)
+              )
+              const cellLabelFontPx = Math.min(
+                0.6 * bandPx,
+                countLabelFontPx(bandPx, longestCellLabelLength)
+              )
+              const cellLabelFontSize = cellLabelFontPx * svgUnitsPerPixel
+              const cellLabelsFit =
+                cellLabelFontPx >= COUNT_LABEL_MIN_FONT_PX &&
+                longestCellLabelLength * 0.6 * cellLabelFontPx <= 0.9 * bandPx
+              const axisValues = axisValueCandidates
+                .reduce<number[]>(
+                  (placed, value) =>
+                    placed.every(
+                      (other) =>
+                        Math.abs(valueIndex.get(value)! - valueIndex.get(other)!) * band >=
+                        minimumAxisLabelSpacing
+                    )
+                      ? [...placed, value]
+                      : placed,
+                  []
+                )
+                .sort((left, right) => left - right)
+              return (
+                <HeatmapSizer>
+                  <HeatmapSvg
+                    viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
+                    {...brush.containerProps}
+                    role="group"
+                    aria-label={`Genotype distribution by ${
+                      lengthAxisMode === 'absolute'
+                        ? 'represented allele length'
+                        : 'change from REF'
+                    }`}
+                  >
+                    <title>
+                      Genotype distribution by longer and shorter{' '}
+                      {lengthAxisMode === 'absolute'
+                        ? 'represented allele length'
+                        : 'change from REF'}
+                    </title>
+                    {valueIndex.has(0) && (
+                      <>
+                        <line
+                          x1={xFor(0)}
+                          y1={heatmapTop}
+                          x2={xFor(0)}
+                          y2={heatmapTop + plotSize}
+                          stroke="#89939a"
+                          strokeDasharray="4 4"
+                        />
+                        <line
+                          x1={heatmapLeft}
+                          y1={yFor(0) + band}
+                          x2={heatmapLeft + plotSize}
+                          y2={yFor(0) + band}
+                          stroke="#89939a"
+                          strokeDasharray="4 4"
+                        />
+                      </>
+                    )}
+                    {[...values].reverse().map((shorter) => (
+                      <g key={shorter}>
+                        {values.map((longer) => {
+                          const cell = byCoordinate.get(`${shorter}/${longer}`)
+                          const key = `${shorter}/${longer}`
+                          const markId = `genotype-length:${key}`
+                          const mark = brushMarks.find((candidate) => candidate.id === markId)
+                          const selected = Boolean(
+                            cell && (activeMarkIds.has(markId) || brush.previewMarkIds.has(markId))
+                          )
+                          const intensity = cell
+                            ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
+                            : 0
+                          let cellFill = cell ? LONG_READ_PRIMARY_PLOT_COLOR : '#f5f7f8'
+                          let cellFillOpacity = cell ? 0.15 + 0.85 * intensity : 1
+                          if (selected) {
+                            cellFill = '#e9781c'
+                            cellFillOpacity = 1
+                          }
+                          const cellTextFill = !selected && intensity > 0.78 ? '#fff' : '#111'
+                          return (
+                            <React.Fragment key={key}>
+                              <rect
+                                x={xFor(longer) + 1}
+                                y={yFor(shorter) + 1}
+                                width={Math.max(1, band - 2)}
+                                height={Math.max(1, band - 2)}
+                                rx={Math.min(2, band / 8)}
+                                fill={cellFill}
+                                fillOpacity={cellFillOpacity}
+                                stroke={selected ? '#6f3508' : '#fff'}
+                                strokeWidth={selected ? 2 : 1}
+                                pointerEvents="none"
+                                aria-hidden="true"
+                              />
+                              {cell && cellLabelsFit && (
+                                <text
+                                  x={xFor(longer) + band / 2}
+                                  y={yFor(shorter) + band / 2 + 0.35 * cellLabelFontSize}
+                                  fill={cellTextFill}
+                                  fontSize={cellLabelFontSize}
+                                  textAnchor="middle"
+                                  pointerEvents="none"
+                                  aria-hidden="true"
+                                >
+                                  {cell.selectedPeople}
+                                </text>
+                              )}
+                              {cell && (
+                                <rect
+                                  role="button"
+                                  tabIndex={0}
+                                  aria-pressed={selected}
+                                  aria-label={`${lengthAxisLabel(
+                                    longer,
+                                    lengthAxisMode,
+                                    representedRefLength
+                                  )} longer allele, ${lengthAxisLabel(
+                                    shorter,
+                                    lengthAxisMode,
+                                    representedRefLength
+                                  )} shorter allele: ${cell.selectedPeople} ${
+                                    cell.selectedPeople === 1 ? 'person' : 'people'
+                                  }; filter the source-ALT index to this square`}
+                                  data-testid="genotype-length-cell-target"
+                                  data-discrete-brush-id={markId}
+                                  x={xFor(longer) + band / 2 - 24}
+                                  y={yFor(shorter) + band / 2 - 24}
+                                  width={48}
+                                  height={48}
+                                  rx={2}
+                                  fill="transparent"
+                                  stroke="transparent"
+                                  cursor="pointer"
+                                  onClick={(event) => {
+                                    if (!mark || !brush.markProps(mark).onClick(event)) {
+                                      selectCell(cell, key)
+                                    }
+                                  }}
+                                  onKeyDown={(event) => {
+                                    if (mark && brush.markProps(mark).onKeyDown(event)) return
+                                    if (event.key === 'Enter' || event.key === ' ') {
+                                      event.preventDefault()
+                                      selectCell(cell, key)
+                                    }
+                                  }}
+                                >
+                                  <title>
+                                    {lengthAxisLabel(longer, lengthAxisMode, representedRefLength)}{' '}
+                                    ×{' '}
+                                    {lengthAxisLabel(shorter, lengthAxisMode, representedRefLength)}
+                                    : {counted(cell.selectedPeople, 'person', 'people')}
+                                  </title>
+                                </rect>
+                              )}
+                            </React.Fragment>
+                          )
+                        })}
+                      </g>
+                    ))}
+                    {selectedRange && (
                       <rect
-                        x={xFor(longer) + 1}
-                        y={yFor(shorter) + 1}
-                        width={Math.max(1, band - 2)}
-                        height={Math.max(1, band - 2)}
-                        rx={Math.min(2, band / 8)}
-                        fill={cellFill}
-                        fillOpacity={cellFillOpacity}
-                        stroke={selected ? '#6f3508' : '#fff'}
-                        strokeWidth={selected ? 2 : 1}
-                        pointerEvents="none"
                         aria-hidden="true"
+                        data-testid="genotype-length-selection-boundary"
+                        x={xFor(selectedRange.minimumLonger) + 1}
+                        y={yFor(selectedRange.maximumShorter) + 1}
+                        width={
+                          xFor(selectedRange.maximumLonger) -
+                          xFor(selectedRange.minimumLonger) +
+                          band -
+                          2
+                        }
+                        height={
+                          yFor(selectedRange.minimumShorter) -
+                          yFor(selectedRange.maximumShorter) +
+                          band -
+                          2
+                        }
+                        fill="none"
+                        stroke="#6f3508"
+                        strokeWidth={3}
+                        pointerEvents="none"
                       />
-                      {cell && band >= 24 && (
+                    )}
+                    {axisValues.map((value) => (
+                      <React.Fragment key={value}>
                         <text
-                          x={xFor(longer) + band / 2}
-                          y={yFor(shorter) + band / 2 + 4}
-                          fill={cellTextFill}
-                          fontSize={Math.min(11, band * 0.34)}
-                          textAnchor="middle"
-                          pointerEvents="none"
-                          aria-hidden="true"
+                          x={xFor(value) + band / 2}
+                          y={heatmapTop + plotSize + xTickLabelOffset}
+                          fill="#566168"
+                          fontSize={axisFontSize}
+                          textAnchor="end"
+                          transform={`rotate(-48 ${xFor(value) + band / 2} ${
+                            heatmapTop + plotSize + xTickLabelOffset
+                          })`}
                         >
-                          {cell.selectedPeople}
+                          {axisValueLabel(value)}
                         </text>
-                      )}
-                      {cell && (
-                        <rect
-                          role="button"
-                          tabIndex={0}
-                          aria-pressed={selected}
-                          aria-label={`${lengthAxisLabel(
-                            longer,
-                            lengthAxisMode,
-                            representedRefLength
-                          )} longer allele, ${lengthAxisLabel(
-                            shorter,
-                            lengthAxisMode,
-                            representedRefLength
-                          )} shorter allele: ${cell.selectedPeople} ${
-                            cell.selectedPeople === 1 ? 'person' : 'people'
-                          }; filter the source-ALT index to this square`}
-                          data-testid="genotype-length-cell-target"
-                          data-discrete-brush-id={markId}
-                          x={xFor(longer) + band / 2 - 24}
-                          y={yFor(shorter) + band / 2 - 24}
-                          width={48}
-                          height={48}
-                          rx={2}
-                          fill="transparent"
-                          stroke="transparent"
-                          cursor="pointer"
-                          onClick={(event) => {
-                            if (!mark || !brush.markProps(mark).onClick(event)) {
-                              selectCell(cell, key)
-                            }
-                          }}
-                          onKeyDown={(event) => {
-                            if (mark && brush.markProps(mark).onKeyDown(event)) return
-                            if (event.key === 'Enter' || event.key === ' ') {
-                              event.preventDefault()
-                              selectCell(cell, key)
-                            }
-                          }}
+                        <text
+                          x={heatmapLeft - yTickLabelGap}
+                          y={yFor(value) + band / 2 + 0.35 * axisFontSize}
+                          fill="#566168"
+                          fontSize={axisFontSize}
+                          textAnchor="end"
                         >
-                          <title>
-                            {lengthAxisLabel(longer, lengthAxisMode, representedRefLength)} ×{' '}
-                            {lengthAxisLabel(shorter, lengthAxisMode, representedRefLength)}:{' '}
-                            {counted(cell.selectedPeople, 'person', 'people')}
-                          </title>
-                        </rect>
-                      )}
-                    </React.Fragment>
-                  )
-                })}
-              </g>
-            ))}
-            {selectedRange && (
-              <rect
-                aria-hidden="true"
-                data-testid="genotype-length-selection-boundary"
-                x={xFor(selectedRange.minimumLonger) + 1}
-                y={yFor(selectedRange.maximumShorter) + 1}
-                width={
-                  xFor(selectedRange.maximumLonger) - xFor(selectedRange.minimumLonger) + band - 2
-                }
-                height={
-                  yFor(selectedRange.minimumShorter) - yFor(selectedRange.maximumShorter) + band - 2
-                }
-                fill="none"
-                stroke="#6f3508"
-                strokeWidth={3}
-                pointerEvents="none"
-              />
-            )}
-            {axisValues.map((value) => (
-              <React.Fragment key={value}>
-                <text
-                  x={xFor(value) + band / 2}
-                  y={heatmapTop + plotSize + 15}
-                  fill="#566168"
-                  fontSize={10}
-                  textAnchor="end"
-                  transform={`rotate(-48 ${xFor(value) + band / 2} ${heatmapTop + plotSize + 15})`}
-                >
-                  {lengthAxisMode === 'absolute'
-                    ? lengthAxisValue(value, lengthAxisMode, representedRefLength).toLocaleString()
-                    : signed(value)}
-                </text>
-                <text
-                  x={heatmapLeft - 7}
-                  y={yFor(value) + band / 2 + 3}
-                  fill="#566168"
-                  fontSize={10}
-                  textAnchor="end"
-                >
-                  {lengthAxisMode === 'absolute'
-                    ? lengthAxisValue(value, lengthAxisMode, representedRefLength).toLocaleString()
-                    : signed(value)}
-                </text>
-              </React.Fragment>
-            ))}
-            <line
-              x1={heatmapLeft}
-              y1={heatmapTop + plotSize}
-              x2={heatmapLeft + plotSize}
-              y2={heatmapTop + plotSize}
-              stroke="#89939a"
-            />
-            <line
-              x1={heatmapLeft}
-              y1={heatmapTop}
-              x2={heatmapLeft}
-              y2={heatmapTop + plotSize}
-              stroke="#89939a"
-            />
-            <text
-              x={heatmapLeft + plotSize / 2}
-              y={heatmapHeight - 8}
-              fill="#566168"
-              fontSize={11}
-              textAnchor="middle"
-            >
-              Longer allele:{' '}
-              {lengthAxisMode === 'absolute' ? 'represented bp' : 'change from REF (bp)'}
-            </text>
-            <text
-              x={15}
-              y={heatmapTop + plotSize / 2}
-              fill="#566168"
-              fontSize={11}
-              textAnchor="middle"
-              transform={`rotate(-90 15 ${heatmapTop + plotSize / 2})`}
-            >
-              Shorter allele:{' '}
-              {lengthAxisMode === 'absolute' ? 'represented bp' : 'change from REF (bp)'}
-            </text>
-          </HeatmapSvg>
+                          {axisValueLabel(value)}
+                        </text>
+                      </React.Fragment>
+                    ))}
+                    <line
+                      x1={heatmapLeft}
+                      y1={heatmapTop + plotSize}
+                      x2={heatmapLeft + plotSize}
+                      y2={heatmapTop + plotSize}
+                      stroke="#89939a"
+                    />
+                    <line
+                      x1={heatmapLeft}
+                      y1={heatmapTop}
+                      x2={heatmapLeft}
+                      y2={heatmapTop + plotSize}
+                      stroke="#89939a"
+                    />
+                    <text
+                      x={heatmapLeft + plotSize / 2}
+                      y={heatmapTop + plotSize + heatmapBottom - 8 * svgUnitsPerPixel}
+                      fill="#566168"
+                      fontSize={axisFontSize}
+                      textAnchor="middle"
+                    >
+                      {lengthAxisTitle('Long Allele', lengthAxisMode)}
+                    </text>
+                    <text
+                      x={yAxisTitleX}
+                      y={heatmapTop + plotSize / 2}
+                      fill="#566168"
+                      fontSize={axisFontSize}
+                      textAnchor="middle"
+                      transform={`rotate(-90 ${yAxisTitleX} ${heatmapTop + plotSize / 2})`}
+                    >
+                      {lengthAxisTitle('Short Allele', lengthAxisMode)}
+                    </text>
+                  </HeatmapSvg>
+                </HeatmapSizer>
+              )
+            }}
+          </MeasuredWidth>
           <IntensityKey aria-label="Logarithmic people intensity legend">
             <span>Fewer people</span>
             <span
@@ -3830,7 +4004,7 @@ export const WholeRecordGenotypeLandscape = ({
                 background: `linear-gradient(90deg, rgba(156,39,176,.15), ${LONG_READ_PRIMARY_PLOT_COLOR})`,
               }}
             />
-            <span>More people (log intensity)</span>
+            <span>More people</span>
           </IntensityKey>
         </HeatmapFigure>
       </PlotCard>
