@@ -8,7 +8,7 @@ import QuestionMarkIcon from '@fortawesome/fontawesome-free/svgs/solid/question-
 // react-aria-modal renders a portal with z-index: 1 (from @gnomad/ui zIndices).
 // This is too low — sticky headers and DeckGL canvases overlay it.
 // Override the portal's underlay z-index when our modal is open.
-const ModalZIndexFix = createGlobalStyle`
+export const ModalZIndexFix = createGlobalStyle`
   [data-reach-dialog-overlay],
   [class*="ReactModal"],
   div[style*="position: fixed"][style*="z-index: 1"] {

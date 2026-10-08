@@ -97,6 +97,11 @@ jest.mock('@gnomad/ui', () => ({
   Page: ({ children, ...props }: any) => <main {...props}>{children}</main>,
   PageHeading: ({ children }: any) => <h1>{children}</h1>,
   Select: ({ children, ...props }: any) => <select {...props}>{children}</select>,
+  TextButton: ({ children, ...props }: any) => (
+    <button type="button" {...props}>
+      {children}
+    </button>
+  ),
   TooltipAnchor: ({ children }: any) => children,
   TooltipHint: ({ children }: any) => children,
 }))
@@ -738,6 +743,27 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('img', { name: /ordered LR reference component/ })).toBeNull()
   })
 
+  test('shortens a motif longer than 35 bp in the heading and the motif attribute', () => {
+    const longMotif =
+      'TGGTGTCCACGCCGGTCTGGATGGTTCCTTTGGCCACATTCATGGCACCAGTCACCCCACTACAGACGGTGTCCTTGGTACCTGTTAGGACAGTCTTAC'
+    const locus = makeSimpleLocus()
+    ;(locus as any).short_read_context = {
+      ...locus.short_read_context,
+      status: 'NONE',
+      catalog_record: null,
+    }
+    ;(locus as any).primary_repeat = { ...locus.primary_repeat, motif: longMotif }
+    ;(locus as any).components = [{ ...locus.components[0], motif: longMotif }]
+    ;(locus as any).motifs = [longMotif]
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.getByRole('heading', { name: 'Tandem repeat with 99bp motif' })).not.toBeNull()
+    expect(motifAttributeValue()).toBe('TGGTGTCC…AGTCTTAC (99 bp)')
+    fireEvent.click(screen.getByRole('button', { name: 'TGGTGTCC…AGTCTTAC' }))
+    const fullMotifDialog = screen.getByRole('dialog', { name: 'Motif (99 bp)' })
+    expect(within(fullMotifDialog).getByText(longMotif)).not.toBeNull()
+  })
+
   test('preserves ATXN1 stored TGC orientation and RFC1 benign reference identity', () => {
     const atxn1 = makeSimpleLocus()
     const atxn1Component = { chrom: '6', start0: 16327633, end0: 16327723, motif: 'TGC' }
@@ -1045,8 +1071,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     // whole number of CAG units, so the browser will not derive a reference unit count.
     expect(Array.from(lengthAxis.options).map((option) => option.value)).toEqual([
       'bp-absolute',
-      'bp-delta',
       'repeats-absolute',
+      'bp-delta',
     ])
 
     lengthAxis.focus()
@@ -1056,9 +1082,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     // Each plot takes its own admitted unit product: the allele slot has the reviewed
     // exact-motif distribution, and the genotype slot falls back to exact repeat counts.
     expect(within(grid).getByTestId('motif-occurrence-card')).not.toBeNull()
-    expect(within(grid).getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue(
-      '0'
-    )
+    // A single-motif distribution has nothing to choose, so it shows no motif menu.
+    expect(within(grid).queryByLabelText('Motif for source ALT occurrence distribution')).toBeNull()
     expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
     expect(within(grid).queryByTestId('allele-repeat-count-card')).toBeNull()
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)

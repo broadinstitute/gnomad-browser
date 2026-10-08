@@ -1,12 +1,17 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { ExternalLink, List, ListItem, PageHeading, Select } from '@gnomad/ui'
+import { ExternalLink, List, ListItem, Modal, PageHeading, Select, TextButton } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import { trLocusDisplayEnvelope } from '@gnomad/dataset-metadata/longReadTrLocusId'
+import {
+  MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL,
+  shortenLongMotifToItsEnds,
+} from '@gnomad/dataset-metadata/longReadTrLocusPresentation'
 
 import AttributeList, { AttributeListItem } from '../AttributeList'
 import DocumentTitle from '../DocumentTitle'
 import { isExperimentalFeatureEnabled } from '../experimentalFeatures'
+import { ModalZIndexFix } from '../Haplotypes/HelpButton'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   LongReadTrComponentTrack,
@@ -122,13 +127,60 @@ const CohortSelector = ({
   </CohortControl>
 )
 
+// A long motif is named by its size, as in the gene table rows, so the heading stays short:
+// "CAG tandem repeat" but "Tandem repeat with 99bp motif".
+const tandemRepeatHeadingForMotif = (motif: string) =>
+  motif.length > MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL
+    ? `tandem repeat with ${motif.length}bp motif`
+    : `${motif} tandem repeat`
+
+const capitalizeFirstLetter = (text: string) => `${text.charAt(0).toUpperCase()}${text.slice(1)}`
+
+const FullMotifSequence = styled.code`
+  display: block;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+`
+
+// A long motif keeps only its first and last bases. The full sequence shows on hover, and
+// clicking opens it in a dialog where it can be read and selected.
+const MotifAttributeValue = ({ motif }: { motif: string }) => {
+  const [isFullMotifDialogOpen, setIsFullMotifDialogOpen] = useState(false)
+  if (motif.length <= MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL) {
+    return <>{`${motif} (${motif.length} bp)`}</>
+  }
+  return (
+    <>
+      <TextButton title={motif} onClick={() => setIsFullMotifDialogOpen(true)}>
+        {shortenLongMotifToItsEnds(motif)}
+      </TextButton>{' '}
+      ({motif.length} bp)
+      {isFullMotifDialogOpen && (
+        <>
+          <ModalZIndexFix />
+          <Modal
+            title={`Motif (${motif.length} bp)`}
+            size="large"
+            onRequestClose={() => setIsFullMotifDialogOpen(false)}
+          >
+            <FullMotifSequence>{motif}</FullMotifSequence>
+          </Modal>
+        </>
+      )}
+    </>
+  )
+}
+
 export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
   if (locus.presentation?.locus_type === 'VARIATION_CLUSTER') {
     return 'TR variation cluster'
   }
   if (!locus.primary_repeat?.motif) {
     const soleMotif = locus.components.length === 1 ? locus.components[0].motif : null
-    return soleMotif ? `${soleMotif} tandem repeat` : 'Tandem-repeat locus'
+    return soleMotif
+      ? capitalizeFirstLetter(tandemRepeatHeadingForMotif(soleMotif))
+      : 'Tandem-repeat locus'
   }
   const record =
     locus.primary_repeat.is_disease_associated_repeat &&
@@ -138,9 +190,9 @@ export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
   if (record) {
     const gene = record.gene?.symbol
     const identity = gene && gene !== record.id ? `${record.id} (${gene})` : record.id
-    return `${identity} ${locus.primary_repeat.motif} tandem repeat`
+    return `${identity} ${tandemRepeatHeadingForMotif(locus.primary_repeat.motif)}`
   }
-  return `${locus.primary_repeat.motif} tandem repeat`
+  return capitalizeFirstLetter(tandemRepeatHeadingForMotif(locus.primary_repeat.motif))
 }
 
 const LongReadTandemRepeatPage = ({
@@ -458,9 +510,11 @@ const LongReadTandemRepeatPage = ({
               )}
               {(locus.primary_repeat.motif || !clusterFocused) && (
                 <AttributeListItem label="Motif">
-                  {locus.primary_repeat.motif
-                    ? `${locus.primary_repeat.motif} (${locus.primary_repeat.motif.length} bp)`
-                    : 'Unavailable — source components remain in the disclosure below'}
+                  {locus.primary_repeat.motif ? (
+                    <MotifAttributeValue motif={locus.primary_repeat.motif} />
+                  ) : (
+                    'Unavailable — source components remain in the disclosure below'
+                  )}
                 </AttributeListItem>
               )}
             </AttributeList>

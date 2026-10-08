@@ -4,6 +4,7 @@ import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 import { Select } from '@gnomad/ui'
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
+import { shortenLongMotifToItsEnds } from '@gnomad/dataset-metadata/longReadTrLocusPresentation'
 
 import Link from '../Link'
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
@@ -1766,7 +1767,6 @@ const MotifOccurrenceControl = styled.label`
 
   select {
     max-width: 100%;
-    min-height: 36px;
   }
 `
 
@@ -1832,25 +1832,31 @@ const MotifOccurrencePlotCard = ({
   return (
     <PlotCard data-plot-card="source-alt-motif-occurrences" data-testid="motif-occurrence-card">
       <h3>Allele exact-motif distribution</h3>
-      <MotifOccurrenceControl>
-        Motif
-        <select
-          aria-label="Motif for source ALT occurrence distribution"
-          value={selectedMotifIndex}
-          onChange={(event) => onSelectMotifIndex(Number(event.target.value))}
-        >
-          {motifs.map((option, motifIndex) => (
-            // Vocabulary position is identity-bearing, including exact duplicate strings.
-            // eslint-disable-next-line react/no-array-index-key
-            <option key={motifIndex} value={motifIndex}>
-              {option}
-              {motifs.filter((candidate) => candidate === option).length > 1
-                ? ` (stored position ${motifIndex + 1})`
-                : ''}
-            </option>
-          ))}
-        </select>
-      </MotifOccurrenceControl>
+      {/* With a single motif there is nothing to choose; the page header already names it. */}
+      {motifs.length > 1 && (
+        <MotifOccurrenceControl>
+          Motif
+          <Select
+            aria-label="Motif for source ALT occurrence distribution"
+            title={motif}
+            value={selectedMotifIndex}
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
+              onSelectMotifIndex(Number(event.target.value))
+            }
+          >
+            {motifs.map((option, motifIndex) => (
+              // Vocabulary position is identity-bearing, including exact duplicate strings.
+              // eslint-disable-next-line react/no-array-index-key
+              <option key={motifIndex} value={motifIndex}>
+                {shortenLongMotifToItsEnds(option)}
+                {motifs.filter((candidate) => candidate === option).length > 1
+                  ? ` (stored position ${motifIndex + 1})`
+                  : ''}
+              </option>
+            ))}
+          </Select>
+        </MotifOccurrenceControl>
+      )}
       {bins.length ? (
         <HistogramChart>
           <HistogramYScale aria-hidden="true" $height={height}>
@@ -2236,14 +2242,17 @@ export const WholeRecordAlleleLandscape = ({
   const measureChoices = useMemo(() => {
     const choices: LandscapeMeasure[] = []
     if (absoluteLengthAvailable) choices.push('bp-absolute')
-    choices.push('bp-delta')
     if (repeatsAvailable) choices.push('repeats-absolute')
+    choices.push('bp-delta')
     if (repeatsAvailable && referenceUnits != null) choices.push('repeats-delta')
     return choices
   }, [absoluteLengthAvailable, referenceUnits, repeatsAvailable])
+  // The fallback is named rather than taken from the list, so the repeats measure listed second
+  // never becomes the default when the absolute bp measure is unavailable.
+  const fallbackMeasure: LandscapeMeasure = absoluteLengthAvailable ? 'bp-absolute' : 'bp-delta'
   const selectedMeasure = measureChoices.includes(requestedMeasure)
     ? requestedMeasure
-    : measureChoices[0]
+    : fallbackMeasure
   const showControlSection =
     measureChoices.length > 1 ||
     showLegacyFilterControls ||
