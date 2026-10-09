@@ -855,8 +855,7 @@ const VariantPage = ({ datasetId, variantId }: VariantPageProps) => {
               graphQLErrors &&
               graphQLErrors.some((err: any) => err.message === 'Variant not found')
             ) {
-              // @ts-expect-error TS(2322) FIXME: Type '{ datasetId: string; variantId: string; }' i... Remove this comment to see the full error message
-              pageContent = <VariantNotFound datasetId={datasetId} variantId={variantId} />
+              pageContent = <VariantNotFound key={variantId} {...{ datasetId, variantId }} />
             } else {
               pageContent = (
                 <StatusMessage>

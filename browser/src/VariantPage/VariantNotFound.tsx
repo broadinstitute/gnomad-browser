@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useState } from 'react'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
+import { Button } from '@gnomad/ui'
 
 import RegionCoverageTrack from '../RegionPage/RegionCoverageTrack'
 import RegionViewer from '../RegionViewer/RegionViewer'
@@ -16,8 +17,15 @@ const Wrapper = styled.div`
   width: 100%;
 `
 
+const LoadCoverageControls = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
 // @ts-expect-error TS(2339) FIXME: Property 'datasetId' does not exist on type '{}'.
 const VariantNotFound = withSize()(({ datasetId, size: { width }, variantId }) => {
+  const [hasRequestedCoverage, setHasRequestedCoverage] = useState(false)
+
   const parts = variantId.split('-')
   const chrom = parts[0]
   const pos = Number(parts[1])
@@ -39,15 +47,24 @@ const VariantNotFound = withSize()(({ datasetId, size: { width }, variantId }) =
         <br />
         <Link to={`/region/${redirectRegion}`}>View surrounding region</Link>
       </StatusMessage>
-      <RegionViewer regions={regionViewerRegions} rightPanelWidth={0} width={width}>
-        <RegionCoverageTrack
-          datasetId={datasetId}
-          chrom={chrom}
-          start={regionViewerRegions[0].start}
-          stop={regionViewerRegions[0].stop}
-        />
-        <PositionAxisTrack />
-      </RegionViewer>
+      {!hasRequestedCoverage && (
+        <LoadCoverageControls>
+          <Button onClick={() => setHasRequestedCoverage(true)}>
+            Load coverage of surrounding region
+          </Button>
+        </LoadCoverageControls>
+      )}
+      {hasRequestedCoverage && (
+        <RegionViewer regions={regionViewerRegions} rightPanelWidth={0} width={width}>
+          <RegionCoverageTrack
+            datasetId={datasetId}
+            chrom={chrom}
+            start={regionViewerRegions[0].start}
+            stop={regionViewerRegions[0].stop}
+          />
+          <PositionAxisTrack />
+        </RegionViewer>
+      )}
     </Wrapper>
   )
 })
