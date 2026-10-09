@@ -502,7 +502,7 @@ describe('long-read TR visualization fidelity', () => {
       'rgb(230, 159, 0)'
     )
     expect(screen.getByLabelText('Allele length histogram colors').textContent).toBe(
-      'REF allele, ALT alleles'
+      'REF allele ALT alleles'
     )
 
     // A selected bar turns dark navy so it never reads as the orange REF allele.
@@ -1214,7 +1214,6 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
     ).toBe('1')
-    expect(screen.getByText(/1 person across 1 exact ALT pair/)).not.toBeNull()
     fireEvent.keyDown(cell, { key: ' ' })
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).toBe(
       document.activeElement
@@ -1501,7 +1500,6 @@ describe('long-read TR visualization fidelity', () => {
     render(
       <WholeRecordGenotypeLandscape
         landscape={landscape}
-        navigation={navigation}
         selectedPopulation={null}
         selectedSex={null}
       />
@@ -1534,13 +1532,8 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(heatmap).getByText('Short Allele (bp minus REF)')).not.toBeNull()
     expect(screen.getByLabelText('Logarithmic people intensity legend')).not.toBeNull()
     expect(cell.getAttribute('aria-pressed')).toBe('false')
-    expect(
-      screen.getByText(
-        (_text, element) =>
-          element?.tagName.toLowerCase() === 'summary' &&
-          Boolean(element.textContent?.includes('12 people across 2 exact ALT pairs'))
-      )
-    ).not.toBeNull()
+    // The exact genotype pair table under the heatmap was removed.
+    expect(screen.queryByRole('region', { name: 'Exact genotype pairs table' })).toBeNull()
   })
 
   test('keeps mismatch bases opaque with readable selected-sequence contrast', () => {

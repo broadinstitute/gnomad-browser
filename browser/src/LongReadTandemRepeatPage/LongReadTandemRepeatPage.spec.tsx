@@ -1153,7 +1153,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const selectedDetail = screen.getByTestId('lr-tr-selected-detail')
     const plotGrid = screen.getByTestId('whole-record-allele-plot-grid')
     const genotypeCard = screen.getByTestId('genotype-length-card')
-    const genotypeDetail = screen.getByTestId('genotype-pair-detail')
 
     expect(alleleTables).toHaveLength(1)
     expect(screen.queryByRole('table', { name: /Exact ALTs at/ })).toBeNull()
@@ -1170,10 +1169,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
       'Length × motif purity',
     ])
     expect(plotGrid.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(genotypeCard.compareDocumentPosition(genotypeDetail)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING
-    )
-    expect(genotypeDetail.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(genotypeCard.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(screen.queryByTestId('genotype-pair-detail')).toBeNull()
     expect(plotGrid.getAttribute('data-plot-count')).toBe('3')
     expect(plotGrid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
     expect(within(plotGrid).queryByTestId('motif-occurrence-card')).toBeNull()
@@ -1533,7 +1530,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
   })
 
-  test('distinguishes reference identity from a zero-delta exact ALT in genotype pair detail', () => {
+  test('distinguishes reference identity from a zero-delta exact ALT in the genotype heatmap', () => {
     renderPage()
     selectChangeFromRefAxis()
     fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
@@ -1542,7 +1539,6 @@ describe('canonical long-read tandem-repeat locus page', () => {
         /Reference remains distinct from a zero-change source ALT/
       )
     ).not.toBeNull()
-    expect(screen.getAllByRole('link', { name: 'Sequence 1' }).length).toBeGreaterThan(0)
     const zeroDeltaCell = screen.getByRole('button', {
       name: /0 bp vs REF longer allele, 0 bp vs REF shorter allele: 20 people; filter the source-ALT index/,
     })

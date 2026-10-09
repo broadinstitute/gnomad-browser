@@ -207,19 +207,6 @@ const HeadingWithHelp = styled.div`
   }
 `
 
-const GenotypePairDetail = styled.div`
-  grid-column: 1 / -1;
-  min-width: 0;
-  padding: 0.7em 1em;
-  border: 1px solid #d8dee2;
-  border-radius: 4px;
-  background: #fbfcfd;
-
-  summary {
-    cursor: pointer;
-  }
-`
-
 const LandscapeControls = styled.div`
   display: flex;
   flex-flow: row wrap;
@@ -2753,7 +2740,6 @@ export const WholeRecordAlleleLandscape = ({
           {selectedGenotypeDistributionView === 'length' && admittedGenotypeLandscape && (
             <WholeRecordGenotypeLandscape
               landscape={admittedGenotypeLandscape}
-              navigation={navigation}
               selectedPopulation={selectedPopulation}
               selectedSex={selectedSex}
             />
@@ -3108,8 +3094,12 @@ export const WholeRecordAlleleLandscape = ({
                 REF allele
                 {!selectedColorBy && (
                   <>
-                    ,{' '}
-                    <AlleleSizeColorSwatch aria-hidden="true" $color={ALT_ALLELE_SIZE_BAR_COLOR} />
+                    {' '}
+                    <AlleleSizeColorSwatch
+                      aria-hidden="true"
+                      $color={ALT_ALLELE_SIZE_BAR_COLOR}
+                      style={{ marginLeft: 10 }}
+                    />
                     ALT alleles
                   </>
                 )}
@@ -3354,11 +3344,11 @@ export const WholeRecordAlleleLandscape = ({
                                 $left={tick.left + HISTOGRAM_SIDE_PADDING}
                               >
                                 {lengthAxisMode === 'absolute'
-                                  ? `${tick.delta === 0 ? 'R · ' : ''}${lengthAxisValue(
+                                  ? lengthAxisValue(
                                       tick.delta,
                                       lengthAxisMode,
                                       representedRefLength
-                                    ).toLocaleString()}`
+                                    ).toLocaleString()
                                   : signed(tick.delta)}
                               </HistogramXTick>
                             ))}
@@ -3378,7 +3368,6 @@ export const WholeRecordAlleleLandscape = ({
         {selectedGenotypeDistributionView === 'length' && admittedGenotypeLandscape && (
           <WholeRecordGenotypeLandscape
             landscape={admittedGenotypeLandscape}
-            navigation={navigation}
             selectedPopulation={selectedPopulation}
             selectedSex={selectedSex}
             selectedPopulations={selectedGenotypeAncestries}
@@ -3553,9 +3542,6 @@ export const aggregateGenotypePairs = (pairs: GenotypePair[]): ExactGenotypePair
   )
 }
 
-const pairName = (id: string, referenceId: string | null) =>
-  id === referenceId ? 'Reference (Δ 0)' : alleleLabel(id)
-
 export type GenotypeBrushCell = {
   markId: string
   shorterDelta: number
@@ -3565,7 +3551,6 @@ export type GenotypeBrushCell = {
 
 export const WholeRecordGenotypeLandscape = ({
   landscape,
-  navigation,
   selectedPopulation,
   selectedSex,
   selectedPopulations,
@@ -3577,7 +3562,6 @@ export const WholeRecordGenotypeLandscape = ({
   representedRefLength = null,
 }: {
   landscape: WholeRecordGenotypeLandscapeData
-  navigation: AlleleNavigation
   selectedPopulation: PopulationId | null
   selectedSex: Sex | null
   selectedPopulations?: readonly string[]
@@ -4008,62 +3992,6 @@ export const WholeRecordGenotypeLandscape = ({
           </IntensityKey>
         </HeatmapFigure>
       </PlotCard>
-      <GenotypePairDetail aria-live="polite" data-testid="genotype-pair-detail">
-        {selectedCell ? (
-          <details>
-            <summary>
-              <strong>
-                {lengthAxisLabel(selectedCell.longer_delta, lengthAxisMode, representedRefLength)} ×{' '}
-                {lengthAxisLabel(selectedCell.shorter_delta, lengthAxisMode, representedRefLength)}
-              </strong>{' '}
-              — {selectedCell.selectedPeople.toLocaleString()}{' '}
-              {selectedCell.selectedPeople === 1 ? 'person' : 'people'} across{' '}
-              {selectedCell.selectedPairs.length.toLocaleString()} exact ALT{' '}
-              {selectedCell.selectedPairs.length === 1 ? 'pair' : 'pairs'}
-            </summary>
-            <ScrollTable role="region" aria-label="Exact genotype pairs table" tabIndex={0}>
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">Exact pair</th>
-                    <th scope="col">People</th>
-                    <th scope="col">Phased</th>
-                    <th scope="col">Unphased</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedCell.selectedPairs.map((pair) => (
-                    <tr key={`${pair.shorter_allele_id}/${pair.longer_allele_id}`}>
-                      <td>
-                        {pair.shorter_allele_id === landscape.reference_allele_id ? (
-                          pairName(pair.shorter_allele_id, landscape.reference_allele_id)
-                        ) : (
-                          <SelectionLink alleleId={pair.shorter_allele_id} navigation={navigation}>
-                            {pairName(pair.shorter_allele_id, landscape.reference_allele_id)}
-                          </SelectionLink>
-                        )}
-                        {' × '}
-                        {pair.longer_allele_id === landscape.reference_allele_id ? (
-                          pairName(pair.longer_allele_id, landscape.reference_allele_id)
-                        ) : (
-                          <SelectionLink alleleId={pair.longer_allele_id} navigation={navigation}>
-                            {pairName(pair.longer_allele_id, landscape.reference_allele_id)}
-                          </SelectionLink>
-                        )}
-                      </td>
-                      <td>{pair.people.toLocaleString()}</td>
-                      <td>{pair.phased_people.toLocaleString()}</td>
-                      <td>{pair.unphased_people.toLocaleString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </ScrollTable>
-          </details>
-        ) : (
-          <p>No complete called genotypes with both plotted alleles match these filters.</p>
-        )}
-      </GenotypePairDetail>
     </>
   )
 }
