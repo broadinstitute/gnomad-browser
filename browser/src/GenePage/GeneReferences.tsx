@@ -68,9 +68,7 @@ const GeneReferences = ({ gene }: Props) => {
               <ExternalLink href={ucscUrl}>UCSC Browser</ExternalLink>
             </ListItem>
             <ListItem>
-              <ExternalLink
-                href={`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${geneSymbol}`}
-              >
+              <ExternalLink href={`https://www.genecards.org/${geneSymbol}`}>
                 GeneCards
               </ExternalLink>
             </ListItem>
