@@ -733,7 +733,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'CAG tandem repeat' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Tandem Repeat: CAG' })).not.toBeNull()
     expect(screen.getByText('chr4:3,074,876–3,074,933 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('HTT — exon')).toBeNull()
     expect(
@@ -757,7 +757,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ;(locus as any).motifs = [longMotif]
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'Tandem repeat with 99bp motif' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Tandem Repeat: 99bp motif' })).not.toBeNull()
     expect(motifAttributeValue()).toBe('TGGTGTCC…AGTCTTAC (99 bp)')
     fireEvent.click(screen.getByRole('button', { name: 'TGGTGTCC…AGTCTTAC' }))
     const fullMotifDialog = screen.getByRole('dialog', { name: 'Motif (99 bp)' })
@@ -812,7 +812,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       },
     })
     const rendered = renderPage({ locus: atxn1, selectedAllele: undefined })
-    expect(screen.getByRole('heading', { name: 'ATXN1 TGC tandem repeat' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'ATXN1 Tandem Repeat: TGC' })).not.toBeNull()
     expect(motifAttributeValue()).toBe('TGC (3 bp)')
     expect(screen.queryByRole('heading', { name: /ATXN1 CAG/ })).toBeNull()
     const atxn1Disease = screen.getByRole('rowheader', { name: 'Spinocerebellar ataxia 1' })
@@ -868,7 +868,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       },
     })
     renderPage({ locus: rfc1, selectedAllele: undefined })
-    expect(screen.getByRole('heading', { name: 'RFC1 AAAAG tandem repeat' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'RFC1 Tandem Repeat: AAAAG' })).not.toBeNull()
     expect(motifAttributeValue()).toBe('AAAAG (5 bp)')
     expect(rfc1.primary_repeat.biological_role).toBe('benign reference motif')
     const rfc1Disease = screen.getByRole('rowheader', {
@@ -1415,7 +1415,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
     renderPage({ locus, selectedAllele: gcaId })
 
-    expect(screen.getByRole('heading', { name: 'ATXN7 GCA tandem repeat' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'ATXN7 Tandem Repeat: GCA' })).not.toBeNull()
     expect(motifAttributeValue()).toBe('GCA (3 bp)')
 
     const detail = screen.getByTestId('lr-tr-selected-detail')

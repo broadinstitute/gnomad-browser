@@ -128,13 +128,11 @@ const CohortSelector = ({
 )
 
 // A long motif is named by its size, as in the gene table rows, so the heading stays short:
-// "CAG tandem repeat" but "Tandem repeat with 99bp motif".
+// "Tandem Repeat: CAG" but "Tandem Repeat: 99bp motif".
 const tandemRepeatHeadingForMotif = (motif: string) =>
   motif.length > MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL
-    ? `tandem repeat with ${motif.length}bp motif`
-    : `${motif} tandem repeat`
-
-const capitalizeFirstLetter = (text: string) => `${text.charAt(0).toUpperCase()}${text.slice(1)}`
+    ? `Tandem Repeat: ${motif.length}bp motif`
+    : `Tandem Repeat: ${motif}`
 
 const FullMotifSequence = styled.code`
   display: block;
@@ -178,9 +176,7 @@ export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
   }
   if (!locus.primary_repeat?.motif) {
     const soleMotif = locus.components.length === 1 ? locus.components[0].motif : null
-    return soleMotif
-      ? capitalizeFirstLetter(tandemRepeatHeadingForMotif(soleMotif))
-      : 'Tandem-repeat locus'
+    return soleMotif ? tandemRepeatHeadingForMotif(soleMotif) : 'Tandem-repeat locus'
   }
   const record =
     locus.primary_repeat.is_disease_associated_repeat &&
@@ -192,7 +188,7 @@ export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
     const identity = gene && gene !== record.id ? `${record.id} (${gene})` : record.id
     return `${identity} ${tandemRepeatHeadingForMotif(locus.primary_repeat.motif)}`
   }
-  return capitalizeFirstLetter(tandemRepeatHeadingForMotif(locus.primary_repeat.motif))
+  return tandemRepeatHeadingForMotif(locus.primary_repeat.motif)
 }
 
 const LongReadTandemRepeatPage = ({
