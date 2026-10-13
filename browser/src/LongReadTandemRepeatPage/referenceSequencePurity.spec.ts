@@ -1,4 +1,8 @@
-import { referenceRepeatSequence, referenceSequencePurity } from './referenceSequencePurity'
+import {
+  longestPureMotifRun,
+  referenceRepeatSequence,
+  referenceSequencePurity,
+} from './referenceSequencePurity'
 
 describe('referenceRepeatSequence', () => {
   test('drops the shared padding base', () => {
@@ -50,5 +54,36 @@ describe('referenceSequencePurity', () => {
     ['a non-sequence motif', 'GTCCCT', 'N/A'],
   ])('returns null for %s', (_description, sequence, motif) => {
     expect(referenceSequencePurity(sequence, motif)).toBeNull()
+  })
+})
+
+describe('longestPureMotifRun', () => {
+  test('counts every copy of a pure repeat', () => {
+    expect(longestPureMotifRun('TTCTTTCTTTCTTTCTTTCT', 'TTCT')).toBe(5)
+  })
+
+  test('takes the longest uninterrupted run, not the total copy count', () => {
+    // Three copies, an interruption, then two copies: five in all, three in a row.
+    expect(longestPureMotifRun('CAGCAGCAGCAACAGCAG', 'CAG')).toBe(3)
+  })
+
+  test('finds a run that starts at any offset, ignoring flanking bases', () => {
+    expect(longestPureMotifRun('GTCAGCAGCAGT', 'CAG')).toBe(3)
+  })
+
+  test('is case-insensitive', () => {
+    expect(longestPureMotifRun('cagcag', 'CAG')).toBe(2)
+  })
+
+  test('is 0 when the motif never occurs', () => {
+    expect(longestPureMotifRun('TTTTTT', 'CAG')).toBe(0)
+  })
+
+  test.each([
+    ['a missing sequence', null, 'CAG'],
+    ['a missing motif', 'CAGCAG', null],
+    ['a non-sequence motif', 'CAGCAG', 'N/A'],
+  ])('returns null for %s', (_description, sequence, motif) => {
+    expect(longestPureMotifRun(sequence, motif)).toBeNull()
   })
 })

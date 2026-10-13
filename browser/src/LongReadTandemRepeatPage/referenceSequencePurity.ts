@@ -24,3 +24,25 @@ export const referenceSequencePurity = (
   const unit = motif.toUpperCase()
   return bases.filter((base, index) => base === unit[index % unit.length]).length / bases.length
 }
+
+/**
+ * Longest pure segment (LPS): the most consecutive exact copies of the motif found anywhere in
+ * the sequence. This is the size trgt-lps assigns an allele, which the precomputed repeat-count
+ * histograms are built from, so it places the REF on their axis.
+ */
+export const longestPureMotifRun = (
+  sequence: string | null | undefined,
+  motif: string | null | undefined
+): number | null => {
+  if (!sequence || !motif) return null
+  if (!BASES.test(sequence) || !BASES.test(motif)) return null
+  const bases = sequence.toUpperCase()
+  const unit = motif.toUpperCase()
+  let longestRun = 0
+  for (let start = 0; start + unit.length <= bases.length; start += 1) {
+    let copies = 0
+    while (bases.startsWith(unit, start + copies * unit.length)) copies += 1
+    longestRun = Math.max(longestRun, copies)
+  }
+  return longestRun
+}

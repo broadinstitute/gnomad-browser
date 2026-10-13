@@ -1067,8 +1067,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(grid.getAttribute('data-plot-count')).toBe('3')
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
     expect(lengthAxis.value).toBe('bp-absolute')
-    // No ALT − REF repeat measure here: the admitted reference length (164 bp) is not a
-    // whole number of CAG units, so the browser will not derive a reference unit count.
+    // No ALT − REF repeat measure here: this fixture's repeat-count histogram does not hold
+    // every REF allele at the REF's longest pure run of CAG, so the REF size stays unknown.
     expect(Array.from(lengthAxis.options).map((option) => option.value)).toEqual([
       'bp-absolute',
       'repeats-absolute',
@@ -1079,17 +1079,18 @@ describe('canonical long-read tandem-repeat locus page', () => {
     fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
     expect(screen.getByLabelText('Length axis')).toBe(lengthAxis)
     expect(document.activeElement).toBe(lengthAxis)
-    // Each plot takes its own admitted unit product: the allele slot has the reviewed
-    // exact-motif distribution, and the genotype slot falls back to exact repeat counts.
-    expect(within(grid).getByTestId('motif-occurrence-card')).not.toBeNull()
-    // A single-motif distribution has nothing to choose, so it shows no motif menu.
-    expect(within(grid).queryByLabelText('Motif for source ALT occurrence distribution')).toBeNull()
-    expect(within(grid).getByTestId('genotype-repeat-count-plot')).not.toBeNull()
+    // Both plots draw the precomputed repeat-count histograms (each allele's longest pure run)
+    // with the same plots as the bp measure, rather than the exact-motif or legacy cards.
+    expect(within(grid).queryByTestId('motif-occurrence-card')).toBeNull()
     expect(within(grid).queryByTestId('allele-repeat-count-card')).toBeNull()
-    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+    expect(within(grid).queryByTestId('genotype-repeat-count-card')).toBeNull()
+    expect(within(grid).getByText('Allele (longest pure run)')).not.toBeNull()
     expect(
-      screen.getByTestId('genotype-repeat-count-card').getAttribute('data-interaction-status')
-    ).toBe('UNAVAILABLE_SOURCE_IDENTITIES')
+      within(within(grid).getByTestId('genotype-length-card')).getByText(
+        'Long Allele (longest pure run)'
+      )
+    ).not.toBeNull()
+    expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
     expect(screen.queryByRole('heading', { name: 'Simple-locus repeat counts' })).toBeNull()
     expect(grid).toHaveStyleRule('grid-template-columns', 'repeat( 3,minmax(280px,1fr) )')
     expect(grid.compareDocumentPosition(screen.getByTestId('lr-tr-exact-allele-browser'))).toBe(
@@ -1098,7 +1099,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
   })
 
   test('integrates the reviewed exact-primary-motif boundary and established genotype orientation', () => {
-    renderPage({ locus: makePrimaryMotifLocus(), selectedAllele: undefined })
+    // The repeat measures prefer the precomputed repeat-count histograms, so the reviewed
+    // exact-motif genotype cells show at loci without them.
+    renderPage({
+      locus: { ...makePrimaryMotifLocus(), repeat_count_plots: makeLocus().repeat_count_plots },
+      selectedAllele: undefined,
+    })
 
     expect(screen.queryByText(/Whole-record, non-clinical measurement/)).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))

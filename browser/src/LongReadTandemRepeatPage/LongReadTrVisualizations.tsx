@@ -38,6 +38,7 @@ import {
   LongReadTrSelectedAllele,
   LongReadTrSequenceCardinality,
   PurityPoint,
+  RepeatCountPlots,
   WholeRecordAlleleLandscapeData,
   WholeRecordGenotypeLandscapeData,
 } from './types'
@@ -46,6 +47,7 @@ import {
   exactStoredMotifPreview,
   ExactStoredMotifSegment,
 } from './exactStoredMotifPreview'
+import { longestPureMotifRun, referenceRepeatSequence } from './referenceSequencePurity'
 import {
   exactStoredMotifDistribution,
   ExactStoredMotifDistributionBin,
@@ -281,11 +283,14 @@ export type LengthAxisMode = 'delta' | 'absolute'
 // products; the repeat measures use whichever admitted repeat-unit product a plot has.
 export type LandscapeMeasure = 'bp-absolute' | 'bp-delta' | 'repeats-absolute' | 'repeats-delta'
 
-const landscapeMeasureLabel = (measure: LandscapeMeasure) => {
+// The repeat measures show the precomputed repeat-count histograms, which give each allele's
+// longest pure run, when a locus has them, and exact motif counts otherwise.
+const landscapeMeasureLabel = (measure: LandscapeMeasure, repeatsAreLongestPureRun: boolean) => {
   if (measure === 'bp-absolute') return 'ALT allele size (bp)'
   if (measure === 'bp-delta') return 'ALT − REF allele size (bp)'
-  if (measure === 'repeats-absolute') return 'ALT allele size (repeats)'
-  return 'ALT − REF allele size (repeats)'
+  const repeatSize = repeatsAreLongestPureRun ? 'longest pure run' : 'size'
+  if (measure === 'repeats-absolute') return `ALT allele ${repeatSize} (repeats)`
+  return `ALT − REF allele ${repeatSize} (repeats)`
 }
 
 const measuresLength = (measure: LandscapeMeasure) =>
@@ -316,20 +321,40 @@ const lengthAxisValue = (
   representedRefLength: number | null
 ) => (mode === 'absolute' && representedRefLength != null ? representedRefLength + delta : delta)
 
+// Allele sizes are drawn in bp, or, for the precomputed repeat-count histograms, as each
+// allele's longest pure run: its most consecutive exact copies of the motif.
+type LengthUnit = 'bp' | 'longest-pure-run'
+
 const lengthAxisLabel = (
   delta: number,
   mode: LengthAxisMode,
-  representedRefLength: number | null
-) =>
-  mode === 'absolute' && representedRefLength != null
-    ? `${(representedRefLength + delta).toLocaleString()} bp represented (${signed(
+  representedRefLength: number | null,
+  unit: LengthUnit = 'bp'
+) => {
+  const absolute = mode === 'absolute' && representedRefLength != null
+  if (unit === 'bp') {
+    return absolute
+      ? `${(representedRefLength + delta).toLocaleString()} bp represented (${signed(
+          delta
+        )} bp vs REF)`
+      : `${signed(delta)} bp vs REF`
+  }
+  // Without a known REF size, sizes are plain longest-pure-run counts, not changes from REF.
+  if (mode === 'absolute' && representedRefLength == null) {
+    return `${delta.toLocaleString()} copies in longest pure run`
+  }
+  return absolute
+    ? `${(representedRefLength + delta).toLocaleString()} copies in longest pure run (${signed(
         delta
-      )} bp vs REF)`
-    : `${signed(delta)} bp vs REF`
+      )} vs REF)`
+    : `${signed(delta)} copies in longest pure run vs REF`
+}
 
-// Axis title for an allele length axis, e.g. "Long Allele (bp)" or "Allele (bp minus REF)".
-const lengthAxisTitle = (allele: string, mode: LengthAxisMode) =>
-  `${allele} (${mode === 'absolute' ? 'bp' : 'bp minus REF'})`
+// Axis title for an allele size axis, e.g. "Long Allele (bp)" or "Allele (longest pure run)".
+const lengthAxisTitle = (allele: string, mode: LengthAxisMode, unit: LengthUnit = 'bp') => {
+  const measure = unit === 'bp' ? 'bp' : 'longest pure run'
+  return `${allele} (${mode === 'absolute' ? measure : `${measure} minus REF`})`
+}
 
 const counted = (count: number, singular: string, plural: string) =>
   `${count.toLocaleString()} ${count === 1 ? singular : plural}`
@@ -1251,6 +1276,168 @@ const withReferenceSizeBin = (bins: AlleleBin[], referenceCalledAlleles: number 
         { delta: 0, called_alleles: 0, exact_alt_count: 0, allele_ids: [], stacks: [] },
       ].sort((left, right) => left.delta - right.delta)
 
+// The bar at the REF size that holds no ALT copies: it carries only the REF copies, which are
+// counted from the separate REF bin.
+const isReferenceOnlyBin = (bin: AlleleBin) => bin.delta === 0 && bin.called_alleles === 0
+
+// The precomputed repeat-count histograms have one row per ancestry and sex group. The length
+// plots also expect ancestry-only and sex-only stacks, so those are summed from the groups.
+const stacksFromAncestrySexGroups = (
+  groups: { ancestry_group: string; sex: string; called_alleles: number }[]
+): AlleleBin['stacks'] => {
+  const totals = new Map<string, AlleleBin['stacks'][number]>()
+  const add = (ancestryGroup: string | null, sex: string | null, count: number) => {
+    const key = `${ancestryGroup || ''}\u0000${sex || ''}`
+    const stack = totals.get(key) || { ancestry_group: ancestryGroup, sex, called_alleles: 0 }
+    stack.called_alleles += count
+    totals.set(key, stack)
+  }
+  groups.forEach((group) => {
+    add(group.ancestry_group, group.sex, group.called_alleles)
+    add(group.ancestry_group, null, group.called_alleles)
+    add(null, group.sex, group.called_alleles)
+  })
+  return [...totals.values()]
+}
+
+// Rows of a repeat-count histogram for the plots' own repeat unit. A locus with several motifs
+// has rows for each; the length-style plots show only the primary one.
+const rowsForRepeatUnit = <Row,>(
+  rows: Row[],
+  repeatUnit: string | null,
+  rowRepeatUnits: (row: Row) => (string | null)[]
+) =>
+  repeatUnit == null
+    ? rows
+    : rows.filter((row) => rowRepeatUnits(row).every((unit) => unit === repeatUnit))
+
+// Alleles of every ancestry and sex group at one size of the precomputed allele histogram.
+const repeatCountHistogramAllelesAt = (repeatCountPlots: RepeatCountPlots, size: number) =>
+  rowsForRepeatUnit(
+    repeatCountPlots.allele_size_distribution,
+    repeatCountPlots.repeat_unit,
+    (row) => [row.repunit]
+  ).reduce(
+    (sum, row) =>
+      sum +
+      row.distribution
+        .filter((item: { repunit_count: number }) => item.repunit_count === size)
+        .reduce((rowSum: number, item: { frequency: number }) => rowSum + item.frequency, 0),
+    0
+  )
+
+// The precomputed repeat-count allele histogram as length-plot bins, with each size given as
+// repeats relative to referenceUnits (0 when the REF repeat count is unknown). The histogram
+// does not say which alleles are REF, so every allele at the REF repeat count goes into the
+// REF bar; it is not split into REF and same-size ALT alleles. No bin carries allele ids, so
+// these bars cannot filter the source-ALT index.
+export const repeatCountHistogramBins = (
+  repeatCountPlots: RepeatCountPlots,
+  referenceUnits: number | null
+): { bins: AlleleBin[]; referenceBin: AlleleBin } => {
+  const groupsByCount = new Map<
+    number,
+    { ancestry_group: string; sex: string; called_alleles: number }[]
+  >()
+  rowsForRepeatUnit(
+    repeatCountPlots.allele_size_distribution,
+    repeatCountPlots.repeat_unit,
+    (row) => [row.repunit]
+  ).forEach((row) => {
+    row.distribution.forEach((item: { repunit_count: number; frequency: number }) => {
+      const groups = groupsByCount.get(item.repunit_count) || []
+      groups.push({
+        ancestry_group: row.ancestry_group,
+        sex: row.sex,
+        called_alleles: item.frequency,
+      })
+      groupsByCount.set(item.repunit_count, groups)
+    })
+  })
+  const offset = referenceUnits ?? 0
+  const sizeBins = [...groupsByCount]
+    .map(([repeatCount, groups]) => ({
+      delta: repeatCount - offset,
+      called_alleles: groups.reduce((sum, group) => sum + group.called_alleles, 0),
+      exact_alt_count: 0,
+      allele_ids: [],
+      stacks: stacksFromAncestrySexGroups(groups),
+    }))
+    .sort((left, right) => left.delta - right.delta)
+  const referenceSizeBin =
+    referenceUnits == null ? undefined : sizeBins.find((bin) => bin.delta === 0)
+  return {
+    bins: sizeBins.map((bin) =>
+      bin === referenceSizeBin ? { ...bin, called_alleles: 0, stacks: [] } : bin
+    ),
+    referenceBin: referenceSizeBin || {
+      delta: 0,
+      called_alleles: 0,
+      exact_alt_count: 0,
+      allele_ids: [],
+      stacks: [],
+    },
+  }
+}
+
+// The precomputed repeat-count genotype histogram as genotype-plot cells, with sizes as repeats
+// relative to referenceUnits. Each ancestry and sex group becomes one pair entry, so the plot's
+// ancestry and sex filters apply as they do to the length data.
+export const repeatCountGenotypeLandscape = (
+  repeatCountPlots: RepeatCountPlots,
+  referenceUnits: number | null
+): WholeRecordGenotypeLandscapeData => {
+  const offset = referenceUnits ?? 0
+  const cellsByKey = new Map<string, GenotypeCell>()
+  rowsForRepeatUnit(repeatCountPlots.genotype_distribution, repeatCountPlots.repeat_unit, (row) => [
+    row.short_allele_repunit,
+    row.long_allele_repunit,
+  ]).forEach((row) => {
+    row.distribution.forEach(
+      (item: {
+        short_allele_repunit_count: number
+        long_allele_repunit_count: number
+        frequency: number
+      }) => {
+        const shorterDelta = item.short_allele_repunit_count - offset
+        const longerDelta = item.long_allele_repunit_count - offset
+        const key = `${shorterDelta}/${longerDelta}`
+        const cell = cellsByKey.get(key) || {
+          shorter_delta: shorterDelta,
+          longer_delta: longerDelta,
+          people: 0,
+          pairs: [],
+        }
+        cell.people += item.frequency
+        cell.pairs.push({
+          shorter_allele_id: String(item.short_allele_repunit_count),
+          longer_allele_id: String(item.long_allele_repunit_count),
+          ancestry_group: row.ancestry_group,
+          sex: row.sex,
+          people: item.frequency,
+          phased_people: 0,
+          unphased_people: item.frequency,
+        })
+        cellsByKey.set(key, cell)
+      }
+    )
+  })
+  const cells = [...cellsByKey.values()]
+  return {
+    status: 'AVAILABLE',
+    reason_code: null,
+    unit: 'WHOLE_RECORD_DELTA_BP',
+    reference_allele_id: null,
+    called_samples: cells.reduce((sum, cell) => sum + cell.people, 0),
+    called_alleles: null,
+    ancestry_groups: [
+      ...new Set(cells.flatMap((cell) => cell.pairs.map((pair) => pair.ancestry_group))),
+    ],
+    sexes: [...new Set(cells.flatMap((cell) => cell.pairs.map((pair) => pair.sex)))],
+    cells,
+  }
+}
+
 const groupSupportsVisiblePlots = (
   group: LongReadTrFilterGroup,
   genotypeLandscapeVisible: boolean
@@ -1715,8 +1902,7 @@ const PurityScatter = ({
         </span>
       </div>
       <div style={{ color: '#566168', fontSize: 11 }}>
-        Drag between points for a rectangular selection, or activate one point then use Shift+Arrow.
-        Escape clears the selection.
+        Drag between points for a rectangular selection.
       </div>
       <div
         aria-label={`Point size represents source ALT allele AC from ${minimumCalledAlleles} to ${maximumCalledAlleles}`}
@@ -2302,11 +2488,11 @@ export const WholeRecordAlleleLandscape = ({
     if (admittedPrimaryMotifGenotype) choices.push('exact-motif')
     return choices
   }, [admittedGenotypeLandscape, admittedPrimaryMotifGenotype, admittedRepeatCountPlots])
-  // A repeat measure uses the reviewed exact-motif product when a plot admits one, and the
-  // exact repeat-count product otherwise.
+  // A repeat measure uses the precomputed repeat-count histograms when a plot admits them, drawn
+  // with the length plots, and the exact-motif product otherwise.
   const repeatViewFor = (choices: DistributionView[]) => {
-    if (choices.includes('exact-motif')) return 'exact-motif' as const
     if (choices.includes('repeat-count')) return 'repeat-count' as const
+    if (choices.includes('exact-motif')) return 'exact-motif' as const
     return null
   }
   const repeatsAvailable = Boolean(
@@ -2317,14 +2503,34 @@ export const WholeRecordAlleleLandscape = ({
     primaryMotif,
     representedRefLength
   )
+  // The precomputed repeat-count histograms size each allele by its longest pure run of the
+  // motif, so the REF sits at its own longest pure run. It is left unknown when the histogram
+  // holds fewer alleles at that size than there are REF alleles, which would mean the two
+  // sources disagree about the REF.
+  const referenceLongestPureRun = admittedRepeatCountPlots
+    ? longestPureMotifRun(
+        referenceRepeatSequence(alleles[0]?.ref),
+        admittedRepeatCountPlots.repeat_unit
+      )
+    : null
+  const referenceLongestPureRunMatchesHistogram =
+    admittedRepeatCountPlots != null &&
+    referenceLongestPureRun != null &&
+    repeatCountHistogramAllelesAt(admittedRepeatCountPlots, referenceLongestPureRun) >=
+      (landscape.reference_called_alleles || 0)
+  const histogramReferenceUnits = referenceLongestPureRunMatchesHistogram
+    ? referenceLongestPureRun
+    : null
+  // The repeat measures show the histograms whenever a locus has them.
+  const repeatReferenceUnits = admittedRepeatCountPlots ? histogramReferenceUnits : referenceUnits
   const measureChoices = useMemo(() => {
     const choices: LandscapeMeasure[] = []
     if (absoluteLengthAvailable) choices.push('bp-absolute')
     if (repeatsAvailable) choices.push('repeats-absolute')
     choices.push('bp-delta')
-    if (repeatsAvailable && referenceUnits != null) choices.push('repeats-delta')
+    if (repeatsAvailable && repeatReferenceUnits != null) choices.push('repeats-delta')
     return choices
-  }, [absoluteLengthAvailable, referenceUnits, repeatsAvailable])
+  }, [absoluteLengthAvailable, repeatReferenceUnits, repeatsAvailable])
   // The fallback is named rather than taken from the list, so the repeats measure listed second
   // never becomes the default when the absolute bp measure is unavailable.
   const fallbackMeasure: LandscapeMeasure = absoluteLengthAvailable ? 'bp-absolute' : 'bp-delta'
@@ -2336,7 +2542,10 @@ export const WholeRecordAlleleLandscape = ({
     showLegacyFilterControls ||
     showContractAncestryControl ||
     showContractSexControl
-  const lengthAxisMode: LengthAxisMode = selectedMeasure === 'bp-absolute' ? 'absolute' : 'delta'
+  const lengthAxisMode: LengthAxisMode =
+    selectedMeasure === 'bp-absolute' || selectedMeasure === 'repeats-absolute'
+      ? 'absolute'
+      : 'delta'
   const lengthAxisName =
     lengthAxisMode === 'absolute' ? 'Represented allele length (bp)' : 'Change from REF (bp)'
   // Each plot honours the selected measure when it admits a matching product, and keeps
@@ -2350,6 +2559,27 @@ export const WholeRecordAlleleLandscape = ({
   }
   const selectedAlleleDistributionView = viewForMeasure(alleleDistributionChoices)
   const selectedGenotypeDistributionView = viewForMeasure(genotypeDistributionChoices)
+  // The repeat measures draw the precomputed repeat-count histograms with the same plots as the
+  // bp measures, with sizes counted from the REF's longest pure run when it is known.
+  const repeatCountHistogram =
+    selectedAlleleDistributionView === 'repeat-count' && admittedRepeatCountPlots
+      ? repeatCountHistogramBins(admittedRepeatCountPlots, histogramReferenceUnits)
+      : null
+  const repeatCountGenotypes =
+    selectedGenotypeDistributionView === 'repeat-count' && admittedRepeatCountPlots
+      ? repeatCountGenotypeLandscape(admittedRepeatCountPlots, histogramReferenceUnits)
+      : null
+  const histogramBins = repeatCountHistogram?.bins ?? bins
+  const histogramReferenceBin = repeatCountHistogram?.referenceBin ?? referenceBin
+  const histogramUnit: LengthUnit = repeatCountHistogram ? 'longest-pure-run' : 'bp'
+  // The REF size on the histogram's axis. When the REF's longest pure run is unknown it is null
+  // and sizes were not offset, so each size reads as its own longest pure run.
+  const histogramReferenceSize = repeatCountHistogram
+    ? histogramReferenceUnits
+    : representedRefLength
+  const genotypeLandscapeShown = repeatCountGenotypes ?? admittedGenotypeLandscape
+  const lengthStyleHistogramShown =
+    selectedAlleleDistributionView === 'length' || Boolean(repeatCountHistogram)
   // The change-from-REF repeat measure reuses the admitted unit products with every count
   // expressed relative to the reference unit count.
   const shiftRepeatUnits = selectedMeasure === 'repeats-delta' && referenceUnits != null
@@ -2442,7 +2672,7 @@ export const WholeRecordAlleleLandscape = ({
     activeIndexSelection?.origin === 'total-length' && activeIndexSelection.markIds.length === 1
       ? activeIndexSelection.singleDelta ?? null
       : null
-  const selectedBin = bins.find((bin) => bin.delta === selectedDelta)
+  const selectedBin = histogramBins.find((bin) => bin.delta === selectedDelta)
   let selectedGenotypeAncestries: readonly string[] = selectedPopulation ? [selectedPopulation] : []
   let selectedGenotypeSexes: readonly string[] = selectedSex ? [selectedSex] : []
   if (filterContract) {
@@ -2663,7 +2893,7 @@ export const WholeRecordAlleleLandscape = ({
       setIndexSelection(null)
     }
   }, [scopeKey])
-  const totalLengthBrushMarks: DiscreteBrushMark<AlleleBin>[] = bins.map((bin) => ({
+  const totalLengthBrushMarks: DiscreteBrushMark<AlleleBin>[] = histogramBins.map((bin) => ({
     id: `total-length:${bin.delta}`,
     x: bin.delta,
     y: 0,
@@ -2694,7 +2924,7 @@ export const WholeRecordAlleleLandscape = ({
       >
         {measureChoices.map((measure) => (
           <option key={measure} value={measure}>
-            {landscapeMeasureLabel(measure)}
+            {landscapeMeasureLabel(measure, Boolean(admittedRepeatCountPlots))}
           </option>
         ))}
       </Select>
@@ -2790,10 +3020,10 @@ export const WholeRecordAlleleLandscape = ({
       .filter(matchingContractFrequencyKeys)
       .reduce((sum, stack) => sum + stack.called_alleles, 0)
   }
-  const counts = bins.map(alleleCopiesInView)
-  // REF copies join the bar at 0 bp change, stacked above any ALT copies of the same length.
-  const referenceCopiesInView = alleleCopiesInView(referenceBin)
-  const referenceCounts = bins.map((bin) => (bin.delta === 0 ? referenceCopiesInView : 0))
+  const counts = histogramBins.map(alleleCopiesInView)
+  // REF copies join the bar at 0 change from REF, stacked above any ALT copies of the same size.
+  const referenceCopiesInView = alleleCopiesInView(histogramReferenceBin)
+  const referenceCounts = histogramBins.map((bin) => (bin.delta === 0 ? referenceCopiesInView : 0))
   const barTotals = counts.map((count, index) => count + referenceCounts[index])
   const maxCount = Math.max(0, ...barTotals)
   const yTicks = histogramTicks(maxCount, selectedScaleType)
@@ -2864,17 +3094,17 @@ export const WholeRecordAlleleLandscape = ({
   // Taken from the genotype plot under the same ancestry and sex filters. At loci where people
   // carry REF alleles or have only one allele called, these people contribute more allele copies
   // than the histogram plots.
-  const genotypePeopleInView = admittedGenotypeLandscape
+  const genotypePeopleInView = genotypeLandscapeShown
     ? genotypeLandscapePeopleCount(
-        admittedGenotypeLandscape.cells || [],
+        genotypeLandscapeShown.cells || [],
         selectedPopulation ? [selectedPopulation] : [],
         selectedSex ? [selectedSex] : []
       )
     : null
   let histogramLayout = { barWidth: 24, gap: 2, height: 260 }
-  if (bins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
-  else if (bins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
-  else if (bins.length <= 40) histogramLayout = { barWidth: 24, gap: 3, height: 240 }
+  if (histogramBins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
+  else if (histogramBins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
+  else if (histogramBins.length <= 40) histogramLayout = { barWidth: 24, gap: 3, height: 240 }
   const activeFilterDescription = selectedDelta == null ? activeIndexSelection?.label : undefined
 
   return (
@@ -2911,7 +3141,7 @@ export const WholeRecordAlleleLandscape = ({
                   ancestryGroupName={longReadAncestryGroupDisplayName}
                 />
               </div>
-              {selectedAlleleDistributionView === 'length' && (
+              {lengthStyleHistogramShown && (
                 <div
                   role="group"
                   aria-label="Total-length histogram display controls"
@@ -2977,7 +3207,7 @@ export const WholeRecordAlleleLandscape = ({
               )}
             </ContractControlGroup>
           )}
-          {contractColorBys.length > 0 && selectedAlleleDistributionView === 'length' && (
+          {contractColorBys.length > 0 && lengthStyleHistogramShown && (
             <div
               role="group"
               aria-label="Total-length histogram display controls"
@@ -3007,7 +3237,7 @@ export const WholeRecordAlleleLandscape = ({
           {unavailableReason(landscape.stratified_unavailable_reason)}.
         </p>
       )}
-      {selectedColorBy && selectedAlleleDistributionView === 'length' && (
+      {selectedColorBy && lengthStyleHistogramShown && (
         <p aria-label="Stack color legend">
           <strong>Stack colors:</strong>{' '}
           {colorCategories.map((category, index) => {
@@ -3037,26 +3267,17 @@ export const WholeRecordAlleleLandscape = ({
           })}
         </p>
       )}
-      {selectedAlleleDistributionView === 'length' &&
-        clippedAt &&
-        barTotals.some((count) => count > clippedAt) && (
-          <p role="status">
-            Bars above {clippedAt.toLocaleString()} copies are clipped; exact counts remain in
-            labels and tables.
-          </p>
-        )}
+      {lengthStyleHistogramShown && clippedAt && barTotals.some((count) => count > clippedAt) && (
+        <p role="status">
+          Bars above {clippedAt.toLocaleString()} copies are clipped; exact counts remain in labels
+          and tables.
+        </p>
+      )}
       <PlotGrid
         $plotCount={visiblePlotCount}
         data-plot-count={visiblePlotCount}
         data-testid="whole-record-allele-plot-grid"
       >
-        {selectedAlleleDistributionView === 'repeat-count' && admittedRepeatCountPlots && (
-          <RepeatCountPlotCard
-            variantId={repeatCountVariantId}
-            repeatCountPlots={shiftedRepeatCountPlots}
-            kind="allele"
-          />
-        )}
         {selectedAlleleDistributionView === 'exact-motif' &&
           admittedMotifDistribution &&
           selectedMotifDistribution && (
@@ -3077,7 +3298,7 @@ export const WholeRecordAlleleLandscape = ({
           admittedPrimaryMotifMeasurement && (
             <PrimaryMotifAllelePlotCard measurement={shiftedPrimaryMotifMeasurement} />
           )}
-        {selectedAlleleDistributionView === 'length' && (
+        {lengthStyleHistogramShown && (
           <PlotCard data-plot-card="total-length-histogram">
             <h3>Allele length distribution</h3>
             <p aria-live="polite">
@@ -3088,10 +3309,12 @@ export const WholeRecordAlleleLandscape = ({
                 .
               </strong>
             </p>
-            {referenceBin.called_alleles > 0 && (
+            {histogramReferenceBin.called_alleles > 0 && (
               <p aria-label="Allele length histogram colors">
                 <AlleleSizeColorSwatch aria-hidden="true" $color={REF_ALLELE_SIZE_BAR_COLOR} />
-                REF allele
+                {/* The repeat histograms cannot tell REF alleles from ALT alleles of the same
+                    repeat count, so their orange bar is every allele of the REF size. */}
+                {repeatCountHistogram ? 'REF size' : 'REF allele'}
                 {!selectedColorBy && (
                   <>
                     {' '}
@@ -3107,12 +3330,17 @@ export const WholeRecordAlleleLandscape = ({
             )}
             <MeasuredWidth>
               {(measuredWidth) => {
-                const barWidth = filledBarWidth(measuredWidth, bins.length, histogramLayout)
+                const barWidth = filledBarWidth(
+                  measuredWidth,
+                  histogramBins.length,
+                  histogramLayout
+                )
                 const histogramContentWidth =
-                  bins.length * barWidth + Math.max(0, bins.length - 1) * histogramLayout.gap
+                  histogramBins.length * barWidth +
+                  Math.max(0, histogramBins.length - 1) * histogramLayout.gap
                 const histogramScrollableWidth = histogramContentWidth + HISTOGRAM_SIDE_PADDING * 2
                 const deltaAxisTicks = histogramDeltaAxisTicks(
-                  bins.map((bin) => bin.delta),
+                  histogramBins.map((bin) => bin.delta),
                   barWidth,
                   histogramLayout.gap,
                   selectedBin?.delta ?? null
@@ -3123,8 +3351,8 @@ export const WholeRecordAlleleLandscape = ({
                   Math.max(0, ...deltaAxisTicks.map((tick) => tick.lane)) *
                     HISTOGRAM_X_TICK_LANE_HEIGHT
                 // A bar holding only REF copies is labeled "REF" above its count.
-                const referenceOnlyBarShown = bins.some(
-                  (bin, index) => bin.allele_ids.length === 0 && barTotals[index] > 0
+                const referenceOnlyBarShown = histogramBins.some(
+                  (bin, index) => isReferenceOnlyBin(bin) && barTotals[index] > 0
                 )
                 const barLabelFontPx = countLabelFontPx(
                   barWidth,
@@ -3139,7 +3367,7 @@ export const WholeRecordAlleleLandscape = ({
                 return (
                   <HistogramSizer>
                     <HistogramChartWithXAxisTitle
-                      data-bin-count={bins.length}
+                      data-bin-count={histogramBins.length}
                       data-bar-width={barWidth}
                     >
                       <HistogramYScale
@@ -3179,12 +3407,11 @@ export const WholeRecordAlleleLandscape = ({
                             $gap={histogramLayout.gap}
                             {...totalLengthBrush.containerProps}
                           >
-                            {bins.map((bin, index) => {
+                            {histogramBins.map((bin, index) => {
                               const count = counts[index]
                               const referenceCount = referenceCounts[index]
                               const barTotal = barTotals[index]
-                              // Only the bar holding the REF allele and no ALT allele has no ids.
-                              const referenceOnly = bin.allele_ids.length === 0
+                              const referenceOnly = isReferenceOnlyBin(bin)
                               const height = histogramHeightPercent(
                                 barTotal,
                                 maxCount,
@@ -3198,24 +3425,22 @@ export const WholeRecordAlleleLandscape = ({
                               const lengthLabel = lengthAxisLabel(
                                 bin.delta,
                                 lengthAxisMode,
-                                representedRefLength
+                                histogramReferenceSize,
+                                histogramUnit
                               )
-                              const referenceCopiesText = counted(
-                                referenceCount,
-                                'REF allele copy',
-                                'REF allele copies'
-                              )
+                              const referenceCopiesText = repeatCountHistogram
+                                ? counted(
+                                    referenceCount,
+                                    'allele of the REF size',
+                                    'alleles of the REF size'
+                                  )
+                                : counted(referenceCount, 'REF allele copy', 'REF allele copies')
                               const altSummary = `${calledAlleleCopies(
                                 count,
                                 true
                               )} in this view; ${exactAltSequences(bin.exact_alt_count)}`
                               let ariaLabel = `${lengthLabel}; ${referenceCopiesText} in this view`
-                              if (!referenceOnly) {
-                                ariaLabel = `${lengthLabel}; ${
-                                  referenceCount > 0 ? `${referenceCopiesText}; ` : ''
-                                }${altSummary}; filter the source-ALT index to this length bin`
-                              }
-                              const barTitle = [
+                              let barTitle = [
                                 lengthLabel,
                                 referenceOnly || referenceCount > 0 ? referenceCopiesText : null,
                                 referenceOnly ? null : calledAlleleCopies(count, true),
@@ -3223,12 +3448,25 @@ export const WholeRecordAlleleLandscape = ({
                               ]
                                 .filter(Boolean)
                                 .join(' · ')
+                              // Repeat-count bars carry no allele ids, so they only report counts.
+                              if (repeatCountHistogram && !referenceOnly) {
+                                ariaLabel = `${lengthLabel}; ${counted(
+                                  count,
+                                  'allele',
+                                  'alleles'
+                                )} in this view`
+                                barTitle = `${lengthLabel} · ${counted(count, 'allele', 'alleles')}`
+                              } else if (!referenceOnly) {
+                                ariaLabel = `${lengthLabel}; ${
+                                  referenceCount > 0 ? `${referenceCopiesText}; ` : ''
+                                }${altSummary}; filter the source-ALT index to this length bin`
+                              }
                               return (
                                 <BarButton
                                   key={bin.delta}
                                   data-discrete-brush-id={markProps['data-discrete-brush-id']}
                                   type="button"
-                                  disabled={referenceOnly}
+                                  disabled={referenceOnly || Boolean(repeatCountHistogram)}
                                   $height={height}
                                   $hasValue={barTotal > 0}
                                   $width={barWidth}
@@ -3291,8 +3529,8 @@ export const WholeRecordAlleleLandscape = ({
                                   <BarExactCount
                                     style={{ fontSize: barLabelFontPx }}
                                     title={
-                                      referenceOnly
-                                        ? referenceCopiesText
+                                      referenceOnly || repeatCountHistogram
+                                        ? barTitle
                                         : `${counted(
                                             barTotal,
                                             'allele',
@@ -3336,8 +3574,8 @@ export const WholeRecordAlleleLandscape = ({
                                 aria-label={`${lengthAxisValue(
                                   tick.delta,
                                   lengthAxisMode,
-                                  representedRefLength
-                                ).toLocaleString()} bp tick`}
+                                  histogramReferenceSize
+                                ).toLocaleString()} ${histogramUnit === 'bp' ? 'bp' : 'copy'} tick`}
                                 data-delta={tick.delta}
                                 data-testid="whole-record-delta-axis-tick"
                                 $lane={tick.lane}
@@ -3347,7 +3585,7 @@ export const WholeRecordAlleleLandscape = ({
                                   ? lengthAxisValue(
                                       tick.delta,
                                       lengthAxisMode,
-                                      representedRefLength
+                                      histogramReferenceSize
                                     ).toLocaleString()
                                   : signed(tick.delta)}
                               </HistogramXTick>
@@ -3357,7 +3595,7 @@ export const WholeRecordAlleleLandscape = ({
                       </HistogramScroller>
                     </HistogramChartWithXAxisTitle>
                     <HistogramXAxisTitle aria-hidden="true">
-                      {lengthAxisTitle('Allele', lengthAxisMode)}
+                      {lengthAxisTitle('Allele', lengthAxisMode, histogramUnit)}
                     </HistogramXAxisTitle>
                   </HistogramSizer>
                 )
@@ -3379,11 +3617,18 @@ export const WholeRecordAlleleLandscape = ({
             representedRefLength={representedRefLength}
           />
         )}
-        {selectedGenotypeDistributionView === 'repeat-count' && admittedRepeatCountPlots && (
-          <RepeatCountPlotCard
-            variantId={repeatCountVariantId}
-            repeatCountPlots={shiftedRepeatCountPlots}
-            kind="genotype"
+        {repeatCountGenotypes && (
+          <WholeRecordGenotypeLandscape
+            landscape={repeatCountGenotypes}
+            selectedPopulation={selectedPopulation}
+            selectedSex={selectedSex}
+            selectedPopulations={selectedGenotypeAncestries}
+            selectedSexes={selectedGenotypeSexes}
+            lengthAxisMode={lengthAxisMode}
+            representedRefLength={histogramReferenceUnits}
+            unit="longest-pure-run"
+            referenceSizeKnown={histogramReferenceUnits != null}
+            cellsClickable={false}
           />
         )}
         {selectedGenotypeDistributionView === 'exact-motif' && admittedPrimaryMotifGenotype && (
@@ -3560,6 +3805,9 @@ export const WholeRecordGenotypeLandscape = ({
   onClear = () => {},
   lengthAxisMode = 'delta',
   representedRefLength = null,
+  unit = 'bp',
+  referenceSizeKnown = true,
+  cellsClickable = true,
 }: {
   landscape: WholeRecordGenotypeLandscapeData
   selectedPopulation: PopulationId | null
@@ -3571,6 +3819,12 @@ export const WholeRecordGenotypeLandscape = ({
   onClear?: () => void
   lengthAxisMode?: LengthAxisMode
   representedRefLength?: number | null
+  unit?: LengthUnit
+  // False when the sizes are not relative to a known REF size, so 0 is not the REF size.
+  referenceSizeKnown?: boolean
+  // False for the repeat-count histograms, which carry no allele ids to filter the source-ALT
+  // index by; their squares then only show their counts on hover.
+  cellsClickable?: boolean
 }) => {
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const activePopulations = selectedPopulations || (selectedPopulation ? [selectedPopulation] : [])
@@ -3618,8 +3872,18 @@ export const WholeRecordGenotypeLandscape = ({
     )
   }
 
+  const cellTooltip = (cell: { selectedPeople: number }, longer: number, shorter: number) =>
+    `${lengthAxisLabel(longer, lengthAxisMode, representedRefLength, unit)} × ${lengthAxisLabel(
+      shorter,
+      lengthAxisMode,
+      representedRefLength,
+      unit
+    )}: ${counted(cell.selectedPeople, 'person', 'people')}`
   const values = [
-    ...new Set([0, ...sourceCells.flatMap((cell) => [cell.shorter_delta, cell.longer_delta])]),
+    ...new Set([
+      ...(referenceSizeKnown ? [0] : []),
+      ...sourceCells.flatMap((cell) => [cell.shorter_delta, cell.longer_delta]),
+    ]),
   ].sort((a, b) => a - b)
   const maxPeople = Math.max(1, ...cells.map((cell) => cell.selectedPeople))
   const keyFor = (cell: GenotypeCell) => `${cell.shorter_delta}/${cell.longer_delta}`
@@ -3756,7 +4020,7 @@ export const WholeRecordGenotypeLandscape = ({
                 <HeatmapSizer>
                   <HeatmapSvg
                     viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
-                    {...brush.containerProps}
+                    {...(cellsClickable ? brush.containerProps : {})}
                     role="group"
                     aria-label={`Genotype distribution by ${
                       lengthAxisMode === 'absolute'
@@ -3770,7 +4034,7 @@ export const WholeRecordGenotypeLandscape = ({
                         ? 'represented allele length'
                         : 'change from REF'}
                     </title>
-                    {valueIndex.has(0) && (
+                    {referenceSizeKnown && valueIndex.has(0) && (
                       <>
                         <line
                           x1={xFor(0)}
@@ -3838,7 +4102,7 @@ export const WholeRecordGenotypeLandscape = ({
                                   {cell.selectedPeople}
                                 </text>
                               )}
-                              {cell && (
+                              {cell && cellsClickable && (
                                 <rect
                                   role="button"
                                   tabIndex={0}
@@ -3846,11 +4110,13 @@ export const WholeRecordGenotypeLandscape = ({
                                   aria-label={`${lengthAxisLabel(
                                     longer,
                                     lengthAxisMode,
-                                    representedRefLength
+                                    representedRefLength,
+                                    unit
                                   )} longer allele, ${lengthAxisLabel(
                                     shorter,
                                     lengthAxisMode,
-                                    representedRefLength
+                                    representedRefLength,
+                                    unit
                                   )} shorter allele: ${cell.selectedPeople} ${
                                     cell.selectedPeople === 1 ? 'person' : 'people'
                                   }; filter the source-ALT index to this square`}
@@ -3877,12 +4143,20 @@ export const WholeRecordGenotypeLandscape = ({
                                     }
                                   }}
                                 >
-                                  <title>
-                                    {lengthAxisLabel(longer, lengthAxisMode, representedRefLength)}{' '}
-                                    ×{' '}
-                                    {lengthAxisLabel(shorter, lengthAxisMode, representedRefLength)}
-                                    : {counted(cell.selectedPeople, 'person', 'people')}
-                                  </title>
+                                  <title>{cellTooltip(cell, longer, shorter)}</title>
+                                </rect>
+                              )}
+                              {/* Squares that cannot be clicked still show their count on hover. */}
+                              {cell && !cellsClickable && (
+                                <rect
+                                  data-testid="genotype-length-cell-tooltip"
+                                  x={xFor(longer) + 1}
+                                  y={yFor(shorter) + 1}
+                                  width={Math.max(1, band - 2)}
+                                  height={Math.max(1, band - 2)}
+                                  fill="transparent"
+                                >
+                                  <title>{cellTooltip(cell, longer, shorter)}</title>
                                 </rect>
                               )}
                             </React.Fragment>
@@ -3960,7 +4234,7 @@ export const WholeRecordGenotypeLandscape = ({
                       fontSize={axisFontSize}
                       textAnchor="middle"
                     >
-                      {lengthAxisTitle('Long Allele', lengthAxisMode)}
+                      {lengthAxisTitle('Long Allele', lengthAxisMode, unit)}
                     </text>
                     <text
                       x={yAxisTitleX}
@@ -3970,7 +4244,7 @@ export const WholeRecordGenotypeLandscape = ({
                       textAnchor="middle"
                       transform={`rotate(-90 ${yAxisTitleX} ${heatmapTop + plotSize / 2})`}
                     >
-                      {lengthAxisTitle('Short Allele', lengthAxisMode)}
+                      {lengthAxisTitle('Short Allele', lengthAxisMode, unit)}
                     </text>
                   </HeatmapSvg>
                 </HeatmapSizer>

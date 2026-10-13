@@ -675,9 +675,35 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
     expect(screen.getByLabelText('Length axis')).toBe(lengthAxis)
     expect(document.activeElement).toBe(lengthAxis)
-    expect(within(grid).getByTestId('allele-repeat-count-card')).not.toBeNull()
-    expect(within(grid).getByTestId('genotype-repeat-count-card')).not.toBeNull()
-    expect(within(grid).queryByTestId('genotype-length-card')).toBeNull()
+    // The repeat measure draws the precomputed repeat-count histograms, which give each allele's
+    // longest pure run, with the same plots as the bp measure. This fixture's histogram holds
+    // fewer alleles at the REF's longest pure run than there are REF alleles, so the REF size is
+    // unknown and each size reads as its own longest pure run, not as a change from REF.
+    expect(
+      screen.getByRole('option', { name: 'ALT allele longest pure run (repeats)' })
+    ).not.toBeNull()
+    expect(within(grid).queryByTestId('allele-repeat-count-card')).toBeNull()
+    expect(within(grid).queryByTestId('genotype-repeat-count-card')).toBeNull()
+    const alleleCard = within(grid).getByRole('heading', { name: 'Allele length distribution' })
+      .parentElement as HTMLElement
+    expect(within(alleleCard).getByText('Allele (longest pure run)')).not.toBeNull()
+    expect(within(alleleCard).getByText(/^Sizes of 2 alleles from 1 individual/)).not.toBeNull()
+    const repeatBar = within(screen.getByTestId('whole-record-delta-histogram')).getByRole(
+      'button',
+      { name: '10 copies in longest pure run; 2 alleles in this view' }
+    ) as HTMLButtonElement
+    expect(repeatBar.disabled).toBe(true)
+    expect(repeatBar.textContent).toBe('2')
+    const genotypeCard = within(grid).getByTestId('genotype-length-card')
+    expect(within(genotypeCard).getByText('Long Allele (longest pure run)')).not.toBeNull()
+    expect(within(genotypeCard).getByText('Short Allele (longest pure run)')).not.toBeNull()
+    // The squares carry no allele ids, so they show their counts on hover but are not buttons.
+    expect(within(genotypeCard).queryByTestId('genotype-length-cell-target')).toBeNull()
+    expect(within(genotypeCard).getByTestId('genotype-length-cell-tooltip').textContent).toBe(
+      '11 copies in longest pure run × 10 copies in longest pure run: 1 person'
+    )
+    // Without a known REF size there is no change-from-REF repeat measure.
+    expect(screen.queryByRole('option', { name: /ALT − REF allele longest pure run/ })).toBeNull()
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
   })
 
