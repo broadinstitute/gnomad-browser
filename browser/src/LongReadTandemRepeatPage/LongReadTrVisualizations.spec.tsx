@@ -117,8 +117,6 @@ const makeAllele = (altIndex: number, length: number, ac: number): LongReadTrAll
   ref: null,
   alt: null,
   length,
-  repeat_count: null,
-  repeat_count_source: null,
   motif_purity: 0.99,
   freq: { all: { ac, an: 200, af: ac / 200 }, populations: [] },
 })
@@ -264,7 +262,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(previewUnit?.getAttribute('shape-rendering')).toBe('crispEdges')
     expect(screen.queryByText(/Restart the GraphQL API/)).toBeNull()
     const emptySelection = screen.getByText(
-      'No sequence details shown. Choose Details in a row to view its sequence and aggregate annotations.'
+      "No sequence details shown. Click a 'Details' button in one of the rows above to view the allele's sequence and other information."
     )
     expect(emptySelection).not.toHaveStyleRule('min-height')
     expect(emptySelection).toHaveStyleRule('padding', '0.65em 0.8em')
@@ -329,9 +327,7 @@ describe('long-read TR visualization fidelity', () => {
         .getAllByRole('cell')
         .map((cell) => cell.textContent)
     ).toEqual([`${sourceId}~1`, 'Unavailable', '94', '−6', '0.99', '100', '0.5000', 'Details'])
-    expect(
-      within(firstRow).queryByText(/Sequence 1|Source ALT 1 of|bp represented|bp vs REF/)
-    ).toBeNull()
+    expect(within(firstRow).queryByText(/Sequence 1|Source ALT 1 of|bp vs REF/)).toBeNull()
 
     const details = within(firstRow).getByRole('link', { name: 'Details for Sequence 1' })
     expect(details.textContent).toBe('Details')
@@ -464,6 +460,22 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByText(/^Sizes of 200 alleles/)).not.toBeNull()
   })
 
+  test('says why purity is missing when every source record has a single ALT allele', () => {
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={{ ...alleleLandscape, purity_unavailable_reason: 'NO_ALIGNED_SOURCE_AP_ALLELE' }}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+
+    expect(
+      screen.getByText(
+        'Purity unavailable: the source VCF reports purity only for records with more than one ALT allele.'
+      )
+    ).not.toBeNull()
+  })
+
   test('keeps sparse bars compact and filters the single exact index only on request', () => {
     const rendered = render(
       <WholeRecordAlleleLandscape
@@ -495,7 +507,8 @@ describe('long-read TR visualization fidelity', () => {
     // ALT allele size bars are blue; the 70 REF copies stack in orange on the 0 bp bar.
     expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(0, 114, 178)')
     expect(histogram.closest('[data-bin-count]')?.getAttribute('data-bin-count')).toBe('3')
-    expect(negativeBar.getAttribute('data-bar-width')).toBe('48')
+    // Few bars keep the widest bar width rather than growing to fill the plot.
+    expect(negativeBar.getAttribute('data-bar-width')).toBe('45')
     const zeroBar = screen.getByRole('button', {
       name: /0 bp vs REF; 70 REF allele copies; 25 called non-reference allele copies/,
     })
@@ -510,7 +523,7 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.click(negativeBar)
     expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(0, 63, 99)')
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '1 of 3 alleles at −6 bp vs REF' })
+      screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
     )
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('2')
 
@@ -522,7 +535,9 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    expect(screen.getByRole('heading', { name: '1 of 3 alleles at −6 bp vs REF' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
+    ).not.toBeNull()
 
     fireEvent.click(
       screen.getByRole('button', {
@@ -531,14 +546,14 @@ describe('long-read TR visualization fidelity', () => {
     )
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '1 of 3 alleles at 0 bp vs REF' })
+      screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
     )
     const exactLink = within(exactIndex).getByRole('link', { name: 'Details for Sequence 2' })
     expect(exactLink.getAttribute('href')).toBe(`?allele=${alleles[1].variant_id}`)
     fireEvent.click(exactLink)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(alleles[1].variant_id)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show all source ALT alleles' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show all ALT alleles' }))
     expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Allele Details' }))
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('4')
 
@@ -580,14 +595,14 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getAllByTestId('total-length-selection-boundary')).toHaveLength(2)
     expect(
       screen.getByRole('heading', {
-        name: '2 of 3 alleles — −6 to 0 bp vs REF',
+        name: '2 of 3 non-reference alleles selected',
       })
     ).toBe(document.activeElement)
 
     fireEvent.click(positive)
     expect(negative.getAttribute('aria-pressed')).toBe('false')
     expect(positive.getAttribute('aria-pressed')).toBe('true')
-    expect(screen.getByRole('heading', { name: '1 of 3 alleles at +12 bp vs REF' })).toBe(
+    expect(screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })).toBe(
       document.activeElement
     )
 
@@ -839,14 +854,14 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(card).queryByText(/pathogenic/i)).toBeNull()
 
     const selectedBin = within(card).getByRole('button', {
-      name: /CAA; 1 exact literal occurrence in each whole represented source ALT; 125 called source ALT copies.*2 source ALT alleles; filter/,
+      name: /CAA; 1 exact literal occurrence in each whole represented source ALT; 125 called source ALT copies.*2 distinct ALT alleles; filter/,
     })
     fireEvent.click(selectedBin)
     expect(selectedBin.getAttribute('aria-pressed')).toBe('true')
     expect(within(card).getAllByTestId('motif-occurrence-selection-boundary')).toHaveLength(1)
     expect(
       screen.getByRole('heading', {
-        name: '2 of 3 alleles — CAA: 1 exact literal occurrence in each whole represented source ALT',
+        name: '2 of 3 non-reference alleles selected',
       })
     ).toBe(document.activeElement)
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
@@ -863,7 +878,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(card).getAllByTestId('motif-occurrence-selection-boundary')).toHaveLength(2)
     expect(
       screen.getByRole('heading', {
-        name: '3 of 3 alleles — CAA: 0 through 1 exact literal occurrences in each whole represented source ALT',
+        name: '3 of 3 non-reference alleles selected',
       })
     ).toBe(document.activeElement)
 
@@ -934,7 +949,7 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.change(screen.getByLabelText('Genetic ancestry group'), { target: { value: 'afr' } })
     expect(
       screen.getByRole('button', {
-        name: /CAG; 0 exact literal occurrences.*2 called source ALT copies.*1 source ALT allele; filter/,
+        name: /CAG; 0 exact literal occurrences.*2 called source ALT copies.*1 distinct ALT allele; filter/,
       })
     ).not.toBeNull()
     expect(screen.queryByRole('button', { name: /CAG; 1 exact literal occurrence/ })).toBeNull()
@@ -948,10 +963,12 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue('0')
     fireEvent.click(
       screen.getByRole('button', {
-        name: /CAG; 0 exact literal occurrences.*2 called source ALT copies.*1 source ALT allele; filter/,
+        name: /CAG; 0 exact literal occurrences.*2 called source ALT copies.*1 distinct ALT allele; filter/,
       })
     )
-    expect(screen.getByRole('heading', { name: /1 of 3 alleles/ })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
+    ).not.toBeNull()
 
     rendered.rerender(
       <WholeRecordAlleleLandscape
@@ -1055,7 +1072,7 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByRole('button', { name: /−6 bp vs REF; 107 called non-reference allele copies/ })
     )
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '2 of 4 alleles at −6 bp vs REF' })
+      screen.getByRole('heading', { name: '2 of 4 non-reference alleles selected' })
     )
     const picker = screen.getByRole('table', { name: 'Source ALT allele index' })
     expect(screen.queryByRole('table', { name: /Exact ALTs at/ })).toBeNull()
@@ -1093,7 +1110,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    const scatter = screen.getByRole('group', { name: /3 source ALT alleles plotted/ })
+    const scatter = screen.getByRole('group', { name: /3 distinct ALT alleles plotted/ })
     expect(scatter.getAttribute('data-purity-domain')).toBe('0.990000:1.000000')
     const purityCard = scatter.closest('[data-plot-card="motif-purity"]') as HTMLElement
     const tickLabels = within(purityCard)
@@ -1145,7 +1162,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(point.getAttribute('aria-pressed')).toBe('true')
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '1 of 3 alleles — Sequence 3' })
+      screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
     )
     fireEvent.keyDown(point, { key: 'ArrowLeft', shiftKey: true })
     expect(points.every((candidate) => candidate.getAttribute('aria-pressed') === 'true')).toBe(
@@ -1153,7 +1170,7 @@ describe('long-read TR visualization fidelity', () => {
     )
     expect(
       screen.getByRole('heading', {
-        name: /3 of 3 alleles — purity region −6 bp vs REF through \+12 bp vs REF/,
+        name: '3 of 3 non-reference alleles selected',
       })
     ).toBe(document.activeElement)
     fireEvent.keyDown(point, { key: 'Escape' })
@@ -1299,7 +1316,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(cell.getAttribute('aria-pressed')).toBe('true')
     expect(
       screen.getByRole('heading', {
-        name: '0 of 3 alleles — selected genotype cell (0 bp vs REF × 0 bp vs REF)',
+        name: '0 of 3 non-reference alleles selected',
       })
     ).toBe(document.activeElement)
     expect(
@@ -1393,7 +1410,7 @@ describe('long-read TR visualization fidelity', () => {
     )
     expect(
       screen.getByRole('heading', {
-        name: /3 of 3 alleles — genotype region longer 0 bp vs REF through \+12 bp vs REF; shorter −6 bp vs REF through 0 bp vs REF/,
+        name: '3 of 3 non-reference alleles selected',
       })
     ).toBe(document.activeElement)
     expect(screen.queryByTitle(referenceId)).toBeNull()
@@ -1483,7 +1500,7 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.change(within(filters).getByLabelText('Sex'), { target: { value: 'XX' } })
     expect(
       screen.getByRole('button', {
-        name: /−6 bp vs REF; 1 called non-reference allele copy in this view; 1 source ALT allele/,
+        name: /−6 bp vs REF; 1 called non-reference allele copy in this view; 1 distinct ALT allele/,
       })
     ).not.toBeNull()
     expect(screen.getByText(/Biallelic genotypes for 6 individuals/)).not.toBeNull()
@@ -1554,7 +1571,9 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.click(
       screen.getByRole('button', { name: /−6 bp vs REF; 2 called non-reference allele copies/ })
     )
-    expect(screen.getByRole('heading', { name: '1 of 3 alleles at −6 bp vs REF' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
+    ).not.toBeNull()
     const index = screen.getByRole('table', { name: 'Source ALT allele index' })
     expect(within(index).getByTitle(stratifiedAlleles[0].variant_id)).not.toBeNull()
     expect(within(index).queryByTitle(stratifiedAlleles[1].variant_id)).toBeNull()
@@ -1991,17 +2010,17 @@ describe('long-read TR visualization fidelity', () => {
     ).toBe(false)
     fireEvent.change(axis, { target: { value: 'absolute' } })
     expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()
-    expect(screen.queryByText('94 bp represented (−6 bp vs REF)')).toBeNull()
-    expect(screen.getAllByLabelText(/94 bp represented \(−6 bp vs REF\)/).length).toBeGreaterThan(0)
+    expect(screen.queryByText('94 bp (−6 bp vs REF)')).toBeNull()
+    expect(screen.getAllByLabelText(/94 bp \(−6 bp vs REF\)/).length).toBeGreaterThan(0)
     const representedRow = screen.getByTitle(`${sourceId}~1`)
     expect(within(representedRow).getAllByRole('cell')[2].textContent).toBe('94')
     expect(within(representedRow).getAllByRole('cell')[3].textContent).toBe('−6')
-    const firstBar = screen.getByRole('button', { name: /94 bp represented \(−6 bp vs REF\)/ })
+    const firstBar = screen.getByRole('button', { name: /94 bp \(−6 bp vs REF\)/ })
     fireEvent.click(firstBar)
     fireEvent.keyDown(firstBar, { key: 'ArrowRight', shiftKey: true })
     expect(
       screen.getByRole('heading', {
-        name: '2 of 3 alleles — 94 to 100 bp represented',
+        name: '2 of 3 non-reference alleles selected',
       })
     ).not.toBeNull()
 
@@ -2025,7 +2044,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByRole('option', { name: 'ALT allele size (bp)' })).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()
-    expect(screen.queryByText(/bp represented \(−6 bp vs REF\)/)).toBeNull()
+    expect(screen.queryByText(/bp \(−6 bp vs REF\)/)).toBeNull()
     expect(within(screen.getByTitle(`${sourceId}~1`)).getAllByRole('cell')[2].textContent).toBe('—')
   })
 

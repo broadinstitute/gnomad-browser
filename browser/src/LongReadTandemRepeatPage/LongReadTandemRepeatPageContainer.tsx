@@ -150,7 +150,7 @@ query ${operationName}(
       }
     }
     selected_allele {
-      variant_id source_variant_id alt_index alt_count ref alt length repeat_count repeat_count_source
+      variant_id source_variant_id alt_index alt_count ref alt length
       motif_purity motif_purity_source decomposition_status decomposition_reason
       phylop
       short_read_match_id short_read_match_type short_read_match_source
@@ -170,8 +170,8 @@ query ${operationName}(
     }
     alleles {
       nodes {
-        variant_id source_variant_id alt_index alt_count ref alt length repeat_count
-        repeat_count_source motif_purity freq { all { ac an af } populations { id ac an af } }
+        variant_id source_variant_id alt_index alt_count ref alt length
+        motif_purity freq { all { ac an af } populations { id ac an af } }
       }
       page_info { has_next_page }
     }

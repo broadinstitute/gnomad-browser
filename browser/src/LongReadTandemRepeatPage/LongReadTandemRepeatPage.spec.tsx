@@ -136,8 +136,6 @@ const makeAllele = (altIndex: number) => ({
   ref: 'ACAGCAG',
   alt: `A${'CAG'.repeat((altIndex % 5) + 1)}${altIndex % 2 ? 'CCG' : 'CAA'}`,
   length: alleleLength(altIndex),
-  repeat_count: null,
-  repeat_count_source: null,
   motif_purity: altIndex === 3 ? null : 0.95 + (altIndex % 10) / 1000,
   freq: {
     all: { ac: altIndex === 2 ? 120 : 1, an: 584, af: altIndex === 2 ? 120 / 584 : 1 / 584 },
@@ -1077,7 +1075,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('heading', { name: 'Data availability' })).toBeNull()
     expect(
       screen.getByRole('button', {
-        name: /−6 bp vs REF; 134 called non-reference allele copies.*2 source ALT alleles/,
+        name: /−6 bp vs REF; 134 called non-reference allele copies.*2 distinct ALT alleles/,
       })
     ).not.toBeNull()
     expect(
@@ -1405,7 +1403,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       screen.getByRole('button', { name: /−6 bp vs REF; 134 called non-reference allele copies/ })
     )
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '2 of 72 alleles at −6 bp vs REF' })
+      screen.getByRole('heading', { name: '2 of 72 non-reference alleles selected' })
     )
     expect(table.getAttribute('aria-rowcount')).toBe('3')
     expect(within(table).getByTitle(`${sourceVariantId}~2`)).not.toBeNull()
@@ -1423,7 +1421,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(fireEvent.click(otherControl)).toBe(false)
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Show all source ALT alleles' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show all ALT alleles' }))
     expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Allele Details' }))
     expect(table.getAttribute('aria-rowcount')).toBe('73')
   })
@@ -1601,7 +1599,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).not.toBeNull()
     expect(
       screen.getByRole('group', {
-        name: /source ALT alleles plotted by change from REF and source-reported motif purity/,
+        name: /distinct ALT alleles plotted by change from REF and source-reported motif purity/,
       })
     ).not.toBeNull()
   })
@@ -1640,13 +1638,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
     fireEvent.click(zeroDeltaCell)
     expect(document.activeElement).toBe(
       screen.getByRole('heading', {
-        name: '1 of 72 alleles — selected genotype cell (0 bp vs REF × 0 bp vs REF)',
+        name: '1 of 72 non-reference alleles selected',
       })
     )
     expect(
       screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
     ).toBe('2')
-    fireEvent.click(screen.getByRole('button', { name: 'Show all source ALT alleles' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show all ALT alleles' }))
     expect(screen.getByRole('heading', { name: 'Allele Details' })).toBe(document.activeElement)
   })
 

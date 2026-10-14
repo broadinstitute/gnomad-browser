@@ -19,8 +19,6 @@ const allele = (
   ref: 'A',
   alt,
   length: alt.length - 1,
-  repeat_count: null,
-  repeat_count_source: null,
   motif_purity: null,
   freq: { all: { ac, an: 40, af: ac / 40 }, populations },
 })

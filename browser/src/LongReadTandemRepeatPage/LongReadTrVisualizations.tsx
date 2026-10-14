@@ -450,9 +450,7 @@ const lengthAxisLabel = (
   const absolute = mode === 'absolute' && representedRefLength != null
   if (unit === 'bp') {
     return absolute
-      ? `${(representedRefLength + delta).toLocaleString()} bp represented (${signed(
-          delta
-        )} bp vs REF)`
+      ? `${(representedRefLength + delta).toLocaleString()} bp (${signed(delta)} bp vs REF)`
       : `${signed(delta)} bp vs REF`
   }
   // Without a known REF size, sizes are plain longest-pure-run counts, not changes from REF.
@@ -483,7 +481,7 @@ const calledAlleleCopies = (count: number, nonReference = false) =>
   )
 
 const exactAltSequences = (count: number) =>
-  counted(count, 'source ALT allele', 'source ALT alleles')
+  counted(count, 'distinct ALT allele', 'distinct ALT alleles')
 const UNAVAILABLE_REASON_COPY: Record<string, string> = {
   ADMITTED_HISTOGRAM_COULD_NOT_BE_VALIDATED:
     'the cohort-specific repeat-count source could not be validated',
@@ -493,6 +491,10 @@ const UNAVAILABLE_REASON_COPY: Record<string, string> = {
     'the complete REF and ALT sequences do not share one validated VCF anchor',
   EXACT_ALT_LIMIT_EXCEEDED:
     'the locus has more alternate alleles than this view can display safely',
+  // The source VCF carries AP_allele only on records with several ALT alleles, and no locus
+  // mixes one-ALT and several-ALT records, so this is the only way a locus ends up without it.
+  NO_ALIGNED_SOURCE_AP_ALLELE:
+    'the source VCF reports purity only for records with more than one ALT allele',
   NO_METADATA: 'the source does not include the required metadata',
   NOT_AVAILABLE: 'the source does not provide these data',
   SELECTED_ALLELE_DETAIL_BYTE_BOUND_EXCEEDED:
@@ -539,8 +541,7 @@ const AllelicLandscapeHelp = ({
       and a bar holding only REF copies is also labeled REF. Hover over the number to see how many
       distinct source ALT sequences the bin holds. Choose a bar to filter the index, drag between
       bars, or activate one bar then use Shift+Arrow to select a contiguous range. Choose a single
-      selected bar again, press Escape, or use <strong>Show all source ALT alleles</strong> to
-      clear.
+      selected bar again, press Escape, or use <strong>Show all ALT alleles</strong> to clear.
     </p>
     <h4>Motif occurrences</h4>
     <p>
@@ -1061,8 +1062,14 @@ export const LongReadTrComponentTrack = ({
 const HISTOGRAM_Y_COLUMN_WIDTH = 76
 // No gap, so the y axis line meets the x axis line at the corner, as in the genotype heatmap.
 const HISTOGRAM_COLUMN_GAP = 0
+// Widest a histogram bar or a genotype heatmap square may be, in on-screen pixels. With few
+// sizes the bars and squares keep this width and sit centered in the plot.
+const MAX_PLOT_BAR_WIDTH_PX = 45
 // The axis line color of the genotype heatmap, which the other plots' axes share.
 const PLOT_AXIS_LINE_COLOR = '#89939a'
+// The selected allele's row and Details button are outlined in the browser's focus ring blue,
+// which outlines the selected allele panel once it takes focus.
+const SELECTED_ALLELE_OUTLINE_COLOR = '#2870f5'
 const HISTOGRAM_SIDE_PADDING = 20
 
 // On-screen size, in CSS pixels, of the axis tick labels and axis titles in the allele length
@@ -1114,23 +1121,33 @@ const MeasuredWidth = withSize({ monitorWidth: true, noPlaceholder: true })(
 
 type HistogramLayout = { barWidth: number; gap: number; height: number }
 
+// Natural bar width, gap and plot height for an allele size histogram with this many bars. The
+// purity plot uses the same layout, so its points sit under the histogram's bars.
+const histogramLayoutForBinCount = (binCount: number): HistogramLayout => {
+  if (binCount <= 3) return { barWidth: 48, gap: 10, height: 190 }
+  if (binCount <= 12) return { barWidth: 34, gap: 6, height: 220 }
+  if (binCount <= 40) return { barWidth: 24, gap: 3, height: 240 }
+  return { barWidth: 24, gap: 2, height: 260 }
+}
+
 // Narrowest a bar may get to fit every bin in the card before the plot scrolls instead.
 const MIN_FITTED_BAR_WIDTH = 12
 
 // Bars widen or narrow to fill the plot, so every bin shows without scrolling, in the same slots
-// as the purity plot. Only bins too many to fit at MIN_FITTED_BAR_WIDTH keep their natural width
-// and scroll horizontally. A measured width of 0 (the initial render, and jsdom) keeps the
-// natural width.
+// as the purity plot, but never beyond MAX_PLOT_BAR_WIDTH_PX. Only bins too many to fit at
+// MIN_FITTED_BAR_WIDTH keep their natural width and scroll horizontally. A measured width of 0
+// (the initial render, and jsdom) keeps the natural width.
 const filledBarWidth = (measuredWidth: number, binCount: number, layout: HistogramLayout) => {
-  if (!measuredWidth || !binCount) return layout.barWidth
+  const naturalBarWidth = Math.min(layout.barWidth, MAX_PLOT_BAR_WIDTH_PX)
+  if (!measuredWidth || !binCount) return naturalBarWidth
   const usableWidth =
     measuredWidth -
     HISTOGRAM_Y_COLUMN_WIDTH -
     HISTOGRAM_COLUMN_GAP -
     HISTOGRAM_SIDE_PADDING * 2 -
     (binCount - 1) * layout.gap
-  const fittedBarWidth = Math.floor(usableWidth / binCount)
-  return fittedBarWidth >= MIN_FITTED_BAR_WIDTH ? fittedBarWidth : layout.barWidth
+  const fittedBarWidth = Math.min(MAX_PLOT_BAR_WIDTH_PX, Math.floor(usableWidth / binCount))
+  return fittedBarWidth >= MIN_FITTED_BAR_WIDTH ? fittedBarWidth : naturalBarWidth
 }
 
 const HistogramYScale = styled.div<{ $height: number }>`
@@ -1344,9 +1361,9 @@ const SelectAlleleControl = styled(SelectionLink)`
   user-select: none;
 
   &[aria-current='page'] {
-    border-color: #a65310;
-    background: #fff3e8;
-    box-shadow: inset 0 0 0 1px #a65310;
+    border-color: ${SELECTED_ALLELE_OUTLINE_COLOR};
+    background: #fff;
+    box-shadow: inset 0 0 0 1px ${SELECTED_ALLELE_OUTLINE_COLOR};
   }
 
   &:hover {
@@ -2064,12 +2081,28 @@ const PurityScatter = ({
               0,
               measuredWidth - HISTOGRAM_Y_COLUMN_WIDTH - HISTOGRAM_COLUMN_GAP
             )
-            const xAxisTicks = histogramDeltaAxisTicks(
-              deltas,
-              Math.max(0, plotWidth - 2 * HISTOGRAM_SIDE_PADDING) / deltas.length,
-              0,
-              null,
-              (delta) => lengthAxisTickLabel(delta, lengthAxisMode, representedRefLength)
+            // The bp histogram's bar geometry, centered the same way, so each point sits under
+            // its bar. When those bars would not fit (the histogram then scrolls), the slots
+            // share the plot width equally instead.
+            const histogramLayout = histogramLayoutForBinCount(deltas.length)
+            const histogramBarWidth = filledBarWidth(measuredWidth, deltas.length, histogramLayout)
+            const histogramContentWidth =
+              deltas.length * histogramBarWidth + (deltas.length - 1) * histogramLayout.gap
+            const followsHistogram = histogramContentWidth <= plotWidth - 2 * HISTOGRAM_SIDE_PADDING
+            const slotWidth = followsHistogram
+              ? histogramBarWidth
+              : Math.max(0, plotWidth - 2 * HISTOGRAM_SIDE_PADDING) / deltas.length
+            const slotGap = followsHistogram ? histogramLayout.gap : 0
+            const slotsLeft = followsHistogram
+              ? (plotWidth - histogramContentWidth) / 2
+              : HISTOGRAM_SIDE_PADDING
+            // Before the first width measurement the equal-slot rule is applied in CSS.
+            const slotCenter = (delta: number) =>
+              measuredWidth > 0
+                ? `${slotsLeft + slotIndex.get(delta)! * (slotWidth + slotGap) + slotWidth / 2}px`
+                : slotCenterCss(delta)
+            const xAxisTicks = histogramDeltaAxisTicks(deltas, slotWidth, slotGap, null, (delta) =>
+              lengthAxisTickLabel(delta, lengthAxisMode, representedRefLength)
             )
             const xAxisHeight =
               AXIS_LABEL_FONT_PX +
@@ -2138,7 +2171,7 @@ const PurityScatter = ({
                             maximumCalledAlleles
                           )}
                           style={{
-                            left: slotCenterCss(referencePoint.delta),
+                            left: slotCenter(referencePoint.delta),
                             bottom: purityTickBottom(referencePoint.motif_purity),
                             transform: `translate(calc(-50% + ${
                               overlapOffsetByAlleleId.get(REFERENCE_PURITY_POINT_ID) || 0
@@ -2151,7 +2184,7 @@ const PurityScatter = ({
                         const markProps = brush.markProps(mark)
                         const pointSelected =
                           activeMarkIds.has(mark.id) || brush.previewMarkIds.has(mark.id)
-                        const left = slotCenterCss(point.delta)
+                        const left = slotCenter(point.delta)
                         const bottom = purityPositionCss(
                           purityScalePosition(
                             point.motif_purity,
@@ -2222,7 +2255,7 @@ const PurityScatter = ({
                           key={tick.delta}
                           data-testid="purity-x-axis-tick"
                           $lane={tick.lane}
-                          $left={tick.left + HISTOGRAM_SIDE_PADDING}
+                          $left={tick.left + slotsLeft}
                         >
                           {lengthAxisTickLabel(tick.delta, lengthAxisMode, representedRefLength)}
                         </HistogramXTick>
@@ -2513,7 +2546,6 @@ export type ExactIndexSelection = {
   origin: ExactIndexSelectionOrigin
   markIds: string[]
   alleleIds: string[]
-  label: string
   singleDelta?: number
 }
 
@@ -3043,24 +3075,12 @@ export const WholeRecordAlleleLandscape = ({
   const filterIndexToLengthBins = (selectedBins: AlleleBin[]) => {
     const ordered = [...selectedBins].sort((left, right) => left.delta - right.delta)
     if (!ordered.length) return
-    const first = ordered[0]
-    const last = ordered[ordered.length - 1]
-    let label = `at ${lengthAxisLabel(first.delta, alleleLengthAxisMode, representedRefLength)}`
-    if (ordered.length > 1) {
-      label =
-        alleleLengthAxisMode === 'absolute' && representedRefLength != null
-          ? `${(representedRefLength + first.delta).toLocaleString()} to ${(
-              representedRefLength + last.delta
-            ).toLocaleString()} bp represented`
-          : `${signed(first.delta)} to ${signed(last.delta)} bp vs REF`
-    }
     activateIndexSelection({
       scope,
       origin: 'total-length',
       markIds: ordered.map((bin) => `total-length:${bin.delta}`),
       alleleIds: uniqueIds(ordered.flatMap((bin) => bin.allele_ids)),
-      label,
-      singleDelta: ordered.length === 1 ? first.delta : undefined,
+      singleDelta: ordered.length === 1 ? ordered[0].delta : undefined,
     })
   }
   const filterIndexToMotifBins = (
@@ -3071,22 +3091,11 @@ export const WholeRecordAlleleLandscape = ({
       (left, right) => left.occurrence_count - right.occurrence_count
     )
     if (!ordered.length) return
-    const motif = motifs[motifIndex]
-    const first = ordered[0].occurrence_count
-    const last = ordered[ordered.length - 1].occurrence_count
     activateIndexSelection({
       scope,
       origin: 'motif-occurrence',
       markIds: ordered.map((bin) => `motif-occurrence:${motifIndex}:${bin.occurrence_count}`),
       alleleIds: uniqueIds(ordered.flatMap((bin) => bin.allele_ids)),
-      label:
-        first === last
-          ? `${motif}: ${counted(
-              first,
-              'exact literal occurrence',
-              'exact literal occurrences'
-            )} in each whole represented source ALT`
-          : `${motif}: ${first.toLocaleString()} through ${last.toLocaleString()} exact literal occurrences in each whole represented source ALT`,
     })
   }
   const selectMotifIndex = (motifIndex: number) => {
@@ -3117,27 +3126,11 @@ export const WholeRecordAlleleLandscape = ({
   }
   const filterIndexToPurityPoints = (points: PurityPoint[]) => {
     if (!points.length) return
-    const deltas = points.map((point) => point.delta)
-    const purities = points.map((point) => point.motif_purity)
     activateIndexSelection({
       scope,
       origin: 'purity',
       markIds: points.map((point) => `purity:${point.allele_id}`),
       alleleIds: uniqueIds(points.map((point) => point.allele_id)),
-      label:
-        points.length === 1
-          ? alleleLabel(points[0].allele_id)
-          : `purity region ${lengthAxisLabel(
-              Math.min(...deltas),
-              purityLengthAxisMode,
-              representedRefLength
-            )} through ${lengthAxisLabel(
-              Math.max(...deltas),
-              purityLengthAxisMode,
-              representedRefLength
-            )}, purity ${Math.min(...purities).toFixed(4)} through ${Math.max(...purities).toFixed(
-              4
-            )}`,
     })
   }
   const filterIndexToGenotypeCells = (
@@ -3149,48 +3142,17 @@ export const WholeRecordAlleleLandscape = ({
     }>
   ) => {
     if (!selectedCells.length) return
-    const shorter = selectedCells.map((cell) => cell.shorterDelta)
-    const longer = selectedCells.map((cell) => cell.longerDelta)
     const referenceId = admittedGenotypeLandscape?.reference_allele_id
     const alleleIds = uniqueIds(
       selectedCells.flatMap((cell) =>
         cell.pairs.flatMap((pair) => [pair.shorter_allele_id, pair.longer_allele_id])
       )
     ).filter((alleleId) => alleleId !== referenceId)
-    const first = selectedCells[0]
     activateIndexSelection({
       scope,
       origin: 'genotype-length',
       markIds: selectedCells.map((cell) => cell.markId),
       alleleIds,
-      label:
-        selectedCells.length === 1
-          ? `selected genotype cell (${lengthAxisLabel(
-              first.longerDelta,
-              genotypeLengthAxisMode,
-              representedRefLength
-            )} × ${lengthAxisLabel(
-              first.shorterDelta,
-              genotypeLengthAxisMode,
-              representedRefLength
-            )})`
-          : `genotype region longer ${lengthAxisLabel(
-              Math.min(...longer),
-              genotypeLengthAxisMode,
-              representedRefLength
-            )} through ${lengthAxisLabel(
-              Math.max(...longer),
-              genotypeLengthAxisMode,
-              representedRefLength
-            )}; shorter ${lengthAxisLabel(
-              Math.min(...shorter),
-              genotypeLengthAxisMode,
-              representedRefLength
-            )} through ${lengthAxisLabel(
-              Math.max(...shorter),
-              genotypeLengthAxisMode,
-              representedRefLength
-            )}`,
     })
   }
   const clearIndexFilter = () => {
@@ -3362,7 +3324,6 @@ export const WholeRecordAlleleLandscape = ({
           sequenceCardinality={sequenceCardinality}
           sourceRecordOrder={sourceRecordOrder}
           excludeValidatedSharedPadding={excludeValidatedSharedPadding}
-          lengthAxisMode={alleleLengthAxisMode}
           representedRefLength={representedRefLength}
         />
       </Panel>
@@ -3451,10 +3412,7 @@ export const WholeRecordAlleleLandscape = ({
     })
   const clippedAt = scaleCap(selectedScaleType)
   const totalInView = barTotals.reduce((sum, count) => sum + count, 0)
-  let histogramLayout = { barWidth: 24, gap: 2, height: 260 }
-  if (histogramBins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
-  else if (histogramBins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
-  else if (histogramBins.length <= 40) histogramLayout = { barWidth: 24, gap: 3, height: 240 }
+  let histogramLayout = histogramLayoutForBinCount(histogramBins.length)
   // When the genotype heatmap is shown, the histogram and the purity plot are as tall as its
   // square of cells, so all three plots in the row have the same height.
   const genotypeHeatmapLandscape =
@@ -3464,7 +3422,6 @@ export const WholeRecordAlleleLandscape = ({
   if (genotypeHeatmapShown && genotypePlotHeightPx) {
     histogramLayout = { ...histogramLayout, height: genotypePlotHeightPx }
   }
-  const activeFilterDescription = selectedDelta == null ? activeIndexSelection?.label : undefined
   // The purity dots stand for every ALT dot's copies plus the REF dot's, when the REF's purity is
   // known. The REF copies come from the bp REF bin, not the histogram's current one: in the
   // repeats measure that also holds ALT alleles with the REF's longest pure run.
@@ -4036,8 +3993,7 @@ export const WholeRecordAlleleLandscape = ({
       <ExactAlleleIndex
         alleles={indexedAlleles}
         totalExactAlts={landscape.exact_alt_count || alleles.length}
-        filteredDelta={selectedBin?.delta}
-        filterDescription={activeFilterDescription}
+        filtered={activeIndexSelection != null}
         motifs={motifs}
         selectedAllele={selectedAllele}
         navigation={navigation}
@@ -4046,7 +4002,6 @@ export const WholeRecordAlleleLandscape = ({
         sequenceCardinality={sequenceCardinality}
         sourceRecordOrder={sourceRecordOrder}
         excludeValidatedSharedPadding={excludeValidatedSharedPadding}
-        lengthAxisMode={alleleLengthAxisMode}
         representedRefLength={representedRefLength}
         sequencesAvailable={sequencesAvailable}
         sequencesUnavailableReason={sequencesUnavailableReason}
@@ -4384,10 +4339,17 @@ export const WholeRecordGenotypeLandscape = ({
                 heatmapWidth - heatmapLeft - heatmapRight,
                 heatmapHeight - heatmapTop - heatmapBottom
               )
-              const band = plotSize / Math.max(1, values.length)
-              const xFor = (value: number) => heatmapLeft + (valueIndex.get(value) || 0) * band
+              // Squares are never wider than the histogram's widest bar; with few sizes the grid
+              // of squares sits centered in the plot, whose axes keep their full length.
+              const band = Math.min(
+                plotSize / Math.max(1, values.length),
+                MAX_PLOT_BAR_WIDTH_PX * svgUnitsPerPixel
+              )
+              const gridInset = (plotSize - band * values.length) / 2
+              const xFor = (value: number) =>
+                heatmapLeft + gridInset + (valueIndex.get(value) || 0) * band
               const yFor = (value: number) =>
-                heatmapTop + (values.length - 1 - (valueIndex.get(value) || 0)) * band
+                heatmapTop + gridInset + (values.length - 1 - (valueIndex.get(value) || 0)) * band
               // Neighboring x labels are rotated 48 degrees, so they need about 1.5 font sizes of
               // horizontal room to clear each other; the y labels need less, so one spacing fits both.
               const minimumAxisLabelSpacing = 1.5 * axisFontSize
@@ -4821,8 +4783,8 @@ const IndexRow = styled.div<{ selected: boolean }>`
   height: 52px;
   padding: 0 0.6em;
   border-bottom: 1px solid #ddd;
-  background: ${(props) => (props.selected ? '#fff3e8' : '#fff')};
-  outline: ${(props) => (props.selected ? '2px solid #a65310' : 'none')};
+  background: #fff;
+  outline: ${(props) => (props.selected ? `2px solid ${SELECTED_ALLELE_OUTLINE_COLOR}` : 'none')};
   outline-offset: -2px;
 
   > span {
@@ -5041,8 +5003,7 @@ const ExactAlleleIndexRow = ({
 export const ExactAlleleIndex = ({
   alleles,
   totalExactAlts = alleles.length,
-  filteredDelta,
-  filterDescription,
+  filtered = false,
   selectedAllele,
   motifs,
   navigation,
@@ -5055,13 +5016,12 @@ export const ExactAlleleIndex = ({
   sequenceCardinality,
   sourceRecordOrder = [],
   excludeValidatedSharedPadding = false,
-  lengthAxisMode = 'delta',
   representedRefLength = null,
 }: {
   alleles: LongReadTrAllele[]
   totalExactAlts?: number
-  filteredDelta?: number
-  filterDescription?: string
+  // Whether a plot selection has narrowed the table to some of the ALT alleles.
+  filtered?: boolean
   motifs: string[]
   selectedAllele?: string
   navigation: AlleleNavigation
@@ -5074,7 +5034,6 @@ export const ExactAlleleIndex = ({
   sequenceCardinality?: LongReadTrSequenceCardinality
   sourceRecordOrder?: string[]
   excludeValidatedSharedPadding?: boolean
-  lengthAxisMode?: LengthAxisMode
   representedRefLength?: number | null
 }) => {
   const [sortKey, setSortKey] = useState<ExactAlleleSortKey>('ac')
@@ -5152,20 +5111,9 @@ export const ExactAlleleIndex = ({
       ? `Motif previews are unavailable because ${unavailableReason(sequencesUnavailableReason)}.`
       : null
   const identityCount = sequenceCardinality?.source_alt_identity_count ?? totalExactAlts
-  let heading = 'Allele Details'
-  if (filterDescription) {
-    heading = `${alleles.length.toLocaleString()} of ${counted(
-      identityCount,
-      'allele',
-      'alleles'
-    )} — ${filterDescription}`
-  } else if (filteredDelta != null) {
-    heading = `${alleles.length.toLocaleString()} of ${counted(
-      identityCount,
-      'allele',
-      'alleles'
-    )} at ${lengthAxisLabel(filteredDelta, lengthAxisMode, representedRefLength)}`
-  }
+  const heading = filtered
+    ? `${alleles.length.toLocaleString()} of ${identityCount.toLocaleString()} non-reference alleles selected`
+    : 'Allele Details'
   return (
     <IndexSection aria-labelledby="lr-tr-index-heading">
       <IndexTitle aria-live="polite">
@@ -5175,13 +5123,13 @@ export const ExactAlleleIndex = ({
           </h3>
           <ExactAlleleIndexHelp />
         </HeadingWithHelp>
-        {(filteredDelta != null || filterDescription) && (
+        {filtered && (
           <ClearIndexFilter type="button" onClick={onClearFilter}>
-            Show all source ALT alleles
+            Show all ALT alleles
           </ClearIndexFilter>
         )}
       </IndexTitle>
-      {(filteredDelta != null || filterDescription) && alleles.length === 0 && (
+      {filtered && alleles.length === 0 && (
         <p role="status">No source ALT alleles match this plot selection in the current slice.</p>
       )}
       {previewUnavailableMessage && <p role="status">{previewUnavailableMessage}</p>}
@@ -5231,7 +5179,7 @@ export const ExactAlleleIndex = ({
             <EmptySelectedAllele>
               {selectedAllele
                 ? 'Details for the selected ALT are unavailable.'
-                : 'No sequence details shown. Choose Details in a row to view its sequence and aggregate annotations.'}
+                : "No sequence details shown. Click a 'Details' button in one of the rows above to view the allele's sequence and other information."}
             </EmptySelectedAllele>
           )}
         </SelectedAllelePane>
@@ -5402,7 +5350,7 @@ const SelectedDetail = styled.article`
   border: 1px solid #d8dee2;
   border-radius: 4px;
   margin: 0;
-  background: #fffdf9;
+  background: #fff;
 `
 
 const SelectedDetailGrid = styled.div`
@@ -5480,10 +5428,6 @@ export const SelectedExactAlleleDetail = React.forwardRef<
             <tr>
               <th scope="row">Allele sequence purity</th>
               <td>{allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(2)}</td>
-            </tr>
-            <tr>
-              <th scope="row">Repeat count</th>
-              <td>{allele.repeat_count == null ? '—' : allele.repeat_count.toLocaleString()}</td>
             </tr>
             {/* Tandem repeat alleles carry no major consequence or CADD score in the source data,
                 so only phyloP is shown. */}

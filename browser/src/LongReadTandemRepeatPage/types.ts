@@ -16,8 +16,6 @@ export type LongReadTrAllele = {
   ref: string | null
   alt: string | null
   length: number | null
-  repeat_count: number | null
-  repeat_count_source: string | null
   motif_purity: number | null
   freq: ExactAlleleFrequency
 }

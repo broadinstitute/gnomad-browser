@@ -33,6 +33,13 @@ import {
 import { variantFeedbackUrl } from '../variantFeedback'
 import { AlleleNavigation, LongReadTrLocus } from './types'
 
+// @gnomad/ui's PageHeading renders its renderPageControls prop at the right end of the heading
+// line, but the library's type definitions misspell that prop as renderPageControl.
+const PageHeadingWithControls = PageHeading as React.ComponentType<{
+  children: React.ReactNode
+  renderPageControls: () => React.ReactNode
+}>
+
 const CohortControl = styled.label`
   display: flex;
   flex-shrink: 0;
@@ -254,13 +261,13 @@ const LongReadTandemRepeatPage = ({
     return (
       <>
         <DocumentTitle title="Tandem-repeat locus unavailable" />
-        <PageHeading
+        <PageHeadingWithControls
           renderPageControls={() => (
             <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
           )}
         >
           Tandem-repeat locus unavailable
-        </PageHeading>
+        </PageHeadingWithControls>
         <p role="status">
           This exact canonical locus is not available in the {cohortName(requestedCohort)} data.
           Data from another cohort were not substituted.
@@ -395,14 +402,6 @@ const LongReadTandemRepeatPage = ({
         ref={setDetail}
         allele={{
           ...locus.selected_allele,
-          repeat_count:
-            locus.selected_allele.repeat_count ||
-            alleleById.get(locus.selected_allele.variant_id)?.repeat_count ||
-            null,
-          repeat_count_source:
-            locus.selected_allele.repeat_count_source ||
-            alleleById.get(locus.selected_allele.variant_id)?.repeat_count_source ||
-            null,
           motif_purity:
             locus.selected_allele.motif_purity ??
             alleleById.get(locus.selected_allele.variant_id)?.motif_purity ??
@@ -464,13 +463,13 @@ const LongReadTandemRepeatPage = ({
         </p>
       )}
 
-      <PageHeading
+      <PageHeadingWithControls
         renderPageControls={() => (
           <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
         )}
       >
         {title}
-      </PageHeading>
+      </PageHeadingWithControls>
 
       <HeaderColumns>
         <HeaderColumn>
@@ -484,18 +483,13 @@ const LongReadTandemRepeatPage = ({
               {referencePurity != null && (
                 <AttributeListItem
                   label="Reference sequence purity"
-                  tooltip="Fraction of bases in the reference interval that match a pure repeat of the motif."
+                  tooltip="Fraction of bases in the reference interval that match a sequence of perfect repeats of the annotated motif."
                 >
                   {referencePurity.toFixed(2)}
                 </AttributeListItem>
               )}
               {alleleLengthRange && (
-                <AttributeListItem
-                  label="Allele lengths"
-                  tooltip="Represented absolute length is shown only when the API admits complete sequence-length provenance, padding rule, and reconciliation. Signed source delta remains a separate measurement."
-                >
-                  {alleleLengthRange}
-                </AttributeListItem>
+                <AttributeListItem label="Allele lengths">{alleleLengthRange}</AttributeListItem>
               )}
               {(locus.primary_repeat.motif || !clusterFocused) && (
                 <AttributeListItem label="Motif">
