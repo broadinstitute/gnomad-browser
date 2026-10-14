@@ -27,36 +27,10 @@ import {
   strchiveLocusUrl,
   stripyLocusUrl,
   trExplorerRegionUrl,
+  ucscBrowserUrlHighlightingRegion,
 } from '../ShortTandemRepeatPage/externalResourceUrls'
+import { variantFeedbackUrl } from '../variantFeedback'
 import { AlleleNavigation, LongReadTrLocus } from './types'
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 2em;
-  margin-bottom: 1.25em;
-
-  h1 {
-    margin-bottom: 0.25em;
-  }
-
-  @media (max-width: 700px) {
-    display: block;
-  }
-`
-
-const HeadingWithHelp = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.35em;
-
-  h1,
-  h2 {
-    margin-right: 0;
-  }
-`
 
 const CohortControl = styled.label`
   display: flex;
@@ -85,6 +59,11 @@ const HeaderColumns = styled.div`
 
 const HeaderColumn = styled.section`
   width: calc(50% - 15px);
+
+  /* lines "External Resources" up with the coordinates at the top of the left column */
+  > h2:first-child {
+    margin-top: 0;
+  }
 
   @media (max-width: 992px) {
     width: 100%;
@@ -192,7 +171,7 @@ export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
 }
 
 const LongReadTandemRepeatPage = ({
-  datasetId: _datasetId,
+  datasetId,
   locus,
   requestedCohort,
   selectedAllele,
@@ -274,10 +253,13 @@ const LongReadTandemRepeatPage = ({
     return (
       <>
         <DocumentTitle title="Tandem-repeat locus unavailable" />
-        <Header>
-          <PageHeading>Tandem-repeat locus unavailable</PageHeading>
-          <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
-        </Header>
+        <PageHeading
+          renderPageControls={() => (
+            <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
+          )}
+        >
+          Tandem-repeat locus unavailable
+        </PageHeading>
         <p role="status">
           This exact canonical locus is not available in the {cohortName(requestedCohort)} data.
           Data from another cohort were not substituted.
@@ -470,21 +452,20 @@ const LongReadTandemRepeatPage = ({
         </p>
       )}
 
-      <Header>
-        <HeadingWithHelp>
-          <div>
-            <PageHeading>{title}</PageHeading>
-            <CoordinateContext>
-              chr{envelope.chrom}:{displayStart0.toLocaleString()}–{displayEnd1.toLocaleString()}{' '}
-              (GRCh38)
-            </CoordinateContext>
-          </div>
-        </HeadingWithHelp>
-        <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
-      </Header>
+      <PageHeading
+        renderPageControls={() => (
+          <CohortSelector cohort={requestedCohort} onCohortChange={onCohortChange} />
+        )}
+      >
+        {title}
+      </PageHeading>
 
       <HeaderColumns>
         <HeaderColumn>
+          <CoordinateContext>
+            chr{envelope.chrom}:{displayStart0.toLocaleString()}–{displayEnd1.toLocaleString()}{' '}
+            (GRCh38)
+          </CoordinateContext>
           <SourceAttributes>
             <AttributeList>
               <AttributeListItem label={spanLabel}>{spanValue}</AttributeListItem>
@@ -519,6 +500,13 @@ const LongReadTandemRepeatPage = ({
         <HeaderColumn>
           <h2>External Resources</h2>
           <List>
+            <ListItem>
+              <ExternalLink
+                href={ucscBrowserUrlHighlightingRegion(envelope.chrom, displayStart1, displayEnd1)}
+              >
+                UCSC
+              </ExternalLink>
+            </ListItem>
             {approvedCatalogRecord?.strchive_id && (
               <ListItem>
                 <ExternalLink href={strchiveLocusUrl(approvedCatalogRecord.strchive_id)}>
@@ -539,6 +527,10 @@ const LongReadTandemRepeatPage = ({
               </ExternalLink>
             </ListItem>
           </List>
+          <h2>Feedback</h2>
+          <ExternalLink href={variantFeedbackUrl({ variant_id: locus.id }, datasetId)}>
+            Report an issue with this tandem repeat
+          </ExternalLink>
         </HeaderColumn>
       </HeaderColumns>
 

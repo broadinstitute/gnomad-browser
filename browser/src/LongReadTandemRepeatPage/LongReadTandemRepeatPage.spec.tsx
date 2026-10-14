@@ -95,7 +95,12 @@ jest.mock('@gnomad/ui', () => ({
     </div>
   ),
   Page: ({ children, ...props }: any) => <main {...props}>{children}</main>,
-  PageHeading: ({ children }: any) => <h1>{children}</h1>,
+  PageHeading: ({ children, renderPageControls }: any) => (
+    <div>
+      <h1>{children}</h1>
+      {renderPageControls?.()}
+    </div>
+  ),
   Select: ({ children, ...props }: any) => <select {...props}>{children}</select>,
   TextButton: ({ children, ...props }: any) => (
     <button type="button" {...props}>
@@ -741,6 +746,23 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).toBeNull()
     expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
     expect(screen.queryByRole('img', { name: /ordered LR reference component/ })).toBeNull()
+  })
+
+  test('lists UCSC before TRExplorer and links to the feedback form', () => {
+    renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
+
+    const externalLinkNames = screen
+      .getAllByRole('link')
+      .map((link) => link.textContent)
+      .filter((name) => name === 'UCSC' || name === 'TRExplorer')
+    expect(externalLinkNames).toEqual(['UCSC', 'TRExplorer'])
+    expect(screen.getByRole('link', { name: 'UCSC' }).getAttribute('href')).toBe(
+      'https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&highlight=hg38.chr4%3A3074877-3074933&position=chr4%3A3074852-3074958'
+    )
+    expect(screen.getByRole('heading', { name: 'Feedback' })).not.toBeNull()
+    expect(
+      screen.getByRole('link', { name: 'Report an issue with this tandem repeat' })
+    ).not.toBeNull()
   })
 
   test('shortens a motif longer than 35 bp in the heading and the motif attribute', () => {
