@@ -696,7 +696,7 @@ describe('long-read TR visualization fidelity', () => {
     const alleleCard = within(grid).getByRole('heading', { name: 'Allele length distribution' })
       .parentElement as HTMLElement
     expect(within(alleleCard).getByText('Allele (longest pure run)')).not.toBeNull()
-    expect(within(alleleCard).getByText(/^Sizes of 2 alleles from 1 individual/)).not.toBeNull()
+    expect(within(alleleCard).getByText('Sizes of 2 alleles.')).not.toBeNull()
     const repeatBar = within(screen.getByTestId('whole-record-delta-histogram')).getByRole(
       'button',
       { name: '10 copies in longest pure run; 2 alleles in this view' }
@@ -1936,7 +1936,7 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByText((_text, element) =>
         Boolean(
           element?.getAttribute('aria-live') === 'polite' &&
-            element.textContent?.startsWith('Sizes of 6 alleles from 4 individuals.')
+            element.textContent?.startsWith('Sizes of 6 alleles.')
         )
       )
     ).not.toBeNull()
@@ -1946,7 +1946,7 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByText((_text, element) =>
         Boolean(
           element?.getAttribute('aria-live') === 'polite' &&
-            element.textContent?.startsWith('Sizes of 6 alleles from 4 individuals.')
+            element.textContent?.startsWith('Sizes of 6 alleles.')
         )
       )
     ).not.toBeNull()

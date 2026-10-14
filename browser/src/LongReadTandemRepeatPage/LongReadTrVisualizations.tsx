@@ -220,7 +220,18 @@ const useAlignedPlotXAxes = (gridRef: RefObject<HTMLElement>) => {
     // Padding does not change an element's content box, so aligning does not retrigger this.
     const observer = new ResizeObserver(align)
     grid.querySelectorAll('[data-x-axis-aligned-plot]').forEach((plot) => observer.observe(plot))
-    return () => observer.disconnect()
+    // The heatmap redraws its axis lines inside an SVG whose box keeps its size, for example
+    // once it has measured its width, so the moving lines are watched directly.
+    const axisLineObserver = new MutationObserver(align)
+    axisLineObserver.observe(grid, {
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['y1', 'y2'],
+    })
+    return () => {
+      observer.disconnect()
+      axisLineObserver.disconnect()
+    }
   })
 }
 
@@ -2875,7 +2886,6 @@ export const WholeRecordAlleleLandscape = ({
   const histogramReferenceSize = repeatCountHistogram
     ? histogramReferenceUnits
     : representedRefLength
-  const genotypeLandscapeShown = repeatCountGenotypes ?? admittedGenotypeLandscape
   const lengthStyleHistogramShown =
     selectedAlleleDistributionView === 'length' || Boolean(repeatCountHistogram)
   // The change-from-REF repeat measure reuses the admitted unit products with every count
@@ -3441,26 +3451,16 @@ export const WholeRecordAlleleLandscape = ({
     })
   const clippedAt = scaleCap(selectedScaleType)
   const totalInView = barTotals.reduce((sum, count) => sum + count, 0)
-  // Taken from the genotype plot under the same ancestry and sex filters. At loci where people
-  // carry REF alleles or have only one allele called, these people contribute more allele copies
-  // than the histogram plots.
-  const genotypePeopleInView = genotypeLandscapeShown
-    ? genotypeLandscapePeopleCount(
-        genotypeLandscapeShown.cells || [],
-        selectedPopulation ? [selectedPopulation] : [],
-        selectedSex ? [selectedSex] : []
-      )
-    : null
   let histogramLayout = { barWidth: 24, gap: 2, height: 260 }
   if (histogramBins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
   else if (histogramBins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
   else if (histogramBins.length <= 40) histogramLayout = { barWidth: 24, gap: 3, height: 240 }
   // When the genotype heatmap is shown, the histogram and the purity plot are as tall as its
   // square of cells, so all three plots in the row have the same height.
-  const genotypeHeatmapShown = Boolean(
-    (selectedGenotypeDistributionView === 'length' && admittedGenotypeLandscape) ||
-      repeatCountGenotypes
-  )
+  const genotypeHeatmapLandscape =
+    repeatCountGenotypes ??
+    (selectedGenotypeDistributionView === 'length' ? admittedGenotypeLandscape : undefined)
+  const genotypeHeatmapShown = Boolean(genotypeHeatmapLandscape)
   if (genotypeHeatmapShown && genotypePlotHeightPx) {
     histogramLayout = { ...histogramLayout, height: genotypePlotHeightPx }
   }
@@ -3668,12 +3668,7 @@ export const WholeRecordAlleleLandscape = ({
           <PlotCard data-plot-card="total-length-histogram">
             <h3>Allele length distribution</h3>
             <p aria-live="polite">
-              <strong>
-                Sizes of {counted(totalInView, 'allele', 'alleles')}
-                {genotypePeopleInView != null &&
-                  ` from ${counted(genotypePeopleInView, 'individual', 'individuals')}`}
-                .
-              </strong>
+              <strong>Sizes of {counted(totalInView, 'allele', 'alleles')}.</strong>
             </p>
             {histogramReferenceBin.called_alleles > 0 && (
               <p aria-label="Allele length histogram colors">
@@ -3977,35 +3972,26 @@ export const WholeRecordAlleleLandscape = ({
             {alleleLengthAxisControl}
           </PlotCard>
         )}
-        {selectedGenotypeDistributionView === 'length' && admittedGenotypeLandscape && (
+        {/* One heatmap element for both the bp and the repeat-count genotypes, so switching
+            measures updates the same heatmap. A new one would first be drawn before measuring
+            its width, and jump. The repeat-count squares carry no allele ids to filter by. */}
+        {genotypeHeatmapLandscape && (
           <WholeRecordGenotypeLandscape
-            landscape={admittedGenotypeLandscape}
+            landscape={genotypeHeatmapLandscape}
             selectedPopulation={selectedPopulation}
             selectedSex={selectedSex}
             selectedPopulations={selectedGenotypeAncestries}
             selectedSexes={selectedGenotypeSexes}
-            activeMarkIds={activeMarkIds}
-            onSelectCells={filterIndexToGenotypeCells}
-            onClear={clearIndexFilter}
+            activeMarkIds={repeatCountGenotypes ? undefined : activeMarkIds}
+            onSelectCells={repeatCountGenotypes ? undefined : filterIndexToGenotypeCells}
+            onClear={repeatCountGenotypes ? undefined : clearIndexFilter}
             lengthAxisMode={genotypeLengthAxisMode}
-            representedRefLength={representedRefLength}
-            alleleAxisLabel={alleleAxisLabel}
-            onPlotHeightChange={setGenotypePlotHeightPx}
-            lengthAxisControl={genotypeLengthAxisControl}
-          />
-        )}
-        {repeatCountGenotypes && (
-          <WholeRecordGenotypeLandscape
-            landscape={repeatCountGenotypes}
-            selectedPopulation={selectedPopulation}
-            selectedSex={selectedSex}
-            selectedPopulations={selectedGenotypeAncestries}
-            selectedSexes={selectedGenotypeSexes}
-            lengthAxisMode={genotypeLengthAxisMode}
-            representedRefLength={histogramReferenceUnits}
-            unit="longest-pure-run"
-            referenceSizeKnown={histogramReferenceUnits != null}
-            cellsClickable={false}
+            representedRefLength={
+              repeatCountGenotypes ? histogramReferenceUnits : representedRefLength
+            }
+            unit={repeatCountGenotypes ? 'longest-pure-run' : 'bp'}
+            referenceSizeKnown={repeatCountGenotypes ? histogramReferenceUnits != null : true}
+            cellsClickable={!repeatCountGenotypes}
             alleleAxisLabel={alleleAxisLabel}
             onPlotHeightChange={setGenotypePlotHeightPx}
             lengthAxisControl={genotypeLengthAxisControl}
@@ -4021,12 +4007,7 @@ export const WholeRecordAlleleLandscape = ({
           <h3>Repeat sequence purity</h3>
           {landscape.purity_available && (
             <p aria-live="polite">
-              <strong>
-                Purity of {counted(purityAllelesInView, 'allele', 'alleles')}
-                {genotypePeopleInView != null &&
-                  ` from ${counted(genotypePeopleInView, 'individual', 'individuals')}`}
-                .
-              </strong>
+              <strong>Purity of {counted(purityAllelesInView, 'allele', 'alleles')}.</strong>
             </p>
           )}
           {landscape.purity_available ? (
