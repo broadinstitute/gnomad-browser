@@ -438,6 +438,8 @@ type LongReadTrWholeRecordAlleleLandscape {
   sexes: [String!]
   bins: [LongReadTrAlleleBin!]
   purity_points: [LongReadTrPurityPoint!]
+  # The REF allele's source AP_allele value; null when the source has none for it.
+  reference_purity: Float
   purity_available: Boolean
   purity_unavailable_reason: String
   stratified_view: LongReadTrAlleleStratifiedView
@@ -593,7 +595,9 @@ enum LongReadTrSourceRefSpanStatus {
 }
 
 # Component geometry, source REF span, and source-declared cluster bounds are never
-# substituted for one another. The latter two remain null without approved provenance.
+# substituted for one another. The source REF span is the interval of the locus's single source
+# VCF record without its padding base, and stays null when the locus has several source records.
+# Source-declared cluster bounds remain null without approved provenance.
 type LongReadTrBounds {
   component_envelope_start0: Int!
   component_envelope_end0: Int!

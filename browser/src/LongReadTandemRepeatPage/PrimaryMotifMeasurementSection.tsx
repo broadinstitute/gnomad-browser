@@ -14,6 +14,7 @@ const PlotScroller = styled.div`
 `
 
 const PlotCard = styled.div`
+  position: relative;
   min-width: 0;
   padding: 1em;
   border: 1px solid #d8dee2;
@@ -160,8 +161,11 @@ export const PrimaryMotifAlleleHistogram = ({
 
 export const PrimaryMotifGenotypeCells = ({
   measurement,
+  lengthAxisControl = null,
 }: {
   measurement: PrimaryMotifMeasurementData
+  // The plot's own Length axis menu, drawn at the bottom of the card.
+  lengthAxisControl?: React.ReactNode
 }) => {
   const { genotype } = measurement
   const motif = measurement.motif!
@@ -174,6 +178,7 @@ export const PrimaryMotifGenotypeCells = ({
       <PlotCard data-testid="primary-motif-genotype-unavailable">
         <h3>Genotype exact-motif distribution</h3>
         <p role="status">{reason}</p>
+        {lengthAxisControl}
       </PlotCard>
     )
   }
@@ -250,6 +255,7 @@ export const PrimaryMotifGenotypeCells = ({
           Shorter allele — exact {motif} units
         </text>
       </svg>
+      {lengthAxisControl}
     </PlotCard>
   )
 }
@@ -265,11 +271,15 @@ export const primaryMotifGenotypeAvailable = (measurement?: PrimaryMotifMeasurem
 
 export const PrimaryMotifAllelePlotCard = ({
   measurement,
+  lengthAxisControl = null,
 }: {
   measurement: PrimaryMotifMeasurementData
+  // The plot's own Length axis menu, drawn at the bottom of the card.
+  lengthAxisControl?: React.ReactNode
 }) => (
   <PlotCard data-testid="primary-motif-allele-copies" data-plot-card="allele-exact-motif">
     <h3>Allele exact-motif distribution</h3>
     <PrimaryMotifAlleleHistogram measurement={measurement} />
+    {lengthAxisControl}
   </PlotCard>
 )

@@ -13,9 +13,14 @@ import { browserVariantId, LongReadCohort } from './long_read_y1_variants'
 import {
   buildLongReadTrComponentContract,
   buildLongReadTrPresentation,
+  sourceRefSpanOfSingleRecord,
 } from './long_read_tr_presentation'
 
-export { buildLongReadTrComponentContract, buildLongReadTrPresentation }
+export {
+  buildLongReadTrComponentContract,
+  buildLongReadTrPresentation,
+  sourceRefSpanOfSingleRecord,
+}
 
 // The exact-ALT index is intentionally bounded. Scientific aggregates fail closed
 // rather than silently truncating a locus that exceeds this contract.
@@ -988,6 +993,7 @@ export const buildWholeRecordAlleleLandscape = ({
   frequencyRowsTruncated = false,
   frequencyRowsUnavailableReason = null,
   purityByAllele,
+  referencePurity = null,
   ancestryFilterId = null,
   sexFilterId = null,
   colorBy = null,
@@ -998,6 +1004,8 @@ export const buildWholeRecordAlleleLandscape = ({
   frequencyRowsTruncated?: boolean
   frequencyRowsUnavailableReason?: string | null
   purityByAllele: Map<string, number | null>
+  // The REF's source AP_allele value, the first entry, before the ALTs'.
+  referencePurity?: number | null
   ancestryFilterId?: string | null
   sexFilterId?: string | null
   colorBy?: 'ANCESTRY' | 'SEX' | null
@@ -1179,6 +1187,7 @@ export const buildWholeRecordAlleleLandscape = ({
     sexes: [...sexes].sort(),
     bins: activeCanonicalProjection ? [] : bins,
     purity_points: activeCanonicalProjection ? [] : purityPoints,
+    reference_purity: activeCanonicalProjection ? null : referencePurity,
     purity_available: activeCanonicalProjection ? false : purityPoints.length > 0,
     purity_unavailable_reason: purityUnavailableReason,
     stratified_view: stratifiedView,
@@ -1456,7 +1465,7 @@ const fetchLongReadTrLocusUncached = async ({
   const summaryRows = await queryRows(
     `
       SELECT task_id, attempt_id, position, source_variant_id, length(alts) AS alt_count,
-        ac, an, af, source_info_json
+        length(ref_allele) AS ref_allele_length, ac, an, af, source_info_json
       FROM lr_y1_summaries
       WHERE run_id = {runId:String} AND release = 'y1'
         AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
@@ -1635,6 +1644,12 @@ const fetchLongReadTrLocusUncached = async ({
       )
     }
   }
+  // The REF's AP_allele value is the first entry; it is only defined for a single source record.
+  const referenceAp = summaries.length === 1 ? parseSourceArray(summaries[0].info.AP_allele) : null
+  const referencePurity =
+    referenceAp && referenceAp.length === summaries[0].alt_count + 1
+      ? finiteNumber(referenceAp[0])
+      : null
 
   const wholeRecordAlleleLandscape = completenessReason
     ? unavailable(completenessReason)
@@ -1645,6 +1660,7 @@ const fetchLongReadTrLocusUncached = async ({
         frequencyRowsTruncated,
         frequencyRowsUnavailableReason: frequencyReceiptMismatch ? 'SOURCE_RECEIPT_MISMATCH' : null,
         purityByAllele,
+        referencePurity,
         ancestryFilterId,
         sexFilterId,
         colorBy,
@@ -1914,7 +1930,15 @@ const fetchLongReadTrLocusUncached = async ({
         ? 'No complete aligned LR reference component counts are available; exact repeat-count plots remain separately fail-closed'
         : 'Compound loci lack an admitted mapping from whole-record sequence to LR reference components'
   }
-  const componentContract = buildLongReadTrComponentContract(locus.components)
+  const componentContract = buildLongReadTrComponentContract(
+    locus.components,
+    sourceRefSpanOfSingleRecord(
+      summaries.map(({ row }) => ({
+        position: Number(row.position),
+        refAlleleLength: Number(row.ref_allele_length),
+      }))
+    )
+  )
   const totalAlleles = sourceRecords.reduce((sum, record) => sum + record.alt_count, 0)
   const filterContract = buildLongReadTrFilterContract({
     cohort,
@@ -1950,7 +1974,7 @@ const fetchLongReadTrLocusUncached = async ({
     accepted_task_attempt_digest: source.accepted_task_attempt_digest,
     primary_database: source.database,
     source_records: sourceRecords,
-    presentation: buildLongReadTrPresentation(locus.components.length),
+    presentation: buildLongReadTrPresentation(locus.components.length, componentContract.bounds),
     bounds: componentContract.bounds,
     component_summary: componentContract.component_summary,
     sequence_cardinality: sequenceCardinality,

@@ -137,6 +137,7 @@ query ${operationName}(
         stacks { ancestry_group sex called_alleles }
       }
       purity_points { allele_id delta motif_purity called_alleles }
+      reference_purity
       purity_available purity_unavailable_reason
     }
     whole_record_genotype_landscape {

@@ -28,6 +28,7 @@ import {
   MAX_TR_LOCUS_AGGREGATE_BYTES,
   MAX_TR_LOCUS_PAGE_SIZE,
   MAX_TR_SELECTED_ALLELE_DETAIL_BYTES,
+  sourceRefSpanOfSingleRecord,
 } from './long_read_tr_loci'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -234,7 +235,11 @@ describe('long-read TR locus query contract', () => {
 
     const summaryRequest = mockQuery.mock.calls[0][0] as any
     expect(summaryRequest.query).toContain('length(alts) AS alt_count')
-    expect(summaryRequest.query).not.toContain('ref_allele')
+    // Only the REF length is read here, for the source REF span; never the REF bytes.
+    expect(summaryRequest.query).toContain('length(ref_allele) AS ref_allele_length')
+    expect(
+      summaryRequest.query.replace('length(ref_allele) AS ref_allele_length', '')
+    ).not.toContain('ref_allele')
     expect(summaryRequest.query).toContain('LIMIT {limit:UInt16}')
     expect(summaryRequest.query_params.limit).toBe(MAX_TR_LOCUS_PAGE_SIZE + 1)
     expect(summaryRequest.query).toContain('acceptedTaskIds:Array(String)')
@@ -777,9 +782,50 @@ describe('round-two Phase 2A contracts', () => {
     )
   })
 
-  test('derives locus type from the exact component count alone', () => {
+  test('derives locus type from the exact component count when no source REF span is known', () => {
     expect(buildLongReadTrPresentation(1)).toEqual({ locus_type: 'ISOLATED_REPEAT' })
     expect(buildLongReadTrPresentation(6)).toEqual({ locus_type: 'VARIATION_CLUSTER' })
+  })
+
+  test('takes the source REF span from a single record, without its padding base', () => {
+    // chr1-114225224-TRV-140: POS 114225224 and a 141 bp REF (padding base plus 140 bp).
+    expect(sourceRefSpanOfSingleRecord([{ position: 114225224, refAlleleLength: 141 }])).toEqual({
+      start0: 114225224,
+      end0: 114225364,
+    })
+    expect(
+      sourceRefSpanOfSingleRecord([
+        { position: 100, refAlleleLength: 11 },
+        { position: 100, refAlleleLength: 11 },
+      ])
+    ).toBeNull()
+    expect(sourceRefSpanOfSingleRecord([{ position: 100, refAlleleLength: NaN }])).toBeNull()
+    expect(sourceRefSpanOfSingleRecord([{ position: 100, refAlleleLength: 0 }])).toBeNull()
+  })
+
+  test('names a single-component locus a cluster when its source REF reaches beyond it', () => {
+    const repeat = { chrom: '1', start0: 114225225, end0: 114225261, motif: 'GT' }
+    const cluster = buildLongReadTrComponentContract([repeat], {
+      start0: 114225224,
+      end0: 114225364,
+    })
+    expect(cluster.bounds).toMatchObject({
+      component_envelope_length_bp: 36,
+      source_ref_span_start0: 114225224,
+      source_ref_span_end0: 114225364,
+      source_ref_span_status: 'AVAILABLE_EXACT',
+    })
+    expect(buildLongReadTrPresentation(1, cluster.bounds)).toEqual({
+      locus_type: 'VARIATION_CLUSTER',
+    })
+
+    const isolated = buildLongReadTrComponentContract([repeat], {
+      start0: 114225225,
+      end0: 114225261,
+    })
+    expect(buildLongReadTrPresentation(1, isolated.bounds)).toEqual({
+      locus_type: 'ISOLATED_REPEAT',
+    })
   })
 
   test('counts exact ALT bytes without coalescing source identities', () => {

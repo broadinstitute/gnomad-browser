@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useMemo, useRef, useState } from 'react'
+import React, { RefObject, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
@@ -168,24 +168,64 @@ const PlotGrid = styled.div<{ $plotCount: number }>`
   /* stylelint-enable unit-whitelist */
 `
 
-const DistributionControls = styled.div`
-  /* stylelint-disable unit-whitelist -- fractional tracks align controls with plot slots. */
-  display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 1fr));
-  gap: clamp(24px, 2vw, 32px);
-  margin: 1em 0 0.8em;
+/**
+ * Pixels to add above each plot so that the x axes of plots side by side in one row of the plot
+ * grid sit level with the lowest of them. Each plot gives the top of its card, which identifies
+ * its row, and the page position of its x axis with nothing added.
+ */
+export const xAxisAlignmentPaddings = (plots: { cardTop: number; xAxisY: number }[]) => {
+  const lowestXAxisYByRow = new Map<number, number>()
+  plots.forEach(({ cardTop, xAxisY }) => {
+    lowestXAxisYByRow.set(cardTop, Math.max(lowestXAxisYByRow.get(cardTop) ?? xAxisY, xAxisY))
+  })
+  return plots.map(({ cardTop, xAxisY }) => lowestXAxisYByRow.get(cardTop)! - xAxisY)
+}
 
-  > [role='radiogroup'] {
-    margin-bottom: 0;
-  }
-
-  @media (max-width: 700px) {
-    grid-template-columns: minmax(280px, 1fr);
-  }
-  /* stylelint-enable unit-whitelist */
-`
+/**
+ * Lines up the x axes of the plots in each row of a plot grid by adding space above the higher
+ * ones. A plot takes part by marking the element to push down with data-x-axis-aligned-plot,
+ * and an element inside it whose bottom edge is the x axis with data-x-axis-line. The plots'
+ * heights depend on their cards' widths and on text that wraps, so this measures them after
+ * layout and again whenever one of them resizes.
+ */
+const useAlignedPlotXAxes = (gridRef: RefObject<HTMLElement>) => {
+  useLayoutEffect(() => {
+    const grid = gridRef.current
+    if (!grid) return undefined
+    const align = () => {
+      const plots = Array.from(grid.querySelectorAll<HTMLElement>('[data-x-axis-aligned-plot]'))
+      plots.forEach((plot) => {
+        // eslint-disable-next-line no-param-reassign
+        plot.style.paddingTop = ''
+      })
+      const measuredPlots = plots.flatMap((plot) => {
+        const card = plot.closest('[data-plot-card]')
+        const xAxisLine = plot.querySelector('[data-x-axis-line]')
+        if (!card || !xAxisLine) return []
+        return [
+          {
+            plot,
+            cardTop: Math.round(card.getBoundingClientRect().top),
+            xAxisY: xAxisLine.getBoundingClientRect().bottom,
+          },
+        ]
+      })
+      xAxisAlignmentPaddings(measuredPlots).forEach((padding, index) => {
+        // Sub-pixel differences are rounding, not misalignment.
+        if (padding >= 1) measuredPlots[index].plot.style.paddingTop = `${padding}px`
+      })
+    }
+    align()
+    if (typeof ResizeObserver === 'undefined') return undefined
+    // Padding does not change an element's content box, so aligning does not retrigger this.
+    const observer = new ResizeObserver(align)
+    grid.querySelectorAll('[data-x-axis-aligned-plot]').forEach((plot) => observer.observe(plot))
+    return () => observer.disconnect()
+  })
+}
 
 const PlotCard = styled.div`
+  position: relative;
   min-width: 0;
   padding: 1em;
   border: 1px solid #d8dee2;
@@ -230,6 +270,27 @@ const LengthAxisControl = styled.label`
   align-items: center;
   gap: 0.5em;
   font-weight: bold;
+`
+
+// Each plot's Length axis menu sits at the bottom of its card, so the menus of cards in one row
+// line up whatever each plot's height.
+const PlotLengthAxisControl = styled(LengthAxisControl)`
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  left: 1em;
+  white-space: nowrap;
+
+  /* The label stays on one line; in a narrow card the menu narrows instead. */
+  select {
+    min-width: 0;
+    flex: 0 1 auto;
+  }
+`
+
+// Keeps room at the bottom of the card for the Length axis menu placed there.
+const PlotLengthAxisControlSpace = styled.div`
+  height: 2.5em;
 `
 
 const ContractControlGroup = styled.div`
@@ -295,6 +356,50 @@ const landscapeMeasureLabel = (measure: LandscapeMeasure, repeatsAreLongestPureR
 
 const measuresLength = (measure: LandscapeMeasure) =>
   measure === 'bp-absolute' || measure === 'bp-delta'
+
+// The exact-motif measurement with every unit count expressed relative to the REF's.
+const primaryMotifMeasurementRelativeToReference = (
+  measurement: PrimaryMotifMeasurementData,
+  referenceUnits: number
+): PrimaryMotifMeasurementData => ({
+  ...measurement,
+  bins: measurement.bins.map((bin) => ({
+    ...bin,
+    exact_units: bin.exact_units - referenceUnits,
+  })),
+  genotype: {
+    ...measurement.genotype,
+    cells: measurement.genotype.cells.map((cell) => ({
+      ...cell,
+      shorter_exact_units: cell.shorter_exact_units - referenceUnits,
+      longer_exact_units: cell.longer_exact_units - referenceUnits,
+    })),
+  },
+})
+
+// The repeat-count histograms with every repeat count expressed relative to the REF's.
+const repeatCountPlotsRelativeToReference = (
+  plots: RepeatCountPlots,
+  referenceUnits: number
+): RepeatCountPlots => ({
+  ...plots,
+  max_repunits: plots.max_repunits == null ? null : plots.max_repunits - referenceUnits,
+  allele_size_distribution: plots.allele_size_distribution.map((cohort: any) => ({
+    ...cohort,
+    distribution: cohort.distribution.map((item: any) => ({
+      ...item,
+      repunit_count: item.repunit_count - referenceUnits,
+    })),
+  })),
+  genotype_distribution: plots.genotype_distribution.map((cohort: any) => ({
+    ...cohort,
+    distribution: cohort.distribution.map((item: any) => ({
+      ...item,
+      short_allele_repunit_count: item.short_allele_repunit_count - referenceUnits,
+      long_allele_repunit_count: item.long_allele_repunit_count - referenceUnits,
+    })),
+  })),
+})
 
 // Reference repeat units for the change-from-REF repeat measure. The browser divides the
 // represented reference length by the primary motif length, which is only defensible for
@@ -521,7 +626,7 @@ const AllelicLandscapeHelp = ({
       showRepeatCountControls) && (
       <p>
         {showLengthAxisControl &&
-          'The length-axis control switches both landscape plots between the API-admitted ALT allele size and its change from REF, in base pairs or in repeat units. Repeat units come from the exact repeat-count product; change from REF in repeat units divides the represented reference length by the primary motif length, so it is offered only for a single-component locus. '}
+          'Each plot has its own allele size measure menu at the bottom of its card, offering only the measures that plot can draw: the ALT allele size or its change from REF, in base pairs or in repeat units. Purity is measured from each exact ALT sequence, so the purity plot uses base pairs only. '}
         {(showAncestryControl || showSexControl) &&
           `The shared ${[showAncestryControl ? 'ancestry' : null, showSexControl ? 'sex' : null]
             .filter(Boolean)
@@ -671,6 +776,25 @@ export const componentLanes = (components: LongReadTrLocus['components']) => {
   })
 }
 
+/**
+ * The interval a locus page describes: its components, widened to the source record's REF span
+ * when the API supplies one. The catalog genotyped some clusters under the id of their main
+ * repeat, so their REF reaches beyond that repeat.
+ */
+export const locusRegionWithSourceRefSpan = (locus: LongReadTrLocus) => {
+  const { region, bounds } = locus
+  if (
+    bounds?.source_ref_span_status !== 'AVAILABLE_EXACT' ||
+    bounds.source_ref_span_start0 == null ||
+    bounds.source_ref_span_end0 == null
+  ) {
+    return region
+  }
+  const start0 = Math.min(region.start0, bounds.source_ref_span_start0)
+  const end0 = Math.max(region.end0, bounds.source_ref_span_end0)
+  return { ...region, start0, end0, size: end0 - start0 }
+}
+
 export const LongReadTrComponentTrack = ({
   locus,
   exactReferenceComponentIndex = null,
@@ -682,7 +806,8 @@ export const LongReadTrComponentTrack = ({
   showTable?: boolean
   showOverview?: boolean
 }) => {
-  const { components, region } = locus
+  const { components } = locus
+  const region = locusRegionWithSourceRefSpan(locus)
   const hasAuthorizedExactReferenceOutline =
     exactReferenceComponentIndex != null &&
     exactReferenceComponentIndex >= 0 &&
@@ -923,7 +1048,10 @@ export const LongReadTrComponentTrack = ({
 // The first column holds the rotated axis title and the y tick labels, so it is wide
 // enough to keep the title inside the plot card rather than in the card's padding.
 const HISTOGRAM_Y_COLUMN_WIDTH = 76
-const HISTOGRAM_COLUMN_GAP = 8
+// No gap, so the y axis line meets the x axis line at the corner, as in the genotype heatmap.
+const HISTOGRAM_COLUMN_GAP = 0
+// The axis line color of the genotype heatmap, which the other plots' axes share.
+const PLOT_AXIS_LINE_COLOR = '#89939a'
 const HISTOGRAM_SIDE_PADDING = 20
 
 // On-screen size, in CSS pixels, of the axis tick labels and axis titles in the allele length
@@ -954,7 +1082,10 @@ const HistogramChart = styled.div`
   margin: 1.8em 0 1.2em;
 `
 
+// flow-root keeps the chart's top margin inside this box, so the space that x axis alignment
+// adds above it moves the chart by exactly that much instead of also unmerging the margins.
 const HistogramSizer = styled.div`
+  display: flow-root;
   width: 100%;
 `
 
@@ -972,9 +1103,13 @@ const MeasuredWidth = withSize({ monitorWidth: true, noPlaceholder: true })(
 
 type HistogramLayout = { barWidth: number; gap: number; height: number }
 
-// Bars widen to fill the plot when the natural layout leaves room. When the bins do not
-// fit, they keep their natural width and the plot scrolls horizontally as before. A
-// measured width of 0 (the initial render, and jsdom) keeps the natural width.
+// Narrowest a bar may get to fit every bin in the card before the plot scrolls instead.
+const MIN_FITTED_BAR_WIDTH = 12
+
+// Bars widen or narrow to fill the plot, so every bin shows without scrolling, in the same slots
+// as the purity plot. Only bins too many to fit at MIN_FITTED_BAR_WIDTH keep their natural width
+// and scroll horizontally. A measured width of 0 (the initial render, and jsdom) keeps the
+// natural width.
 const filledBarWidth = (measuredWidth: number, binCount: number, layout: HistogramLayout) => {
   if (!measuredWidth || !binCount) return layout.barWidth
   const usableWidth =
@@ -983,14 +1118,15 @@ const filledBarWidth = (measuredWidth: number, binCount: number, layout: Histogr
     HISTOGRAM_COLUMN_GAP -
     HISTOGRAM_SIDE_PADDING * 2 -
     (binCount - 1) * layout.gap
-  return Math.max(layout.barWidth, Math.floor(usableWidth / binCount))
+  const fittedBarWidth = Math.floor(usableWidth / binCount)
+  return fittedBarWidth >= MIN_FITTED_BAR_WIDTH ? fittedBarWidth : layout.barWidth
 }
 
 const HistogramYScale = styled.div<{ $height: number }>`
   position: relative;
   height: ${(props) => props.$height}px;
   margin-top: ${HISTOGRAM_BAR_LABEL_HEADROOM}px;
-  border-right: 1px solid #89939a;
+  border-right: 1px solid ${PLOT_AXIS_LINE_COLOR};
 `
 
 const HistogramScroller = styled.div`
@@ -1006,6 +1142,8 @@ const HistogramScrollContent = styled.div`
   padding-top: ${HISTOGRAM_BAR_LABEL_HEADROOM}px;
 `
 
+// Its bottom border is the x axis line, so the line spans the whole plot width and meets the
+// y axis line at the corner.
 const Histogram = styled.div<{ $height: number; $gap: number }>`
   display: flex;
   justify-content: center;
@@ -1013,6 +1151,7 @@ const Histogram = styled.div<{ $height: number; $gap: number }>`
   box-sizing: border-box;
   gap: ${(props) => props.$gap}px;
   height: ${(props) => props.$height}px;
+  border-bottom: 1px solid ${PLOT_AXIS_LINE_COLOR};
 `
 
 const AxisTick = styled.span`
@@ -1127,7 +1266,6 @@ const HistogramXAxis = styled.div<{ $height: number; $width: number }>`
   box-sizing: border-box;
   width: ${(props) => props.$width}px;
   height: ${(props) => props.$height}px;
-  border-top: 1px solid #566168;
   margin: 0 auto;
   color: #3f484d;
   font-size: ${AXIS_LABEL_FONT_PX}px;
@@ -1162,7 +1300,7 @@ const HistogramXTick = styled.span<{ $lane: number; $left: number }>`
     left: 50%;
     width: 1px;
     height: ${(props) => 5 + props.$lane * HISTOGRAM_X_TICK_LANE_HEIGHT}px;
-    background: #566168;
+    background: ${PLOT_AXIS_LINE_COLOR};
   }
 `
 
@@ -1256,6 +1394,20 @@ const binCount = (bin: AlleleBin, ancestry: PopulationId | null, sex: Sex | null
 const ALT_ALLELE_SIZE_BAR_COLOR = '#0072b2'
 const REF_ALLELE_SIZE_BAR_COLOR = '#e69f00'
 const SELECTED_ALLELE_SIZE_BAR_COLOR = '#003f63'
+
+// A legend line between a plot card's heading and its plot, like the allele length histogram's.
+const PlotLegendAbovePlot = styled.p`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+`
+
+// A note about how to read a plot, under its legend and above the plot.
+const PlotNoteAbovePlot = styled.p`
+  color: #566168;
+  font-size: 12px;
+`
 
 const AlleleSizeColorSwatch = styled.span<{ $color: string }>`
   display: inline-block;
@@ -1505,16 +1657,26 @@ type HistogramDeltaTick = {
   left: number
 }
 
-const deltaTickWidth = (delta: number) =>
-  Math.max(20, signed(delta).length * AXIS_LABEL_FONT_PX * 0.7 + 6)
+// The text of an allele size axis tick: the size itself, or its change from REF.
+const lengthAxisTickLabel = (delta: number, mode: LengthAxisMode, referenceSize: number | null) =>
+  mode === 'absolute' ? lengthAxisValue(delta, mode, referenceSize).toLocaleString() : signed(delta)
 
+// On-screen width of a tick label; tabular digits are about 0.62em wide.
+const tickLabelWidth = (label: string) => label.length * AXIS_LABEL_FONT_PX * 0.62
+// Least space between neighboring tick labels.
+const TICK_LABEL_GAP = 6
+
+// Ticks for an axis with one slot per allele size. Every size gets a label when the labels
+// fit; otherwise some are left out, always keeping the ends, 0 and the selected size.
 export const histogramDeltaAxisTicks = (
   deltas: number[],
   barWidth: number,
   gap: number,
-  selectedDelta: number | null
+  selectedDelta: number | null,
+  tickLabel: (delta: number) => string = signed
 ): HistogramDeltaTick[] => {
   if (!deltas.length) return []
+  const labelWidth = (delta: number) => tickLabelWidth(tickLabel(delta))
 
   const centerForIndex = (index: number) => index * (barWidth + gap) + barWidth / 2
   const required = new Map<number, number>()
@@ -1554,7 +1716,8 @@ export const histogramDeltaAxisTicks = (
   const collides = (delta: number, left: number) =>
     chosen.some(
       (tick) =>
-        Math.abs(tick.left - left) < (deltaTickWidth(tick.delta) + deltaTickWidth(delta)) / 2 + 6
+        Math.abs(tick.left - left) <
+        (labelWidth(tick.delta) + labelWidth(delta)) / 2 + TICK_LABEL_GAP
     )
 
   deltas.forEach((delta, index) => {
@@ -1567,10 +1730,10 @@ export const histogramDeltaAxisTicks = (
   return chosen
     .sort((left, right) => left.left - right.left)
     .map((tick) => {
-      const tickLeft = tick.left - deltaTickWidth(tick.delta) / 2
-      let lane = laneEnds.findIndex((end) => tickLeft >= end + 6)
+      const tickLeft = tick.left - labelWidth(tick.delta) / 2
+      let lane = laneEnds.findIndex((end) => tickLeft >= end + TICK_LABEL_GAP)
       if (lane < 0) lane = laneEnds.length
-      laneEnds[lane] = tick.left + deltaTickWidth(tick.delta) / 2
+      laneEnds[lane] = tick.left + labelWidth(tick.delta) / 2
       return { ...tick, lane }
     })
 }
@@ -1625,6 +1788,22 @@ const PurityPointButton = styled.button<{ $diameter: number }>`
   }
 `
 
+// The id the REF allele's purity dot is keyed by; no source ALT has it.
+const REFERENCE_PURITY_POINT_ID = '__REFERENCE__'
+
+// The REF allele's purity dot: drawn like the ALT dots, in the histogram's REF color. It is not
+// a button, because the source-ALT index has no REF row to filter to.
+const PurityReferencePoint = styled.span<{ $diameter: number }>`
+  position: absolute;
+  box-sizing: border-box;
+  width: ${(props) => props.$diameter}px;
+  height: ${(props) => props.$diameter}px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: ${REF_ALLELE_SIZE_BAR_COLOR};
+  box-shadow: 0 0 0 1px #8a5c00;
+`
+
 export const purityPointDiameter = (value: number, minimum: number, maximum: number) => {
   if (minimum === maximum) return 16
   const normalized = Math.max(0, Math.min(1, (value - minimum) / (maximum - minimum)))
@@ -1660,11 +1839,28 @@ const purityDecimals = (domainMinimum: number, domainMaximum: number) => {
   return 2
 }
 
+// Decimals for the purity axis ticks: enough to tell them apart across the domain's span, minus
+// trailing zeros that every tick has, so 1.000, 0.995 and 0.990 rather than 1.0000.
+export const purityTickDecimals = (
+  ticks: number[],
+  domainMinimum: number,
+  domainMaximum: number
+) => {
+  const decimals = purityDecimals(domainMinimum, domainMaximum)
+  const showsEveryTickAsPrecisely = (candidateDecimals: number) =>
+    ticks.every(
+      (tick) => Number(tick.toFixed(candidateDecimals)) === Number(tick.toFixed(decimals))
+    )
+  let fewestDecimals = decimals
+  while (fewestDecimals > 0 && showsEveryTickAsPrecisely(fewestDecimals - 1)) fewestDecimals -= 1
+  return fewestDecimals
+}
+
 // The 44 px button's focus outline reaches 25 px from its center. Keep that full keyboard
-// target (and the largest 26 px AC mark) inside the axes at every data-domain boundary.
+// target (and the largest 26 px AC mark) inside the y range at every data-domain boundary.
+// Horizontally, points sit in the allele length histogram's slots.
 export const PURITY_POINT_CLEARANCE = 25
 export const PURITY_MAX_JITTER = 32
-export const PURITY_HORIZONTAL_INSET = PURITY_POINT_CLEARANCE + PURITY_MAX_JITTER
 
 export const purityScalePosition = (
   value: number,
@@ -1693,20 +1889,34 @@ const purityPositionCss = ({ percent, pixelOffset }: ReturnType<typeof puritySca
 
 const PurityScatter = ({
   points,
+  plotHeight,
+  slotDeltas = [],
   selectedAllele,
   activeMarkIds,
   onSelectPoints,
   onClear,
   lengthAxisMode = 'delta',
   representedRefLength = null,
+  alleleAxisLabel = 'Allele',
+  referencePurity = null,
+  referenceCalledAlleles = 0,
 }: {
   points: PurityPoint[]
+  // The REF allele's purity and its copies in the current view, drawn as one more dot.
+  referencePurity?: number | null
+  referenceCalledAlleles?: number
+  // Height in pixels of the plot area, the same as the allele length histogram's.
+  plotHeight: number
+  // The allele sizes (bp versus REF) that get a slot on the x axis: the allele length
+  // histogram's bars, so each point sits under its bar.
+  slotDeltas?: number[]
   selectedAllele?: string
   activeMarkIds: Set<string>
   onSelectPoints: (points: PurityPoint[]) => void
   onClear: () => void
   lengthAxisMode?: LengthAxisMode
   representedRefLength?: number | null
+  alleleAxisLabel?: string
 }) => {
   const brushMarks: DiscreteBrushMark<PurityPoint>[] = points.map((point) => ({
     id: `purity:${point.allele_id}`,
@@ -1721,242 +1931,280 @@ const PurityScatter = ({
     onClear,
   })
   if (!points.length) return <p>Motif purity is unavailable.</p>
-  const minDelta = Math.min(...points.map((point) => point.delta))
-  const maxDelta = Math.max(...points.map((point) => point.delta))
-  const [domainMinimum, domainMaximum] = purityDomain(points.map((point) => point.motif_purity))
+  // The REF allele as one more dot at the REF size, so the dots account for every allele. It is
+  // not a filter button: the source-ALT index has no REF row.
+  const referencePoint =
+    referencePurity != null && referenceCalledAlleles > 0
+      ? {
+          allele_id: REFERENCE_PURITY_POINT_ID,
+          delta: 0,
+          motif_purity: referencePurity,
+          called_alleles: referenceCalledAlleles,
+        }
+      : null
+  const allPoints = referencePoint ? [...points, referencePoint] : points
+  // One equal-width slot per allele size, laid out like the allele length histogram's bars.
+  const deltas = Array.from(
+    new Set([...slotDeltas, ...allPoints.map((point) => point.delta)])
+  ).sort((left, right) => left - right)
+  const slotIndex = new Map(deltas.map((delta, index) => [delta, index]))
+  const slotCenterCss = (delta: number) =>
+    `calc(${HISTOGRAM_SIDE_PADDING}px + ${
+      (slotIndex.get(delta)! + 0.5) / deltas.length
+    } * (100% - ${2 * HISTOGRAM_SIDE_PADDING}px))`
+  const [domainMinimum, domainMaximum] = purityDomain(allPoints.map((point) => point.motif_purity))
   const domainSpan = domainMaximum - domainMinimum
-  const decimals = purityDecimals(domainMinimum, domainMaximum)
   const purityTicks = [domainMinimum, domainMinimum + domainSpan / 2, domainMaximum]
-  let scatterHeight = 270
-  if (points.length <= 5) scatterHeight = 190
-  else if (points.length <= 25) scatterHeight = 230
-  const overlapCounts = points.reduce((counts, point) => {
+  const decimals = purityTickDecimals(purityTicks, domainMinimum, domainMaximum)
+  const overlapCounts = allPoints.reduce((counts, point) => {
     const key = `${point.delta}\u0000${point.motif_purity}`
     counts.set(key, (counts.get(key) || 0) + 1)
     return counts
   }, new Map<string, number>())
-  const overlapIndexes = new Map<string, number>()
+  // Each point's sideways offset among the points at its exact size and purity. It is worked out
+  // here rather than while drawing, because MeasuredWidth redraws the plot below on every width
+  // measurement, and a counter advanced while drawing would keep counting across those redraws.
+  const overlapIndexByKey = new Map<string, number>()
+  const overlapOffsetByAlleleId = new Map(
+    allPoints.map((point) => {
+      const key = `${point.delta}\u0000${point.motif_purity}`
+      const overlapIndex = overlapIndexByKey.get(key) || 0
+      overlapIndexByKey.set(key, overlapIndex + 1)
+      return [point.allele_id, purityOverlapOffset(overlapIndex, overlapCounts.get(key) || 1)]
+    })
+  )
   const coincidentPoints = [...overlapCounts.values()].some((count) => count > 1)
-  const minimumCalledAlleles = Math.min(...points.map((point) => point.called_alleles))
-  const maximumCalledAlleles = Math.max(...points.map((point) => point.called_alleles))
+  const minimumCalledAlleles = Math.min(...allPoints.map((point) => point.called_alleles))
+  const maximumCalledAlleles = Math.max(...allPoints.map((point) => point.called_alleles))
+
+  const purityTickBottom = (tick: number) =>
+    purityPositionCss(
+      purityScalePosition(tick, domainMinimum, domainMaximum, PURITY_POINT_CLEARANCE)
+    )
+
+  const alleleCountLegendMark = (calledAlleles: number) => {
+    const diameter = purityPointDiameter(calledAlleles, minimumCalledAlleles, maximumCalledAlleles)
+    return (
+      <span
+        aria-hidden="true"
+        style={{
+          boxSizing: 'border-box',
+          width: diameter,
+          height: diameter,
+          borderRadius: '50%',
+          background: LONG_READ_PRIMARY_PLOT_COLOR,
+        }}
+      />
+    )
+  }
 
   return (
     <>
-      <div
-        role="group"
-        aria-label={`${exactAltSequences(points.length)} plotted by ${
-          lengthAxisMode === 'absolute' ? 'represented allele length' : 'change from REF'
-        } and source-reported motif purity`}
-        data-purity-domain={`${domainMinimum.toFixed(6)}:${domainMaximum.toFixed(6)}`}
-        data-horizontal-inset={PURITY_HORIZONTAL_INSET}
-        data-vertical-inset={PURITY_POINT_CLEARANCE}
-        {...brush.containerProps}
-        style={{
-          position: 'relative',
-          height: scatterHeight,
-          margin: '1em 1.5em 2.5em 2.8em',
-          borderLeft: '1px solid #89939a',
-          borderBottom: '1px solid #89939a',
-        }}
+      <PlotLegendAbovePlot
+        aria-label={`Point size represents allele count (AC) from ${minimumCalledAlleles} to ${maximumCalledAlleles}`}
       >
-        {purityTicks.map((tick) => {
-          const bottom = purityPositionCss(
-            purityScalePosition(tick, domainMinimum, domainMaximum, PURITY_POINT_CLEARANCE)
-          )
-          return (
-            <React.Fragment key={tick}>
-              <span
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  right: 0,
-                  bottom,
-                  left: 0,
-                  borderTop: '1px solid #e2e6e8',
-                }}
-              />
-              <span
-                data-testid="purity-axis-tick"
-                style={{
-                  position: 'absolute',
-                  right: 'calc(100% + 6px)',
-                  bottom,
-                  transform: 'translateY(50%)',
-                  color: '#566168',
-                  fontSize: 10,
-                  fontVariantNumeric: 'tabular-nums',
-                }}
-              >
-                {tick.toFixed(decimals)}
-              </span>
-            </React.Fragment>
-          )
-        })}
-        {points.map((point) => {
-          const mark = brushMarks.find((candidate) => candidate.value === point)!
-          const markProps = brush.markProps(mark)
-          const pointSelected = activeMarkIds.has(mark.id) || brush.previewMarkIds.has(mark.id)
-          const left = purityPositionCss(
-            purityScalePosition(point.delta, minDelta, maxDelta, PURITY_HORIZONTAL_INSET)
-          )
-          const bottom = purityPositionCss(
-            purityScalePosition(
-              point.motif_purity,
-              domainMinimum,
-              domainMaximum,
-              PURITY_POINT_CLEARANCE
-            )
-          )
-          const size = purityPointDiameter(
-            point.called_alleles,
-            minimumCalledAlleles,
-            maximumCalledAlleles
-          )
-          const overlapKey = `${point.delta}\u0000${point.motif_purity}`
-          const overlapIndex = overlapIndexes.get(overlapKey) || 0
-          overlapIndexes.set(overlapKey, overlapIndex + 1)
-          const overlapCount = overlapCounts.get(overlapKey) || 1
-          const overlapOffset = purityOverlapOffset(overlapIndex, overlapCount)
-          return (
-            <PurityPointButton
-              key={point.allele_id}
-              type="button"
-              $diameter={size}
-              aria-pressed={pointSelected}
-              data-selected-allele={point.allele_id === selectedAllele}
-              data-discrete-brush-id={markProps['data-discrete-brush-id']}
-              title={`${alleleLabel(point.allele_id)}: ${lengthAxisLabel(
-                point.delta,
-                lengthAxisMode,
-                representedRefLength
-              )}, purity ${point.motif_purity.toFixed(4)}, AC ${point.called_alleles}`}
-              aria-label={`Filter the source-ALT index to ${alleleLabel(
-                point.allele_id
-              )}; ${lengthAxisLabel(
-                point.delta,
-                lengthAxisMode,
-                representedRefLength
-              )}; source-reported motif purity ${point.motif_purity.toFixed(
-                4
-              )}; ${calledAlleleCopies(point.called_alleles)}`}
-              data-allele-id={point.allele_id}
-              data-called-alleles={point.called_alleles}
-              data-point-diameter={size}
-              data-overlap-offset={overlapOffset}
-              onClick={(event) => {
-                if (!markProps.onClick(event)) onSelectPoints([point])
-              }}
-              onKeyDown={(event) => markProps.onKeyDown(event)}
-              style={{
-                left,
-                bottom,
-                transform: `translate(calc(-50% + ${overlapOffset}px), 50%)`,
-              }}
-            >
-              <span aria-hidden="true" />
-            </PurityPointButton>
-          )
-        })}
-        {minDelta === maxDelta ? (
-          <span
-            style={{
-              position: 'absolute',
-              left: '50%',
-              bottom: -28,
-              transform: 'translateX(-50%)',
-            }}
-          >
-            {lengthAxisMode === 'absolute'
-              ? lengthAxisValue(minDelta, lengthAxisMode, representedRefLength).toLocaleString()
-              : signed(minDelta)}{' '}
-            bp
-          </span>
-        ) : (
-          <>
-            <span style={{ position: 'absolute', left: PURITY_HORIZONTAL_INSET, bottom: -28 }}>
-              {lengthAxisMode === 'absolute'
-                ? lengthAxisValue(minDelta, lengthAxisMode, representedRefLength).toLocaleString()
-                : signed(minDelta)}{' '}
-              bp
-            </span>
-            <span style={{ position: 'absolute', right: PURITY_HORIZONTAL_INSET, bottom: -28 }}>
-              {lengthAxisMode === 'absolute'
-                ? lengthAxisValue(maxDelta, lengthAxisMode, representedRefLength).toLocaleString()
-                : signed(maxDelta)}{' '}
-              bp
-            </span>
-          </>
-        )}
-        <span
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: -42,
-            transform: 'translate(-50%, -50%) rotate(-90deg)',
-            color: '#566168',
-            fontSize: 10,
-            whiteSpace: 'nowrap',
-          }}
-        >
-          Motif purity
-        </span>
-      </div>
-      <div style={{ color: '#566168', fontSize: 11 }}>
-        Drag between points for a rectangular selection.
-      </div>
-      <div
-        aria-label={`Point size represents source ALT allele AC from ${minimumCalledAlleles} to ${maximumCalledAlleles}`}
-        style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#566168', fontSize: 11 }}
-      >
-        <strong>Allele count (AC)</strong>
-        <span
-          aria-hidden="true"
-          style={{
-            boxSizing: 'border-box',
-            width: purityPointDiameter(
-              minimumCalledAlleles,
-              minimumCalledAlleles,
-              maximumCalledAlleles
-            ),
-            height: purityPointDiameter(
-              minimumCalledAlleles,
-              minimumCalledAlleles,
-              maximumCalledAlleles
-            ),
-            borderRadius: '50%',
-            background: LONG_READ_PRIMARY_PLOT_COLOR,
-          }}
-        />
+        <span>Allele count (AC)</span>
+        {alleleCountLegendMark(minimumCalledAlleles)}
         <span>{minimumCalledAlleles.toLocaleString()}</span>
         {minimumCalledAlleles !== maximumCalledAlleles && (
           <>
-            <span
-              aria-hidden="true"
-              style={{
-                boxSizing: 'border-box',
-                width: purityPointDiameter(
-                  maximumCalledAlleles,
-                  minimumCalledAlleles,
-                  maximumCalledAlleles
-                ),
-                height: purityPointDiameter(
-                  maximumCalledAlleles,
-                  minimumCalledAlleles,
-                  maximumCalledAlleles
-                ),
-                borderRadius: '50%',
-                background: LONG_READ_PRIMARY_PLOT_COLOR,
-              }}
-            />
+            {alleleCountLegendMark(maximumCalledAlleles)}
             <span>{maximumCalledAlleles.toLocaleString()}</span>
           </>
         )}
-      </div>
+        {referencePoint && (
+          <span style={{ marginLeft: 10 }}>
+            <AlleleSizeColorSwatch aria-hidden="true" $color={REF_ALLELE_SIZE_BAR_COLOR} />
+            REF allele
+          </span>
+        )}
+      </PlotLegendAbovePlot>
       {coincidentPoints && (
-        <div style={{ color: '#566168', fontSize: 11 }}>
-          Overlapping points are slightly separated.
-        </div>
+        <PlotNoteAbovePlot>
+          Note: Overlapping points are separated slightly for visibility.
+        </PlotNoteAbovePlot>
       )}
+      <HistogramSizer data-x-axis-aligned-plot="true">
+        <MeasuredWidth>
+          {(measuredWidth) => {
+            const plotWidth = Math.max(
+              0,
+              measuredWidth - HISTOGRAM_Y_COLUMN_WIDTH - HISTOGRAM_COLUMN_GAP
+            )
+            const xAxisTicks = histogramDeltaAxisTicks(
+              deltas,
+              Math.max(0, plotWidth - 2 * HISTOGRAM_SIDE_PADDING) / deltas.length,
+              0,
+              null,
+              (delta) => lengthAxisTickLabel(delta, lengthAxisMode, representedRefLength)
+            )
+            const xAxisHeight =
+              AXIS_LABEL_FONT_PX +
+              15 +
+              Math.max(0, ...xAxisTicks.map((tick) => tick.lane)) * HISTOGRAM_X_TICK_LANE_HEIGHT
+            return (
+              <>
+                <HistogramChartWithXAxisTitle>
+                  <HistogramYScale aria-hidden="true" $height={plotHeight} style={{ marginTop: 0 }}>
+                    <AxisTitle>Purity</AxisTitle>
+                    {purityTicks.map((tick) => (
+                      <AxisTick
+                        key={tick}
+                        data-testid="purity-axis-tick"
+                        style={{ bottom: purityTickBottom(tick) }}
+                      >
+                        {tick.toFixed(decimals)}
+                      </AxisTick>
+                    ))}
+                  </HistogramYScale>
+                  <div style={{ minWidth: 0 }}>
+                    <div
+                      role="group"
+                      aria-label={`${exactAltSequences(points.length)} plotted by ${
+                        lengthAxisMode === 'absolute'
+                          ? 'represented allele length'
+                          : 'change from REF'
+                      } and source-reported motif purity`}
+                      data-purity-domain={`${domainMinimum.toFixed(6)}:${domainMaximum.toFixed(6)}`}
+                      data-vertical-inset={PURITY_POINT_CLEARANCE}
+                      data-x-axis-line="true"
+                      {...brush.containerProps}
+                      style={{
+                        position: 'relative',
+                        boxSizing: 'border-box',
+                        height: plotHeight,
+                        borderBottom: `1px solid ${PLOT_AXIS_LINE_COLOR}`,
+                      }}
+                    >
+                      {purityTicks.map((tick) => (
+                        <span
+                          key={tick}
+                          aria-hidden="true"
+                          style={{
+                            position: 'absolute',
+                            right: 0,
+                            bottom: purityTickBottom(tick),
+                            left: 0,
+                            borderTop: '1px solid #e2e6e8',
+                          }}
+                        />
+                      ))}
+                      {referencePoint && (
+                        <PurityReferencePoint
+                          role="img"
+                          aria-label={`REF allele: purity ${referencePoint.motif_purity.toFixed(
+                            4
+                          )}, ${calledAlleleCopies(referencePoint.called_alleles)}`}
+                          title={`REF allele: purity ${referencePoint.motif_purity.toFixed(
+                            4
+                          )}, AC ${referencePoint.called_alleles}`}
+                          data-testid="purity-reference-point"
+                          $diameter={purityPointDiameter(
+                            referencePoint.called_alleles,
+                            minimumCalledAlleles,
+                            maximumCalledAlleles
+                          )}
+                          style={{
+                            left: slotCenterCss(referencePoint.delta),
+                            bottom: purityTickBottom(referencePoint.motif_purity),
+                            transform: `translate(calc(-50% + ${
+                              overlapOffsetByAlleleId.get(REFERENCE_PURITY_POINT_ID) || 0
+                            }px), 50%)`,
+                          }}
+                        />
+                      )}
+                      {points.map((point) => {
+                        const mark = brushMarks.find((candidate) => candidate.value === point)!
+                        const markProps = brush.markProps(mark)
+                        const pointSelected =
+                          activeMarkIds.has(mark.id) || brush.previewMarkIds.has(mark.id)
+                        const left = slotCenterCss(point.delta)
+                        const bottom = purityPositionCss(
+                          purityScalePosition(
+                            point.motif_purity,
+                            domainMinimum,
+                            domainMaximum,
+                            PURITY_POINT_CLEARANCE
+                          )
+                        )
+                        const size = purityPointDiameter(
+                          point.called_alleles,
+                          minimumCalledAlleles,
+                          maximumCalledAlleles
+                        )
+                        const overlapOffset = overlapOffsetByAlleleId.get(point.allele_id) || 0
+                        return (
+                          <PurityPointButton
+                            key={point.allele_id}
+                            type="button"
+                            $diameter={size}
+                            aria-pressed={pointSelected}
+                            data-selected-allele={point.allele_id === selectedAllele}
+                            data-discrete-brush-id={markProps['data-discrete-brush-id']}
+                            title={`${alleleLabel(point.allele_id)}: ${lengthAxisLabel(
+                              point.delta,
+                              lengthAxisMode,
+                              representedRefLength
+                            )}, purity ${point.motif_purity.toFixed(4)}, AC ${
+                              point.called_alleles
+                            }`}
+                            aria-label={`Filter the source-ALT index to ${alleleLabel(
+                              point.allele_id
+                            )}; ${lengthAxisLabel(
+                              point.delta,
+                              lengthAxisMode,
+                              representedRefLength
+                            )}; source-reported motif purity ${point.motif_purity.toFixed(
+                              4
+                            )}; ${calledAlleleCopies(point.called_alleles)}`}
+                            data-allele-id={point.allele_id}
+                            data-called-alleles={point.called_alleles}
+                            data-point-diameter={size}
+                            data-overlap-offset={overlapOffset}
+                            onClick={(event) => {
+                              if (!markProps.onClick(event)) onSelectPoints([point])
+                            }}
+                            onKeyDown={(event) => markProps.onKeyDown(event)}
+                            style={{
+                              left,
+                              bottom,
+                              transform: `translate(calc(-50% + ${overlapOffset}px), 50%)`,
+                            }}
+                          >
+                            <span aria-hidden="true" />
+                          </PurityPointButton>
+                        )
+                      })}
+                    </div>
+                    <HistogramXAxis
+                      role="group"
+                      aria-label={`${lengthAxisTitle(alleleAxisLabel, lengthAxisMode)} axis`}
+                      data-testid="purity-x-axis"
+                      $height={xAxisHeight}
+                      $width={plotWidth}
+                      style={{ width: '100%' }}
+                    >
+                      {xAxisTicks.map((tick) => (
+                        <HistogramXTick
+                          key={tick.delta}
+                          data-testid="purity-x-axis-tick"
+                          $lane={tick.lane}
+                          $left={tick.left + HISTOGRAM_SIDE_PADDING}
+                        >
+                          {lengthAxisTickLabel(tick.delta, lengthAxisMode, representedRefLength)}
+                        </HistogramXTick>
+                      ))}
+                    </HistogramXAxis>
+                  </div>
+                </HistogramChartWithXAxisTitle>
+                <HistogramXAxisTitle aria-hidden="true">
+                  {lengthAxisTitle(alleleAxisLabel, lengthAxisMode)}
+                </HistogramXAxisTitle>
+              </>
+            )
+          }}
+        </MeasuredWidth>
+      </HistogramSizer>
     </>
   )
 }
@@ -1965,10 +2213,13 @@ const RepeatCountPlotCard = ({
   variantId,
   repeatCountPlots,
   kind,
+  lengthAxisControl = null,
 }: {
   variantId: string
   repeatCountPlots: LongReadTrLocus['repeat_count_plots']
   kind: 'allele' | 'genotype'
+  // The plot's own Length axis menu, drawn at the bottom of the card.
+  lengthAxisControl?: React.ReactNode
 }) => {
   if (repeatCountPlots.status !== 'AVAILABLE_EXACT') return null
 
@@ -2010,6 +2261,7 @@ const RepeatCountPlotCard = ({
           />
         </>
       )}
+      {lengthAxisControl}
     </PlotCard>
   )
 }
@@ -2033,7 +2285,6 @@ const MotifOccurrenceAxis = styled.div<{ $gap: number; $width: number }>`
   box-sizing: border-box;
   width: ${(props) => props.$width}px;
   padding-top: 6px;
-  border-top: 1px solid #566168;
   margin: 0 auto;
   color: #3f484d;
   font-size: ${AXIS_LABEL_FONT_PX}px;
@@ -2053,6 +2304,7 @@ const MotifOccurrencePlotCard = ({
   onSelectMotifIndex,
   onSelectBins,
   onClear,
+  lengthAxisControl = null,
 }: {
   motifs: string[]
   selectedMotifIndex: number
@@ -2061,6 +2313,8 @@ const MotifOccurrencePlotCard = ({
   onSelectMotifIndex: (motifIndex: number) => void
   onSelectBins: (bins: ExactStoredMotifDistributionBin[]) => void
   onClear: () => void
+  // The plot's own Length axis menu, drawn at the bottom of the card.
+  lengthAxisControl?: React.ReactNode
 }) => {
   const motif = motifs[selectedMotifIndex]
   const brushMarks: DiscreteBrushMark<ExactStoredMotifDistributionBin>[] = bins.map((bin) => ({
@@ -2204,6 +2458,7 @@ const MotifOccurrencePlotCard = ({
       ) : (
         <p role="status">No called source ALT copies in the current frequency slice.</p>
       )}
+      {lengthAxisControl}
     </PlotCard>
   )
 }
@@ -2289,7 +2544,13 @@ export const WholeRecordAlleleLandscape = ({
   const [selectedContractSexId, setSelectedContractSexId] = useState<string | null>(null)
   const [selectedColorBy, rawSetSelectedColorBy] = useState<ColorBy | null>(null)
   const [selectedScaleType, setSelectedScaleType] = useState<ScaleType>('linear')
-  const [requestedMeasure, setRequestedMeasure] = useState<LandscapeMeasure>('bp-absolute')
+  // Each plot has its own Length axis menu.
+  const [requestedAlleleMeasure, setRequestedAlleleMeasure] =
+    useState<LandscapeMeasure>('bp-absolute')
+  const [requestedGenotypeMeasure, setRequestedGenotypeMeasure] =
+    useState<LandscapeMeasure>('bp-absolute')
+  const [requestedPurityMeasure, setRequestedPurityMeasure] =
+    useState<LandscapeMeasure>('bp-absolute')
   const representedRefLength = representedLength?.represented_ref_length_bp ?? null
   const absoluteLengthAvailable =
     representedLength?.status === 'AVAILABLE_EXACT' &&
@@ -2495,14 +2756,14 @@ export const WholeRecordAlleleLandscape = ({
     if (choices.includes('exact-motif')) return 'exact-motif' as const
     return null
   }
-  const repeatsAvailable = Boolean(
-    repeatViewFor(alleleDistributionChoices) || repeatViewFor(genotypeDistributionChoices)
-  )
   const referenceUnits = referenceRepeatUnits(
     presentation?.locus_type === 'ISOLATED_REPEAT',
     primaryMotif,
     representedRefLength
   )
+  // On a variation cluster page each allele spans the whole cluster, not one repeat.
+  const alleleAxisLabel =
+    presentation?.locus_type === 'VARIATION_CLUSTER' ? 'Cluster Allele' : 'Allele'
   // The precomputed repeat-count histograms size each allele by its longest pure run of the
   // motif, so the REF sits at its own longest pure run. It is left unknown when the histogram
   // holds fewer alleles at that size than there are REF alleles, which would mean the two
@@ -2521,44 +2782,59 @@ export const WholeRecordAlleleLandscape = ({
   const histogramReferenceUnits = referenceLongestPureRunMatchesHistogram
     ? referenceLongestPureRun
     : null
-  // The repeat measures show the histograms whenever a locus has them.
-  const repeatReferenceUnits = admittedRepeatCountPlots ? histogramReferenceUnits : referenceUnits
-  const measureChoices = useMemo(() => {
-    const choices: LandscapeMeasure[] = []
-    if (absoluteLengthAvailable) choices.push('bp-absolute')
-    if (repeatsAvailable) choices.push('repeats-absolute')
-    choices.push('bp-delta')
-    if (repeatsAvailable && repeatReferenceUnits != null) choices.push('repeats-delta')
-    return choices
-  }, [absoluteLengthAvailable, repeatReferenceUnits, repeatsAvailable])
-  // The fallback is named rather than taken from the list, so the repeats measure listed second
-  // never becomes the default when the absolute bp measure is unavailable.
-  const fallbackMeasure: LandscapeMeasure = absoluteLengthAvailable ? 'bp-absolute' : 'bp-delta'
-  const selectedMeasure = measureChoices.includes(requestedMeasure)
-    ? requestedMeasure
-    : fallbackMeasure
-  const showControlSection =
-    measureChoices.length > 1 ||
-    showLegacyFilterControls ||
-    showContractAncestryControl ||
-    showContractSexControl
-  const lengthAxisMode: LengthAxisMode =
-    selectedMeasure === 'bp-absolute' || selectedMeasure === 'repeats-absolute'
-      ? 'absolute'
-      : 'delta'
-  const lengthAxisName =
-    lengthAxisMode === 'absolute' ? 'Represented allele length (bp)' : 'Change from REF (bp)'
-  // Each plot honours the selected measure when it admits a matching product, and keeps
-  // its own first admitted view otherwise.
-  const viewForMeasure = (choices: DistributionView[]) => {
-    if (!choices.length) return undefined
-    if (measuresLength(selectedMeasure)) {
-      return choices.includes('length') ? ('length' as const) : choices[0]
-    }
-    return repeatViewFor(choices) || choices[0]
+  // The measures a plot's Length axis menu offers: bp when it has the length product, repeats
+  // when it has a repeat-unit product, and each change-from-REF measure only when the REF's size
+  // in that unit is known.
+  const measureChoicesFor = (choices: DistributionView[]) => {
+    const repeatView = repeatViewFor(choices)
+    const repeatReferenceKnown =
+      (repeatView === 'repeat-count' ? histogramReferenceUnits : referenceUnits) != null
+    const measures: LandscapeMeasure[] = []
+    if (choices.includes('length') && absoluteLengthAvailable) measures.push('bp-absolute')
+    if (repeatView) measures.push('repeats-absolute')
+    if (choices.includes('length')) measures.push('bp-delta')
+    if (repeatView && repeatReferenceKnown) measures.push('repeats-delta')
+    return measures
   }
-  const selectedAlleleDistributionView = viewForMeasure(alleleDistributionChoices)
-  const selectedGenotypeDistributionView = viewForMeasure(genotypeDistributionChoices)
+  const alleleMeasureChoices = measureChoicesFor(alleleDistributionChoices)
+  const genotypeMeasureChoices = measureChoicesFor(genotypeDistributionChoices)
+  // Purity comes from each exact ALT sequence, so it is only measured in bp.
+  const purityMeasureChoices: LandscapeMeasure[] = absoluteLengthAvailable
+    ? ['bp-absolute', 'bp-delta']
+    : ['bp-delta']
+  // A plot shows the requested measure when it offers it, and otherwise prefers bp over repeats.
+  const measureFrom = (requested: LandscapeMeasure, choices: LandscapeMeasure[]) => {
+    if (choices.includes(requested)) return requested
+    return (
+      choices.find((measure) => measure === 'bp-absolute') ??
+      choices.find((measure) => measure === 'bp-delta') ??
+      choices[0]
+    )
+  }
+  const alleleMeasure = measureFrom(requestedAlleleMeasure, alleleMeasureChoices)
+  const genotypeMeasure = measureFrom(requestedGenotypeMeasure, genotypeMeasureChoices)
+  const purityMeasure = measureFrom(requestedPurityMeasure, purityMeasureChoices)
+  const lengthAxisModeFor = (measure: LandscapeMeasure | undefined): LengthAxisMode =>
+    measure === 'bp-absolute' || measure === 'repeats-absolute' ? 'absolute' : 'delta'
+  const alleleLengthAxisMode = lengthAxisModeFor(alleleMeasure)
+  const genotypeLengthAxisMode = lengthAxisModeFor(genotypeMeasure)
+  const purityLengthAxisMode = lengthAxisModeFor(purityMeasure)
+  const showControlSection =
+    showLegacyFilterControls || showContractAncestryControl || showContractSexControl
+  const lengthAxisName =
+    alleleLengthAxisMode === 'absolute' ? 'Represented allele length (bp)' : 'Change from REF (bp)'
+  const viewForMeasure = (
+    measure: LandscapeMeasure | undefined,
+    choices: DistributionView[]
+  ): DistributionView | undefined => {
+    if (!measure) return undefined
+    return measuresLength(measure) ? 'length' : repeatViewFor(choices) || undefined
+  }
+  const selectedAlleleDistributionView = viewForMeasure(alleleMeasure, alleleDistributionChoices)
+  const selectedGenotypeDistributionView = viewForMeasure(
+    genotypeMeasure,
+    genotypeDistributionChoices
+  )
   // The repeat measures draw the precomputed repeat-count histograms with the same plots as the
   // bp measures, with sizes counted from the REF's longest pure run when it is known.
   const repeatCountHistogram =
@@ -2581,64 +2857,43 @@ export const WholeRecordAlleleLandscape = ({
   const lengthStyleHistogramShown =
     selectedAlleleDistributionView === 'length' || Boolean(repeatCountHistogram)
   // The change-from-REF repeat measure reuses the admitted unit products with every count
-  // expressed relative to the reference unit count.
-  const shiftRepeatUnits = selectedMeasure === 'repeats-delta' && referenceUnits != null
-  const shiftedPrimaryMotifMeasurement = useMemo(() => {
-    if (!admittedPrimaryMotifMeasurement || !shiftRepeatUnits || referenceUnits == null) {
-      return admittedPrimaryMotifMeasurement
-    }
-    return {
-      ...admittedPrimaryMotifMeasurement,
-      bins: admittedPrimaryMotifMeasurement.bins.map((bin) => ({
-        ...bin,
-        exact_units: bin.exact_units - referenceUnits,
-      })),
-      genotype: {
-        ...admittedPrimaryMotifMeasurement.genotype,
-        cells: admittedPrimaryMotifMeasurement.genotype.cells.map((cell) => ({
-          ...cell,
-          shorter_exact_units: cell.shorter_exact_units - referenceUnits,
-          longer_exact_units: cell.longer_exact_units - referenceUnits,
-        })),
-      },
-    }
-  }, [admittedPrimaryMotifMeasurement, referenceUnits, shiftRepeatUnits])
-  const shiftedPrimaryMotifGenotype = admittedPrimaryMotifGenotype
-    ? shiftedPrimaryMotifMeasurement
-    : undefined
-  const shiftedRepeatCountPlots = useMemo(() => {
-    if (
-      !admittedRepeatCountPlots ||
-      selectedMeasure !== 'repeats-delta' ||
-      referenceUnits == null
-    ) {
-      return admittedRepeatCountPlots
-    }
-    return {
-      ...admittedRepeatCountPlots,
-      max_repunits:
-        admittedRepeatCountPlots.max_repunits == null
-          ? null
-          : admittedRepeatCountPlots.max_repunits - referenceUnits,
-      allele_size_distribution: admittedRepeatCountPlots.allele_size_distribution.map(
-        (cohort: any) => ({
-          ...cohort,
-          distribution: cohort.distribution.map((item: any) => ({
-            ...item,
-            repunit_count: item.repunit_count - referenceUnits,
-          })),
-        })
-      ),
-      genotype_distribution: admittedRepeatCountPlots.genotype_distribution.map((cohort: any) => ({
-        ...cohort,
-        distribution: cohort.distribution.map((item: any) => ({
-          ...item,
-          short_allele_repunit_count: item.short_allele_repunit_count - referenceUnits,
-          long_allele_repunit_count: item.long_allele_repunit_count - referenceUnits,
-        })),
-      })),
-    }
-  }, [admittedRepeatCountPlots, referenceUnits, selectedMeasure])
+  // expressed relative to the reference unit count, separately for each plot's own measure.
+  const shiftAlleleRepeatUnits = alleleMeasure === 'repeats-delta' && referenceUnits != null
+  const shiftGenotypeRepeatUnits = genotypeMeasure === 'repeats-delta' && referenceUnits != null
+  const allelePrimaryMotifMeasurement = useMemo(
+    () =>
+      admittedPrimaryMotifMeasurement && shiftAlleleRepeatUnits
+        ? primaryMotifMeasurementRelativeToReference(
+            admittedPrimaryMotifMeasurement,
+            referenceUnits as number
+          )
+        : admittedPrimaryMotifMeasurement,
+    [admittedPrimaryMotifMeasurement, referenceUnits, shiftAlleleRepeatUnits]
+  )
+  const genotypePrimaryMotifMeasurement = useMemo(
+    () =>
+      admittedPrimaryMotifGenotype && shiftGenotypeRepeatUnits
+        ? primaryMotifMeasurementRelativeToReference(
+            admittedPrimaryMotifGenotype,
+            referenceUnits as number
+          )
+        : admittedPrimaryMotifGenotype,
+    [admittedPrimaryMotifGenotype, referenceUnits, shiftGenotypeRepeatUnits]
+  )
+  const alleleRepeatCountPlots = useMemo(
+    () =>
+      admittedRepeatCountPlots && shiftAlleleRepeatUnits
+        ? repeatCountPlotsRelativeToReference(admittedRepeatCountPlots, referenceUnits as number)
+        : admittedRepeatCountPlots,
+    [admittedRepeatCountPlots, referenceUnits, shiftAlleleRepeatUnits]
+  )
+  const genotypeRepeatCountPlots = useMemo(
+    () =>
+      admittedRepeatCountPlots && shiftGenotypeRepeatUnits
+        ? repeatCountPlotsRelativeToReference(admittedRepeatCountPlots, referenceUnits as number)
+        : admittedRepeatCountPlots,
+    [admittedRepeatCountPlots, referenceUnits, shiftGenotypeRepeatUnits]
+  )
   const visiblePlotCount = 2 + (genotypeDistributionChoices.length ? 1 : 0)
   const filteredPurityPoints = (landscape.purity_points || []).flatMap((point) => {
     const frequencyCount = frequencyCountFor(alleleById.get(point.allele_id))
@@ -2668,6 +2923,20 @@ export const WholeRecordAlleleLandscape = ({
     selectedGenotypeDistributionView,
   ])
   const activeMarkIds = new Set(activeIndexSelection?.markIds || [])
+  const plotGridRef = useRef<HTMLDivElement>(null)
+  useAlignedPlotXAxes(plotGridRef)
+  const [genotypePlotHeightPx, setGenotypePlotHeightPx] = useState<number | null>(null)
+  // Changing a plot's measure can swap in a different card, which draws a new Length axis menu;
+  // focus moves to that menu so a keyboard user keeps their place.
+  const [lengthAxisMenuToRefocus, setLengthAxisMenuToRefocus] = useState<string | null>(null)
+  useEffect(() => {
+    if (!lengthAxisMenuToRefocus) return
+    const menu = plotGridRef.current?.querySelector<HTMLSelectElement>(
+      `select[aria-label="${lengthAxisMenuToRefocus}"]`
+    )
+    if (menu && document.activeElement !== menu) menu.focus()
+    setLengthAxisMenuToRefocus(null)
+  }, [lengthAxisMenuToRefocus])
   const selectedDelta =
     activeIndexSelection?.origin === 'total-length' && activeIndexSelection.markIds.length === 1
       ? activeIndexSelection.singleDelta ?? null
@@ -2744,10 +3013,10 @@ export const WholeRecordAlleleLandscape = ({
     if (!ordered.length) return
     const first = ordered[0]
     const last = ordered[ordered.length - 1]
-    let label = `at ${lengthAxisLabel(first.delta, lengthAxisMode, representedRefLength)}`
+    let label = `at ${lengthAxisLabel(first.delta, alleleLengthAxisMode, representedRefLength)}`
     if (ordered.length > 1) {
       label =
-        lengthAxisMode === 'absolute' && representedRefLength != null
+        alleleLengthAxisMode === 'absolute' && representedRefLength != null
           ? `${(representedRefLength + first.delta).toLocaleString()} to ${(
               representedRefLength + last.delta
             ).toLocaleString()} bp represented`
@@ -2792,8 +3061,10 @@ export const WholeRecordAlleleLandscape = ({
     setSelectedMotifIndex(motifIndex)
     if (activeIndexSelection?.origin === 'motif-occurrence') setIndexSelection(null)
   }
-  const selectMeasure = (measure: LandscapeMeasure) => {
-    setRequestedMeasure(measure)
+  // Changing a plot's Length axis clears an allele index filter made in that plot when the
+  // plot it was made in is replaced.
+  const selectAlleleMeasure = (measure: LandscapeMeasure) => {
+    setRequestedAlleleMeasure(measure)
     const alleleView = measuresLength(measure) ? 'length' : repeatViewFor(alleleDistributionChoices)
     let visibleOrigin: ExactIndexSelectionOrigin | null = null
     if (alleleView === 'length') visibleOrigin = 'total-length'
@@ -2805,6 +3076,9 @@ export const WholeRecordAlleleLandscape = ({
     ) {
       setIndexSelection(null)
     }
+  }
+  const selectGenotypeMeasure = (measure: LandscapeMeasure) => {
+    setRequestedGenotypeMeasure(measure)
     if (!measuresLength(measure) && activeIndexSelection?.origin === 'genotype-length') {
       setIndexSelection(null)
     }
@@ -2823,11 +3097,11 @@ export const WholeRecordAlleleLandscape = ({
           ? alleleLabel(points[0].allele_id)
           : `purity region ${lengthAxisLabel(
               Math.min(...deltas),
-              lengthAxisMode,
+              purityLengthAxisMode,
               representedRefLength
             )} through ${lengthAxisLabel(
               Math.max(...deltas),
-              lengthAxisMode,
+              purityLengthAxisMode,
               representedRefLength
             )}, purity ${Math.min(...purities).toFixed(4)} through ${Math.max(...purities).toFixed(
               4
@@ -2861,24 +3135,28 @@ export const WholeRecordAlleleLandscape = ({
         selectedCells.length === 1
           ? `selected genotype cell (${lengthAxisLabel(
               first.longerDelta,
-              lengthAxisMode,
+              genotypeLengthAxisMode,
               representedRefLength
-            )} × ${lengthAxisLabel(first.shorterDelta, lengthAxisMode, representedRefLength)})`
+            )} × ${lengthAxisLabel(
+              first.shorterDelta,
+              genotypeLengthAxisMode,
+              representedRefLength
+            )})`
           : `genotype region longer ${lengthAxisLabel(
               Math.min(...longer),
-              lengthAxisMode,
+              genotypeLengthAxisMode,
               representedRefLength
             )} through ${lengthAxisLabel(
               Math.max(...longer),
-              lengthAxisMode,
+              genotypeLengthAxisMode,
               representedRefLength
             )}; shorter ${lengthAxisLabel(
               Math.min(...shorter),
-              lengthAxisMode,
+              genotypeLengthAxisMode,
               representedRefLength
             )} through ${lengthAxisLabel(
               Math.max(...shorter),
-              lengthAxisMode,
+              genotypeLengthAxisMode,
               representedRefLength
             )}`,
     })
@@ -2912,23 +3190,62 @@ export const WholeRecordAlleleLandscape = ({
       activeMarkIds.has(mark.id) || totalLengthBrush.previewMarkIds.has(mark.id) ? index : -1
     )
     .filter((index) => index >= 0)
-  const measureControl = measureChoices.length > 1 && (
-    <LengthAxisControl>
-      Length axis
-      <Select
-        aria-label="Length axis"
-        value={selectedMeasure}
-        onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-          selectMeasure(event.target.value as LandscapeMeasure)
-        }
-      >
-        {measureChoices.map((measure) => (
-          <option key={measure} value={measure}>
-            {landscapeMeasureLabel(measure, Boolean(admittedRepeatCountPlots))}
-          </option>
-        ))}
-      </Select>
-    </LengthAxisControl>
+  // A plot's own allele size measure menu, at the bottom of its card. A plot with one measure
+  // has none.
+  const lengthAxisControl = (
+    plotTitle: string,
+    measure: LandscapeMeasure | undefined,
+    choices: LandscapeMeasure[],
+    distributionChoices: DistributionView[],
+    onSelect: (measure: LandscapeMeasure) => void
+  ) =>
+    measure && choices.length > 1 ? (
+      <>
+        <PlotLengthAxisControlSpace aria-hidden="true" />
+        <PlotLengthAxisControl>
+          Allele size measure:
+          <Select
+            aria-label={`${plotTitle} allele size measure`}
+            value={measure}
+            onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+              onSelect(event.target.value as LandscapeMeasure)
+              if (document.activeElement === event.target) {
+                setLengthAxisMenuToRefocus(`${plotTitle} allele size measure`)
+              }
+            }}
+          >
+            {choices.map((choice) => (
+              <option key={choice} value={choice}>
+                {landscapeMeasureLabel(
+                  choice,
+                  repeatViewFor(distributionChoices) === 'repeat-count'
+                )}
+              </option>
+            ))}
+          </Select>
+        </PlotLengthAxisControl>
+      </>
+    ) : null
+  const alleleLengthAxisControl = lengthAxisControl(
+    'Allele length distribution',
+    alleleMeasure,
+    alleleMeasureChoices,
+    alleleDistributionChoices,
+    selectAlleleMeasure
+  )
+  const genotypeLengthAxisControl = lengthAxisControl(
+    'Genotype length distribution',
+    genotypeMeasure,
+    genotypeMeasureChoices,
+    genotypeDistributionChoices,
+    selectGenotypeMeasure
+  )
+  const purityLengthAxisControl = lengthAxisControl(
+    'Repeat sequence purity',
+    purityMeasure,
+    purityMeasureChoices,
+    ['length'],
+    setRequestedPurityMeasure
   )
 
   if (landscape.status !== 'AVAILABLE') {
@@ -2941,23 +3258,25 @@ export const WholeRecordAlleleLandscape = ({
             primaryMotifMeasurement={admittedPrimaryMotifMeasurement}
           />
         </HeadingWithHelp>
-        <DistributionControls aria-label="Allelic Landscape measurement controls">
-          {measureControl}
-        </DistributionControls>
         <PlotGrid
+          ref={plotGridRef}
           $plotCount={visiblePlotCount}
           data-plot-count={visiblePlotCount}
           data-testid="whole-record-allele-plot-grid"
         >
-          {selectedAlleleDistributionView === 'repeat-count' && admittedRepeatCountPlots && (
+          {selectedAlleleDistributionView === 'repeat-count' && alleleRepeatCountPlots && (
             <RepeatCountPlotCard
               variantId={repeatCountVariantId}
-              repeatCountPlots={shiftedRepeatCountPlots}
+              repeatCountPlots={alleleRepeatCountPlots}
               kind="allele"
+              lengthAxisControl={alleleLengthAxisControl}
             />
           )}
-          {selectedAlleleDistributionView === 'exact-motif' && admittedPrimaryMotifMeasurement && (
-            <PrimaryMotifAllelePlotCard measurement={shiftedPrimaryMotifMeasurement} />
+          {selectedAlleleDistributionView === 'exact-motif' && allelePrimaryMotifMeasurement && (
+            <PrimaryMotifAllelePlotCard
+              measurement={allelePrimaryMotifMeasurement}
+              lengthAxisControl={alleleLengthAxisControl}
+            />
           )}
           {!selectedAlleleDistributionView && (
             <PlotCard data-plot-card="total-length-histogram">
@@ -2972,20 +3291,29 @@ export const WholeRecordAlleleLandscape = ({
               landscape={admittedGenotypeLandscape}
               selectedPopulation={selectedPopulation}
               selectedSex={selectedSex}
+              lengthAxisMode={genotypeLengthAxisMode}
+              representedRefLength={representedRefLength}
+              alleleAxisLabel={alleleAxisLabel}
+              lengthAxisControl={genotypeLengthAxisControl}
             />
           )}
-          {selectedGenotypeDistributionView === 'repeat-count' && admittedRepeatCountPlots && (
+          {selectedGenotypeDistributionView === 'repeat-count' && genotypeRepeatCountPlots && (
             <RepeatCountPlotCard
               variantId={repeatCountVariantId}
-              repeatCountPlots={shiftedRepeatCountPlots}
+              repeatCountPlots={genotypeRepeatCountPlots}
               kind="genotype"
+              lengthAxisControl={genotypeLengthAxisControl}
             />
           )}
-          {selectedGenotypeDistributionView === 'exact-motif' && admittedPrimaryMotifGenotype && (
-            <PrimaryMotifGenotypeCells measurement={shiftedPrimaryMotifGenotype} />
-          )}
+          {selectedGenotypeDistributionView === 'exact-motif' &&
+            genotypePrimaryMotifMeasurement && (
+              <PrimaryMotifGenotypeCells
+                measurement={genotypePrimaryMotifMeasurement}
+                lengthAxisControl={genotypeLengthAxisControl}
+              />
+            )}
           <PlotCard data-plot-card="motif-purity">
-            <h3>Length × motif purity</h3>
+            <h3>Repeat sequence purity</h3>
             <p role="status">
               Motif purity unavailable: {unavailableReason(landscape.reason_code)}.
             </p>
@@ -3002,7 +3330,7 @@ export const WholeRecordAlleleLandscape = ({
           sequenceCardinality={sequenceCardinality}
           sourceRecordOrder={sourceRecordOrder}
           excludeValidatedSharedPadding={excludeValidatedSharedPadding}
-          lengthAxisMode={lengthAxisMode}
+          lengthAxisMode={alleleLengthAxisMode}
           representedRefLength={representedRefLength}
         />
       </Panel>
@@ -3105,6 +3433,15 @@ export const WholeRecordAlleleLandscape = ({
   if (histogramBins.length <= 3) histogramLayout = { barWidth: 48, gap: 10, height: 190 }
   else if (histogramBins.length <= 12) histogramLayout = { barWidth: 34, gap: 6, height: 220 }
   else if (histogramBins.length <= 40) histogramLayout = { barWidth: 24, gap: 3, height: 240 }
+  // When the genotype heatmap is shown, the histogram and the purity plot are as tall as its
+  // square of cells, so all three plots in the row have the same height.
+  const genotypeHeatmapShown = Boolean(
+    (selectedGenotypeDistributionView === 'length' && admittedGenotypeLandscape) ||
+      repeatCountGenotypes
+  )
+  if (genotypeHeatmapShown && genotypePlotHeightPx) {
+    histogramLayout = { ...histogramLayout, height: genotypePlotHeightPx }
+  }
   const activeFilterDescription = selectedDelta == null ? activeIndexSelection?.label : undefined
 
   return (
@@ -3113,7 +3450,9 @@ export const WholeRecordAlleleLandscape = ({
         <h2 id="lr-tr-allele-landscape-heading">Allelic Landscape</h2>
         <AllelicLandscapeHelp
           showRepeatCountControls={Boolean(admittedRepeatCountPlots)}
-          showLengthAxisControl={measureChoices.length > 1}
+          showLengthAxisControl={Boolean(
+            alleleLengthAxisControl || genotypeLengthAxisControl || purityLengthAxisControl
+          )}
           showAncestryControl={showLegacyFilterControls || showContractAncestryControl}
           showSexControl={showLegacyFilterControls || showContractSexControl}
           showHistogramDisplayControl={showHistogramDisplayControl}
@@ -3122,7 +3461,6 @@ export const WholeRecordAlleleLandscape = ({
       </HeadingWithHelp>
       {showControlSection && (
         <LandscapeControls role="group" aria-label="Allelic Landscape controls">
-          {measureControl}
           {showLegacyFilterControls && (
             <>
               <div
@@ -3267,13 +3605,8 @@ export const WholeRecordAlleleLandscape = ({
           })}
         </p>
       )}
-      {lengthStyleHistogramShown && clippedAt && barTotals.some((count) => count > clippedAt) && (
-        <p role="status">
-          Bars above {clippedAt.toLocaleString()} copies are clipped; exact counts remain in labels
-          and tables.
-        </p>
-      )}
       <PlotGrid
+        ref={plotGridRef}
         $plotCount={visiblePlotCount}
         data-plot-count={visiblePlotCount}
         data-testid="whole-record-allele-plot-grid"
@@ -3291,12 +3624,16 @@ export const WholeRecordAlleleLandscape = ({
                 filterIndexToMotifBins(selectedMotifIndex, selectedBins)
               }
               onClear={clearIndexFilter}
+              lengthAxisControl={alleleLengthAxisControl}
             />
           )}
         {selectedAlleleDistributionView === 'exact-motif' &&
           !admittedMotifDistribution &&
-          admittedPrimaryMotifMeasurement && (
-            <PrimaryMotifAllelePlotCard measurement={shiftedPrimaryMotifMeasurement} />
+          allelePrimaryMotifMeasurement && (
+            <PrimaryMotifAllelePlotCard
+              measurement={allelePrimaryMotifMeasurement}
+              lengthAxisControl={alleleLengthAxisControl}
+            />
           )}
         {lengthStyleHistogramShown && (
           <PlotCard data-plot-card="total-length-histogram">
@@ -3328,6 +3665,12 @@ export const WholeRecordAlleleLandscape = ({
                 )}
               </p>
             )}
+            {clippedAt && barTotals.some((count) => count > clippedAt) && (
+              <PlotNoteAbovePlot role="status">
+                Bars above {clippedAt.toLocaleString()} copies are clipped; exact counts remain in
+                labels and tables.
+              </PlotNoteAbovePlot>
+            )}
             <MeasuredWidth>
               {(measuredWidth) => {
                 const barWidth = filledBarWidth(
@@ -3343,7 +3686,9 @@ export const WholeRecordAlleleLandscape = ({
                   histogramBins.map((bin) => bin.delta),
                   barWidth,
                   histogramLayout.gap,
-                  selectedBin?.delta ?? null
+                  selectedBin?.delta ?? null,
+                  (delta) =>
+                    lengthAxisTickLabel(delta, alleleLengthAxisMode, histogramReferenceSize)
                 )
                 const deltaAxisHeight =
                   AXIS_LABEL_FONT_PX +
@@ -3365,7 +3710,7 @@ export const WholeRecordAlleleLandscape = ({
                   (referenceOnlyBarShown ? 2 : 1) * 1.2 * barLabelFontPx + 6
                 )
                 return (
-                  <HistogramSizer>
+                  <HistogramSizer data-x-axis-aligned-plot="true">
                     <HistogramChartWithXAxisTitle
                       data-bin-count={histogramBins.length}
                       data-bar-width={barWidth}
@@ -3403,6 +3748,7 @@ export const WholeRecordAlleleLandscape = ({
                           <Histogram
                             aria-label={`${lengthAxisName} histogram`}
                             data-testid="whole-record-delta-histogram"
+                            data-x-axis-line="true"
                             $height={histogramLayout.height}
                             $gap={histogramLayout.gap}
                             {...totalLengthBrush.containerProps}
@@ -3424,7 +3770,7 @@ export const WholeRecordAlleleLandscape = ({
                                 totalLengthBrush.previewMarkIds.has(mark.id)
                               const lengthLabel = lengthAxisLabel(
                                 bin.delta,
-                                lengthAxisMode,
+                                alleleLengthAxisMode,
                                 histogramReferenceSize,
                                 histogramUnit
                               )
@@ -3573,7 +3919,7 @@ export const WholeRecordAlleleLandscape = ({
                                 key={tick.delta}
                                 aria-label={`${lengthAxisValue(
                                   tick.delta,
-                                  lengthAxisMode,
+                                  alleleLengthAxisMode,
                                   histogramReferenceSize
                                 ).toLocaleString()} ${histogramUnit === 'bp' ? 'bp' : 'copy'} tick`}
                                 data-delta={tick.delta}
@@ -3581,13 +3927,11 @@ export const WholeRecordAlleleLandscape = ({
                                 $lane={tick.lane}
                                 $left={tick.left + HISTOGRAM_SIDE_PADDING}
                               >
-                                {lengthAxisMode === 'absolute'
-                                  ? lengthAxisValue(
-                                      tick.delta,
-                                      lengthAxisMode,
-                                      histogramReferenceSize
-                                    ).toLocaleString()
-                                  : signed(tick.delta)}
+                                {lengthAxisTickLabel(
+                                  tick.delta,
+                                  alleleLengthAxisMode,
+                                  histogramReferenceSize
+                                )}
                               </HistogramXTick>
                             ))}
                           </HistogramXAxis>
@@ -3595,12 +3939,13 @@ export const WholeRecordAlleleLandscape = ({
                       </HistogramScroller>
                     </HistogramChartWithXAxisTitle>
                     <HistogramXAxisTitle aria-hidden="true">
-                      {lengthAxisTitle('Allele', lengthAxisMode, histogramUnit)}
+                      {lengthAxisTitle(alleleAxisLabel, alleleLengthAxisMode, histogramUnit)}
                     </HistogramXAxisTitle>
                   </HistogramSizer>
                 )
               }}
             </MeasuredWidth>
+            {alleleLengthAxisControl}
           </PlotCard>
         )}
         {selectedGenotypeDistributionView === 'length' && admittedGenotypeLandscape && (
@@ -3613,8 +3958,11 @@ export const WholeRecordAlleleLandscape = ({
             activeMarkIds={activeMarkIds}
             onSelectCells={filterIndexToGenotypeCells}
             onClear={clearIndexFilter}
-            lengthAxisMode={lengthAxisMode}
+            lengthAxisMode={genotypeLengthAxisMode}
             representedRefLength={representedRefLength}
+            alleleAxisLabel={alleleAxisLabel}
+            onPlotHeightChange={setGenotypePlotHeightPx}
+            lengthAxisControl={genotypeLengthAxisControl}
           />
         )}
         {repeatCountGenotypes && (
@@ -3624,33 +3972,47 @@ export const WholeRecordAlleleLandscape = ({
             selectedSex={selectedSex}
             selectedPopulations={selectedGenotypeAncestries}
             selectedSexes={selectedGenotypeSexes}
-            lengthAxisMode={lengthAxisMode}
+            lengthAxisMode={genotypeLengthAxisMode}
             representedRefLength={histogramReferenceUnits}
             unit="longest-pure-run"
             referenceSizeKnown={histogramReferenceUnits != null}
             cellsClickable={false}
+            alleleAxisLabel={alleleAxisLabel}
+            onPlotHeightChange={setGenotypePlotHeightPx}
+            lengthAxisControl={genotypeLengthAxisControl}
           />
         )}
-        {selectedGenotypeDistributionView === 'exact-motif' && admittedPrimaryMotifGenotype && (
-          <PrimaryMotifGenotypeCells measurement={shiftedPrimaryMotifGenotype} />
+        {selectedGenotypeDistributionView === 'exact-motif' && genotypePrimaryMotifMeasurement && (
+          <PrimaryMotifGenotypeCells
+            measurement={genotypePrimaryMotifMeasurement}
+            lengthAxisControl={genotypeLengthAxisControl}
+          />
         )}
         <PlotCard data-plot-card="motif-purity">
-          <h3>Length × motif purity</h3>
+          <h3>Repeat sequence purity</h3>
           {landscape.purity_available ? (
             <PurityScatter
               points={filteredPurityPoints}
+              plotHeight={histogramLayout.height}
+              slotDeltas={bins.map((bin) => bin.delta)}
               selectedAllele={selectedAllele}
               activeMarkIds={activeMarkIds}
               onSelectPoints={filterIndexToPurityPoints}
               onClear={clearIndexFilter}
-              lengthAxisMode={lengthAxisMode}
+              lengthAxisMode={purityLengthAxisMode}
               representedRefLength={representedRefLength}
+              alleleAxisLabel={alleleAxisLabel}
+              referencePurity={landscape.reference_purity ?? null}
+              // The bp REF bin, not the histogram's current one: in the repeats measure that
+              // also holds ALT alleles with the REF's longest pure run.
+              referenceCalledAlleles={alleleCopiesInView(referenceBin)}
             />
           ) : (
             <p role="status">
               Purity unavailable: {unavailableReason(landscape.purity_unavailable_reason)}.
             </p>
           )}
+          {landscape.purity_available && purityLengthAxisControl}
         </PlotCard>
       </PlotGrid>
       <ExactAlleleIndex
@@ -3666,7 +4028,7 @@ export const WholeRecordAlleleLandscape = ({
         sequenceCardinality={sequenceCardinality}
         sourceRecordOrder={sourceRecordOrder}
         excludeValidatedSharedPadding={excludeValidatedSharedPadding}
-        lengthAxisMode={lengthAxisMode}
+        lengthAxisMode={alleleLengthAxisMode}
         representedRefLength={representedRefLength}
         sequencesAvailable={sequencesAvailable}
         sequencesUnavailableReason={sequencesUnavailableReason}
@@ -3692,6 +4054,20 @@ const HeatmapFigure = styled.figure`
   }
 `
 
+// Passes a plot height that is only known while drawing up to the parent, after the draw.
+const ReportPlotHeight = ({
+  heightPx,
+  onChange,
+}: {
+  heightPx: number
+  onChange?: (heightPx: number) => void
+}) => {
+  useEffect(() => {
+    if (onChange) onChange(heightPx)
+  }, [heightPx, onChange])
+  return null
+}
+
 // The heatmap SVG fills this box, so measuring the box gives the SVG's on-screen width.
 const HeatmapSizer = styled.div`
   width: 100%;
@@ -3715,16 +4091,6 @@ const HeatmapSvg = styled.svg`
     stroke: #111;
     stroke-width: 4px;
   }
-`
-
-const IntensityKey = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 0.5em;
-  color: #566168;
-  font-size: ${AXIS_LABEL_FONT_PX}px;
 `
 
 const filteredPairs = (
@@ -3808,6 +4174,9 @@ export const WholeRecordGenotypeLandscape = ({
   unit = 'bp',
   referenceSizeKnown = true,
   cellsClickable = true,
+  alleleAxisLabel = 'Allele',
+  onPlotHeightChange,
+  lengthAxisControl = null,
 }: {
   landscape: WholeRecordGenotypeLandscapeData
   selectedPopulation: PopulationId | null
@@ -3825,6 +4194,12 @@ export const WholeRecordGenotypeLandscape = ({
   // False for the repeat-count histograms, which carry no allele ids to filter the source-ALT
   // index by; their squares then only show their counts on hover.
   cellsClickable?: boolean
+  // "Cluster Allele" on a variation cluster page, where each allele spans the whole cluster.
+  alleleAxisLabel?: string
+  // Receives the on-screen height in pixels of the square of cells, so the other plots can match.
+  onPlotHeightChange?: (heightPx: number) => void
+  // The plot's own Length axis menu, drawn at the bottom of the card.
+  lengthAxisControl?: React.ReactNode
 }) => {
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const activePopulations = selectedPopulations || (selectedPopulation ? [selectedPopulation] : [])
@@ -3910,9 +4285,7 @@ export const WholeRecordGenotypeLandscape = ({
     ),
   ]
   const axisValueLabel = (value: number) =>
-    lengthAxisMode === 'absolute'
-      ? lengthAxisValue(value, lengthAxisMode, representedRefLength).toLocaleString()
-      : signed(value)
+    lengthAxisTickLabel(value, lengthAxisMode, representedRefLength)
   const longestAxisValueLabelLength = Math.max(
     1,
     ...values.map((value) => axisValueLabel(value).length)
@@ -3949,6 +4322,19 @@ export const WholeRecordGenotypeLandscape = ({
             Biallelic genotypes for {counted(totalPeople, 'individual', 'individuals')}
           </strong>
         </p>
+        <PlotLegendAbovePlot aria-label="Logarithmic people intensity legend">
+          <span>Fewer people</span>
+          <span
+            aria-hidden="true"
+            style={{
+              width: 110,
+              height: 10,
+              border: '1px solid #bfc8ce',
+              background: `linear-gradient(90deg, rgba(156,39,176,.15), ${LONG_READ_PRIMARY_PLOT_COLOR})`,
+            }}
+          />
+          <span>More people</span>
+        </PlotLegendAbovePlot>
         <HeatmapFigure role="region" aria-label="Genotype length distribution plot" tabIndex={0}>
           <MeasuredWidth>
             {(svgWidth) => {
@@ -4017,7 +4403,13 @@ export const WholeRecordGenotypeLandscape = ({
                 )
                 .sort((left, right) => left - right)
               return (
-                <HeatmapSizer>
+                <HeatmapSizer data-x-axis-aligned-plot="true">
+                  {svgWidth > 0 && (
+                    <ReportPlotHeight
+                      heightPx={Math.round(plotSize / svgUnitsPerPixel)}
+                      onChange={onPlotHeightChange}
+                    />
+                  )}
                   <HeatmapSvg
                     viewBox={`0 0 ${heatmapWidth} ${heatmapHeight}`}
                     {...(cellsClickable ? brush.containerProps : {})}
@@ -4214,18 +4606,19 @@ export const WholeRecordGenotypeLandscape = ({
                       </React.Fragment>
                     ))}
                     <line
+                      data-x-axis-line="true"
                       x1={heatmapLeft}
                       y1={heatmapTop + plotSize}
                       x2={heatmapLeft + plotSize}
                       y2={heatmapTop + plotSize}
-                      stroke="#89939a"
+                      stroke={PLOT_AXIS_LINE_COLOR}
                     />
                     <line
                       x1={heatmapLeft}
                       y1={heatmapTop}
                       x2={heatmapLeft}
                       y2={heatmapTop + plotSize}
-                      stroke="#89939a"
+                      stroke={PLOT_AXIS_LINE_COLOR}
                     />
                     <text
                       x={heatmapLeft + plotSize / 2}
@@ -4234,7 +4627,7 @@ export const WholeRecordGenotypeLandscape = ({
                       fontSize={axisFontSize}
                       textAnchor="middle"
                     >
-                      {lengthAxisTitle('Long Allele', lengthAxisMode, unit)}
+                      {lengthAxisTitle(`Long ${alleleAxisLabel}`, lengthAxisMode, unit)}
                     </text>
                     <text
                       x={yAxisTitleX}
@@ -4244,27 +4637,15 @@ export const WholeRecordGenotypeLandscape = ({
                       textAnchor="middle"
                       transform={`rotate(-90 ${yAxisTitleX} ${heatmapTop + plotSize / 2})`}
                     >
-                      {lengthAxisTitle('Short Allele', lengthAxisMode, unit)}
+                      {lengthAxisTitle(`Short ${alleleAxisLabel}`, lengthAxisMode, unit)}
                     </text>
                   </HeatmapSvg>
                 </HeatmapSizer>
               )
             }}
           </MeasuredWidth>
-          <IntensityKey aria-label="Logarithmic people intensity legend">
-            <span>Fewer people</span>
-            <span
-              aria-hidden="true"
-              style={{
-                width: 110,
-                height: 10,
-                border: '1px solid #bfc8ce',
-                background: `linear-gradient(90deg, rgba(156,39,176,.15), ${LONG_READ_PRIMARY_PLOT_COLOR})`,
-              }}
-            />
-            <span>More people</span>
-          </IntensityKey>
         </HeatmapFigure>
+        {lengthAxisControl}
       </PlotCard>
     </>
   )

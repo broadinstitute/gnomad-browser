@@ -612,10 +612,15 @@ const renderPage = ({
     </ThemeProvider>
   )
 
-// The length axis defaults to represented ALT allele size. Tests that assert signed
-// change-from-REF labels switch the axis back to that mode first.
+// Each plot's own allele size measure defaults to represented ALT allele size. Tests that assert
+// signed change-from-REF labels switch every plot that offers it back to that mode first.
 const selectChangeFromRefAxis = () =>
-  fireEvent.change(screen.getByLabelText('Length axis'), { target: { value: 'bp-delta' } })
+  screen.getAllByLabelText(/ allele size measure$/).forEach((menu) => {
+    const options = Array.from((menu as HTMLSelectElement).options)
+    if (options.some((option) => option.value === 'bp-delta')) {
+      fireEvent.change(menu, { target: { value: 'bp-delta' } })
+    }
+  })
 
 const motifAttributeValue = () =>
   screen.getAllByText('Motif').find((element) => element.tagName === 'DT')!.nextElementSibling!
@@ -940,6 +945,29 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
   })
 
+  test('describes a cluster filed under its main repeat by its source record span', () => {
+    // One CAG component at 3074876-3074933, in a source record whose REF spans the whole
+    // 170 bp cluster at 3074870-3075040.
+    const locus = makeSimpleLocus()
+    ;(locus as any).presentation = { locus_type: 'VARIATION_CLUSTER' }
+    ;(locus as any).bounds = {
+      ...locus.bounds,
+      source_ref_span_start0: 3074870,
+      source_ref_span_end0: 3075040,
+      source_ref_span_status: 'AVAILABLE_EXACT',
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
+    expect(screen.getByText('chr4:3,074,870–3,075,040 (GRCh38)')).not.toBeNull()
+    expect(screen.getByText('Cluster length')).not.toBeNull()
+    expect(screen.getByText('170 bp')).not.toBeNull()
+    expect(screen.queryByText('Reference sequence purity')).toBeNull()
+    expect(screen.getAllByText(/^Cluster Allele \(bp/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/^Long Cluster Allele \(bp/).length).toBeGreaterThan(0)
+    expect(screen.queryByText(/^Allele \(bp/)).toBeNull()
+  })
+
   test('hides unavailable controls when represented length is unavailable', () => {
     const locus = makeLocus()
     ;(locus as any).sequence_cardinality = {
@@ -958,7 +986,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.queryByLabelText('Length axis')).toBeNull()
+    expect(screen.queryByLabelText(/allele size measure$/)).toBeNull()
     expect(screen.queryByRole('option', { name: 'ALT allele size (bp)' })).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     expect(screen.queryByText('Allele lengths')).toBeNull()
@@ -1039,7 +1067,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).toBeNull()
     expect(within(help).queryByText(/Repeat-count controls are card-local/)).toBeNull()
     expect(
-      within(help).getByText(/The length-axis control switches both landscape plots/)
+      within(help).getByText(
+        /Each plot has its own allele size measure menu at the bottom of its card/
+      )
     ).not.toBeNull()
     expect(
       within(help).getByText(
@@ -1084,23 +1114,41 @@ describe('canonical long-read tandem-repeat locus page', () => {
     renderPage({ locus: makeSimpleLocus(), selectedAllele: undefined })
 
     const grid = screen.getByTestId('whole-record-allele-plot-grid')
-    const lengthAxis = screen.getByLabelText('Length axis') as HTMLSelectElement
+    const alleleLengthAxis = screen.getByLabelText(
+      'Allele length distribution allele size measure'
+    ) as HTMLSelectElement
+    const genotypeLengthAxis = screen.getByLabelText(
+      'Genotype length distribution allele size measure'
+    ) as HTMLSelectElement
+    const purityLengthAxis = screen.getByLabelText(
+      'Repeat sequence purity allele size measure'
+    ) as HTMLSelectElement
+    const optionValues = (menu: HTMLSelectElement) =>
+      Array.from(menu.options).map((option) => option.value)
 
     expect(grid.getAttribute('data-plot-count')).toBe('3')
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
-    expect(lengthAxis.value).toBe('bp-absolute')
+    // Each plot has its own menu, defaulting to bp and offering only what that plot can draw.
     // No ALT − REF repeat measure here: this fixture's repeat-count histogram does not hold
     // every REF allele at the REF's longest pure run of CAG, so the REF size stays unknown.
-    expect(Array.from(lengthAxis.options).map((option) => option.value)).toEqual([
+    expect(alleleLengthAxis.value).toBe('bp-absolute')
+    expect(optionValues(alleleLengthAxis)).toEqual(['bp-absolute', 'repeats-absolute', 'bp-delta'])
+    expect(genotypeLengthAxis.value).toBe('bp-absolute')
+    expect(optionValues(genotypeLengthAxis)).toEqual([
       'bp-absolute',
       'repeats-absolute',
       'bp-delta',
     ])
+    // Purity is measured from each exact ALT sequence, so only in bp.
+    expect(optionValues(purityLengthAxis)).toEqual(['bp-absolute', 'bp-delta'])
 
-    lengthAxis.focus()
-    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
-    expect(screen.getByLabelText('Length axis')).toBe(lengthAxis)
-    expect(document.activeElement).toBe(lengthAxis)
+    alleleLengthAxis.focus()
+    fireEvent.change(alleleLengthAxis, { target: { value: 'repeats-absolute' } })
+    expect(screen.getByLabelText('Allele length distribution allele size measure')).toBe(
+      alleleLengthAxis
+    )
+    expect(document.activeElement).toBe(alleleLengthAxis)
+    fireEvent.change(genotypeLengthAxis, { target: { value: 'repeats-absolute' } })
     // Both plots draw the precomputed repeat-count histograms (each allele's longest pure run)
     // with the same plots as the bp measure, rather than the exact-motif or legacy cards.
     expect(within(grid).queryByTestId('motif-occurrence-card')).toBeNull()
@@ -1118,6 +1166,27 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(grid.compareDocumentPosition(screen.getByTestId('lr-tr-exact-allele-browser'))).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING
     )
+  })
+
+  test('offers the genotype plot no bp measure when bp genotypes are missing', () => {
+    // As in AoU, which has no per-person calls in the bp data: only repeat-count genotypes exist.
+    const locus = makeSimpleLocus()
+    ;(locus as any).whole_record_genotype_landscape = {
+      ...locus.whole_record_genotype_landscape,
+      status: 'UNAVAILABLE',
+      reason_code: 'CARRIER_CALLS_NOT_AVAILABLE',
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    // The genotype plot's only measure is the longest pure run, so it shows that without a menu,
+    // while the allele plot keeps its bp default.
+    const genotypeCard = screen.getByTestId('genotype-length-card')
+    expect(within(genotypeCard).getByText('Long Allele (longest pure run)')).not.toBeNull()
+    expect(screen.queryByLabelText('Genotype length distribution allele size measure')).toBeNull()
+    expect(
+      (screen.getByLabelText('Allele length distribution allele size measure') as HTMLSelectElement)
+        .value
+    ).toBe('bp-absolute')
   })
 
   test('integrates the reviewed exact-primary-motif boundary and established genotype orientation', () => {
@@ -1144,11 +1213,15 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(help).getByText('primary-motif-hgsvc-htt')).not.toBeNull()
     expect(within(help).getByText('complete_no_truncation')).not.toBeNull()
 
-    const lengthAxis = screen.getByLabelText('Length axis')
-    lengthAxis.focus()
-    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
-    expect(screen.getByLabelText('Length axis')).toBe(lengthAxis)
-    expect(document.activeElement).toBe(lengthAxis)
+    const genotypeLengthAxis = screen.getByLabelText(
+      'Genotype length distribution allele size measure'
+    )
+    genotypeLengthAxis.focus()
+    fireEvent.change(genotypeLengthAxis, { target: { value: 'repeats-absolute' } })
+    // The exact-motif card replaces the length card and draws its own menu, which takes focus.
+    expect(document.activeElement).toBe(
+      screen.getByLabelText('Genotype length distribution allele size measure')
+    )
 
     const card = screen.getByTestId('primary-motif-genotype-cells')
     expect(
@@ -1194,7 +1267,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).toEqual([
       'Allele length distribution',
       'Genotype length distribution',
-      'Length × motif purity',
+      'Repeat sequence purity',
     ])
     expect(plotGrid.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(genotypeCard.compareDocumentPosition(index)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
@@ -1202,7 +1275,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(plotGrid.getAttribute('data-plot-count')).toBe('3')
     expect(plotGrid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
     expect(within(plotGrid).queryByTestId('motif-occurrence-card')).toBeNull()
-    fireEvent.change(screen.getByLabelText('Length axis'), {
+    fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
       target: { value: 'repeats-absolute' },
     })
     expect(
@@ -1554,7 +1627,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(highAcPoint.getAttribute('data-selected-allele')).toBe('true')
     expect(highAcPoint).toHaveStyleRule('box-sizing', 'border-box')
     expect(
-      screen.getByLabelText('Point size represents source ALT allele AC from 40 to 120')
+      screen.getByLabelText('Point size represents allele count (AC) from 40 to 120')
     ).not.toBeNull()
   })
 

@@ -11,18 +11,19 @@ import {
   histogramHeightPercent,
   LongReadTrComponentTrack,
   motifColor,
-  PURITY_HORIZONTAL_INSET,
   PURITY_MAX_JITTER,
   PURITY_POINT_CLEARANCE,
   purityDomain,
   purityOverlapOffset,
   purityPointDiameter,
   purityScalePosition,
+  purityTickDecimals,
   reconciledFilterOptions,
   SelectedExactAlleleDetail,
   stackColorFor,
   WholeRecordAlleleLandscape,
   WholeRecordGenotypeLandscape,
+  xAxisAlignmentPaddings,
 } from './LongReadTrVisualizations'
 import {
   AlleleNavigation,
@@ -670,17 +671,31 @@ describe('long-read TR visualization fidelity', () => {
     expect(grid.getAttribute('data-plot-count')).toBe('3')
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
     expect(within(grid).getByTestId('genotype-length-card')).not.toBeNull()
-    const lengthAxis = screen.getByLabelText('Length axis')
-    lengthAxis.focus()
-    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
-    expect(screen.getByLabelText('Length axis')).toBe(lengthAxis)
-    expect(document.activeElement).toBe(lengthAxis)
+    const alleleLengthAxis = screen.getByLabelText('Allele length distribution allele size measure')
+    alleleLengthAxis.focus()
+    fireEvent.change(alleleLengthAxis, { target: { value: 'repeats-absolute' } })
+    expect(screen.getByLabelText('Allele length distribution allele size measure')).toBe(
+      alleleLengthAxis
+    )
+    expect(document.activeElement).toBe(alleleLengthAxis)
+    // Each plot has its own allele size measure menu, so the genotype plot stays in bp until its own
+    // menu changes.
+    expect(
+      within(within(grid).getByTestId('genotype-length-card')).queryByText(
+        'Long Allele (longest pure run)'
+      )
+    ).toBeNull()
+    fireEvent.change(screen.getByLabelText('Genotype length distribution allele size measure'), {
+      target: { value: 'repeats-absolute' },
+    })
     // The repeat measure draws the precomputed repeat-count histograms, which give each allele's
     // longest pure run, with the same plots as the bp measure. This fixture's histogram holds
     // fewer alleles at the REF's longest pure run than there are REF alleles, so the REF size is
     // unknown and each size reads as its own longest pure run, not as a change from REF.
     expect(
-      screen.getByRole('option', { name: 'ALT allele longest pure run (repeats)' })
+      within(alleleLengthAxis).getByRole('option', {
+        name: 'ALT allele longest pure run (repeats)',
+      })
     ).not.toBeNull()
     expect(within(grid).queryByTestId('allele-repeat-count-card')).toBeNull()
     expect(within(grid).queryByTestId('genotype-repeat-count-card')).toBeNull()
@@ -758,9 +773,11 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    const lengthAxis = screen.getByLabelText('Length axis') as HTMLSelectElement
-    expect(lengthAxis.value).toBe('bp-delta')
-    fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
+    const genotypeLengthAxis = screen.getByLabelText(
+      'Genotype length distribution allele size measure'
+    ) as HTMLSelectElement
+    expect(genotypeLengthAxis.value).toBe('bp-delta')
+    fireEvent.change(genotypeLengthAxis, { target: { value: 'repeats-absolute' } })
     expect(screen.getByTestId('primary-motif-genotype-cells')).not.toBeNull()
     expect(screen.queryByTestId('genotype-length-card')).toBeNull()
 
@@ -776,8 +793,8 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    // The genotype plot no longer admits a repeat-unit product, so it falls back to its
-    // own length card while the repeat measure stays selected for the allele plot.
+    // The genotype plot no longer admits a repeat-unit product, so its own menu falls back to
+    // the bp measure and its length card.
     expect(screen.queryByTestId('primary-motif-genotype-cells')).toBeNull()
     expect(screen.getByTestId('genotype-length-card')).not.toBeNull()
   })
@@ -801,12 +818,15 @@ describe('long-read TR visualization fidelity', () => {
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(2)
     expect(within(grid).getByTestId('whole-record-delta-histogram')).not.toBeNull()
     expect(within(grid).queryByTestId('motif-occurrence-card')).toBeNull()
-    const lengthAxis = screen.getByLabelText('Length axis') as HTMLSelectElement
+    const lengthAxis = screen.getByLabelText(
+      'Allele length distribution allele size measure'
+    ) as HTMLSelectElement
     expect(lengthAxis.value).toBe('bp-absolute')
     fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
-    expect((screen.getByLabelText('Length axis') as HTMLSelectElement).value).toBe(
-      'repeats-absolute'
-    )
+    expect(
+      (screen.getByLabelText('Allele length distribution allele size measure') as HTMLSelectElement)
+        .value
+    ).toBe('repeats-absolute')
     expect(within(grid).queryByTestId('whole-record-delta-histogram')).toBeNull()
     const card = within(grid).getByTestId('motif-occurrence-card')
     expect(
@@ -864,11 +884,13 @@ describe('long-read TR visualization fidelity', () => {
         name: /CAG; 1 exact literal occurrence in each whole represented source ALT/,
       })
     )
-    fireEvent.change(screen.getByLabelText('Length axis'), { target: { value: 'bp-delta' } })
+    fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
+      target: { value: 'bp-delta' },
+    })
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
     expect(within(grid).queryByTestId('motif-occurrence-card')).toBeNull()
     expect(within(grid).getByTestId('whole-record-delta-histogram')).not.toBeNull()
-    fireEvent.change(screen.getByLabelText('Length axis'), {
+    fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
       target: { value: 'repeats-absolute' },
     })
     expect(screen.getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue('0')
@@ -904,7 +926,7 @@ describe('long-read TR visualization fidelity', () => {
         navigation={navigation}
       />
     )
-    fireEvent.change(screen.getByLabelText('Length axis'), {
+    fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
       target: { value: 'repeats-absolute' },
     })
     expect(
@@ -924,9 +946,11 @@ describe('long-read TR visualization fidelity', () => {
       })
     ).not.toBeNull()
     expect(screen.queryByRole('button', { name: /CAG; 1 exact literal occurrence/ })).toBeNull()
-    fireEvent.change(screen.getByLabelText('Length axis'), { target: { value: 'bp-absolute' } })
+    fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
+      target: { value: 'bp-absolute' },
+    })
     expect(screen.getByLabelText('Genetic ancestry group')).toHaveValue('afr')
-    fireEvent.change(screen.getByLabelText('Length axis'), {
+    fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
       target: { value: 'repeats-absolute' },
     })
     expect(screen.getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue('0')
@@ -1084,11 +1108,21 @@ describe('long-read TR visualization fidelity', () => {
 
     const scatter = screen.getByRole('group', { name: /3 source ALT alleles plotted/ })
     expect(scatter.getAttribute('data-purity-domain')).toBe('0.990000:1.000000')
-    const tickLabels = within(scatter)
+    const purityCard = scatter.closest('[data-plot-card="motif-purity"]') as HTMLElement
+    const tickLabels = within(purityCard)
       .getAllByTestId('purity-axis-tick')
       .map((tick) => tick.textContent)
     expect(new Set(tickLabels).size).toBe(3)
-    expect(tickLabels).toEqual(['0.9900', '0.9950', '1.0000'])
+    // No trailing zeros that every tick shares.
+    expect(tickLabels).toEqual(['0.990', '0.995', '1.000'])
+    // The x axis reads like the allele length histogram's: bare tick values and one title.
+    expect(
+      within(purityCard)
+        .getAllByTestId('purity-x-axis-tick')
+        .every((tick) => /^[−+-]?\d+$/.test(tick.textContent || ''))
+    ).toBe(true)
+    expect(within(purityCard).getByText('Allele (bp minus REF)')).not.toBeNull()
+    expect(within(purityCard).queryByText(/ bp$/)).toBeNull()
 
     const points = within(scatter).getAllByRole('button', {
       name: /Filter the source-ALT index to Sequence/,
@@ -1097,7 +1131,9 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       points.slice(0, 2).map((candidate) => candidate.getAttribute('data-overlap-offset'))
     ).toEqual(['-12', '12'])
-    expect(screen.getByText('Overlapping points are slightly separated.')).not.toBeNull()
+    expect(
+      screen.getByText('Note: Overlapping points are separated slightly for visibility.')
+    ).not.toBeNull()
     const point = within(scatter).getByRole('button', {
       name: /Filter the source-ALT index to Sequence 3; \+12 bp vs REF; source-reported motif purity 1.0000/,
     })
@@ -1136,19 +1172,59 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByRole('heading', { name: '3 source ALT alleles' })).not.toBeNull()
   })
 
-  test('keeps boundary AC marks and bounded coincidence jitter inside narrow plots', () => {
-    const narrowWidth = 120
+  test('adds the REF allele to the purity plot as a dot that does not filter the index', () => {
+    const landscape: WholeRecordAlleleLandscapeData = {
+      ...alleleLandscape,
+      purity_available: true,
+      purity_unavailable_reason: null,
+      reference_purity: 0.98,
+      purity_points: alleles.map((allele) => ({
+        allele_id: allele.variant_id,
+        delta: allele.length as number,
+        motif_purity: 1,
+        called_alleles: allele.freq.all.ac,
+      })),
+    }
+    render(
+      <WholeRecordAlleleLandscape landscape={landscape} alleles={alleles} navigation={navigation} />
+    )
+
+    const purityCard = screen
+      .getByRole('heading', { name: 'Repeat sequence purity' })
+      .closest('[data-plot-card="motif-purity"]') as HTMLElement
+    // The REF's 70 copies join the ALT dots, so the dots account for every allele.
+    const referencePoint = within(purityCard).getByTestId('purity-reference-point')
+    expect(referencePoint.getAttribute('aria-label')).toBe(
+      'REF allele: purity 0.9800, 70 called allele copies'
+    )
+    expect(referencePoint.tagName).toBe('SPAN')
+    expect(within(purityCard).getByText('REF allele')).not.toBeNull()
+    expect(
+      within(purityCard).getAllByRole('button', { name: /Filter the source-ALT index/ })
+    ).toHaveLength(alleles.length)
+  })
+
+  test('pads the higher plots in each grid row down to the lowest x axis in that row', () => {
+    expect(
+      xAxisAlignmentPaddings([
+        { cardTop: 100, xAxisY: 340 },
+        { cardTop: 100, xAxisY: 360 },
+        { cardTop: 100, xAxisY: 250 },
+        { cardTop: 700, xAxisY: 900 },
+      ])
+    ).toEqual([20, 0, 110, 0])
+  })
+
+  test('drops trailing zeros that every purity tick shares', () => {
+    expect(purityTickDecimals([0.99, 0.995, 1], 0.99, 1)).toBe(3)
+    expect(purityTickDecimals([0.9, 0.95, 1], 0.9, 1)).toBe(2)
+    expect(purityTickDecimals([0.8123, 0.9061, 1], 0.8123, 1)).toBe(3)
+  })
+
+  test('keeps boundary AC marks inside short plots and bounds coincidence jitter', () => {
     const shortHeight = 190
     const toPixels = (position: ReturnType<typeof purityScalePosition>, extent: number) =>
       (position.percent / 100) * extent + position.pixelOffset
-    const minimumX = toPixels(
-      purityScalePosition(-33, -33, 3577, PURITY_HORIZONTAL_INSET),
-      narrowWidth
-    )
-    const maximumX = toPixels(
-      purityScalePosition(3577, -33, 3577, PURITY_HORIZONTAL_INSET),
-      narrowWidth
-    )
     const minimumPurity = toPixels(
       purityScalePosition(0.97, 0.97, 1, PURITY_POINT_CLEARANCE),
       shortHeight
@@ -1159,8 +1235,6 @@ describe('long-read TR visualization fidelity', () => {
     )
     const jitterOffsets = Array.from({ length: 6 }, (_, index) => purityOverlapOffset(index, 6))
 
-    expect(minimumX + jitterOffsets[0]).toBe(PURITY_POINT_CLEARANCE)
-    expect(maximumX + jitterOffsets[5]).toBe(narrowWidth - PURITY_POINT_CLEARANCE)
     expect(minimumPurity).toBe(PURITY_POINT_CLEARANCE)
     expect(maximumPurity).toBe(shortHeight - PURITY_POINT_CLEARANCE)
     expect(new Set(jitterOffsets).size).toBe(6)
@@ -1650,7 +1724,7 @@ describe('long-read TR visualization fidelity', () => {
       />
     )
 
-    expect(screen.queryByLabelText('Length axis')).toBeNull()
+    expect(screen.queryByLabelText(/allele size measure$/)).toBeNull()
     expect(screen.queryByLabelText('Genetic ancestry group')).toBeNull()
     expect(screen.queryByLabelText('Sex')).toBeNull()
     expect(screen.queryByLabelText('Color by')).toBeNull()
@@ -1918,7 +1992,9 @@ describe('long-read TR visualization fidelity', () => {
         representedLength={representedLength}
       />
     )
-    const axis = screen.getByLabelText('Length axis') as HTMLSelectElement
+    const axis = screen.getByLabelText(
+      'Allele length distribution allele size measure'
+    ) as HTMLSelectElement
     expect(
       (
         within(axis).getByRole('option', {
@@ -1958,7 +2034,7 @@ describe('long-read TR visualization fidelity', () => {
         }}
       />
     )
-    expect(screen.queryByLabelText('Length axis')).toBeNull()
+    expect(screen.queryByLabelText(/allele size measure$/)).toBeNull()
     expect(screen.queryByRole('option', { name: 'ALT allele size (bp)' })).toBeNull()
     expect(screen.queryByText(/Represented allele length is disabled/)).toBeNull()
     expect(screen.getByRole('heading', { name: 'Allele length distribution' })).not.toBeNull()

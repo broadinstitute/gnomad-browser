@@ -77,6 +77,8 @@ export type WholeRecordAlleleLandscapeData = {
   sexes: string[] | null
   bins: AlleleBin[] | null
   purity_points: PurityPoint[] | null
+  // The REF allele's source purity; absent in older fixtures.
+  reference_purity?: number | null
   purity_available: boolean | null
   purity_unavailable_reason: string | null
 }

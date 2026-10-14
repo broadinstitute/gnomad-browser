@@ -15,6 +15,7 @@ import { ModalZIndexFix } from '../Haplotypes/HelpButton'
 import { LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
   LongReadTrComponentTrack,
+  locusRegionWithSourceRefSpan,
   SelectedExactAlleleDetail,
   WholeRecordAlleleLandscape,
   signed,
@@ -321,8 +322,14 @@ const LongReadTandemRepeatPage = ({
     reconciliation_status: 'NOT_EVALUATED' as const,
   }
   const clusterFocused = presentation.locus_type === 'VARIATION_CLUSTER'
-  const displayStart1 = envelope.start1
-  const displayEnd1 = envelope.end1
+  // A cluster page describes the whole cluster: the source record's REF span when the API
+  // supplies it, which can reach beyond the components.
+  const clusterRegion =
+    clusterFocused && bounds.source_ref_span_status === 'AVAILABLE_EXACT'
+      ? locusRegionWithSourceRefSpan({ ...locus, bounds })
+      : null
+  const displayStart1 = clusterRegion ? clusterRegion.start0 + 1 : envelope.start1
+  const displayEnd1 = clusterRegion ? clusterRegion.end0 : envelope.end1
   // The heading shows the interval zero-based half-open, matching the locus id and
   // the tandem repeat rows. The envelope's end1 is already the exclusive end0, so
   // only the start moves. displayStart1 stays one-based for the TRExplorer link,
@@ -415,12 +422,17 @@ const LongReadTandemRepeatPage = ({
   }
 
   let spanLabel = 'Represented LR region length'
-  if (clusterFocused) {
+  if (clusterRegion) {
+    spanLabel = 'Cluster length'
+  } else if (clusterFocused) {
     spanLabel = 'Locus component-envelope length'
   } else if (locus.components.length === 1) {
     spanLabel = 'Reference interval size'
   }
-  let spanValue = `${bounds.component_envelope_length_bp.toLocaleString()} bp`
+  let spanValue = `${(clusterRegion
+    ? clusterRegion.size
+    : bounds.component_envelope_length_bp
+  ).toLocaleString()} bp`
   if (!clusterFocused && locus.components.length > 1 && alleleLengthRange) {
     spanValue = alleleLengthRange
   } else if (!clusterFocused && locus.components.length === 1 && locus.primary_repeat.motif) {
