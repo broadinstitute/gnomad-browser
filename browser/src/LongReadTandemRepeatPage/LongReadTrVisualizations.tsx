@@ -1377,6 +1377,26 @@ const ScrollTable = styled.div`
   /* stylelint-enable no-descending-specificity */
 `
 
+// A table of a few short cells, only as wide as its content.
+const CompactScrollTable = styled(ScrollTable)`
+  padding: 7px 0;
+
+  table {
+    width: auto;
+  }
+
+  th,
+  td {
+    padding: 0.3em 1.5em 0.3em 0.5em;
+  }
+
+  /* Counts line up on their last digit, under their column titles. */
+  td,
+  th[scope='col']:not(:first-child) {
+    text-align: right;
+  }
+`
+
 const stackSourceKey = (stack: AlleleBin['stacks'][number]) => {
   if (stack.ancestry_group && stack.sex) return `${stack.ancestry_group}_${stack.sex}`
   return stack.ancestry_group || stack.sex
@@ -3445,6 +3465,13 @@ export const WholeRecordAlleleLandscape = ({
     histogramLayout = { ...histogramLayout, height: genotypePlotHeightPx }
   }
   const activeFilterDescription = selectedDelta == null ? activeIndexSelection?.label : undefined
+  // The purity dots stand for every ALT dot's copies plus the REF dot's, when the REF's purity is
+  // known. The REF copies come from the bp REF bin, not the histogram's current one: in the
+  // repeats measure that also holds ALT alleles with the REF's longest pure run.
+  const referenceCopiesForPurity = alleleCopiesInView(referenceBin)
+  const purityAllelesInView =
+    filteredPurityPoints.reduce((sum, point) => sum + point.called_alleles, 0) +
+    (landscape.reference_purity != null ? referenceCopiesForPurity : 0)
 
   return (
     <Panel aria-labelledby="lr-tr-allele-landscape-heading">
@@ -3992,6 +4019,16 @@ export const WholeRecordAlleleLandscape = ({
         )}
         <PlotCard data-plot-card="motif-purity">
           <h3>Repeat sequence purity</h3>
+          {landscape.purity_available && (
+            <p aria-live="polite">
+              <strong>
+                Purity of {counted(purityAllelesInView, 'allele', 'alleles')}
+                {genotypePeopleInView != null &&
+                  ` from ${counted(genotypePeopleInView, 'individual', 'individuals')}`}
+                .
+              </strong>
+            </p>
+          )}
           {landscape.purity_available ? (
             <PurityScatter
               points={filteredPurityPoints}
@@ -4005,9 +4042,7 @@ export const WholeRecordAlleleLandscape = ({
               representedRefLength={representedRefLength}
               alleleAxisLabel={alleleAxisLabel}
               referencePurity={landscape.reference_purity ?? null}
-              // The bp REF bin, not the histogram's current one: in the repeats measure that
-              // also holds ALT alleles with the REF's longest pure run.
-              referenceCalledAlleles={alleleCopiesInView(referenceBin)}
+              referenceCalledAlleles={referenceCopiesForPurity}
             />
           ) : (
             <p role="status">
@@ -4842,10 +4877,15 @@ const IndexRow = styled.div<{ selected: boolean }>`
 
 const MOTIF_UNIT_SEPARATOR = '#36454f'
 
-const MotifPreview = styled.svg`
-  display: block;
+// Every row's allele bar is drawn inside the same frame, so one base has the same width in
+// every row and a bar's length is proportional to its allele's size.
+const MotifPreviewFrame = styled.div`
   width: 100%;
   max-width: 420px;
+`
+
+const MotifPreview = styled.svg`
+  display: block;
   height: 18px;
   border: 1px solid #d8dee2;
   background: #fff;
@@ -4855,10 +4895,13 @@ const ExactAlleleMotifPreview = ({
   allele,
   motifs,
   excludeValidatedSharedPadding = false,
+  longestAlleleBases,
 }: {
   allele: LongReadTrAllele
   motifs: string[]
   excludeValidatedSharedPadding?: boolean
+  // The longest allele in the table, in bases; its bar fills the frame.
+  longestAlleleBases: number
 }) => {
   if (!allele.ref || !allele.alt || !excludeValidatedSharedPadding) {
     return (
@@ -4884,39 +4927,44 @@ const ExactAlleleMotifPreview = ({
   const countSummary = exactStoredMotifCountSummary(preview, motifs)
   let offset = 0
   return (
-    <MotifPreview
-      role="img"
-      aria-label={`${alleleLabel(
-        allele.variant_id
-      )} exact stored-motif string preview; ${countSummary}`}
-      viewBox={`0 0 ${totalBases} 18`}
-      preserveAspectRatio="none"
-    >
-      {preview.segments.map((segment, segmentIndex) => {
-        const start = offset
-        offset += segment.sequence.length
-        return (
-          <rect
-            // Sequence order is the stable identity for repeated literal motif occurrences.
-            // eslint-disable-next-line react/no-array-index-key
-            key={segmentIndex}
-            x={start}
-            y={0}
-            width={segment.sequence.length}
-            height={18}
-            fill={
-              segment.type === 'motif' ? motifColor(motifs[segment.motifIndex], motifs) : '#333'
-            }
-            data-motif-unit={segment.type === 'motif' ? 'true' : undefined}
-            data-sequence-match={segment.type === 'motif' ? 'motif' : 'unmatched'}
-            stroke={MOTIF_UNIT_SEPARATOR}
-            strokeWidth={1}
-            vectorEffect="non-scaling-stroke"
-            shapeRendering="crispEdges"
-          />
-        )
-      })}
-    </MotifPreview>
+    <MotifPreviewFrame>
+      <MotifPreview
+        role="img"
+        aria-label={`${alleleLabel(
+          allele.variant_id
+        )} exact stored-motif string preview; ${countSummary}`}
+        viewBox={`0 0 ${totalBases} 18`}
+        preserveAspectRatio="none"
+        style={{
+          width: `${(100 * Math.min(1, totalBases / Math.max(1, longestAlleleBases))).toFixed(3)}%`,
+        }}
+      >
+        {preview.segments.map((segment, segmentIndex) => {
+          const start = offset
+          offset += segment.sequence.length
+          return (
+            <rect
+              // Sequence order is the stable identity for repeated literal motif occurrences.
+              // eslint-disable-next-line react/no-array-index-key
+              key={segmentIndex}
+              x={start}
+              y={0}
+              width={segment.sequence.length}
+              height={18}
+              fill={
+                segment.type === 'motif' ? motifColor(motifs[segment.motifIndex], motifs) : '#333'
+              }
+              data-motif-unit={segment.type === 'motif' ? 'true' : undefined}
+              data-sequence-match={segment.type === 'motif' ? 'motif' : 'unmatched'}
+              stroke={MOTIF_UNIT_SEPARATOR}
+              strokeWidth={1}
+              vectorEffect="non-scaling-stroke"
+              shapeRendering="crispEdges"
+            />
+          )
+        })}
+      </MotifPreview>
+    </MotifPreviewFrame>
   )
 }
 
@@ -4931,6 +4979,7 @@ type ExactAlleleIndexRowData = {
   navigation: AlleleNavigation
   excludeValidatedSharedPadding: boolean
   representedRefLength: number | null
+  longestAlleleBases: number
 }
 
 const exactAlleleFrequency = (allele: LongReadTrAllele, selectedDivision?: string | null) =>
@@ -4954,7 +5003,7 @@ const ExactAlleleIndexRow = ({
     allele.length == null || data.representedRefLength == null
       ? '—'
       : (data.representedRefLength + allele.length).toLocaleString()
-  const purity = allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(4)
+  const purity = allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(2)
   const frequency = exactAlleleFrequency(allele, data.selectedDivision)
   const ac = frequency ? Math.round(frequency.ac).toLocaleString() : '—'
   const af = frequency ? frequency.af.toPrecision(4) : '—'
@@ -4976,6 +5025,7 @@ const ExactAlleleIndexRow = ({
           allele={allele}
           motifs={data.motifs}
           excludeValidatedSharedPadding={data.excludeValidatedSharedPadding}
+          longestAlleleBases={data.longestAlleleBases}
         />
       </span>
       <NumericIndexCell className="lr-tr-index-represented-length" role="cell">
@@ -5112,6 +5162,8 @@ export const ExactAlleleIndex = ({
     navigation,
     excludeValidatedSharedPadding,
     representedRefLength,
+    // The bars draw each ALT without its VCF padding base.
+    longestAlleleBases: Math.max(1, ...alleles.map((allele) => (allele.alt?.length || 1) - 1)),
   }
   const hasMissingIndexSequence = alleles.some((allele) => !allele.ref || !allele.alt)
   const previewUnavailableMessage =
@@ -5119,18 +5171,18 @@ export const ExactAlleleIndex = ({
       ? `Motif previews are unavailable because ${unavailableReason(sequencesUnavailableReason)}.`
       : null
   const identityCount = sequenceCardinality?.source_alt_identity_count ?? totalExactAlts
-  let heading = counted(identityCount, 'source ALT allele', 'source ALT alleles')
+  let heading = 'Allele Details'
   if (filterDescription) {
     heading = `${alleles.length.toLocaleString()} of ${counted(
       identityCount,
-      'source ALT allele',
-      'source ALT alleles'
+      'allele',
+      'alleles'
     )} — ${filterDescription}`
   } else if (filteredDelta != null) {
     heading = `${alleles.length.toLocaleString()} of ${counted(
       identityCount,
-      'source ALT allele',
-      'source ALT alleles'
+      'allele',
+      'alleles'
     )} at ${lengthAxisLabel(filteredDelta, lengthAxisMode, representedRefLength)}`
   }
   return (
@@ -5161,15 +5213,20 @@ export const ExactAlleleIndex = ({
           <IndexHeader role="row" aria-rowindex={1}>
             <span role="columnheader">Source ID</span>
             <span className="lr-tr-index-preview" role="columnheader">
-              Motifs
+              Allele Sequence
             </span>
             {sortHeader(
               'representedLength',
-              'Represented length (bp)',
+              'Allele Size (bp)',
               'lr-tr-index-represented-length',
               true
             )}
-            {sortHeader('lengthChange', 'Change from REF (bp)', 'lr-tr-index-length-change', true)}
+            {sortHeader(
+              'lengthChange',
+              'Allele Size vs REF (bp)',
+              'lr-tr-index-length-change',
+              true
+            )}
             {sortHeader('purity', 'Purity', 'lr-tr-index-purity', true)}
             {sortHeader('ac', 'AC', 'lr-tr-index-ac', true)}
             {sortHeader('af', 'AF', 'lr-tr-index-af', true)}
@@ -5303,20 +5360,19 @@ const SelectedExactSequence = ({
     excludeValidatedSharedPadding,
   })
   const sequenceLabel = alleleLabel(allele.variant_id)
-  const exactSequence = (
-    <Sequence aria-label={`Exact copyable source sequence for ${sequenceLabel}`}>
-      {allele.alt}
-    </Sequence>
-  )
-  if (!excludeValidatedSharedPadding || preview.status !== 'available') return exactSequence
+  // The sequence is shown once: as motif tiles without the VCF padding base, or, when the tiles
+  // cannot be drawn, as the plain source ALT string.
+  if (!excludeValidatedSharedPadding || preview.status !== 'available') {
+    return (
+      <Sequence aria-label={`Exact copyable source sequence for ${sequenceLabel}`}>
+        {allele.alt}
+      </Sequence>
+    )
+  }
 
   const countSummary = exactStoredMotifCountSummary(preview, motifs)
   return (
     <>
-      {exactSequence}
-      <p style={{ marginBottom: 4 }}>
-        <strong>Stored-motif matches</strong>
-      </p>
       <HighlightedExactSequence>
         <ExactStoredMotifSequence
           segments={preview.segments}
@@ -5324,13 +5380,13 @@ const SelectedExactSequence = ({
           ariaLabel={`Exact stored-motif string preview for ${sequenceLabel}; ${countSummary}`}
         />
       </HighlightedExactSequence>
-      <ScrollTable>
+      <CompactScrollTable>
         <table aria-label="Exact motif match summary">
           <thead>
             <tr>
               <th scope="col">Motif</th>
-              <th scope="col">Exact occurrences</th>
-              <th scope="col">Matched bases</th>
+              <th scope="col"># of repeats</th>
+              <th scope="col"># of base pairs</th>
             </tr>
           </thead>
           <tbody>
@@ -5347,14 +5403,15 @@ const SelectedExactSequence = ({
                 <td>{preview.matchedBases[motifIndex].toLocaleString()}</td>
               </tr>
             ))}
+            {/* Bases outside any exact motif copy; they are not repeats, so only their bp. */}
             <tr>
-              <th scope="row">Unmatched</th>
-              <td>—</td>
+              <th scope="row">Other</th>
+              <td />
               <td>{preview.unmatchedBases.toLocaleString()}</td>
             </tr>
           </tbody>
         </table>
-      </ScrollTable>
+      </CompactScrollTable>
     </>
   )
 }
@@ -5405,7 +5462,6 @@ export const SelectedExactAlleleDetail = React.forwardRef<
             <>
               <strong>
                 {(representedLength.represented_ref_length_bp + allele.length).toLocaleString()} bp
-                represented
               </strong>{' '}
               ({signed(allele.length)} bp vs REF)
             </>
@@ -5415,12 +5471,10 @@ export const SelectedExactAlleleDetail = React.forwardRef<
                 ? 'Change from REF unavailable'
                 : `${signed(allele.length)} bp vs REF`}
             </strong>
-          )}{' '}
-          · Stored {motifs.length === 1 ? 'motif' : 'motifs'}{' '}
-          <code>{motifs.length ? motifs.join(', ') : 'unavailable'}</code>
+          )}
         </p>
         <p style={{ marginBottom: 4 }}>
-          <strong>Source ALT sequence</strong>
+          <strong>ALT allele sequence</strong>
         </p>
         <SelectedExactSequence
           allele={allele}
@@ -5436,42 +5490,25 @@ export const SelectedExactAlleleDetail = React.forwardRef<
         <table>
           <tbody>
             <tr>
-              <th scope="row">Total allele length change (ALT − REF, bp)</th>
-              <td>{allele.length == null ? '—' : `${signed(allele.length)} bp`}</td>
-            </tr>
-            <tr>
-              <th scope="row">Exact frequency</th>
+              <th scope="row">Allele frequency</th>
               <td>
                 {allele.freq.all.ac.toLocaleString()} / {allele.freq.all.an.toLocaleString()} (
                 {(allele.freq.all.af * 100).toPrecision(4)}%)
               </td>
             </tr>
             <tr>
-              <th scope="row">Motif purity</th>
-              <td>{allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(6)}</td>
+              <th scope="row">Allele sequence purity</th>
+              <td>{allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(2)}</td>
             </tr>
             <tr>
               <th scope="row">Repeat count</th>
               <td>{allele.repeat_count == null ? '—' : allele.repeat_count.toLocaleString()}</td>
             </tr>
+            {/* Tandem repeat alleles carry no major consequence or CADD score in the source data,
+                so only phyloP is shown. */}
             <tr>
-              <th scope="row">Filters</th>
-              <td>{allele.filters.length ? allele.filters.join(', ') : 'PASS'}</td>
-            </tr>
-            <tr>
-              <th scope="row">rsID</th>
-              <td>{allele.rsids.length ? allele.rsids.join(', ') : '—'}</td>
-            </tr>
-            <tr>
-              <th scope="row">Major consequence</th>
-              <td>{allele.major_consequence || '—'}</td>
-            </tr>
-            <tr>
-              <th scope="row">CADD / phyloP</th>
-              <td>
-                {allele.cadd_phred == null ? '—' : allele.cadd_phred} /{' '}
-                {allele.phylop == null ? '—' : allele.phylop}
-              </td>
+              <th scope="row">phyloP</th>
+              <td>{allele.phylop == null ? '—' : allele.phylop}</td>
             </tr>
           </tbody>
         </table>

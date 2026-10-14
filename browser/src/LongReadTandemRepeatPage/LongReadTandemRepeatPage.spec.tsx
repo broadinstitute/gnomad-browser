@@ -281,10 +281,6 @@ const makeLocus = (count = 72) => {
       decomposition_status: 'UNAVAILABLE_COMPOUND_LOCUS',
       decomposition_reason:
         'Observed sequence tokens cannot be assigned to coordinate-defined LR reference components',
-      rsids: ['rs-test'],
-      filters: [],
-      major_consequence: 'intron_variant',
-      cadd_phred: 3.2,
       phylop: null,
       short_read_match_id: null,
       short_read_match_type: null,
@@ -681,7 +677,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     )
     expect(screen.queryByText('Long-read tandem repeat')).toBeNull()
     expect(screen.queryByText('GRCh38 / hg38')).toBeNull()
-    expect(screen.getAllByText('72 source ALT alleles')).toHaveLength(1)
+    expect(screen.getAllByText('Allele Details')).toHaveLength(1)
     expect(
       screen.getAllByText('140–212 bp represented (−24 to +48 bp versus REF)').length
     ).toBeGreaterThan(0)
@@ -1399,7 +1395,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     selectChangeFromRefAxis()
     const table = screen.getByRole('table', { name: 'Source ALT allele index' })
     const allAllelesHeading = screen.getByRole('heading', {
-      name: '72 source ALT alleles',
+      name: 'Allele Details',
     })
     expect(allAllelesHeading).not.toBeNull()
     expect(allAllelesHeading.closest('header')).toHaveStyleRule('flex-wrap', 'wrap')
@@ -1409,7 +1405,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       screen.getByRole('button', { name: /−6 bp vs REF; 134 called non-reference allele copies/ })
     )
     expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '2 of 72 source ALT alleles at −6 bp vs REF' })
+      screen.getByRole('heading', { name: '2 of 72 alleles at −6 bp vs REF' })
     )
     expect(table.getAttribute('aria-rowcount')).toBe('3')
     expect(within(table).getByTitle(`${sourceVariantId}~2`)).not.toBeNull()
@@ -1428,13 +1424,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(navigation.onSelectAllele).toHaveBeenCalledWith(`${sourceVariantId}~3`)
 
     fireEvent.click(screen.getByRole('button', { name: 'Show all source ALT alleles' }))
-    expect(document.activeElement).toBe(
-      screen.getByRole('heading', { name: '72 source ALT alleles' })
-    )
+    expect(document.activeElement).toBe(screen.getByRole('heading', { name: 'Allele Details' }))
     expect(table.getAttribute('aria-rowcount')).toBe('73')
   })
 
-  test('highlights the represented GCA tract while keeping the exact padded ALT separately copyable', () => {
+  test('shows the ALT allele sequence once, as GCA motif tiles without the padding base', () => {
     const locus = makeSimpleLocus()
     const gcaId = 'chr3-63912684-TRV-30~15'
     const ref = 'GGCAGCAGCAGCAGCAGCAGCAGCAGCAGCA'
@@ -1514,17 +1508,17 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(motifAttributeValue()).toBe('GCA (3 bp)')
 
     const detail = screen.getByTestId('lr-tr-selected-detail')
-    expect(within(detail).getByText('Source ALT sequence', { exact: true })).not.toBeNull()
-    expect(within(detail).getByText('Stored-motif matches', { exact: true })).not.toBeNull()
-    const exactSequence = within(detail).getByLabelText(
-      'Exact copyable source sequence for Sequence 15'
-    )
+    expect(within(detail).getByText('ALT allele sequence', { exact: true })).not.toBeNull()
+    // The sequence is shown once, as motif tiles without the VCF padding base.
+    expect(within(detail).queryByText('Stored-motif matches', { exact: true })).toBeNull()
+    expect(
+      within(detail).queryByLabelText('Exact copyable source sequence for Sequence 15')
+    ).toBeNull()
     const representedSequence = within(detail).getByLabelText(
       /Exact stored-motif string preview for Sequence 15/
     )
-    expect(exactSequence.textContent).toBe(alt)
-    expect(exactSequence.textContent).toHaveLength(43)
-    expect(within(detail).getByText('42 bp represented')).not.toBeNull()
+    expect(within(detail).getByText('42 bp')).not.toBeNull()
+    expect(within(detail).queryByText(/represented|Stored motif/)).toBeNull()
     expect(within(detail).getByText(/\+12 bp vs REF/)).not.toBeNull()
     expect(representedSequence.textContent).toBe(alt.slice(1))
     expect(representedSequence.textContent).toHaveLength(42)
@@ -1537,11 +1531,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
       within(motifSummary)
         .getAllByRole('columnheader')
         .map((header) => header.textContent)
-    ).toEqual(['Motif', 'Exact occurrences', 'Matched bases'])
+    ).toEqual(['Motif', '# of repeats', '# of base pairs'])
     const motifRows = within(motifSummary).getAllByRole('row')
     expect(motifRows).toHaveLength(3)
     expect(motifRows[1].textContent).toBe('GCA1339')
-    expect(motifRows[2].textContent).toBe('Unmatched—3')
+    expect(motifRows[2].textContent).toBe('Other3')
     expect(screen.queryByText(/Shared VCF anchor/i)).toBeNull()
     expect(screen.queryByLabelText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByText(/every other represented base is dark/)).toBeNull()
@@ -1572,13 +1566,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(detail).getByRole('heading', { name: exactId })).not.toBeNull()
     expect(within(detail).queryByText(/source_ap_allele/)).toBeNull()
     expect(within(detail).queryByText(/shown neutrally because no admitted projection/)).toBeNull()
-    expect(
-      within(detail).getByLabelText('Exact copyable source sequence for Sequence 2').textContent
-    ).toContain('ACAGCAA')
     expect(within(detail).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
     expect(
-      within(detail).getByLabelText(/Exact stored-motif string preview for Sequence 2/)
-    ).not.toBeNull()
+      within(detail).getByLabelText(/Exact stored-motif string preview for Sequence 2/).textContent
+    ).toContain('CAGCAA')
     expect(detail.querySelectorAll('[data-sequence-match="motif"]')).toHaveLength(6)
     expect(detail.querySelectorAll('[data-sequence-match="unmatched"]')).toHaveLength(0)
     const visualSeparators = detail.querySelectorAll('[data-motif-visual-separator="true"]')
@@ -1596,8 +1587,8 @@ describe('canonical long-read tandem-repeat locus page', () => {
       within(motifSummary).getByRole('rowheader', { name: 'CAA' }).closest('tr')?.textContent
     ).toBe('CAA13')
     expect(
-      within(motifSummary).getByRole('rowheader', { name: 'Unmatched' }).closest('tr')?.textContent
-    ).toBe('Unmatched—0')
+      within(motifSummary).getByRole('rowheader', { name: 'Other' }).closest('tr')?.textContent
+    ).toBe('Other0')
     expect(within(detail).queryByText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByLabelText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByText(/Sequence analysis details/)).toBeNull()
@@ -1649,23 +1640,21 @@ describe('canonical long-read tandem-repeat locus page', () => {
     fireEvent.click(zeroDeltaCell)
     expect(document.activeElement).toBe(
       screen.getByRole('heading', {
-        name: '1 of 72 source ALT alleles — selected genotype cell (0 bp vs REF × 0 bp vs REF)',
+        name: '1 of 72 alleles — selected genotype cell (0 bp vs REF × 0 bp vs REF)',
       })
     )
     expect(
       screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
     ).toBe('2')
     fireEvent.click(screen.getByRole('button', { name: 'Show all source ALT alleles' }))
-    expect(screen.getByRole('heading', { name: '72 source ALT alleles' })).toBe(
-      document.activeElement
-    )
+    expect(screen.getByRole('heading', { name: 'Allele Details' })).toBe(document.activeElement)
   })
 
   test.each([72, 497])(
     'shows all %s exact ALT sequences in the primary virtualized browser',
     (count) => {
       renderPage({ locus: makeLocus(count), selectedAllele: undefined })
-      const heading = screen.getByRole('heading', { name: `${count} source ALT alleles` })
+      const heading = screen.getByRole('heading', { name: 'Allele Details' })
       const section = heading.closest('section')
       expect(section).not.toBeNull()
       expect(heading.closest('details')).toBeNull()
@@ -1857,7 +1846,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       )!
     expect(revalidationStatus).toBeDefined()
     expect(screen.getByRole('heading', { name: exactId, exact: true })).not.toBeNull()
-    expect(screen.getByRole('heading', { name: '72 source ALT alleles' })).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'Allele Details' })).not.toBeNull()
     const retainedFrame = revalidationStatus.nextElementSibling as HTMLElement
     expect(retainedFrame.hasAttribute('inert')).toBe(true)
     expect(retainedFrame.getAttribute('aria-busy')).toBe('true')
