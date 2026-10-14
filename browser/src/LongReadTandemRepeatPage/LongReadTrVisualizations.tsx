@@ -1765,13 +1765,15 @@ const PurityPointButton = styled.button<{ $diameter: number }>`
     border: 2px solid #fff;
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    background: ${LONG_READ_PRIMARY_PLOT_COLOR};
-    box-shadow: 0 0 0 1px #681875;
+    /* The same blue as the ALT bars in the allele length histogram, with a darker outline. */
+    background: ${ALT_ALLELE_SIZE_BAR_COLOR};
+    box-shadow: 0 0 0 1px #004a73;
   }
 
+  /* Navy like a selected histogram bar, so it is not mistaken for the orange REF dot. */
   &[data-selected-allele='true'] > span {
     border: 3px solid #111;
-    background: #e9781c;
+    background: ${SELECTED_ALLELE_SIZE_BAR_COLOR};
     box-shadow: 0 0 0 2px #fff;
   }
 
@@ -1992,7 +1994,7 @@ const PurityScatter = ({
           width: diameter,
           height: diameter,
           borderRadius: '50%',
-          background: LONG_READ_PRIMARY_PLOT_COLOR,
+          background: ALT_ALLELE_SIZE_BAR_COLOR,
         }}
       />
     )

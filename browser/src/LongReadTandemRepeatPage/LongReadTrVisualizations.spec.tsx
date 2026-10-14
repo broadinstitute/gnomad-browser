@@ -1140,8 +1140,9 @@ describe('long-read TR visualization fidelity', () => {
     expect(point.getAttribute('aria-pressed')).toBe('false')
     expect(point).toHaveStyleRule('width', '44px')
     expect(point).toHaveStyleRule('height', '44px')
+    // The ALT dots use the allele length histogram's ALT bar blue.
     expect(window.getComputedStyle(point.firstElementChild as Element).backgroundColor).toBe(
-      'rgb(156, 39, 176)'
+      'rgb(0, 114, 178)'
     )
     expect(point.getAttribute('style')).toContain(
       `bottom: calc(100% - ${PURITY_POINT_CLEARANCE}px)`
