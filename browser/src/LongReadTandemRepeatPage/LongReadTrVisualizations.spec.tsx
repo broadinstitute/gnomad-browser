@@ -2304,8 +2304,9 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.click(screen.getByRole('button', { name: /^Component 1,/ }))
     const dialog = screen.getByRole('dialog')
     expect(within(dialog).getByText('Variation Cluster: Tandem Repeat #1')).not.toBeNull()
+    // 259 bp of a 32 bp motif: 8.1 copies.
     expect(dialogLines()).toEqual([
-      `Motif: ${longMotif} (${longMotif.length} bp)`,
+      `Motif: ${longMotif} (${longMotif.length} bp) x 8.1`,
       'Reference Region: chr9:133,071,240–133,071,499 (259 bp)',
     ])
     fireEvent.click(within(dialog).getByRole('button', { name: 'Ok' }))
@@ -2315,7 +2316,7 @@ describe('long-read TR visualization fidelity', () => {
     // size.
     fireEvent.keyDown(screen.getByRole('button', { name: /^Component 2,/ }), { key: 'Enter' })
     expect(dialogLines()).toEqual([
-      'Motif: CCG',
+      'Motif: CCG x 3',
       'Reference Region: chr9:133,071,499–133,071,508 (9 bp)',
     ])
   })

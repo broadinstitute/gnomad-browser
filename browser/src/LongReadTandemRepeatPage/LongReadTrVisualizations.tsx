@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Modal, Select } from '@gnomad/ui'
 import {
   MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL,
+  repeatCopyText,
   shortenLongMotifToItsEnds,
 } from '@gnomad/dataset-metadata/longReadTrLocusPresentation'
 
@@ -916,6 +917,11 @@ export const LongReadTrComponentTrack = ({
                 <strong>Motif:</strong> <code>{openComponent.motif}</code>
                 {/* A short motif's size is plain from the motif itself. */}
                 {openComponent.motif.length > 6 && ` (${openComponent.motif.length} bp)`}
+                {/* Its copies in the reference region, as in the long-read variant table rows. */}
+                {` x ${repeatCopyText(
+                  openComponent.end0 - openComponent.start0,
+                  openComponent.motif.length
+                )}`}
               </p>
               <p>
                 <strong>Reference Region:</strong> chr{openComponent.chrom}:

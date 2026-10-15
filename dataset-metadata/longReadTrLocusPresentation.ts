@@ -70,7 +70,7 @@ const motifPhrase = (motifs: string[]) => {
 // multiple of the motif keep one decimal rather than rounding to a count the coordinates
 // do not support, so 9bp of TG reads 4.5 and 64bp of a 21bp motif reads 3.0. Whole multiples
 // are checked in whole numbers rather than on the floating-point quotient.
-const repeatCopyText = (lengthBp: number, motifLength: number) => {
+export const repeatCopyText = (lengthBp: number, motifLength: number) => {
   if (motifLength <= 0) return null
   const copies = lengthBp / motifLength
   if (lengthBp % motifLength === 0) return String(copies)
