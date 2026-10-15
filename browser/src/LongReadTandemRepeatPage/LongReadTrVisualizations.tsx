@@ -489,14 +489,15 @@ const UNAVAILABLE_REASON_COPY: Record<string, string> = {
     'the cohort-specific repeat-count source could not be validated',
   ALLELE_INDEX_SEQUENCE_BYTE_BOUND_EXCEEDED: 'the allele sequences are too large to preview safely',
   BOUND_EXCEEDED: 'the result is too large to display safely',
+  // Purity is read from the per-person calls, which are loaded for HGSVC/HPRC but not for AoU.
+  CARRIER_CALLS_NOT_AVAILABLE: 'the per-person calls for this cohort are not loaded',
+  CARRIER_PURITY_ROW_BOUND_EXCEEDED: 'the locus has too many carriers to read purity from safely',
   EXACT_ALLELE_SEQUENCE_ANCHOR_NOT_RECONCILABLE:
     'the complete REF and ALT sequences do not share one validated VCF anchor',
   EXACT_ALT_LIMIT_EXCEEDED:
     'the locus has more alternate alleles than this view can display safely',
-  // The source VCF carries AP_allele only on records with several ALT alleles, and no locus
-  // mixes one-ALT and several-ALT records, so this is the only way a locus ends up without it.
-  NO_ALIGNED_SOURCE_AP_ALLELE:
-    'the source VCF reports purity only for records with more than one ALT allele',
+  NO_CARRIER_PURITY_MATCHED_TO_AN_ALLELE:
+    "no carrier's purity value could be matched to an ALT allele",
   NO_METADATA: 'the source does not include the required metadata',
   NOT_AVAILABLE: 'the source does not provide these data',
   SELECTED_ALLELE_DETAIL_BYTE_BOUND_EXCEEDED:
@@ -5482,7 +5483,6 @@ const ExactStoredMotifSequence = ({
             }`
       const color =
         segment.type === 'motif' ? motifColor(motifs[segment.motifIndex], motifs) : '#333'
-      const followsMotif = segmentIndex > 0 && segments[segmentIndex - 1].type === 'motif'
       return (
         <span
           // Source sequence order is stable and repeated literal occurrences remain distinct.
@@ -5490,12 +5490,19 @@ const ExactStoredMotifSequence = ({
           key={segmentIndex}
           data-sequence-role={segment.type}
           aria-label={label}
+          // A motif copy moves to the next line whole rather than splitting across lines, unless
+          // it is wider than the box; unmatched bases wrap anywhere.
+          style={
+            segment.type === 'motif' ? { display: 'inline-block', maxWidth: '100%' } : undefined
+          }
         >
           {segment.sequence.split('').map((base, baseIndex) => {
             let borderRadius: string | number = 0
             if (baseIndex === 0) borderRadius = '2px 0 0 2px'
             else if (baseIndex === segment.sequence.length - 1) borderRadius = '0 2px 2px 0'
-            const hasMotifSeparator = segment.type === 'motif' && followsMotif && baseIndex === 0
+            // Every segment after the first starts with a gap. Unmatched bases form one segment
+            // between motif copies, so the gaps fall before and after every motif copy.
+            const hasMotifSeparator = segmentIndex > 0 && baseIndex === 0
             return (
               <span
                 // Base offset within one stable source segment is deterministic.

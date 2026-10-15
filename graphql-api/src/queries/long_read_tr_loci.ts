@@ -28,6 +28,9 @@ export const MAX_TR_LOCUS_PAGE_SIZE = 600
 export const DEFAULT_TR_LOCUS_PAGE_SIZE = 50
 export const MAX_TR_LOCUS_FREQUENCY_ROWS = 20_000
 export const MAX_TR_LOCUS_GENOTYPE_GROUPS = 5_000
+// Carrier rows read to rebuild per-allele purity: two genotype positions per carrier, for every
+// source record of a locus.
+export const MAX_TR_LOCUS_CARRIER_PURITY_ROWS = 50_000
 export const MAX_TR_LOCUS_AGGREGATE_BYTES = 1024 * 1024
 // Selected REF/ALT detail has an independent response bound. Sequence is all-or-nothing:
 // an over-bound allele keeps its validated compact index node but never returns a prefix.
@@ -148,6 +151,85 @@ const selectedDetailWithinBound = (value: unknown) =>
 
 const compactAlleleKey = (sourceVariantId: string, altIndex: number) =>
   `${sourceVariantId}\u0000${altIndex}`
+
+// The value that occurs most often, and the lowest of those on a tie.
+const mostCommonValue = (values: number[]) => {
+  const counts = new Map<number, number>()
+  for (const value of values) counts.set(value, (counts.get(value) || 0) + 1)
+  return [...counts].sort(
+    ([leftValue, leftCount], [rightValue, rightCount]) =>
+      rightCount - leftCount || leftValue - rightValue
+  )[0][0]
+}
+
+// Each allele's TRGT purity (FORMAT AP), rebuilt from its carriers' own values and keyed by
+// compactAlleleKey, with allele index 0 for the REF. The source INFO AP_allele is not used: it
+// paired each person's FORMAT values, which TRGT lists in allele number order, with the genotype
+// in written order, so a phased genotype written high|low gave an allele its partner's purity.
+// A carrier row holds the FORMAT values at its genotype position, which belong to whichever of the
+// person's alleles has the stored allele length (AL); rows whose length matches none of them, or
+// two different alleles of that length, are left out. Carriers of one allele can report slightly
+// different purities, so the most common value is used. Alleles whose values are all left out,
+// mostly ALTs carried once as ALT|REF, get no purity.
+export const carrierPurityByAllele = (
+  rows: {
+    source_variant_id: string
+    gt_alleles: unknown
+    stored_length: unknown
+    stored_purity: unknown
+  }[],
+  // Per source record, each allele's length as TRGT reports it (AL), by allele index.
+  alleleLengthsBySourceRecord: Map<string, (number | null)[]>
+) => {
+  const puritiesByAllele = new Map<string, number[]>()
+  for (const row of rows) {
+    const alleleLengths = alleleLengthsBySourceRecord.get(row.source_variant_id)
+    const storedLength = finiteNumber(row.stored_length)
+    const storedPurity = finiteNumber(row.stored_purity)
+    const owners =
+      alleleLengths && storedLength != null && Array.isArray(row.gt_alleles)
+        ? [...new Set(row.gt_alleles)].filter(
+            (alleleIndex): alleleIndex is number =>
+              Number.isInteger(alleleIndex) && alleleLengths[alleleIndex] === storedLength
+          )
+        : []
+    if (storedPurity != null && owners.length === 1) {
+      const key = compactAlleleKey(row.source_variant_id, owners[0])
+      const purities = puritiesByAllele.get(key) || []
+      purities.push(storedPurity)
+      puritiesByAllele.set(key, purities)
+    }
+  }
+  return new Map([...puritiesByAllele].map(([key, purities]) => [key, mostCommonValue(purities)]))
+}
+
+// The REF's purity for a single source record. Homozygous REF people have no carrier rows, so the
+// REF's own FORMAT values only reach a carrier row when a genotype is written ALT|REF, which puts
+// them at the ALT's position; carrierPurityByAllele then gives them to the REF. Where no carrier
+// is written ALT|REF, the source INFO AP_allele's first entry is right: the first person with a
+// REF allele has it first or twice, so the source paired the REF with its own value.
+export const referencePurityForSourceRecord = ({
+  sourceVariantId,
+  carrierRows,
+  carrierPurity,
+  sourceReferencePurity,
+}: {
+  sourceVariantId: string
+  carrierRows: { source_variant_id: string; gt_alleles: unknown }[]
+  carrierPurity: Map<string, number>
+  sourceReferencePurity: number | null
+}) => {
+  const fromCarriers = carrierPurity.get(compactAlleleKey(sourceVariantId, 0))
+  if (fromCarriers != null) return fromCarriers
+  const genotypeWrittenAltRef = carrierRows.some(
+    (row) =>
+      row.source_variant_id === sourceVariantId &&
+      Array.isArray(row.gt_alleles) &&
+      Number(row.gt_alleles[0]) > 0 &&
+      row.gt_alleles[1] === 0
+  )
+  return genotypeWrittenAltRef ? null : sourceReferencePurity
+}
 
 const taskAttemptKey = (taskId: string, attemptId: string) => `${taskId}\u0000${attemptId}`
 
@@ -994,6 +1076,7 @@ export const buildWholeRecordAlleleLandscape = ({
   frequencyRowsUnavailableReason = null,
   purityByAllele,
   referencePurity = null,
+  purityUnavailableReasonWithoutPurities = 'NO_CARRIER_PURITY_MATCHED_TO_AN_ALLELE',
   ancestryFilterId = null,
   sexFilterId = null,
   colorBy = null,
@@ -1004,8 +1087,10 @@ export const buildWholeRecordAlleleLandscape = ({
   frequencyRowsTruncated?: boolean
   frequencyRowsUnavailableReason?: string | null
   purityByAllele: Map<string, number | null>
-  // The REF's source AP_allele value, the first entry, before the ALTs'.
+  // The REF's purity, from carrierPurityByAllele like the ALTs'.
   referencePurity?: number | null
+  // Why purity is unavailable when no ALT has a purity.
+  purityUnavailableReasonWithoutPurities?: string
   ancestryFilterId?: string | null
   sexFilterId?: string | null
   colorBy?: 'ANCESTRY' | 'SEX' | null
@@ -1171,7 +1256,7 @@ export const buildWholeRecordAlleleLandscape = ({
   })
   let purityUnavailableReason: string | null = null
   if (activeCanonicalProjection) purityUnavailableReason = 'USE_STRATIFIED_VIEW_FOR_ACTIVE_FILTER'
-  else if (!purityPoints.length) purityUnavailableReason = 'NO_ALIGNED_SOURCE_AP_ALLELE'
+  else if (!purityPoints.length) purityUnavailableReason = purityUnavailableReasonWithoutPurities
   const response = {
     status: 'AVAILABLE',
     reason_code: null,
@@ -1634,21 +1719,79 @@ const fetchLongReadTrLocusUncached = async ({
     frequencies.set(key, values)
   }
 
-  const purityByAllele = new Map<string, number | null>()
-  for (const summary of summaries) {
-    const ap = parseSourceArray(summary.info.AP_allele)
-    for (let altIndex = 1; altIndex <= summary.alt_count; altIndex += 1) {
-      purityByAllele.set(
-        compactAlleleKey(summary.source_variant_id, altIndex),
-        ap && ap.length === summary.alt_count + 1 ? finiteNumber(ap[altIndex]) : null
-      )
+  // Per-allele purity from the carriers' own stored values (see carrierPurityByAllele). Each
+  // allele's length as TRGT reports it (AL) is its sequence length without the VCF padding base:
+  // the REF's length minus 1, plus the ALT's change from REF.
+  let purityUnavailableReasonWithoutPurities = 'CARRIER_CALLS_NOT_AVAILABLE'
+  let carrierPurityRows: any[] = []
+  let carrierPurityRowsLoaded = false
+  if (source.carriers_available && completeAlleles.length) {
+    const rows = await queryRows(
+      `
+        SELECT source_variant_id, gt_alleles,
+          JSONExtractString(position_fields_json, 'AL') AS stored_length,
+          JSONExtractString(position_fields_json, 'AP') AS stored_purity
+        FROM lr_y1_carriers
+        WHERE run_id = {runId:String} AND release = 'y1'
+          AND cohort = {cohort:String} AND reference_genome = 'GRCh38'
+          AND chrom = {chrom:String} AND source_variant_id IN {sourceIds:Array(String)}
+          ${sourceRecordAttemptQuery}
+        LIMIT {limit:UInt32}
+      `,
+      {
+        runId: source.run_id,
+        cohort,
+        chrom: source.chrom,
+        sourceIds,
+        limit: MAX_TR_LOCUS_CARRIER_PURITY_ROWS + 1,
+        ...sourceRecordAttemptParams(sourceRecords),
+      }
+    )
+    if (rows.length > MAX_TR_LOCUS_CARRIER_PURITY_ROWS) {
+      purityUnavailableReasonWithoutPurities = 'CARRIER_PURITY_ROW_BOUND_EXCEEDED'
+    } else {
+      carrierPurityRows = rows
+      carrierPurityRowsLoaded = true
+      purityUnavailableReasonWithoutPurities = 'NO_CARRIER_PURITY_MATCHED_TO_AN_ALLELE'
     }
   }
-  // The REF's AP_allele value is the first entry; it is only defined for a single source record.
-  const referenceAp = summaries.length === 1 ? parseSourceArray(summaries[0].info.AP_allele) : null
+  const alleleLengthsBySourceRecord = new Map(
+    summaries.map(({ row, source_variant_id, alt_count: altCount }) => {
+      const referenceLength = integer(row.ref_allele_length)
+      const alleleLengths: (number | null)[] = new Array(altCount + 1).fill(null)
+      if (referenceLength != null && referenceLength > 0) {
+        alleleLengths[0] = referenceLength - 1
+        for (const allele of completeAlleles) {
+          if (allele.source_variant_id === source_variant_id && allele.allele_length != null) {
+            alleleLengths[allele.alt_index] = referenceLength - 1 + allele.allele_length
+          }
+        }
+      }
+      return [source_variant_id, alleleLengths]
+    })
+  )
+  const carrierPurity = carrierPurityByAllele(carrierPurityRows, alleleLengthsBySourceRecord)
+  const purityByAllele = new Map<string, number | null>()
+  for (const summary of summaries) {
+    for (let altIndex = 1; altIndex <= summary.alt_count; altIndex += 1) {
+      const key = compactAlleleKey(summary.source_variant_id, altIndex)
+      purityByAllele.set(key, carrierPurity.get(key) ?? null)
+    }
+  }
+  // The REF's purity is only defined for a single source record, and needs the carrier rows.
+  const sourceReferencePurities =
+    summaries.length === 1 ? parseSourceArray(summaries[0].info.AP_allele) : null
   const referencePurity =
-    referenceAp && referenceAp.length === summaries[0].alt_count + 1
-      ? finiteNumber(referenceAp[0])
+    summaries.length === 1 && carrierPurityRowsLoaded
+      ? referencePurityForSourceRecord({
+          sourceVariantId: summaries[0].source_variant_id,
+          carrierRows: carrierPurityRows,
+          carrierPurity,
+          sourceReferencePurity:
+            sourceReferencePurities?.length === summaries[0].alt_count + 1
+              ? finiteNumber(sourceReferencePurities[0])
+              : null,
+        })
       : null
 
   const wholeRecordAlleleLandscape = completenessReason
@@ -1661,6 +1804,7 @@ const fetchLongReadTrLocusUncached = async ({
         frequencyRowsUnavailableReason: frequencyReceiptMismatch ? 'SOURCE_RECEIPT_MISMATCH' : null,
         purityByAllele,
         referencePurity,
+        purityUnavailableReasonWithoutPurities,
         ancestryFilterId,
         sexFilterId,
         colorBy,
@@ -1839,11 +1983,10 @@ const fetchLongReadTrLocusUncached = async ({
     }
     const summary = summaries[sourceOrder.get(selectedSourceRecord.source_variant_id)!]
     const mc = parseSourceArray(summary.info.MC_allele)
-    const ap = parseSourceArray(summary.info.AP_allele)
     const altIndex = Number(row.alt_index)
     const alignedMc = mc && mc.length === summary.alt_count + 1 ? finiteNumber(mc[altIndex]) : null
     const alignedPurity =
-      ap && ap.length === summary.alt_count + 1 ? finiteNumber(ap[altIndex]) : null
+      purityByAllele.get(compactAlleleKey(row.source_variant_id, altIndex)) ?? null
     const candidateDetail = {
       variant_id: browserVariantId(row.source_variant_id, altIndex),
       source_variant_id: row.source_variant_id,
@@ -1855,7 +1998,7 @@ const fetchLongReadTrLocusUncached = async ({
       repeat_count: alignedMc,
       repeat_count_source: repeatCountSource(alignedMc),
       motif_purity: alignedPurity,
-      motif_purity_source: alignedPurity == null ? null : 'source_ap_allele',
+      motif_purity_source: alignedPurity == null ? null : 'carrier_format_ap',
       decomposition_status:
         locus.components.length === 1
           ? 'UNAVAILABLE_NO_DECOMPOSITION'
@@ -2066,7 +2209,7 @@ export const longReadTrLocusCacheKey = ({
     'G_DATA_ANCESTRY_PENDING',
     'REMAINDER_COMPATIBILITY_UNAVAILABLE',
   ]
-  return `lr_tr_locus:v9:${crypto
+  return `lr_tr_locus:v10:${crypto
     .createHash('sha256')
     .update(JSON.stringify(identity))
     .digest('hex')}`

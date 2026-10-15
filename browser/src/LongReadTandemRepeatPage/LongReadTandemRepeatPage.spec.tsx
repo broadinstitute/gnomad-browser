@@ -275,7 +275,7 @@ const makeLocus = (count = 72) => {
       ...alleles[1],
       ref: 'ACAGCAG',
       alt: 'ACAGCAA',
-      motif_purity_source: 'source_ap_allele',
+      motif_purity_source: 'carrier_format_ap',
       decomposition_status: 'UNAVAILABLE_COMPOUND_LOCUS',
       decomposition_reason:
         'Observed sequence tokens cannot be assigned to coordinate-defined LR reference components',
@@ -1553,7 +1553,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(detail).toBe(document.activeElement)
     expect(scrollIntoView).toHaveBeenCalledWith({ block: 'start' })
     expect(within(detail).getByRole('heading', { name: exactId })).not.toBeNull()
-    expect(within(detail).queryByText(/source_ap_allele/)).toBeNull()
+    expect(within(detail).queryByText(/carrier_format_ap/)).toBeNull()
     expect(within(detail).queryByText(/shown neutrally because no admitted projection/)).toBeNull()
     expect(within(detail).queryByLabelText('Selected ALT motif structure grid')).toBeNull()
     expect(

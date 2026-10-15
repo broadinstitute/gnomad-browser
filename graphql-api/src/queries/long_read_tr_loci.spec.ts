@@ -19,6 +19,7 @@ import {
   buildSequenceCardinality,
   buildWholeRecordAlleleLandscape,
   buildWholeRecordGenotypeLandscape,
+  carrierPurityByAllele,
   certifySoleAncestryControlRedundant,
   countUniqueExactAltBytes,
   decodeTrAlleleCursor,
@@ -26,8 +27,10 @@ import {
   fetchLongReadTrLocus,
   longReadTrLocusCacheKey,
   MAX_TR_LOCUS_AGGREGATE_BYTES,
+  MAX_TR_LOCUS_CARRIER_PURITY_ROWS,
   MAX_TR_LOCUS_PAGE_SIZE,
   MAX_TR_SELECTED_ALLELE_DETAIL_BYTES,
+  referencePurityForSourceRecord,
   sourceRefSpanOfSingleRecord,
 } from './long_read_tr_loci'
 
@@ -95,8 +98,6 @@ const compactAlleles = (altCount: number, an: number) =>
   })
 
 const summary = (altCount: number, an: number) => {
-  const purity = new Array(altCount + 1).fill(null)
-  purity[altCount] = 0.97
   const ac = new Array(altCount).fill(altCount === 72 ? 0 : 1)
   if (altCount === 72) {
     ac[0] = 292
@@ -108,6 +109,8 @@ const summary = (altCount: number, an: number) => {
     position: 3074876,
     source_variant_id: sourceVariantId,
     alt_count: altCount,
+    // The length of compactAlleles' REF, A followed by 164 C.
+    ref_allele_length: 165,
     ac,
     an,
     af: ac.map((value) => value / an),
@@ -115,7 +118,6 @@ const summary = (altCount: number, an: number) => {
       TRID: httSourceTrid,
       MOTIFS: 'CAA,CCG,CCT,CAG,GCC',
       STRUC: '<VC172773>',
-      AP_allele: purity,
       SOURCE: 'TRGT',
     }),
   }
@@ -145,6 +147,105 @@ const selectedAlt72 = {
 describe('long-read TR locus query contract', () => {
   beforeEach(() => mockQuery.mockReset())
 
+  test('gives each carrier purity to the one allele with its stored length', () => {
+    const recordId = 'chr5-177554489-TRV-42'
+    // REF 42 bp, ALT 14 56 bp, ALT 31 56 bp (same length as ALT 14), ALT 32 264 bp.
+    const alleleLengths = new Array(33).fill(null)
+    alleleLengths[0] = 42
+    alleleLengths[14] = 56
+    alleleLengths[31] = 56
+    alleleLengths[32] = 264
+    const row = (gtAlleles: (number | null)[], storedLength: string, storedPurity: string) => ({
+      source_variant_id: recordId,
+      gt_alleles: gtAlleles,
+      stored_length: storedLength,
+      stored_purity: storedPurity,
+    })
+    const purity = carrierPurityByAllele(
+      [
+        // HG03225: 32|14 written high|low, so the ALT 32 row holds ALT 14's values.
+        row([32, 14], '56', '0.982456'),
+        row([32, 14], '264', '1'),
+        // Two more carriers of ALT 14: the most common value wins.
+        row([0, 14], '56', '0.95'),
+        row([14, 14], '56', '0.95'),
+        row([14, 14], '56', '0.95'),
+        // 31|14 have the same length, so neither value can be placed.
+        row([31, 14], '56', '0.5'),
+        row([31, 14], '56', '0.6'),
+        // 32|0 written high|low: the ALT 32 row holds the REF's values.
+        row([32, 0], '42', '0.98'),
+        // A length that matches neither allele and an unreadable value are left out; a missing
+        // allele does not stop the other allele from owning its value.
+        row([32, 0], '100', '0.1'),
+        row([32, 0], '264', ''),
+        row([null, 32], '264', '1'),
+      ],
+      new Map([[recordId, alleleLengths]])
+    )
+    const key = (alleleIndex: number) => `${recordId}\u0000${alleleIndex}`
+    expect(purity.get(key(32))).toBe(1)
+    expect(purity.get(key(14))).toBe(0.95)
+    expect(purity.has(key(31))).toBe(false)
+    expect(purity.get(key(0))).toBe(0.98)
+  })
+
+  test('trusts the source REF purity only when no carrier is written ALT|REF', () => {
+    const recordId = 'chr4-test'
+    const referenceKey = `${recordId}\u00000`
+    const lowFirst = { source_variant_id: recordId, gt_alleles: [0, 2] }
+    const altRef = { source_variant_id: recordId, gt_alleles: [2, 0] }
+    // A carrier value for the REF wins over the source value.
+    expect(
+      referencePurityForSourceRecord({
+        sourceVariantId: recordId,
+        carrierRows: [altRef],
+        carrierPurity: new Map([[referenceKey, 0.9]]),
+        sourceReferencePurity: 0.7,
+      })
+    ).toBe(0.9)
+    // With every genotype written low allele first, the source value is the REF's own.
+    expect(
+      referencePurityForSourceRecord({
+        sourceVariantId: recordId,
+        carrierRows: [lowFirst],
+        carrierPurity: new Map(),
+        sourceReferencePurity: 0.7,
+      })
+    ).toBe(0.7)
+    // An ALT|REF genotype without a usable carrier value leaves the source value in doubt.
+    expect(
+      referencePurityForSourceRecord({
+        sourceVariantId: recordId,
+        carrierRows: [lowFirst, altRef],
+        carrierPurity: new Map(),
+        sourceReferencePurity: 0.7,
+      })
+    ).toBeNull()
+  })
+
+  test('uses the lower purity when carriers are tied', () => {
+    const recordId = 'chr4-test'
+    const purity = carrierPurityByAllele(
+      [
+        {
+          source_variant_id: recordId,
+          gt_alleles: [1, 0],
+          stored_length: '10',
+          stored_purity: '1',
+        },
+        {
+          source_variant_id: recordId,
+          gt_alleles: [0, 1],
+          stored_length: '10',
+          stored_purity: '0.9',
+        },
+      ],
+      new Map([[recordId, [8, 10]]])
+    )
+    expect(purity.get(`${recordId}\u00001`)).toBe(0.9)
+  })
+
   test('uses versioned source/ALT keyset cursors', () => {
     const encoded = encodeTrAlleleCursor({ sourceVariantId, altIndex: 50 })
     expect(decodeTrAlleleCursor(encoded)).toEqual({ version: 1, sourceVariantId, altIndex: 50 })
@@ -167,7 +268,7 @@ describe('long-read TR locus query contract', () => {
     expect(longReadTrLocusCacheKey(base)).not.toBe(
       longReadTrLocusCacheKey({ ...base, source: source('hgsvc_hprc', { attemptId: 'attempt-2' }) })
     )
-    expect(longReadTrLocusCacheKey(base)).toMatch(/^lr_tr_locus:v9:/)
+    expect(longReadTrLocusCacheKey(base)).toMatch(/^lr_tr_locus:v10:/)
     expect(() =>
       longReadTrLocusCacheKey({
         ...base,
@@ -191,6 +292,38 @@ describe('long-read TR locus query contract', () => {
             ac: 20,
             an: 90,
             af: 20 / 90,
+          },
+        ])
+      )
+      // Carrier rows hold the FORMAT values at their genotype position. AL is the length without
+      // the padding base: 140 for ALT 1, 212 for ALT 72, 164 for the REF. The 72|1 genotype is
+      // written high|low, so the ALT 72 row holds ALT 1's values and the ALT 1 row ALT 72's. The
+      // 1|0 row, written high|low too, holds the REF's values.
+      .mockImplementationOnce(() =>
+        result([
+          {
+            source_variant_id: sourceVariantId,
+            gt_alleles: [72, 1],
+            stored_length: '140',
+            stored_purity: '0.5',
+          },
+          {
+            source_variant_id: sourceVariantId,
+            gt_alleles: [72, 1],
+            stored_length: '212',
+            stored_purity: '0.97',
+          },
+          {
+            source_variant_id: sourceVariantId,
+            gt_alleles: [72, 72],
+            stored_length: '212',
+            stored_purity: '0.97',
+          },
+          {
+            source_variant_id: sourceVariantId,
+            gt_alleles: [1, 0],
+            stored_length: '164',
+            stored_purity: '1',
           },
         ])
       )
@@ -259,8 +392,12 @@ describe('long-read TR locus query contract', () => {
         sourceRecordAttemptIds: ['attempt-1'],
       })
     }
-    const genotypeRequest = mockQuery.mock.calls[4][0] as any
-    const selectedRequest = mockQuery.mock.calls[5][0] as any
+    const carrierPurityRequest = mockQuery.mock.calls[3][0] as any
+    expect(carrierPurityRequest.query).toContain('FROM lr_y1_carriers')
+    expect(carrierPurityRequest.query).not.toContain('sample_id')
+    expect(carrierPurityRequest.query_params.limit).toBe(MAX_TR_LOCUS_CARRIER_PURITY_ROWS + 1)
+    const genotypeRequest = mockQuery.mock.calls[5][0] as any
+    const selectedRequest = mockQuery.mock.calls[6][0] as any
     for (const request of [genotypeRequest, selectedRequest]) {
       expect(request.query).toContain('task_id = {sourceTaskId:String}')
       expect(request.query_params).toMatchObject({
@@ -287,7 +424,8 @@ describe('long-read TR locus query contract', () => {
         component_envelope_end0: 3075040,
         component_envelope_length_bp: 164,
         component_envelope_basis: 'EXACT_ORDERED_COMPONENTS',
-        source_ref_span_status: 'UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT',
+        // The summary row carries the REF length, so the record's REF span is known.
+        source_ref_span_status: 'AVAILABLE_EXACT',
       },
       component_summary: {
         ordered_component_count: 6,
@@ -376,7 +514,7 @@ describe('long-read TR locus query contract', () => {
       alt: `A${'C'.repeat(212)}`,
       length: 48,
       motif_purity: 0.97,
-      motif_purity_source: 'source_ap_allele',
+      motif_purity_source: 'carrier_format_ap',
       decomposition_status: 'UNAVAILABLE_COMPOUND_LOCUS',
       source_run_id: 'run-hgsvc_hprc',
     })
@@ -387,6 +525,11 @@ describe('long-read TR locus query contract', () => {
       ref: `A${'C'.repeat(164)}`,
       alt: `A${'C'.repeat(140)}`,
     })
+    // Purity follows each carrier value's allele length, not the order the genotype is written.
+    expect(locus.alleles.nodes[0].motif_purity).toBe(0.5)
+    expect(locus.alleles.nodes[71].motif_purity).toBe(0.97)
+    expect(locus.alleles.nodes[1].motif_purity).toBeNull()
+    expect(locus.whole_record_allele_landscape.reference_purity).toBe(1)
     const aggregateJson = JSON.stringify({
       index: locus.alleles,
       alleles: locus.whole_record_allele_landscape,

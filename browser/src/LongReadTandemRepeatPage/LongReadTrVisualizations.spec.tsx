@@ -485,19 +485,17 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByText(/^Sizes of 200 alleles/)).not.toBeNull()
   })
 
-  test('says why purity is missing when every source record has a single ALT allele', () => {
+  test('says why purity is missing for a cohort without per-person calls', () => {
     render(
       <WholeRecordAlleleLandscape
-        landscape={{ ...alleleLandscape, purity_unavailable_reason: 'NO_ALIGNED_SOURCE_AP_ALLELE' }}
+        landscape={{ ...alleleLandscape, purity_unavailable_reason: 'CARRIER_CALLS_NOT_AVAILABLE' }}
         alleles={alleles}
         navigation={navigation}
       />
     )
 
     expect(
-      screen.getByText(
-        'Purity unavailable: the source VCF reports purity only for records with more than one ALT allele.'
-      )
+      screen.getByText('Purity unavailable: the per-person calls for this cohort are not loaded.')
     ).not.toBeNull()
   })
 
@@ -1024,6 +1022,52 @@ describe('long-read TR visualization fidelity', () => {
     ).toBe('2')
   })
 
+  test('separates unmatched bases from the motif copies on both sides', () => {
+    render(
+      <SelectedExactAlleleDetail
+        allele={{
+          ...alleles[0],
+          ref: 'A',
+          alt: 'ACGCGCCGC',
+          motif_purity_source: null,
+          decomposition_status: 'UNAVAILABLE_NO_DECOMPOSITION',
+          decomposition_reason: 'No admitted source decomposition is available',
+          short_read_match_id: null,
+          short_read_match_type: null,
+          short_read_match_source: null,
+          source_release: 'test',
+          source_run_id: 'run-test',
+        }}
+        motifs={['CGC']}
+        representedLength={{
+          status: 'AVAILABLE_EXACT',
+          reason: null,
+          represented_ref_length_bp: 0,
+          represented_alt_min_length_bp: 8,
+          represented_alt_max_length_bp: 8,
+          source_delta_provenance: 'INFO_ALLELE_LENGTH',
+          sequence_length_provenance: 'test',
+          sequence_source_record_digest: 'a'.repeat(64),
+          sequence_content_digest: 'b'.repeat(64),
+          anchor_rule: 'VCF_SHARED_LEFT_PADDING_BASE_V1',
+          anchor_rule_source: 'test',
+          anchor_rule_release: 'test',
+          anchor_rule_digest: 'c'.repeat(64),
+          reconciliation_status: 'RECONCILED',
+        }}
+      />
+    )
+
+    // CGC, then the unmatched GC, then CGC: a gap before the GC and another after it.
+    const preview = screen.getByLabelText(/Exact stored-motif string preview for Sequence 1/)
+    expect(preview.textContent).toBe('CGCGCCGC')
+    const separators = Array.from(
+      preview.querySelectorAll<HTMLElement>('[data-motif-visual-separator="true"]')
+    )
+    expect(separators.map((separator) => separator.textContent)).toEqual(['G', 'C'])
+    expect(separators.every((separator) => separator.style.marginLeft === '2px')).toBe(true)
+  })
+
   test('visually separates adjacent motif matches without changing sequence bytes', () => {
     render(
       <SelectedExactAlleleDetail
@@ -1076,6 +1120,16 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       Array.from(separators).every(
         (separator) => window.getComputedStyle(separator).marginLeft === '2px'
+      )
+    ).toBe(true)
+    // Each motif copy is one block, so a line break never splits it unless it is wider than the box.
+    const motifCopies = Array.from(
+      preview.querySelectorAll<HTMLElement>('[data-sequence-role="motif"]')
+    )
+    expect(motifCopies).toHaveLength(3)
+    expect(
+      motifCopies.every(
+        (copy) => copy.style.display === 'inline-block' && copy.style.maxWidth === '100%'
       )
     ).toBe(true)
   })
