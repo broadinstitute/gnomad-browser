@@ -2,7 +2,7 @@ import React, { RefObject, useEffect, useLayoutEffect, useMemo, useRef, useState
 import { FixedSizeList } from 'react-window'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
-import { Select } from '@gnomad/ui'
+import { Modal, Select } from '@gnomad/ui'
 import {
   MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL,
   shortenLongMotifToItsEnds,
@@ -21,7 +21,7 @@ import {
   LongReadAlleleSizeDistributionSection,
   LongReadGenotypeDistributionSection,
 } from '../LongReadVariantPage/LongReadSTRDistributionSections'
-import HaplotypeHelpButton from '../Haplotypes/HelpButton'
+import HaplotypeHelpButton, { ModalZIndexFix } from '../Haplotypes/HelpButton'
 import { PATH_COLORS, SUPERPOPULATION_COLORS } from '../Haplotypes/colors'
 import {
   AlleleBin,
@@ -303,14 +303,13 @@ export type LengthAxisMode = 'delta' | 'absolute'
 // admitted repeat-unit product a plot has.
 export type LandscapeMeasure = 'bp-absolute' | 'bp-delta' | 'repeats-absolute' | 'repeats-delta'
 
-// The repeat measures show the precomputed repeat-count histograms, which give each allele's
-// longest pure run, when a locus has them, and exact motif counts otherwise.
-const landscapeMeasureLabel = (measure: LandscapeMeasure, repeatsAreLongestPureRun: boolean) => {
+// The repeat measures show each allele's longest pure run: from the precomputed repeat-count
+// histograms when a locus has them, and from the exact ALT sequences otherwise.
+const landscapeMeasureLabel = (measure: LandscapeMeasure) => {
   if (measure === 'bp-absolute') return 'ALT allele size (bp)'
   if (measure === 'bp-delta') return 'ALT − REF allele size (bp)'
-  const repeatSize = repeatsAreLongestPureRun ? 'longest pure run' : 'size'
-  if (measure === 'repeats-absolute') return `ALT allele ${repeatSize} (repeats)`
-  return `ALT − REF allele ${repeatSize} (repeats)`
+  if (measure === 'repeats-absolute') return 'ALT allele longest pure run (repeats)'
+  return 'ALT − REF allele longest pure run (repeats)'
 }
 
 const measuresLength = (measure: LandscapeMeasure) =>
@@ -692,6 +691,34 @@ export const locusRegionWithSourceRefSpan = (locus: LongReadTrLocus) => {
   return { ...region, start0, end0, size: end0 - start0 }
 }
 
+// The dialog a component box opens, in larger text than the page. A long motif wraps so it can
+// be read and selected.
+const ComponentDetails = styled.div`
+  font-size: 18px;
+  line-height: 1.5;
+
+  p {
+    margin: 0 0 0.6em;
+  }
+
+  code {
+    font-size: inherit;
+    overflow-wrap: anywhere;
+  }
+`
+
+// A component box, which opens a dialog with the component's coordinates and full motif.
+const ComponentButton = styled.g`
+  cursor: pointer;
+  outline: none;
+
+  &:focus-visible rect {
+    stroke: #111;
+    stroke-width: 3px;
+    stroke-dasharray: none;
+  }
+`
+
 export const LongReadTrComponentTrack = ({
   locus,
   exactReferenceComponentIndex = null,
@@ -700,6 +727,8 @@ export const LongReadTrComponentTrack = ({
   exactReferenceComponentIndex?: number | null
 }) => {
   const { components } = locus
+  const [openComponentIndex, setOpenComponentIndex] = useState<number | null>(null)
+  const openComponent = openComponentIndex == null ? undefined : components[openComponentIndex]
   const region = locusRegionWithSourceRefSpan(locus)
   const hasAuthorizedExactReferenceOutline =
     exactReferenceComponentIndex != null &&
@@ -727,7 +756,8 @@ export const LongReadTrComponentTrack = ({
             <strong>How to use it.</strong> Read components from left to right. Overlapping
             intervals use separate lanes, and repeated motifs remain separate because interval and
             order are part of their identity. A neutral black dotted outline marks a verified unique
-            exact short-read catalog reference match.
+            exact short-read catalog reference match. Click a component to see its coordinates and
+            full motif.
           </p>
           <p style={{ marginBottom: 0 }}>
             <strong>What it does not show.</strong> Motif fills and outlines do not classify an LR
@@ -758,7 +788,8 @@ export const LongReadTrComponentTrack = ({
         <svg
           viewBox={`0 0 ${width} ${85 + laneCount * 54}`}
           style={{ display: 'block', minWidth: 700, width: '100%' }}
-          role="img"
+          // A group, not an image, so its component buttons stay reachable.
+          role="group"
           aria-label={`${
             components.length
           } ordered components of the variation cluster reference region in ${laneCount} coordinate lanes${
@@ -798,9 +829,22 @@ export const LongReadTrComponentTrack = ({
               ? `${label}; known disease-associated tandem repeat`
               : label
             return (
-              // Source component order is identity-bearing, including exact duplicate components.
-              // eslint-disable-next-line react/no-array-index-key
-              <g key={`${component.start0}-${component.end0}-${component.motif}-${index}`}>
+              <ComponentButton
+                // Source component order is identity-bearing, including exact duplicate components.
+                // eslint-disable-next-line react/no-array-index-key
+                key={`${component.start0}-${component.end0}-${component.motif}-${index}`}
+                role="button"
+                tabIndex={0}
+                aria-label={accessibleLabel}
+                aria-haspopup="dialog"
+                onClick={() => setOpenComponentIndex(index)}
+                onKeyDown={(event: React.KeyboardEvent) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    setOpenComponentIndex(index)
+                  }
+                }}
+              >
                 <rect
                   x={x(component.start0)}
                   y={y}
@@ -842,7 +886,7 @@ export const LongReadTrComponentTrack = ({
                     </text>
                   </>
                 )}
-              </g>
+              </ComponentButton>
             )
           })}
           <text x={left} y={60 + laneCount * 54} fill="#4f5960" fontSize={11}>
@@ -859,6 +903,29 @@ export const LongReadTrComponentTrack = ({
           </text>
         </svg>
       </HorizontalPlotScroller>
+      {openComponent && (
+        <>
+          <ModalZIndexFix />
+          <Modal
+            title={`Variation Cluster: Tandem Repeat #${(openComponentIndex as number) + 1}`}
+            size="large"
+            onRequestClose={() => setOpenComponentIndex(null)}
+          >
+            <ComponentDetails>
+              <p>
+                <strong>Motif:</strong> <code>{openComponent.motif}</code>
+                {/* A short motif's size is plain from the motif itself. */}
+                {openComponent.motif.length > 6 && ` (${openComponent.motif.length} bp)`}
+              </p>
+              <p>
+                <strong>Reference Region:</strong> chr{openComponent.chrom}:
+                {openComponent.start0.toLocaleString()}–{openComponent.end0.toLocaleString()} (
+                {(openComponent.end0 - openComponent.start0).toLocaleString()} bp)
+              </p>
+            </ComponentDetails>
+          </Modal>
+        </>
+      )}
     </Panel>
   )
 }
@@ -2194,6 +2261,7 @@ const MotifOccurrencePlotCard = ({
   onSelectMotifIndex,
   onSelectBins,
   onClear,
+  plotHeight,
   lengthAxisControl = null,
 }: {
   motifs: string[]
@@ -2203,13 +2271,15 @@ const MotifOccurrencePlotCard = ({
   onSelectMotifIndex: (motifIndex: number) => void
   onSelectBins: (bins: ExactStoredMotifDistributionBin[]) => void
   onClear: () => void
+  // The height of the other plots in the row, so all of them line up.
+  plotHeight: number
   // The plot's own Length axis menu, drawn at the bottom of the card.
   lengthAxisControl?: React.ReactNode
 }) => {
   const motif = motifs[selectedMotifIndex]
   const brushMarks: DiscreteBrushMark<ExactStoredMotifDistributionBin>[] = bins.map((bin) => ({
-    id: `motif-occurrence:${selectedMotifIndex}:${bin.occurrence_count}`,
-    x: bin.occurrence_count,
+    id: `motif-occurrence:${selectedMotifIndex}:${bin.longest_pure_run}`,
+    x: bin.longest_pure_run,
     y: 0,
     value: bin,
   }))
@@ -2221,9 +2291,6 @@ const MotifOccurrencePlotCard = ({
   })
   const maxCopies = Math.max(0, ...bins.map((bin) => bin.allele_copies))
   const ticks = histogramTicks(maxCopies, 'linear')
-  let height = 240
-  if (bins.length <= 3) height = 190
-  else if (bins.length <= 12) height = 220
   const gap = bins.length <= 12 ? 6 : 3
   const barWidth = 34
   const sidePadding = 20
@@ -2258,96 +2325,102 @@ const MotifOccurrencePlotCard = ({
         </MotifOccurrenceControl>
       )}
       {bins.length ? (
-        <HistogramChart>
-          <HistogramYScale aria-hidden="true" $height={height}>
-            <AxisTitle $left={yAxisTitleLeft(ticks.map((tick) => tick.toLocaleString()))}>
-              Called source ALT copies
-            </AxisTitle>
-            {ticks.map((tick) => (
-              <AxisTick
-                key={tick}
-                style={{ bottom: `${histogramHeightPercent(tick, maxCopies, 'linear')}%` }}
-              >
-                {tick.toLocaleString()}
-              </AxisTick>
-            ))}
-          </HistogramYScale>
-          <HistogramScroller
-            role="region"
-            aria-label={`${motif} exact literal occurrence histogram for whole represented source ALTs`}
-            tabIndex={0}
-          >
-            <HistogramScrollContent style={{ width: scrollWidth }}>
-              <Histogram $height={height} $gap={gap} {...brush.containerProps}>
-                {bins.map((bin, index) => {
-                  const mark = brushMarks.find(
-                    (candidate) => candidate.value.occurrence_count === bin.occurrence_count
-                  )!
-                  const selected = activeMarkIds.has(mark.id) || brush.previewMarkIds.has(mark.id)
-                  const selectedIndices = brushMarks
-                    .map((candidate, candidateIndex) =>
-                      activeMarkIds.has(candidate.id) || brush.previewMarkIds.has(candidate.id)
-                        ? candidateIndex
-                        : -1
+        <>
+          <HistogramChartWithXAxisTitle>
+            <HistogramYScale aria-hidden="true" $height={plotHeight}>
+              <AxisTitle $left={yAxisTitleLeft(ticks.map((tick) => tick.toLocaleString()))}>
+                Called source ALT copies
+              </AxisTitle>
+              {ticks.map((tick) => (
+                <AxisTick
+                  key={tick}
+                  style={{ bottom: `${histogramHeightPercent(tick, maxCopies, 'linear')}%` }}
+                >
+                  {tick.toLocaleString()}
+                </AxisTick>
+              ))}
+            </HistogramYScale>
+            <HistogramScroller
+              role="region"
+              aria-label={`${motif} longest pure run histogram for whole represented source ALTs`}
+              tabIndex={0}
+            >
+              <HistogramScrollContent style={{ width: scrollWidth }}>
+                <Histogram $height={plotHeight} $gap={gap} {...brush.containerProps}>
+                  {bins.map((bin, index) => {
+                    const mark = brushMarks.find(
+                      (candidate) => candidate.value.longest_pure_run === bin.longest_pure_run
+                    )!
+                    const selected = activeMarkIds.has(mark.id) || brush.previewMarkIds.has(mark.id)
+                    const selectedIndices = brushMarks
+                      .map((candidate, candidateIndex) =>
+                        activeMarkIds.has(candidate.id) || brush.previewMarkIds.has(candidate.id)
+                          ? candidateIndex
+                          : -1
+                      )
+                      .filter((candidateIndex) => candidateIndex >= 0)
+                    const selectionStart = selected && index === Math.min(...selectedIndices)
+                    const selectionStop = selected && index === Math.max(...selectedIndices)
+                    const barHeight = histogramHeightPercent(bin.allele_copies, maxCopies, 'linear')
+                    const markProps = brush.markProps(mark)
+                    return (
+                      <BarButton
+                        key={bin.longest_pure_run}
+                        data-discrete-brush-id={markProps['data-discrete-brush-id']}
+                        type="button"
+                        $height={barHeight}
+                        $hasValue={bin.allele_copies > 0}
+                        $width={barWidth}
+                        $gap={gap}
+                        // The allele length histogram's colors for ALT alleles.
+                        $fill={ALT_ALLELE_SIZE_BAR_COLOR}
+                        $selectedFill={SELECTED_ALLELE_SIZE_BAR_COLOR}
+                        $selected={selected}
+                        aria-pressed={selected}
+                        aria-label={`${motif}; longest pure run of ${counted(
+                          bin.longest_pure_run,
+                          'copy',
+                          'copies'
+                        )} in each whole represented source ALT; ${counted(
+                          bin.allele_copies,
+                          'called source ALT copy',
+                          'called source ALT copies'
+                        )} in this view; ${exactAltSequences(
+                          bin.allele_ids.length
+                        )}; filter the source-ALT index to this bin`}
+                        onClick={(event) => {
+                          if (!markProps.onClick(event)) onSelectBins([bin])
+                        }}
+                        onKeyDown={(event) => markProps.onKeyDown(event)}
+                      >
+                        <BarExactCount title={exactAltSequences(bin.allele_ids.length)}>
+                          {bin.allele_ids.length}
+                        </BarExactCount>
+                        {(selectionStart || selectionStop) && (
+                          <HistogramSelectionBoundary
+                            aria-hidden="true"
+                            data-testid="motif-occurrence-selection-boundary"
+                            $height={plotHeight}
+                            $start={selectionStart}
+                            $stop={selectionStop}
+                          />
+                        )}
+                      </BarButton>
                     )
-                    .filter((candidateIndex) => candidateIndex >= 0)
-                  const selectionStart = selected && index === Math.min(...selectedIndices)
-                  const selectionStop = selected && index === Math.max(...selectedIndices)
-                  const barHeight = histogramHeightPercent(bin.allele_copies, maxCopies, 'linear')
-                  const markProps = brush.markProps(mark)
-                  return (
-                    <BarButton
-                      key={bin.occurrence_count}
-                      data-discrete-brush-id={markProps['data-discrete-brush-id']}
-                      type="button"
-                      $height={barHeight}
-                      $hasValue={bin.allele_copies > 0}
-                      $width={barWidth}
-                      $gap={gap}
-                      $selected={selected}
-                      aria-pressed={selected}
-                      aria-label={`${motif}; ${counted(
-                        bin.occurrence_count,
-                        'exact literal occurrence',
-                        'exact literal occurrences'
-                      )} in each whole represented source ALT; ${counted(
-                        bin.allele_copies,
-                        'called source ALT copy',
-                        'called source ALT copies'
-                      )} in this view; ${exactAltSequences(
-                        bin.allele_ids.length
-                      )}; filter the source-ALT index to this occurrence bin`}
-                      onClick={(event) => {
-                        if (!markProps.onClick(event)) onSelectBins([bin])
-                      }}
-                      onKeyDown={(event) => markProps.onKeyDown(event)}
-                    >
-                      <BarExactCount title={exactAltSequences(bin.allele_ids.length)}>
-                        {bin.allele_ids.length}
-                      </BarExactCount>
-                      {(selectionStart || selectionStop) && (
-                        <HistogramSelectionBoundary
-                          aria-hidden="true"
-                          data-testid="motif-occurrence-selection-boundary"
-                          $height={height}
-                          $start={selectionStart}
-                          $stop={selectionStop}
-                        />
-                      )}
-                    </BarButton>
-                  )
-                })}
-              </Histogram>
-              <MotifOccurrenceAxis $gap={gap} $width={scrollWidth}>
-                {bins.map((bin) => (
-                  <MotifOccurrenceTick key={bin.occurrence_count}>
-                    {bin.occurrence_count.toLocaleString()}
-                  </MotifOccurrenceTick>
-                ))}
-              </MotifOccurrenceAxis>
-            </HistogramScrollContent>
-          </HistogramScroller>
-        </HistogramChart>
+                  })}
+                </Histogram>
+                <MotifOccurrenceAxis $gap={gap} $width={scrollWidth}>
+                  {bins.map((bin) => (
+                    <MotifOccurrenceTick key={bin.longest_pure_run}>
+                      {bin.longest_pure_run.toLocaleString()}
+                    </MotifOccurrenceTick>
+                  ))}
+                </MotifOccurrenceAxis>
+              </HistogramScrollContent>
+            </HistogramScroller>
+          </HistogramChartWithXAxisTitle>
+          <HistogramXAxisTitle aria-hidden="true">Longest pure run (repeats)</HistogramXAxisTitle>
+        </>
       ) : (
         <p role="status">No called source ALT copies in the current frequency slice.</p>
       )}
@@ -2861,13 +2934,13 @@ export const WholeRecordAlleleLandscape = ({
     selectedBins: ExactStoredMotifDistributionBin[]
   ) => {
     const ordered = [...selectedBins].sort(
-      (left, right) => left.occurrence_count - right.occurrence_count
+      (left, right) => left.longest_pure_run - right.longest_pure_run
     )
     if (!ordered.length) return
     activateIndexSelection({
       scope,
       origin: 'motif-occurrence',
-      markIds: ordered.map((bin) => `motif-occurrence:${motifIndex}:${bin.occurrence_count}`),
+      markIds: ordered.map((bin) => `motif-occurrence:${motifIndex}:${bin.longest_pure_run}`),
       alleleIds: uniqueIds(ordered.flatMap((bin) => bin.allele_ids)),
     })
   }
@@ -2960,7 +3033,6 @@ export const WholeRecordAlleleLandscape = ({
     plotTitle: string,
     measure: LandscapeMeasure | undefined,
     choices: LandscapeMeasure[],
-    distributionChoices: DistributionView[],
     onSelect: (measure: LandscapeMeasure) => void
   ) =>
     measure && choices.length > 1 ? (
@@ -2980,10 +3052,7 @@ export const WholeRecordAlleleLandscape = ({
           >
             {choices.map((choice) => (
               <option key={choice} value={choice}>
-                {landscapeMeasureLabel(
-                  choice,
-                  repeatViewFor(distributionChoices) === 'repeat-count'
-                )}
+                {landscapeMeasureLabel(choice)}
               </option>
             ))}
           </Select>
@@ -2994,21 +3063,18 @@ export const WholeRecordAlleleLandscape = ({
     'Allele length distribution',
     alleleMeasure,
     alleleMeasureChoices,
-    alleleDistributionChoices,
     selectAlleleMeasure
   )
   const genotypeLengthAxisControl = lengthAxisControl(
     'Genotype length distribution',
     genotypeMeasure,
     genotypeMeasureChoices,
-    genotypeDistributionChoices,
     selectGenotypeMeasure
   )
   const purityLengthAxisControl = lengthAxisControl(
     'Repeat sequence purity',
     purityMeasure,
     purityMeasureChoices,
-    ['length'],
     setRequestedPurityMeasure
   )
 
@@ -3309,6 +3375,7 @@ export const WholeRecordAlleleLandscape = ({
                 filterIndexToMotifBins(selectedMotifIndex, selectedBins)
               }
               onClear={clearIndexFilter}
+              plotHeight={histogramLayout.height}
               lengthAxisControl={alleleLengthAxisControl}
             />
           )}

@@ -961,7 +961,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(card).queryByText(/pathogenic/i)).toBeNull()
 
     const selectedBin = within(card).getByRole('button', {
-      name: /CAA; 1 exact literal occurrence in each whole represented source ALT; 125 called source ALT copies.*2 distinct ALT alleles; filter/,
+      name: /CAA; longest pure run of 1 copy in each whole represented source ALT; 125 called source ALT copies.*2 distinct ALT alleles; filter/,
     })
     fireEvent.click(selectedBin)
     expect(selectedBin.getAttribute('aria-pressed')).toBe('true')
@@ -977,7 +977,7 @@ describe('long-read TR visualization fidelity', () => {
     ).toHaveLength(3)
 
     const zeroBin = within(card).getByRole('button', {
-      name: /CAA; 0 exact literal occurrences in each whole represented source ALT/,
+      name: /CAA; longest pure run of 0 copies in each whole represented source ALT/,
     })
     fireEvent.keyDown(selectedBin, { key: 'ArrowLeft', shiftKey: true })
     expect(selectedBin.getAttribute('aria-pressed')).toBe('true')
@@ -995,7 +995,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(selector.value).toBe('0')
     fireEvent.click(
       within(card).getByRole('button', {
-        name: /CAG; 1 exact literal occurrence in each whole represented source ALT/,
+        name: /CAG; longest pure run of 1 copy in each whole represented source ALT/,
       })
     )
     fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
@@ -1055,10 +1055,10 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.change(screen.getByLabelText('Genetic ancestry group'), { target: { value: 'afr' } })
     expect(
       screen.getByRole('button', {
-        name: /CAG; 0 exact literal occurrences.*2 called source ALT copies.*1 distinct ALT allele; filter/,
+        name: /CAG; longest pure run of 0 copies.*2 called source ALT copies.*1 distinct ALT allele; filter/,
       })
     ).not.toBeNull()
-    expect(screen.queryByRole('button', { name: /CAG; 1 exact literal occurrence/ })).toBeNull()
+    expect(screen.queryByRole('button', { name: /CAG; longest pure run of 1 copy/ })).toBeNull()
     fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
       target: { value: 'bp-absolute' },
     })
@@ -1069,7 +1069,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByLabelText('Motif for source ALT occurrence distribution')).toHaveValue('0')
     fireEvent.click(
       screen.getByRole('button', {
-        name: /CAG; 0 exact literal occurrences.*2 called source ALT copies.*1 distinct ALT allele; filter/,
+        name: /CAG; longest pure run of 0 copies.*2 called source ALT copies.*1 distinct ALT allele; filter/,
       })
     )
     expect(
@@ -1867,7 +1867,7 @@ describe('long-read TR visualization fidelity', () => {
     } as LongReadTrLocus
     render(<LongReadTrComponentTrack locus={locus} exactReferenceComponentIndex={0} />)
 
-    const track = screen.getByRole('img', { name: /component 1 has a neutral dotted outline/ })
+    const track = screen.getByRole('group', { name: /component 1 has a neutral dotted outline/ })
     const outlined = track.querySelectorAll('[data-exact-reference-component-match="true"]')
     expect(outlined).toHaveLength(1)
     expect(outlined[0].getAttribute('fill')).toBe(motifColor('CAG', locus.motifs))
@@ -2246,7 +2246,12 @@ describe('long-read TR visualization fidelity', () => {
     expect(motifColor('CCT', locus.motifs)).toBe('#ff7f0e')
     expect(screen.queryByLabelText('Repeat motif color legend')).toBeNull()
     expect(
-      Number(screen.getByRole('img').querySelectorAll('rect')[0].getAttribute('width'))
+      Number(
+        screen
+          .getByRole('group', { name: /ordered components/ })
+          .querySelectorAll('rect')[0]
+          .getAttribute('width')
+      )
     ).toBeCloseTo(8.8)
     expect(
       screen.getByRole('heading', { name: 'Variation Cluster Reference Region' })
@@ -2272,12 +2277,46 @@ describe('long-read TR visualization fidelity', () => {
     } as LongReadTrLocus
     render(<LongReadTrComponentTrack locus={locus} />)
 
-    const labels = Array.from(screen.getByRole('img').querySelectorAll('text')).map(
-      (text) => text.textContent
-    )
+    const labels = Array.from(
+      screen.getByRole('group', { name: /ordered components/ }).querySelectorAll('text')
+    ).map((text) => text.textContent)
     expect(labels).toContain('TGGTGTCC…AGTCTTAC (99 bp)')
     expect(labels).not.toContain(longMotif)
     // The 18 bp motif's 10 bp box is too narrow for its label, which hovering still shows.
     expect(labels).not.toContain('CAGCAGCAGCAGCAGCAG')
+  })
+
+  test("opens a dialog with a component box's zero-based interval and full motif", () => {
+    const longMotif = `CCCCCGTG${'C'.repeat(17)}GGGGCCC`
+    const locus = {
+      motifs: [longMotif, 'CCG'],
+      components: [
+        { chrom: '9', start0: 133071240, end0: 133071499, motif: longMotif },
+        { chrom: '9', start0: 133071499, end0: 133071508, motif: 'CCG' },
+      ],
+      region: { chrom: '9', start0: 133071240, end0: 133071608, size: 368 },
+    } as LongReadTrLocus
+    render(<LongReadTrComponentTrack locus={locus} />)
+
+    const dialogLines = () =>
+      Array.from(screen.getByRole('dialog').querySelectorAll('p')).map((line) => line.textContent)
+
+    fireEvent.click(screen.getByRole('button', { name: /^Component 1,/ }))
+    const dialog = screen.getByRole('dialog')
+    expect(within(dialog).getByText('Variation Cluster: Tandem Repeat #1')).not.toBeNull()
+    expect(dialogLines()).toEqual([
+      `Motif: ${longMotif} (${longMotif.length} bp)`,
+      'Reference Region: chr9:133,071,240–133,071,499 (259 bp)',
+    ])
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Ok' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+
+    // A narrow box with no text opens its dialog from the keyboard too. Its 3 bp motif needs no
+    // size.
+    fireEvent.keyDown(screen.getByRole('button', { name: /^Component 2,/ }), { key: 'Enter' })
+    expect(dialogLines()).toEqual([
+      'Motif: CCG',
+      'Reference Region: chr9:133,071,499–133,071,508 (9 bp)',
+    ])
   })
 })

@@ -361,9 +361,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(page.getByText('Allele copies with a genotype call')).toHaveCount(0)
     await expect(page.getByText('−9 bp')).toBeVisible()
     await expect(page.getByText('+25 bp', { exact: true })).toBeVisible()
-    await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
-      'NGC (3 bp)'
-    )
+    await expect(
+      page
+        .locator('dt')
+        .filter({ hasText: /^Motif$/ })
+        .locator('+ dd')
+    ).toHaveText('NGC (3 bp)')
     await expect(page.getByRole('heading', { name: 'External Resources' })).toBeVisible()
     await expect(page.getByRole('link', { name: 'TRExplorer' })).toBeVisible()
 
@@ -523,9 +526,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const index = await openLocus(page, GCA_LOCUS, 16)
     await expect(page.getByRole('heading', { name: 'ATXN7 GCA tandem repeat' })).toBeVisible()
     await expect(page.getByLabel('Primary repeat GCA', { exact: true })).toHaveCount(0)
-    await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
-      'GCA (3 bp)'
-    )
+    await expect(
+      page
+        .locator('dt')
+        .filter({ hasText: /^Motif$/ })
+        .locator('+ dd')
+    ).toHaveText('GCA (3 bp)')
     const selected = await selectExactAllele(page, GCA_LOCUS, 15, 16)
     expect(selected).toBe(GCA_ALT)
 
@@ -737,9 +743,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       await expect(page.getByRole('heading', { name: item.title })).toBeVisible()
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
       await expect(page.getByLabel(`Primary repeat ${item.motif}`, { exact: true })).toHaveCount(0)
-      await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
-        `${item.motif} (${item.motif.length} bp)`
-      )
+      await expect(
+        page
+          .locator('dt')
+          .filter({ hasText: /^Motif$/ })
+          .locator('+ dd')
+      ).toHaveText(`${item.motif} (${item.motif.length} bp)`)
       await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
       const diseaseSection = page
         .getByRole('heading', { name: /Known disease-associated TR locus/ })
@@ -940,7 +949,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(motifSelector).toHaveValue('1')
     const motifBin = motifCard
       .getByRole('button', {
-        name: /CAA; \d+ exact literal occurrences?.*source ALT cop(?:y|ies).*source ALT alleles?; filter/,
+        name: /CAA; longest pure run of \d+ cop(?:y|ies).*source ALT cop(?:y|ies).*source ALT alleles?; filter/,
       })
       .first()
     const motifBinLabel = await motifBin.getAttribute('aria-label')
@@ -1301,7 +1310,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(narrowMotifMarks.nth(0)).toHaveAttribute('aria-pressed', 'true')
     await expect(narrowMotifMarks.nth(1)).toHaveAttribute('aria-pressed', 'true')
     await expect(
-      page.getByRole('heading', { name: /source ALT alleles — .+ exact literal occurrences/ })
+      page.getByRole('heading', { name: /source ALT alleles — .+ longest pure run of/ })
     ).toBeFocused()
     await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
 

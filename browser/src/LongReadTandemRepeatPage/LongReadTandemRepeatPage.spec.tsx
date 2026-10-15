@@ -707,7 +707,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     // A variation cluster renders the ordered component track; the assertions below
     // still guard that no classifying or provenance detail comes with it.
     expect(
-      screen.queryByRole('img', {
+      screen.queryByRole('group', {
         name: /ordered components of the variation cluster reference region/,
       })
     ).not.toBeNull()
@@ -810,7 +810,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByText('Known disease-associated tandem repeat')).toBeNull()
     expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
     expect(
-      screen.queryByRole('img', {
+      screen.queryByRole('group', {
         name: /ordered components of the variation cluster reference region/,
       })
     ).toBeNull()
