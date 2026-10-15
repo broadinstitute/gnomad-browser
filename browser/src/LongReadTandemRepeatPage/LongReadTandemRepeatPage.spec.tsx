@@ -1352,7 +1352,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(section).queryByRole('button')).toBeNull()
     const exactMatch = document.querySelector('[data-exact-reference-component-match="true"]')
     expect(exactMatch).not.toBeNull()
-    expect(exactMatch!.querySelector('title')!.textContent).toContain('no clinical classification')
+    expect(exactMatch!.querySelector('title')!.textContent).toContain(
+      'known disease-associated tandem repeat'
+    )
   })
 
   test.each([

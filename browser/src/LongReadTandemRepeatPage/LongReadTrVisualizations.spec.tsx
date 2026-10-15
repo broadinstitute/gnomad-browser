@@ -1828,7 +1828,9 @@ describe('long-read TR visualization fidelity', () => {
     // motif color.
     expect(outlined[0].getAttribute('stroke-width')).toBe('2')
     expect(outlined[0].getAttribute('stroke-dasharray')).toBe('2 2')
-    expect(outlined[0].textContent).toContain('no clinical classification')
+    expect(outlined[0].textContent).toBe(
+      'Component 1, CAG, chr4:1–12, 12 bp; known disease-associated tandem repeat'
+    )
     const legend = screen.getByLabelText('Variation cluster reference region legend')
     expect(legend.textContent).toContain('Known disease-associated tandem repeat')
     // The browser reports the color as rgb(), so compare it with the same color set the same way.

@@ -909,8 +909,9 @@ export const LongReadTrComponentTrack = ({
                 const compactLabel = componentWidth < 44
                 const exactReferenceMatch =
                   hasAuthorizedExactReferenceOutline && index === exactReferenceComponentIndex
+                // The hover text names the outlined component the way the legend does.
                 const accessibleLabel = exactReferenceMatch
-                  ? `${label}; exact short-read catalog reference match; neutral identity outline; no clinical classification`
+                  ? `${label}; known disease-associated tandem repeat`
                   : label
                 return (
                   // Source component order is identity-bearing, including exact duplicate components.
@@ -4470,12 +4471,6 @@ export const WholeRecordGenotypeLandscape = ({
                         : 'change from REF'
                     }`}
                   >
-                    <title>
-                      Genotype distribution by longer and shorter{' '}
-                      {lengthAxisMode === 'absolute'
-                        ? 'represented allele length'
-                        : 'change from REF'}
-                    </title>
                     {squares.map(({ shorter, longer, key, cell, markId, selected, intensity }) => {
                       const mark = brushMarks.find((candidate) => candidate.id === markId)
                       let cellFill = cell ? LONG_READ_PRIMARY_PLOT_COLOR : '#f5f7f8'
