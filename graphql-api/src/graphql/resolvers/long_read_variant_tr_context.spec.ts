@@ -19,7 +19,7 @@ import { mergeTypeDefs } from '@graphql-tools/merge'
 import { makeExecutableSchema } from '@graphql-tools/schema'
 import { buildSchema, graphql, GraphQLObjectType } from 'graphql'
 import { parseTrLocusId } from '../../../../dataset-metadata/longReadTrLocusId'
-import { getTrTableCatalogPresentation } from '../../../../dataset-metadata/longReadTrCatalogContext'
+import { isCompleteExactTableContext } from '../../../../dataset-metadata/longReadTrCatalogContext'
 import * as authority from '../../queries/long_read_tr_reference'
 import { getY1SourceSnapshot } from '../../queries/long_read_y1_provenance'
 import {
@@ -29,7 +29,7 @@ import {
 import { resolveVariantTrShortReadContext } from './long_read_variant_tr_context'
 import resolvers from './long_read_variants'
 
-const artifact = authority.longReadTrReferenceArtifactForTests
+const artifact = authority.longReadTrReferenceCrosswalkArtifact
 const catalog = artifact.rows.map((row: any) => row.short)
 const fetchAll = fetchBoundedShortTandemRepeatCatalog as jest.Mock
 const fetchDetail = fetchShortTandemRepeatById as jest.Mock
@@ -136,9 +136,9 @@ describe('optional variant-row exact TR context (real crosswalk, local mocked so
       lr_cohort: row.lr_cohort,
       tr_locus_short_read_context: { status: 'EXACT_UNIQUE', catalog_record: { id: 'RFC1' } },
     })
-    expect(
-      getTrTableCatalogPresentation(projected.tr_locus_short_read_context, scopeFor(row))
-    ).not.toBeNull()
+    expect(isCompleteExactTableContext(projected.tr_locus_short_read_context, scopeFor(row))).toBe(
+      true
+    )
     const context = projected.tr_locus_short_read_context
     expect(Object.keys(context)).toEqual([
       'status',
@@ -201,15 +201,7 @@ describe('optional variant-row exact TR context (real crosswalk, local mocked so
       })
       expect(fetchAll).toHaveBeenCalledTimes(1)
       expect(fetchDetail).toHaveBeenCalledTimes(1)
-      const presentation = getTrTableCatalogPresentation(result, scopeFor(row))!
-      expect(presentation).not.toBeNull()
-      if (id === 'RFC1') {
-        expect(scopeFor(row).locus.components.map((component) => component.motif)).toEqual([
-          'AAAAG',
-        ])
-        expect(presentation.pathogenicMotifs).toEqual(['AAGGC', 'AAGGG', 'AGAGG', 'AGGGC', 'GGACA'])
-        expect(presentation.pathogenicLine?.label).toBe('Catalog pathogenic: AAGGC +4 more motifs')
-      }
+      expect(isCompleteExactTableContext(result, scopeFor(row))).toBe(true)
     }
   )
 

@@ -131,7 +131,7 @@ query ${operationName}(
     whole_record_allele_landscape {
       status reason_code unit called_alleles non_reference_called_alleles reference_called_alleles
       reference_stacks { ancestry_group sex called_alleles }
-      exact_alt_count stratified_available stratified_unavailable_reason ancestry_groups sexes
+      exact_alt_count
       bins {
         delta called_alleles exact_alt_count allele_ids
         stacks { ancestry_group sex called_alleles }
@@ -141,7 +141,7 @@ query ${operationName}(
       purity_available purity_unavailable_reason
     }
     whole_record_genotype_landscape {
-      status reason_code unit reference_allele_id called_samples called_alleles ancestry_groups sexes
+      status reason_code unit reference_allele_id called_samples called_alleles
       cells {
         shorter_delta longer_delta people
         pairs {
@@ -214,18 +214,20 @@ const LongReadTandemRepeatPageContainer = ({
   const history = useHistory()
   const location = useLocation()
   const selectionScroll = useRef<{
+    // The locus page the allele was picked on; another locus page opens at the top instead.
+    pathname: string
     x: number
     y: number
     list: { element: HTMLElement; top: number } | null
   } | null>(null)
   const restoreSelectionScroll = useCallback(() => {
-    if (selectionScroll.current) {
+    if (selectionScroll.current?.pathname === location.pathname) {
       window.scrollTo(selectionScroll.current.x, selectionScroll.current.y)
       if (selectionScroll.current.list) {
         selectionScroll.current.list.element.scrollTop = selectionScroll.current.list.top
       }
     }
-  }, [])
+  }, [location.pathname])
 
   useLayoutEffect(restoreSelectionScroll, [location.key, restoreSelectionScroll])
 
@@ -256,6 +258,7 @@ const LongReadTandemRepeatPageContainer = ({
       delete list.dataset.activationWindowY
     }
     selectionScroll.current = {
+      pathname: location.pathname,
       x: Number.isFinite(activationWindowX) ? activationWindowX : window.scrollX,
       y: Number.isFinite(activationWindowY) ? activationWindowY : window.scrollY,
       list: list

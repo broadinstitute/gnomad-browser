@@ -79,7 +79,8 @@ export const PrimaryMotifAlleleHistogram = ({
           y2={dimensions.top + innerHeight}
           stroke="#566168"
         />
-        {[0, Math.round(maximum / 2), maximum].map((tick) => (
+        {/* A Set, because with a maximum of 1 the middle tick rounds to the top one. */}
+        {[...new Set([0, Math.round(maximum / 2), maximum])].map((tick) => (
           <g key={tick}>
             <line
               x1={dimensions.left - 4}
@@ -167,22 +168,9 @@ export const PrimaryMotifGenotypeCells = ({
   // The plot's own Length axis menu, drawn at the bottom of the card.
   lengthAxisControl?: React.ReactNode
 }) => {
+  // Callers pass only a measurement whose genotypes passed primaryMotifGenotypeAvailable.
   const { genotype } = measurement
   const motif = measurement.motif!
-  if (genotype.status !== 'AVAILABLE') {
-    const reason =
-      genotype.reason_code === 'AGGREGATE_ONLY_SOURCE_NO_GT_PAIRING'
-        ? 'All of Us is aggregate-only and has no source-complete genotype pairing.'
-        : 'Source-complete anonymous genotype pairing is unavailable for this product.'
-    return (
-      <PlotCard data-testid="primary-motif-genotype-unavailable">
-        <h3>Genotype exact-motif distribution</h3>
-        <p role="status">{reason}</p>
-        {lengthAxisControl}
-      </PlotCard>
-    )
-  }
-
   const cells = genotype.cells
   const shorter = cells.map((cell) => cell.shorter_exact_units)
   const longer = cells.map((cell) => cell.longer_exact_units)

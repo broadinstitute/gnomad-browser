@@ -101,6 +101,8 @@ export const useDiscretePlotBrush = <T>({
     clientX: number
     clientY: number
     dragged: boolean
+    // Escape was pressed during this press, so releasing it selects nothing.
+    cancelled: boolean
   } | null>(null)
   const suppressClick = useRef(false)
   const [previewMarkIds, setPreviewMarkIds] = useState<string[]>([])
@@ -125,15 +127,17 @@ export const useDiscretePlotBrush = <T>({
 
     // Pointer capture retargets move/up events to the plot container. Dense scatter and
     // heatmap targets can also overlap, so choose the geometrically nearest mark rather
-    // than whichever overlapping element happens to be painted on top.
+    // than whichever overlapping element happens to be painted on top. On an x-only plot the
+    // marks are bars of different heights, so only the horizontal distance counts.
     let nearestId: string | null = null
     let nearestDistance = Number.POSITIVE_INFINITY
     event.currentTarget.querySelectorAll('[data-discrete-brush-id]').forEach((candidate) => {
       const bounds = candidate.getBoundingClientRect()
-      const distance = Math.hypot(
-        event.clientX - (bounds.left + bounds.width / 2),
-        event.clientY - (bounds.top + bounds.height / 2)
-      )
+      const horizontalDistance = event.clientX - (bounds.left + bounds.width / 2)
+      const distance =
+        axis === 'x'
+          ? Math.abs(horizontalDistance)
+          : Math.hypot(horizontalDistance, event.clientY - (bounds.top + bounds.height / 2))
       if (distance < nearestDistance) {
         nearestDistance = distance
         nearestId = candidate.getAttribute('data-discrete-brush-id')
@@ -148,6 +152,23 @@ export const useDiscretePlotBrush = <T>({
     return selection
   }
 
+  // Swallows the click that the browser sends after a pointer is released.
+  const suppressFollowingClick = () => {
+    suppressClick.current = true
+    window.setTimeout(() => {
+      suppressClick.current = false
+    }, 0)
+  }
+
+  // Escape clears the selection and cancels a press in progress, so releasing it selects nothing.
+  const clearSelection = () => {
+    if (pointer.current) pointer.current.cancelled = true
+    setPreviewMarkIds([])
+    anchorId.current = null
+    endpointId.current = null
+    onClear()
+  }
+
   const containerProps = {
     onPointerDown: (event: React.PointerEvent<HTMLElement | SVGElement>) => {
       if (event.button !== 0) return
@@ -160,11 +181,19 @@ export const useDiscretePlotBrush = <T>({
         clientX: event.clientX,
         clientY: event.clientY,
         dragged: false,
+        cancelled: false,
       }
     },
     onPointerMove: (event: React.PointerEvent<HTMLElement | SVGElement>) => {
       const current = pointer.current
-      if (!current || current.id !== event.pointerId) return
+      if (!current || current.id !== event.pointerId || current.cancelled) return
+      // A press released outside the plot before it dragged far enough to capture the pointer
+      // sends no pointerup here, so a later move with no button held ends that press.
+      if (event.buttons === 0) {
+        pointer.current = null
+        setPreviewMarkIds([])
+        return
+      }
       const distance = Math.hypot(event.clientX - current.clientX, event.clientY - current.clientY)
       if (!current.dragged && distance < dragThreshold) return
       if (!current.dragged) {
@@ -183,18 +212,16 @@ export const useDiscretePlotBrush = <T>({
       if (!current || current.id !== event.pointerId) return
       const endId = markIdAtPointer(event)
       if (endId) current.endId = endId
-      if (current.dragged) {
+      // A press without a drag is a click: the mark's onClick, which runs after this, sets the
+      // anchor, so a Shift+click can still extend from the previous click's anchor.
+      if (current.cancelled) {
+        suppressFollowingClick()
+      } else if (current.dragged) {
         const selection = selectionBetween(current.startId, current.endId)
         if (selection) onSelect(selection)
         anchorId.current = current.startId
         endpointId.current = current.endId
-        suppressClick.current = true
-        window.setTimeout(() => {
-          suppressClick.current = false
-        }, 0)
-      } else {
-        anchorId.current = current.startId
-        endpointId.current = current.startId
+        suppressFollowingClick()
       }
       pointer.current = null
       setPreviewMarkIds([])
@@ -206,10 +233,7 @@ export const useDiscretePlotBrush = <T>({
     onKeyDown: (event: React.KeyboardEvent<HTMLElement | SVGElement>) => {
       if (event.key === 'Escape') {
         event.preventDefault()
-        setPreviewMarkIds([])
-        anchorId.current = null
-        endpointId.current = null
-        onClear()
+        clearSelection()
       }
     },
   }
@@ -237,9 +261,7 @@ export const useDiscretePlotBrush = <T>({
       if (event.key === 'Escape') {
         event.preventDefault()
         event.stopPropagation()
-        anchorId.current = null
-        endpointId.current = null
-        onClear()
+        clearSelection()
         return true
       }
       if (event.shiftKey && event.key.startsWith('Arrow')) {

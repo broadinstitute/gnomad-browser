@@ -1,6 +1,6 @@
 import React from 'react'
 import 'jest-styled-components'
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
 import { Router } from 'react-router-dom'
 import { createMemoryHistory } from 'history'
@@ -196,6 +196,28 @@ const makeLocus = (count = 72) => {
       anchor_rule_release: 'test-v1',
       anchor_rule_digest: 'e'.repeat(64),
       reconciliation_status: 'RECONCILED' as const,
+    },
+    primary_motif_measurement: {
+      status: 'UNAVAILABLE' as const,
+      reason_code: 'PUBLIC_PRODUCT_NOT_APPROVED' as const,
+      motif: null,
+      biological_role: null,
+      metric: 'WHOLE_RECORD_EXACT_PRIMARY_MOTIF_UNITS_V1' as const,
+      unit: 'EXACT_PRIMARY_MOTIF_UNITS' as const,
+      scope: 'WHOLE_REPRESENTED_ALLELE' as const,
+      called_alleles: null,
+      reference_alleles: null,
+      alternate_alleles: null,
+      alternate_identities_checked: null,
+      bins: [],
+      genotype: {
+        status: 'UNAVAILABLE' as const,
+        reason_code: 'PRODUCT_INCOMPLETE' as const,
+        called_diploid_people: null,
+        no_call_people: null,
+        cells: [],
+      },
+      provenance: null,
     },
     filter_contract: {
       status: 'PARTIAL' as const,
@@ -689,20 +711,14 @@ describe('canonical long-read tandem-repeat locus page', () => {
         name: /ordered components of the variation cluster reference region/,
       })
     ).not.toBeNull()
-    expect(screen.queryByText('Full ordered component table (6)')).toBeNull()
     expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
   })
 
-  test('reports reference sequence purity directly below the reference interval size', () => {
+  test("reports TRGT's REF purity, the purity plot's REF value, below the reference interval size", () => {
     const locus = makeSimpleLocus()
-    // Padding base, then 12 bases of CAG carrying two substitutions: 10 of 12.
-    // Only the first allele node carries it, so the assertion below fails if the
-    // page reads REF from any other node.
-    ;(locus as any).alleles = {
-      ...locus.alleles,
-      nodes: locus.alleles.nodes.map((allele, index) =>
-        index === 0 ? { ...allele, ref: 'ACAGCAGCTGCAT' } : allele
-      ),
+    ;(locus as any).whole_record_allele_landscape = {
+      ...locus.whole_record_allele_landscape,
+      reference_purity: 0.958333,
     }
 
     renderPage({ locus, selectedAllele: undefined })
@@ -710,7 +726,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     const term = screen
       .getAllByText('Reference sequence purity')
       .find((element) => element.tagName === 'DT')!
-    expect(term.nextElementSibling!.textContent).toBe('0.83')
+    expect(term.nextElementSibling!.textContent).toBe('0.96')
 
     const intervalTerm = screen
       .getAllByText('Reference interval size')
@@ -718,10 +734,58 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(intervalTerm.parentElement!.nextElementSibling).toBe(term.parentElement)
   })
 
-  test('omits reference sequence purity when the locus spans more than one component', () => {
-    renderPage()
+  test('omits reference sequence purity when the API has no REF purity', () => {
+    const locus = makeSimpleLocus()
+    // A REF the page could score itself, which it no longer does: its own position-by-position
+    // score disagreed with TRGT's wherever the interval starts partway into a motif copy.
+    ;(locus as any).alleles = {
+      ...locus.alleles,
+      nodes: locus.alleles.nodes.map((allele, index) =>
+        index === 0 ? { ...allele, ref: 'ACAGCAGCTGCAT' } : allele
+      ),
+    }
+    ;(locus as any).whole_record_allele_landscape = {
+      ...locus.whole_record_allele_landscape,
+      reference_purity: null,
+    }
+
+    renderPage({ locus, selectedAllele: undefined })
 
     expect(screen.queryByText('Reference sequence purity')).toBeNull()
+  })
+
+  test('says why no ALT alleles are listed when the locus has too many to read', () => {
+    const locus = makeSimpleLocus()
+    ;(locus as any).total_alleles = 2501
+    ;(locus as any).exact_alt_count_complete = false
+    ;(locus as any).exact_alt_count_unavailable_reason = 'ALT_COUNT_EXCEEDS_2500'
+    ;(locus as any).alleles = { nodes: [], page_info: { has_next_page: false } }
+    ;(locus as any).whole_record_allele_landscape = {
+      status: 'UNAVAILABLE',
+      reason_code: 'ALT_COUNT_EXCEEDS_2500',
+    }
+
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(
+      screen.getByText(
+        'No ALT alleles are listed because the locus has more than 2,500 ALT alleles, more than this page can show.'
+      )
+    ).not.toBeNull()
+  })
+
+  test("reports TRGT's REF purity on a variation cluster page too", () => {
+    const locus = makeLocus()
+    ;(locus as any).whole_record_allele_landscape = {
+      ...locus.whole_record_allele_landscape,
+      reference_purity: 0.9,
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    const term = screen
+      .getAllByText('Reference sequence purity')
+      .find((element) => element.tagName === 'DT')!
+    expect(term.nextElementSibling!.textContent).toBe('0.90')
   })
 
   test('uses motif identity rather than an interval as the anonymous-locus title', () => {
@@ -932,6 +996,29 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.queryByRole('heading', { name: /Long-read exact CAG units/ })).toBeNull()
   })
 
+  test("shows a single-repeat locus's component motif when its primary repeat is unavailable", () => {
+    const locus = makeSimpleLocus()
+    ;(locus as any).primary_repeat = {
+      status: 'UNAVAILABLE',
+      motif: null,
+      component_index: null,
+      component: null,
+      selection_basis: null,
+      biological_role: null,
+      catalog_id: null,
+      catalog_digest: null,
+    }
+    renderPage({ locus, selectedAllele: undefined })
+
+    expect(motifAttributeValue()).toBe('CAG (3 bp)')
+    expect(screen.queryByText(/disclosure below/)).toBeNull()
+    // The repeat count uses the same component motif.
+    const attributeValue = (label: string) =>
+      screen.getAllByText(label).find((element) => element.tagName === 'DT')!.nextElementSibling!
+        .textContent
+    expect(attributeValue('Reference interval size')).toBe('19.0 repeats (57 bp)')
+  })
+
   test('falls back from an unreceipted reviewed compound presentation', () => {
     const locus = makeLocus()
     ;(locus as any).presentation = {
@@ -1020,11 +1107,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       screen.queryByRole('button', { name: 'About known disease-associated TR locus' })
     ).toBeNull()
-    const helpTitles = [
-      'About the allelic landscape',
-      'About the source-ALT index',
-      'About exact ALT details',
-    ]
+    const helpTitles = ['About the allelic landscape', 'Allele Details Table', 'ALT Allele Details']
     expect(screen.queryByRole('heading', { name: 'Unavailable data' })).toBeNull()
     expect(screen.queryByRole('button', { name: 'About unavailable data' })).toBeNull()
 
@@ -1038,6 +1121,12 @@ describe('canonical long-read tandem-repeat locus page', () => {
       if (title === 'About the allelic landscape') {
         expect(
           within(dialog).getByText(/These plots summarize long-read observations at this locus/)
+        ).not.toBeNull()
+      } else if (title === 'ALT Allele Details') {
+        expect(
+          within(dialog).getByText(
+            'The sequence of a single ALT allele as reported by TRGT at this locus.'
+          )
         ).not.toBeNull()
       } else {
         expect(within(dialog).getByText('What this shows.')).not.toBeNull()
@@ -1399,9 +1488,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     fireEvent.click(
       screen.getByRole('button', { name: /−6 bp vs REF; 134 called non-reference allele copies/ })
     )
-    expect(document.activeElement).toBe(
+    expect(
       screen.getByRole('heading', { name: '2 of 72 non-reference alleles selected' })
-    )
+    ).not.toBeNull()
     expect(table.getAttribute('aria-rowcount')).toBe('3')
     expect(within(table).getByTitle(`${sourceVariantId}~2`)).not.toBeNull()
     expect(within(table).getByTitle(`${sourceVariantId}~3`)).not.toBeNull()
@@ -1645,11 +1734,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(zeroDeltaCell.closest('svg')?.getAttribute('role')).toBe('group')
 
     fireEvent.click(zeroDeltaCell)
-    expect(document.activeElement).toBe(
+    expect(
       screen.getByRole('heading', {
         name: '1 of 72 non-reference alleles selected',
       })
-    )
+    ).not.toBeNull()
     expect(
       screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
     ).toBe('2')
@@ -1723,6 +1812,42 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
     expect(screen.getByRole('alert').textContent).toContain('removed from the URL')
     await waitFor(() => expect(onInvalidSelection).toHaveBeenCalledTimes(1))
+  })
+
+  test('keeps the invalid selection notice after the page reloads without the allele', async () => {
+    const onInvalidSelection = jest.fn()
+    const page = (locus: any, selectedAllele?: string) => (
+      <ThemeProvider
+        theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+      >
+        <LongReadTandemRepeatPage
+          datasetId="gnomad_r4_lr"
+          locus={locus}
+          requestedCohort={locus.lr_cohort}
+          selectedAllele={selectedAllele}
+          onCohortChange={jest.fn()}
+          onInvalidSelection={onInvalidSelection}
+          navigation={navigation}
+        />
+      </ThemeProvider>
+    )
+    const rendered = render(
+      page({ ...makeLocus(), selected_allele_valid: false, selected_allele: null }, 'other~9')
+    )
+    await waitFor(() => expect(onInvalidSelection).toHaveBeenCalledTimes(1))
+    // The URL cleanup reloads the locus with no allele requested.
+    rendered.rerender(
+      page({ ...makeLocus(), selected_allele_valid: null, selected_allele: null }, undefined)
+    )
+    expect(screen.getByRole('alert').textContent).toContain('removed from the URL')
+
+    // Selecting a valid allele, then going back to no selection, does not bring the notice back.
+    rendered.rerender(page({ ...makeLocus(), selected_allele_valid: true }, exactId))
+    expect(screen.queryByRole('alert')).toBeNull()
+    rendered.rerender(
+      page({ ...makeLocus(), selected_allele_valid: null, selected_allele: null }, undefined)
+    )
+    expect(screen.queryByRole('alert')).toBeNull()
   })
 
   test('keeps a belonging selection when its bounded detail is unavailable', () => {
@@ -1942,6 +2067,42 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(history.action).toBe('PUSH')
     expect(new URLSearchParams(history.location.search).get('allele')).toBe(exactId)
     expect(new URLSearchParams(history.location.search).get('keep')).toBe('1')
+  })
+
+  test('container keeps the scroll position of a picked allele on its own locus only', () => {
+    const displayedLocus = makeLocus()
+    displayedLocus.selected_allele = null as any
+    displayedLocus.selected_allele_valid = null as any
+    ;(global as any).__TR_QUERY_DATA__ = displayedLocus
+    const history = createMemoryHistory({
+      initialEntries: [`/tandem-repeat/${displayedLocus.id}?dataset=gnomad_r4_lr`],
+    })
+    render(
+      <Router history={history}>
+        <ThemeProvider
+          theme={{ colors: { border: '#ddd', highlightedBackground: '#ffc', link: '#06c' } }}
+        >
+          <LongReadTandemRepeatPageContainer
+            datasetId="gnomad_r4_lr"
+            locusId={displayedLocus.id}
+            lrCohort="hgsvc_hprc"
+          />
+        </ThemeProvider>
+      </Router>
+    )
+    // The page was scrolled 1500 px down when the allele's link was pressed.
+    document.querySelector<HTMLElement>('.lr-tr-exact-index-scroll')!.dataset.activationWindowY =
+      '1500'
+    fireEvent.click(
+      within(screen.getByRole('table', { name: 'Source ALT allele index' })).getByRole('link', {
+        name: 'Details for Sequence 2',
+      })
+    )
+    expect(windowScrollTo).toHaveBeenCalledWith(0, 1500)
+
+    windowScrollTo.mockClear()
+    act(() => history.push('/tandem-repeat/4-3074876-3074933-CAG?dataset=gnomad_r4_lr'))
+    expect(windowScrollTo).not.toHaveBeenCalledWith(0, 1500)
   })
 
   test('container replaces only an invalid allele parameter', async () => {

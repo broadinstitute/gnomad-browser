@@ -63,6 +63,8 @@ export const buildLongReadTrComponentContract = (
  * record's REF reaches beyond its components. The catalog genotyped some clusters under the id
  * of their main repeat, so their single component is only part of what the record measures.
  * This is the gene table's rule in getTrLocusRowDisplay, so both name a locus the same way.
+ * The REF-span part applies only when bounds are given, as the locus query does; without them
+ * (as for variant rows) a single-component locus is always ISOLATED_REPEAT.
  */
 export const buildLongReadTrPresentation = (
   orderedComponentCount: number,

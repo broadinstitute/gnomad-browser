@@ -193,11 +193,22 @@ const fixture = ({
     catalog_digest: catalogDigest,
     registry_digest: null,
   }
+  // Rows over every stratum; this fixture writes only the overall stratum unless a test adds more.
+  const allStrataCounts = { bins: bins.length, cells: genotypeAvailable ? cells.length : 0 }
   const queries: string[] = []
   const queryRows = jest.fn(async (query: string) => {
     queries.push(query)
     if (query.includes('FROM lr_y1_primary_motif_runs')) return [run]
     if (query.includes('FROM lr_y1_primary_motif_loci')) return [locusReceipt]
+    if (query.includes('all_strata_row_count')) {
+      return [
+        {
+          all_strata_row_count: query.includes('lr_y1_primary_motif_allele_bins')
+            ? allStrataCounts.bins
+            : allStrataCounts.cells,
+        },
+      ]
+    }
     if (query.includes('FROM lr_y1_primary_motif_allele_bins')) return bins
     if (query.includes('FROM lr_y1_primary_motif_genotype_pairs')) return cells
     if (query.includes('FROM lr_y1_primary_motif_genotype_margins') && query.includes('count()')) {
@@ -214,6 +225,7 @@ const fixture = ({
     bins,
     cells,
     margins,
+    allStrataCounts,
     queryRows,
     queries,
     an: resolvedAn,
@@ -251,6 +263,31 @@ describe('exact primary-motif product query', () => {
     }
   )
 
+  test('checks the receipt counts against every stratum, not just the overall one', async () => {
+    // The producer's receipt counts bins and genotype cells in all 21 population and sex strata,
+    // while the page reads only the overall stratum.
+    const source = fixture({ catalog: 'ATXN1', an: 584, calledPeople: 292, noCallPeople: 0 })
+    source.locusReceipt.bin_count = source.bins.length * 21
+    source.locusReceipt.genotype_cell_count = source.cells.length * 21
+    source.allStrataCounts.bins = source.bins.length * 21
+    source.allStrataCounts.cells = source.cells.length * 21
+    const result = await fetchLongReadTrPrimaryMotifMeasurementUncached(
+      source.locus,
+      source.primaryRepeat,
+      { enabled: true, queryRows: source.queryRows }
+    )
+    expect(result.status).toBe('AVAILABLE')
+    expect(result.bins).toHaveLength(source.bins.length)
+
+    source.allStrataCounts.bins -= 1
+    await expect(
+      fetchLongReadTrPrimaryMotifMeasurementUncached(source.locus, source.primaryRepeat, {
+        enabled: true,
+        queryRows: source.queryRows,
+      })
+    ).rejects.toThrow('all-stratum bin count differs from locus receipt')
+  })
+
   test('preserves both HTT source totals while making AoU genotype pairing typed unavailable', async () => {
     const hgsvc = fixture({ catalog: 'HTT', cohort: 'hgsvc_hprc', an: 584 })
     const aou = fixture({ catalog: 'HTT', cohort: 'aou', an: 2050 })
@@ -273,7 +310,10 @@ describe('exact primary-motif product query', () => {
       no_call_people: null,
       cells: [],
     })
-    expect(aou.queryRows).toHaveBeenCalledTimes(3)
+    // The run, the locus receipt, the overall bins and the bin count over all strata; never a
+    // genotype table.
+    expect(aou.queryRows).toHaveBeenCalledTimes(4)
+    expect(aou.queries.join('\n')).not.toMatch(/lr_y1_primary_motif_genotype/)
   })
 
   test('requires all 682 RFC1 AoU ALT identities before serving aggregate bins', async () => {
@@ -407,6 +447,20 @@ describe('exact primary-motif product query', () => {
     ['response bound exceeded', 'PRODUCT_BOUND_EXCEEDED'],
     ['bins do not reconcile', 'PRODUCT_INCOMPLETE'],
     ['network unavailable', 'PRODUCT_QUERY_FAILED'],
+    // Messages the query itself throws.
+    ['locus receipt is stale or cross-bound', 'PRODUCT_IDENTITY_MISMATCH'],
+    ['locus receipt is not complete, reviewed, available, and within bounds', 'PRODUCT_INCOMPLETE'],
+    ['run and locus registry digests or completion reasons differ', 'PRODUCT_IDENTITY_MISMATCH'],
+    ['allele bins are empty or exceed the response bound', 'PRODUCT_BOUND_EXCEEDED'],
+    ['accepted product run advertises unsupported or failed bounds', 'PRODUCT_BOUND_EXCEEDED'],
+    [
+      'checked ALT identities do not match the complete primary source record',
+      'PRODUCT_IDENTITY_MISMATCH',
+    ],
+    [
+      'AoU locus receipt contradicts aggregate-only genotype unavailability',
+      'PRODUCT_IDENTITY_MISMATCH',
+    ],
   ] as const)('classifies contained %s failures without exposing details', (message, reason) => {
     expect(containedPrimaryMotifFailureReason(new Error(message))).toBe(reason)
   })

@@ -3,12 +3,12 @@ import { UserVisibleError } from '../errors'
 import { parseTrLocusId } from '../../../dataset-metadata/longReadTrLocusId'
 import type { Y1SourceSnapshot } from './long_read_y1_provenance'
 import {
-  longReadTrReferenceArtifactForTests,
+  longReadTrReferenceCrosswalkArtifact,
   normalizeShortCatalogRows,
 } from './long_read_tr_reference'
 import { fetchShortTandemRepeatDetailReceipt } from './short-tandem-repeat-queries'
 
-const artifact: any = longReadTrReferenceArtifactForTests
+const artifact: any = longReadTrReferenceCrosswalkArtifact
 const CACHE_MS = 300_000
 const CACHE_MAX_ITEMS = 100
 const RESPONSE_SAFETY_BYTES = 1024
@@ -409,6 +409,11 @@ const fetchCachedDetail = (esClient: object, shortId: string, distributionDigest
   while (cache.size >= CACHE_MAX_ITEMS) cache.delete(cache.keys().next().value)
   const promise = fetchShortTandemRepeatDetailReceipt(esClient, artifact.catalog.dataset, shortId)
   cache.set(key, { expires: now + CACHE_MS, promise })
+  // A failed fetch is usually a passing Elasticsearch failure, so it is not kept: the next
+  // request for this id retries. The caller still sees this rejection.
+  promise.catch(() => {
+    if (cache!.get(key)?.promise === promise) cache!.delete(key)
+  })
   return promise
 }
 

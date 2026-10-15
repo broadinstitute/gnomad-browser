@@ -5,7 +5,6 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import { MotifHighlightedSequence } from '../Haplotypes/TrAlleleStructure'
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
 import {
-  aggregateGenotypePairs,
   ExactAlleleIndex,
   histogramDeltaAxisTicks,
   histogramHeightPercent,
@@ -19,10 +18,9 @@ import {
   purityPointDiameter,
   purityScalePosition,
   purityTickDecimals,
-  reconciledFilterOptions,
   SelectedExactAlleleDetail,
   stackColorFor,
-  WholeRecordAlleleLandscape,
+  WholeRecordAlleleLandscape as WholeRecordAlleleLandscapeWithFilterContract,
   WholeRecordGenotypeLandscape,
   xAxisAlignmentPaddings,
 } from './LongReadTrVisualizations'
@@ -45,48 +43,6 @@ jest.mock(
         <a href={to} {...props}>
           {children}
         </a>
-      )
-)
-jest.mock(
-  '../ShortTandemRepeatPage/ShortTandemRepeatPopulationOptions',
-  () =>
-    ({
-      populations,
-      selectedPopulation,
-      selectedSex,
-      setSelectedPopulation,
-      setSelectedSex,
-    }: any) =>
-      (
-        <>
-          <label>
-            Genetic ancestry group
-            <select
-              aria-label="Genetic ancestry group"
-              value={selectedPopulation || ''}
-              onChange={(event) => setSelectedPopulation(event.target.value || null)}
-            >
-              <option value="">Global</option>
-              {populations.map((population: string) => (
-                <option key={population} value={population}>
-                  {population}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Sex
-            <select
-              aria-label="Sex"
-              value={selectedSex || ''}
-              onChange={(event) => setSelectedSex(event.target.value || null)}
-            >
-              <option value="">All</option>
-              <option value="XX">XX</option>
-              <option value="XY">XY</option>
-            </select>
-          </label>
-        </>
       )
 )
 jest.mock(
@@ -131,10 +87,6 @@ const alleleLandscape: WholeRecordAlleleLandscapeData = {
   non_reference_called_alleles: 130,
   reference_called_alleles: 70,
   exact_alt_count: 3,
-  stratified_available: false,
-  stratified_unavailable_reason: 'NOT_AVAILABLE',
-  ancestry_groups: [],
-  sexes: [],
   bins: alleles.map((allele) => ({
     delta: allele.length as number,
     called_alleles: allele.freq.all.ac,
@@ -199,6 +151,57 @@ const unavailableFilterContract: LongReadTrFilterContract = {
   source_run_id: 'run-test',
   metadata_source_run_id: null,
 }
+
+// An approved contract whose groups are the given source ancestry and sex keys, each group
+// matching its own key alone and combined with every key of the other kind.
+const approvedFilterContract = (
+  ancestries: string[],
+  sexes: string[]
+): LongReadTrFilterContract => {
+  const group = (key: string, frequencyKeys: string[]) => ({
+    id: key,
+    label: key,
+    kind: 'SOURCE_GROUP' as const,
+    source_frequency_keys: frequencyKeys,
+    source_metadata_keys: [key],
+    available_in_frequency: true,
+    available_in_genotype: true,
+    shared_available: true,
+    unavailable_reason: null,
+  })
+  return {
+    ...unavailableFilterContract,
+    status: 'AVAILABLE',
+    reason: null,
+    ancestry_mapping_status: 'APPROVED_EXACT',
+    sex_mapping_status: 'APPROVED_EXACT',
+    ancestry_groups: ancestries.map((ancestry) =>
+      group(ancestry, [ancestry, ...sexes.map((sex) => `${ancestry}_${sex}`)])
+    ),
+    sex_groups: sexes.map((sex) =>
+      group(sex, [sex, ...ancestries.map((ancestry) => `${ancestry}_${sex}`)])
+    ),
+    available_color_dimensions: ['ANCESTRY', 'SEX'],
+    allele_color_dimensions: ['ANCESTRY', 'SEX'],
+    genotype_color_dimensions: ['ANCESTRY', 'SEX'],
+    vocabulary_release: 'approved-v1',
+    vocabulary_digest: 'd'.repeat(64),
+  }
+}
+
+// Production always passes the API's filter contract. A test that is not about filtering gets one
+// that admits no filters.
+const WholeRecordAlleleLandscape = (
+  props: Omit<
+    React.ComponentProps<typeof WholeRecordAlleleLandscapeWithFilterContract>,
+    'filterContract'
+  > & { filterContract?: LongReadTrFilterContract }
+) => (
+  <WholeRecordAlleleLandscapeWithFilterContract
+    filterContract={unavailableFilterContract}
+    {...props}
+  />
+)
 
 const navigation: AlleleNavigation = {
   hrefForAllele: (alleleId) => `?allele=${alleleId}`,
@@ -272,6 +275,10 @@ describe('long-read TR visualization fidelity', () => {
       <ExactAlleleIndex alleles={simpleAlleles} motifs={['T']} navigation={navigation} />
     )
     expect(screen.getAllByText('Unavailable')).toHaveLength(3)
+    // The sequences are there, so the page says why their previews are not.
+    expect(screen.getByRole('status').textContent).toBe(
+      'Motif previews are unavailable because the REF and ALT sequences were not validated to share their leading VCF padding base.'
+    )
 
     rendered.rerender(
       <ExactAlleleIndex
@@ -368,9 +375,6 @@ describe('long-read TR visualization fidelity', () => {
   test('labels canonical stack-color legends accessibly', () => {
     const stratifiedLandscape: WholeRecordAlleleLandscapeData = {
       ...alleleLandscape,
-      stratified_available: true,
-      ancestry_groups: ['nfe', 'afr'],
-      sexes: ['XY', 'XX'],
       bins: (alleleLandscape.bins || []).map((bin) => ({
         ...bin,
         stacks: [
@@ -387,6 +391,7 @@ describe('long-read TR visualization fidelity', () => {
         alleles={alleles}
         motifs={['T']}
         navigation={navigation}
+        filterContract={approvedFilterContract(['nfe', 'afr'], ['XY', 'XX'])}
       />
     )
 
@@ -485,6 +490,75 @@ describe('long-read TR visualization fidelity', () => {
     ).not.toBeNull()
   })
 
+  test('says why AoU purity is missing at a record with a single ALT allele', () => {
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={{ ...alleleLandscape, purity_unavailable_reason: 'NO_ALIGNED_SOURCE_AP_ALLELE' }}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+
+    expect(
+      screen.getByText(
+        'Purity unavailable: the source VCF reports purity only for records with more than one ALT allele.'
+      )
+    ).not.toBeNull()
+  })
+
+  test('notes a table that lists only the most common ALTs, and counts unlisted ones a bar selects', () => {
+    // A fourth ALT, at +12 bp with ~3, is counted by the plots but not listed in the table.
+    const unlistedAlleleId = `${sourceId}~4`
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={{
+          ...alleleLandscape,
+          called_alleles: 202,
+          non_reference_called_alleles: 132,
+          exact_alt_count: 4,
+          bins: (alleleLandscape.bins || []).map((bin) =>
+            bin.delta === 12
+              ? {
+                  ...bin,
+                  called_alleles: 7,
+                  exact_alt_count: 2,
+                  allele_ids: [...bin.allele_ids, unlistedAlleleId],
+                }
+              : bin
+          ),
+          purity_points: [
+            ...alleles.map((allele) => ({
+              allele_id: allele.variant_id,
+              delta: allele.length as number,
+              motif_purity: 0.99,
+              called_alleles: allele.freq.all.ac,
+            })),
+            { allele_id: unlistedAlleleId, delta: 12, motif_purity: 0.9, called_alleles: 2 },
+          ],
+          purity_available: true,
+          purity_unavailable_reason: null,
+        }}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+
+    // The unlisted ALT's dot is drawn too: 100 + 25 + 5 + 2 copies.
+    expect(screen.getByText('Purity of 132 alleles')).not.toBeNull()
+    const note =
+      'The table lists the 3 ALT alleles with the highest allele counts (AC), out of 4. The plots include all of them.'
+    expect(screen.getByText(note)).not.toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: /\+12 bp vs REF; 7 called non-reference/ }))
+    expect(
+      screen.getByRole('heading', { name: '2 of 4 non-reference alleles selected' })
+    ).not.toBeNull()
+    expect(screen.getByText(`${note} 1 of the selected ALT alleles are not listed.`)).not.toBeNull()
+    expect(
+      screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
+    ).toBe('2')
+  })
+
   test('keeps sparse bars compact and filters the single exact index only on request', () => {
     const rendered = render(
       <WholeRecordAlleleLandscape
@@ -540,9 +614,9 @@ describe('long-read TR visualization fidelity', () => {
     // A selected bar turns dark navy so it never reads as the orange REF allele.
     fireEvent.click(negativeBar)
     expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(0, 63, 99)')
-    expect(document.activeElement).toBe(
+    expect(
       screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
-    )
+    ).not.toBeNull()
     expect(exactIndex.getAttribute('aria-rowcount')).toBe('2')
 
     rendered.rerender(
@@ -563,9 +637,9 @@ describe('long-read TR visualization fidelity', () => {
       })
     )
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
-    expect(document.activeElement).toBe(
+    expect(
       screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
-    )
+    ).not.toBeNull()
     const exactLink = within(exactIndex).getByRole('link', { name: 'Details for Sequence 2' })
     expect(exactLink.getAttribute('href')).toBe(`?allele=${alleles[1].variant_id}`)
     fireEvent.click(exactLink)
@@ -605,30 +679,38 @@ describe('long-read TR visualization fidelity', () => {
     })
     const positive = screen.getByRole('button', { name: /\+12 bp vs REF; 5 called/ })
 
+    // Keyboard keys go to whatever has focus, so a selection must leave focus on the bar for
+    // Shift+Arrow and Escape to keep working.
+    negative.focus()
     fireEvent.click(negative)
-    fireEvent.keyDown(negative, { key: 'ArrowRight', shiftKey: true })
+    expect(document.activeElement).toBe(negative)
+    fireEvent.keyDown(document.activeElement!, { key: 'ArrowRight', shiftKey: true })
     expect(negative.getAttribute('aria-pressed')).toBe('true')
     expect(zero.getAttribute('aria-pressed')).toBe('true')
     expect(positive.getAttribute('aria-pressed')).toBe('false')
     expect(screen.getAllByTestId('total-length-selection-boundary')).toHaveLength(2)
+    // The heading announces the new count as a live region instead of taking focus.
     expect(
       screen.getByRole('heading', {
         name: '2 of 3 non-reference alleles selected',
       })
-    ).toBe(document.activeElement)
+    ).not.toBeNull()
+    expect(document.activeElement).toBe(negative)
 
+    positive.focus()
     fireEvent.click(positive)
     expect(negative.getAttribute('aria-pressed')).toBe('false')
     expect(positive.getAttribute('aria-pressed')).toBe('true')
-    expect(screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })).toBe(
-      document.activeElement
-    )
+    expect(
+      screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
+    ).not.toBeNull()
 
-    fireEvent.keyDown(positive, { key: 'ArrowLeft', shiftKey: true })
+    fireEvent.keyDown(document.activeElement!, { key: 'ArrowLeft', shiftKey: true })
     expect(zero.getAttribute('aria-pressed')).toBe('true')
     expect(positive.getAttribute('aria-pressed')).toBe('true')
-    fireEvent.keyDown(positive, { key: 'Escape' })
-    expect(screen.getByRole('heading', { name: 'Allele Details' })).toBe(document.activeElement)
+    fireEvent.keyDown(document.activeElement!, { key: 'Escape' })
+    expect(screen.getByRole('heading', { name: 'Allele Details' })).not.toBeNull()
+    expect(document.activeElement).toBe(positive)
   })
 
   test('renders repeat-count and genotype-length cards together with a dynamic plot count', () => {
@@ -639,8 +721,6 @@ describe('long-read TR visualization fidelity', () => {
       reference_allele_id: '__REFERENCE__',
       called_samples: 1,
       called_alleles: 2,
-      ancestry_groups: [],
-      sexes: [],
       cells: [
         {
           shorter_delta: -6,
@@ -726,6 +806,9 @@ describe('long-read TR visualization fidelity', () => {
     ).not.toBeNull()
     expect(within(grid).queryByTestId('allele-repeat-count-card')).toBeNull()
     expect(within(grid).queryByTestId('genotype-repeat-count-card')).toBeNull()
+    // Screen readers hear the histogram's unit, longest pure runs, not base pairs.
+    expect(screen.getByLabelText('Longest pure run (repeats) histogram')).not.toBeNull()
+    expect(screen.getByLabelText('Longest pure run (repeats) axis')).not.toBeNull()
     const alleleCard = within(grid).getByRole('heading', { name: 'Allele length distribution' })
       .parentElement as HTMLElement
     expect(within(alleleCard).getByText('Allele (longest pure run)')).not.toBeNull()
@@ -757,8 +840,6 @@ describe('long-read TR visualization fidelity', () => {
       reference_allele_id: '__REFERENCE__',
       called_samples: 1,
       called_alleles: 2,
-      ancestry_groups: [],
-      sexes: [],
       cells: [
         {
           shorter_delta: -6,
@@ -833,9 +914,10 @@ describe('long-read TR visualization fidelity', () => {
         alleles={motifAlleles}
         motifs={['CAG', 'CAA']}
         primaryMotif="CAA"
+        presentation={{ locus_type: 'ISOLATED_REPEAT' }}
         exactAltCountComplete
         sequenceCardinality={exactSequenceCardinality}
-        representedLength={exactRepresentedLength}
+        representedLength={{ ...exactRepresentedLength, represented_ref_length_bp: 6 }}
         navigation={navigation}
       />
     )
@@ -849,6 +931,13 @@ describe('long-read TR visualization fidelity', () => {
       'Allele length distribution allele size measure'
     ) as HTMLSelectElement
     expect(lengthAxis.value).toBe('bp-absolute')
+    // The motif occurrence counts have no change-from-REF form, so only the absolute repeat
+    // measure is offered for them.
+    expect(Array.from(lengthAxis.options).map((option) => option.value)).toEqual([
+      'bp-absolute',
+      'repeats-absolute',
+      'bp-delta',
+    ])
     fireEvent.change(lengthAxis, { target: { value: 'repeats-absolute' } })
     expect(
       (screen.getByLabelText('Allele length distribution allele size measure') as HTMLSelectElement)
@@ -881,7 +970,7 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByRole('heading', {
         name: '2 of 3 non-reference alleles selected',
       })
-    ).toBe(document.activeElement)
+    ).not.toBeNull()
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
     expect(
       within(screen.getByRole('table', { name: 'Source ALT allele index' })).getAllByRole('row')
@@ -898,10 +987,10 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByRole('heading', {
         name: '3 of 3 non-reference alleles selected',
       })
-    ).toBe(document.activeElement)
+    ).not.toBeNull()
 
     fireEvent.keyDown(selectedBin, { key: 'Escape' })
-    expect(screen.getByRole('heading', { name: 'Allele Details' })).toBe(document.activeElement)
+    expect(screen.getByRole('heading', { name: 'Allele Details' })).not.toBeNull()
     fireEvent.change(selector, { target: { value: '0' } })
     expect(selector.value).toBe('0')
     fireEvent.click(
@@ -931,14 +1020,12 @@ describe('long-read TR visualization fidelity', () => {
     }))
     const stratifiedLandscape: WholeRecordAlleleLandscapeData = {
       ...alleleLandscape,
-      stratified_available: true,
-      ancestry_groups: ['afr'],
-      sexes: [],
       bins: (alleleLandscape.bins || []).map((bin) => ({
         ...bin,
         stacks: [{ ancestry_group: 'afr', sex: null, called_alleles: 2 }],
       })),
     }
+    const filterContract = approvedFilterContract(['afr'], [])
     const rendered = render(
       <WholeRecordAlleleLandscape
         landscape={stratifiedLandscape}
@@ -949,6 +1036,7 @@ describe('long-read TR visualization fidelity', () => {
         sequenceCardinality={exactSequenceCardinality}
         representedLength={exactRepresentedLength}
         navigation={navigation}
+        filterContract={filterContract}
       />
     )
     fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
@@ -956,7 +1044,7 @@ describe('long-read TR visualization fidelity', () => {
     })
     expect(
       screen.getByRole('group', {
-        name: 'Shared ancestry and sex filters for visible allelic-landscape plots',
+        name: 'API-admitted ancestry and sex filters for visible allelic-landscape plots',
       })
     ).not.toBeNull()
     expect(screen.getByText('Filter visible allelic-landscape plots:')).not.toBeNull()
@@ -1000,6 +1088,7 @@ describe('long-read TR visualization fidelity', () => {
         sequenceCardinality={exactSequenceCardinality}
         representedLength={exactRepresentedLength}
         navigation={navigation}
+        filterContract={filterContract}
       />
     )
     expect(screen.queryByTestId('motif-occurrence-card')).toBeNull()
@@ -1148,9 +1237,9 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.click(
       screen.getByRole('button', { name: /−6 bp vs REF; 107 called non-reference allele copies/ })
     )
-    expect(document.activeElement).toBe(
+    expect(
       screen.getByRole('heading', { name: '2 of 4 non-reference alleles selected' })
-    )
+    ).not.toBeNull()
     const picker = screen.getByRole('table', { name: 'Source ALT allele index' })
     expect(screen.queryByRole('table', { name: /Exact ALTs at/ })).toBeNull()
     const links = within(picker).getAllByRole('link')
@@ -1212,15 +1301,15 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       points.slice(0, 2).map((candidate) => candidate.getAttribute('data-overlap-offset'))
     ).toEqual(['-12', '12'])
-    expect(
-      screen.getByText('Note: Overlapping points are separated slightly for visibility.')
-    ).not.toBeNull()
+    expect(screen.queryByText(/Overlapping points are separated/)).toBeNull()
     const point = within(scatter).getByRole('button', {
       name: /Filter the source-ALT index to Sequence 3; \+12 bp vs REF; source-reported motif purity 1.0000/,
     })
     expect(point.getAttribute('aria-pressed')).toBe('false')
-    expect(point).toHaveStyleRule('width', '44px')
-    expect(point).toHaveStyleRule('height', '44px')
+    // The click area is the visible dot, so it never covers a neighboring dot.
+    const diameter = point.getAttribute('data-point-diameter')
+    expect(point).toHaveStyleRule('width', `${diameter}px`)
+    expect(point).toHaveStyleRule('height', `${diameter}px`)
     // The ALT dots use the allele length histogram's ALT bar blue.
     expect(window.getComputedStyle(point.firstElementChild as Element).backgroundColor).toBe(
       'rgb(0, 114, 178)'
@@ -1238,9 +1327,9 @@ describe('long-read TR visualization fidelity', () => {
     expect(sameDeltaBar.getAttribute('aria-pressed')).toBe('false')
     expect(point.getAttribute('aria-pressed')).toBe('true')
     expect(navigation.onSelectAllele).not.toHaveBeenCalled()
-    expect(document.activeElement).toBe(
+    expect(
       screen.getByRole('heading', { name: '1 of 3 non-reference alleles selected' })
-    )
+    ).not.toBeNull()
     fireEvent.keyDown(point, { key: 'ArrowLeft', shiftKey: true })
     expect(points.every((candidate) => candidate.getAttribute('aria-pressed') === 'true')).toBe(
       true
@@ -1249,7 +1338,7 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByRole('heading', {
         name: '3 of 3 non-reference alleles selected',
       })
-    ).toBe(document.activeElement)
+    ).not.toBeNull()
     fireEvent.keyDown(point, { key: 'Escape' })
     expect(screen.getByRole('heading', { name: 'Allele Details' })).not.toBeNull()
   })
@@ -1329,25 +1418,6 @@ describe('long-read TR visualization fidelity', () => {
     expect(largestAcRadius).toBeLessThan(PURITY_POINT_CLEARANCE)
   })
 
-  test('aggregates stratum rows into reconciled unique exact pairs', () => {
-    expect(aggregateGenotypePairs(duplicatePairs)).toEqual([
-      {
-        shorter_allele_id: `${sourceId}~1`,
-        longer_allele_id: `${sourceId}~2`,
-        people: 10,
-        phased_people: 5,
-        unphased_people: 5,
-      },
-      {
-        shorter_allele_id: `${sourceId}~2`,
-        longer_allele_id: `${sourceId}~3`,
-        people: 2,
-        phased_people: 2,
-        unphased_people: 0,
-      },
-    ])
-  })
-
   test('keeps a reference/reference genotype mark active with an empty exact index', () => {
     const referenceId = '__REFERENCE__'
     const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
@@ -1357,8 +1427,6 @@ describe('long-read TR visualization fidelity', () => {
       reference_allele_id: referenceId,
       called_samples: 1,
       called_alleles: 2,
-      ancestry_groups: ['afr'],
-      sexes: ['XX'],
       cells: [
         {
           shorter_delta: 0,
@@ -1423,12 +1491,12 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByRole('heading', {
         name: '0 of 3 non-reference alleles selected',
       })
-    ).toBe(document.activeElement)
+    ).not.toBeNull()
     expect(
       screen.getByRole('table', { name: 'Source ALT allele index' }).getAttribute('aria-rowcount')
     ).toBe('1')
     fireEvent.keyDown(cell, { key: ' ' })
-    expect(screen.getByRole('heading', { name: 'Allele Details' })).toBe(document.activeElement)
+    expect(screen.getByRole('heading', { name: 'Allele Details' })).not.toBeNull()
   })
 
   test('rotates the heatmap x labels, keeping their tick marks, when they do not fit under their squares', () => {
@@ -1441,8 +1509,6 @@ describe('long-read TR visualization fidelity', () => {
       reference_allele_id: referenceId,
       called_samples: 40,
       called_alleles: 80,
-      ancestry_groups: [],
-      sexes: [],
       cells: Array.from({ length: 40 }, (_, longerDelta) => ({
         shorter_delta: 0,
         longer_delta: longerDelta,
@@ -1492,8 +1558,6 @@ describe('long-read TR visualization fidelity', () => {
       reference_allele_id: referenceId,
       called_samples: 2,
       called_alleles: 4,
-      ancestry_groups: [],
-      sexes: [],
       cells: [
         {
           shorter_delta: -6,
@@ -1565,7 +1629,7 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByRole('heading', {
         name: '3 of 3 non-reference alleles selected',
       })
-    ).toBe(document.activeElement)
+    ).not.toBeNull()
     expect(screen.queryByTitle(referenceId)).toBeNull()
   })
 
@@ -1583,10 +1647,6 @@ describe('long-read TR visualization fidelity', () => {
     }))
     const stratifiedLandscape: WholeRecordAlleleLandscapeData = {
       ...alleleLandscape,
-      stratified_available: true,
-      stratified_unavailable_reason: null,
-      ancestry_groups: ['afr', 'nfe'],
-      sexes: ['XX', 'XY'],
       bins: (alleleLandscape.bins || []).map((bin) => ({
         ...bin,
         stacks: [
@@ -1611,25 +1671,20 @@ describe('long-read TR visualization fidelity', () => {
       reference_allele_id: '__REFERENCE__',
       called_samples: 12,
       called_alleles: 24,
-      ancestry_groups: ['afr'],
-      sexes: ['XX'],
       cells: [{ shorter_delta: -6, longer_delta: 12, people: 12, pairs: duplicatePairs }],
     }
-    expect(reconciledFilterOptions(stratifiedLandscape, genotypeLandscape)).toEqual({
-      ancestries: ['afr'],
-      sexes: ['XX'],
-    })
-
+    // The API admits only the groups that both the allele and genotype data have.
     const rendered = render(
       <WholeRecordAlleleLandscape
         landscape={stratifiedLandscape}
         genotypeLandscape={genotypeLandscape}
         alleles={stratifiedAlleles}
         navigation={navigation}
+        filterContract={approvedFilterContract(['afr'], ['XX'])}
       />
     )
     const filters = screen.getByRole('group', {
-      name: 'Shared ancestry and sex filters for visible allelic-landscape plots',
+      name: 'API-admitted ancestry and sex filters for visible allelic-landscape plots',
     })
     expect(
       screen.getByRole('group', { name: 'Total-length histogram display controls' })
@@ -1661,13 +1716,10 @@ describe('long-read TR visualization fidelity', () => {
     rendered.rerender(
       <WholeRecordAlleleLandscape
         landscape={stratifiedLandscape}
-        genotypeLandscape={{
-          ...genotypeLandscape,
-          ancestry_groups: ['nfe'],
-          sexes: ['XY'],
-        }}
+        genotypeLandscape={genotypeLandscape}
         alleles={stratifiedAlleles}
         navigation={navigation}
+        filterContract={approvedFilterContract(['nfe'], ['XY'])}
       />
     )
     await waitFor(() => {
@@ -1689,9 +1741,6 @@ describe('long-read TR visualization fidelity', () => {
     }))
     const landscape: WholeRecordAlleleLandscapeData = {
       ...alleleLandscape,
-      stratified_available: true,
-      ancestry_groups: ['afr'],
-      sexes: [],
       bins: [
         {
           ...(alleleLandscape.bins || [])[0],
@@ -1710,12 +1759,14 @@ describe('long-read TR visualization fidelity', () => {
       })),
     }
     const scope = { locusId: 'locus-a', cohort: 'hgsvc_hprc', sourceRunId: 'run-a' }
+    const filterContract = approvedFilterContract(['afr'], [])
     const rendered = render(
       <WholeRecordAlleleLandscape
         landscape={landscape}
         markFilterScope={scope}
         alleles={stratifiedAlleles}
         navigation={navigation}
+        filterContract={filterContract}
       />
     )
     fireEvent.change(screen.getByLabelText('Genetic ancestry group'), {
@@ -1737,6 +1788,7 @@ describe('long-read TR visualization fidelity', () => {
         markFilterScope={{ ...scope, sourceRunId: 'run-b' }}
         alleles={stratifiedAlleles}
         navigation={navigation}
+        filterContract={filterContract}
       />
     )
     await waitFor(() => {
@@ -1752,17 +1804,9 @@ describe('long-read TR visualization fidelity', () => {
       reference_allele_id: '__REFERENCE__',
       called_samples: 12,
       called_alleles: 24,
-      ancestry_groups: ['afr', 'nfe'],
-      sexes: ['XX', 'XY'],
       cells: [{ shorter_delta: -6, longer_delta: 12, people: 12, pairs: duplicatePairs }],
     }
-    render(
-      <WholeRecordGenotypeLandscape
-        landscape={landscape}
-        selectedPopulation={null}
-        selectedSex={null}
-      />
-    )
+    render(<WholeRecordGenotypeLandscape landscape={landscape} />)
 
     const heatmap = screen.getByRole('group', {
       name: 'Genotype distribution by change from REF',
@@ -1833,7 +1877,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(outlined[0].getAttribute('stroke-width')).toBe('2')
     expect(outlined[0].getAttribute('stroke-dasharray')).toBe('2 2')
     expect(outlined[0].textContent).toBe(
-      'Component 1, CAG, chr4:1–12, 12 bp; known disease-associated tandem repeat'
+      'Component 1, CAG, chr4:0–12, 12 bp; known disease-associated tandem repeat'
     )
     const legend = screen.getByLabelText('Variation cluster reference region legend')
     expect(legend.textContent).toContain('Known disease-associated tandem repeat')
@@ -1844,29 +1888,6 @@ describe('long-read TR visualization fidelity', () => {
       motifColorSwatch.style.background
     )
     expect(track.querySelector('[data-catalog-pathogenic-match]')).toBeNull()
-  })
-
-  test('keeps all 180 ordered components reachable through a bounded table', () => {
-    const components = Array.from({ length: 180 }, (_, index) => ({
-      chrom: '3',
-      start0: index * 3,
-      end0: index * 3 + 2,
-      motif: index % 2 ? 'TGC' : 'CAG',
-    }))
-    const locus = {
-      motifs: ['CAG', 'TGC'],
-      components,
-      region: { chrom: '3', start0: 0, end0: 539, size: 539 },
-    } as LongReadTrLocus
-    render(<LongReadTrComponentTrack locus={locus} />)
-
-    fireEvent.click(screen.getByText('Full ordered component table (180)'))
-    expect(screen.getByText('Components 1–25 of 180')).not.toBeNull()
-    const next = screen.getByRole('button', { name: 'Next components' })
-    for (let page = 1; page < 8; page += 1) fireEvent.click(next)
-    expect(screen.getByText('Components 176–180 of 180')).not.toBeNull()
-    expect(screen.getByRole('rowheader', { name: '180' })).not.toBeNull()
-    expect(screen.getByLabelText('Scrollable ordered source component table')).not.toBeNull()
   })
 
   test('omits fully unavailable landscape controls, messages, spacing, and stale help', () => {
@@ -2014,10 +2035,6 @@ describe('long-read TR visualization fidelity', () => {
     }))
     const contractLandscape: WholeRecordAlleleLandscapeData = {
       ...alleleLandscape,
-      stratified_available: true,
-      stratified_unavailable_reason: null,
-      ancestry_groups: ['group-a'],
-      sexes: ['source-sex-a'],
       bins: (alleleLandscape.bins || []).map((bin, index) => ({
         ...bin,
         stacks: [
@@ -2072,8 +2089,6 @@ describe('long-read TR visualization fidelity', () => {
       reference_allele_id: '__REFERENCE__',
       called_samples: 4,
       called_alleles: 8,
-      ancestry_groups: ['group-a'],
-      sexes: ['source-sex-a'],
       cells: [
         {
           shorter_delta: -6,
@@ -2236,11 +2251,33 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       screen.getByRole('heading', { name: 'Variation Cluster Reference Region' })
     ).not.toBeNull()
-    fireEvent.click(screen.getByLabelText('About the variation cluster reference region'))
+    // The section heading has the same name, so the help button is found by its role.
+    fireEvent.click(screen.getByRole('button', { name: 'Variation Cluster Reference Region' }))
     expect(screen.getByText(/callset.*ordered coordinate-and-motif intervals/)).not.toBeNull()
-    expect(screen.getByText(/one-based, inclusive/)).not.toBeNull()
+    expect(screen.getByText(/zero-based and half-open, as in the locus ID/)).not.toBeNull()
     expect(screen.getByText(/Overlapping intervals use separate lanes/)).not.toBeNull()
     expect(screen.getByText(/interval and order are part of their identity/)).not.toBeNull()
     expect(screen.getByText(/do not classify an LR component/)).not.toBeNull()
+  })
+
+  test('labels a long motif by its ends and length, and leaves a box too narrow for its label empty', () => {
+    const longMotif = `TGGTGTCC${'A'.repeat(83)}AGTCTTAC`
+    const locus = {
+      motifs: [longMotif, 'CAGCAGCAGCAGCAGCAG'],
+      components: [
+        { chrom: '19', start0: 0, end0: 300, motif: longMotif },
+        { chrom: '19', start0: 300, end0: 310, motif: 'CAGCAGCAGCAGCAGCAG' },
+      ],
+      region: { chrom: '19', start0: 0, end0: 310, size: 310 },
+    } as LongReadTrLocus
+    render(<LongReadTrComponentTrack locus={locus} />)
+
+    const labels = Array.from(screen.getByRole('img').querySelectorAll('text')).map(
+      (text) => text.textContent
+    )
+    expect(labels).toContain('TGGTGTCC…AGTCTTAC (99 bp)')
+    expect(labels).not.toContain(longMotif)
+    // The 18 bp motif's 10 bp box is too narrow for its label, which hovering still shows.
+    expect(labels).not.toContain('CAGCAGCAGCAGCAGCAG')
   })
 })

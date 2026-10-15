@@ -64,10 +64,6 @@ export type WholeRecordAlleleLandscapeData = {
   // REF allele copies per ancestry and sex stratum, shaped like each bin's ALT stacks.
   reference_stacks?: AlleleStack[] | null
   exact_alt_count: number | null
-  stratified_available: boolean | null
-  stratified_unavailable_reason: string | null
-  ancestry_groups: string[] | null
-  sexes: string[] | null
   bins: AlleleBin[] | null
   purity_points: PurityPoint[] | null
   // The REF allele's source purity; absent in older fixtures.
@@ -100,8 +96,6 @@ export type WholeRecordGenotypeLandscapeData = {
   reference_allele_id: string | null
   called_samples: number | null
   called_alleles: number | null
-  ancestry_groups: string[] | null
-  sexes: string[] | null
   cells: GenotypeCell[] | null
 }
 

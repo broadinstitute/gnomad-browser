@@ -344,6 +344,22 @@ describe('exact long-read TR locus histogram contract', () => {
     )
   })
 
+  test('names a missing genotype histogram on an autosome', async () => {
+    mockQuery
+      .mockImplementationOnce(() => result([mapping()]))
+      .mockImplementationOnce(() =>
+        result([
+          row({
+            biallelic_histogram: '',
+            populations: { 'AlleleSizeHistogram:afr:female': '10x:2,11x:2' },
+          }),
+        ])
+      )
+    await expect(fetchLongReadTrRepeatCountPlots(locus(), route)).rejects.toThrow(
+      'biallelic_histogram is empty'
+    )
+  })
+
   test('rejects source-AN mismatches and payloads over the hard cap', async () => {
     mockQuery
       .mockImplementationOnce(() => result([mapping()]))

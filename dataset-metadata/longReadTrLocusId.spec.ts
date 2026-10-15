@@ -1,9 +1,4 @@
-import {
-  parseTrLocusId,
-  trComponentDisplayRegion,
-  trLocusDisplayEnvelope,
-  trLocusUrl,
-} from './longReadTrLocusId'
+import { parseTrLocusId, trLocusDisplayEnvelope, trLocusUrl } from './longReadTrLocusId'
 
 const htt =
   '4-3074876-3074933-CAG+4-3074927-3074936-CAA+4-3074939-3074966-CCG+4-3074966-3074972-CCT+4-3074983-3074994-GCC+4-3075029-3075040-CCG'
@@ -13,7 +8,7 @@ describe('long-read tandem-repeat locus identity', () => {
     const locus = parseTrLocusId('4-39348424-39348479-AAAAG')!
     expect(locus.canonicalId).toBe('4-39348424-39348479-AAAAG')
     expect(locus.sourceTrid).toBe('4-39348424-39348479-AAAAG')
-    expect(trComponentDisplayRegion(locus.components[0])).toEqual({
+    expect(trLocusDisplayEnvelope(locus)).toEqual({
       chrom: '4',
       start1: 39348425,
       end1: 39348479,

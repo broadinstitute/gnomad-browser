@@ -1,11 +1,9 @@
 import { parseTrLocusId } from './longReadTrLocusId'
-import { getTrLocusTableDisplay } from './longReadTrTablePresentation'
 import {
-  getTrTableCatalogPresentation,
   isCompleteExactContext,
+  isCompleteExactTableContext,
   LongReadTrTableCatalogContext,
   LongReadTrTableCatalogScope,
-  selectCatalogPathogenicMotifs,
 } from './longReadTrCatalogContext'
 
 // Exact stored/reference examples from the frozen crosswalk; not a science approval receipt.
@@ -69,80 +67,18 @@ const makeContext = (fixture = fixtures[2]) => {
   return { scope, context }
 }
 
-describe('catalog selection is reference context, not observed allele classification', () => {
-  test.each(fixtures)(
-    '$id keeps stored motifs separate from all catalog pathogenic strings',
-    (fixture) => {
-      const { context, scope } = makeContext(fixture)
-      const original = JSON.stringify(context)
-      const presentation = getTrTableCatalogPresentation(context, scope)!
-      expect(presentation.pathogenicMotifs).toEqual(fixture.pathogenic)
-      expect(presentation.context).toBe(context)
-      expect(JSON.stringify(context)).toBe(original)
-      const stored = getTrLocusTableDisplay(scope.locus).storedMotifs
-      if (fixture.id === 'RFC1') {
-        expect(stored.label).toBe('Stored: AAAAG')
-        expect(presentation.pathogenicLine?.label).toBe('Catalog pathogenic: AAGGC +4 more motifs')
-        expect(presentation.pathogenicMotifs).not.toContain('AAAAG')
-        expect(
-          presentation.pathogenicMotifs?.every((motif) => !stored.motifs.includes(motif))
-        ).toBe(true)
-      } else if (fixture.id === 'HTT') {
-        expect(stored.motifs).toEqual(['CAG', 'CAA', 'CCG', 'CCT', 'GCC'])
-      }
-      expect(presentation.explanation).toContain(
-        'not evidence that an LR allele contains this motif'
-      )
-    }
-  )
-
-  test('deduplicates exact pathogenic strings only, preserving order and orientation', () => {
-    expect(
-      selectCatalogPathogenicMotifs([
-        { repeat_unit: 'CAG', classification: 'pathogenic' },
-        { repeat_unit: 'AGC', classification: 'pathogenic' },
-        { repeat_unit: 'CAG', classification: 'pathogenic' },
-        { repeat_unit: 'CTG', classification: 'pathogenic' },
-        { repeat_unit: 'cag', classification: 'pathogenic' },
-        { repeat_unit: 'AAA', classification: 'Pathogenic' },
-      ])
-    ).toEqual(['CAG', 'AGC', 'CTG', 'cag'])
+describe('exact catalog admission for a table row', () => {
+  test.each(fixtures)('admits the exact $id context for its own row', (fixture) => {
+    const { context, scope } = makeContext(fixture)
+    const original = JSON.stringify(context)
+    expect(isCompleteExactTableContext(context, scope)).toBe(true)
+    expect(JSON.stringify(context)).toBe(original)
   })
 
-  test.each(['benign', 'reference', 'unknown', 'Pathogenic'])(
-    'does not treat %s as pathogenic',
-    (classification) => {
-      const { context, scope } = makeContext()
-      context.catalog_record!.repeat_units = [{ repeat_unit: 'AAAAG', classification }]
-      const presentation = getTrTableCatalogPresentation(context, scope)!
-      expect(presentation.pathogenicMotifs).toEqual([])
-      expect(presentation.pathogenicLine).toBeNull()
-      expect(presentation.context.catalog_record.id).toBe('RFC1') // catalog remains available
-    }
-  )
-
-  test.each([false, true])(
-    'conflicting classifications fail the entire list closed (reversed=%s)',
-    (reverse) => {
-      const { context, scope } = makeContext()
-      const units = [
-        { repeat_unit: 'AAAAG', classification: 'benign' },
-        { repeat_unit: 'AAAAG', classification: 'reference' },
-        { repeat_unit: 'AAGGC', classification: 'pathogenic' },
-      ]
-      context.catalog_record!.repeat_units = reverse ? units.reverse() : units
-      const presentation = getTrTableCatalogPresentation(context, scope)!
-      expect(presentation.pathogenicMotifs).toBeNull()
-      expect(presentation.pathogenicLine).toBeNull()
-      expect(presentation.context.catalog_record.id).toBe('RFC1')
-    }
-  )
-
-  test('empty catalog units retain admitted context, not a benign assertion', () => {
+  test('admits a context whose catalog lists no repeat units', () => {
     const { context, scope } = makeContext()
     context.catalog_record!.repeat_units = []
-    expect(getTrTableCatalogPresentation(context, scope)?.pathogenicLine).toBeNull()
-    expect(getTrTableCatalogPresentation(context, scope)?.pathogenicMotifs).toEqual([])
+    expect(isCompleteExactTableContext(context, scope)).toBe(true)
   })
 })
 
@@ -160,12 +96,12 @@ describe('fail-closed catalog admission', () => {
     const { context, scope } = makeContext()
     context.status = status
     expect(isCompleteExactContext(context, scope.lrCohort)).toBe(false)
-    expect(getTrTableCatalogPresentation(context, scope)).toBeNull()
+    expect(isCompleteExactTableContext(context, scope)).toBe(false)
   })
 
   test.each([null, undefined])('rejects missing context %s', (context) => {
     const { scope } = makeContext()
-    expect(getTrTableCatalogPresentation(context, scope)).toBeNull()
+    expect(isCompleteExactTableContext(context, scope)).toBe(false)
   })
 
   const invalid: [string, (context: LongReadTrTableCatalogContext) => void][] = [
@@ -371,29 +307,28 @@ describe('fail-closed catalog admission', () => {
       },
     ],
   ]
-  test.each(invalid)('rejects %s without removing stored motifs', (_, invalidate) => {
+  test.each(invalid)('rejects %s', (_, invalidate) => {
     const { context, scope } = makeContext()
     invalidate(context)
-    expect(getTrTableCatalogPresentation(context, scope)).toBeNull()
-    expect(getTrLocusTableDisplay(scope.locus).storedMotifs.label).toBe('Stored: AAAAG')
+    expect(isCompleteExactTableContext(context, scope)).toBe(false)
   })
 
   test('requires caller provenance instead of borrowing it from the context', () => {
     const { context, scope } = makeContext()
-    expect(getTrTableCatalogPresentation(context, { ...scope, lrRunId: '' })).toBeNull()
-    expect(getTrTableCatalogPresentation(context, { ...scope, lrRelease: '' })).toBeNull()
+    expect(isCompleteExactTableContext(context, { ...scope, lrRunId: '' })).toBe(false)
+    expect(isCompleteExactTableContext(context, { ...scope, lrRelease: '' })).toBe(false)
   })
 
   test('validates the indexed tuple, not membership anywhere in the locus', () => {
     const { context, scope } = makeContext(fixtures[1])
     context.matched_component_index = 1
-    expect(getTrTableCatalogPresentation(context, scope)).toBeNull()
+    expect(isCompleteExactTableContext(context, scope)).toBe(false)
   })
 
   test('accepts each cohort only in its own scope', () => {
     const { context, scope } = makeContext()
     context.lr_cohort = 'aou'
-    expect(getTrTableCatalogPresentation(context, scope)).toBeNull()
-    expect(getTrTableCatalogPresentation(context, { ...scope, lrCohort: 'aou' })).not.toBeNull()
+    expect(isCompleteExactTableContext(context, scope)).toBe(false)
+    expect(isCompleteExactTableContext(context, { ...scope, lrCohort: 'aou' })).toBe(true)
   })
 })

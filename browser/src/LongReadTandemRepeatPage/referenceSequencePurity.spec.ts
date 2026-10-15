@@ -1,12 +1,17 @@
 import {
   longestPureMotifRun,
   referenceRepeatSequence,
-  referenceSequencePurity,
+  sharedPaddingBaseValidated,
 } from './referenceSequencePurity'
+import { LongReadTrRepresentedLength } from './types'
 
 describe('referenceRepeatSequence', () => {
   test('drops the shared padding base', () => {
-    expect(referenceRepeatSequence('AGTCCCTGTCCCT')).toBe('GTCCCTGTCCCT')
+    expect(referenceRepeatSequence('AGTCCCTGTCCCT', true)).toBe('GTCCCTGTCCCT')
+  })
+
+  test('does not drop a first base that was not validated as shared padding', () => {
+    expect(referenceRepeatSequence('AGTCCCTGTCCCT', false)).toBeNull()
   })
 
   test.each([
@@ -15,45 +20,31 @@ describe('referenceRepeatSequence', () => {
     ['an empty REF', ''],
     ['a REF that is only the padding base', 'A'],
   ])('returns null for %s', (_description, ref) => {
-    expect(referenceRepeatSequence(ref)).toBeNull()
+    expect(referenceRepeatSequence(ref, true)).toBeNull()
   })
 })
 
-describe('referenceSequencePurity', () => {
-  test('scores a pure repeat as 1', () => {
-    expect(referenceSequencePurity('GTCCCTGTCCCTGTCCCT', 'GTCCCT')).toBe(1)
-  })
+describe('sharedPaddingBaseValidated', () => {
+  const validated = {
+    status: 'AVAILABLE_EXACT' as const,
+    reconciliation_status: 'RECONCILED' as const,
+    anchor_rule: 'VCF_SHARED_LEFT_PADDING_BASE_V1' as const,
+  } as LongReadTrRepresentedLength
 
-  test('scores a partial trailing copy over every base it covers', () => {
-    // 32 bases of a 6 bp motif: five whole copies plus GT.
-    const sequence = `${'GTCCCT'.repeat(5)}GT`
-    expect(sequence).toHaveLength(32)
-    expect(referenceSequencePurity(sequence, 'GTCCCT')).toBe(1)
-  })
-
-  test('counts each mismatching base against the pure repeat', () => {
-    // Two substitutions in 12 bases.
-    expect(referenceSequencePurity('GTCCCTGACCCT', 'GTCCCT')).toBeCloseTo(11 / 12, 10)
-    expect(referenceSequencePurity('ATCCCTGACCCT', 'GTCCCT')).toBeCloseTo(10 / 12, 10)
-  })
-
-  test('is phased to the first base, so a rotated interval scores below 1', () => {
-    // A perfect repeat whose interval starts one base into the motif.
-    expect(referenceSequencePurity('TCCCTGTCCCTG', 'GTCCCT')).toBeCloseTo(4 / 12, 10)
-  })
-
-  test('ignores case in both the sequence and the motif', () => {
-    expect(referenceSequencePurity('gtccctGTCCCT', 'GtCcCt')).toBe(1)
+  test('accepts a reconciled exact length with the shared padding rule', () => {
+    expect(sharedPaddingBaseValidated(validated)).toBe(true)
   })
 
   test.each([
-    ['a missing sequence', null, 'GTCCCT'],
-    ['a missing motif', 'GTCCCT', null],
-    ['an empty sequence', '', 'GTCCCT'],
-    ['a symbolic sequence', '<INS>', 'GTCCCT'],
-    ['a non-sequence motif', 'GTCCCT', 'N/A'],
-  ])('returns null for %s', (_description, sequence, motif) => {
-    expect(referenceSequencePurity(sequence, motif)).toBeNull()
+    ['an unavailable length', { ...validated, status: 'UNAVAILABLE' as const }],
+    ['an unreconciled length', { ...validated, reconciliation_status: 'NOT_RECONCILED' as const }],
+    ['no padding rule', { ...validated, anchor_rule: null }],
+  ])('rejects %s', (_description, representedLength) => {
+    expect(sharedPaddingBaseValidated(representedLength as LongReadTrRepresentedLength)).toBe(false)
+  })
+
+  test('rejects a missing represented length', () => {
+    expect(sharedPaddingBaseValidated(undefined)).toBe(false)
   })
 })
 

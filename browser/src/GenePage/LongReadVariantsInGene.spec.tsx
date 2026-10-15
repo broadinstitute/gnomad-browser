@@ -1,13 +1,12 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import type { LongReadTrTableCatalogRow } from '@gnomad/dataset-metadata/longReadTrCatalogContext'
 
 import geneFactory from '../__factories__/Gene'
 
 const queryProps: any[] = []
 const unifiedViewProps: any[] = []
-const mockCatalogRow: LongReadTrTableCatalogRow & { variant_id: string } = {
+const mockCatalogRow = {
   variant_id: 'RFC1-source-alt-1',
   tr_locus_id: '4-39348424-39348479-AAAAG',
   data_source: 'Y1_ACCEPTED',

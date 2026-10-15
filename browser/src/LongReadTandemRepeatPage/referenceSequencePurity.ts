@@ -1,29 +1,30 @@
+import { LongReadTrRepresentedLength } from './types'
+
 const BASES = /^[ACGTN]+$/i
 
 /**
- * Drops the VCF padding base that a source REF carries ahead of the repeat. The
- * API validates that REF and ALT share it (SHARED_PADDING_BASE_NOT_VALIDATED),
- * so what remains is the reference sequence of the repeat interval itself.
+ * Whether the API confirmed that every source REF and ALT of the locus starts
+ * with the same VCF padding base, so that base can be dropped. When it could
+ * not, the represented length is unavailable or unreconciled, for example with
+ * reason SHARED_PADDING_BASE_NOT_VALIDATED.
  */
-export const referenceRepeatSequence = (ref: string | null | undefined): string | null =>
-  ref && ref.length > 1 ? ref.slice(1) : null
+export const sharedPaddingBaseValidated = (
+  representedLength: LongReadTrRepresentedLength | null | undefined
+) =>
+  representedLength?.status === 'AVAILABLE_EXACT' &&
+  representedLength.reconciliation_status === 'RECONCILED' &&
+  representedLength.anchor_rule === 'VCF_SHARED_LEFT_PADDING_BASE_V1'
 
 /**
- * Fraction of reference bases that match a pure repeat of the motif, phased to
- * the first base of the interval: Hamming distance expressed as agreement. A
- * partial final copy still counts, so a 32 bp interval of a 6 bp motif is scored
- * over all 32 bases rather than the 30 that make up whole copies.
+ * Drops the VCF padding base that a source REF carries ahead of the repeat, so
+ * what remains is the reference sequence of the repeat interval itself. Returns
+ * null unless that base was validated as a shared padding base
+ * (sharedPaddingBaseValidated), since otherwise it may be part of the repeat.
  */
-export const referenceSequencePurity = (
-  referenceSequence: string | null | undefined,
-  motif: string | null | undefined
-): number | null => {
-  if (!referenceSequence || !motif) return null
-  if (!BASES.test(referenceSequence) || !BASES.test(motif)) return null
-  const bases = Array.from(referenceSequence.toUpperCase())
-  const unit = motif.toUpperCase()
-  return bases.filter((base, index) => base === unit[index % unit.length]).length / bases.length
-}
+export const referenceRepeatSequence = (
+  ref: string | null | undefined,
+  paddingValidated: boolean
+): string | null => (paddingValidated && ref && ref.length > 1 ? ref.slice(1) : null)
 
 /**
  * Longest pure segment (LPS): the most consecutive exact copies of the motif found anywhere in
