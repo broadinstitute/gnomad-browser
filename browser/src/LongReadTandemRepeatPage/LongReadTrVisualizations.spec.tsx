@@ -9,6 +9,7 @@ import {
   ExactAlleleIndex,
   histogramDeltaAxisTicks,
   histogramHeightPercent,
+  histogramTicks,
   LongReadTrComponentTrack,
   motifColor,
   PURITY_MAX_JITTER,
@@ -401,6 +402,16 @@ describe('long-read TR visualization fidelity', () => {
     fireEvent.change(colorBy, { target: { value: 'sex' } })
     expect(screen.getByLabelText('XY stack color').getAttribute('data-stack-color')).toBe('#6AA6CE')
     expect(screen.getByLabelText('XX stack color').getAttribute('data-stack-color')).toBe('#F7C3CC')
+  })
+
+  test('puts linear count ticks at round numbers below the largest count', () => {
+    expect(histogramTicks(372, 'linear')).toEqual([0, 100, 200, 300])
+    expect(histogramTicks(265, 'linear')).toEqual([0, 50, 100, 150, 200, 250])
+    expect(histogramTicks(400, 'linear')).toEqual([0, 100, 200, 300, 400])
+    expect(histogramTicks(7, 'linear')).toEqual([0, 2, 4, 6])
+    expect(histogramTicks(1, 'linear')).toEqual([0, 1])
+    expect(histogramTicks(0, 'linear')).toEqual([0, 1])
+    expect(histogramTicks(5000, 'linear-truncated-50')).toEqual([0, 10, 20, 30, 40, 50])
   })
 
   test('keeps signed delta ticks adaptive while retaining endpoints, zero, and selection', () => {
@@ -1328,6 +1339,19 @@ describe('long-read TR visualization fidelity', () => {
     expect(Number(horizontalReferenceLine.getAttribute('y1'))).toBeCloseTo(
       Number(cell.getAttribute('y')) + 24
     )
+    // Each x label has a tick mark above it, like the histogram's, and lies flat because it
+    // fits under its square.
+    const xTickLabels = screen.getAllByTestId('genotype-length-x-tick-label')
+    const xTickMarks = screen.getAllByTestId('genotype-length-x-tick-mark')
+    expect(xTickMarks.map((mark) => mark.getAttribute('x1'))).toEqual(
+      xTickLabels.map((label) => label.getAttribute('x'))
+    )
+    expect(
+      xTickLabels.every(
+        (label) =>
+          label.getAttribute('transform') == null && label.getAttribute('text-anchor') === 'middle'
+      )
+    ).toBe(true)
     fireEvent.keyDown(cell, { key: 'Enter' })
     expect(cell.getAttribute('aria-pressed')).toBe('true')
     expect(
@@ -1340,6 +1364,54 @@ describe('long-read TR visualization fidelity', () => {
     ).toBe('1')
     fireEvent.keyDown(cell, { key: ' ' })
     expect(screen.getByRole('heading', { name: 'Allele Details' })).toBe(document.activeElement)
+  })
+
+  test('rotates the heatmap x labels, keeping their tick marks, when they do not fit under their squares', () => {
+    const referenceId = '__REFERENCE__'
+    // 40 sizes make squares narrower than a label like "+39".
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: referenceId,
+      called_samples: 40,
+      called_alleles: 80,
+      ancestry_groups: [],
+      sexes: [],
+      cells: Array.from({ length: 40 }, (_, longerDelta) => ({
+        shorter_delta: 0,
+        longer_delta: longerDelta,
+        people: 1,
+        pairs: [
+          {
+            shorter_allele_id: referenceId,
+            longer_allele_id: referenceId,
+            ancestry_group: 'unknown',
+            sex: 'unknown',
+            people: 1,
+            phased_people: 0,
+            unphased_people: 1,
+          },
+        ],
+      })),
+    }
+    render(
+      <WholeRecordAlleleLandscape
+        landscape={alleleLandscape}
+        genotypeLandscape={genotypeLandscape}
+        alleles={alleles}
+        navigation={navigation}
+      />
+    )
+    const xTickLabels = screen.getAllByTestId('genotype-length-x-tick-label')
+    expect(
+      xTickLabels.every(
+        (label) =>
+          label.getAttribute('transform')?.startsWith('rotate(-48') &&
+          label.getAttribute('text-anchor') === 'end'
+      )
+    ).toBe(true)
+    expect(screen.getAllByTestId('genotype-length-x-tick-mark')).toHaveLength(xTickLabels.length)
   })
 
   test('unions genotype-region contributors, bypasses frequency AC, and excludes the reference sentinel', () => {

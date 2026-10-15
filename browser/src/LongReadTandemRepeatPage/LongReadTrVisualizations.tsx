@@ -1689,7 +1689,10 @@ export const histogramHeightPercent = (count: number, maxCount: number, scale: S
   return (scaleValue(count, scale) / domainMax) * 100
 }
 
-const histogramTicks = (maxCount: number, scale: ScaleType) => {
+// Linear ticks are round numbers: about four steps of 1, 2 or 5 times a power of ten (at least
+// 1), up to the top of the axis. The top stays at the largest count, which only gets a tick of
+// its own when it is a multiple of the step.
+export const histogramTicks = (maxCount: number, scale: ScaleType) => {
   if (scale === 'log') {
     const ticks = [0]
     for (let value = 1; value <= maxCount; value *= 10) ticks.push(value)
@@ -1697,7 +1700,15 @@ const histogramTicks = (maxCount: number, scale: ScaleType) => {
     return ticks
   }
   const domainMax = scaleCap(scale) || Math.max(1, maxCount)
-  return [...new Set([0, 0.25, 0.5, 0.75, 1].map((part) => Math.round(domainMax * part)))]
+  const roughStep = domainMax / 4
+  const powerOfTen = 10 ** Math.floor(Math.log10(roughStep))
+  const roughStepInPowersOfTen = roughStep / powerOfTen
+  let step = powerOfTen
+  if (roughStepInPowersOfTen >= Math.sqrt(50)) step = 10 * powerOfTen
+  else if (roughStepInPowersOfTen >= Math.sqrt(10)) step = 5 * powerOfTen
+  else if (roughStepInPowersOfTen >= Math.sqrt(2)) step = 2 * powerOfTen
+  step = Math.max(1, step)
+  return Array.from({ length: Math.floor(domainMax / step) + 1 }, (_, index) => index * step)
 }
 
 type HistogramDeltaTick = {
@@ -4326,33 +4337,44 @@ export const WholeRecordGenotypeLandscape = ({
                 8 * svgUnitsPerPixel +
                 longestAxisValueLabelWidth +
                 yTickLabelGap
-              const xTickLabelOffset = axisFontSize + 5 * svgUnitsPerPixel
-              // x tick labels are rotated 48 degrees and end at their anchor point, so they reach
-              // width * sin(48) below it, plus a little for the glyphs' descent.
-              const heatmapBottom =
-                xTickLabelOffset +
-                longestAxisValueLabelWidth * 0.74 +
-                axisFontSize * 0.25 +
-                4 * svgUnitsPerPixel +
-                axisFontSize +
-                8 * svgUnitsPerPixel
-              const plotSize = Math.min(
-                heatmapWidth - heatmapLeft - heatmapRight,
-                heatmapHeight - heatmapTop - heatmapBottom
-              )
+              const xTickMarkLength = 5 * svgUnitsPerPixel
+              const xTickLabelOffset = axisFontSize + xTickMarkLength
+              // Below the x tick labels: their glyphs' descent, a gap, and the x axis title.
+              const heightBelowXTickLabels =
+                axisFontSize * 0.25 + 4 * svgUnitsPerPixel + axisFontSize + 8 * svgUnitsPerPixel
+              const plotSizeFor = (heatmapBottom: number) =>
+                Math.min(
+                  heatmapWidth - heatmapLeft - heatmapRight,
+                  heatmapHeight - heatmapTop - heatmapBottom
+                )
               // Squares are never wider than the histogram's widest bar; with few sizes the grid
               // of squares sits centered in the plot, whose axes keep their full length.
-              const band = Math.min(
-                plotSize / Math.max(1, values.length),
-                MAX_PLOT_BAR_WIDTH_PX * svgUnitsPerPixel
-              )
+              const bandFor = (plotSize: number) =>
+                Math.min(
+                  plotSize / Math.max(1, values.length),
+                  MAX_PLOT_BAR_WIDTH_PX * svgUnitsPerPixel
+                )
+              // x tick labels lie flat, like the histogram's, when the longest one fits under a
+              // square. Otherwise they are rotated 48 degrees and end at their anchor point, so they
+              // reach width * sin(48) below it. Flat labels free that height for a larger plot.
+              const rotatedXTickLabelsHeatmapBottom =
+                xTickLabelOffset + longestAxisValueLabelWidth * 0.74 + heightBelowXTickLabels
+              const xTickLabelsFlat =
+                bandFor(plotSizeFor(rotatedXTickLabelsHeatmapBottom)) >=
+                longestAxisValueLabelWidth + TICK_LABEL_GAP * svgUnitsPerPixel
+              const heatmapBottom = xTickLabelsFlat
+                ? xTickLabelOffset + heightBelowXTickLabels
+                : rotatedXTickLabelsHeatmapBottom
+              const plotSize = plotSizeFor(heatmapBottom)
+              const band = bandFor(plotSize)
               const gridInset = (plotSize - band * values.length) / 2
               const xFor = (value: number) =>
                 heatmapLeft + gridInset + (valueIndex.get(value) || 0) * band
               const yFor = (value: number) =>
                 heatmapTop + gridInset + (values.length - 1 - (valueIndex.get(value) || 0)) * band
-              // Neighboring x labels are rotated 48 degrees, so they need about 1.5 font sizes of
-              // horizontal room to clear each other; the y labels need less, so one spacing fits both.
+              // Rotated x labels need about 1.5 font sizes of horizontal room to clear each other,
+              // and flat ones each fit under their own square; the y labels need less, so one
+              // spacing fits all of them.
               const minimumAxisLabelSpacing = 1.5 * axisFontSize
               // People counts in the squares: one size for the plot, also short enough to fit the
               // square's height. When squares are too small even for the minimum size, the counts
@@ -4583,15 +4605,28 @@ export const WholeRecordGenotypeLandscape = ({
                     )}
                     {axisValues.map((value) => (
                       <React.Fragment key={value}>
+                        <line
+                          data-testid="genotype-length-x-tick-mark"
+                          x1={xFor(value) + band / 2}
+                          y1={heatmapTop + plotSize}
+                          x2={xFor(value) + band / 2}
+                          y2={heatmapTop + plotSize + xTickMarkLength}
+                          stroke={PLOT_AXIS_LINE_COLOR}
+                        />
                         <text
+                          data-testid="genotype-length-x-tick-label"
                           x={xFor(value) + band / 2}
                           y={heatmapTop + plotSize + xTickLabelOffset}
                           fill="#566168"
                           fontSize={axisFontSize}
-                          textAnchor="end"
-                          transform={`rotate(-48 ${xFor(value) + band / 2} ${
-                            heatmapTop + plotSize + xTickLabelOffset
-                          })`}
+                          textAnchor={xTickLabelsFlat ? 'middle' : 'end'}
+                          transform={
+                            xTickLabelsFlat
+                              ? undefined
+                              : `rotate(-48 ${xFor(value) + band / 2} ${
+                                  heatmapTop + plotSize + xTickLabelOffset
+                                })`
+                          }
                         >
                           {axisValueLabel(value)}
                         </text>
