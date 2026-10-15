@@ -41,6 +41,7 @@ export type DatasetMetadata = {
   transcriptsHaveExomeCoverage: boolean
   regionsHaveExomeCoverage: boolean
   regionsHaveGenomeCoverage: boolean
+  hasAlleleNumber: boolean
   hasLocalAncestryPopulations: boolean
   isLiftoverSource: boolean
   isLiftoverTarget: boolean
@@ -88,6 +89,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -138,6 +140,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -188,6 +191,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -238,6 +242,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -288,6 +293,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -338,6 +344,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -388,6 +395,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: false,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -438,6 +446,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: false,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -488,6 +497,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: false,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -538,6 +548,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: false,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -588,6 +599,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: false,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -638,6 +650,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: false,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -688,6 +701,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: false,
     hasStructuralVariants: true,
     hasCopyNumberVariants: false,
@@ -738,6 +752,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: false,
     hasStructuralVariants: true,
     hasCopyNumberVariants: false,
@@ -788,6 +803,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: false,
     hasStructuralVariants: true,
     hasCopyNumberVariants: false,
@@ -838,6 +854,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: false,
     regionsHaveExomeCoverage: false,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: false,
     hasStructuralVariants: true,
     hasCopyNumberVariants: false,
@@ -888,6 +905,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: false,
+    hasAlleleNumber: false,
     hasShortVariants: false,
     hasStructuralVariants: false,
     hasCopyNumberVariants: true,
@@ -938,6 +956,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: true,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -988,6 +1007,7 @@ const metadata: Record<DatasetId, DatasetMetadata> = {
     transcriptsHaveExomeCoverage: true,
     regionsHaveExomeCoverage: true,
     regionsHaveGenomeCoverage: true,
+    hasAlleleNumber: false,
     hasShortVariants: true,
     hasStructuralVariants: false,
     hasCopyNumberVariants: false,
@@ -1064,6 +1084,12 @@ export const regionsHaveExomeCoverage = (datsetId: DatasetId) =>
 
 export const regionsHaveGenomeCoverage = (datsetId: DatasetId) =>
   getMetadata(datsetId, 'regionsHaveGenomeCoverage')
+
+// Whether an all-sites allele number release exists for this dataset, which is
+// what the coverage track's call rate metric is drawn from. Only the full
+// gnomAD v4.1 callset has one: a subset's call rate is a different number, so a
+// subset must not be shown the full release's.
+export const hasAlleleNumber = (datasetId: DatasetId) => getMetadata(datasetId, 'hasAlleleNumber')
 
 export const hasShortVariants = (datasetId: DatasetId) => getMetadata(datasetId, 'hasShortVariants')
 

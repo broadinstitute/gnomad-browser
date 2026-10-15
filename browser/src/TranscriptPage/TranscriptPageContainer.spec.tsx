@@ -61,6 +61,11 @@ forAllDatasets('TranscriptPageContainer with dataset %s', (datasetId) => {
           coverage: {},
         },
       }),
+      TranscriptAlleleNumber: () => ({
+        feature: {
+          allele_number: {},
+        },
+      }),
     })
 
     const tree = renderer.create(
