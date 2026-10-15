@@ -112,14 +112,14 @@ describe('bounded tandem-repeat locus row presentation', () => {
     expect(display.label).toBe('4:3068956–3068965 TR locus (9bp): TG x 4.5')
   })
 
-  test('marks a copy count that one decimal cannot state exactly as approximate', () => {
+  test('states a copy count that is not a whole number to one decimal, without a "~"', () => {
     expect(getTrLocusRowDisplay(contractsFor('4-3068956-3068965-TG')).label).toMatch(/ x 4\.5$/)
     expect(
       getTrLocusRowDisplay(contractsFor('4-3099609-3099673-TTGTATGGTTTGGAGGTGCTC')).label
-    ).toBe('4:3099609–3099673 TR locus (64bp): TTGTATGGTTTGGAGGTGCTC (21bp motif) x ~3.0')
+    ).toBe('4:3099609–3099673 TR locus (64bp): TTGTATGGTTTGGAGGTGCTC (21bp motif) x 3.0')
     expect(
       getTrLocusRowDisplay(contractsFor('4-3113748-3113861-GTGGGGTAGTCCTGTGGCTCCGG')).label
-    ).toBe('4:3113748–3113861 TR locus (113bp): GTGGGGTAGTCCTGTGGCTCCGG (23bp motif) x ~4.9')
+    ).toBe('4:3113748–3113861 TR locus (113bp): GTGGGGTAGTCCTGTGGCTCCGG (23bp motif) x 4.9')
   })
 
   test('names a long motif by size rather than printing the stored sequence', () => {
@@ -155,7 +155,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
     )
     const sixtyOneBaseMotif = 'TTTATGTAGCTTTCAAACTCCTCTTAGGAGTTCTGGTCCCTACAGGGCGTGGGAGCCCAGG'
     expect(getTrLocusRowDisplay(contractsFor(`4-3238066-3238190-${sixtyOneBaseMotif}`)).label).toBe(
-      '4:3238066–3238190 TR locus (124bp): 61bp motif x ~2.0'
+      '4:3238066–3238190 TR locus (124bp): 61bp motif x 2.0'
     )
   })
 
@@ -164,7 +164,7 @@ describe('bounded tandem-repeat locus row presentation', () => {
       '4:3208719–3208734 TR locus (15bp): A x 15'
     )
     expect(getTrLocusRowDisplay(contractsFor('4-3074307-3074341-CCACGCCCCCGCATCG')).label).toBe(
-      '4:3074307–3074341 TR locus (34bp): CCACGCCCCCGCATCG (16bp motif) x ~2.1'
+      '4:3074307–3074341 TR locus (34bp): CCACGCCCCCGCATCG (16bp motif) x 2.1'
     )
   })
 })

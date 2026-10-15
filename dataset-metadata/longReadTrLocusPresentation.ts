@@ -68,14 +68,13 @@ const motifPhrase = (motifs: string[]) => {
 
 // Repeat copies implied by the exact component envelope. Envelopes that are not a whole
 // multiple of the motif keep one decimal rather than rounding to a count the coordinates
-// do not support. A count that one decimal cannot state exactly gets a leading "~", so 9bp of
-// TG reads 4.5 but 64bp of a 21bp motif reads ~3.0. Exactness is checked in whole numbers
-// rather than on the floating-point quotient.
+// do not support, so 9bp of TG reads 4.5 and 64bp of a 21bp motif reads 3.0. Whole multiples
+// are checked in whole numbers rather than on the floating-point quotient.
 const repeatCopyText = (lengthBp: number, motifLength: number) => {
   if (motifLength <= 0) return null
   const copies = lengthBp / motifLength
   if (lengthBp % motifLength === 0) return String(copies)
-  return `${(lengthBp * 10) % motifLength === 0 ? '' : '~'}${copies.toFixed(1)}`
+  return copies.toFixed(1)
 }
 
 // Zero-based half-open bounds, matching the canonical locus id rather than 1-based display.
