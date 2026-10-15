@@ -15,6 +15,7 @@ import {
   y1CoverageViewColumnShape,
 } from '../../y1_admission_config'
 import type { Y1AncillaryRoute } from '../../y1_config'
+import { preflightStrContext } from './str-context-preflight'
 import {
   joinedPhasedMethylationRoute,
   preflightJoinedPhasedMethylation,
@@ -119,6 +120,17 @@ export const sourcePhasedEvaluationScope = (
 ) => {
   const normalizedChrom = chrom.startsWith('chr') ? chrom : `chr${chrom}`
   if (!route) throw new Error('Source-phased methylation route is unavailable')
+  if (route.compatibility) {
+    // The preserved product includes chrX but does not bind its 114 sample IDs.
+    // Do not report an empty response as a measured zero for the other samples.
+    if (normalizedChrom === 'chrX' || normalizedChrom === 'chrY') {
+      throw new Error(`Candidate source-labelled methylation is unavailable for ${normalizedChrom}`)
+    }
+    // The existing raw query uses an inclusive BETWEEN on native BED pos1.
+    if (!Number.isSafeInteger(start) || !Number.isSafeInteger(stop) || stop - start + 1 > 100_000) {
+      throw new Error('Candidate source-labelled methylation requires an integer range <= 100kb')
+    }
+  }
   if (start < 0 || stop < start) {
     throw new Error('Source-phased methylation range must be non-negative and ordered')
   }
@@ -163,6 +175,9 @@ export const phasedMethylationCapability = (
     orientation_status: 'UNCONFIRMED' as const,
     phase_set_semantics: 'SOURCE_TRACK_HAS_NO_PHASE_SET' as const,
   }
+  if (route?.compatibility && cohort !== 'hgsvc_hprc' && cohort !== 'aou') {
+    throw new Error('Candidate source-labelled methylation requires the hgsvc_hprc cohort')
+  }
   if (cohort === 'aou') {
     return {
       ...common,
@@ -189,7 +204,13 @@ export const phasedMethylationCapability = (
     status: 'AVAILABLE_ORIENTATION_UNCONFIRMED',
     route_run_id: route.run_id,
     source_sample_ids: route.receipt.source_sample_ids,
-    reason: route.receipt.missing_orientation_evidence,
+    reason: route.compatibility
+      ? 'Candidate standalone source-labelled HAP1/HAP2 only; this raw route does not establish VCF/copy alignment. ' +
+        'No VCF strand or phase-set binding. Sparse autosomal observations do not establish complete assay coverage; ' +
+        'source-absent samples are not zero. chrX data for 114 samples are preserved but sample-contig eligibility ' +
+        'is not bound, so candidate chrX queries are unavailable; chrY has no source data. ' +
+        'Sample-total partial/skip/no-assay statuses remain a separate product.'
+      : route.receipt.missing_orientation_evidence,
   }
 }
 
@@ -565,6 +586,14 @@ const preflightSourcePhasedMethylation = async (route: SourcePhasedMethylationRo
 }
 
 const preflightConfiguredRoute = async (route: Y1AncillaryRoute) => {
+  if (route.receipt.source_format === 'str_context_completion_v2') {
+    await preflightStrContext(route, queryRows)
+    activeRoutes.set(routeKey(route.cohort, route.modality), route)
+    capabilities.set(routeKey(route.cohort, route.modality), {
+      available: true, source: 'Y1_DATABASE', reason: null,
+    })
+    return
+  }
   const rawBackedCoverageView =
     route.modality === 'coverage' && route.receipt.source_format === 'coverage_view_completion'
   const strictStrCompletion =

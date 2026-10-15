@@ -15,6 +15,7 @@ type Props = {
   setSelectedColorBy: (newColorBy: ColorBy | null) => void
   setSelectedScaleType: Dispatch<SetStateAction<ScaleType>>
   allowedColorBys?: ColorBy[]
+  sourceMetadata?: boolean
 }
 
 export const colorByLabels: Record<ColorBy, string> = {
@@ -30,7 +31,11 @@ const ShortTandemRepeatColorBySelect = ({
   setSelectedColorBy,
   setSelectedScaleType,
   allowedColorBys = ['quality_description', 'q_score', 'sex', 'population'],
+  sourceMetadata = false,
 }: Props) => {
+  const labels = sourceMetadata
+    ? { ...colorByLabels, population: 'Population (source metadata)', sex: 'Sex (source metadata)' }
+    : colorByLabels
   return (
     <Label htmlFor={`short-tandem-repeat-${id}-color-by-select`}>
       Color by: &nbsp;
@@ -49,7 +54,7 @@ const ShortTandemRepeatColorBySelect = ({
         </option>
         {allowedColorBys.map((key) => (
           <option key={key} value={key}>
-            {colorByLabels[key]}
+            {labels[key]}
           </option>
         ))}
       </Select>

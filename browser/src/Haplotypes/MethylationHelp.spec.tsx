@@ -127,6 +127,18 @@ describe('MethylationHelp', () => {
     expect(perCopyText).toContain('AVAILABLE_CONFIRMED')
   })
 
+  test('keeps refreshed assumption pending confirmation in methods, without receipt jargon', () => {
+    const text = renderedText(renderer.create(<PerCopyMethylationHelp capability={{
+      available: true, joinable_to_vcf: true, status: 'AVAILABLE_OPERATOR_ASSUMPTION',
+      identity: null, source_sample_ids: [], max_samples: 25, max_records: 250000,
+      max_span_bp: 10000, reason: 'technical receipt details are not displayed',
+    }} />).toJSON())
+    expect(text).toContain('Haplotype alignment assumes phasing is unchanged in the refreshed release; confirmation pending.')
+    expect(text).not.toContain('supports regions up to 10,000 bases')
+    expect(text).not.toContain('receipt')
+    expect(text).not.toContain('AVAILABLE_OPERATOR_ASSUMPTION')
+  })
+
   test('uses cohort terminology while retaining the cited publication title', () => {
     const text = renderedText(renderer.create(<MethylationHelp />).toJSON())
 

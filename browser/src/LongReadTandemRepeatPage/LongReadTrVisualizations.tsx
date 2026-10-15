@@ -58,6 +58,7 @@ import {
   ExactStoredMotifDistributionBin,
 } from './exactStoredMotifDistribution'
 import { DiscreteBrushMark, useDiscretePlotBrush } from './discretePlotBrush'
+import { repeatPlotAvailable, SourceContextHistogramMetadata } from './SourceContextHistogram'
 import {
   PrimaryMotifAllelePlotCard,
   PrimaryMotifGenotypeCells,
@@ -403,6 +404,7 @@ const unavailableReason = (reason: string | null | undefined) =>
 
 const AllelicLandscapeHelp = ({
   showRepeatCountControls = false,
+  sourceContext = false,
   showLengthAxisControl = false,
   showAncestryControl = false,
   showSexControl = false,
@@ -410,6 +412,7 @@ const AllelicLandscapeHelp = ({
   primaryMotifMeasurement,
 }: {
   showRepeatCountControls?: boolean
+  sourceContext?: boolean
   showLengthAxisControl?: boolean
   showAncestryControl?: boolean
   showSexControl?: boolean
@@ -423,9 +426,15 @@ const AllelicLandscapeHelp = ({
       a range or region. A new plot selection replaces the previous one and never changes the URL.
       Choose <strong>Details</strong> in the index to update allele details.
     </p>
-    <h4>Repeat-count distributions (simple loci only)</h4>
+    <h4>
+      {sourceContext
+        ? 'Source-size distributions (simple loci only)'
+        : 'Repeat-count distributions (simple loci only)'}
+    </h4>
     <p>
-      Bars show called allele copies; squares show people by shorter and longer repeat count.
+      {sourceContext
+        ? 'Bars show measured allele observations; squares count source pair entries in source units. Pairs are not phased; n/n may encode one or two observed alleles, not necessarily a diploid genotype.'
+        : 'Bars show called allele copies; squares show people by shorter and longer repeat count.'}
       {showRepeatCountControls &&
         ' Use the ancestry, sex, color, and scale controls within each card.'}{' '}
       These marks are read-only when the source does not identify the contributing exact ALT
@@ -2172,7 +2181,7 @@ const PurityScatter = ({
   )
 }
 
-const RepeatCountPlotCard = ({
+export const RepeatCountPlotCard = ({
   variantId,
   repeatCountPlots,
   kind,
@@ -2184,7 +2193,8 @@ const RepeatCountPlotCard = ({
   // The plot's own Length axis menu, drawn at the bottom of the card.
   lengthAxisControl?: React.ReactNode
 }) => {
-  if (repeatCountPlots.status !== 'AVAILABLE_EXACT') return null
+  if (!repeatPlotAvailable(repeatCountPlots, kind)) return null
+  const sourceContext = repeatCountPlots.status === 'AVAILABLE_SOURCE_CONTEXT'
 
   return (
     <PlotCard
@@ -2192,38 +2202,47 @@ const RepeatCountPlotCard = ({
       data-testid={`${kind}-repeat-count-card`}
       data-interaction-status={repeatCountPlots.interaction.interaction_status}
       role="group"
-      aria-label={`Static ${kind} repeat-count plot and controls; does not filter the source-ALT index`}
+      aria-label={
+        sourceContext
+          ? `Static ${
+              kind === 'allele' ? 'repeat-size' : 'size-pair'
+            } plot and controls; does not filter the source-ALT index`
+          : `Static ${kind} repeat-count plot and controls; does not filter the source-ALT index`
+      }
     >
       {kind === 'allele' ? (
         <>
-          <h3>Allele repeat-count distribution</h3>
+          <h3>{sourceContext ? 'Repeat-size distribution' : 'Allele repeat-count distribution'}</h3>
           <LongReadAlleleSizeDistributionSection
             variantId={variantId}
             alleleSizeDistribution={repeatCountPlots.allele_size_distribution}
             maxRepunits={repeatCountPlots.max_repunits || 0}
             repeatUnit={repeatCountPlots.repeat_unit || undefined}
             headingLevel="h4"
-            heading="Repeat-count plot"
+            heading={sourceContext ? 'Source-size plot' : 'Repeat-count plot'}
             compact
             focusObservedDomain
             showHelp={false}
-            yAxisLabel="Called allele copies"
+            sourceContext={sourceContext}
+            yAxisLabel={sourceContext ? 'Measured allele observations' : 'Called allele copies'}
           />
         </>
       ) : (
         <>
-          <h3>Genotype repeat-count distribution</h3>
+          <h3>{sourceContext ? 'Size-pair distribution' : 'Genotype repeat-count distribution'}</h3>
           <LongReadGenotypeDistributionSection
             variantId={variantId}
             genotypeDistribution={repeatCountPlots.genotype_distribution}
             headingLevel="h4"
-            heading="Repeat-count plot"
+            heading={sourceContext ? 'Source-size-pair plot' : 'Repeat-count plot'}
             compact
             focusObservedDomain
             showHelp={false}
+            sourceContext={sourceContext}
           />
         </>
       )}
+      {sourceContext && <SourceContextHistogramMetadata plots={repeatCountPlots} />}
       {lengthAxisControl}
     </PlotCard>
   )
@@ -2498,7 +2517,10 @@ export const WholeRecordAlleleLandscape = ({
   sourceRecordOrder?: string[]
 }) => {
   const admittedRepeatCountPlots =
-    repeatCountPlots?.status === 'AVAILABLE_EXACT' ? repeatCountPlots : undefined
+    repeatPlotAvailable(repeatCountPlots, 'allele') ||
+    repeatPlotAvailable(repeatCountPlots, 'genotype')
+      ? repeatCountPlots
+      : undefined
   const admittedGenotypeLandscape =
     genotypeLandscape?.status === 'AVAILABLE' ? genotypeLandscape : undefined
   const admittedPrimaryMotifMeasurement = primaryMotifMeasurementAvailable(primaryMotifMeasurement)
@@ -2677,7 +2699,7 @@ export const WholeRecordAlleleLandscape = ({
   const alleleDistributionChoices = useMemo(() => {
     const choices: DistributionView[] = []
     if (landscape.status === 'AVAILABLE') choices.push('length')
-    if (admittedRepeatCountPlots) choices.push('repeat-count')
+    if (repeatPlotAvailable(admittedRepeatCountPlots, 'allele')) choices.push('repeat-count')
     if (admittedMotifDistribution || admittedPrimaryMotifMeasurement) {
       choices.push('exact-motif')
     }
@@ -2691,7 +2713,7 @@ export const WholeRecordAlleleLandscape = ({
   const genotypeDistributionChoices = useMemo(() => {
     const choices: DistributionView[] = []
     if (admittedGenotypeLandscape) choices.push('length')
-    if (admittedRepeatCountPlots) choices.push('repeat-count')
+    if (repeatPlotAvailable(admittedRepeatCountPlots, 'genotype')) choices.push('repeat-count')
     if (admittedPrimaryMotifGenotype) choices.push('exact-motif')
     return choices
   }, [admittedGenotypeLandscape, admittedPrimaryMotifGenotype, admittedRepeatCountPlots])
@@ -3091,6 +3113,7 @@ export const WholeRecordAlleleLandscape = ({
           <h2 id="lr-tr-allele-landscape-heading">Allelic Landscape</h2>
           <AllelicLandscapeHelp
             showRepeatCountControls={Boolean(admittedRepeatCountPlots)}
+            sourceContext={admittedRepeatCountPlots?.status === 'AVAILABLE_SOURCE_CONTEXT'}
             primaryMotifMeasurement={admittedPrimaryMotifMeasurement}
           />
         </HeadingWithHelp>
@@ -3255,6 +3278,7 @@ export const WholeRecordAlleleLandscape = ({
         {/* Repeat counts are drawn in the shared plots here, not in cards with their own
             controls, so the help does not describe card controls. */}
         <AllelicLandscapeHelp
+          sourceContext={admittedRepeatCountPlots?.status === 'AVAILABLE_SOURCE_CONTEXT'}
           showLengthAxisControl={Boolean(
             alleleLengthAxisControl || genotypeLengthAxisControl || purityLengthAxisControl
           )}
@@ -4734,7 +4758,7 @@ const ExactAlleleIndexRow = ({
   const purity = allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(2)
   const frequency = exactAlleleFrequency(allele, data.selectedDivision)
   const ac = frequency ? Math.round(frequency.ac).toLocaleString() : '—'
-  const af = frequency ? frequency.af.toPrecision(4) : '—'
+  const af = frequency?.af == null ? 'Unavailable' : frequency.af.toPrecision(4)
   const selected = allele.variant_id === data.selectedAllele
   return (
     <IndexRow

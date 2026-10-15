@@ -133,7 +133,7 @@ const variantTableColumns: VariantTableColumn[] = [
     minWidth: 110,
     compareFunction: makeNumericCompareFunction('af'),
     render: (row: any, key: string) =>
-      row.is_long_read_tr_locus ? <NumericCell title="Exact-allele frequency is unavailable for a locus summary.">—</NumericCell> : renderAlleleFrequencyCell(row, key),
+      row.is_long_read_tr_locus ? <NumericCell title="Exact-allele frequency is unavailable for a locus summary.">—</NumericCell> : row.long_read && row[key] == null ? <NumericCell title="Allele frequency unavailable">—</NumericCell> : renderAlleleFrequencyCell(row, key),
   },
 
   {

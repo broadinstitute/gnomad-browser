@@ -1,4 +1,6 @@
 import { readY1AncillaryReceipt, type Y1AncillaryReceipt } from './y1_admission_config'
+import { contextReceipt } from './str_context_admission'
+import { validateStrContextSourceMap } from './str_context_source_map'
 
 export const DEFAULT_Y1_CLICKHOUSE_DATABASE = 'gnomad_lr_y1_scratch_v5_current'
 export const DEFAULT_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS = 120_000
@@ -48,6 +50,11 @@ export type Y1AncillaryRoute = {
   run_id: string
   receipt_path: string
   receipt: Y1AncillaryReceipt
+  source_map_artifacts?: {
+    sourceMapPath: string
+    verificationPath: string
+    verificationSha256: string
+  }
 }
 
 export type Y1ClickHouseConfig = {
@@ -173,16 +180,30 @@ export const resolveY1AncillaryRoutes = (
           throw new Error(`LR_Y1_ANCILLARY_ROUTES.${modality}.${cohort} requires receipt_path`)
         }
         const receipt_path = entry.receipt_path.trim()
-        routes.push({
+        const receipt = readY1AncillaryReceipt(receipt_path, { modality, cohort, database, run_id })
+        if (receipt.source_format === 'str_context_completion_v2' &&
+            env.LR_Y1_STR_CONTEXT_CANDIDATE_ENABLED !== 'true') {
+          throw new Error('Context-v2 routes require explicit LR_Y1_STR_CONTEXT_CANDIDATE_ENABLED=true')
+        }
+        const source_map_artifacts = entry.source_map_artifacts as Y1AncillaryRoute['source_map_artifacts']
+        const route: Y1AncillaryRoute = {
           modality,
           cohort,
           database,
           run_id,
           receipt_path,
-          receipt: readY1AncillaryReceipt(receipt_path, { modality, cohort, database, run_id }),
-        })
+          receipt,
+          ...(source_map_artifacts ? { source_map_artifacts } : {}),
+        }
+        if (receipt.source_format === 'str_context_completion_v2') {
+          if (!source_map_artifacts) throw new Error('Context-v2 requires pinned source_map_artifacts')
+          validateStrContextSourceMap(contextReceipt(route), source_map_artifacts)
+        } else if (entry.source_map_artifacts !== undefined) {
+          throw new Error('source_map_artifacts is only valid for context-v2')
+        }
+        routes.push(route)
         const unknownKeys = Object.keys(entry).filter(
-          (key) => key !== 'database' && key !== 'run_id' && key !== 'receipt_path'
+          (key) => !['database', 'run_id', 'receipt_path', 'source_map_artifacts'].includes(key)
         )
         if (unknownKeys.length) {
           throw new Error(

@@ -31,6 +31,7 @@ import {
 } from '../ShortTandemRepeatPage/externalResourceUrls'
 import { variantFeedbackUrl } from '../variantFeedback'
 import { AlleleNavigation, LongReadTrLocus } from './types'
+import { repeatPlotAvailable, SourceContextHistogramMetadata } from './SourceContextHistogram'
 
 // @gnomad/ui's PageHeading renders its renderPageControls prop at the right end of the heading
 // line, but the library's type definitions misspell that prop as renderPageControl.
@@ -344,7 +345,9 @@ const LongReadTandemRepeatPage = ({
           locus.delta_min
         )} to ${signed(locus.delta_max)} bp versus REF)`
       : null
-  const repeatPlotsAvailable = locus.repeat_count_plots.status === 'AVAILABLE_EXACT'
+  const repeatPlotsAvailable =
+    repeatPlotAvailable(locus.repeat_count_plots, 'allele') ||
+    repeatPlotAvailable(locus.repeat_count_plots, 'genotype')
   const localHaplotypeBackgroundsEnabled = isExperimentalFeatureEnabled('tr_haplotype_backgrounds')
   let selectedAlleleDetail: React.ReactNode
   if (locus.selected_allele) {
@@ -482,6 +485,16 @@ const LongReadTandemRepeatPage = ({
       )}
 
       <ShortReadKnownLocusContext lrCohort={locus.lr_cohort} context={locus.short_read_context} />
+
+      {!repeatPlotsAvailable && locus.repeat_count_plots.allele_status != null && (
+        <section aria-label="Source-context distributions">
+          <p>
+            Source-context distributions unavailable: {locus.repeat_count_plots.status};{' '}
+            {locus.repeat_count_plots.reason_code || 'No available observations'}.
+          </p>
+          <SourceContextHistogramMetadata plots={locus.repeat_count_plots} />
+        </section>
+      )}
 
       <WholeRecordAlleleLandscape
         landscape={locus.whole_record_allele_landscape}

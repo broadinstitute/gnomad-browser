@@ -1,6 +1,7 @@
 import { joinedPhasedMethylationRoute, y1PrimaryManifests } from '../../clickhouse'
 import {
   JOINED_PHASED_MAX_RECORDS,
+  LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256,
   JOINED_PHASED_MAX_SAMPLES,
   type JoinedBrowserEntry,
   type JoinedPhasedMethylationRoute,
@@ -70,6 +71,8 @@ export type JoinedIdentity = {
   orientation_receipt_sha256: string
   mapping_artifact_sha256: null
   mapping_scope: 'CHROMOSOME_WIDE'
+  approval_basis: 'operator_direct_mapping_assumption'
+  independently_machine_verified_lineage: false
 }
 
 const browserEntry = (
@@ -106,6 +109,8 @@ export const joinedIdentity = (
     orientation_receipt_sha256: route.orientation_receipt_sha256,
     mapping_artifact_sha256: null,
     mapping_scope: 'CHROMOSOME_WIDE',
+    approval_basis: route.receipt.approval_basis.kind,
+    independently_machine_verified_lineage: false,
   }
 }
 
@@ -153,7 +158,7 @@ export const joinedPhasedCapability = async (
       joinable_to_vcf: false,
       status: 'UNAVAILABLE_NOT_CONFIGURED',
       identity: null,
-      reason: 'No admitted joined methylation route',
+      reason: 'VCF-joined methylation is not enabled for these primary VCFs: a matching source-haplotype orientation receipt is required. Raw HAP1/HAP2 and sample-total measurements do not establish that mapping.',
     }
   const primary = await sourceSnapshot('hgsvc_hprc', chrom)
   if (!primary?.carriers_available || primary.run_id !== browserEntry(route, chrom)?.run_id)
@@ -169,12 +174,14 @@ export const joinedPhasedCapability = async (
     ...common,
     available: true,
     joinable_to_vcf: true,
-    status: 'AVAILABLE_CONFIRMED',
+    status: 'AVAILABLE_OPERATOR_ASSUMPTION',
+    ...(route.orientation_receipt_sha256 === LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256
+      ? { max_span_bp: 10_000 } : {}),
     identity: joinedIdentity(route, chrom),
     source_sample_ids: route.receipt.coverage.roster
       .filter((row) => row.source_status === 'source_present')
       .map((row) => row.sample_id),
-    reason: 'Operator-approved chromosome-wide direct HAP1-to-GT1 and HAP2-to-GT2 mapping',
+    reason: 'Operator-assumed chromosome-wide HAP1-to-first-phased-GT and HAP2-to-second-phased-GT mapping; not independently verified',
   }
 }
 

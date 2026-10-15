@@ -18,7 +18,7 @@ export type LongReadPopulationFrequency = {
   id: string
   ac: number
   an: number
-  af: number
+  af: number | null
   homozygote_ref_count?: number | null
   homozygote_alt_count?: number | null
   heterozygote_count?: number | null
@@ -92,7 +92,7 @@ export type RawLongReadVariant = {
     all: {
       ac: number
       an: number
-      af: number
+      af: number | null
       homozygote_ref_count?: number | null
       homozygote_alt_count?: number | null
       heterozygote_count?: number | null
@@ -138,7 +138,7 @@ export type RawLongReadVariant = {
 function buildLongReadData(lr: RawLongReadVariant): LongReadSequencingTypeData {
   const freq = lr.freq
   if (!freq) {
-    return { ac: 0, an: 0, af: 0, filters: lr.filters || [], populations: [] }
+    return { ac: null, an: null, af: null, filters: lr.filters || [], populations: [] }
   }
   return {
     ac: freq.all.ac,

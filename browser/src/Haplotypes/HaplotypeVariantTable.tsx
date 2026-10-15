@@ -24,7 +24,7 @@ import {
 import HaplotypeHelpButton from './HelpButton'
 import type { HaplotypeGroup, HaplotypeCluster, LRVariant } from './index'
 import Link from '../Link'
-import { formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
+import { exportLongReadAf, formatLongReadFrequency, nullableLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
 import { aggregateTrLoci, getTrLocusKey } from '../LongReadVariantPage/trLocusAggregation'
 import { longReadVariantUrl, type LongReadCohort } from '../LongReadVariantPage/longReadCohort'
 import {
@@ -298,10 +298,10 @@ const renderPredictor = (value: number | null | undefined, warnThreshold: number
 // --- Mini group AF bar ---
 
 const PopAfBar = ({ variant }: { variant: DerivedVariant }) => {
-  const pops = (variant.populations || []).map((p) => ({
+  const pops = (variant.populations || []).flatMap((p) => p.af == null ? [] : [{
     key: p.id.toUpperCase() === 'NFE' ? 'EUR' : p.id.toUpperCase(),
     value: p.af,
-  }))
+  }])
 
   if (pops.length === 0) return <span style={{ color: '#ccc' }}>—</span>
 
@@ -831,7 +831,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
       const populations = isTr
         ? []
         : (v.freq?.populations || [])
-            .filter((p: any) => SUPERPOPS.has(p.id) && p.af != null)
+            .filter((p: any) => SUPERPOPS.has(p.id))
             .map((p: any) => ({ id: p.id, af: p.af, ac: p.ac ?? null }))
 
       return [{
@@ -1248,7 +1248,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
     ]
     const escapeField = (s: string) => (s.includes(',') ? `"${s}"` : s)
     const getPopAf = (v: DerivedVariant, popId: string) =>
-      v.populations?.find((p) => p.id === popId)?.af ?? ''
+      exportLongReadAf(v.populations?.find((p) => p.id === popId))
     const rows = sorted.map((v) => {
       const locusId = v.is_tr ? getTrLocusId(v) : null
       return [
@@ -1264,7 +1264,7 @@ const HaplotypeVariantTable = forwardRef<HaplotypeVariantTableHandle, HaplotypeV
         v.is_tr ? 'TR' : v.allele_type,
         v.is_tr ? 'TR' : getVariantCategory(v.allele_type, v.allele_length),
         v.is_tr ? formatTrLengthRange(v.min_length_diff, v.max_length_diff) : v.allele_length,
-        v.is_tr ? '' : v.freq.af,
+        v.is_tr ? '' : exportLongReadAf(v.freq),
         ...(mode === 'haplotype'
           ? [
               ...(showGroupCount

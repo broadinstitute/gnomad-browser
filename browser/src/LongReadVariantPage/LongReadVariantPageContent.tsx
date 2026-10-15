@@ -262,7 +262,7 @@ const LongReadVariantOccurrenceTable = ({ variant }: { variant: LongReadVariant 
                 <TooltipHint>Allele Frequency</TooltipHint>
               </TooltipAnchor>
             </th>
-            <td>{variant.freq.all.af.toPrecision(4)}</td>
+            <td>{variant.freq.all.af == null ? 'Unavailable' : variant.freq.all.af.toPrecision(4)}</td>
           </tr>
         </tbody>
       </Table>
@@ -281,6 +281,10 @@ const LongReadVariantPopulationFrequencies = ({ variant }: { variant: LongReadVa
     <TableWrapper>
       <PopulationsTable
         populations={nestPopulations(addLongReadAncestryGroupNames(variant.freq.populations))}
+        useSuppliedAf
+        suppliedTotalAf={variant.freq.all.af}
+        suppliedTotalAc={variant.freq.all.ac}
+        suppliedTotalAn={variant.freq.all.an}
       />
     </TableWrapper>
   )

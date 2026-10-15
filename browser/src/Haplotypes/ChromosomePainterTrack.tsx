@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useCallback, useRef, useContext } from 'react'
+import { formatLongReadFrequency } from '../LongReadVariantPage/longReadFrequency'
 import { DeckGL } from '@deck.gl/react'
 import { OrthographicView } from '@deck.gl/core'
 import { SolidPolygonLayer, ScatterplotLayer, LineLayer, TextLayer } from '@deck.gl/layers'
@@ -420,7 +421,7 @@ function ChromosomePainterCanvas({
 
         for (const v of svVariants) {
           const binIdx = Math.max(0, Math.min(NUM_BINS - 1, Math.floor((v.pos - start) / binSize)))
-          const score = v.freq.af
+          const score = v.freq.af ?? -Infinity // Missing ranks after known AF, never as zero.
           if (!binVariants[binIdx] || score > binScores[binIdx]) {
             binVariants[binIdx] = v
             binScores[binIdx] = score
@@ -744,7 +745,7 @@ function PaintingTooltip({ x, y, segment }: { x: number; y: number; segment: Pai
         </div>
       )}
       <div>
-        <strong>AF:</strong> {v.freq.af.toFixed(4)}
+        <strong>AF:</strong> {formatLongReadFrequency(v.freq.af, 4)}
       </div>
       <div style={{ fontSize: 10, color: '#888', marginTop: 2 }}>
         Bin: {Math.floor(segment.binStart).toLocaleString()} - {Math.floor(segment.binStop).toLocaleString()}

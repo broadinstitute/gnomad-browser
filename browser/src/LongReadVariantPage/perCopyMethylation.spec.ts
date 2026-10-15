@@ -4,9 +4,15 @@ import {
   diploidPerCopyLayout,
   filterGroupsToSourceSamples,
   inclusiveRegionSpanBp,
+  joinedMethylationCoordinateChunks,
+  loadJoinedMethylationChunks,
+  JOINED_MAX_VIEWPORT_REQUESTS,
+  JOINED_MAX_VIEWPORT_RECORDS,
+  JOINED_ZOOM_NEEDED,
   joinedMethylationRequestScope,
   joinedMethylationUsabilityForRegion,
   perCopyLoadingProgress,
+  withSourceAbsentSampleStates,
   perCopyMethylationForReadyRow,
   validateJoinedMethylationBatch,
   type JoinedPhasedMethylationIdentity,
@@ -57,7 +63,124 @@ const sample = (sampleId: string, strandA: number | null, strandB: number | null
   phase_set_mapping: { phaseSetA: null, phaseSetB: null },
 })
 
+describe('bounded coordinate batches', () => {
+  const expectation = { identity, requestedSampleIds: ['s', 'absent'], chrom: '22', start: 100, stop: 50100 }
+  const limits = { max_span_bp: 10000, max_records: 250000 }
+  const response = (chunk: { start: number; stop: number }) => ({
+    identity, requested_sample_ids: ['s', 'absent'], completed_sample_ids: ['s'],
+    unavailable_samples: [{ sample_id: 'absent', status: 'UNAVAILABLE_NO_ASSAY_SOURCE' as const, reason: 'No source' }],
+    records: [record('s', 20, 1, chunk.start)],
+  })
+
+  test.each([10000, 10001, 50001])('partitions %i inclusive bases without overlap or conversion', (span) => {
+    const chunks = joinedMethylationCoordinateChunks(31400000, 31400000 + span - 1, 10000)
+    expect(chunks).toHaveLength(Math.ceil(span / 10000))
+    expect(chunks[0].start).toBe(31400000)
+    expect(chunks[chunks.length - 1].stop).toBe(31400000 + span - 1)
+    expect(chunks.reduce((n, c) => n + c.stop - c.start + 1, 0)).toBe(span)
+    chunks.forEach((c, i) => {
+      expect(c.stop - c.start + 1).toBeLessThanOrEqual(10000)
+      if (i) expect(c.start).toBe(chunks[i - 1].stop + 1)
+    })
+  })
+
+  test('bounds local fanout without imposing a new span restriction on ordinary routes', () => {
+    expect(() => joinedMethylationCoordinateChunks(1, 60001, 10000)).toThrow(JOINED_ZOOM_NEEDED)
+    expect(joinedMethylationCoordinateChunks(1, 1000001)).toEqual([{ start: 1, stop: 1000001 }])
+    expect(joinedMethylationCoordinateChunks(1, 120, 20)).toHaveLength(6) // capability, not hardcoded 10kb
+    expect(() => joinedMethylationCoordinateChunks(1, 121, 20)).toThrow(JOINED_ZOOM_NEEDED)
+  })
+
+  test('serializes all six chunks and commits exact first/last CpGs only after full completion', async () => {
+    const calls: any[] = []
+    const budget = { requests: 0, records: 0 }
+    let active = 0; let maxActive = 0
+    const result = await loadJoinedMethylationChunks(expectation, limits, budget, new AbortController().signal, async c => {
+      active += 1; maxActive = Math.max(maxActive, active); calls.push(c)
+      await Promise.resolve(); active -= 1
+      return { ...response(c), records: [record('s', 20, 1, c.start), record('s', 80, 2, c.stop)] }
+    })
+    expect(maxActive).toBe(1)
+    expect(calls).toHaveLength(6)
+    expect(result.records[0].pos1).toBe(100)
+    expect(result.records[11]).toMatchObject({ pos1: 50100, pos2: 50101 })
+    expect(result.completed_sample_ids).toEqual(['s'])
+    expect(result.unavailable_samples[0].sample_id).toBe('absent')
+    expect(budget).toEqual({ requests: 6, records: 12 })
+  })
+
+  test.each(['receipt', 'sample', 'chromosome', 'source-status', 'duplicate'])('rejects a wrong %s in any later chunk', async kind => {
+    let index = 0
+    await expect(loadJoinedMethylationChunks(expectation, limits, { requests: 0, records: 0 }, new AbortController().signal, async c => {
+      const r = response(c)
+      if (index++ === 1) {
+        if (kind === 'receipt') r.identity = { ...identity, orientation_receipt_sha256: 'wrong' }
+        if (kind === 'sample') r.requested_sample_ids = ['intruder', 'absent']
+        if (kind === 'chromosome') r.records[0].chr = 'chr6'
+        if (kind === 'source-status') { r.completed_sample_ids = ['s', 'absent']; r.unavailable_samples = [] }
+        if (kind === 'duplicate') r.records[0].source_row_key = 's-1-100'
+      }
+      return r
+    })).rejects.toThrow(/JOINED_/)
+  })
+
+  test('failed chunk never completes a sample; explicit retry restarts the whole batch', async () => {
+    const budget = { requests: 0, records: 0 }; let calls = 0
+    await expect(loadJoinedMethylationChunks(expectation, limits, budget, new AbortController().signal, async c => {
+      if (++calls === 2) throw new Error('failed chunk')
+      return response(c)
+    })).rejects.toThrow('failed chunk')
+    expect(budget.requests).toBe(2)
+    const result = await loadJoinedMethylationChunks(expectation, limits, budget, new AbortController().signal, async c => response(c))
+    expect(result.records).toHaveLength(6)
+    expect(budget.requests).toBe(8)
+  })
+
+  test('an abort suppresses late results and does not launch another chunk', async () => {
+    const controller = new AbortController(); const request = jest.fn(async c => { controller.abort(); return response(c) })
+    await expect(loadJoinedMethylationChunks(expectation, limits, { requests: 0, records: 0 }, controller.signal, request)).rejects.toMatchObject({ name: 'AbortError' })
+    expect(request).toHaveBeenCalledTimes(1)
+  })
+
+  test('caps total requests including retries and total points across sample batches', async () => {
+    const request = jest.fn(async c => response(c))
+    await expect(loadJoinedMethylationChunks(expectation, limits, { requests: JOINED_MAX_VIEWPORT_REQUESTS - 5, records: 0 }, new AbortController().signal, request)).rejects.toThrow('request limit')
+    expect(request).not.toHaveBeenCalled()
+    await expect(loadJoinedMethylationChunks(expectation, limits, { requests: 0, records: JOINED_MAX_VIEWPORT_RECORDS }, new AbortController().signal, request)).rejects.toThrow('point limit')
+    expect(request).toHaveBeenCalledTimes(1)
+    await expect(loadJoinedMethylationChunks(expectation, { ...limits, max_records: 0 }, { requests: 0, records: 0 }, new AbortController().signal, request)).rejects.toThrow('point limit')
+  })
+})
+
 describe('per-copy methylation mapping and aggregation', () => {
+  test('admits the explicitly labelled operator assumption, not a fabricated verification claim', () => {
+    const capability = {
+      available: true, joinable_to_vcf: true, status: 'AVAILABLE_OPERATOR_ASSUMPTION' as const,
+      source_sample_ids: sourceSampleIds, max_samples: 25, max_records: 250000, reason: 'Assumed; confirmation pending',
+      identity: { ...identity, approval_basis: 'operator_direct_mapping_assumption' as const, independently_machine_verified_lineage: false as const },
+    }
+    expect(joinedMethylationUsabilityForRegion(capability, 1001, true).usable).toBe(true)
+    expect(joinedMethylationUsabilityForRegion({ ...capability, max_span_bp: 10000 }, 10000, true).usable).toBe(true)
+    expect(joinedMethylationUsabilityForRegion({ ...capability, max_span_bp: 10000 }, 50001, true).usable).toBe(true)
+    expect(joinedMethylationUsabilityForRegion({ ...capability, max_span_bp: 10000 }, 60001, true)).toEqual({ usable: false, reason: JOINED_ZOOM_NEEDED })
+    expect(joinedMethylationUsabilityForRegion({ ...capability, identity }, 1001, true).usable).toBe(false)
+    expect(joinedMethylationUsabilityForRegion({ ...capability, identity: { ...capability.identity, independently_machine_verified_lineage: true } } as any, 1001, true).usable).toBe(false)
+  })
+
+  test('a source-absent row member is unavailable, never perpetual loading or a zero-valued observation', () => {
+    const states = new Map<string, PerCopyMethylationSampleState>([['present', { status: 'complete', recordCount: 2 }]])
+    const augmented = withSourceAbsentSampleStates(states, ['present', 'absent', 'still-loading'], ['present', 'still-loading'])
+    expect(augmented.get('absent')?.status).toBe('unavailable')
+    expect(augmented.has('still-loading')).toBe(false)
+    expect(states.has('absent')).toBe(false)
+    const records = [record('present', 20, 1), record('present', 80, 2)]
+    const result = perCopyMethylationForReadyRow(records, [sample('present', 2, 1), sample('absent', 1, 2)], augmented)
+    expect(result.readiness).toBe('ready')
+    expect(result.points.A[0]).toMatchObject({ meanMethylation: 80, sampleCount: 1 })
+    expect(result.points.B[0]).toMatchObject({ meanMethylation: 20, sampleCount: 1 })
+    expect(perCopyMethylationForReadyRow(records, [sample('present', 2, 1), sample('still-loading', 1, 2)], augmented).readiness).toBe('loading')
+  })
+
   test('maps direct and swapped strand mappings to canonical A/B before averaging', () => {
     const result = aggregatePerCopyMethylation(
       [

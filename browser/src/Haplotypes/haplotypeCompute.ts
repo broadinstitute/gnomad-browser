@@ -4,6 +4,8 @@
  * to enable zero-latency slider interactions.
  */
 
+import { passesMinimumLongReadAf } from '../LongReadVariantPage/longReadFrequency'
+
 import type {
   LRVariant,
   HaplotypeCarrierIdentity,
@@ -72,7 +74,7 @@ export type SoAVariants = {
   alt: string[]
   allele_type: string[]
   allele_length: number[]
-  freq_af: number[]
+  freq_af: (number | null)[]
   freq_ac: number[]
   freq_an: number[]
   rsid: string[]
@@ -89,7 +91,7 @@ export type SoAVariants = {
   motif_counts: (number[] | null)[]
   allele_purity: (number | null)[]
   short_read_match_id?: (string | null)[]
-  populations: Array<{ id: string; af: number }>[]
+  populations: Array<{ id: string; af: number | null }>[]
 }
 
 export function rehydrateVariants(soa: SoAVariants): LRVariant[] {
@@ -486,7 +488,7 @@ function targetDisplaySidecarFor(
       .map((index) => exactAlleleIdFor(variants[index]))
       .filter((id): id is string => id != null))].sort()
     const hasUsableFlankingSignature = variantIndices.some(
-      (index) => !targetVariantIndices.has(index) && variants[index].freq.af >= minAf
+      (index) => !targetVariantIndices.has(index) && passesMinimumLongReadAf(variants[index].freq.af, minAf)
     )
     const isSelected = exactAlleleIds.includes(descriptor.selected_exact_allele_id)
 
@@ -850,7 +852,7 @@ export function groupCarriersLightweight(
 ): LightweightGroup[] {
   const passingIndices = new Set<number>()
   for (let i = 0; i < variants.length; i++) {
-    if (!excludedVariantIndices.has(i) && variants[i].freq.af >= minAf) passingIndices.add(i)
+    if (!excludedVariantIndices.has(i) && passesMinimumLongReadAf(variants[i].freq.af, minAf)) passingIndices.add(i)
   }
 
   const signatureToCarriers = new Map<string, string[]>()
@@ -978,7 +980,7 @@ export function groupCarriers(
   // Build set of variant indices that pass AF threshold
   const passingIndices = new Set<number>()
   for (let i = 0; i < variants.length; i++) {
-    if (variants[i].freq.af >= minAf) passingIndices.add(i)
+    if (passesMinimumLongReadAf(variants[i].freq.af, minAf)) passingIndices.add(i)
   }
 
   // Build per-carrier filtered variant index lists and group by signature
@@ -1196,7 +1198,7 @@ export function groupDiplotypes(
   // Build set of variant indices that pass AF threshold
   const passingIndices = new Set<number>()
   for (let i = 0; i < variants.length; i++) {
-    if (!excludedVariantIndices.has(i) && variants[i].freq.af >= minAf) passingIndices.add(i)
+    if (!excludedVariantIndices.has(i) && passesMinimumLongReadAf(variants[i].freq.af, minAf)) passingIndices.add(i)
   }
 
   type CarrierStrand = HaplotypeCarrierIdentity & {
@@ -1536,10 +1538,10 @@ export function filterDisplayVariants(
     if ('is_diplotype' in g && g.is_diplotype) return g
 
     const hg = g as HaplotypeGroup
-    const filteredVariants = hg.variants.variants.filter((v: LRVariant) => v.freq.af >= minAf)
+    const filteredVariants = hg.variants.variants.filter((v: LRVariant) => passesMinimumLongReadAf(v.freq.af, minAf))
     const filteredBelow = [
       ...hg.below_threshold.variants,
-      ...hg.variants.variants.filter((v: LRVariant) => v.freq.af < minAf).map((v: LRVariant) => ({
+      ...hg.variants.variants.filter((v: LRVariant) => !passesMinimumLongReadAf(v.freq.af, minAf)).map((v: LRVariant) => ({
         ...v,
         in_samples: hg.samples.map((s) => s.sample_id),
         in_haplotypes: hg.samples.map(({ sample_id, vcf_strand, phase_set }) => ({
@@ -1561,7 +1563,7 @@ export function filterDisplayVariants(
         ...s,
         variant_sets: s.variant_sets.map((vs) => ({
           ...vs,
-          variants: vs.variants.filter((v: LRVariant) => v.freq.af >= minAf),
+          variants: vs.variants.filter((v: LRVariant) => passesMinimumLongReadAf(v.freq.af, minAf)),
         })),
       })),
     }
@@ -1616,8 +1618,8 @@ export function deriveSliderRange(
   const maxAN = variants.reduce((max, v) => Math.max(max, v.freq.an), 0)
   const floor = maxAN > 0 ? 2 / maxAN : 0.001
 
-  // Ceiling: 95th percentile AF
-  const sortedAfs = variants.map((v) => v.freq.af).sort((a, b) => a - b)
+  // Ceiling: 95th percentile of available AF only (including genuine zero).
+  const sortedAfs = variants.map((v) => v.freq.af).filter((af): af is number => af != null).sort((a, b) => a - b)
   const p95idx = Math.floor(sortedAfs.length * 0.95)
   const ceiling = Math.min(sortedAfs[p95idx] || 0.95, 0.95)
 
@@ -1653,7 +1655,7 @@ function countGroups(
 ): number {
   const passingIndices = new Set<number>()
   for (let i = 0; i < variants.length; i++) {
-    if (variants[i].freq.af >= minAf) passingIndices.add(i)
+    if (passesMinimumLongReadAf(variants[i].freq.af, minAf)) passingIndices.add(i)
   }
 
   const signatures = new Set<string>()
@@ -1694,7 +1696,7 @@ export function deriveAutoDefaults(
   // Compute floor and ceiling (same as deriveSliderRange)
   const maxAN = variants.reduce((max, v) => Math.max(max, v.freq.an), 0)
   const floor = Math.max(maxAN > 0 ? 2 / maxAN : 0.001, 0.001)
-  const sortedAfs = variants.map((v) => v.freq.af).sort((a, b) => a - b)
+  const sortedAfs = variants.map((v) => v.freq.af).filter((af): af is number => af != null).sort((a, b) => a - b)
   const p95idx = Math.floor(sortedAfs.length * 0.95)
   const ceiling = Math.max(Math.min(sortedAfs[p95idx] || 0.95, 0.95), floor + 0.01)
 

@@ -7,6 +7,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis'
 
 import { TooltipAnchor } from '@gnomad/ui'
 import { GenotypeDistributionItem, Sex } from './ShortTandemRepeatPage'
+import { sourcePairExplanation } from './sourceHistogramLabels'
 
 import { PopulationId } from '@gnomad/dataset-metadata/gnomadPopulations'
 
@@ -38,6 +39,7 @@ type Props = {
   selectedPopulation: PopulationId | null
   selectedSex: Sex | null
   baseColor?: string
+  sourceContext?: boolean
 }
 
 export type Bin = {
@@ -61,6 +63,7 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
     onSelectBin,
     isBinSelected,
     baseColor = '#73ab3d',
+    sourceContext = false,
   }: Props) => {
     const height = Math.min(width, 500)
 
@@ -101,7 +104,9 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
       const yLabel = yBinSize === 1 ? `${yStart}` : `${yStart} - ${yStop}`
 
       const result: Bin = {
-        label: `${xLabel} repeats in ${axisLabels[0]} / ${yLabel} repeats in ${axisLabels[1]}`,
+        label: sourceContext
+          ? `${xLabel} / ${yLabel} encoded values (source units)`
+          : `${xLabel} repeats in ${axisLabels[0]} / ${yLabel} repeats in ${axisLabels[1]}`,
         xBinIndex,
         yBinIndex,
         xRange,
@@ -120,13 +125,18 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
       }
     )
 
-    const staticDistributionLabel = `Genotype repeat-count distribution. ${data
-      .filter((bin) => bin.count > 0)
-      .map(
-        (bin) =>
-          `${bin.label}: ${bin.count.toLocaleString()} ${bin.count === 1 ? 'person' : 'people'}`
-      )
-      .join('; ')}`
+    const staticDistributionLabel = sourceContext
+      ? `Size-pair distribution. ${sourcePairExplanation} ${data
+          .filter((bin) => bin.count > 0)
+          .map((bin) => `${bin.label}: ${bin.count.toLocaleString()} source pair entries`)
+          .join('; ')}`
+      : `Genotype repeat-count distribution. ${data
+          .filter((bin) => bin.count > 0)
+          .map(
+            (bin) =>
+              `${bin.label}: ${bin.count.toLocaleString()} ${bin.count === 1 ? 'person' : 'people'}`
+          )
+          .join('; ')}`
 
     const xScale = scaleBand<number>()
       .domain(Array.from(Array(xNumBins).keys()))
@@ -176,7 +186,9 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
           aria-label={onSelectBin ? undefined : staticDistributionLabel}
         >
           <AxisBottom
-            label={`Repeats in ${axisLabels[0]}`}
+            label={
+              sourceContext ? 'Larger encoded value (source units)' : `Repeats in ${axisLabels[0]}`
+            }
             labelOffset={xBinSize === 1 ? 10 : 30}
             labelProps={labelProps}
             left={margin.left}
@@ -209,7 +221,9 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
             top={height - margin.bottom}
           />
           <AxisLeft
-            label={`Repeats in ${axisLabels[1]}`}
+            label={
+              sourceContext ? 'Smaller encoded value (source units)' : `Repeats in ${axisLabels[1]}`
+            }
             labelOffset={60}
             labelProps={labelProps}
             left={margin.left}
@@ -237,7 +251,11 @@ const ShortTandemRepeatGenotypeDistributionPlot = withSize()(
                       tooltip={
                         <>
                           {d.label}
-                          <br /> {d.count.toLocaleString()} individual{d.count === 1 ? '' : 's'}
+                          <br /> {d.count.toLocaleString()}{' '}
+                          {sourceContext
+                            ? 'source pair entries'
+                            : `individual${d.count === 1 ? '' : 's'}`}
+                          {sourceContext && <p>{sourcePairExplanation}</p>}
                           {onSelectBin &&
                             (d.xRange[0] !== d.xRange[1] || d.yRange[0] !== d.yRange[1]) && (
                               <p style={{ marginBottom: 0 }}>Activate for details</p>

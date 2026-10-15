@@ -4,6 +4,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 
 import { MotifHighlightedSequence } from '../Haplotypes/TrAlleleStructure'
 import { LONG_READ_PRIMARY_PLOT_COLOR } from '../LongReadPlotTheme'
+import { sourceContextHistogram } from './__fixtures__/sourceContextHistogram'
 import {
   ExactAlleleIndex,
   histogramDeltaAxisTicks,
@@ -830,6 +831,59 @@ describe('long-read TR visualization fidelity', () => {
     // Without a known REF size there is no change-from-REF repeat measure.
     expect(screen.queryByRole('option', { name: /ALT − REF allele longest pure run/ })).toBeNull()
     expect(grid.querySelectorAll(':scope > [data-plot-card]')).toHaveLength(3)
+  })
+
+  test('source-context allele and pair plots are offered independently and stay static', () => {
+    const genotypeLandscape: WholeRecordGenotypeLandscapeData = {
+      status: 'AVAILABLE',
+      reason_code: null,
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: '__REFERENCE__',
+      called_samples: 1,
+      called_alleles: 2,
+      cells: [{ shorter_delta: -6, longer_delta: 0, people: 1, pairs: [duplicatePairs[0]] }],
+    }
+    const props = { landscape: alleleLandscape, genotypeLandscape, alleles, navigation }
+    const view = render(
+      <WholeRecordAlleleLandscape
+        {...props}
+        repeatCountPlots={sourceContextHistogram({
+          pair_status: 'UNAVAILABLE_MISSING',
+          genotype_distribution: [],
+        })}
+      />
+    )
+    // A plot with a single measure has no menu, so a missing menu also means no repeat measure.
+    const repeatOption = (plotTitle: string) => {
+      const menu = screen.queryByLabelText(`${plotTitle} allele size measure`)
+      return (
+        menu &&
+        within(menu).queryByRole('option', { name: 'ALT allele longest pure run (repeats)' })
+      )
+    }
+    // Source sizes without source pairs give only the allele plot a repeat measure.
+    expect(repeatOption('Allele length distribution')).not.toBeNull()
+    expect(repeatOption('Genotype length distribution')).toBeNull()
+    fireEvent.change(screen.getByLabelText('Allele length distribution allele size measure'), {
+      target: { value: 'repeats-absolute' },
+    })
+    // The source histogram names no contributing ALT alleles, so its bars do not filter the index.
+    const repeatBar = within(screen.getByTestId('whole-record-delta-histogram')).getByRole(
+      'button',
+      { name: /^10 copies in longest pure run;/ }
+    ) as HTMLButtonElement
+    expect(repeatBar.disabled).toBe(true)
+
+    view.rerender(
+      <WholeRecordAlleleLandscape {...props} repeatCountPlots={sourceContextHistogram()} />
+    )
+    expect(repeatOption('Genotype length distribution')).not.toBeNull()
+    fireEvent.change(screen.getByLabelText('Genotype length distribution allele size measure'), {
+      target: { value: 'repeats-absolute' },
+    })
+    const genotypeCard = screen.getByTestId('genotype-length-card')
+    expect(within(genotypeCard).getByText('Long Allele (longest pure run)')).not.toBeNull()
+    expect(within(genotypeCard).queryByTestId('genotype-length-cell-target')).toBeNull()
   })
 
   test('admits exact-motif genotype choice only for source-complete paired product data', () => {

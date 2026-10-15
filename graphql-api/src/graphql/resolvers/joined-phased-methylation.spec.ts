@@ -329,7 +329,8 @@ describe('joined phased methylation projection contract', () => {
       .map((row) => row.sample_id)
     expect(available).toMatchObject({
       available: true,
-      status: 'AVAILABLE_CONFIRMED',
+      status: 'AVAILABLE_OPERATOR_ASSUMPTION',
+      identity: expect.objectContaining({ approval_basis: 'operator_direct_mapping_assumption', independently_machine_verified_lineage: false }),
       source_sample_ids: expected,
     })
     expect(available).not.toHaveProperty('max_span_bp')

@@ -17,7 +17,7 @@ export const makeCompareFunction =
     }
 
     if (isEmpty(key1)) {
-      return 1
+      return isEmpty(key2) ? 0 : 1
     }
     if (isEmpty(key2)) {
       return -1

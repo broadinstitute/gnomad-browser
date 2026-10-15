@@ -43,7 +43,8 @@ const VariantColorHelp = () => (
     <h4 style={{ margin: '16px 0 8px' }}>Allele Frequency</h4>
     <p>
       A logarithmic grayscale runs from light gray at lower allele frequency to dark gray at higher
-      allele frequency, clamped between 0.1 and 1.
+      allele frequency, clamped between 0.1 and 1. Purple marks unavailable AF; it is not zero
+      and is not inferred from allele counts.
     </p>
 
     <h4 style={{ margin: '16px 0 8px' }}>Haplotype Count</h4>

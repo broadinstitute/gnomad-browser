@@ -1,0 +1,8 @@
+{
+  "database": "gnomad_lr_y1_scratch_v5_REFRESH_CANDIDATE_REPLACE",
+  "primary_manifest_path": "/POSTLOAD/actual-48-primary-bundle.json",
+  "run_map_path": "/POSTLOAD/actual-48-run-map.json",
+  "coordinate_evidence_path": "/POSTLOAD/native-coordinate-evidence.json",
+  "physical_evidence_path": "/POSTLOAD/preserved-source-physical.json",
+  "entries": []
+}

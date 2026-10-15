@@ -3,9 +3,11 @@ import { jest } from '@jest/globals'
 
 const mockQuery = jest.fn()
 const mockRoute = jest.fn()
+let mockJoinedRoute: any = null
 
 jest.mock('../clickhouse', () => ({
   isY1PilotEnabled: true,
+  get joinedPhasedMethylationRoute() { return mockJoinedRoute },
   clickhouseClient: { query: (...args: any[]) => mockQuery(...args) },
   y1ClickhouseClient: { query: (...args: any[]) => mockQuery(...args) },
   getY1AncillaryClickhouseClient: () => ({ query: (...args: any[]) => mockQuery(...args) }),
@@ -31,6 +33,7 @@ describe('Y1 ancillary query routing', () => {
   beforeEach(() => {
     mockQuery.mockReset()
     mockRoute.mockReset()
+    mockJoinedRoute = null
   })
 
   test.each(['hgsvc_hprc', 'aou'] as const)(
@@ -78,6 +81,15 @@ describe('Y1 ancillary query routing', () => {
       mockRoute.mockReturnValue(null)
       await expect(fetchLRCoverageForRegion(null, 'chr1', 100, 200, cohort)).resolves.toEqual([])
       expect(mockRoute).toHaveBeenCalledWith(cohort, 'coverage')
+      expect(mockQuery).not.toHaveBeenCalled()
+    }
+  )
+
+  test.each(['hgsvc_hprc', 'aou'] as const)(
+    'fences context v2 from legacy %s position enrichment',
+    async (cohort) => {
+      mockRoute.mockReturnValue({ cohort, receipt: { source_format: 'str_context_completion_v2' } })
+      await expect(fetchSTRHistogram(null, '1', 100, cohort)).resolves.toBeNull()
       expect(mockQuery).not.toHaveBeenCalled()
     }
   )
@@ -210,6 +222,25 @@ describe('Y1 ancillary query routing', () => {
       read_overflow_mode: 'throw',
       max_bytes_to_read: '1073741824',
     })
+  })
+
+  test('separate local receipt uses readonly-safe SQL, a client deadline and tighter input limits', async () => {
+    const { LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 } = require('../joined_phased_methylation_config')
+    mockJoinedRoute = { orientation_receipt_sha256: LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 }
+    const admittedRoute = { database: 'exact', run_id: 'exact', receipt_path: '/exact',
+      receipt: { route_run_id: 'exact', completion_receipt_sha256: 'c', source_manifest_sha256: 'm' } } as any
+    mockRoute.mockReturnValue(admittedRoute)
+    mockQuery.mockImplementation(async () => ({ json: async () => [] }))
+    await fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 1, 10000, ['HG00097'])
+    const call = mockQuery.mock.calls[0][0] as any
+    expect(call).not.toHaveProperty('clickhouse_settings')
+    expect(call.abort_signal).toBeInstanceOf(AbortSignal)
+    expect(call.query).toContain('LIMIT 250001')
+    expect(call.query_params).toEqual({ chrom: 'chr22', rawStart0: 0, rawStop0: 9999, sampleIds: ['HG00097'] })
+    await expect(fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 1, 10001, ['HG00097'])).rejects.toThrow('at most 10,000')
+    await expect(fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chrX', 1, 100, ['HG00097'])).rejects.toThrow('autosomal')
+    await expect(fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 1, 100, Array(26).fill('HG00097'))).rejects.toThrow('1–25')
+    expect(mockQuery).toHaveBeenCalledTimes(1)
   })
 
   test('queries canonical first/last boundaries as raw BED start0 without stop+1 admission', async () => {

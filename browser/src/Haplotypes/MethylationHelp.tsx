@@ -160,6 +160,8 @@ export const PerCopyMethylationHelp = ({
         <strong>Status:</strong> {unavailableReason}
       </p>
     )
+  } else if (capability?.status === 'AVAILABLE_OPERATOR_ASSUMPTION') {
+    status = <p>Available under the haplotype-alignment assumption above.</p>
   } else if (capability) {
     status = (
       <p>
@@ -177,12 +179,12 @@ export const PerCopyMethylationHelp = ({
           biological lineage, allelic outlier call, or clinical result.
         </p>
       </ImportantNotice>
+      <p>Haplotype alignment assumes phasing is unchanged in the refreshed release; confirmation pending.</p>
       <p>
-        <strong>Per-copy methylation</strong> uses a hash-bound, operator-approved orientation for
-        the exact pinned browser products. Under that assumption, source HAP1 maps to phased VCF GT
-        strand 1 and HAP2 to GT strand 2. Each sample&apos;s <code>strand_mapping</code> then maps
-        GT1/GT2 to canonical Copy A/B. Copy A is not necessarily GT strand 1. The approval receipt
-        is an operational provenance gate, not independent scientific lineage validation.
+        <strong>Per-copy methylation</strong> uses operator-assumed haplotype alignment: source
+        HAP1 maps to phased VCF GT strand 1 and HAP2 to GT strand 2. Each sample&apos;s
+        <code> strand_mapping</code> then maps GT1/GT2 to canonical Copy A/B. Copy A is not
+        necessarily GT strand 1. This assumption is not independent scientific lineage validation.
       </p>
       <p>
         Ordinary Copy A/B percentages are coverage-weighted across admitted observations. Current
@@ -208,8 +210,7 @@ export const PerCopyMethylationHelp = ({
         Cluster rows wait until every source-eligible member sample is complete or explicitly
         unavailable. A loading member suppresses the summary; errors remain errors. Missing,
         unavailable, and complete requests with no CpGs remain distinct and are never converted to
-        0%. The joined endpoint is limited to the admitted region span shown in status, currently at
-        most 100 kb.
+        0%.
       </p>
       <p>
         Similarity clusters and visual CpG groups are display-time summaries, not stable biological

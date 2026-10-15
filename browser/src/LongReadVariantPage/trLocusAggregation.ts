@@ -1,3 +1,5 @@
+import { getLongReadAf } from './longReadFrequency'
+
 export type TrAlleleRecord = {
   variant_id: string
   source_variant_id?: string | null
@@ -30,10 +32,7 @@ export type TrLocus<T extends TrAlleleRecord = TrAlleleRecord> = {
   maxAf: number | null
 }
 
-export const getAltAf = (variant: TrAlleleRecord): number | null => {
-  const af = variant.freq?.all?.af ?? variant.freq?.af
-  return typeof af === 'number' && Number.isFinite(af) ? af : null
-}
+export const getAltAf = (variant: TrAlleleRecord): number | null => getLongReadAf(variant)
 
 const coordinates = (variant: TrAlleleRecord) => {
   const region = variant.main_reference_region
