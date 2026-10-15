@@ -152,7 +152,6 @@ query ${operationName}(
     selected_allele {
       variant_id source_variant_id alt_index alt_count ref alt length
       motif_purity motif_purity_source decomposition_status decomposition_reason
-      phylop
       short_read_match_id short_read_match_type short_read_match_source
       source_release source_run_id
       freq { all { ac an af } populations { id ac an af } }

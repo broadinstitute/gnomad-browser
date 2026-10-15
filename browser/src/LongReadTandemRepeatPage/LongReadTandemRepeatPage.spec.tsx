@@ -279,7 +279,6 @@ const makeLocus = (count = 72) => {
       decomposition_status: 'UNAVAILABLE_COMPOUND_LOCUS',
       decomposition_reason:
         'Observed sequence tokens cannot be assigned to coordinate-defined LR reference components',
-      phylop: null,
       short_read_match_id: null,
       short_read_match_type: null,
       short_read_match_source: null,

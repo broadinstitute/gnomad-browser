@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { ExternalLink, List, ListItem, Modal, PageHeading, Select, TextButton } from '@gnomad/ui'
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
@@ -252,11 +252,6 @@ const LongReadTandemRepeatPage = ({
     detail.current.scrollIntoView?.({ block: 'start' })
   }, [locus?.selected_allele, locus?.selected_allele_valid, revalidating, selectedAllele])
 
-  const alleleById = useMemo(
-    () => new Map((locus?.alleles.nodes || []).map((allele) => [allele.variant_id, allele])),
-    [locus?.alleles.nodes]
-  )
-
   if (!locus) {
     return (
       <>
@@ -400,13 +395,7 @@ const LongReadTandemRepeatPage = ({
     selectedAlleleDetail = (
       <SelectedExactAlleleDetail
         ref={setDetail}
-        allele={{
-          ...locus.selected_allele,
-          motif_purity:
-            locus.selected_allele.motif_purity ??
-            alleleById.get(locus.selected_allele.variant_id)?.motif_purity ??
-            null,
-        }}
+        allele={locus.selected_allele}
         motifs={locus.motifs}
         representedLength={representedLength}
       />

@@ -1212,8 +1212,9 @@ const BarButton = styled.button<{
   $selectedFill?: string
 }>`
   position: relative;
+  /* Exactly $width wide, with no minimum, because the x ticks and purity dots are placed for
+     that width. The ::after area keeps the click target at least 44px wide. */
   flex: 0 0 ${(props) => props.$width}px;
-  min-width: 24px;
   max-width: ${(props) => Math.max(48, props.$width)}px;
   height: ${(props) => props.$height}%;
   min-height: ${(props) => (props.$hasValue ? '3px' : '1px')};
@@ -3625,7 +3626,7 @@ export const WholeRecordAlleleLandscape = ({
           <PlotCard data-plot-card="total-length-histogram">
             <h3>Allele length distribution</h3>
             <p aria-live="polite">
-              <strong>Sizes of {counted(totalInView, 'allele', 'alleles')}.</strong>
+              <strong>Sizes of {counted(totalInView, 'allele', 'alleles')}</strong>
             </p>
             {histogramReferenceBin.called_alleles > 0 && (
               <p aria-label="Allele length histogram colors">
@@ -3964,7 +3965,7 @@ export const WholeRecordAlleleLandscape = ({
           <h3>Repeat sequence purity</h3>
           {landscape.purity_available && (
             <p aria-live="polite">
-              <strong>Purity of {counted(purityAllelesInView, 'allele', 'alleles')}.</strong>
+              <strong>Purity of {counted(purityAllelesInView, 'allele', 'alleles')}</strong>
             </p>
           )}
           {landscape.purity_available ? (
@@ -4382,6 +4383,28 @@ export const WholeRecordGenotypeLandscape = ({
                   []
                 )
                 .sort((left, right) => left - right)
+              // Every square of the grid, top row first. The squares are drawn first, then the
+              // REF guide lines over them, then the people counts over the lines.
+              const squares = [...values].reverse().flatMap((shorter) =>
+                values.map((longer) => {
+                  const key = `${shorter}/${longer}`
+                  const cell = byCoordinate.get(key)
+                  const markId = `genotype-length:${key}`
+                  return {
+                    shorter,
+                    longer,
+                    key,
+                    cell,
+                    markId,
+                    selected: Boolean(
+                      cell && (activeMarkIds.has(markId) || brush.previewMarkIds.has(markId))
+                    ),
+                    intensity: cell
+                      ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
+                      : 0,
+                  }
+                })
+              )
               return (
                 <HeatmapSizer data-x-axis-aligned-plot="true">
                   {svgWidth > 0 && (
@@ -4406,136 +4429,134 @@ export const WholeRecordGenotypeLandscape = ({
                         ? 'represented allele length'
                         : 'change from REF'}
                     </title>
+                    {squares.map(({ shorter, longer, key, cell, markId, selected, intensity }) => {
+                      const mark = brushMarks.find((candidate) => candidate.id === markId)
+                      let cellFill = cell ? LONG_READ_PRIMARY_PLOT_COLOR : '#f5f7f8'
+                      let cellFillOpacity = cell ? 0.15 + 0.85 * intensity : 1
+                      // Picked squares are navy with a dark border, like picked histogram bars,
+                      // so a pick never reads as the orange REF.
+                      if (selected) {
+                        cellFill = SELECTED_ALLELE_SIZE_BAR_COLOR
+                        cellFillOpacity = 1
+                      }
+                      return (
+                        <React.Fragment key={key}>
+                          <rect
+                            x={xFor(longer) + 1}
+                            y={yFor(shorter) + 1}
+                            width={Math.max(1, band - 2)}
+                            height={Math.max(1, band - 2)}
+                            rx={Math.min(2, band / 8)}
+                            fill={cellFill}
+                            fillOpacity={cellFillOpacity}
+                            stroke={selected ? '#222' : '#fff'}
+                            strokeWidth={selected ? 2 : 1}
+                            pointerEvents="none"
+                            aria-hidden="true"
+                          />
+                          {cell && cellsClickable && (
+                            <rect
+                              role="button"
+                              tabIndex={0}
+                              aria-pressed={selected}
+                              aria-label={`${lengthAxisLabel(
+                                longer,
+                                lengthAxisMode,
+                                representedRefLength,
+                                unit
+                              )} longer allele, ${lengthAxisLabel(
+                                shorter,
+                                lengthAxisMode,
+                                representedRefLength,
+                                unit
+                              )} shorter allele: ${cell.selectedPeople} ${
+                                cell.selectedPeople === 1 ? 'person' : 'people'
+                              }; filter the source-ALT index to this square`}
+                              data-testid="genotype-length-cell-target"
+                              data-discrete-brush-id={markId}
+                              x={xFor(longer) + band / 2 - 24}
+                              y={yFor(shorter) + band / 2 - 24}
+                              width={48}
+                              height={48}
+                              rx={2}
+                              fill="transparent"
+                              stroke="transparent"
+                              cursor="pointer"
+                              onClick={(event) => {
+                                if (!mark || !brush.markProps(mark).onClick(event)) {
+                                  selectCell(cell, key)
+                                }
+                              }}
+                              onKeyDown={(event) => {
+                                if (mark && brush.markProps(mark).onKeyDown(event)) return
+                                if (event.key === 'Enter' || event.key === ' ') {
+                                  event.preventDefault()
+                                  selectCell(cell, key)
+                                }
+                              }}
+                            >
+                              <title>{cellTooltip(cell, longer, shorter)}</title>
+                            </rect>
+                          )}
+                          {/* Squares that cannot be clicked still show their count on hover. */}
+                          {cell && !cellsClickable && (
+                            <rect
+                              data-testid="genotype-length-cell-tooltip"
+                              x={xFor(longer) + 1}
+                              y={yFor(shorter) + 1}
+                              width={Math.max(1, band - 2)}
+                              height={Math.max(1, band - 2)}
+                              fill="transparent"
+                            >
+                              <title>{cellTooltip(cell, longer, shorter)}</title>
+                            </rect>
+                          )}
+                        </React.Fragment>
+                      )
+                    })}
+                    {/* REF guide lines cross at the center of the REF/REF square. */}
                     {referenceSizeKnown && valueIndex.has(0) && (
                       <>
                         <line
-                          x1={xFor(0)}
+                          data-testid="genotype-length-reference-line"
+                          x1={xFor(0) + band / 2}
                           y1={heatmapTop}
-                          x2={xFor(0)}
+                          x2={xFor(0) + band / 2}
                           y2={heatmapTop + plotSize}
                           stroke="#89939a"
                           strokeDasharray="4 4"
+                          pointerEvents="none"
                         />
                         <line
+                          data-testid="genotype-length-reference-line"
                           x1={heatmapLeft}
-                          y1={yFor(0) + band}
+                          y1={yFor(0) + band / 2}
                           x2={heatmapLeft + plotSize}
-                          y2={yFor(0) + band}
+                          y2={yFor(0) + band / 2}
                           stroke="#89939a"
                           strokeDasharray="4 4"
+                          pointerEvents="none"
                         />
                       </>
                     )}
-                    {[...values].reverse().map((shorter) => (
-                      <g key={shorter}>
-                        {values.map((longer) => {
-                          const cell = byCoordinate.get(`${shorter}/${longer}`)
-                          const key = `${shorter}/${longer}`
-                          const markId = `genotype-length:${key}`
-                          const mark = brushMarks.find((candidate) => candidate.id === markId)
-                          const selected = Boolean(
-                            cell && (activeMarkIds.has(markId) || brush.previewMarkIds.has(markId))
+                    {cellLabelsFit &&
+                      squares.map(
+                        ({ shorter, longer, key, cell, selected, intensity }) =>
+                          cell && (
+                            <text
+                              key={key}
+                              x={xFor(longer) + band / 2}
+                              y={yFor(shorter) + band / 2 + 0.35 * cellLabelFontSize}
+                              fill={selected || intensity > 0.78 ? '#fff' : '#111'}
+                              fontSize={cellLabelFontSize}
+                              textAnchor="middle"
+                              pointerEvents="none"
+                              aria-hidden="true"
+                            >
+                              {cell.selectedPeople}
+                            </text>
                           )
-                          const intensity = cell
-                            ? Math.log(cell.selectedPeople + 1) / Math.log(maxPeople + 1)
-                            : 0
-                          let cellFill = cell ? LONG_READ_PRIMARY_PLOT_COLOR : '#f5f7f8'
-                          let cellFillOpacity = cell ? 0.15 + 0.85 * intensity : 1
-                          if (selected) {
-                            cellFill = '#e9781c'
-                            cellFillOpacity = 1
-                          }
-                          const cellTextFill = !selected && intensity > 0.78 ? '#fff' : '#111'
-                          return (
-                            <React.Fragment key={key}>
-                              <rect
-                                x={xFor(longer) + 1}
-                                y={yFor(shorter) + 1}
-                                width={Math.max(1, band - 2)}
-                                height={Math.max(1, band - 2)}
-                                rx={Math.min(2, band / 8)}
-                                fill={cellFill}
-                                fillOpacity={cellFillOpacity}
-                                stroke={selected ? '#6f3508' : '#fff'}
-                                strokeWidth={selected ? 2 : 1}
-                                pointerEvents="none"
-                                aria-hidden="true"
-                              />
-                              {cell && cellLabelsFit && (
-                                <text
-                                  x={xFor(longer) + band / 2}
-                                  y={yFor(shorter) + band / 2 + 0.35 * cellLabelFontSize}
-                                  fill={cellTextFill}
-                                  fontSize={cellLabelFontSize}
-                                  textAnchor="middle"
-                                  pointerEvents="none"
-                                  aria-hidden="true"
-                                >
-                                  {cell.selectedPeople}
-                                </text>
-                              )}
-                              {cell && cellsClickable && (
-                                <rect
-                                  role="button"
-                                  tabIndex={0}
-                                  aria-pressed={selected}
-                                  aria-label={`${lengthAxisLabel(
-                                    longer,
-                                    lengthAxisMode,
-                                    representedRefLength,
-                                    unit
-                                  )} longer allele, ${lengthAxisLabel(
-                                    shorter,
-                                    lengthAxisMode,
-                                    representedRefLength,
-                                    unit
-                                  )} shorter allele: ${cell.selectedPeople} ${
-                                    cell.selectedPeople === 1 ? 'person' : 'people'
-                                  }; filter the source-ALT index to this square`}
-                                  data-testid="genotype-length-cell-target"
-                                  data-discrete-brush-id={markId}
-                                  x={xFor(longer) + band / 2 - 24}
-                                  y={yFor(shorter) + band / 2 - 24}
-                                  width={48}
-                                  height={48}
-                                  rx={2}
-                                  fill="transparent"
-                                  stroke="transparent"
-                                  cursor="pointer"
-                                  onClick={(event) => {
-                                    if (!mark || !brush.markProps(mark).onClick(event)) {
-                                      selectCell(cell, key)
-                                    }
-                                  }}
-                                  onKeyDown={(event) => {
-                                    if (mark && brush.markProps(mark).onKeyDown(event)) return
-                                    if (event.key === 'Enter' || event.key === ' ') {
-                                      event.preventDefault()
-                                      selectCell(cell, key)
-                                    }
-                                  }}
-                                >
-                                  <title>{cellTooltip(cell, longer, shorter)}</title>
-                                </rect>
-                              )}
-                              {/* Squares that cannot be clicked still show their count on hover. */}
-                              {cell && !cellsClickable && (
-                                <rect
-                                  data-testid="genotype-length-cell-tooltip"
-                                  x={xFor(longer) + 1}
-                                  y={yFor(shorter) + 1}
-                                  width={Math.max(1, band - 2)}
-                                  height={Math.max(1, band - 2)}
-                                  fill="transparent"
-                                >
-                                  <title>{cellTooltip(cell, longer, shorter)}</title>
-                                </rect>
-                              )}
-                            </React.Fragment>
-                          )
-                        })}
-                      </g>
-                    ))}
+                      )}
                     {selectedRange && (
                       <rect
                         aria-hidden="true"
@@ -4555,7 +4576,7 @@ export const WholeRecordGenotypeLandscape = ({
                           2
                         }
                         fill="none"
-                        stroke="#6f3508"
+                        stroke="#222"
                         strokeWidth={3}
                         pointerEvents="none"
                       />
@@ -5415,29 +5436,6 @@ export const SelectedExactAlleleDetail = React.forwardRef<
           }
         />
       </div>
-      <ScrollTable role="region" aria-label="Selected exact ALT summary table" tabIndex={0}>
-        <table>
-          <tbody>
-            <tr>
-              <th scope="row">Allele frequency</th>
-              <td>
-                {allele.freq.all.ac.toLocaleString()} / {allele.freq.all.an.toLocaleString()} (
-                {(allele.freq.all.af * 100).toPrecision(4)}%)
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">Allele sequence purity</th>
-              <td>{allele.motif_purity == null ? '—' : allele.motif_purity.toFixed(2)}</td>
-            </tr>
-            {/* Tandem repeat alleles carry no major consequence or CADD score in the source data,
-                so only phyloP is shown. */}
-            <tr>
-              <th scope="row">phyloP</th>
-              <td>{allele.phylop == null ? '—' : allele.phylop}</td>
-            </tr>
-          </tbody>
-        </table>
-      </ScrollTable>
     </SelectedDetailGrid>
   </SelectedDetail>
 ))

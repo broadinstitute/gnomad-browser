@@ -26,7 +26,6 @@ export type LongReadTrSelectedAllele = Omit<LongReadTrAllele, 'ref' | 'alt'> & {
   motif_purity_source: string | null
   decomposition_status: string
   decomposition_reason: string
-  phylop: number | null
   short_read_match_id: string | null
   short_read_match_type: string | null
   short_read_match_source: string | null

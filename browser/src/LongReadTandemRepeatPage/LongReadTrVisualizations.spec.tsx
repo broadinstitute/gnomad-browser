@@ -509,6 +509,8 @@ describe('long-read TR visualization fidelity', () => {
     expect(histogram.closest('[data-bin-count]')?.getAttribute('data-bin-count')).toBe('3')
     // Few bars keep the widest bar width rather than growing to fill the plot.
     expect(negativeBar.getAttribute('data-bar-width')).toBe('45')
+    // No minimum width may widen a bar past the width its x tick and purity dot are placed for.
+    expect(window.getComputedStyle(negativeBar).minWidth).toBe('')
     const zeroBar = screen.getByRole('button', {
       name: /0 bp vs REF; 70 REF allele copies; 25 called non-reference allele copies/,
     })
@@ -711,7 +713,7 @@ describe('long-read TR visualization fidelity', () => {
     const alleleCard = within(grid).getByRole('heading', { name: 'Allele length distribution' })
       .parentElement as HTMLElement
     expect(within(alleleCard).getByText('Allele (longest pure run)')).not.toBeNull()
-    expect(within(alleleCard).getByText('Sizes of 2 alleles.')).not.toBeNull()
+    expect(within(alleleCard).getByText('Sizes of 2 alleles')).not.toBeNull()
     const repeatBar = within(screen.getByTestId('whole-record-delta-histogram')).getByRole(
       'button',
       { name: '10 copies in longest pure run; 2 alleles in this view' }
@@ -1001,7 +1003,6 @@ describe('long-read TR visualization fidelity', () => {
           motif_purity_source: null,
           decomposition_status: 'UNAVAILABLE_NO_DECOMPOSITION',
           decomposition_reason: 'No admitted source decomposition is available',
-          phylop: null,
           short_read_match_id: null,
           short_read_match_type: null,
           short_read_match_source: null,
@@ -1030,6 +1031,10 @@ describe('long-read TR visualization fidelity', () => {
 
     expect(screen.getByRole('heading', { name: 'chr4-test~1', exact: true })).not.toBeNull()
     expect(screen.getByText('ALT allele sequence', { exact: true })).not.toBeNull()
+    // Frequency and purity are in the allele table, and phyloP belongs to the whole record, so
+    // the panel has no table of them.
+    expect(screen.queryByRole('region', { name: 'Selected exact ALT summary table' })).toBeNull()
+    expect(screen.queryByText(/Allele frequency|Allele sequence purity|phyloP/)).toBeNull()
     // The sequence is shown once, as motif tiles without the VCF padding base.
     expect(screen.queryByText('Stored-motif matches', { exact: true })).toBeNull()
     expect(screen.queryByLabelText('Exact copyable source sequence for Sequence 1')).toBeNull()
@@ -1206,7 +1211,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(purityCard).getByText('REF allele')).not.toBeNull()
     // The subtitle counts every allele a dot stands for, REF included.
     const altCopies = alleles.reduce((sum, allele) => sum + allele.freq.all.ac, 0)
-    expect(within(purityCard).getByText(`Purity of ${altCopies + 70} alleles.`)).not.toBeNull()
+    expect(within(purityCard).getByText(`Purity of ${altCopies + 70} alleles`)).not.toBeNull()
     expect(
       within(purityCard).getAllByRole('button', { name: /Filter the source-ALT index/ })
     ).toHaveLength(alleles.length)
@@ -1312,6 +1317,17 @@ describe('long-read TR visualization fidelity', () => {
     const cell = screen.getByRole('button', {
       name: /0 bp vs REF longer allele, 0 bp vs REF shorter allele: 1 person; filter the source-ALT index/,
     })
+    // The REF guide lines cross at the center of the REF/REF square, whose 48 unit click target
+    // is centered on it.
+    const [verticalReferenceLine, horizontalReferenceLine] = screen.getAllByTestId(
+      'genotype-length-reference-line'
+    )
+    expect(Number(verticalReferenceLine.getAttribute('x1'))).toBeCloseTo(
+      Number(cell.getAttribute('x')) + 24
+    )
+    expect(Number(horizontalReferenceLine.getAttribute('y1'))).toBeCloseTo(
+      Number(cell.getAttribute('y')) + 24
+    )
     fireEvent.keyDown(cell, { key: 'Enter' })
     expect(cell.getAttribute('aria-pressed')).toBe('true')
     expect(
@@ -1394,19 +1410,19 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getAllByTestId('genotype-length-selection-boundary')).toHaveLength(1)
     const selectedCells = screen
       .getByTestId('genotype-length-card')
-      .querySelectorAll('rect[fill="#e9781c"]')
+      .querySelectorAll('rect[fill="#003f63"]')
     expect(selectedCells).toHaveLength(2)
     expect(
       Array.from(selectedCells).every(
         (cell) =>
-          cell.getAttribute('stroke') === '#6f3508' && cell.getAttribute('stroke-width') === '2'
+          cell.getAttribute('stroke') === '#222' && cell.getAttribute('stroke-width') === '2'
       )
     ).toBe(true)
     expect(
-      screen.getByTestId('genotype-length-card').querySelectorAll('text[fill="#111"]').length
+      screen.getByTestId('genotype-length-card').querySelectorAll('text[fill="#fff"]').length
     ).toBeGreaterThanOrEqual(2)
     expect(screen.getByTestId('genotype-length-selection-boundary').getAttribute('stroke')).toBe(
-      '#6f3508'
+      '#222'
     )
     expect(
       screen.getByRole('heading', {
@@ -1745,7 +1761,7 @@ describe('long-read TR visualization fidelity', () => {
     const alleleHeading = screen.getByRole('heading', { name: 'Allele length distribution' })
     expect(alleleHeading.nextElementSibling?.getAttribute('aria-live')).toBe('polite')
     expect(alleleHeading.nextElementSibling?.textContent).toMatch(
-      /^Sizes of [\d,]+ alleles( from [\d,]+ individuals)?\.$/
+      /^Sizes of [\d,]+ alleles( from [\d,]+ individuals)?$/
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
@@ -1955,7 +1971,7 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByText((_text, element) =>
         Boolean(
           element?.getAttribute('aria-live') === 'polite' &&
-            element.textContent?.startsWith('Sizes of 6 alleles.')
+            element.textContent === 'Sizes of 6 alleles'
         )
       )
     ).not.toBeNull()
@@ -1965,7 +1981,7 @@ describe('long-read TR visualization fidelity', () => {
       screen.getByText((_text, element) =>
         Boolean(
           element?.getAttribute('aria-live') === 'polite' &&
-            element.textContent?.startsWith('Sizes of 6 alleles.')
+            element.textContent === 'Sizes of 6 alleles'
         )
       )
     ).not.toBeNull()
