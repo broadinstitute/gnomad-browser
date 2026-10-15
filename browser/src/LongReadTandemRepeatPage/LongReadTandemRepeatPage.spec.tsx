@@ -684,7 +684,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByTitle(`${sourceVariantId}~1`)).not.toBeNull()
     // A variation cluster renders the ordered component track; the assertions below
     // still guard that no classifying or provenance detail comes with it.
-    expect(screen.queryByRole('img', { name: /ordered LR reference components/ })).not.toBeNull()
+    expect(
+      screen.queryByRole('img', {
+        name: /ordered components of the variation cluster reference region/,
+      })
+    ).not.toBeNull()
     expect(screen.queryByText('Full ordered component table (6)')).toBeNull()
     expect(componentLanes(components)).toEqual([0, 1, 0, 0, 0, 0])
   })
@@ -739,11 +743,13 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(screen.getByRole('heading', { name: 'Tandem Repeat: CAG' })).not.toBeNull()
     expect(screen.getByText('chr4:3,074,876–3,074,933 (GRCh38)')).not.toBeNull()
     expect(screen.queryByText('HTT — exon')).toBeNull()
-    expect(
-      screen.queryByText('Exact short-read catalog reference match (identity only)')
-    ).toBeNull()
+    expect(screen.queryByText('Known disease-associated tandem repeat')).toBeNull()
     expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
-    expect(screen.queryByRole('img', { name: /ordered LR reference component/ })).toBeNull()
+    expect(
+      screen.queryByRole('img', {
+        name: /ordered components of the variation cluster reference region/,
+      })
+    ).toBeNull()
   })
 
   test('lists UCSC before TRExplorer and links to the feedback form', () => {
@@ -1299,7 +1305,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
       media: '(max-width:420px)',
     })
     expect(
-      screen.queryByRole('region', { name: 'Scrollable LR reference component track' })
+      screen.queryByRole('region', { name: 'Scrollable variation cluster reference region' })
     ).not.toBeNull()
   })
 
@@ -1373,9 +1379,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).toBeNull()
     expect(screen.queryByText(/Short-read known-locus ranges are reference context/)).toBeNull()
     expect(screen.queryByText(/Outlined component/)).toBeNull()
-    expect(
-      screen.queryByText('Exact short-read catalog reference match (identity only)')
-    ).toBeNull()
+    expect(screen.queryByText('Known disease-associated tandem repeat')).toBeNull()
     expect(document.querySelector('[data-exact-reference-component-match="true"]')).toBeNull()
   })
 
@@ -1525,6 +1529,18 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(motifRows).toHaveLength(3)
     expect(motifRows[1].textContent).toBe('GCA1339')
     expect(motifRows[2].textContent).toBe('Other3')
+    // The motif column shows each motif, and "Other", white on its color in the sequence above.
+    const sequenceMotifBase = representedSequence.querySelector<HTMLElement>(
+      '[data-sequence-match="motif"]'
+    )!
+    const sequenceUnmatchedBase = representedSequence.querySelector<HTMLElement>(
+      '[data-sequence-match="unmatched"]'
+    )!
+    const motifTile = within(motifRows[1]).getByText('GCA')
+    const otherTile = within(motifRows[2]).getByText('Other')
+    expect(motifTile.style.background).toBe(sequenceMotifBase.style.background)
+    expect(otherTile.style.background).toBe(sequenceUnmatchedBase.style.background)
+    expect(motifTile).toHaveStyleRule('color', '#fff')
     expect(screen.queryByText(/Shared VCF anchor/i)).toBeNull()
     expect(screen.queryByLabelText(/Shared VCF anchor/i)).toBeNull()
     expect(within(detail).queryByText(/every other represented base is dark/)).toBeNull()

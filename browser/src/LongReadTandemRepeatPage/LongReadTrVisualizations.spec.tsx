@@ -21,7 +21,6 @@ import {
   purityTickDecimals,
   reconciledFilterOptions,
   SelectedExactAlleleDetail,
-  sizeAxisSlots,
   stackColorFor,
   WholeRecordAlleleLandscape,
   WholeRecordGenotypeLandscape,
@@ -405,19 +404,6 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByLabelText('XX stack color').getAttribute('data-stack-color')).toBe('#F7C3CC')
   })
 
-  test('gives every size a slot but cuts runs of more than 5 empty sizes to one break', () => {
-    const sizesOf = (slots: ReturnType<typeof sizeAxisSlots>) =>
-      slots.map((slot) => (slot.kind === 'size' ? slot.size : 'break'))
-    expect(sizesOf(sizeAxisSlots([21, 14, 15, 18, 19, 19, 20]))).toEqual([
-      14, 15, 16, 17, 18, 19, 20, 21,
-    ])
-    expect(sizesOf(sizeAxisSlots([0, 6]))).toEqual([0, 1, 2, 3, 4, 5, 6])
-    expect(sizesOf(sizeAxisSlots([0, 7]))).toEqual([0, 'break', 7])
-    expect(sizesOf(sizeAxisSlots([12, -6, 0]))).toEqual([-6, -5, -4, -3, -2, -1, 0, 'break', 12])
-    expect(sizesOf(sizeAxisSlots([1.5, 3]))).toEqual([1.5, 3])
-    expect(sizeAxisSlots([])).toEqual([])
-  })
-
   test('puts linear count ticks at round numbers below the largest count', () => {
     expect(histogramTicks(372, 'linear')).toEqual([0, 100, 200, 300])
     expect(histogramTicks(265, 'linear')).toEqual([0, 50, 100, 150, 200, 250])
@@ -428,10 +414,10 @@ describe('long-read TR visualization fidelity', () => {
     expect(histogramTicks(5000, 'linear-truncated-50')).toEqual([0, 10, 20, 30, 40, 50])
   })
 
-  test('keeps signed delta ticks adaptive while retaining endpoints, zero, and selection', () => {
+  test('keeps signed delta ticks adaptive while retaining endpoints and zero', () => {
     const deltas = Array.from({ length: 41 }, (_, index) => index - 20)
-    const ticks = histogramDeltaAxisTicks(sizeAxisSlots(deltas), 14, 2, 7)
-    expect(ticks.map((tick) => tick.delta)).toEqual(expect.arrayContaining([-20, 0, 7, 20]))
+    const ticks = histogramDeltaAxisTicks(deltas, 14, 2)
+    expect(ticks.map((tick) => tick.delta)).toEqual(expect.arrayContaining([-20, 0, 20]))
     expect(ticks.length).toBeLessThan(deltas.length)
     expect(ticks.every((tick) => tick.lane >= 0)).toBe(true)
   })
@@ -530,13 +516,10 @@ describe('long-read TR visualization fidelity', () => {
     // ALT allele size bars are blue; the 70 REF copies stack in orange on the 0 bp bar.
     expect(window.getComputedStyle(negativeBar).backgroundColor).toBe('rgb(0, 114, 178)')
     expect(histogram.closest('[data-bin-count]')?.getAttribute('data-bin-count')).toBe('3')
-    // The 3 bars sit in 9 slots: the sizes −6 to 0, where −5 to −1 are empty, a break for the 11
-    // empty sizes from +1 to +11, and +12. Unmeasured (as in jsdom), 4 to 12 slots keep the
-    // natural bar width for that many.
-    expect(negativeBar.getAttribute('data-bar-width')).toBe('34')
-    expect(within(deltaAxis).getByLabelText('-3 bp tick').textContent).toBe('−3')
-    expect(within(deltaAxis).queryByLabelText('6 bp tick')).toBeNull()
-    expect(within(histogram).getAllByTestId('histogram-x-axis-break')).toHaveLength(1)
+    // One slot per size that someone has, so only the 3 sizes get a bar and a tick. Few bars keep
+    // the widest bar width rather than growing to fill the plot.
+    expect(negativeBar.getAttribute('data-bar-width')).toBe('45')
+    expect(within(deltaAxis).getAllByTestId('whole-record-delta-axis-tick')).toHaveLength(3)
     expect(within(histogram).getAllByRole('button')).toHaveLength(3)
     // No minimum width may widen a bar past the width its x tick and purity dot are placed for.
     expect(window.getComputedStyle(negativeBar).minWidth).toBe('')
@@ -1835,10 +1818,18 @@ describe('long-read TR visualization fidelity', () => {
     expect(outlined).toHaveLength(1)
     expect(outlined[0].getAttribute('fill')).toBe(motifColor('CAG', locus.motifs))
     expect(outlined[0].getAttribute('stroke')).toBe('#111')
-    expect(outlined[0].getAttribute('stroke-dasharray')).toBe('2 4')
+    // A thin dotted outline like the legend key's, which is filled with the outlined component's
+    // motif color.
+    expect(outlined[0].getAttribute('stroke-width')).toBe('2')
+    expect(outlined[0].getAttribute('stroke-dasharray')).toBe('2 2')
     expect(outlined[0].textContent).toContain('no clinical classification')
-    expect(screen.getByLabelText('LR reference component legend').textContent).toContain(
-      'Exact short-read catalog reference match (identity only)'
+    const legend = screen.getByLabelText('Variation cluster reference region legend')
+    expect(legend.textContent).toContain('Known disease-associated tandem repeat')
+    // The browser reports the color as rgb(), so compare it with the same color set the same way.
+    const motifColorSwatch = document.createElement('span')
+    motifColorSwatch.style.background = motifColor('CAG', locus.motifs)
+    expect((legend.firstElementChild as HTMLElement).style.background).toBe(
+      motifColorSwatch.style.background
     )
     expect(track.querySelector('[data-catalog-pathogenic-match]')).toBeNull()
   })
@@ -2210,7 +2201,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(within(screen.getByTitle(`${sourceId}~1`)).getAllByRole('cell')[2].textContent).toBe('—')
   })
 
-  test('uses one stable color per motif and explains LR reference components accessibly', () => {
+  test('uses one stable color per motif and explains the variation cluster reference region accessibly', () => {
     const locus = {
       motifs: ['CCG', 'CCT'],
       components: [
@@ -2230,8 +2221,10 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       Number(screen.getByRole('img').querySelectorAll('rect')[0].getAttribute('width'))
     ).toBeCloseTo(8.8)
-    expect(screen.getByRole('heading', { name: 'LR reference components' })).not.toBeNull()
-    fireEvent.click(screen.getByLabelText('About LR reference components'))
+    expect(
+      screen.getByRole('heading', { name: 'Variation Cluster Reference Region' })
+    ).not.toBeNull()
+    fireEvent.click(screen.getByLabelText('About the variation cluster reference region'))
     expect(screen.getByText(/callset.*ordered coordinate-and-motif intervals/)).not.toBeNull()
     expect(screen.getByText(/one-based, inclusive/)).not.toBeNull()
     expect(screen.getByText(/Overlapping intervals use separate lanes/)).not.toBeNull()
