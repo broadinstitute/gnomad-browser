@@ -27,5 +27,3 @@ steps:
         --format="table(name,status,healthState,instanceTemplate,lastAttempt.errors)"
 
       echo "MIG is stable. Deployment complete."
-options:
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
