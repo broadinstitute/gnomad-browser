@@ -235,13 +235,15 @@ const useAlignedPlotXAxes = (gridRef: RefObject<HTMLElement>) => {
   })
 }
 
+const PLOT_CARD_BACKGROUND = '#fbfcfd'
+
 const PlotCard = styled.div`
   position: relative;
   min-width: 0;
   padding: 1em;
   border: 1px solid #d8dee2;
   border-radius: 4px;
-  background: #fbfcfd;
+  background: ${PLOT_CARD_BACKGROUND};
 
   h3 {
     margin-top: 0;
@@ -1130,23 +1132,27 @@ const histogramLayoutForBinCount = (binCount: number): HistogramLayout => {
   return { barWidth: 24, gap: 2, height: 260 }
 }
 
-// Narrowest a bar may get to fit every bin in the card before the plot scrolls instead.
-const MIN_FITTED_BAR_WIDTH = 12
+// Narrowest a bar may get to fit every slot in the card before the plot scrolls instead. It is
+// small so that the many slots of a wide size range, empty sizes included, still fit.
+const MIN_FITTED_BAR_WIDTH = 4
 
-// Bars widen or narrow to fill the plot, so every bin shows without scrolling, in the same slots
-// as the purity plot, but never beyond MAX_PLOT_BAR_WIDTH_PX. Only bins too many to fit at
+// Bars widen or narrow to fill the plot, so every slot shows without scrolling, in the same slots
+// as the purity plot, but never beyond MAX_PLOT_BAR_WIDTH_PX. Only slots too many to fit at
 // MIN_FITTED_BAR_WIDTH keep their natural width and scroll horizontally. A measured width of 0
 // (the initial render, and jsdom) keeps the natural width.
-const filledBarWidth = (measuredWidth: number, binCount: number, layout: HistogramLayout) => {
+const filledBarWidth = (measuredWidth: number, slots: SizeAxisSlot[], layout: HistogramLayout) => {
   const naturalBarWidth = Math.min(layout.barWidth, MAX_PLOT_BAR_WIDTH_PX)
-  if (!measuredWidth || !binCount) return naturalBarWidth
+  if (!measuredWidth || !slots.length) return naturalBarWidth
   const usableWidth =
     measuredWidth -
     HISTOGRAM_Y_COLUMN_WIDTH -
     HISTOGRAM_COLUMN_GAP -
     HISTOGRAM_SIDE_PADDING * 2 -
-    (binCount - 1) * layout.gap
-  const fittedBarWidth = Math.min(MAX_PLOT_BAR_WIDTH_PX, Math.floor(usableWidth / binCount))
+    (slots.length - 1) * layout.gap
+  const fittedBarWidth = Math.min(
+    MAX_PLOT_BAR_WIDTH_PX,
+    Math.floor(usableWidth / sizeAxisWidthInSlots(slots))
+  )
   return fittedBarWidth >= MIN_FITTED_BAR_WIDTH ? fittedBarWidth : naturalBarWidth
 }
 
@@ -1257,6 +1263,11 @@ const BarButton = styled.button<{
     outline: 3px solid #111;
     outline-offset: 2px;
   }
+`
+
+// A histogram slot without a bar: an allele size that no allele has, or a break.
+const HistogramEmptySlot = styled.span`
+  position: relative;
 `
 
 // Anchored to the bar's top edge, so a two-line label (REF and its copy count) grows upward.
@@ -1711,6 +1722,77 @@ export const histogramTicks = (maxCount: number, scale: ScaleType) => {
   return Array.from({ length: Math.floor(domainMax / step) + 1 }, (_, index) => index * step)
 }
 
+// On the allele size axes, a run of more than this many sizes that no allele has is cut to one
+// narrow break slot. Shorter runs keep a slot per size, so the spacing of sizes stays true.
+const MAX_EMPTY_SIZES_SHOWN_IN_A_ROW = 5
+// A break slot's width, as a fraction of a size slot's width.
+const SIZE_AXIS_BREAK_WIDTH_IN_SLOTS = 0.5
+
+// One slot on an allele size axis: a size, which may have no alleles, or a break that stands for
+// a cut run of empty sizes.
+export type SizeAxisSlot = { kind: 'size'; size: number } | { kind: 'break' }
+
+// The slots of an axis that shows these sizes: every whole size from the smallest to the largest,
+// except that runs of more than MAX_EMPTY_SIZES_SHOWN_IN_A_ROW sizes missing from the list become
+// one break. No sizes are added next to a size that is not a whole number.
+export const sizeAxisSlots = (sizes: number[]): SizeAxisSlot[] => {
+  const sortedSizes = [...new Set(sizes)].sort((left, right) => left - right)
+  return sortedSizes.flatMap((size, index): SizeAxisSlot[] => {
+    const previousSize = sortedSizes[index - 1]
+    if (index === 0 || !Number.isInteger(size) || !Number.isInteger(previousSize)) {
+      return [{ kind: 'size', size }]
+    }
+    const emptySizeCount = size - previousSize - 1
+    if (emptySizeCount > MAX_EMPTY_SIZES_SHOWN_IN_A_ROW) {
+      return [{ kind: 'break' }, { kind: 'size', size }]
+    }
+    return [
+      ...Array.from({ length: emptySizeCount }, (_, offset) => ({
+        kind: 'size' as const,
+        size: previousSize + 1 + offset,
+      })),
+      { kind: 'size', size },
+    ]
+  })
+}
+
+// The slots' total width in size slot widths, gaps not included.
+const sizeAxisWidthInSlots = (slots: SizeAxisSlot[]) =>
+  slots.reduce((sum, slot) => sum + (slot.kind === 'break' ? SIZE_AXIS_BREAK_WIDTH_IN_SLOTS : 1), 0)
+
+// Each slot's left edge and width, measured from the left edge of the first slot, for size slots
+// of this width with this gap between neighboring slots, and the width of all the slots together.
+export const sizeAxisSlotPositions = (slots: SizeAxisSlot[], slotWidth: number, gap: number) => {
+  let left = 0
+  const positions = slots.map((slot) => {
+    const width = slot.kind === 'break' ? slotWidth * SIZE_AXIS_BREAK_WIDTH_IN_SLOTS : slotWidth
+    const position = { left, width }
+    left += width + gap
+    return position
+  })
+  return { positions, contentWidth: Math.max(0, left - gap) }
+}
+
+// The mark drawn over an axis line at a break slot.
+const SIZE_AXIS_BREAK_MARK_TEXT = '//'
+
+// Marks a break slot on an x axis drawn in HTML: SIZE_AXIS_BREAK_MARK_TEXT over the axis line, on
+// the plot card's background so that it interrupts the line. Placed by its center on the top of
+// the line.
+const SizeAxisBreakMark = styled.span`
+  position: absolute;
+  bottom: 0;
+  padding: 0 1px;
+  background: ${PLOT_CARD_BACKGROUND};
+  color: ${PLOT_AXIS_LINE_COLOR};
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: -2px;
+  line-height: 1;
+  transform: translate(-50%, 50%);
+  pointer-events: none;
+`
+
 type HistogramDeltaTick = {
   delta: number
   lane: number
@@ -1726,19 +1808,24 @@ const tickLabelWidth = (label: string) => label.length * AXIS_LABEL_FONT_PX * 0.
 // Least space between neighboring tick labels.
 const TICK_LABEL_GAP = 6
 
-// Ticks for an axis with one slot per allele size. Every size gets a label when the labels
-// fit; otherwise some are left out, always keeping the ends, 0 and the selected size.
+// Ticks for an allele size axis's slots. Every size gets a label when the labels fit; otherwise
+// some are left out, always keeping the ends, 0 and the selected size. Breaks get no tick.
 export const histogramDeltaAxisTicks = (
-  deltas: number[],
+  slots: SizeAxisSlot[],
   barWidth: number,
   gap: number,
   selectedDelta: number | null,
   tickLabel: (delta: number) => string = signed
 ): HistogramDeltaTick[] => {
+  const { positions } = sizeAxisSlotPositions(slots, barWidth, gap)
+  const sizeSlotCenters = slots.flatMap((slot, index) =>
+    slot.kind === 'size' ? [positions[index].left + positions[index].width / 2] : []
+  )
+  const deltas = slots.flatMap((slot) => (slot.kind === 'size' ? [slot.size] : []))
   if (!deltas.length) return []
   const labelWidth = (delta: number) => tickLabelWidth(tickLabel(delta))
 
-  const centerForIndex = (index: number) => index * (barWidth + gap) + barWidth / 2
+  const centerForIndex = (index: number) => sizeSlotCenters[index]
   const required = new Map<number, number>()
   required.set(deltas[0], centerForIndex(0))
   required.set(deltas[deltas.length - 1], centerForIndex(deltas.length - 1))
@@ -2005,15 +2092,20 @@ const PurityScatter = ({
         }
       : null
   const allPoints = referencePoint ? [...points, referencePoint] : points
-  // One equal-width slot per allele size, laid out like the allele length histogram's bars.
-  const deltas = Array.from(
-    new Set([...slotDeltas, ...allPoints.map((point) => point.delta)])
-  ).sort((left, right) => left - right)
-  const slotIndex = new Map(deltas.map((delta, index) => [delta, index]))
-  const slotCenterCss = (delta: number) =>
-    `calc(${HISTOGRAM_SIDE_PADDING}px + ${
-      (slotIndex.get(delta)! + 0.5) / deltas.length
+  // The allele length histogram's slots: one per allele size, empty sizes and breaks included.
+  const slots = sizeAxisSlots([...slotDeltas, ...allPoints.map((point) => point.delta)])
+  const slotIndexBySize = new Map(
+    slots.flatMap((slot, index) => (slot.kind === 'size' ? [[slot.size, index]] : []))
+  )
+  // Slot positions in size slot widths, with no gaps, for placing points before the plot's
+  // width is measured.
+  const slotPositionsInSlots = sizeAxisSlotPositions(slots, 1, 0)
+  const slotCenterCss = (index: number) => {
+    const position = slotPositionsInSlots.positions[index]
+    return `calc(${HISTOGRAM_SIDE_PADDING}px + ${
+      (position.left + position.width / 2) / slotPositionsInSlots.contentWidth
     } * (100% - ${2 * HISTOGRAM_SIDE_PADDING}px))`
+  }
   const [domainMinimum, domainMaximum] = purityDomain(allPoints.map((point) => point.motif_purity))
   const domainSpan = domainMaximum - domainMinimum
   const purityTicks = [domainMinimum, domainMinimum + domainSpan / 2, domainMaximum]
@@ -2096,24 +2188,29 @@ const PurityScatter = ({
             // The bp histogram's bar geometry, centered the same way, so each point sits under
             // its bar. When those bars would not fit (the histogram then scrolls), the slots
             // share the plot width equally instead.
-            const histogramLayout = histogramLayoutForBinCount(deltas.length)
-            const histogramBarWidth = filledBarWidth(measuredWidth, deltas.length, histogramLayout)
-            const histogramContentWidth =
-              deltas.length * histogramBarWidth + (deltas.length - 1) * histogramLayout.gap
+            const histogramLayout = histogramLayoutForBinCount(slots.length)
+            const histogramBarWidth = filledBarWidth(measuredWidth, slots, histogramLayout)
+            const histogramContentWidth = sizeAxisSlotPositions(
+              slots,
+              histogramBarWidth,
+              histogramLayout.gap
+            ).contentWidth
             const followsHistogram = histogramContentWidth <= plotWidth - 2 * HISTOGRAM_SIDE_PADDING
             const slotWidth = followsHistogram
               ? histogramBarWidth
-              : Math.max(0, plotWidth - 2 * HISTOGRAM_SIDE_PADDING) / deltas.length
+              : Math.max(0, plotWidth - 2 * HISTOGRAM_SIDE_PADDING) / sizeAxisWidthInSlots(slots)
             const slotGap = followsHistogram ? histogramLayout.gap : 0
             const slotsLeft = followsHistogram
               ? (plotWidth - histogramContentWidth) / 2
               : HISTOGRAM_SIDE_PADDING
+            const { positions: slotPositions } = sizeAxisSlotPositions(slots, slotWidth, slotGap)
             // Before the first width measurement the equal-slot rule is applied in CSS.
-            const slotCenter = (delta: number) =>
+            const slotCenterAt = (index: number) =>
               measuredWidth > 0
-                ? `${slotsLeft + slotIndex.get(delta)! * (slotWidth + slotGap) + slotWidth / 2}px`
-                : slotCenterCss(delta)
-            const xAxisTicks = histogramDeltaAxisTicks(deltas, slotWidth, slotGap, null, (delta) =>
+                ? `${slotsLeft + slotPositions[index].left + slotPositions[index].width / 2}px`
+                : slotCenterCss(index)
+            const slotCenter = (delta: number) => slotCenterAt(slotIndexBySize.get(delta)!)
+            const xAxisTicks = histogramDeltaAxisTicks(slots, slotWidth, slotGap, null, (delta) =>
               lengthAxisTickLabel(delta, lengthAxisMode, representedRefLength)
             )
             const xAxisHeight =
@@ -2253,6 +2350,21 @@ const PurityScatter = ({
                           </PurityPointButton>
                         )
                       })}
+                      {slots.map(
+                        (slot, index) =>
+                          slot.kind === 'break' && (
+                            <SizeAxisBreakMark
+                              // Breaks have no size, so their slot position is their identity.
+                              // eslint-disable-next-line react/no-array-index-key
+                              key={index}
+                              aria-hidden="true"
+                              data-testid="purity-x-axis-break"
+                              style={{ left: slotCenterAt(index) }}
+                            >
+                              {SIZE_AXIS_BREAK_MARK_TEXT}
+                            </SizeAxisBreakMark>
+                          )
+                      )}
                     </div>
                     <HistogramXAxis
                       role="group"
@@ -3424,7 +3536,10 @@ export const WholeRecordAlleleLandscape = ({
     })
   const clippedAt = scaleCap(selectedScaleType)
   const totalInView = barTotals.reduce((sum, count) => sum + count, 0)
-  let histogramLayout = histogramLayoutForBinCount(histogramBins.length)
+  // One slot per allele size, empty sizes and breaks included; a bar for each bin.
+  const histogramSlots = sizeAxisSlots(histogramBins.map((bin) => bin.delta))
+  const histogramBinIndexBySize = new Map(histogramBins.map((bin, index) => [bin.delta, index]))
+  let histogramLayout = histogramLayoutForBinCount(histogramSlots.length)
   // When the genotype heatmap is shown, the histogram and the purity plot are as tall as its
   // square of cells, so all three plots in the row have the same height.
   const genotypeHeatmapLandscape =
@@ -3666,17 +3781,12 @@ export const WholeRecordAlleleLandscape = ({
             )}
             <MeasuredWidth>
               {(measuredWidth) => {
-                const barWidth = filledBarWidth(
-                  measuredWidth,
-                  histogramBins.length,
-                  histogramLayout
-                )
-                const histogramContentWidth =
-                  histogramBins.length * barWidth +
-                  Math.max(0, histogramBins.length - 1) * histogramLayout.gap
+                const barWidth = filledBarWidth(measuredWidth, histogramSlots, histogramLayout)
+                const { positions: histogramSlotPositions, contentWidth: histogramContentWidth } =
+                  sizeAxisSlotPositions(histogramSlots, barWidth, histogramLayout.gap)
                 const histogramScrollableWidth = histogramContentWidth + HISTOGRAM_SIDE_PADDING * 2
                 const deltaAxisTicks = histogramDeltaAxisTicks(
-                  histogramBins.map((bin) => bin.delta),
+                  histogramSlots,
                   barWidth,
                   histogramLayout.gap,
                   selectedBin?.delta ?? null,
@@ -3692,13 +3802,15 @@ export const WholeRecordAlleleLandscape = ({
                 const referenceOnlyBarShown = histogramBins.some(
                   (bin, index) => isReferenceOnlyBin(bin) && barTotals[index] > 0
                 )
-                const barLabelFontPx = countLabelFontPx(
-                  barWidth,
-                  Math.max(
-                    referenceOnlyBarShown ? 'REF'.length : 1,
-                    ...barTotals.map((total) => total.toLocaleString().length)
-                  )
+                const longestBarLabelLength = Math.max(
+                  referenceOnlyBarShown ? 'REF'.length : 1,
+                  ...barTotals.map((total) => total.toLocaleString().length)
                 )
+                const barLabelFontPx = countLabelFontPx(barWidth, longestBarLabelLength)
+                // Bars too narrow for their labels, even spilling into the gaps beside them, leave
+                // the counts to the bars' tooltips.
+                const barLabelsFit =
+                  longestBarLabelLength * 0.6 * barLabelFontPx <= barWidth + histogramLayout.gap
                 const barLabelHeadroom = Math.ceil(
                   (referenceOnlyBarShown ? 2 : 1) * 1.2 * barLabelFontPx + 6
                 )
@@ -3746,7 +3858,36 @@ export const WholeRecordAlleleLandscape = ({
                             $gap={histogramLayout.gap}
                             {...totalLengthBrush.containerProps}
                           >
-                            {histogramBins.map((bin, index) => {
+                            {histogramSlots.map((slot, slotIndex) => {
+                              // An empty size or a break holds no bar; a break shows a "//" on
+                              // the x axis line.
+                              if (
+                                slot.kind === 'break' ||
+                                !histogramBinIndexBySize.has(slot.size)
+                              ) {
+                                return (
+                                  <HistogramEmptySlot
+                                    // Breaks have no size, so their slot position is their identity.
+                                    // eslint-disable-next-line react/no-array-index-key
+                                    key={slot.kind === 'break' ? `break:${slotIndex}` : slot.size}
+                                    aria-hidden="true"
+                                    style={{
+                                      flex: `0 0 ${histogramSlotPositions[slotIndex].width}px`,
+                                    }}
+                                  >
+                                    {slot.kind === 'break' && (
+                                      <SizeAxisBreakMark
+                                        data-testid="histogram-x-axis-break"
+                                        style={{ left: '50%' }}
+                                      >
+                                        {SIZE_AXIS_BREAK_MARK_TEXT}
+                                      </SizeAxisBreakMark>
+                                    )}
+                                  </HistogramEmptySlot>
+                                )
+                              }
+                              const index = histogramBinIndexBySize.get(slot.size)!
+                              const bin = histogramBins[index]
                               const count = counts[index]
                               const referenceCount = referenceCounts[index]
                               const barTotal = barTotals[index]
@@ -3865,27 +4006,29 @@ export const WholeRecordAlleleLandscape = ({
                                         )}
                                       </BarSegments>
                                     )}
-                                  <BarExactCount
-                                    style={{ fontSize: barLabelFontPx }}
-                                    title={
-                                      referenceOnly || repeatCountHistogram
-                                        ? barTitle
-                                        : `${counted(
-                                            barTotal,
-                                            'allele',
-                                            'alleles'
-                                          )} · ${exactAltSequences(bin.exact_alt_count)}`
-                                    }
-                                  >
-                                    {/* The label is the bar height: alleles in this view. */}
-                                    {referenceOnly && (
-                                      <>
-                                        REF
-                                        <br />
-                                      </>
-                                    )}
-                                    {barTotal.toLocaleString()}
-                                  </BarExactCount>
+                                  {barLabelsFit && (
+                                    <BarExactCount
+                                      style={{ fontSize: barLabelFontPx }}
+                                      title={
+                                        referenceOnly || repeatCountHistogram
+                                          ? barTitle
+                                          : `${counted(
+                                              barTotal,
+                                              'allele',
+                                              'alleles'
+                                            )} · ${exactAltSequences(bin.exact_alt_count)}`
+                                      }
+                                    >
+                                      {/* The label is the bar height: alleles in this view. */}
+                                      {referenceOnly && (
+                                        <>
+                                          REF
+                                          <br />
+                                        </>
+                                      )}
+                                      {barTotal.toLocaleString()}
+                                    </BarExactCount>
+                                  )}
                                   {(index === Math.min(...selectedLengthMarkIndices) ||
                                     index === Math.max(...selectedLengthMarkIndices)) && (
                                     <HistogramSelectionBoundary
@@ -4239,12 +4382,12 @@ export const WholeRecordGenotypeLandscape = ({
       representedRefLength,
       unit
     )}: ${counted(cell.selectedPeople, 'person', 'people')}`
-  const values = [
-    ...new Set([
-      ...(referenceSizeKnown ? [0] : []),
-      ...sourceCells.flatMap((cell) => [cell.shorter_delta, cell.longer_delta]),
-    ]),
-  ].sort((a, b) => a - b)
+  // The same slots on both axes: one per size, empty sizes and breaks included.
+  const slots = sizeAxisSlots([
+    ...(referenceSizeKnown ? [0] : []),
+    ...sourceCells.flatMap((cell) => [cell.shorter_delta, cell.longer_delta]),
+  ])
+  const values = slots.flatMap((slot) => (slot.kind === 'size' ? [slot.size] : []))
   const maxPeople = Math.max(1, ...cells.map((cell) => cell.selectedPeople))
   const keyFor = (cell: GenotypeCell) => `${cell.shorter_delta}/${cell.longer_delta}`
   const selectedCell = cells.find((cell) => keyFor(cell) === selectedKey) || cells[0]
@@ -4254,7 +4397,9 @@ export const WholeRecordGenotypeLandscape = ({
   const heatmapHeight = 650
   const heatmapTop = 18
   const heatmapRight = 18
-  const valueIndex = new Map(values.map((value, index) => [value, index]))
+  const slotIndexByValue = new Map(
+    slots.flatMap((slot, index) => (slot.kind === 'size' ? [[slot.size, index]] : []))
+  )
   // Tick candidates in priority order: REF, the selected square, the two ends, then the rest.
   // A tick is drawn only if it clears the labels already placed, so labels never overlap.
   const axisValueCandidates = [
@@ -4266,7 +4411,7 @@ export const WholeRecordGenotypeLandscape = ({
         values[0],
         values[values.length - 1],
         ...values,
-      ].filter((value): value is number => value != null && valueIndex.has(value))
+      ].filter((value): value is number => value != null && slotIndexByValue.has(value))
     ),
   ]
   const axisValueLabel = (value: number) =>
@@ -4351,7 +4496,7 @@ export const WholeRecordGenotypeLandscape = ({
               // of squares sits centered in the plot, whose axes keep their full length.
               const bandFor = (plotSize: number) =>
                 Math.min(
-                  plotSize / Math.max(1, values.length),
+                  plotSize / Math.max(1, sizeAxisWidthInSlots(slots)),
                   MAX_PLOT_BAR_WIDTH_PX * svgUnitsPerPixel
                 )
               // x tick labels lie flat, like the histogram's, when the longest one fits under a
@@ -4367,11 +4512,24 @@ export const WholeRecordGenotypeLandscape = ({
                 : rotatedXTickLabelsHeatmapBottom
               const plotSize = plotSizeFor(heatmapBottom)
               const band = bandFor(plotSize)
-              const gridInset = (plotSize - band * values.length) / 2
-              const xFor = (value: number) =>
-                heatmapLeft + gridInset + (valueIndex.get(value) || 0) * band
-              const yFor = (value: number) =>
-                heatmapTop + gridInset + (values.length - 1 - (valueIndex.get(value) || 0)) * band
+              const { positions: slotPositions, contentWidth: gridSize } = sizeAxisSlotPositions(
+                slots,
+                band,
+                0
+              )
+              const gridInset = (plotSize - gridSize) / 2
+              // A slot's left edge on the x axis, and its top edge on the y axis, where sizes grow
+              // upward.
+              const slotLeft = (slotIndex: number) =>
+                heatmapLeft + gridInset + slotPositions[slotIndex].left
+              const slotTop = (slotIndex: number) =>
+                heatmapTop +
+                gridInset +
+                gridSize -
+                slotPositions[slotIndex].left -
+                slotPositions[slotIndex].width
+              const xFor = (value: number) => slotLeft(slotIndexByValue.get(value) || 0)
+              const yFor = (value: number) => slotTop(slotIndexByValue.get(value) || 0)
               // Rotated x labels need about 1.5 font sizes of horizontal room to clear each other,
               // and flat ones each fit under their own square; the y labels need less, so one
               // spacing fits all of them.
@@ -4396,9 +4554,7 @@ export const WholeRecordGenotypeLandscape = ({
                 .reduce<number[]>(
                   (placed, value) =>
                     placed.every(
-                      (other) =>
-                        Math.abs(valueIndex.get(value)! - valueIndex.get(other)!) * band >=
-                        minimumAxisLabelSpacing
+                      (other) => Math.abs(xFor(value) - xFor(other)) >= minimumAxisLabelSpacing
                     )
                       ? [...placed, value]
                       : placed,
@@ -4537,7 +4693,7 @@ export const WholeRecordGenotypeLandscape = ({
                       )
                     })}
                     {/* REF guide lines cross at the center of the REF/REF square. */}
-                    {referenceSizeKnown && valueIndex.has(0) && (
+                    {referenceSizeKnown && slotIndexByValue.has(0) && (
                       <>
                         <line
                           data-testid="genotype-length-reference-line"
@@ -4656,6 +4812,49 @@ export const WholeRecordGenotypeLandscape = ({
                       y2={heatmapTop + plotSize}
                       stroke={PLOT_AXIS_LINE_COLOR}
                     />
+                    {/* A "//" on both axis lines where a run of empty sizes is cut, on the card's
+                        background so that it interrupts the line. */}
+                    {slots.flatMap((slot, slotIndex) => {
+                      if (slot.kind !== 'break') return []
+                      const markFontSize = 12 * svgUnitsPerPixel
+                      const halfBreakWidth = slotPositions[slotIndex].width / 2
+                      return [
+                        {
+                          axis: 'x',
+                          x: slotLeft(slotIndex) + halfBreakWidth,
+                          y: heatmapTop + plotSize,
+                        },
+                        { axis: 'y', x: heatmapLeft, y: slotTop(slotIndex) + halfBreakWidth },
+                      ].map(({ axis, x, y }) => (
+                        <g
+                          // Breaks have no size, so their slot position is their identity.
+                          // eslint-disable-next-line react/no-array-index-key
+                          key={`${axis}:${slotIndex}`}
+                          data-testid="genotype-length-axis-break"
+                          aria-hidden="true"
+                          pointerEvents="none"
+                        >
+                          <rect
+                            x={x - 0.4 * markFontSize}
+                            y={y - 0.3 * markFontSize}
+                            width={0.8 * markFontSize}
+                            height={0.6 * markFontSize}
+                            fill={PLOT_CARD_BACKGROUND}
+                          />
+                          <text
+                            x={x}
+                            y={y + 0.35 * markFontSize}
+                            fill={PLOT_AXIS_LINE_COLOR}
+                            fontSize={markFontSize}
+                            fontWeight="bold"
+                            letterSpacing={-2 * svgUnitsPerPixel}
+                            textAnchor="middle"
+                          >
+                            {SIZE_AXIS_BREAK_MARK_TEXT}
+                          </text>
+                        </g>
+                      ))
+                    })}
                     <text
                       x={heatmapLeft + plotSize / 2}
                       y={heatmapTop + plotSize + heatmapBottom - 8 * svgUnitsPerPixel}

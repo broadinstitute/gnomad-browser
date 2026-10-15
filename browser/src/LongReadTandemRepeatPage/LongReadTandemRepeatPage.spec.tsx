@@ -1010,8 +1010,11 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('gives every canonical page help dialog the task-first structure', () => {
     renderPage()
+    // The known disease-associated TR locus section has no help dialog.
+    expect(
+      screen.queryByRole('button', { name: 'About known disease-associated TR locus' })
+    ).toBeNull()
     const helpTitles = [
-      'About known disease-associated TR locus',
       'About the allelic landscape',
       'About the source-ALT index',
       'About exact ALT details',
@@ -1340,18 +1343,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(section).queryByText(/Green short-read repeat-count plots/)).toBeNull()
     expect(within(section).getAllByRole('heading', { level: 2 })).toHaveLength(1)
     expect(within(section).getAllByRole('link')).toHaveLength(2)
-    fireEvent.click(
-      within(section).getByRole('button', { name: 'About known disease-associated TR locus' })
-    )
-    const help = screen.getByRole('dialog', {
-      name: 'About known disease-associated TR locus',
-    })
-    expect(within(help).getByText(/exact coordinate-and-stored-motif identity/)).not.toBeNull()
-    expect(within(help).getByText(/corresponding gnomAD short-read data page/)).not.toBeNull()
-    expect(within(help).queryByText(/Load short-read distributions/)).toBeNull()
-    expect(
-      within(help).getByText(/do not classify, filter, or select any LR allele/)
-    ).not.toBeNull()
+    expect(within(section).queryByRole('button')).toBeNull()
     const exactMatch = document.querySelector('[data-exact-reference-component-match="true"]')
     expect(exactMatch).not.toBeNull()
     expect(exactMatch!.querySelector('title')!.textContent).toContain('no clinical classification')
