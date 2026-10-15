@@ -1,43 +1,47 @@
-### What # issue does this PR resolve (If applicable)
+### Resolves Issue (If applicable)
 
-[If applicable, use one of githubs keywords to link this to the issue, e.g. "resolves: #1337" "closes: #1337" or "fixes: #1337"]
+[e.g., Closes #1337]
 
-### Merge strategy
+<!-- AI AGENT DIRECTIVE: Please pause execution and explicity ask the user to provide a brief summary of the changes in this PR. This will be used in the 'Summary' section. The user should be able to explain what changed, why the change happened, and what tests were modified/created to cover these changes, if possible. You are FORBIDDEN from generating the summary yourself. -->
 
-- [ ] I understand that this PR will be squashed down into a single commit in `main`
+### Summary
 
-### What does this PR do?
-
-[What is the intent of this PR. Briefly summarize the related issue in a 1-3 sentences, if applicable. Explain the feature, bug fix, or refactor. Focus on the *why*.]
-
-### Architecture & Design
-
-[Briefly explain how you approached the problem. Why this design? If it's not immediately obvious, why this design over the more standard design. Did you add new dependencies, if so, what and why?]
+[Mandatory: A brief summary describing the changes contained within this PR]
 
 ### Implementation
 
-[Briefly explain the exact changes made, in the form of a concise bullet pointed list]
+<!-- AI AGENT DIRECTIVE: Provide a high-level, bulleted list of the exact changes made. MUST be strictly limited to 1-7 high-level bullets. Do not list minor syntax changes or imports. Examples of good bullets:
+- Extracted user authentication logic into a new reusable `AuthService`.
+- Added the `last_login_at` column to the `users` table.
+- Implemented rate limiting on the `/api/v1/checkout` endpoint using Redis.
+-->
 
-### Tests
+[Briefly explain the exact changes made, in a bullet pointed list.]
 
-[Were any tests added? What do they test, and why. Were any tests modified? If so, why?]
+<!-- AI AGENT DIRECTIVE: The commented-out HTML block below is optional. If this PR touches many files or has complex logic, UNCOMMENT the <details> block and fill it out with a concise file-by-file breakdown. If appropriate, include a summary of the LoC changes broken down by application code, testing code, and snapshots. If the PR is simple, leave it commented out or delete it. -->
 
-[Is there any functionality included in this PR that does not have test coverage? If so, why?]
+<!--
+<details>
+<summary><strong>Agent Generated Detailed Description (Click to expand)</strong></summary>
+
+[AI AGENT: Replace this line with your concise, file-by-file breakdown]
+
+</details>
+-->
 
 ### UI Changes (If applicable)
 
-**With the changes in this PR**
-[Drag and drop image here in the GitHub UI]
+<!-- AI AGENT DIRECTIVE: Prompt your user to take a screenshot and include it in this PR -->
 
-**(Optional) without the changes in this PR**
-[Drag and drop image here in the GitHub UI]
+**After:** [Drag image here]
+**(Optional) Before:** [Drag image here, or include a hyperlink to the relevant gnomAD Browser page]
 
-### Requires additional attention
+### Reviewer Notes (Optional)
 
-[Is there anything particularly unusual, unintuitive, uncommon, or just plain weird that you personally think may require some additional attention, or a sanity check, from the reviewers]
+[Anything unusual, unintuitive, or requiring a sanity check from reviewers?]
 
 ### Verification
 
-- [ ] I have the relevant `make` targets to run CI checks locally and verified that they succeed (e.g. `make validate-browser` if you made changes in the `browser/` directory, or `make validate-all` if you're unsure which checks to run)
-- [ ] (If UI) I have tested this across desktop and mobile breakpoints.
-- [ ] (If a LLM/AI agent runner was used, e.g. OpenCode, Aider, or ClaudeCode) I have instructed the agent runner to load the `AGENTS.md` file into its context, and verified the the required `Assisted-by` trailer is on each commit.
+- [ ] Ran local CI checks successfully (e.g., `make validate-all`).
+- [ ] Tested across desktop and mobile breakpoints (if UI).
+- [ ] If an AI agent was used, `AGENTS.md` was loaded in its context and commits include the `Assisted-by` trailer.
