@@ -1385,16 +1385,20 @@ describe('long-read TR visualization fidelity', () => {
     const cell = screen.getByRole('button', {
       name: /0 bp vs REF longer allele, 0 bp vs REF shorter allele: 1 person; filter the source-ALT index/,
     })
-    // The REF guide lines cross at the center of the REF/REF square, whose 48 unit click target
-    // is centered on it.
+    // The REF guide lines cross at the center of the REF/REF square, whose click target is
+    // exactly the square.
     const [verticalReferenceLine, horizontalReferenceLine] = screen.getAllByTestId(
       'genotype-length-reference-line'
     )
     expect(Number(verticalReferenceLine.getAttribute('x1'))).toBeCloseTo(
-      Number(cell.getAttribute('x')) + 24
+      Number(cell.getAttribute('x')) + Number(cell.getAttribute('width')) / 2
     )
     expect(Number(horizontalReferenceLine.getAttribute('y1'))).toBeCloseTo(
-      Number(cell.getAttribute('y')) + 24
+      Number(cell.getAttribute('y')) + Number(cell.getAttribute('height')) / 2
+    )
+    const squareFill = cell.parentElement!.querySelector('rect[aria-hidden="true"]')!
+    expect(Number(cell.getAttribute('width'))).toBeCloseTo(
+      Number(squareFill.getAttribute('width')) + 2
     )
     // Each x label has a tick mark above it, like the histogram's, and lies flat because it
     // fits under its square.
@@ -1776,8 +1780,10 @@ describe('long-read TR visualization fidelity', () => {
       name: /\+12 bp vs REF longer allele, −6 bp vs REF shorter allele: 12 people; filter the source-ALT index/,
     })
     expect(cell.getAttribute('fill')).toBe('transparent')
-    expect(cell.getAttribute('width')).toBe('48')
-    expect(cell.getAttribute('height')).toBe('48')
+    // The click target is exactly the square (45 units wide at most), so it never covers a
+    // neighboring square.
+    expect(cell.getAttribute('width')).toBe('45')
+    expect(cell.getAttribute('height')).toBe('45')
     expect(heatmap.querySelector(`rect[fill="${LONG_READ_PRIMARY_PLOT_COLOR}"]`)).not.toBeNull()
     expect(within(heatmap).getByText('Long Allele (bp minus REF)')).not.toBeNull()
     expect(within(heatmap).getByText('Short Allele (bp minus REF)')).not.toBeNull()

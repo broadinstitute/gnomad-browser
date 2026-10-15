@@ -77,16 +77,6 @@ const HorizontalPlotScroller = styled.div`
   }
 `
 
-const ComponentLegend = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45em;
-  margin-top: 0.5em;
-  color: #38434a;
-  font-size: 0.9em;
-`
-
 const ComponentTableScroller = styled.div`
   overflow: auto;
   max-height: 420px;
@@ -856,7 +846,7 @@ export const LongReadTrComponentTrack = ({
                 intervals.
               </p>
               <p>
-                <strong>How to use it.</strong> Read components in number order. Overlapping
+                <strong>How to use it.</strong> Read components from left to right. Overlapping
                 intervals use separate lanes, and repeated motifs remain separate because interval
                 and order are part of their identity. A neutral black dotted outline marks a
                 verified unique exact short-read catalog reference match.
@@ -867,6 +857,21 @@ export const LongReadTrComponentTrack = ({
               </p>
             </HaplotypeHelpButton>
           </HeadingWithHelp>
+          {/* Above the track, like the allele length histogram's legend above its plot. */}
+          {hasAuthorizedExactReferenceOutline && (
+            <PlotLegendAbovePlot aria-label="Variation cluster reference region legend">
+              <ExactReferenceOutlineKey
+                aria-hidden="true"
+                style={{
+                  background: motifColor(
+                    components[exactReferenceComponentIndex as number].motif,
+                    locus.motifs
+                  ),
+                }}
+              />
+              <span>Known disease-associated tandem repeat</span>
+            </PlotLegendAbovePlot>
+          )}
           <HorizontalPlotScroller
             role="region"
             aria-label="Scrollable variation cluster reference region"
@@ -930,26 +935,29 @@ export const LongReadTrComponentTrack = ({
                     >
                       <title>{accessibleLabel}</title>
                     </rect>
-                    <text
-                      x={x(component.start0) + componentWidth / 2}
-                      y={y + 19}
-                      fill="#fff"
-                      fontSize={11}
-                      fontWeight="bold"
-                      textAnchor="middle"
-                    >
-                      {compactLabel ? index + 1 : component.motif}
-                    </text>
+                    {/* A box too narrow for its motif shows no text; hovering shows its details. */}
                     {!compactLabel && (
-                      <text
-                        x={x(component.start0) + componentWidth / 2}
-                        y={y + 43}
-                        fill="#4f5960"
-                        fontSize={10}
-                        textAnchor="middle"
-                      >
-                        {component.end0 - component.start0} bp
-                      </text>
+                      <>
+                        <text
+                          x={x(component.start0) + componentWidth / 2}
+                          y={y + 19}
+                          fill="#fff"
+                          fontSize={11}
+                          fontWeight="bold"
+                          textAnchor="middle"
+                        >
+                          {component.motif}
+                        </text>
+                        <text
+                          x={x(component.start0) + componentWidth / 2}
+                          y={y + 43}
+                          fill="#4f5960"
+                          fontSize={10}
+                          textAnchor="middle"
+                        >
+                          {component.end0 - component.start0} bp
+                        </text>
+                      </>
                     )}
                   </g>
                 )
@@ -968,20 +976,6 @@ export const LongReadTrComponentTrack = ({
               </text>
             </svg>
           </HorizontalPlotScroller>
-          {hasAuthorizedExactReferenceOutline && (
-            <ComponentLegend aria-label="Variation cluster reference region legend">
-              <ExactReferenceOutlineKey
-                aria-hidden="true"
-                style={{
-                  background: motifColor(
-                    components[exactReferenceComponentIndex as number].motif,
-                    locus.motifs
-                  ),
-                }}
-              />
-              <span>Known disease-associated tandem repeat</span>
-            </ComponentLegend>
-          )}
         </>
       )}
       {showTable && (
@@ -1071,6 +1065,9 @@ export const LongReadTrComponentTrack = ({
 const HISTOGRAM_Y_COLUMN_WIDTH = 76
 // No gap, so the y axis line meets the x axis line at the corner, as in the genotype heatmap.
 const HISTOGRAM_COLUMN_GAP = 0
+// Space between the right end of a plot's x axis and the card's padding, so the plot does not run
+// up to the card's edge.
+const HISTOGRAM_RIGHT_MARGIN = 16
 // Widest a histogram bar or a genotype heatmap square may be, in on-screen pixels. With few
 // sizes the bars and squares keep this width and sit centered in the plot.
 const MAX_PLOT_BAR_WIDTH_PX = 45
@@ -1106,7 +1103,7 @@ const HistogramChart = styled.div`
     ${HISTOGRAM_Y_COLUMN_WIDTH}px
     calc(100% - ${HISTOGRAM_Y_COLUMN_WIDTH + HISTOGRAM_COLUMN_GAP}px);
   gap: ${HISTOGRAM_COLUMN_GAP}px;
-  margin: 1.8em 0 1.2em;
+  margin: 1.8em ${HISTOGRAM_RIGHT_MARGIN}px 1.2em 0;
 `
 
 // flow-root keeps the chart's top margin inside this box, so the space that x axis alignment
@@ -1150,7 +1147,11 @@ const fittedHistogramBars = (measuredWidth: number, binCount: number, layout: Hi
   const naturalBarWidth = Math.min(layout.barWidth, MAX_PLOT_BAR_WIDTH_PX)
   if (!measuredWidth || !binCount) return { barWidth: naturalBarWidth, gap: layout.gap }
   const usableWidth =
-    measuredWidth - HISTOGRAM_Y_COLUMN_WIDTH - HISTOGRAM_COLUMN_GAP - HISTOGRAM_SIDE_PADDING * 2
+    measuredWidth -
+    HISTOGRAM_Y_COLUMN_WIDTH -
+    HISTOGRAM_COLUMN_GAP -
+    HISTOGRAM_RIGHT_MARGIN -
+    HISTOGRAM_SIDE_PADDING * 2
   const barWidthWithGaps = Math.floor((usableWidth - (binCount - 1) * layout.gap) / binCount)
   if (barWidthWithGaps >= MIN_BAR_WIDTH_WITH_GAPS) {
     return { barWidth: Math.min(MAX_PLOT_BAR_WIDTH_PX, barWidthWithGaps), gap: layout.gap }
@@ -1191,9 +1192,12 @@ const Histogram = styled.div<{ $height: number; $gap: number }>`
   border-bottom: 1px solid ${PLOT_AXIS_LINE_COLOR};
 `
 
+// Space between a y tick label and the y axis line.
+const AXIS_TICK_LABEL_RIGHT_GAP = 5
+
 const AxisTick = styled.span`
   position: absolute;
-  right: 5px;
+  right: ${AXIS_TICK_LABEL_RIGHT_GAP}px;
   transform: translateY(50%);
   color: #566168;
   font-size: ${AXIS_LABEL_FONT_PX}px;
@@ -1201,10 +1205,11 @@ const AxisTick = styled.span`
   white-space: nowrap;
 `
 
-const AxisTitle = styled.span`
+// Placed with yAxisTitleLeft.
+const AxisTitle = styled.span<{ $left: number }>`
   position: absolute;
   top: 50%;
-  left: ${AXIS_LABEL_FONT_PX / 2 + 2}px;
+  left: ${(props) => props.$left}px;
   width: 170px;
   transform: translate(-50%, -50%) rotate(-90deg);
   color: #566168;
@@ -1217,12 +1222,14 @@ const BarButton = styled.button<{
   $selected: boolean
   $hasValue: boolean
   $width: number
+  // The gap to each neighboring bar.
+  $gap: number
   $fill?: string
   $selectedFill?: string
 }>`
   position: relative;
   /* Exactly $width wide, with no minimum, because the x ticks and purity dots are placed for
-     that width. The ::after area keeps the click target at least 44px wide. */
+     that width. */
   flex: 0 0 ${(props) => props.$width}px;
   max-width: ${(props) => Math.max(48, props.$width)}px;
   height: ${(props) => props.$height}%;
@@ -1251,13 +1258,14 @@ const BarButton = styled.button<{
     cursor: default;
   }
 
+  /* The click area spans the bar and half the gap on each side, and no further, so a click never
+     lands on a neighboring bar. It is at least 44px tall, so short bars are easy to hit. */
   &::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: 100%;
-    min-width: 44px;
+    width: ${(props) => props.$width + props.$gap}px;
     height: max(44px, 100%);
     transform: translateX(-50%);
   }
@@ -1318,6 +1326,7 @@ const HistogramChartWithXAxisTitle = styled(HistogramChart)`
 // Sits under the scrolling plot column, outside the scroller, so it stays centered and visible.
 const HistogramXAxisTitle = styled.div`
   margin: 2px 0 1.2em;
+  padding-right: ${HISTOGRAM_RIGHT_MARGIN}px;
   padding-left: ${HISTOGRAM_Y_COLUMN_WIDTH + HISTOGRAM_COLUMN_GAP}px;
   color: #566168;
   font-size: ${AXIS_LABEL_FONT_PX}px;
@@ -1735,6 +1744,19 @@ const tickLabelWidth = (label: string) => label.length * AXIS_LABEL_FONT_PX * 0.
 // Least space between neighboring tick labels.
 const TICK_LABEL_GAP = 6
 
+// Where a y axis title's center sits, from the left edge of the y column: a gap left of the widest
+// tick label, so the title stays close to the axis. The column keeps its width, so plots placed
+// with it still line up, and any room left over falls outside the title.
+const yAxisTitleLeft = (tickLabels: string[]) =>
+  Math.max(
+    AXIS_LABEL_FONT_PX / 2 + 2,
+    HISTOGRAM_Y_COLUMN_WIDTH -
+      AXIS_TICK_LABEL_RIGHT_GAP -
+      Math.max(0, ...tickLabels.map(tickLabelWidth)) -
+      TICK_LABEL_GAP -
+      AXIS_LABEL_FONT_PX / 2
+  )
+
 // Ticks for an axis with one slot per allele size. Every size gets a label when the labels
 // fit; otherwise some are left out, always keeping the ends and 0. Picking bars does not change
 // the ticks, so the labels stay put.
@@ -2095,7 +2117,10 @@ const PurityScatter = ({
           {(measuredWidth) => {
             const plotWidth = Math.max(
               0,
-              measuredWidth - HISTOGRAM_Y_COLUMN_WIDTH - HISTOGRAM_COLUMN_GAP
+              measuredWidth -
+                HISTOGRAM_Y_COLUMN_WIDTH -
+                HISTOGRAM_COLUMN_GAP -
+                HISTOGRAM_RIGHT_MARGIN
             )
             // The bp histogram's bar geometry, centered the same way, so each point sits under
             // its bar. When those bars would not fit (the histogram then scrolls), the slots
@@ -2128,7 +2153,11 @@ const PurityScatter = ({
               <>
                 <HistogramChartWithXAxisTitle>
                   <HistogramYScale aria-hidden="true" $height={plotHeight} style={{ marginTop: 0 }}>
-                    <AxisTitle>Purity</AxisTitle>
+                    <AxisTitle
+                      $left={yAxisTitleLeft(purityTicks.map((tick) => tick.toFixed(decimals)))}
+                    >
+                      Purity
+                    </AxisTitle>
                     {purityTicks.map((tick) => (
                       <AxisTick
                         key={tick}
@@ -2452,7 +2481,9 @@ const MotifOccurrencePlotCard = ({
       {bins.length ? (
         <HistogramChart>
           <HistogramYScale aria-hidden="true" $height={height}>
-            <AxisTitle>Called source ALT copies</AxisTitle>
+            <AxisTitle $left={yAxisTitleLeft(ticks.map((tick) => tick.toLocaleString()))}>
+              Called source ALT copies
+            </AxisTitle>
             {ticks.map((tick) => (
               <AxisTick
                 key={tick}
@@ -2493,6 +2524,7 @@ const MotifOccurrencePlotCard = ({
                       $height={barHeight}
                       $hasValue={bin.allele_copies > 0}
                       $width={barWidth}
+                      $gap={gap}
                       $selected={selected}
                       aria-pressed={selected}
                       aria-label={`${motif}; ${counted(
@@ -3710,7 +3742,11 @@ export const WholeRecordAlleleLandscape = ({
                         $height={histogramLayout.height}
                         style={{ marginTop: barLabelHeadroom }}
                       >
-                        <AxisTitle># of alleles</AxisTitle>
+                        <AxisTitle
+                          $left={yAxisTitleLeft(yTicks.map((tick) => tick.toLocaleString()))}
+                        >
+                          # of alleles
+                        </AxisTitle>
                         {yTicks.map((tick) => (
                           <AxisTick
                             key={tick}
@@ -3806,6 +3842,7 @@ export const WholeRecordAlleleLandscape = ({
                                   $height={height}
                                   $hasValue={barTotal > 0}
                                   $width={barWidth}
+                                  $gap={barGap}
                                   $fill={
                                     referenceOnly
                                       ? REF_ALLELE_SIZE_BAR_COLOR
@@ -4484,10 +4521,11 @@ export const WholeRecordGenotypeLandscape = ({
                               }; filter the source-ALT index to this square`}
                               data-testid="genotype-length-cell-target"
                               data-discrete-brush-id={markId}
-                              x={xFor(longer) + band / 2 - 24}
-                              y={yFor(shorter) + band / 2 - 24}
-                              width={48}
-                              height={48}
+                              // Exactly the square, so a click never lands on a neighbor.
+                              x={xFor(longer)}
+                              y={yFor(shorter)}
+                              width={band}
+                              height={band}
                               rx={2}
                               fill="transparent"
                               stroke="transparent"
