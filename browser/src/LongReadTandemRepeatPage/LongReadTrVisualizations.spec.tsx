@@ -504,6 +504,10 @@ describe('long-read TR visualization fidelity', () => {
     expect(window.getComputedStyle(histogram).paddingTop).toBe('')
     // The headroom fits one line of the bar labels: 9px (the minimum size) at 1.2 line height + 6px.
     expect(window.getComputedStyle(histogram.parentElement!).paddingTop).toBe('17px')
+    // A light grid line at each y tick above 0 (the tallest bar holds 100 alleles, so ticks are
+    // every 20), placed where a bar of that height ends.
+    const gridLines = within(histogram).getAllByTestId('histogram-grid-line')
+    expect(gridLines.map((line) => line.style.bottom)).toEqual(['20%', '40%', '60%', '80%', '100%'])
     const deltaAxis = screen.getByTestId('whole-record-delta-axis')
     expect(within(deltaAxis).getByLabelText('-6 bp tick').textContent).toBe('−6')
     expect(within(deltaAxis).getByLabelText('0 bp tick').textContent).toBe('0')

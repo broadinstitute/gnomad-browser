@@ -1184,6 +1184,7 @@ const HistogramScrollContent = styled.div`
 // Its bottom border is the x axis line, so the line spans the whole plot width and meets the
 // y axis line at the corner.
 const Histogram = styled.div<{ $height: number; $gap: number }>`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -1191,6 +1192,18 @@ const Histogram = styled.div<{ $height: number; $gap: number }>`
   gap: ${(props) => props.$gap}px;
   height: ${(props) => props.$height}px;
   border-bottom: 1px solid ${PLOT_AXIS_LINE_COLOR};
+`
+
+// The color of the light horizontal lines at a plot's y ticks.
+const PLOT_GRID_LINE_COLOR = '#e2e6e8'
+
+// A horizontal line across a histogram at one y tick, drawn before the bars so they cover it.
+const HistogramGridLine = styled.span`
+  position: absolute;
+  right: 0;
+  left: 0;
+  border-top: 1px solid ${PLOT_GRID_LINE_COLOR};
+  pointer-events: none;
 `
 
 // Space between a y tick label and the y axis line.
@@ -2197,7 +2210,7 @@ const PurityScatter = ({
                             right: 0,
                             bottom: purityTickBottom(tick),
                             left: 0,
-                            borderTop: '1px solid #e2e6e8',
+                            borderTop: `1px solid ${PLOT_GRID_LINE_COLOR}`,
                           }}
                         />
                       ))}
@@ -3780,6 +3793,24 @@ export const WholeRecordAlleleLandscape = ({
                             $gap={barGap}
                             {...totalLengthBrush.containerProps}
                           >
+                            {/* Grid lines at the y ticks above 0, where the x axis already is,
+                                like the purity plot's. */}
+                            {yTicks
+                              .filter((tick) => tick > 0)
+                              .map((tick) => (
+                                <HistogramGridLine
+                                  key={tick}
+                                  aria-hidden="true"
+                                  data-testid="histogram-grid-line"
+                                  style={{
+                                    bottom: `${histogramHeightPercent(
+                                      tick,
+                                      maxCount,
+                                      selectedScaleType
+                                    )}%`,
+                                  }}
+                                />
+                              ))}
                             {histogramBins.map((bin, index) => {
                               const count = counts[index]
                               const referenceCount = referenceCounts[index]
