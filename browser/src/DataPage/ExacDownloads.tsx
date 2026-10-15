@@ -40,23 +40,19 @@ const coverageFiles = [
 
 const ExacDownloads = () => (
   <>
-    <SectionTitle id="exac" subject="release">
-      ExAC Downloads
-    </SectionTitle>
+    <SectionTitle id="exac" $subject="release" title="ExAC Downloads" />
     <StyledParagraph>
       The ExAC data set contains data from 60,706 exomes, all mapped to the GRCh37/hg19 reference
       sequence.
     </StyledParagraph>
 
-    <SectionTitle id="exac-core-dataset" subject="datasets">
-      Core Dataset
-    </SectionTitle>
+    <SectionTitle id="exac-core-dataset" $subject="datasets" title="Core Dataset" />
     <StyledParagraph>
       gnomAD database and features created and maintained by the gnomAD production team.
     </StyledParagraph>
 
     <DownloadsSection>
-      <SectionTitle id="exac-variants">Variants</SectionTitle>
+      <SectionTitle id="exac-variants" title="Variants" />
       <h3>Exomes</h3>
       <FileList>
         <ListItem>
@@ -72,7 +68,7 @@ const ExacDownloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="exac-coverage">Coverage</SectionTitle>
+      <SectionTitle id="exac-coverage" title="Coverage" />
       <FileList>
         {coverageFiles.map(({ chrom, md5, size }) => (
           <ListItem key={chrom}>
@@ -88,7 +84,7 @@ const ExacDownloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="exac-constraint">Constraint</SectionTitle>
+      <SectionTitle id="exac-constraint" title="Constraint" />
       <FileList>
         <ListItem>
           <DownloadLinks
@@ -100,9 +96,7 @@ const ExacDownloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="exac-regional-missense-constraint">
-        Regional Missense Constraint
-      </SectionTitle>
+      <SectionTitle id="exac-regional-missense-constraint" title="Regional Missense Constraint" />
       <FileList>
         <ListItem>
           <DownloadLinks
@@ -114,7 +108,7 @@ const ExacDownloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="exac-resources">Resources</SectionTitle>
+      <SectionTitle id="exac-resources" title="Resources" />
       <FileList>
         <ListItem>
           <DownloadLinks
@@ -126,7 +120,7 @@ const ExacDownloads = () => (
     </DownloadsSection>
 
     <section>
-      <SectionTitle id="exac-other">Other</SectionTitle>
+      <SectionTitle id="exac-other" title="Other" />
       <FileList>
         <ListItem>
           <GetUrlButtons

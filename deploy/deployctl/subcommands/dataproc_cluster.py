@@ -25,7 +25,7 @@ def start_cluster(name: str, cluster_args: typing.List[str]) -> None:
     if not config.project:
         raise RuntimeError("project configuration is required")
 
-    with open(os.path.join(HOME_DIRECTORY, "requirements.txt")) as requirements_file:
+    with open(os.path.join(HOME_DIRECTORY, "cluster-requirements.txt")) as requirements_file:
         requirements_hail_version = next(
             (line.strip().split("==")[1] for line in requirements_file if line.strip().startswith("hail==")), None
         )

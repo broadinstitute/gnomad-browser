@@ -72,7 +72,9 @@ const CopyNumberVariantPopulationsTable = ({ variant }: CopyNumberVariantPopulat
     sf: 'Site Frequency',
   }
 
-  return <CNVPopulationsTable columnLabels={columnLabels} populations={populations} variant={variant} />
+  return (
+    <CNVPopulationsTable columnLabels={columnLabels} populations={populations} variant={variant} />
+  )
 }
 
 export default CopyNumberVariantPopulationsTable

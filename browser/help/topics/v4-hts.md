@@ -19,11 +19,11 @@ The Hail forum is a place to search for answers to Hail issues, post about any b
 
 ### <a id="frequency-annotations"></a>gnomAD Hail Table frequency annotations
 
-The gnomAD release sites Hail Tables containing allele frequency information within the row annotation named '`freq`'.
+The gnomAD release sites Hail Tables containing allele frequency information within the row annotation named `freq`.
 
-The '`freq`' annotation is an array, and each element of the array is a struct that contains the alternate allele count (`AC`), alternate allele frequency (`AF`), total number of alleles (`AN`), and number of homozygous alternate individuals (`homozygote_count`) for a specific sample grouping.
+The `freq` annotation is an array, and each element of the array is a struct that contains the alternate allele count (`AC`), alternate allele frequency (`AF`), total number of alleles (`AN`), and number of homozygous alternate individuals (`homozygote_count`) for a specific sample grouping.
 
-Use the '`freq_index_dict`' global annotation to retrieve frequency information for a specific group of samples from the '`freq`' array. This global annotation is a dictionary keyed by sample grouping combinations whose values are the combination's index in the '`freq`' array. The groupings and their available options by version are listed in the table below.
+Use the `freq_index_dict` global annotation to retrieve frequency information for a specific group of samples from the `freq` array. This global annotation is a dictionary keyed by sample grouping combinations whose values are the combination's index in the `freq` array. The groupings and their available options by version are listed in the table below.
 
 | Category                                 | Definition                             | Exome Options                                                                                                                                                                                                                                                                                  | Genome Options                                                                                                                                                                                                                                                                                                                                                                                                                                    | Joint (combined exome + genome) Options                                     |
 | ---------------------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
@@ -35,21 +35,21 @@ Use the '`freq_index_dict`' global annotation to retrieve frequency information 
 | `gen_anc` (HGDP subset only)<sup>2</sup> | The HGDP's ancestry labels             | N/A                                                                                                                                                                                                                                                                                            | adygei, balochi, bantukenya, bantusafrica, basque, bedouin, biakapygmy, brahui, burusho, cambodian, colombian, dai, daur, druze, french, han, hazara, hezhen, italian, japanese, kalash, karitiana, lahu, makrani, mandenka, maya, mbutipygmy, melanesian, miaozu, mongola, mozabite, naxi, orcadian, oroqen, palestinian, papuan, pathan, pima, russian, san, sardinian, she, sindhi, surui, tu, tujia, tuscan, uygur, xibo, yakut, yizu, yoruba | N/A                                                                         |
 | `downsampling`<sup>3</sup>               | Downsampled sample counts              | gnomAD: 10, 100, 500, 1000, 2000, 2884, 5000, 10000, 13068, 16740, 19850, 20000, 22362, 26710, 30198, 43129, 50000, 100000, 200000, 500000, 556006, non-UKB: 10, 100, 500, 1000, 2000, 2074, 5000, 8847, 10000, 10492, 16549, 18035, 20000, 21870, 26572, 34899, 50000, 100000, 175054, 200000 | The genomes release Hail Table does not contain downsampling information.                                                                                                                                                                                                                                                                                                                                                                         | The joint frequencies Hail Table does not contain downsampling information. |
 
-#### Version 4.1.1 sample grouping combinations and '`freq`' array access
+#### Version 4.1.1 sample grouping combinations and `freq` array access
 
-The available v4.1.1 grouping combinations within the '`freq`' array annotation are listed below. adj<sup>1</sup> must be provided as the “group” for all combinations except when requesting raw frequency information, which is only available for the main gnomAD callsets and subsets.
+The available v4.1.1 grouping combinations within the `freq` array annotation are listed below. adj<sup>1</sup> must be provided as the “group” for all combinations except when requesting raw frequency information, which is only available for the main gnomAD callsets and subsets.
 
-- group, e.g. '`adj`', '`raw`'
-- sex-group, e.g. '`XX_adj`'
-- subset-group, e.g. '`non_ukb-raw`'
-- gen-anc<sup>2</sup>-group, e.g. '`afr_adj`'
-- gen-anc-sex-group, e.g. '`ami_XX_adj`'
-- downsampling<sup>3</sup>-group-gen-anc, e.g. '`10_adj_eas`',
-- subset-gen-anc-group, e.g. '`non_ukb_sas_adj`'
-- subset-sex-group, e.g. '`non_ukb_XY_adj`'
-- subset-gen-anc<sup>3</sup>-sex-group, e.g. '`non_ukb_mid_XX_adj`',
+- group, e.g. `adj`, `raw`
+- sex-group, e.g. `XX_adj`
+- subset-group, e.g. `non_ukb-raw`
+- gen-anc<sup>2</sup>-group, e.g. `afr_adj`
+- gen-anc-sex-group, e.g. `ami_XX_adj`
+- downsampling<sup>3</sup>-group-gen-anc, e.g. `10_adj_eas`,
+- subset-gen-anc-group, e.g. `non_ukb_sas_adj`
+- subset-sex-group, e.g. `non_ukb_XY_adj`
+- subset-gen-anc<sup>3</sup>-sex-group, e.g. `non_ukb_mid_XX_adj`,
 
-To access the '`freq`' array using the '`freq_index_dict`', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) clustered with the AFR genetic ancestry group in the gnomAD v4.1.1 exomes:
+To access the `freq` array using the `freq_index_dict`, you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) clustered with the AFR genetic ancestry group in the gnomAD v4.1.1 exomes:
 
 ```
 # Load the v4.1.1 exomes public release HT
@@ -66,7 +66,7 @@ The above example will retrieve the entire frequency struct for each variant. To
 ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict["afr_XX_adj"]].AC)
 ```
 
-This same approach can be applied to the filtering allele frequency (FAF) array, '`faf`', by using the '`faf_index_dict`'.
+This same approach can be applied to the filtering allele frequency (FAF) array, `faf`, by using the `faf_index_dict`.
 
 1. Includes only genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes.
 2. For the HGDP and 1KG subsets in the gnomAD v4.1 genomes, project specified ancestry labels are available in place of gnomAD inferred genetic ancestry groups. The HGDP labels are detailed [here](https://science.sciencemag.org/content/367/6484/eaay5012). The 1KG labels are described [here](https://www.internationalgenome.org/category/population).
@@ -78,11 +78,11 @@ This same approach can be applied to the filtering allele frequency (FAF) array,
 
 Global fields:
 
-- `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the '`freq`' array row annotation.
-- `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the '`freq`' array row annotation.
-- `freq_meta_sample_count`: A sample count per sample grouping defined in the '`freq_meta`' global annotation.
-- `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the '`faf`' array row annotation.
-- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency ('`faf`') row annotation.
+- `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the `freq` array row annotation.
+- `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the `freq` array row annotation.
+- `freq_meta_sample_count`: A sample count per sample grouping defined in the `freq_meta` global annotation.
+- `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the `faf` array row annotation.
+- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`faf`) row annotation.
 - `age_distribution`: Callset-wide age histogram calculated on release samples.
   - `bin_edges`: Bin edges for the age histogram.
   - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
@@ -90,7 +90,7 @@ Global fields:
   - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `downsamplings`: Dictionary keyed by dataset with values corresponding to available downsampled sample counts.
 - `filtering_model`: The variant filtering model used and its specific cutoffs.
-  - `filter_name`: Variant filtering model name used in the '`filters`' row annotation, indicating the variant was filtered by this model during variant QC.
+  - `filter_name`: Variant filtering model name used in the `filters` row annotation, indicating the variant was filtered by this model during variant QC.
   - `score_name`: Annotation name of the score used for variant filtering.
   - `snv_cutoff`: SNV filtering cutoff information.
     - `bin`: Filtering percentile cutoff for SNVs.
@@ -134,7 +134,7 @@ Global fields:
   - `vep_config`: Ensembl VEP configuration to run VEP 115 version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
   - `gencode_version`: GENCODE version used in Ensembl VEP 115.
   - `mane_select_version`: MANE Select version used in Ensembl VEP 115.
-- `frequency_README`: Explanation of how to use the '`freq_index_dict`' global annotation to extract frequencies from the '`freq`' row annotation.
+- `frequency_README`: Explanation of how to use the `freq_index_dict` global annotation to extract frequencies from the `freq` row annotation.
 - `date`: Date Hail Table was created.
 - `version`: gnomAD data version.
 
@@ -655,11 +655,11 @@ Row fields
 
 Global fields:
 
-- `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the '`freq`' array row annotation.
-- `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the '`freq`' array row annotation.
-- `freq_meta_sample_count`: A sample count per sample grouping defined in the '`freq_meta`' global annotation.
-- `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the '`faf`' array row annotation.
-- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency ('`faf`') row annotation.
+- `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the `freq` array row annotation.
+- `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the `freq` array row annotation.
+- `freq_meta_sample_count`: A sample count per sample grouping defined in the `freq_meta` global annotation.
+- `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the `faf` array row annotation.
+- `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, gen_anc: gnomAD inferred genetic ancestry group, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (`faf`) row annotation.
 - `age_distribution`: Callset-wide age histogram calculated on release samples.
   - `bin_edges`: Bin edges for the age histogram.
   - `bin_freq`: Bin frequencies for the age histogram. This is the number of records found in each bin.
@@ -667,7 +667,7 @@ Global fields:
   - `n_larger`: Count of age values falling above highest histogram bin edge.
 - `downsamplings`: Dictionary keyed by dataset with values corresponding to available downsampled sample counts.
 - `filtering_model`: The variant filtering model used and its specific cutoffs.
-  - `filter_name`: Variant filtering model name used in the '`filters`' row annotation, indicating the variant was filtered by this model during variant QC.
+  - `filter_name`: Variant filtering model name used in the `filters` row annotation, indicating the variant was filtered by this model during variant QC.
   - `score_name`: Annotation name of the score used for variant filtering.
   - `snv_cutoff`: SNV filtering cutoff information.
     - `bin`: Filtering percentile cutoff for SNVs.
@@ -705,7 +705,7 @@ Global fields:
   - `vep_config`: VEP configuration to run VEP version with [Hail](https://hail.is/docs/0.2/methods/genetics.html#hail.methods.vep). File created using command within VEP init shell script in https://github.com/broadinstitute/gnomad_methods/tree/main.
   - `gencode_version`: GENCODE version used in VEP.
   - `mane_select_version`: MANE select version used in VEP.
-- `frequency_README`: Explanation of how to use the '`freq_index_dict`' global annotation to extract frequencies from the '`freq`' row annotation.
+- `frequency_README`: Explanation of how to use the `freq_index_dict` global annotation to extract frequencies from the `freq` row annotation.
 - `date`: Date Hail Table was created.
 - `version`: gnomAD data version.
 
@@ -907,7 +907,7 @@ Global fields:
 
 - `freq_meta`: Allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘freq’ array row annotation.
 - `freq_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the ‘freq’ array row annotation.
-- `freq_meta_sample_count`: A sample count per sample grouping defined in the '`freq_meta`' global annotation.
+- `freq_meta_sample_count`: A sample count per sample grouping defined in the `freq_meta` global annotation.
 - `faf_meta`: Filtering allele frequency metadata. An ordered list containing the frequency aggregation group for each element of the ‘faf’ array row annotation.
 - `faf_index_dict`: Dictionary keyed by specified label grouping combinations (group: adj/raw, pop: gnomAD inferred global population, sex: sex karyotype), with values describing the corresponding index of each grouping entry in the filtering allele frequency (‘faf’) row annotation.
 - `joint_freq_meta`: Joint allele frequency across the exomes and genomes metadata. An ordered list containing the frequency aggregation group for each element of the ‘joint_freq’ array row annotation.
@@ -1187,7 +1187,7 @@ Row fields
 
 #### Version 2.1 sample grouping combinations and `freq` array access
 
-The available v2.1 grouping combinations within the '`freq`' array annotation are listed below. To access the full callset's data, use “`gnomad`” as the subset. Raw frequency information is only available for subsets; adj<sub>1</sub> frequency information is provided for all other combinations and does not need to be specified.
+The available v2.1 grouping combinations within the `freq` array annotation are listed below. To access the full callset's data, use “`gnomad`” as the subset. Raw frequency information is only available for subsets; adj<sub>1</sub> frequency information is provided for all other combinations and does not need to be specified.
 
 - `subset`, e.g. “`gnomad`”
 - `subset_group`, e.g. “`controls_raw`”
@@ -1195,7 +1195,7 @@ The available v2.1 grouping combinations within the '`freq`' array annotation ar
 - `subset_pop_subpop`, e.g. “`non_topmed_eas_jpn`”
 - `subset_pop_sex`, e.g. “`non_neuro_nfe_female`”
 
-To access the 'freq' array using the '`freq_index_dict`', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes of XX individuals (sex: female2) labeled as `AFR` (pop: `AFR`) in the entire callset (subset: gnomad) for gnomAD v2.1.1 genomes:
+To access the 'freq' array using the `freq_index_dict`, you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes of XX individuals (sex: female2) labeled as `AFR` (pop: `AFR`) in the entire callset (subset: gnomad) for gnomAD v2.1.1 genomes:
 
 ```
 # Load the v2.1.1 public release HT
@@ -1212,7 +1212,7 @@ The above example will retrieve the entire frequency struct for each variant. To
  ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict['gnomad_afr_female']].AC)
 ```
 
-This same approach can be applied to the filtering allele frequency (FAF) array, '`faf`', by using the '`faf_index_dict`'.
+This same approach can be applied to the filtering allele frequency (FAF) array, `faf`, by using the `faf_index_dict`.
 
 #### Version 3.1 sample grouping combinations and `freq` array access
 
@@ -1228,7 +1228,7 @@ The available v3 grouping combinations within the 'freq' array annotation are li
 - `subset-sex-group`, e.g. “`non_cancer-XY-adj`”
 - `subset-pop4-sex-group`, e.g. “`controls_and_biobanks-mid-XX-adj`”,
 
-To access the '`freq`' array using the '`freq_index_dict`', you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) labeled as AFR (pop: AFR) in gnomAD v3.1.2:
+To access the `freq` array using the `freq_index_dict`, you need to retrieve the value of your desired label combination key. The example below accesses the entry of the high quality genotypes (group: adj) of XX individuals (sex: XX) labeled as AFR (pop: AFR) in gnomAD v3.1.2:
 
 ```
 # Load the v3.1.2 public release HT
@@ -1245,7 +1245,7 @@ The above example will retrieve the entire frequency struct for each variant. To
 ht = ht.annotate(afr_XX_AC=ht.freq[ht.freq_index_dict['afr-XX-adj']].AC)
 ```
 
-This same approach can be applied to the filtering allele frequency (FAF) array, '`faf`', by using the '`faf_index_dict`'.
+This same approach can be applied to the filtering allele frequency (FAF) array, `faf`, by using the `faf_index_dict`.
 
 1. Includes only genotypes with depth >= 10, genotype quality >= 20 and minor allele balance > 0.2 for heterozygous genotypes.
 2. The labels we use to classify individuals by chromosomal sex changed from “male” and “female” to “XY” and “XX.” More details available in this [blog post](https://gnomad.broadinstitute.org/news/2020-10-gnomad-v3-1-new-content-methods-annotations-and-data-availability/#tweaks-and-updates).

@@ -6,13 +6,11 @@ import {
   DatasetId,
   hasMitochondrialVariants,
 } from '@gnomad/dataset-metadata/metadata'
-import ClinvarVariantTrack from '../ClinvarVariantsTrack/ClinvarVariantTrack'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import StatusMessage from '../StatusMessage'
-import { TrackPageSection } from '../TrackPage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 
@@ -134,29 +132,14 @@ const MitochondrialVariantsInTranscript = ({
 
         return (
           <>
-            <TrackPageSection>
-              <h2>ClinVar variants</h2>
-            </TrackPageSection>
-            {data.transcript.clinvar_variants.length > 0 ? (
-              <>
-                <ClinvarVariantTrack
-                  referenceGenome={referenceGenome(datasetId)}
-                  transcripts={[transcript]}
-                  variants={filterVariantsInZoomRegion(
-                    data.transcript.clinvar_variants,
-                    zoomRegion
-                  )}
-                />
-                <TrackPageSection as="p">
-                  Data displayed here is from ClinVar&apos;s{' '}
-                  {formatClinvarDate(data.meta.clinvar_release_date)} release.
-                </TrackPageSection>
-              </>
-            ) : (
-              <TrackPageSection as="p">
-                No ClinVar variants found in this transcript.
-              </TrackPageSection>
-            )}
+            <ClinvarVariants
+              clinvarVariants={data.transcript.clinvar_variants}
+              clinvarReleaseDate={data.meta.clinvar_release_date}
+              referenceGenome={referenceGenome(datasetId)}
+              transcripts={[transcript]}
+              zoomRegion={zoomRegion}
+              pageType="transcript"
+            />
 
             <MitochondrialVariants
               {...rest}

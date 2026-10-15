@@ -13,10 +13,10 @@ import { ExternalLink } from '@gnomad/ui'
 const NavBar = lazy(() => import('./NavBar'))
 const Routes = lazy(() => import('./Routes'))
 
-const scrollToAnchorOrStartOfPage = (location: any) => {
+export const scrollToAnchorOrStartOfPage = (location: any) => {
   if (location.hash) {
     setTimeout(() => {
-      const anchor = document.querySelector(`a${location.hash}`)
+      const anchor = document.getElementById(location.hash.slice(1))
       if (anchor) {
         anchor.scrollIntoView()
       } else {

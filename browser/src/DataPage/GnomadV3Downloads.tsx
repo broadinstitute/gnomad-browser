@@ -69,23 +69,19 @@ const hgdpAnd1kgChromosomeVcfs = [
 
 const GnomadV3Downloads = () => (
   <>
-    <SectionTitle id="v3" subject="release">
-      v3 Downloads
-    </SectionTitle>
+    <SectionTitle id="v3" $subject="release" title="v3 Downloads" />
     <StyledParagraph>
       The gnomAD v3.1.2 data set contains 76,156 whole genomes (and no exomes), all mapped to the
       GRCh38 reference sequence.
     </StyledParagraph>
 
-    <SectionTitle id="v3-core-dataset" subject="datasets">
-      Core Dataset
-    </SectionTitle>
+    <SectionTitle id="v3-core-dataset" $subject="datasets" title="Core Dataset" />
     <StyledParagraph>
       gnomAD database and features created and maintained by the gnomAD production team.
     </StyledParagraph>
 
     <DownloadsSection>
-      <SectionTitle id="v3-variants">Variants</SectionTitle>
+      <SectionTitle id="v3-variants" title="Variants" />
       <p>
         <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-10-gnomad-v3-1-2-minor-release/">
@@ -121,7 +117,7 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-coverage">Coverage</SectionTitle>
+      <SectionTitle id="v3-coverage" title="Coverage" />
       <FileList>
         <ListItem>
           <GetUrlButtons
@@ -141,7 +137,7 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-hgdp-1kg">HGDP + 1KG callset</SectionTitle>
+      <SectionTitle id="v3-hgdp-1kg" title="HGDP + 1KG callset" />
       <p>
         These files contain individual genotypes for all samples in the HGDP and 1KG subsets. For
         more information, see the{' '}
@@ -202,7 +198,7 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-mitochondrial-dna">Mitochondrial DNA (mtDNA)</SectionTitle>
+      <SectionTitle id="v3-mitochondrial-dna" title="Mitochondrial DNA (mtDNA)" />
       <p>
         For details about these files, see the{' '}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2020-11-gnomad-v3-1-mitochondrial-dna-variants/">
@@ -244,9 +240,7 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-ancestry-classification">
-        Genetic ancestry group classification
-      </SectionTitle>
+      <SectionTitle id="v3-ancestry-classification" title="Genetic ancestry group classification" />
       <p>
         For more information about these files, see our blog post on{' '}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
@@ -273,7 +267,7 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-local-ancestry">Local ancestry</SectionTitle>
+      <SectionTitle id="v3-local-ancestry" title="Local ancestry" />
       <p>
         For more information about these files, see our blog posts on local ancestry inference for{' '}
         <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-12-local-ancestry-inference-for-latino-admixed-american-samples-in-gnomad/">
@@ -306,7 +300,7 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-short-tandem-repeats">Short tandem repeats</SectionTitle>
+      <SectionTitle id="v3-short-tandem-repeats" title="Short tandem repeats" />
       <p>
         These files contain the data that underlies the{' '}
         <ExternalLink href="https://gnomad.broadinstitute.org/short-tandem-repeats?dataset=gnomad_r4">
@@ -397,16 +391,14 @@ const GnomadV3Downloads = () => (
       </FileList>
     </DownloadsSection>
 
-    <SectionTitle id="v3-secondary-analyses" subject="datasets">
-      Secondary Analyses
-    </SectionTitle>
+    <SectionTitle id="v3-secondary-analyses" $subject="datasets" title="Secondary Analyses" />
     <StyledParagraph>
       Additional research analyses created using the core gnomAD releases in collaboration with
       members of the gnomAD steering committee.
     </StyledParagraph>
 
     <DownloadsSection>
-      <SectionTitle id="v3-genomic-constraint">Genomic constraint</SectionTitle>
+      <SectionTitle id="v3-genomic-constraint" title="Genomic constraint" />
       <p>For more information about these files, see the README included in the download.</p>
       <FileList>
         <ListItem>
@@ -438,7 +430,7 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-hgdp-1kg-tutorials">HGDP + 1KG tutorials</SectionTitle>
+      <SectionTitle id="v3-hgdp-1kg-tutorials" title="HGDP + 1KG tutorials" />
       <p>
         For more information about these files, see the{' '}
         <ExternalLink href="https://docs.google.com/document/d/16W0KyrpRGRKHaOwahxtogtepbHe181BoOrSpTQVSVHc/edit?usp=sharing">
@@ -666,7 +658,7 @@ const GnomadV3Downloads = () => (
     </DownloadsSection>
 
     <DownloadsSection>
-      <SectionTitle id="v3-mito-constraint">Mitochondrial constraint</SectionTitle>
+      <SectionTitle id="v3-mito-constraint" title="Mitochondrial constraint" />
       <p>
         For more information about mitochondrial constraint, see{' '}
         <ExternalLink href="https://doi.org/10.1038/s41586-024-08048-x">

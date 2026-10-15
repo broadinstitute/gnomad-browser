@@ -237,7 +237,7 @@ const _fetchCoverageForTranscript = async (esClient: any, datasetId: any, transc
       })
     : []
   const genomeCoveragePromise = genomeCoverageIndex
-    ? await fetchCoverage(esClient, {
+    ? fetchCoverage(esClient, {
         index: genomeCoverageIndex,
         contig:
           transcript.reference_genome === 'GRCh38' ? `chr${transcript.chrom}` : transcript.chrom,

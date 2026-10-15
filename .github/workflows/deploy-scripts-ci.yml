@@ -9,9 +9,11 @@ on:
     paths:
       - 'deploy/deployctl/**'
       - '.github/workflows/**'
+permissions:
+  contents: read
 jobs:
-  checks:
-    name: Checks
+  deployctl-checks:
+    name: Deployctl Checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,10 +24,8 @@ jobs:
           enable-cache: true
           cache-dependency-glob: 'uv.lock'
       - name: Install dependencies
-        # Install the exact dependencies from uv.lock without re-resolving or updating
-        # the lockfile; fails if pyproject.toml has drifted from uv.lock.
-        run: uv sync --frozen
+        run: make install-py-deploy-dependencies
       - name: Check formatting
-        run: uv run ruff format --check deploy/deployctl
-      - name: Run Ruff
-        run: uv run ruff check deploy/deployctl
+        run: make check-format-deploy
+      - name: Lint
+        run: make lint-deploy

@@ -35,7 +35,7 @@ replacements:
     version: v1
   targets:
   - fieldPaths:
-    - spec.template.spec.containers.0.env.0.value
+    - spec.template.spec.containers.[name=web].env.[name=API_URL].value
     options:
       delimiter: /
       index: 2
@@ -56,8 +56,23 @@ patches:
             containers:
               - name: app
                 env:
+                  - name: GCP_PROJECT
+                    value: '{project}'
                   - name: JSON_CACHE_PATH
                     value: 'gs://{cluster_name}-gene-cache/2024-04-24'
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gnomad-browser
+      spec:
+        template:
+          spec:
+            containers:
+              - name: web
+                env:
+                  - name: GCP_PROJECT
+                    value: '{project}'
 """
 
 DEMO_DEPLOYMENT_KUSTOMIZATION = """

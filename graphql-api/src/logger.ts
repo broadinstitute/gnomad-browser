@@ -1,3 +1,5 @@
+import { requestStore } from './request-context'
+
 // https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#logseverity
 const Severity = {
   INFO: 'INFO',
@@ -32,22 +34,30 @@ const formatLogEntry = (obj: any) => {
   return record
 }
 
+const addTrace = (record: any) => {
+  const trace = requestStore.getStore()?.trace
+
+  return trace
+    ? {
+        ...record,
+        'logging.googleapis.com/trace': trace,
+      }
+    : record
+}
+
 const logger = {
   info: (obj: any) => {
-    const record = formatLogEntry(obj)
-    // @ts-expect-error TS(2339) FIXME: Property 'severity' does not exist on type '{}'.
+    const record = addTrace(formatLogEntry(obj))
     record.severity = Severity.INFO
     console.log(JSON.stringify(record)) // eslint-disable-line no-console
   },
   warn: (obj: any) => {
-    const record = formatLogEntry(obj)
-    // @ts-expect-error TS(2339) FIXME: Property 'severity' does not exist on type '{}'.
+    const record = addTrace(formatLogEntry(obj))
     record.severity = Severity.WARNING
     console.log(JSON.stringify(record)) // eslint-disable-line no-console
   },
   error: (obj: any) => {
-    const record = formatLogEntry(obj)
-    // @ts-expect-error TS(2339) FIXME: Property 'severity' does not exist on type '{}'.
+    const record = addTrace(formatLogEntry(obj))
     record.severity = Severity.ERROR
     console.error(JSON.stringify(record)) // eslint-disable-line no-console
   },

@@ -212,6 +212,23 @@ test('ConstraintTable with exac dataset and gene with available constraints has 
   expect(tree).toMatchSnapshot()
 })
 
+test('ConstraintTable preserves ExAC metrics when pLI is missing', () => {
+  const tree = renderer.create(
+    <ConstraintTable
+      datasetId="exac"
+      geneOrTranscript={transcriptFactory.build({
+        exac_constraint: exacConstraintFactory.build({ pLI: null }),
+      })}
+    />
+  )
+  const rows = tree.root.findAllByType('tr')
+  const lofCells = rows[3].findAllByType('td')
+
+  expect(lofCells[0].findByType('span').children).toEqual(['0.1'])
+  expect(lofCells[1].children).toEqual(['0.234'])
+  expect(lofCells[2].children).toEqual(['pLI =', ' ', '—'])
+})
+
 test('ConstraintTable with exac dataset and transcript with available constraints has no unexpected changes', () => {
   const tree = renderer.create(
     <BrowserRouter>

@@ -20,7 +20,7 @@ const useHeadsObserver = () => {
       rootMargin: '0% 0px -90% 0px',
     })
 
-    const elements = document.querySelectorAll('a[id]')
+    const elements = document.querySelectorAll('h2[id]')
     // @ts-expect-error
     elements.forEach((element) => observer.current.observe(element))
     // @ts-expect-error

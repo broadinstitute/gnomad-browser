@@ -3,7 +3,7 @@ id: sv-class_INS
 title: 'SV class: insertion (INS)'
 ---
 
-Classification: _Balanced<sup>*</sup> canonical SV_
+Classification: _Balanced<sup>\*</sup> canonical SV_
 
 ![Insertion (INS)](gnomAD_browser.SV_schematics_INS.png)
 

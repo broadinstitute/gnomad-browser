@@ -69,23 +69,19 @@ const liftoverGenomeChromosomeVcfs = [
 const Gnomadv2LiftoverDownloads = () => {
   return (
     <>
-      <SectionTitle id="v2-liftover" subject="release">
-        v2 Liftover Downloads
-      </SectionTitle>
+      <SectionTitle id="v2-liftover" $subject="release" title="v2 Liftover Downloads" />
       <StyledParagraph>
         The gnomAD v2.1.1 liftover data set contains data from 125,748 exomes and 15,708 whole
         genomes, lifted over from the GRCh37 to the GRCh38 reference sequence.
       </StyledParagraph>
 
-      <SectionTitle id="v2-liftover-core-dataset" subject="datasets">
-        Core Dataset
-      </SectionTitle>
+      <SectionTitle id="v2-liftover-core-dataset" $subject="datasets" title="Core Dataset" />
       <StyledParagraph>
         gnomAD database and features created and maintained by the gnomAD production team.
       </StyledParagraph>
 
       <DownloadsSection>
-        <SectionTitle id="v2-liftover-variants">Variants (GRCh38 liftover)</SectionTitle>
+        <SectionTitle id="v2-liftover-variants" title="Variants (GRCh38 liftover)" />
         <p>
           The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only,
           and non-TOPMed).
@@ -159,9 +155,10 @@ const Gnomadv2LiftoverDownloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-liftover-structural-variants">
-          Structural variants (GRCh38 liftover)
-        </SectionTitle>
+        <SectionTitle
+          id="v2-liftover-structural-variants"
+          title="Structural variants (GRCh38 liftover)"
+        />
         <p>
           <Badge level="info">Note</Badge> The lifted over structural variant dataset was created by
           dbVar and has not been assessed by the gnomAD production team.

@@ -223,7 +223,7 @@ exports[`NavBar has no unexpected changes 1`] = `
         <option
           value="gnomad_r4"
         >
-          gnomAD v4.1.1
+          gnomAD v4.1.2
         </option>
         <option
           value="gnomad_r3"

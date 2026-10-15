@@ -154,23 +154,19 @@ const LDFiles = () => {
 const GnomadV2Downloads = () => {
   return (
     <>
-      <SectionTitle id="v2" subject="release">
-        v2 Downloads
-      </SectionTitle>
+      <SectionTitle id="v2" $subject="release" title="v2 Downloads" />
       <StyledParagraph>
         The gnomAD v2.1.1 data set contains data from 125,748 exomes and 15,708 whole genomes, all
         mapped to the GRCh37/hg19 reference sequence.
       </StyledParagraph>
 
-      <SectionTitle id="v2-core-dataset" subject="datasets">
-        Core Dataset
-      </SectionTitle>
+      <SectionTitle id="v2-core-dataset" $subject="datasets" title="Core Dataset" />
       <StyledParagraph>
         gnomAD database and features created and maintained by the gnomAD production team.
       </StyledParagraph>
 
       <DownloadsSection>
-        <SectionTitle id="v2-variants">Variants</SectionTitle>
+        <SectionTitle id="v2-variants" title="Variants" />
         <p>
           <Badge level="info">Note</Badge> Find out what changed in the latest release in the{' '}
           <ExternalLink href="https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/README.txt">
@@ -260,7 +256,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-browser-tables">Browser Tables</SectionTitle>
+        <SectionTitle id="v2-browser-tables" title="Browser Tables" />
 
         <p>
           For more information about these files, see our{' '}
@@ -282,7 +278,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-coverage">Coverage</SectionTitle>
+        <SectionTitle id="v2-coverage" title="Coverage" />
         <FileList>
           <ListItem>
             <GetUrlButtons
@@ -316,7 +312,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-structural-variants">Structural variants</SectionTitle>
+        <SectionTitle id="v2-structural-variants" title="Structural variants" />
         <p>
           For information on gnomAD structural variants, see{' '}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2287-8">
@@ -371,12 +367,12 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-linkage-disequilibrium">Linkage disequilibrium</SectionTitle>
+        <SectionTitle id="v2-linkage-disequilibrium" title="Linkage disequilibrium" />
         <LDFiles />
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-ancestry-classification">Ancestry classification</SectionTitle>
+        <SectionTitle id="v2-ancestry-classification" title="Ancestry classification" />
         <p>
           For more information about these files, see our blog post on{' '}
           <ExternalLink href="https://gnomad.broadinstitute.org/news/2021-09-using-the-gnomad-ancestry-principal-components-analysis-loadings-and-random-forest-classifier-on-your-dataset/">
@@ -403,9 +399,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-regional-missense-constraint">
-          Regional Missense Constraint
-        </SectionTitle>
+        <SectionTitle id="v2-regional-missense-constraint" title="Regional Missense Constraint" />
         <FileList>
           <ListItem>
             <GetUrlButtons
@@ -429,7 +423,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-clinvar-grch37">ClinVar</SectionTitle>
+        <SectionTitle id="v2-clinvar-grch37" title="ClinVar" />
         <p>
           For more information about these files, including how to download a specific previous
           version of the gnomAD browser ClinVar GRCh37 table, see the{' '}
@@ -449,7 +443,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-resources">Resources</SectionTitle>
+        <SectionTitle id="v2-resources" title="Resources" />
         <FileList>
           <ListItem>
             <DownloadLinks
@@ -484,16 +478,14 @@ const GnomadV2Downloads = () => {
         </FileList>
       </DownloadsSection>
 
-      <SectionTitle id="v2-secondary-analyses" subject="datasets">
-        Secondary Analyses
-      </SectionTitle>
+      <SectionTitle id="v2-secondary-analyses" $subject="datasets" title="Secondary Analyses" />
       <StyledParagraph>
         Additional research analyses created using the core gnomAD releases in collaboration with
         members of the gnomAD steering committee.
       </StyledParagraph>
 
       <DownloadsSection>
-        <SectionTitle id="v2-constraint">Constraint</SectionTitle>
+        <SectionTitle id="v2-constraint" title="Constraint" />
         <p>
           For information on constraint, see{' '}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">
@@ -536,9 +528,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-multi-nucleotide-variants">
-          Multi-nucleotide variants (MNVs)
-        </SectionTitle>
+        <SectionTitle id="v2-multi-nucleotide-variants" title="Multi-nucleotide variants (MNVs)" />
         <p>
           For information on multi-nucleotide variants in gnomAD, see{' '}
           <ExternalLink href="https://doi.org/10.1038/s41467-019-12438-5">
@@ -588,7 +578,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-pext">Proportion expressed across transcripts (pext)</SectionTitle>
+        <SectionTitle id="v2-pext" title="Proportion expressed across transcripts (pext)" />
         <p>
           For information on pext, see{' '}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2329-2">
@@ -625,7 +615,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-variant-cooccurrence">Variant co-occurrence</SectionTitle>
+        <SectionTitle id="v2-variant-cooccurrence" title="Variant co-occurrence" />
         <FileList>
           <ListItem>
             <DownloadLinks
@@ -656,7 +646,7 @@ const GnomadV2Downloads = () => {
       </DownloadsSection>
 
       <DownloadsSection>
-        <SectionTitle id="v2-lof-curation-results">Loss-of-function curation results</SectionTitle>
+        <SectionTitle id="v2-lof-curation-results" title="Loss-of-function curation results" />
         <p>
           For information on loss-of-function curation results, see{' '}
           <ExternalLink href="https://doi.org/10.1038/s41586-020-2308-7">

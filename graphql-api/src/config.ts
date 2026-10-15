@@ -20,6 +20,7 @@ const parseProxyConfig = (config: any) => {
 }
 
 const config: Record<string, any> = {
+  NODE_ENV: env.NODE_ENV || 'development',
   // Elasticsearch
   ELASTICSEARCH_URL: env.ELASTICSEARCH_URL,
   ELASTICSEARCH_USERNAME: env.ELASTICSEARCH_USERNAME,
@@ -48,6 +49,9 @@ const config: Record<string, any> = {
   JSON_CACHE_LARGE_GENES: env.JSON_CACHE_LARGE_GENES === 'true' || false,
   JSON_CACHE_COMPRESSION: env.JSON_CACHE_COMPRESSION === 'true' || false,
   REDIS_CACHE_PREFIX: env.REDIS_CACHE_PREFIX || '',
+
+  // GCP
+  GCP_PROJECT: env.GCP_PROJECT,
 }
 
 const requiredConfig = ['ELASTICSEARCH_URL']

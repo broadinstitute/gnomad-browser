@@ -9,13 +9,6 @@ Please note that this resource is under development and the query schema is subj
 
 The gnomAD API uses [GraphQL](https://graphql.org/learn/) for queries.
 
-To get started, open the interactive query editor at https://gnomad.broadinstitute.org/api.
-
-Click the "Docs" button in the top right-hand corner to open up the Documentation Explorer.
-GraphQL is self-documenting, so the fields and data described in this section are always
-up-to-date. Browsing through the Documentation Explorer is the best way to understand how
-to query data and learn which types of data are available to retrieve.
-
 ## Examples
 
 Examples of fetching gnomAD allele counts for a specific variant using different languages.
