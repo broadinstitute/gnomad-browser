@@ -39,6 +39,20 @@ afterEach(() => {
   resetMockApiResponses()
 })
 
+const genotypeCountsFromLowToHigh = (
+  low: number,
+  mediumLow: number,
+  medium: number,
+  mediumHigh: number,
+  high: number
+) => [
+  { quality_description: 'low', genotype_count: low },
+  { quality_description: 'medium-low', genotype_count: mediumLow },
+  { quality_description: 'medium', genotype_count: medium },
+  { quality_description: 'medium-high', genotype_count: mediumHigh },
+  { quality_description: 'high', genotype_count: high },
+]
+
 const strApiResponse = {
   short_tandem_repeats: [
     {
@@ -62,6 +76,8 @@ const strApiResponse = {
         start: 123,
         stop: 234,
       },
+      average_quality_of_manually_reviewed_genotypes: 4.82,
+      manually_reviewed_genotype_counts_by_quality: genotypeCountsFromLowToHigh(0, 0, 0, 5, 23),
     },
     {
       id: 'ARX_1',
@@ -90,6 +106,9 @@ const strApiResponse = {
         start: 234,
         stop: 345,
       },
+      // (25 * 1 + 10 * 2 + 20 * 3 + 5 * 4 + 10 * 5) / 70
+      average_quality_of_manually_reviewed_genotypes: 175 / 70,
+      manually_reviewed_genotype_counts_by_quality: genotypeCountsFromLowToHigh(25, 10, 20, 5, 10),
     },
     {
       id: 'AFF2',
@@ -112,6 +131,9 @@ const strApiResponse = {
         start: 345,
         stop: 456,
       },
+      // (160 * 1 + 50 * 2 + 15 * 3 + 4 * 4 + 2 * 5) / 231
+      average_quality_of_manually_reviewed_genotypes: 331 / 231,
+      manually_reviewed_genotype_counts_by_quality: genotypeCountsFromLowToHigh(160, 50, 15, 4, 2),
     },
     {
       id: 'ATN1',
@@ -134,6 +156,8 @@ const strApiResponse = {
         start: 456,
         stop: 567,
       },
+      average_quality_of_manually_reviewed_genotypes: 5,
+      manually_reviewed_genotype_counts_by_quality: genotypeCountsFromLowToHigh(0, 0, 0, 0, 1),
     },
     {
       id: 'ATXN1',
@@ -156,6 +180,8 @@ const strApiResponse = {
         start: 567,
         stop: 678,
       },
+      average_quality_of_manually_reviewed_genotypes: null,
+      manually_reviewed_genotype_counts_by_quality: genotypeCountsFromLowToHigh(0, 0, 0, 0, 0),
     },
     {
       id: 'ATXN2',
@@ -184,6 +210,8 @@ const strApiResponse = {
         start: 678,
         stop: 789,
       },
+      average_quality_of_manually_reviewed_genotypes: 4.25,
+      manually_reviewed_genotype_counts_by_quality: genotypeCountsFromLowToHigh(0, 0, 1, 1, 2),
     },
     {
       id: 'ATXN10',
@@ -206,6 +234,8 @@ const strApiResponse = {
         start: 789,
         stop: 1012,
       },
+      average_quality_of_manually_reviewed_genotypes: 3,
+      manually_reviewed_genotype_counts_by_quality: genotypeCountsFromLowToHigh(10, 20, 24, 20, 10),
     },
   ],
 }
@@ -224,6 +254,57 @@ describe('ShortTandemRepeatsPage', () => {
       </MemoryRouter>
     )
     expect(tree).toMatchSnapshot()
+  })
+
+  test('shows a genotype quality square only for loci with manually reviewed genotypes', () => {
+    render(
+      <MemoryRouter>
+        <ShortTandemRepeatsPage datasetId="gnomad_r4" />
+      </MemoryRouter>
+    )
+
+    const squareLabelsById = Object.fromEntries(
+      screen.queryAllByRole('row').flatMap((row) => {
+        const id = row.querySelector('th[scope="row"]')?.textContent
+        const square = row.querySelector('[role="img"]')
+        return id ? [[id, square?.getAttribute('aria-label') ?? null]] : []
+      })
+    )
+    const hoverText = (averageQuality: string, counts: string, reviewedGenotypes: string) =>
+      `Average genotype quality is ${averageQuality} at this locus (${counts}). This is based on manual review of read visualizations from ${reviewedGenotypes} relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail.`
+    const atxn2HoverText = hoverText(
+      '4.25',
+      '2 = High, 1 = Medium-high, 1 = Medium',
+      '4 genotypes that are the largest outliers'
+    )
+    expect(squareLabelsById).toEqual({
+      AFF2: hoverText(
+        '1.43',
+        '2 = High, 4 = Medium-high, 15 = Medium, 50 = Medium-low, 160 = Low',
+        '231 genotypes that are the largest outliers'
+      ),
+      AR: hoverText(
+        '4.82',
+        '23 = High, 5 = Medium-high',
+        '28 genotypes that are the largest outliers'
+      ),
+      ARX_1: hoverText(
+        '2.50',
+        '10 = High, 5 = Medium-high, 20 = Medium, 10 = Medium-low, 25 = Low',
+        '70 genotypes that are the largest outliers'
+      ),
+      ATN1: hoverText('5.00', '1 = High', '1 genotype that is the largest outlier'),
+      ATXN1: null,
+      ATXN10: hoverText(
+        '3.00',
+        '10 = High, 20 = Medium-high, 24 = Medium, 20 = Medium-low, 10 = Low',
+        '84 genotypes that are the largest outliers'
+      ),
+      ATXN2: atxn2HoverText,
+    })
+    expect(screen.getByRole('img', { name: atxn2HoverText }).style.backgroundColor).toEqual(
+      'rgb(169, 217, 124)'
+    )
   })
 
   describe('sorting', () => {
@@ -386,6 +467,42 @@ describe('ShortTandemRepeatsPage', () => {
         'AFF2', // FRAXE mental retardation
         'ATN1', // Dentatorubral-pallidoluysian atrophy
         'ARX_1', // Developmental and epileptic encephalopathy-1, X-linked mental retardation with or without seizures
+      ])
+    })
+
+    test('sorts by average genotype quality, treating unreviewed loci as the lowest', async () => {
+      const user = userEvent.setup()
+
+      render(
+        <MemoryRouter>
+          <ShortTandemRepeatsPage datasetId="gnomad_r4" />
+        </MemoryRouter>
+      )
+
+      const genotypeQualityButton = screen.getByText('GQ')
+
+      await user.click(genotypeQualityButton)
+      const highestFirstIds = screen.queryAllByRole('rowheader').map((cell) => cell.textContent)
+      expect(highestFirstIds).toEqual([
+        'ATN1', // 5
+        'AR', // 4.82
+        'ATXN2', // 4.25
+        'ATXN10', // 3
+        'ARX_1', // 2.50
+        'AFF2', // 1.43
+        'ATXN1', // not reviewed
+      ])
+
+      await user.click(genotypeQualityButton)
+      const lowestFirstIds = screen.queryAllByRole('rowheader').map((cell) => cell.textContent)
+      expect(lowestFirstIds).toEqual([
+        'ATXN1', // not reviewed
+        'AFF2', // 1.43
+        'ARX_1', // 2.50
+        'ATXN10', // 3
+        'ATXN2', // 4.25
+        'AR', // 4.82
+        'ATN1', // 5
       ])
     })
   })

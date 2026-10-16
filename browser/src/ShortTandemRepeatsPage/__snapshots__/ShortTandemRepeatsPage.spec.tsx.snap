@@ -346,6 +346,20 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     Associated disease(s)
                   </button>
                 </th>
+                <th
+                  aria-sort="none"
+                  scope="col"
+                >
+                  <button
+                    type="button"
+                  >
+                    <span
+                      class="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                    >
+                      GQ
+                    </span>
+                  </button>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -395,6 +409,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     FRAXE mental retardation
                   </div>
                 </td>
+                <td>
+                  <span
+                    aria-label="Average genotype quality is 1.43 at this locus (2 = High, 4 = Medium-high, 15 = Medium, 50 = Medium-low, 160 = Low). This is based on manual review of read visualizations from 231 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                    role="img"
+                    style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(231, 88, 61);"
+                  />
+                </td>
               </tr>
               <tr>
                 <th
@@ -441,6 +462,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     : 
                     Spinal and bulbar muscular atrophy
                   </div>
+                </td>
+                <td>
+                  <span
+                    aria-label="Average genotype quality is 4.82 at this locus (23 = High, 5 = Medium-high). This is based on manual review of read visualizations from 28 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                    role="img"
+                    style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(60, 168, 91);"
+                  />
                 </td>
               </tr>
               <tr>
@@ -497,6 +525,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     X-linked mental retardation with or without seizures
                   </div>
                 </td>
+                <td>
+                  <span
+                    aria-label="Average genotype quality is 2.50 at this locus (10 = High, 5 = Medium-high, 20 = Medium, 10 = Medium-low, 25 = Low). This is based on manual review of read visualizations from 70 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                    role="img"
+                    style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(253, 183, 114);"
+                  />
+                </td>
               </tr>
               <tr>
                 <th
@@ -543,6 +578,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     : 
                     Dentatorubral-pallidoluysian atrophy
                   </div>
+                </td>
+                <td>
+                  <span
+                    aria-label="Average genotype quality is 5.00 at this locus (1 = High). This is based on manual review of read visualizations from 1 genotype that is the largest outlier relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                    role="img"
+                    style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(26, 152, 80);"
+                  />
                 </td>
               </tr>
               <tr>
@@ -591,6 +633,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     Spinocerebellar ataxia 1
                   </div>
                 </td>
+                <td />
               </tr>
               <tr>
                 <th
@@ -637,6 +680,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     : 
                     Spinocerebellar ataxia 10
                   </div>
+                </td>
+                <td>
+                  <span
+                    aria-label="Average genotype quality is 3.00 at this locus (10 = High, 20 = Medium-high, 24 = Medium, 20 = Medium-low, 10 = Low). This is based on manual review of read visualizations from 84 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                    role="img"
+                    style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(254, 224, 139);"
+                  />
                 </td>
               </tr>
               <tr>
@@ -693,12 +743,26 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                     Spinocerebellar ataxia 2
                   </div>
                 </td>
+                <td>
+                  <span
+                    aria-label="Average genotype quality is 4.25 at this locus (2 = High, 1 = Medium-high, 1 = Medium). This is based on manual review of read visualizations from 4 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                    role="img"
+                    style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(169, 217, 124);"
+                  />
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
+    <div />
   </body>,
   "container": <div>
     <div
@@ -1042,6 +1106,20 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   Associated disease(s)
                 </button>
               </th>
+              <th
+                aria-sort="none"
+                scope="col"
+              >
+                <button
+                  type="button"
+                >
+                  <span
+                    class="TooltipHint-sc-1wwbc8j-0 cimmsD"
+                  >
+                    GQ
+                  </span>
+                </button>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -1091,6 +1169,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   FRAXE mental retardation
                 </div>
               </td>
+              <td>
+                <span
+                  aria-label="Average genotype quality is 1.43 at this locus (2 = High, 4 = Medium-high, 15 = Medium, 50 = Medium-low, 160 = Low). This is based on manual review of read visualizations from 231 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                  role="img"
+                  style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(231, 88, 61);"
+                />
+              </td>
             </tr>
             <tr>
               <th
@@ -1137,6 +1222,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   : 
                   Spinal and bulbar muscular atrophy
                 </div>
+              </td>
+              <td>
+                <span
+                  aria-label="Average genotype quality is 4.82 at this locus (23 = High, 5 = Medium-high). This is based on manual review of read visualizations from 28 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                  role="img"
+                  style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(60, 168, 91);"
+                />
               </td>
             </tr>
             <tr>
@@ -1193,6 +1285,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   X-linked mental retardation with or without seizures
                 </div>
               </td>
+              <td>
+                <span
+                  aria-label="Average genotype quality is 2.50 at this locus (10 = High, 5 = Medium-high, 20 = Medium, 10 = Medium-low, 25 = Low). This is based on manual review of read visualizations from 70 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                  role="img"
+                  style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(253, 183, 114);"
+                />
+              </td>
             </tr>
             <tr>
               <th
@@ -1239,6 +1338,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   : 
                   Dentatorubral-pallidoluysian atrophy
                 </div>
+              </td>
+              <td>
+                <span
+                  aria-label="Average genotype quality is 5.00 at this locus (1 = High). This is based on manual review of read visualizations from 1 genotype that is the largest outlier relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                  role="img"
+                  style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(26, 152, 80);"
+                />
               </td>
             </tr>
             <tr>
@@ -1287,6 +1393,7 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   Spinocerebellar ataxia 1
                 </div>
               </td>
+              <td />
             </tr>
             <tr>
               <th
@@ -1333,6 +1440,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   : 
                   Spinocerebellar ataxia 10
                 </div>
+              </td>
+              <td>
+                <span
+                  aria-label="Average genotype quality is 3.00 at this locus (10 = High, 20 = Medium-high, 24 = Medium, 20 = Medium-low, 10 = Low). This is based on manual review of read visualizations from 84 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                  role="img"
+                  style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(254, 224, 139);"
+                />
               </td>
             </tr>
             <tr>
@@ -1388,6 +1502,13 @@ exports[`ShortTandemRepeatsPage has no unexpected changes 1`] = `
                   : 
                   Spinocerebellar ataxia 2
                 </div>
+              </td>
+              <td>
+                <span
+                  aria-label="Average genotype quality is 4.25 at this locus (2 = High, 1 = Medium-high, 1 = Medium). This is based on manual review of read visualizations from 4 genotypes that are the largest outliers relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail."
+                  role="img"
+                  style="display: inline-block; width: 15px; height: 15px; vertical-align: middle; background-color: rgb(169, 217, 124);"
+                />
               </td>
             </tr>
           </tbody>
