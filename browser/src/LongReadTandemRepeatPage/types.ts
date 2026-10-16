@@ -108,23 +108,7 @@ export type RepeatCountPlots = {
   pair_status?: string | null
   pair_encoding?: string | null
   pair_observations?: number | null
-  source_context?: {
-    source_uri: string
-    source_generation: string
-    source_md5_base64: string
-    source_row_ordinal: string
-    source_locus_id: string
-    interval_raw: string
-    vc_raw: string
-    context_relation: string
-    measurement_kind: string
-    unit: string
-    semantics_evidence_status: string
-    projection_version: string
-    receipt_digest: string
-  } | null
-  primary_binding?: { status: string; an_concordance: string } | null
-  primary_an_comparison?: 'MATCH' | 'MISMATCH' | 'NOT_COMPARABLE' | null
+  source_context?: { source_locus_id: string } | null
   allele_size_distribution: any[]
   genotype_distribution: any[]
   interaction: {

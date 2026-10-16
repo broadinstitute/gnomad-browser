@@ -58,7 +58,7 @@ import {
   ExactStoredMotifDistributionBin,
 } from './exactStoredMotifDistribution'
 import { DiscreteBrushMark, useDiscretePlotBrush } from './discretePlotBrush'
-import { repeatPlotAvailable, SourceContextHistogramMetadata } from './SourceContextHistogram'
+import { repeatPlotAvailable } from './SourceContextHistogram'
 import {
   PrimaryMotifAllelePlotCard,
   PrimaryMotifGenotypeCells,
@@ -2242,7 +2242,6 @@ export const RepeatCountPlotCard = ({
           />
         </>
       )}
-      {sourceContext && <SourceContextHistogramMetadata plots={repeatCountPlots} />}
       {lengthAxisControl}
     </PlotCard>
   )

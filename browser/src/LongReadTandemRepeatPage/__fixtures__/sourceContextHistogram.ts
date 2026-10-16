@@ -11,22 +11,7 @@ export const sourceContextHistogram = (
   pair_status: 'AVAILABLE_SOURCE_ENCODING',
   pair_encoding: 'TWO_COPY_CONSISTENT',
   pair_observations: 1,
-  source_context: {
-    source_uri: 'gs://candidate/fixture.tsv',
-    source_generation: 'fixture-generation',
-    source_md5_base64: 'fixture-md5',
-    source_row_ordinal: '1',
-    source_locus_id: '1-100-130-CAG',
-    interval_raw: '1:100-130',
-    vc_raw: '',
-    context_relation: 'EQUAL',
-    measurement_kind: 'SOURCE_REPORTED_SIZE',
-    unit: 'SOURCE_REPORTED_UNIT',
-    semantics_evidence_status: 'PRODUCER_VERSION_UNKNOWN',
-    projection_version: 'candidate-fixture-v2',
-    receipt_digest: 'fixture-receipt',
-  },
-  primary_binding: { status: 'NOT_ESTABLISHED', an_concordance: 'NOT_ESTABLISHED' },
+  source_context: { source_locus_id: '1-100-130-CAG' },
   allele_size_distribution: [
     {
       ancestry_group: 'afr',

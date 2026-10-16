@@ -159,13 +159,7 @@ query ${operationName}(
     repeat_count_plots {
       status reason_code unit repeat_unit max_repunits
       allele_status pair_status pair_encoding pair_observations
-      source_context {
-        source_uri source_generation source_md5_base64 source_row_ordinal
-        source_locus_id interval_raw vc_raw context_relation
-        measurement_kind unit semantics_evidence_status projection_version receipt_digest
-      }
-      primary_binding { status an_concordance }
-      primary_an_comparison
+      source_context { source_locus_id }
       interaction { interaction_status reason }
       allele_size_distribution {
         ancestry_group sex repunit distribution { repunit_count frequency }
@@ -229,10 +223,11 @@ const LongReadTandemRepeatPageContainer = ({
     list: { element: HTMLElement; top: number } | null
   } | null>(null)
   const restoreSelectionScroll = useCallback(() => {
-    if (selectionScroll.current?.pathname === location.pathname) {
-      window.scrollTo(selectionScroll.current.x, selectionScroll.current.y)
-      if (selectionScroll.current.list) {
-        selectionScroll.current.list.element.scrollTop = selectionScroll.current.list.top
+    const savedSelectionScroll = selectionScroll.current
+    if (savedSelectionScroll && savedSelectionScroll.pathname === location.pathname) {
+      window.scrollTo(savedSelectionScroll.x, savedSelectionScroll.y)
+      if (savedSelectionScroll.list) {
+        savedSelectionScroll.list.element.scrollTop = savedSelectionScroll.list.top
       }
     }
   }, [location.pathname])

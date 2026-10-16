@@ -31,7 +31,7 @@ import {
 } from '../ShortTandemRepeatPage/externalResourceUrls'
 import { variantFeedbackUrl } from '../variantFeedback'
 import { AlleleNavigation, LongReadTrLocus } from './types'
-import { repeatPlotAvailable, SourceContextHistogramMetadata } from './SourceContextHistogram'
+import { repeatPlotAvailable } from './SourceContextHistogram'
 
 // @gnomad/ui's PageHeading renders its renderPageControls prop at the right end of the heading
 // line, but the library's type definitions misspell that prop as renderPageControl.
@@ -492,7 +492,6 @@ const LongReadTandemRepeatPage = ({
             Source-context distributions unavailable: {locus.repeat_count_plots.status};{' '}
             {locus.repeat_count_plots.reason_code || 'No available observations'}.
           </p>
-          <SourceContextHistogramMetadata plots={locus.repeat_count_plots} />
         </section>
       )}
 
