@@ -17,6 +17,7 @@ import GnomadPageHeading from '../GnomadPageHeading'
 import Link from '../Link'
 import RegionalGenomicConstraintTrack from '../RegionalGenomicConstraintTrack'
 import RegionViewer from '../RegionViewer/RegionViewer'
+import { useSectionErrorBoundary } from '../SectionErrorBoundary'
 import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
@@ -105,6 +106,12 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
   // Subtract 30px for padding on Page component
   const regionViewerWidth = windowWidth - 30
 
+  const wrapWithSectionErrorBoundary = useSectionErrorBoundary(
+    `region ${chrom}:${start}-${stop}`,
+    datasetId,
+    [chrom, start, stop, datasetId]
+  )
+
   const nccToRegion = (ncc: NonCodingConstraint) => {
     return {
       start: ncc.start,
@@ -138,15 +145,20 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         </GnomadPageHeading>
         <RegionInfoColumnWrapper>
           <div>
-            <RegionInfo region={region} />
-            {region.short_tandem_repeats && region.short_tandem_repeats.length > 0 && (
-              <p>
-                <Badge level="info">Note</Badge> Data is available for a{' '}
-                <Link to={`/short-tandem-repeat/${region.short_tandem_repeats[0].id}`}>
-                  tandem repeat locus
-                </Link>{' '}
-                within this region.
-              </p>
+            {wrapWithSectionErrorBoundary(
+              'Region information',
+              <>
+                <RegionInfo region={region} />
+                {region.short_tandem_repeats && region.short_tandem_repeats.length > 0 && (
+                  <p>
+                    <Badge level="info">Note</Badge> Data is available for a{' '}
+                    <Link to={`/short-tandem-repeat/${region.short_tandem_repeats[0].id}`}>
+                      tandem repeat locus
+                    </Link>{' '}
+                    within this region.
+                  </p>
+                )}
+              </>
             )}
           </div>
           <RegionControlsWrapper>
@@ -160,23 +172,31 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
         rightPanelWidth={isSmallScreen ? 0 : 80}
         width={regionViewerWidth}
       >
-        {region.chrom === 'M' ? (
-          <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
-        ) : (
-          <RegionCoverageTrack
-            datasetId={datasetId}
-            chrom={chrom}
-            includeExomeCoverage={regionsHaveExomeCoverage(datasetId)}
-            includeGenomeCoverage={regionsHaveGenomeCoverage(datasetId)}
-            start={start}
-            stop={stop}
-          />
+        {region.chrom === 'M'
+          ? wrapWithSectionErrorBoundary(
+              'Region coverage',
+              <MitochondrialRegionCoverageTrack datasetId={datasetId} start={start} stop={stop} />
+            )
+          : wrapWithSectionErrorBoundary(
+              'Region coverage',
+              <RegionCoverageTrack
+                datasetId={datasetId}
+                chrom={chrom}
+                includeExomeCoverage={regionsHaveExomeCoverage(datasetId)}
+                includeGenomeCoverage={regionsHaveGenomeCoverage(datasetId)}
+                start={start}
+                stop={stop}
+              />
+            )}
+
+        {wrapWithSectionErrorBoundary(
+          'Genes in region',
+          <GenesInRegionTrack genes={region.genes} region={region} />
         )}
 
-        <GenesInRegionTrack genes={region.genes} region={region} />
-
-        {hasNonCodingConstraints(datasetId) && (
-          <>
+        {hasNonCodingConstraints(datasetId) &&
+          wrapWithSectionErrorBoundary(
+            'Regional genomic constraint',
             <RegionalGenomicConstraintTrack
               start={region.start}
               stop={region.stop}
@@ -186,9 +206,8 @@ const RegionPage = ({ datasetId, region }: RegionPageProps) => {
                   : null
               }
             />
-          </>
-        )}
-        {variantsInRegion(datasetId, region)}
+          )}
+        {wrapWithSectionErrorBoundary('Variants', variantsInRegion(datasetId, region))}
       </RegionViewer>
     </TrackPage>
   )
