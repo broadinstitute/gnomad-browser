@@ -3,16 +3,18 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 
 const mockUnifiedViewProps: any[] = []
+const mockQueryProps: any[] = []
 
-jest.mock('../Query', () => ({ children }: any) =>
-  children({
+jest.mock('../Query', () => (props: any) => {
+  mockQueryProps.push(props)
+  return props.children({
     data: {
       meta: { clinvar_release_date: '2026-01-01' },
       long_read_y1_provenance: null,
       region: { long_read_variants: [] },
     },
   })
-)
+})
 
 jest.mock('../LongReadVariantPage/LongReadUnifiedView', () => (props: any) => {
   mockUnifiedViewProps.push(props)
@@ -39,6 +41,7 @@ const LocationProbe = () => {
 describe('long-read region variant_id integration', () => {
   beforeEach(() => {
     mockUnifiedViewProps.length = 0
+    mockQueryProps.length = 0
   })
 
   test('passes a decoded direct-load search to the existing unified view without changing the URL', () => {
@@ -56,5 +59,18 @@ describe('long-read region variant_id integration', () => {
     expect(mockUnifiedViewProps.at(-1).variantSearch).toBe('22-100-A>T')
     expect(mockUnifiedViewProps.at(-1).genes).toBe(region.genes)
     expect(screen.getByTestId('location').textContent).toBe(search)
+  })
+
+  test('treats a failed long-read variant query as an error rather than an empty region', () => {
+    render(
+      <MemoryRouter initialEntries={['/region/22-100-200?dataset=gnomad_r4_lr']}>
+        <VariantsInRegion datasetId={'gnomad_r4_lr' as any} region={region} />
+      </MemoryRouter>
+    )
+
+    // The API returns null for long_read_variants when its database query fails
+    const { success } = mockQueryProps.at(-1)
+    expect(success({ region: { long_read_variants: null } })).toBeFalsy()
+    expect(success({ region: { long_read_variants: [] } })).toBeTruthy()
   })
 })
