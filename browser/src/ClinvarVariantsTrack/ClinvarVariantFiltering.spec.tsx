@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom'
 import React from 'react'
 import { describe, test } from '@jest/globals'
 import { fireEvent, render, screen, within } from '@testing-library/react'

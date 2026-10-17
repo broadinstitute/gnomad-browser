@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom'
 import React from 'react'
 import { afterEach, describe, test } from '@jest/globals'
 import { render, screen } from '@testing-library/react'
