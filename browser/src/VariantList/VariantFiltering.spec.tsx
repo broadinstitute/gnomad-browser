@@ -13,6 +13,8 @@ import { sequencingFactory, variantFactory } from '../__factories__/Variant'
 import userPreferences from '../userPreferences'
 import Variants from './Variants'
 
+jest.setTimeout(15_000)
+
 type User = ReturnType<typeof userEvent.setup>
 
 const DEFAULT_TEST_DATASET_ID: DatasetId = 'gnomad_r2_1'

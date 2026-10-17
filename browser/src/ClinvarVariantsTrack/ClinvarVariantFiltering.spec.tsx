@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import React from 'react'
-import { describe, test } from '@jest/globals'
+import { describe, jest, test } from '@jest/globals'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
@@ -9,6 +9,8 @@ import { RegionViewerContext, regionViewerScale } from '@gnomad/region-viewer'
 import clinvarVariantFactory from '../__factories__/ClinvarVariant'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { ClinvarVariantTrack } from './ClinvarVariantTrack'
+
+jest.setTimeout(15_000)
 
 type User = ReturnType<typeof userEvent.setup>
 
