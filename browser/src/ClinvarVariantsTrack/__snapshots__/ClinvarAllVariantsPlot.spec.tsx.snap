@@ -101,7 +101,9 @@ exports[`ClinvarAllVariantsPlot rendering a frameshift on strand + clamps end to
     <g
       transform="translate(0, 25)"
     >
-      <g>
+      <g
+        data-variant-id="123-457-A-C"
+      >
         <rect
           fill="transparent"
           height="10"
@@ -297,7 +299,9 @@ exports[`ClinvarAllVariantsPlot rendering a frameshift on strand + renders clamp
     <g
       transform="translate(0, 25)"
     >
-      <g>
+      <g
+        data-variant-id="123-457-A-C"
+      >
         <rect
           fill="transparent"
           height="10"
@@ -493,7 +497,9 @@ exports[`ClinvarAllVariantsPlot rendering a frameshift on strand + renders prope
     <g
       transform="translate(0, 25)"
     >
-      <g>
+      <g
+        data-variant-id="123-457-A-C"
+      >
         <rect
           fill="transparent"
           height="10"
@@ -678,7 +684,9 @@ exports[`ClinvarAllVariantsPlot rendering a frameshift on strand + renders prope
     <g
       transform="translate(0, 25)"
     >
-      <g>
+      <g
+        data-variant-id="123-457-A-C"
+      >
         <rect
           fill="transparent"
           height="10"
@@ -874,7 +882,9 @@ exports[`ClinvarAllVariantsPlot rendering a frameshift on strand - clamps end to
     <g
       transform="translate(0, 25)"
     >
-      <g>
+      <g
+        data-variant-id="123-458-A-C"
+      >
         <rect
           fill="transparent"
           height="10"
@@ -1070,7 +1080,9 @@ exports[`ClinvarAllVariantsPlot rendering a frameshift on strand - renders clamp
     <g
       transform="translate(0, 25)"
     >
-      <g>
+      <g
+        data-variant-id="123-458-A-C"
+      >
         <rect
           fill="transparent"
           height="10"
@@ -1266,7 +1278,9 @@ exports[`ClinvarAllVariantsPlot rendering a frameshift on strand - renders prope
     <g
       transform="translate(0, 25)"
     >
-      <g>
+      <g
+        data-variant-id="123-458-A-C"
+      >
         <rect
           fill="transparent"
           height="10"
@@ -1451,7 +1465,9 @@ exports[`ClinvarAllVariantsPlot rendering a frameshift on strand - renders prope
     <g
       transform="translate(0, 25)"
     >
-      <g>
+      <g
+        data-variant-id="123-458-A-C"
+      >
         <rect
           fill="transparent"
           height="10"

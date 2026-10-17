@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import React from 'react'
 import { describe, jest, test } from '@jest/globals'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import { RegionViewerContext, regionViewerScale } from '@gnomad/region-viewer'
@@ -124,12 +124,9 @@ const selectOnlyClinicalCategory = async (user: User, label: string) => {
 }
 
 const expectExpandedVariantIds = (container: HTMLElement, expected: string[]) => {
-  const ids = Array.from(container.querySelectorAll('svg path[stroke="#666"]')).map((marker) => {
-    fireEvent.mouseEnter(marker)
-    const id = screen.getByText(/^1-\d+-A-C$/).textContent
-    fireEvent.mouseLeave(marker)
-    return id
-  })
+  const ids = Array.from(container.querySelectorAll('[data-variant-id]')).map((marker) =>
+    marker.getAttribute('data-variant-id')
+  )
   expect(ids.sort()).toEqual([...expected].sort())
   expect(screen.getByText(`ClinVar variants (${expected.length})`)).toBeVisible()
 }
