@@ -1,5 +1,5 @@
 import React from 'react'
-import { afterEach, describe, expect, test } from '@jest/globals'
+import { afterEach, describe, test } from '@jest/globals'
 import { render, screen } from '@testing-library/react'
 
 import { SizeMe } from '../../../tests/__mocks__/react-sizeme'

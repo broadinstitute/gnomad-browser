@@ -1,5 +1,5 @@
 import React from 'react'
-import { describe, expect, test } from '@jest/globals'
+import { describe, test } from '@jest/globals'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
