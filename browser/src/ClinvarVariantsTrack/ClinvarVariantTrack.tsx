@@ -7,22 +7,18 @@ import CategoryFilterControl from '../CategoryFilterControl'
 import InfoButton from '../help/InfoButton'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { PageType, TrackPageSection } from '../TrackPage'
-import {
-  VEP_CONSEQUENCE_CATEGORIES,
-  VEP_CONSEQUENCE_CATEGORY_LABELS,
-  getCategoryFromConsequence,
-} from '../vepConsequences'
+import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 
 import {
   CLINICAL_SIGNIFICANCE_CATEGORIES,
   CLINICAL_SIGNIFICANCE_CATEGORY_LABELS,
   CLINICAL_SIGNIFICANCE_CATEGORY_COLORS,
-  clinvarVariantClinicalSignificanceCategory,
 } from './clinvarVariantCategories'
 import ClinvarAllVariantsPlot from './ClinvarAllVariantsPlot'
 import ClinvarBinnedVariantsPlot from './ClinvarBinnedVariantsPlot'
 import ClinvarVariantDetails from './ClinvarVariantDetails'
 import formatClinvarDate from './formatClinvarDate'
+import filterClinvarVariants, { DEFAULT_CLINVAR_FILTER_STATE } from './filterClinvarVariants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import { ReferenceGenome } from '../../../dataset-metadata/metadata'
@@ -105,39 +101,22 @@ const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants 
   const [selectedVariant, setSelectedVariant] = useState(null)
 
   const [includedClinicalSignificanceCategories, setIncludedClinicalSignificanceCategories] =
-    useState(
-      CLINICAL_SIGNIFICANCE_CATEGORIES.reduce(
-        (acc, category) => ({
-          ...acc,
-          [category]: true,
-        }),
-        {}
-      )
-    )
+    useState(DEFAULT_CLINVAR_FILTER_STATE.includedClinicalSignificanceCategories)
 
   const [includedConsequenceCategories, setIncludedConsequenceCategories] = useState(
-    VEP_CONSEQUENCE_CATEGORIES.reduce(
-      (acc, category) => ({
-        ...acc,
-        [category]: true,
-      }),
-      {}
-    )
+    DEFAULT_CLINVAR_FILTER_STATE.includedConsequenceCategories
   )
 
-  const [showOnlyGnomad, setShowOnlyGnomad] = useState(false)
+  const [showOnlyGnomad, setShowOnlyGnomad] = useState(DEFAULT_CLINVAR_FILTER_STATE.showOnlyGnomad)
   const [isExpanded, setIsExpanded] = useState(false)
-  const [starFilter, setStarFilter] = useState(0)
+  const [starFilter, setStarFilter] = useState(DEFAULT_CLINVAR_FILTER_STATE.starFilter)
 
-  const filteredVariants = variants.filter(
-    (v) =>
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      includedClinicalSignificanceCategories[clinvarVariantClinicalSignificanceCategory(v)] &&
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      includedConsequenceCategories[getCategoryFromConsequence(v.major_consequence)] &&
-      (!showOnlyGnomad || v.in_gnomad) &&
-      v.gold_stars >= starFilter
-  )
+  const filteredVariants = filterClinvarVariants(variants, {
+    includedClinicalSignificanceCategories,
+    includedConsequenceCategories,
+    showOnlyGnomad,
+    starFilter,
+  })
 
   return (
     <>
@@ -168,7 +147,6 @@ const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants 
                     id={`clinvar-track-include-${category}`}
                     // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                     label={VEP_CONSEQUENCE_CATEGORY_LABELS[category]}
-                    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                     checked={includedConsequenceCategories[category]}
                     onChange={(value) => {
                       setIncludedConsequenceCategories({
