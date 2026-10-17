@@ -20,11 +20,27 @@ export type VariantFilterState = {
   searchText: string
 }
 
-export function getFilteredVariants(
+export const DEFAULT_VARIANT_FILTER_STATE: VariantFilterState = {
+  includeCategories: {
+    lof: true,
+    missense: true,
+    synonymous: true,
+    other: true,
+  },
+  includeFilteredVariants: false,
+  includeSNVs: true,
+  includeIndels: true,
+  includeExomes: true,
+  includeGenomes: true,
+  includeContext: true,
+  searchText: '',
+}
+
+export const getFilteredVariants = (
   filter: VariantFilterState,
   variants: Variant[],
   variantTableColumns: VariantTableColumn[]
-) {
+): Variant[] => {
   const searchColumns = variantTableColumns.filter((column) => !!column.getSearchTerms)
   const getVariantSearchTerms = (variant: Variant) =>
     searchColumns

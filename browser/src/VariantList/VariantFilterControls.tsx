@@ -7,6 +7,7 @@ import CategoryFilterControl from '../CategoryFilterControl'
 import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import InfoButton from '../help/InfoButton'
 import useSearchHotkeys from '../useSearchHotkeys'
+import { VariantFilterState } from './filterVariants'
 
 const consequenceCategoryColors = {
   lof: '#FF583F',
@@ -61,21 +62,7 @@ const keyboardShortcuts = {
 
 type Props = {
   onChange: (...args: any[]) => any
-  value: {
-    includeCategories: {
-      lof: boolean
-      missense: boolean
-      synonymous: boolean
-      other: boolean
-    }
-    includeExomes: boolean
-    includeGenomes: boolean
-    includeFilteredVariants: boolean
-    includeSNVs: boolean
-    includeIndels: boolean
-    includeContext: boolean
-    searchText: string
-  }
+  value: VariantFilterState
   jumpToRow: (...args: any[]) => any
   position: number
 }
