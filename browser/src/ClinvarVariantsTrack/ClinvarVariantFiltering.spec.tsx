@@ -6,11 +6,17 @@ import { BrowserRouter } from 'react-router-dom'
 import { RegionViewerContext, regionViewerScale } from '@gnomad/region-viewer'
 
 import clinvarVariantFactory from '../__factories__/ClinvarVariant'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { ClinvarVariantTrack } from './ClinvarVariantTrack'
 
 type User = ReturnType<typeof userEvent.setup>
 
-const records = [
+type TestClinvarVariantDefinition = Pick<
+  ClinvarVariant,
+  'pos' | 'clinical_significance' | 'major_consequence' | 'gold_stars' | 'in_gnomad'
+>
+
+const testClinvarVariantDefinitions: TestClinvarVariantDefinition[] = [
   {
     pos: 100,
     clinical_significance: 'Pathogenic',
@@ -71,12 +77,12 @@ const records = [
 
 const renderClinvarFilters = () => {
   const regions = [{ start: 1, stop: 900 }]
-  const variants = records.map((record) =>
+  const testClinvarVariants = testClinvarVariantDefinitions.map((testClinvarVariantDefinition) =>
     clinvarVariantFactory.build(
-      { ...record, variant_id: `1-${record.pos}-A-C` },
+      { ...testClinvarVariantDefinition, variant_id: `1-${testClinvarVariantDefinition.pos}-A-C` },
       {
         associations: {
-          gnomad: record.in_gnomad
+          gnomad: testClinvarVariantDefinition.in_gnomad
             ? { exome: { ac: 2, an: 100, filters: [] }, genome: null }
             : null,
         },
@@ -95,7 +101,11 @@ const renderClinvarFilters = () => {
           isPositionDefined: () => true,
         }}
       >
-        <ClinvarVariantTrack referenceGenome="GRCh38" transcripts={[]} variants={variants} />
+        <ClinvarVariantTrack
+          referenceGenome="GRCh38"
+          transcripts={[]}
+          variants={testClinvarVariants}
+        />
       </RegionViewerContext.Provider>
     </BrowserRouter>
   )
