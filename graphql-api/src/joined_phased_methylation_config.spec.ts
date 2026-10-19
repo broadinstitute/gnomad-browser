@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto'
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
@@ -6,6 +7,8 @@ import {
   JOINED_PHASED_ORIENTATION_RECEIPT_SHA256,
   LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256,
   LOCAL_JOINED_BROWSER_BUNDLE_SHA256,
+  PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256,
+  PUBLIC_JOINED_APPROVAL_ARTIFACT_SHA256,
   readJoinedPhasedMethylationOrientationReceipt,
   reconcileJoinedOrientationRoster,
   resolveJoinedPhasedMethylationRoute,
@@ -31,6 +34,73 @@ const routeEnv = (receiptPath = orientationPath) => ({
     orientation_receipt_path: receiptPath,
     expected_orientation_receipt_sha256: JOINED_PHASED_ORIENTATION_RECEIPT_SHA256,
   }),
+})
+
+describe('public refreshed operator-assumption route', () => {
+  const publicPath = path.join(root, 'graphql-api/config/refresh-20260923-public-orientation-assumption.json')
+  const publicEnv = (): NodeJS.ProcessEnv => ({
+    ...JSON.parse(readFileSync(path.join(root, 'deploy/terraform/lr-viewer/refresh-20260923-api-env.json'),
+      'utf8').split('/app/').join(`${root}/`)),
+    // Synthetic credentials, no connection is made by configuration validation.
+    LR_Y1_CLICKHOUSE_URL: 'http://synthetic_reader:synthetic_password@192.168.0.2:8123',
+  })
+  test('admits only the separately approved exact public product with honest provenance', () => {
+    const route = resolveJoinedPhasedMethylationRoute(publicEnv())!
+    expect(route.orientation_receipt_sha256).toBe(PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256)
+    expect(route.receipt.browser_product.primary_manifest_bundle_sha256).toBe(LOCAL_JOINED_BROWSER_BUNDLE_SHA256)
+    expect(route.receipt.approval_basis).toMatchObject({
+      approved_at: '2026-10-19', kind: 'operator_direct_mapping_assumption',
+      decision_artifact_sha256: PUBLIC_JOINED_APPROVAL_ARTIFACT_SHA256,
+      independently_machine_verified_lineage: false, cryptographic_human_signature: false,
+    })
+    const approval = readFileSync(path.join(root, 'graphql-api/config/refresh-20260923-public-methylation-approval.json'))
+    expect(createHash('sha256').update(approval).digest('hex')).toBe(PUBLIC_JOINED_APPROVAL_ARTIFACT_SHA256)
+    expect(JSON.parse(approval.toString()).user_instruction_verbatim).toBe('YES please approve and make this available on the site')
+    expect(route.receipt.mapping_contract).toEqual(readJoinedPhasedMethylationOrientationReceipt(orientationPath).mapping_contract)
+    expect(route.receipt.coverage).toEqual(readJoinedPhasedMethylationOrientationReceipt(orientationPath).coverage)
+    expect(route.receipt.exclusions).toEqual(expect.arrayContaining(['aou', 'chrX', 'chrY', 'maternal_or_paternal_identity']))
+  })
+  test.each([
+    ['LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED', undefined],
+    ['LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED', 'false'],
+    ['LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED', 'TRUE'],
+    ['LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED', '1'],
+    ['LR_Y1_LOCAL_JOINED_MAPPING_ASSUMPTION_ENABLED', 'true'],
+    ['NODE_ENV', 'development'], ['NODE_ENV', 'test'], ['NODE_ENV', undefined],
+    ['LR_Y1_CLICKHOUSE_DATABASE', 'gnomad_lr_y1_scratch_v6_other'],
+    ['LR_Y1_CLICKHOUSE_DATABASE', undefined],
+    ['LR_Y1_CLICKHOUSE_URL', undefined], ['LR_Y1_CLICKHOUSE_URL', 'invalid'],
+    ['LR_Y1_CLICKHOUSE_URL', 'http://192.168.0.124:8123'],
+    ['LR_Y1_CLICKHOUSE_URL', 'http://127.0.0.1:8123'],
+    ['LR_Y1_CLICKHOUSE_URL', 'https://192.168.0.2:8123'],
+    ['LR_Y1_CLICKHOUSE_URL', 'http://192.168.0.2:8124'],
+    ['LR_Y1_CLICKHOUSE_URL', 'http://192.168.0.2:8123/other'],
+    ['LR_Y1_CLICKHOUSE_URL', 'http://192.168.0.2:8123/?database=other'],
+    ['LR_Y1_CLICKHOUSE_URL', 'http://192.168.0.2:8123/#other'],
+  ])('rejects public scope drift %s=%s', (key, value) => {
+    expect(() => resolveJoinedPhasedMethylationRoute({ ...publicEnv(), [key!]: value })).toThrow('explicit production opt-in')
+  })
+  test('rejects wrong bundle, local receipt in production, changed receipt bytes and route identities', () => {
+    expect(() => resolveJoinedPhasedMethylationRoute({ ...publicEnv(), LR_Y1_PRIMARY_MANIFEST_PATH: primaryPath })).toThrow('configured browser VCF bundle')
+    const base = publicEnv()
+    const route = JSON.parse(base.LR_Y1_JOINED_PHASED_METHYLATION_ROUTE!)
+    for (const changes of [
+      { expected_orientation_receipt_sha256: LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 },
+      { expected_orientation_receipt_sha256: '0'.repeat(64) },
+      { database: 'wrong' }, { run_id: 'wrong' }, { raw_receipt_path: publicPath },
+    ]) expect(() => resolveJoinedPhasedMethylationRoute({ ...base,
+      LR_Y1_JOINED_PHASED_METHYLATION_ROUTE: JSON.stringify({ ...route, ...changes }),
+    })).toThrow()
+    const changedPath = path.join(mkdtempSync(path.join(tmpdir(), 'changed-public-joined-')), 'receipt.json')
+    for (const [key, value] of [['scope', 'LOCAL ONLY'], ['independently_machine_verified_lineage', true]]) {
+      const changed = JSON.parse(readFileSync(publicPath, 'utf8'))
+      changed.approval_basis[key as string] = value
+      writeFileSync(changedPath, JSON.stringify(changed))
+      expect(() => resolveJoinedPhasedMethylationRoute({ ...base,
+        LR_Y1_JOINED_PHASED_METHYLATION_ROUTE: JSON.stringify({ ...route, orientation_receipt_path: changedPath }),
+      })).toThrow('exact approved receipt/product')
+    }
+  })
 })
 
 describe('joined phased methylation configuration', () => {

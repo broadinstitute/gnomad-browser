@@ -59,6 +59,15 @@ test('loading is not absence; an API failure is unavailable, not still loading o
   expect(view.container.innerHTML).not.toContain(diagnostic)
 })
 
+test('available assumption has a visible concise disclosure without opening methods', () => {
+  render(<MethylationToggle capability={{ ...capability, available: true, joinable_to_vcf: true,
+    status: 'AVAILABLE_OPERATOR_ASSUMPTION' }} usable checked={false} onChange={jest.fn()} />)
+  expect(screen.getByRole('checkbox', { name: 'Methylation' })).toBeEnabled()
+  expect(screen.getByText('Operator-assumed alignment; not independently validated.')).toBeVisible()
+  expect(document.body.textContent).not.toContain(diagnostic)
+  expect(document.body.textContent).not.toContain('AVAILABLE_CONFIRMED')
+})
+
 test('only region usability enables the control, and scope loss clears its visible checked state', () => {
   const onChange = jest.fn()
   const view = render(<MethylationToggle capability={capability} usable checked={false} onChange={onChange} />)

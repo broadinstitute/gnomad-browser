@@ -30,8 +30,10 @@ REFRESH_CONFIG_NAMES = {
     "presentation-primary-manifest-bundle.json",
     "refresh-20260923-represented-length.json",
     "refresh-20260923-source-labelled-compatibility.json",
+    "refresh-20260923-public-orientation-assumption.json",
+    "refresh-20260923-public-methylation-approval.json",
 }
-EXPECTED_REFRESH_MANIFEST_SHA256 = "c93f5d0e8a7a29fcf1508a03fa53c56419dc68c6af18b1c50b2c2b8f18f7dd19"
+EXPECTED_REFRESH_MANIFEST_SHA256 = "d7a83d71d7fff2c04526f81d84e048ff0ab42454d04ec94ebb31eec1441698ab"
 EXPECTED_JOINED_ROUTE = {
     "database": "gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3",
     "run_id": "y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1",
@@ -39,6 +41,12 @@ EXPECTED_JOINED_ROUTE = {
     "orientation_receipt_path": "/app/graphql-api/config/y1-source-to-browser-vcf-orientation-receipt.json",
     "expected_orientation_receipt_sha256": "e3d7c819e0cb8fb759d8ce1611eec1228ae3a40d6f9407cbbfbe50551809e460",
 }
+EXPECTED_PUBLIC_JOINED_ROUTE = {
+    **EXPECTED_JOINED_ROUTE,
+    "orientation_receipt_path": "/app/graphql-api/config/refresh-20260923-public-orientation-assumption.json",
+    "expected_orientation_receipt_sha256": "81898149a1731577ebe21b21582b786cd3f32784410f8a1a2d6f35e460053ed6",
+}
+EXPECTED_PUBLIC_APPROVAL_SHA256 = "45c40f3a9c8ecd24eab8860de33808c7647382473359d7007812bde246e96d8a"
 
 
 def sha256(path: Path) -> str:
@@ -73,6 +81,30 @@ def require_exact_joined_route(api_env: dict[str, object]) -> None:
     )
 
 
+def require_exact_public_joined_env(env: dict[str, object]) -> None:
+    require(env.get("NODE_ENV") == "production", "refresh must use production guards")
+    require(env.get("LR_Y1_CLICKHOUSE_DATABASE") == "gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af",
+            "refresh primary database differs")
+    require("LR_Y1_CLICKHOUSE_URL" not in env, "refresh credential URL must be a secret reference")
+    require(env.get("LR_Y1_LOCAL_JOINED_MAPPING_ASSUMPTION_ENABLED") == "false" and
+            env.get("LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED") == "true",
+            "public assumption requires its own explicit opt-in; local assumption must stay disabled")
+    try:
+        route = json.loads(env.get("LR_Y1_JOINED_PHASED_METHYLATION_ROUTE", ""))
+    except (TypeError, json.JSONDecodeError):
+        require(False, "public joined route must be valid JSON")
+    require(route == EXPECTED_PUBLIC_JOINED_ROUTE, "public joined route differs from exact approved identity")
+    require(env.get("REDIS_CACHE_PREFIX") == "public:v6-refresh-20260923:joined-" +
+            EXPECTED_PUBLIC_JOINED_ROUTE["expected_orientation_receipt_sha256"] + ":",
+            "public joined cache namespace must bind the exact assumption receipt")
+    require(env.get("LR_Y1_PRIMARY_MANIFEST_PATH") ==
+            "/app/graphql-api/config/presentation-primary-manifest-bundle.json",
+            "public joined primary bundle path differs")
+    require(env.get("LR_Y1_SOURCE_LABELLED_COMPATIBILITY_CANDIDATE_ENABLED") == "true" and
+            bool(env.get("LR_Y1_SOURCE_LABELLED_COMPATIBILITY_ROUTE")),
+            "raw source-labelled route must remain enabled")
+
+
 def verify_refresh_bundle() -> None:
     """Verify the separately pinned refresh inputs without relaxing the old bundle."""
     path = SCRIPT_DIR / "refresh-20260923-artifacts.json"
@@ -81,20 +113,31 @@ def verify_refresh_bundle() -> None:
     expected_paths = {f"graphql-api/config/{name}" for name in REFRESH_CONFIG_NAMES}
     expected_paths.add("deploy/terraform/lr-viewer/refresh-20260923-api-env.json")
     artifacts = manifest["artifacts"]
-    require(len(artifacts) == 4 and {a["path"] for a in artifacts} == expected_paths,
+    require(len(artifacts) == 6 and {a["path"] for a in artifacts} == expected_paths,
             "refresh artifact allowlist differs")
     for item in artifacts:
         artifact = ROOT / item["path"]
         require(artifact.stat().st_size == item["bytes"] and sha256(artifact) == item["sha256"],
                 f"refresh artifact hash/size mismatch: {item['path']}")
     env = json.loads((SCRIPT_DIR / "refresh-20260923-api-env.json").read_text())
-    require(env["NODE_ENV"] == "production", "refresh must use production guards")
-    require(env["LR_Y1_CLICKHOUSE_DATABASE"] == "gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af",
-            "refresh primary database differs")
-    require("LR_Y1_CLICKHOUSE_URL" not in env, "refresh credential URL must be a secret reference")
-    require(env["LR_Y1_LOCAL_JOINED_MAPPING_ASSUMPTION_ENABLED"] == "false" and
-            env["LR_Y1_JOINED_PHASED_METHYLATION_ROUTE"] == "",
-            "unvalidated local joined methylation must not be enabled")
+    require_exact_public_joined_env(env)
+    require(manifest["clickhouse_host"] == "192.168.0.2" and
+            manifest["url_secret"] == "gnomad-lr-refresh-public-clickhouse-url-20261019",
+            "public assumption endpoint/secret scope differs")
+    require(manifest["joined_methylation"] == "AVAILABLE_OPERATOR_ASSUMPTION" and
+            manifest["joined_approval_basis"] == "operator_direct_mapping_assumption" and
+            manifest["independently_machine_verified_lineage"] is False,
+            "public assumption must not be described as verified lineage")
+    approval_path = CONFIG_DIR / "refresh-20260923-public-methylation-approval.json"
+    receipt_path = CONFIG_DIR / "refresh-20260923-public-orientation-assumption.json"
+    require(sha256(approval_path) == EXPECTED_PUBLIC_APPROVAL_SHA256 and
+            sha256(receipt_path) == EXPECTED_PUBLIC_JOINED_ROUTE["expected_orientation_receipt_sha256"],
+            "public approval/receipt pin mismatch")
+    receipt = json.loads(receipt_path.read_text())
+    require(receipt["approval_basis"]["decision_artifact_sha256"] == sha256(approval_path) and
+            receipt["approval_basis"]["independently_machine_verified_lineage"] is False and
+            receipt["approval_basis"]["cryptographic_human_signature"] is False,
+            "public assumption approval provenance differs")
 
 
 def main() -> None:

@@ -6,7 +6,7 @@ import {
   sha256File, SOURCE_PHASED_SERVING_RECEIPT_SHA256,
 } from './source_phased_methylation_config'
 import { SOURCE_LABELLED_SCHEMA, validateSourceLabelledCompatibilityReceipt } from './source_labelled_methylation_compatibility'
-import { JOINED_PHASED_ORIENTATION_RECEIPT_SHA256, resolveJoinedPhasedMethylationRoute } from './joined_phased_methylation_config'
+import { JOINED_PHASED_ORIENTATION_RECEIPT_SHA256, PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256, resolveJoinedPhasedMethylationRoute } from './joined_phased_methylation_config'
 import { phasedMethylationCapability, sourcePhasedEvaluationScope, sourcePhasedMethylationRecords } from './graphql/resolvers/ancillary-availability'
 import { generate } from '../../development/source-labelled-methylation/generate'
 
@@ -26,6 +26,36 @@ const save = (name: string, value: any) => {
   writeFileSync(p, JSON.stringify(value))
   return p
 }
+
+describe('separately approved public assumption coexistence', () => {
+  const root = path.resolve(__dirname, '../..')
+  const publicEnv = (): NodeJS.ProcessEnv => ({
+    ...JSON.parse(readFileSync(path.join(root, 'deploy/terraform/lr-viewer/refresh-20260923-api-env.json'),
+      'utf8').split('/app/').join(`${root}/`)),
+    LR_Y1_CLICKHOUSE_URL: 'http://synthetic_reader@192.168.0.2:8123',
+  })
+  test('raw compatibility remains source-labelled, while the separate exact joined route is admitted', () => {
+    const env = publicEnv()
+    const joined = resolveJoinedPhasedMethylationRoute(env)!
+    const source = resolveSourcePhasedMethylationRoute(env)!
+    expect(joined.orientation_receipt_sha256).toBe(PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256)
+    expect(source.receipt_path).toBe(joined.raw_receipt_path)
+    expect(source.compatibility?.source_labelled_only).toBe(true)
+    expect(source.compatibility?.vcf_orientation_joined).toBe(false)
+    expect(phasedMethylationCapability('hgsvc_hprc', source)).toMatchObject({ available: true, joinable_to_vcf: false })
+    expect(phasedMethylationCapability('aou', source).available).toBe(false)
+    for (const chrom of ['chrX', 'chrY']) {
+      expect(() => sourcePhasedEvaluationScope(chrom, 0, 100, 'HG00097', source)).toThrow('unavailable')
+    }
+  })
+  test.each([
+    ['LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED', undefined],
+    ['LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED', 'false'],
+    ['NODE_ENV', 'development'], ['LR_Y1_CLICKHOUSE_URL', 'http://192.168.0.124:8123'],
+  ])('compatibility cannot bypass the common public guard: %s', (key, value) => {
+    expect(() => resolveSourcePhasedMethylationRoute({ ...publicEnv(), [key!]: value })).toThrow('cannot enable a joined VCF route')
+  })
+})
 
 describe.each(['v5', 'v6'])('isolated %s candidate', (version) => {
 beforeAll(() => {

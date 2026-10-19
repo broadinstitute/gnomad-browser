@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "decision_date": "2026-10-19",
+  "decision_source": "Direct user message in data-update-cont-de6842f6",
+  "user_instruction_verbatim": "YES please approve and make this available on the site",
+  "preceding_explanation": "The old public site also used an operator-approved assumption, not independently verified phasing lineage. The September assumption was restricted to local use. We could explicitly approve the same assumption for the beta, but should call that an assumption, not validation.",
+  "approved_scope": "Public gnomAD long-read beta, September 2026 refreshed HGSVC/HPRC VCF dataset and existing methylation source product",
+  "mapping_assumption": "Retain the previously used chromosome-wide source HAP1 to first phased GT value and source HAP2 to second phased GT value mapping, only for the already supported autosomes and source-present samples.",
+  "independently_machine_verified_lineage": false,
+  "cryptographic_human_signature": false,
+  "required_disclosure": "Operator-approved assumption, not independently validated mapping",
+  "authorization": "Implement, test and deploy the explicitly scoped public assumption path; no generic phasing-guard bypass, no NODE_ENV=development in production, no data mutations, no AoU or chrX/chrY scope expansion."
+}

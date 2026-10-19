@@ -53,5 +53,7 @@ COPY --chown=node:node graphql-api/config/long-read-tr-reference-crosswalk.json 
 COPY --chown=node:node graphql-api/config/presentation-primary-manifest-bundle.json /app/graphql-api/config/presentation-primary-manifest-bundle.json
 COPY --chown=node:node graphql-api/config/refresh-20260923-represented-length.json /app/graphql-api/config/refresh-20260923-represented-length.json
 COPY --chown=node:node graphql-api/config/refresh-20260923-source-labelled-compatibility.json /app/graphql-api/config/refresh-20260923-source-labelled-compatibility.json
+COPY --chown=node:node graphql-api/config/refresh-20260923-public-orientation-assumption.json /app/graphql-api/config/refresh-20260923-public-orientation-assumption.json
+COPY --chown=node:node graphql-api/config/refresh-20260923-public-methylation-approval.json /app/graphql-api/config/refresh-20260923-public-methylation-approval.json
 
 CMD ["node", "graphql-api/src/app.js"]

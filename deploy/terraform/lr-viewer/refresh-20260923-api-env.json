@@ -13,7 +13,8 @@
   "LR_Y1_REPRESENTED_LENGTH_RULE_PATH": "/app/graphql-api/config/refresh-20260923-represented-length.json",
   "LR_Y1_ANCILLARY_ROUTES": "{\"coverage\":{\"aou\":{\"database\":\"gnomad_lr_y1_scratch_demo_cov_aou_fg_20260804_r1\",\"run_id\":\"demo-coverage-aou-full-genome-20260804-r1\",\"receipt_path\":\"/app/graphql-api/config/completion-receipt-coverage-aou.json\"},\"hgsvc_hprc\":{\"database\":\"gnomad_lr_y1_scratch_demo_cov_hgsvc_hprc_fg_20260804_r1\",\"run_id\":\"demo-coverage-hgsvc-hprc-full-genome-20260804-r1\",\"receipt_path\":\"/app/graphql-api/config/completion-receipt-coverage-hgsvc_hprc.json\"}}}",
   "LR_Y1_SOURCE_PHASED_METHYLATION_ROUTE": "",
-  "LR_Y1_JOINED_PHASED_METHYLATION_ROUTE": "",
+  "LR_Y1_JOINED_PHASED_METHYLATION_ROUTE": "{\"database\":\"gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3\",\"run_id\":\"y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1\",\"raw_receipt_path\":\"/app/graphql-api/config/y1-source-phased-methylation-serving-receipt.json\",\"orientation_receipt_path\":\"/app/graphql-api/config/refresh-20260923-public-orientation-assumption.json\",\"expected_orientation_receipt_sha256\":\"81898149a1731577ebe21b21582b786cd3f32784410f8a1a2d6f35e460053ed6\"}",
+  "LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED": "true",
   "LR_Y1_TR_READONLY_QUERY_COMPAT": "true",
   "LR_Y1_TR_READONLY_QUERY_TIMEOUT_MS": "15000",
   "LR_Y1_CLICKHOUSE_REQUEST_TIMEOUT_MS": "120000",
@@ -23,7 +24,7 @@
   "LR_Y1_STR_CONTEXT_CANDIDATE_ENABLED": "false",
   "LR_Y1_PRIMARY_MOTIF_ENABLED": "false",
   "LR_PHASED_METHYLATION_EVALUATION_ENABLED": "false",
-  "REDIS_CACHE_PREFIX": "public:v6-refresh-20260923:20261019:",
+  "REDIS_CACHE_PREFIX": "public:v6-refresh-20260923:joined-81898149a1731577ebe21b21582b786cd3f32784410f8a1a2d6f35e460053ed6:",
   "JSON_CACHE_ENABLE_ALL": "false",
   "JSON_CACHE_LARGE_GENES": "false"
 }

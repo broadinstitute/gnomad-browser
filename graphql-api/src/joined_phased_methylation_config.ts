@@ -32,6 +32,13 @@ const LOCAL_JOINED_APPROVAL_ARTIFACT_SHA256 =
   '6935dd8b80ba640ee91738567c8333404028120480666dc792b8d835578ba111'
 const LOCAL_JOINED_APPROVAL_REF =
   'flow://rolling/enable-local-joined-methylation-under-explicit-unc-f1615509/operator-approval.json'
+// Separate public decision: the local receipt/guard is deliberately unchanged.
+export const PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256 =
+  '81898149a1731577ebe21b21582b786cd3f32784410f8a1a2d6f35e460053ed6'
+export const PUBLIC_JOINED_APPROVAL_ARTIFACT_SHA256 =
+  '45c40f3a9c8ecd24eab8860de33808c7647382473359d7007812bde246e96d8a'
+const PUBLIC_JOINED_APPROVAL_REF =
+  'flow://rolling/data-update-cont-de6842f6/public-methylation-approval.json'
 export const JOINED_PHASED_MAX_SAMPLES = 25
 export const JOINED_PHASED_MAX_RECORDS = 250_000
 
@@ -283,9 +290,10 @@ export const readJoinedPhasedMethylationOrientationReceipt = (
     'receipt.integrity'
   )
 
-  const localAssumption =
+  const publicAssumption = approval.decision_artifact_sha256 === PUBLIC_JOINED_APPROVAL_ARTIFACT_SHA256
+  const localAssumption = !publicAssumption &&
     browser.primary_manifest_bundle_sha256 === LOCAL_JOINED_BROWSER_BUNDLE_SHA256
-  const expectedBundle = localAssumption
+  const expectedBundle = localAssumption || publicAssumption
     ? LOCAL_JOINED_BROWSER_BUNDLE_SHA256
     : SOURCE_PHASED_BROWSER_VCF_BUNDLE_SHA256
   if (
@@ -299,8 +307,8 @@ export const readJoinedPhasedMethylationOrientationReceipt = (
     approval.approved_role !== 'gnomAD-LR operator' ||
     approval.statement !== JOINED_PHASED_APPROVAL_STATEMENT ||
     approval.statement_sha256 !== JOINED_PHASED_APPROVAL_STATEMENT_SHA256 ||
-    approval.decision_artifact_sha256 !== (localAssumption
-      ? LOCAL_JOINED_APPROVAL_ARTIFACT_SHA256 : JOINED_PHASED_APPROVAL_ARTIFACT_SHA256)
+    approval.decision_artifact_sha256 !== (publicAssumption ? PUBLIC_JOINED_APPROVAL_ARTIFACT_SHA256 :
+      localAssumption ? LOCAL_JOINED_APPROVAL_ARTIFACT_SHA256 : JOINED_PHASED_APPROVAL_ARTIFACT_SHA256)
   )
     throw new Error('Joined methylation receipt lacks the exact operator-assumption approval basis')
   string(receipt.receipt_id, 'receipt.receipt_id')
@@ -312,9 +320,11 @@ export const readJoinedPhasedMethylationOrientationReceipt = (
   string(approval.production_release_gate, 'receipt.approval_basis.production_release_gate')
   if (
     !approval.scope.includes(expectedBundle) ||
-    approval.decision_artifact_ref !== (localAssumption ? LOCAL_JOINED_APPROVAL_REF :
+    approval.decision_artifact_ref !== (publicAssumption ? PUBLIC_JOINED_APPROVAL_REF :
+      localAssumption ? LOCAL_JOINED_APPROVAL_REF :
       'flow://rolling/implement-operator-approved-direct-methylation-ori-ecf9c6ce/briefing-1786042659.xml') ||
-    approval.approved_at !== (localAssumption ? '2026-09-24' : '2026-08-06T14:57:45.89893-04:00')
+    approval.approved_at !== (publicAssumption ? '2026-10-19' :
+      localAssumption ? '2026-09-24' : '2026-08-06T14:57:45.89893-04:00')
   )
     throw new Error(
       'Joined methylation receipt approval provenance is not the exact recorded decision'
@@ -519,9 +529,21 @@ export const resolveJoinedPhasedMethylationRoute = (
         env.LR_Y1_CLICKHOUSE_DATABASE !== 'gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af')
       throw new Error('Refreshed joined mapping assumption requires explicit local development clone opt-in')
   }
-  const expectedReceipt = localAssumption
-    ? LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 : JOINED_PHASED_ORIENTATION_RECEIPT_SHA256
-  const expectedBundle = localAssumption
+  const publicAssumption =
+    route.expected_orientation_receipt_sha256 === PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256
+  if (publicAssumption) {
+    let endpoint: URL | undefined
+    try { endpoint = new URL(env.LR_Y1_CLICKHOUSE_URL || '') } catch { /* fail closed */ }
+    if (env.LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED !== 'true' ||
+        env.LR_Y1_LOCAL_JOINED_MAPPING_ASSUMPTION_ENABLED !== 'false' ||
+        env.NODE_ENV !== 'production' || endpoint?.origin !== 'http://192.168.0.2:8123' ||
+        endpoint.pathname !== '/' || endpoint.search !== '' || endpoint.hash !== '' ||
+        env.LR_Y1_CLICKHOUSE_DATABASE !== 'gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af')
+      throw new Error('Public joined mapping assumption requires explicit production opt-in and exact endpoint/database scope')
+  }
+  const expectedReceipt = publicAssumption ? PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256 :
+    localAssumption ? LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 : JOINED_PHASED_ORIENTATION_RECEIPT_SHA256
+  const expectedBundle = localAssumption || publicAssumption
     ? LOCAL_JOINED_BROWSER_BUNDLE_SHA256 : SOURCE_PHASED_BROWSER_VCF_BUNDLE_SHA256
   if (
     database !== SOURCE_PHASED_METHYLATION_DATABASE ||

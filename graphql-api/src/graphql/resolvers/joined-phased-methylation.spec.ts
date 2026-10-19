@@ -1,4 +1,8 @@
 import path from 'node:path'
+import { readFileSync } from 'node:fs'
+import { resolveY1PrimaryManifests } from '../../y1_admission_config'
+import { resolveY1PrimaryRunMap } from '../../y1_config'
+import { resolveSourcePhasedMethylationRoute } from '../../source_phased_methylation_config'
 
 import {
   JOINED_PHASED_ORIENTATION_RECEIPT_SHA256,
@@ -92,6 +96,46 @@ const validRow = (overrides: Record<string, unknown> = {}) => ({
   source_haplotype: 1,
   vcf_strand: 1,
   ...overrides,
+})
+
+describe('public refreshed joined preflight and output', () => {
+  const env: NodeJS.ProcessEnv = {
+    ...JSON.parse(readFileSync(path.join(root, 'deploy/terraform/lr-viewer/refresh-20260923-api-env.json'),
+      'utf8').split('/app/').join(`${root}/`)),
+    LR_Y1_CLICKHOUSE_URL: 'http://synthetic_reader@192.168.0.2:8123',
+  }
+  const publicRoute = resolveJoinedPhasedMethylationRoute(env)!
+  const manifests = resolveY1PrimaryManifests(resolveY1PrimaryRunMap(env), env)!
+  const snapshot = async (_cohort: any, chrom?: string | null) => ({
+    ...(await admittedSnapshot('hgsvc_hprc', chrom)),
+    run_id: manifests.get(`hgsvc_hprc\u0000${chrom}`)!.run_id,
+  })
+  test('checks all 22 actual refreshed manifest/VCF/TBI identities before activation', async () => {
+    await expect(preflightJoinedPhasedMethylation(publicRoute,
+      resolveSourcePhasedMethylationRoute(env), manifests, snapshot)).resolves.toBeUndefined()
+    await expect(preflightJoinedPhasedMethylation(publicRoute,
+      resolveSourcePhasedMethylationRoute(env), primaryManifests, snapshot)).rejects.toThrow('browser identity mismatch')
+  })
+  test('exposes assumption not verification, and never admits AoU, sex contigs or absent samples', async () => {
+    const capability = await joinedPhasedCapability('hgsvc_hprc', 'chr22', publicRoute, snapshot)
+    expect(capability).toMatchObject({ available: true, status: 'AVAILABLE_OPERATOR_ASSUMPTION',
+      identity: { approval_basis: 'operator_direct_mapping_assumption', independently_machine_verified_lineage: false,
+        orientation_receipt_sha256: publicRoute.orientation_receipt_sha256 } })
+    expect(capability.source_sample_ids).toHaveLength(231)
+    expect(capability.source_sample_ids).not.toContain('HG00096')
+    expect(capability.reason).toContain('not independently verified')
+    for (const [cohort, chrom] of [['aou', 'chr22'], ['hgsvc_hprc', 'chrX'], ['hgsvc_hprc', 'chrY']]) {
+      expect(await joinedPhasedCapability(cohort, chrom, publicRoute, snapshot)).toMatchObject({
+        available: false, joinable_to_vcf: false, source_sample_ids: [], identity: null,
+      })
+    }
+    const scope = joinedRegionScope('chr22', 10, 20, ['HG00097', 'HG00096', 'HG00272'],
+      publicRoute.orientation_receipt_sha256, publicRoute)
+    expect(scope.completed_sample_ids).toEqual(['HG00097'])
+    expect(scope.unavailable_samples).toHaveLength(2)
+    for (const chrom of ['chrX', 'chrY']) expect(() => joinedRegionScope(chrom, 10, 20,
+      ['HG00097'], publicRoute.orientation_receipt_sha256, publicRoute)).toThrow('unavailable')
+  })
 })
 
 describe('joined phased methylation projection contract', () => {

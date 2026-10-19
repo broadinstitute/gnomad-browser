@@ -54,6 +54,35 @@ class RefreshBundleReleaseConfigTest(unittest.TestCase):
     def test_exact_refresh_bundle_is_admitted(self) -> None:
         VERIFY.verify_refresh_bundle()
 
+    def test_public_joined_identity_and_scope_drift_fail_closed(self) -> None:
+        env = json.loads((SCRIPT_DIR / "refresh-20260923-api-env.json").read_text())
+        for key, value in [
+            ("REDIS_CACHE_PREFIX", "public:v6-refresh-20260923:20261019:"),
+            ("REDIS_CACHE_PREFIX", ""),
+            ("NODE_ENV", "development"),
+            ("LR_Y1_CLICKHOUSE_DATABASE", "wrong"),
+            ("LR_Y1_CLICKHOUSE_URL", "http://192.168.0.124:8123"),
+            ("LR_Y1_LOCAL_JOINED_MAPPING_ASSUMPTION_ENABLED", "true"),
+            ("LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED", "false"),
+            ("LR_Y1_PRIMARY_MANIFEST_PATH", "/app/graphql-api/config/y1-presentation-primary-manifests.json"),
+            ("LR_Y1_SOURCE_LABELLED_COMPATIBILITY_CANDIDATE_ENABLED", "false"),
+            ("LR_Y1_SOURCE_LABELLED_COMPATIBILITY_ROUTE", ""),
+            ("LR_Y1_JOINED_PHASED_METHYLATION_ROUTE", ""),
+        ]:
+            with self.subTest(key=key):
+                with self.assertRaises(SystemExit):
+                    VERIFY.require_exact_public_joined_env({**env, key: value})
+        missing = dict(env)
+        del missing["LR_Y1_PUBLIC_JOINED_MAPPING_ASSUMPTION_ENABLED"]
+        with self.assertRaises(SystemExit):
+            VERIFY.require_exact_public_joined_env(missing)
+        for key in VERIFY.EXPECTED_PUBLIC_JOINED_ROUTE:
+            with self.subTest(route_key=key):
+                route = {**VERIFY.EXPECTED_PUBLIC_JOINED_ROUTE, key: "wrong"}
+                with self.assertRaises(SystemExit):
+                    VERIFY.require_exact_public_joined_env({**env,
+                        "LR_Y1_JOINED_PHASED_METHYLATION_ROUTE": json.dumps(route)})
+
     def test_manifest_drift_fails_closed(self) -> None:
         with patch.object(VERIFY, "sha256", return_value="0" * 64):
             with self.assertRaisesRegex(SystemExit, "refresh artifact manifest drifted"):

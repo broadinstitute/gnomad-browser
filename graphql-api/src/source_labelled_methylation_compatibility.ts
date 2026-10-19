@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs'
 
 import {
   LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256,
+  PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256,
   resolveJoinedPhasedMethylationRoute,
 } from './joined_phased_methylation_config'
 import { resolveY1PrimaryManifests } from './y1_admission_config'
@@ -194,15 +195,17 @@ export const resolveSourceLabelledCompatibilityRoute = (
     throw new Error('Source-labelled compatibility candidate flag must be explicitly true')
   }
   // Compatibility itself never supplies orientation. Only the separately pinned,
-  // explicit local assumption may coexist; it still goes through joined preflight.
+  // explicit local or public assumption may coexist, each through its own joined guard.
   let separatelyApprovedJoined = null
   if ((env.LR_Y1_JOINED_PHASED_METHYLATION_ROUTE || '').trim()) {
     try {
       separatelyApprovedJoined = resolveJoinedPhasedMethylationRoute(env)
-      if (separatelyApprovedJoined?.orientation_receipt_sha256 !== LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256)
-        throw new Error('not the separate local assumption')
+      if (!separatelyApprovedJoined || ![
+        LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256, PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256,
+      ].includes(separatelyApprovedJoined.orientation_receipt_sha256))
+        throw new Error('not a separate exact refreshed assumption')
     } catch (error: any) {
-      throw new Error(`Source-labelled compatibility cannot enable a joined VCF route without the separate exact local assumption: ${error.message}`)
+      throw new Error(`Source-labelled compatibility cannot enable a joined VCF route without a separately validated exact local/public assumption: ${error.message}`)
     }
   }
   const route = object(JSON.parse(raw), 'source-labelled compatibility route')
