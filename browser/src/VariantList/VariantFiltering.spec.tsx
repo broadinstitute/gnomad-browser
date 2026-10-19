@@ -372,6 +372,46 @@ describe('gnomAD variant filtering', () => {
     expectDisplayedGnomadVariantIds(['1-300-AT-A'])
   })
 
+  test('allows searching while consequence filters exclude every variant', async () => {
+    const user = userEvent.setup()
+    renderGnomadVariantFilters()
+    await selectOnlyConsequence(user, 'Other')
+    await user.type(screen.getByPlaceholderText('Search variant table'), 'exome-match')
+    expect(screen.getByText('No matching variants')).toBeVisible()
+    await user.click(screen.getByRole('checkbox', { name: 'Filtered variants' }))
+    expectDisplayedGnomadVariantIds(['1-300-AT-A'])
+  })
+
+  test('navigates to a search entered while the table was empty when rows return', async () => {
+    const user = userEvent.setup()
+    const template = buildTestGnomadVariants()[0]
+    const variants = Array.from({ length: 40 }, (_, index) => ({
+      ...template,
+      pos: 1000 + index * 10,
+      variant_id: `1-${1000 + index * 10}-A-C`,
+    }))
+    renderGnomadVariantFilters(DEFAULT_TEST_DATASET_ID, variants)
+    const targetId = '1-1390-A-C'
+    expect(screen.queryByRole('rowheader', { name: targetId })).toBeNull()
+    await selectOnlyConsequence(user, 'Other')
+    await user.type(screen.getByPlaceholderText('Search variant table'), targetId)
+    await selectOnlyConsequence(user, 'Missense / Inframe indel')
+    expect(await screen.findByRole('rowheader', { name: targetId })).toBeVisible()
+  })
+
+  test('preserves the table instance when filtered results become empty', async () => {
+    const user = userEvent.setup()
+    renderGnomadVariantFilters()
+    const table = screen.getByRole('grid')
+    await selectOnlyConsequence(user, 'Other')
+    expect(table).toBeInTheDocument()
+    expect(table).not.toBeVisible()
+    expect(within(table).queryAllByRole('rowheader')).toEqual([])
+    await user.click(screen.getByRole('checkbox', { name: 'Filtered variants' }))
+    expect(screen.getByRole('grid')).toBe(table)
+    expectDisplayedGnomadVariantIds(['1-300-AT-A'])
+  })
+
   test('preserves filtered membership when the table sort changes', async () => {
     const user = userEvent.setup()
     renderGnomadVariantFilters()

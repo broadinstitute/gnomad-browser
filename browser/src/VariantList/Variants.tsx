@@ -176,15 +176,15 @@ export const ControlledVariants = ({
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // When searching the table with context, scroll to the first hit whenever the
-  //   search text changes
+  const hasRenderedVariants = renderedVariants.length > 0
+
   useEffect(() => {
-    if (!filter.includeContext) {
+    if (filter.searchText === '') {
+      setCurrentSearchIndex(-1)
       return
     }
 
-    if (filter.searchText === '') {
-      setCurrentSearchIndex(-1)
+    if (!filter.includeContext || !hasRenderedVariants) {
       return
     }
 
@@ -201,7 +201,7 @@ export const ControlledVariants = ({
 
     // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
     table.current.scrollToDataRow(searchIndex)
-  }, [filter.searchText]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [filter.searchText, hasRenderedVariants]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const datasetLabel = labelForDataset(datasetId)
 
@@ -272,7 +272,7 @@ export const ControlledVariants = ({
             minHeight: '540px',
           }}
         >
-          {renderedVariants.length ? (
+          <div hidden={renderedVariants.length === 0}>
             <VariantTable
               ref={table}
               columns={renderedTableColumns}
@@ -285,9 +285,8 @@ export const ControlledVariants = ({
               sortOrder={sortOrder}
               variants={renderedVariants}
             />
-          ) : (
-            <StatusMessage>No matching variants</StatusMessage>
-          )}
+          </div>
+          {renderedVariants.length === 0 && <StatusMessage>No matching variants</StatusMessage>}
         </div>
       </TrackPageSection>
 
