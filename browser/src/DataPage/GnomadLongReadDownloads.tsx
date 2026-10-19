@@ -16,8 +16,18 @@ const chromosomes = [...Array.from({ length: 22 }, (_, i) => `${i + 1}`), 'X', '
 
 // The HGSVC/HPRC VCFs include per-sample genotypes; the All of Us VCFs are sites-only
 const cohorts = [
-  { id: 'hgsvc_hprc', label: 'HGSVC/HPRC', vcfDescription: 'VCF with genotypes' },
-  { id: 'aou', label: 'All of Us', vcfDescription: 'sites VCF' },
+  {
+    id: 'hgsvc_hprc',
+    label: 'HGSVC/HPRC',
+    vcfDescription: 'VCF with genotypes',
+    vcfFileNamePrefix: 'gnomad.lr.genomes.0.1.hgsvc_hprc',
+  },
+  {
+    id: 'aou',
+    label: 'All of Us',
+    vcfDescription: 'sites VCF',
+    vcfFileNamePrefix: 'gnomad.lr.genomes.0.1.aou.sites',
+  },
 ]
 
 const GnomadLongReadDownloads = () => {
@@ -44,9 +54,6 @@ const GnomadLongReadDownloads = () => {
       <SectionTitle id="lr-core-dataset" subject="datasets">
         Core Dataset
       </SectionTitle>
-      <StyledParagraph>
-        gnomAD database and features created and maintained by the gnomAD production team.
-      </StyledParagraph>
 
       <DownloadsSection>
         <SectionTitle id="lr-variants">Variants</SectionTitle>
@@ -69,7 +76,8 @@ const GnomadLongReadDownloads = () => {
                     <DownloadLinks
                       label={`chr${chrom} ${cohort.vcfDescription}`}
                       loggingLabel={`LR 0.1 ${cohort.label} chr${chrom} ${cohort.vcfDescription}`}
-                      path={`/release/lr/0.1/vcf/${cohort.id}/gnomad.lr.genomes.0.1.sites.chr${chrom}.vcf.gz`}
+                      path={`/release/lr/0.1/vcf/${cohort.id}/${cohort.vcfFileNamePrefix}.chr${chrom}.vcf.gz`}
+                      associatedFileType="TBI"
                     />
                   </ListItem>
                 ))}

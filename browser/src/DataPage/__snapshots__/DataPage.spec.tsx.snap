@@ -686,11 +686,6 @@ exports[`Data Page has no unexpected changes 1`] = `
         Core Dataset
       </h2>
     </span>
-    <p
-      className="c13"
-    >
-      gnomAD database and features created and maintained by the gnomAD production team.
-    </p>
     <section
       className="c16"
     >
@@ -779,7 +774,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr1 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr1.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr1.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -790,8 +785,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr1 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr1.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr1.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr1 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr1.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr1 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr1.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -812,7 +833,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr2 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr2.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr2.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -823,8 +844,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr2 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr2.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr2.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr2 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr2.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr2 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr2.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -845,7 +892,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr3 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr3.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr3.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -856,8 +903,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr3 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr3.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr3.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr3 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr3.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr3 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr3.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -878,7 +951,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr4 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr4.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr4.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -889,8 +962,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr4 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr4.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr4.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr4 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr4.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr4 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr4.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -911,7 +1010,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr5 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr5.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr5.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -922,8 +1021,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr5 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr5.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr5.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr5 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr5.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr5 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr5.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -944,7 +1069,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr6 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr6.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr6.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -955,8 +1080,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr6 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr6.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr6.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr6 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr6.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr6 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr6.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -977,7 +1128,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr7 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr7.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr7.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -988,8 +1139,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr7 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr7.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr7.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr7 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr7.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr7 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr7.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1010,7 +1187,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr8 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr8.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr8.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1021,8 +1198,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr8 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr8.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr8.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr8 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr8.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr8 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr8.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1043,7 +1246,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr9 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr9.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr9.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1054,8 +1257,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr9 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr9.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr9.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr9 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr9.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr9 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr9.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1076,7 +1305,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr10 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr10.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr10.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1087,8 +1316,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr10 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr10.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr10.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr10 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr10.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr10 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr10.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1109,7 +1364,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr11 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr11.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr11.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1120,8 +1375,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr11 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr11.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr11.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr11 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr11.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr11 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr11.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1142,7 +1423,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr12 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr12.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr12.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1153,8 +1434,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr12 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr12.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr12.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr12 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr12.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr12 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr12.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1175,7 +1482,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr13 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr13.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr13.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1186,8 +1493,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr13 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr13.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr13.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr13 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr13.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr13 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr13.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1208,7 +1541,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr14 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr14.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr14.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1219,8 +1552,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr14 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr14.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr14.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr14 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr14.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr14 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr14.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1241,7 +1600,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr15 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr15.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr15.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1252,8 +1611,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr15 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr15.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr15.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr15 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr15.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr15 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr15.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1274,7 +1659,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr16 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr16.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr16.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1285,8 +1670,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr16 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr16.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr16.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr16 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr16.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr16 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr16.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1307,7 +1718,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr17 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr17.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr17.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1318,8 +1729,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr17 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr17.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr17.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr17 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr17.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr17 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr17.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1340,7 +1777,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr18 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr18.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr18.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1351,8 +1788,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr18 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr18.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr18.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr18 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr18.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr18 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr18.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1373,7 +1836,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr19 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr19.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr19.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1384,8 +1847,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr19 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr19.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr19.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr19 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr19.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr19 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr19.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1406,7 +1895,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr20 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr20.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr20.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1417,8 +1906,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr20 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr20.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr20.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr20 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr20.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr20 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr20.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1439,7 +1954,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr21 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr21.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr21.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1450,8 +1965,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr21 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr21.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr21.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr21 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr21.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr21 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr21.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1472,7 +2013,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr22 VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr22.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr22.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1483,8 +2024,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr22 VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr22.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr22.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr22 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr22.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr22 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chr22.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1505,7 +2072,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrX VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chrX.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chrX.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1516,8 +2083,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrX VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chrX.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chrX.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chrX VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chrX.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrX VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chrX.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1538,7 +2131,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrY VCF with genotypes from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chrY.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chrY.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1549,8 +2142,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrY VCF with genotypes from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chrY.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chrY.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chrY VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chrY.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrY VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.hgsvc_hprc.chrY.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1582,7 +2201,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr1 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr1.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr1.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1593,8 +2212,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr1 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr1.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr1.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr1 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr1.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr1 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr1.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1615,7 +2260,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr2 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr2.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr2.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1626,8 +2271,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr2 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr2.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr2.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr2 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr2.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr2 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr2.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1648,7 +2319,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr3 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr3.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr3.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1659,8 +2330,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr3 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr3.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr3.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr3 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr3.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr3 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr3.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1681,7 +2378,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr4 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr4.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr4.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1692,8 +2389,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr4 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr4.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr4.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr4 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr4.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr4 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr4.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1714,7 +2437,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr5 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr5.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr5.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1725,8 +2448,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr5 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr5.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr5.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr5 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr5.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr5 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr5.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1747,7 +2496,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr6 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr6.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr6.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1758,8 +2507,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr6 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr6.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr6.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr6 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr6.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr6 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr6.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1780,7 +2555,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr7 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr7.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr7.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1791,8 +2566,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr7 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr7.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr7.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr7 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr7.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr7 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr7.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1813,7 +2614,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr8 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr8.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr8.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1824,8 +2625,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr8 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr8.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr8.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr8 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr8.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr8 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr8.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1846,7 +2673,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr9 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr9.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr9.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1857,8 +2684,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr9 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr9.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr9.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr9 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr9.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr9 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr9.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1879,7 +2732,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr10 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr10.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr10.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1890,8 +2743,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr10 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr10.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr10.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr10 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr10.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr10 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr10.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1912,7 +2791,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr11 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr11.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr11.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1923,8 +2802,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr11 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr11.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr11.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr11 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr11.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr11 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr11.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1945,7 +2850,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr12 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr12.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr12.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1956,8 +2861,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr12 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr12.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr12.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr12 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr12.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr12 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr12.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1978,7 +2909,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr13 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr13.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr13.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -1989,8 +2920,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr13 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr13.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr13.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr13 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr13.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr13 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr13.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2011,7 +2968,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr14 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr14.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr14.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2022,8 +2979,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr14 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr14.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr14.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr14 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr14.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr14 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr14.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2044,7 +3027,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr15 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr15.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr15.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2055,8 +3038,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr15 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr15.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr15.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr15 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr15.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr15 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr15.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2077,7 +3086,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr16 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr16.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr16.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2088,8 +3097,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr16 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr16.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr16.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr16 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr16.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr16 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr16.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2110,7 +3145,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr17 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr17.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr17.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2121,8 +3156,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr17 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr17.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr17.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr17 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr17.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr17 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr17.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2143,7 +3204,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr18 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr18.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr18.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2154,8 +3215,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr18 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr18.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr18.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr18 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr18.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr18 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr18.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2176,7 +3263,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr19 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr19.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr19.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2187,8 +3274,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr19 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr19.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr19.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr19 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr19.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr19 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr19.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2209,7 +3322,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr20 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr20.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr20.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2220,8 +3333,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr20 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr20.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr20.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr20 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr20.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr20 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr20.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2242,7 +3381,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr21 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr21.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr21.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2253,8 +3392,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr21 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr21.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr21.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr21 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr21.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr21 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr21.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2275,7 +3440,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr22 sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr22.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr22.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2286,8 +3451,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chr22 sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr22.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr22.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chr22 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr22.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chr22 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chr22.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2308,7 +3499,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrX sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chrX.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chrX.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2319,8 +3510,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrX sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chrX.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chrX.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chrX sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chrX.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrX sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chrX.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2341,7 +3558,7 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrY sites VCF from Google"
                   className="c8"
-                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chrY.vcf.gz"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chrY.vcf.gz"
                   onClick={[Function]}
                   rel="noopener noreferrer"
                   target="_blank"
@@ -2352,8 +3569,34 @@ exports[`Data Page has no unexpected changes 1`] = `
                 <a
                   aria-label="Download chrY sites VCF from Amazon"
                   className="c8"
-                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chrY.vcf.gz"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chrY.vcf.gz"
                   onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+              <br />
+              <span>
+                Download 
+                TBI
+                 from
+                 
+                <a
+                  aria-label="Download TBI file for chrY sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chrY.vcf.gz.tbi"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download TBI file for chrY sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.aou.sites.chrY.vcf.gz.tbi"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
