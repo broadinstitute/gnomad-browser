@@ -5,24 +5,18 @@ import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
 import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
-import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
-import userPreferences from '../userPreferences'
 import ExportVariantsButton from './ExportVariantsButton'
-import filterVariants, {
-  DEFAULT_VARIANT_FILTER_STATE,
+import useVariantFiltering, {
+  VariantFiltering,
   VariantFilterState,
   getFilteredVariants,
-} from './filterVariants'
-import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
+} from './useVariantFiltering'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
-import variantTableColumns, {
-  DEFAULT_COLUMNS,
-  getRenderedVariantTableColumns,
-} from './variantTableColumns'
+import variantTableColumns, { DEFAULT_COLUMNS } from './variantTableColumns'
 import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
 import { Variant } from '../VariantPage/VariantPage'
@@ -71,29 +65,27 @@ export const getFirstIndexFromSearchText = (
   return variantWindow[0]
 }
 
-const Variants = ({
+type ControlledVariantsProps = Omit<OwnVariantsProps, 'clinvarReleaseDate' | 'variants'> & {
+  selection: VariantFiltering
+}
+
+export const ControlledVariants = ({
   children,
-  clinvarReleaseDate,
   context,
   datasetId,
-  exportFileName,
-  variants,
-}: VariantsProps) => {
+  exportFileName = 'variants',
+  selection,
+}: ControlledVariantsProps) => {
   const table = useRef(null)
-
-  const [selectedColumns, setSelectedColumns] = useState(() => {
-    try {
-      return userPreferences.getPreference('variantTableColumns') || DEFAULT_COLUMNS
-    } catch (error) {
-      return DEFAULT_COLUMNS
-    }
-  })
-
-  const renderedTableColumns = useMemo(() => {
-    return getRenderedVariantTableColumns(context, selectedColumns, clinvarReleaseDate)
-  }, [clinvarReleaseDate, context, selectedColumns])
-
-  const [filter, setFilter] = useState(DEFAULT_VARIANT_FILTER_STATE)
+  const {
+    variants,
+    filter,
+    setFilter,
+    selectedColumns,
+    saveSelectedColumns,
+    renderedTableColumns,
+    filteredVariants,
+  } = selection
 
   const [sortState, setSortState] = useState({
     sortKey: 'variant_id',
@@ -116,14 +108,6 @@ const Variants = ({
       }
     })
   }, [])
-
-  const filteredVariants = useMemo(() => {
-    return mergeExomeAndGenomeData({
-      datasetId,
-      variants: filterVariants(variants, filter, renderedTableColumns),
-      preferJointData: filter.includeExomes && filter.includeGenomes,
-    })
-  }, [datasetId, variants, filter, renderedTableColumns])
 
   const renderedVariants = useMemo(() => {
     return sortVariants(filteredVariants, sortState)
@@ -317,23 +301,18 @@ const Variants = ({
             setShowTableConfigurationModal(false)
           }}
           onSave={(newSelectedColumns) => {
-            setSelectedColumns(newSelectedColumns)
+            saveSelectedColumns(newSelectedColumns)
             setShowTableConfigurationModal(false)
-
-            userPreferences
-              .savePreference('variantTableColumns', newSelectedColumns)
-              .then(null, (error: any) => {
-                showNotification({
-                  title: 'Error',
-                  message: error.message,
-                  status: 'error',
-                })
-              })
           }}
         />
       )}
     </div>
   )
+}
+
+const Variants = (props: VariantsProps) => {
+  const selection = useVariantFiltering(props)
+  return <ControlledVariants {...props} selection={selection} />
 }
 
 Variants.defaultProps = variantsDefaultProps

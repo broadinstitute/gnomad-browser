@@ -3,9 +3,9 @@ import React from 'react'
 import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Query from '../Query'
-import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import useLinkedVariantSelection from '../VariantList/useLinkedVariantSelection'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
-import Variants from '../VariantList/Variants'
+import { ControlledVariants } from '../VariantList/Variants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 
 type OwnVariantsInRegionProps = {
@@ -40,6 +40,14 @@ const VariantsInRegion = ({
   zoomRegion,
 }: VariantsInRegionProps) => {
   const datasetLabel = labelForDataset(datasetId)
+  const selection = useLinkedVariantSelection({
+    clinvarVariants,
+    variants,
+    context: region,
+    datasetId,
+    clinvarReleaseDate,
+    zoomRegion,
+  })
 
   return (
     <>
@@ -50,14 +58,14 @@ const VariantsInRegion = ({
         transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
         zoomRegion={zoomRegion}
         pageType="region"
+        selection={selection.clinvar}
       />
 
-      <Variants
-        clinvarReleaseDate={clinvarReleaseDate}
+      <ControlledVariants
+        selection={selection.gnomad}
         context={region}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
-        variants={filterVariantsInZoomRegion(variants, zoomRegion)}
       />
     </>
   )

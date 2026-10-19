@@ -7,7 +7,7 @@ import CategoryFilterControl from '../CategoryFilterControl'
 import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import InfoButton from '../help/InfoButton'
 import useSearchHotkeys from '../useSearchHotkeys'
-import { VariantFilterState } from './filterVariants'
+import { VariantFilterState } from './useVariantFiltering'
 
 const consequenceCategoryColors = {
   lof: '#FF583F',
