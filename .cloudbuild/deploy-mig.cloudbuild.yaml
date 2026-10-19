@@ -5,14 +5,14 @@ steps:
       - |
         set -euo pipefail
 
-        echo "Deploying Reads, image tag: ${_IMAGE_TAG}"
+        echo "Deploying ${_SERVICE_NAME}, image tag: ${_IMAGE_TAG}"
 
         gcloud compute instance-groups managed all-instances-config update \
           "${_MIG_NAME}" \
           --zone="${_SERVICE_ZONE}" \
-          --metadata="image-tag=${_IMAGE_TAG}"
+          --metadata="api-image-tag=${_IMAGE_TAG},server-image-tag=${_IMAGE_TAG}"
 
-        echo "Waiting for Reads MIG rollout to complete and become healthy..."
+        echo "Waiting for ${_SERVICE_NAME} MIG rollout to complete and become healthy..."
 
         gcloud compute instance-groups managed wait-until \
           "${_MIG_NAME}" \
