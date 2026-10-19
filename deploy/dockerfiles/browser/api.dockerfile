@@ -48,4 +48,10 @@ COPY --chown=node:node graphql-api/config/sample-total-completion-receipt.json /
 COPY --chown=node:node graphql-api/config/terminal-metadata-receipt.json /app/graphql-api/config/terminal-metadata-receipt.json
 COPY --chown=node:node graphql-api/config/long-read-tr-reference-crosswalk.json /app/graphql-api/config/long-read-tr-reference-crosswalk.json
 
+# Refreshed primary manifests and source-labelled (not VCF-joined) methylation proof.
+# The old admitted bundle above remains available for rollback; runtime selects one bundle.
+COPY --chown=node:node graphql-api/config/presentation-primary-manifest-bundle.json /app/graphql-api/config/presentation-primary-manifest-bundle.json
+COPY --chown=node:node graphql-api/config/refresh-20260923-represented-length.json /app/graphql-api/config/refresh-20260923-represented-length.json
+COPY --chown=node:node graphql-api/config/refresh-20260923-source-labelled-compatibility.json /app/graphql-api/config/refresh-20260923-source-labelled-compatibility.json
+
 CMD ["node", "graphql-api/src/app.js"]

@@ -8,6 +8,7 @@ import importlib.util
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SPEC = importlib.util.spec_from_file_location(
@@ -47,6 +48,26 @@ class JoinedRouteReleaseConfigTest(unittest.TestCase):
                     env["LR_Y1_JOINED_PHASED_METHYLATION_ROUTE"] = json.dumps(route)
                 with self.assertRaises(SystemExit):
                     VERIFY.require_exact_joined_route(env)
+
+
+class RefreshBundleReleaseConfigTest(unittest.TestCase):
+    def test_exact_refresh_bundle_is_admitted(self) -> None:
+        VERIFY.verify_refresh_bundle()
+
+    def test_manifest_drift_fails_closed(self) -> None:
+        with patch.object(VERIFY, "sha256", return_value="0" * 64):
+            with self.assertRaisesRegex(SystemExit, "refresh artifact manifest drifted"):
+                VERIFY.verify_refresh_bundle()
+
+    def test_any_refresh_artifact_drift_fails_closed(self) -> None:
+        original_sha256 = VERIFY.sha256
+        names = VERIFY.REFRESH_CONFIG_NAMES | {"refresh-20260923-api-env.json"}
+        for name in names:
+            with self.subTest(name=name):
+                with patch.object(VERIFY, "sha256", side_effect=lambda p: "0" * 64
+                                  if p.name == name else original_sha256(p)):
+                    with self.assertRaisesRegex(SystemExit, "refresh artifact hash/size mismatch"):
+                        VERIFY.verify_refresh_bundle()
 
 
 if __name__ == "__main__":

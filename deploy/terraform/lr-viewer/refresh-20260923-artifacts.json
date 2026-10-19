@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "database": "gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af",
+  "clickhouse_host": "192.168.0.2",
+  "url_secret": "gnomad-lr-refresh-public-clickhouse-url-20261019",
+  "joined_methylation": "unavailable_no_new_vcf_orientation_proof",
+  "str_histograms": "unavailable_no_admitted_refreshed_context_receipt",
+  "artifacts": [
+    {
+      "path": "graphql-api/config/presentation-primary-manifest-bundle.json",
+      "bytes": 898950,
+      "sha256": "29cb1dc73670bdcfa993983931219bb0e6798a200152dffab890f702b464a57b"
+    },
+    {
+      "path": "graphql-api/config/refresh-20260923-represented-length.json",
+      "bytes": 1243,
+      "sha256": "37b4524692f72b551db2b7b4a325ae427a1e900a83647dc4ac882abafe181994"
+    },
+    {
+      "path": "graphql-api/config/refresh-20260923-source-labelled-compatibility.json",
+      "bytes": 57222,
+      "sha256": "1653a911fa934932da647f4f3035918f8faaa7ac4d6a6e69d56ebaf315c5fc5e"
+    },
+    {
+      "path": "deploy/terraform/lr-viewer/refresh-20260923-api-env.json",
+      "bytes": 5786,
+      "sha256": "e7874994345854dc42bd5fa1de0a1b74ea708aec44b478e2d6b0e0ea7dd539b5"
+    }
+  ]
+}

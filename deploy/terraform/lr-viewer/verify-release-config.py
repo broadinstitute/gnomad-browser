@@ -26,6 +26,12 @@ EXPECTED_ARTIFACTS = {
     "terminal-metadata-receipt.json",
     "long-read-tr-reference-crosswalk.json",
 }
+REFRESH_CONFIG_NAMES = {
+    "presentation-primary-manifest-bundle.json",
+    "refresh-20260923-represented-length.json",
+    "refresh-20260923-source-labelled-compatibility.json",
+}
+EXPECTED_REFRESH_MANIFEST_SHA256 = "c93f5d0e8a7a29fcf1508a03fa53c56419dc68c6af18b1c50b2c2b8f18f7dd19"
 EXPECTED_JOINED_ROUTE = {
     "database": "gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3",
     "run_id": "y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1",
@@ -67,7 +73,32 @@ def require_exact_joined_route(api_env: dict[str, object]) -> None:
     )
 
 
+def verify_refresh_bundle() -> None:
+    """Verify the separately pinned refresh inputs without relaxing the old bundle."""
+    path = SCRIPT_DIR / "refresh-20260923-artifacts.json"
+    require(sha256(path) == EXPECTED_REFRESH_MANIFEST_SHA256, "refresh artifact manifest drifted")
+    manifest = json.loads(path.read_text())
+    expected_paths = {f"graphql-api/config/{name}" for name in REFRESH_CONFIG_NAMES}
+    expected_paths.add("deploy/terraform/lr-viewer/refresh-20260923-api-env.json")
+    artifacts = manifest["artifacts"]
+    require(len(artifacts) == 4 and {a["path"] for a in artifacts} == expected_paths,
+            "refresh artifact allowlist differs")
+    for item in artifacts:
+        artifact = ROOT / item["path"]
+        require(artifact.stat().st_size == item["bytes"] and sha256(artifact) == item["sha256"],
+                f"refresh artifact hash/size mismatch: {item['path']}")
+    env = json.loads((SCRIPT_DIR / "refresh-20260923-api-env.json").read_text())
+    require(env["NODE_ENV"] == "production", "refresh must use production guards")
+    require(env["LR_Y1_CLICKHOUSE_DATABASE"] == "gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af",
+            "refresh primary database differs")
+    require("LR_Y1_CLICKHOUSE_URL" not in env, "refresh credential URL must be a secret reference")
+    require(env["LR_Y1_LOCAL_JOINED_MAPPING_ASSUMPTION_ENABLED"] == "false" and
+            env["LR_Y1_JOINED_PHASED_METHYLATION_ROUTE"] == "",
+            "unvalidated local joined methylation must not be enabled")
+
+
 def main() -> None:
+    verify_refresh_bundle()
     manifest = json.loads(MANIFEST_PATH.read_text())
     require(manifest.get("schema_version") == 1, "unexpected artifact manifest schema")
     artifacts = manifest.get("artifacts", [])
@@ -225,9 +256,9 @@ def main() -> None:
     api_dockerfile = (ROOT / "deploy/dockerfiles/browser/api.dockerfile").read_text()
     api_ignore = (ROOT / "deploy/dockerfiles/browser/api.dockerfile.dockerignore").read_text().splitlines()
     config_negations = {line[1:] for line in api_ignore if line.startswith("!graphql-api/config/")}
-    require(config_negations == {f"graphql-api/config/{name}" for name in EXPECTED_ARTIFACTS}, "API dockerignore config allowlist is not exact")
+    require(config_negations == {f"graphql-api/config/{name}" for name in EXPECTED_ARTIFACTS | REFRESH_CONFIG_NAMES}, "API dockerignore config allowlist is not exact")
     copy_lines = [line for line in api_dockerfile.splitlines() if line.startswith("COPY ")]
-    for name in EXPECTED_ARTIFACTS:
+    for name in EXPECTED_ARTIFACTS | REFRESH_CONFIG_NAMES:
         source = f"graphql-api/config/{name}"
         matches = [line for line in copy_lines if line.split()[2] == source]
         require(len(matches) == 1, f"API Dockerfile must copy {name} exactly once")

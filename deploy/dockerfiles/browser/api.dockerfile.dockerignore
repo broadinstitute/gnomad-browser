@@ -20,3 +20,6 @@
 !graphql-api/config/sample-total-completion-receipt.json
 !graphql-api/config/terminal-metadata-receipt.json
 !graphql-api/config/long-read-tr-reference-crosswalk.json
+!graphql-api/config/presentation-primary-manifest-bundle.json
+!graphql-api/config/refresh-20260923-represented-length.json
+!graphql-api/config/refresh-20260923-source-labelled-compatibility.json

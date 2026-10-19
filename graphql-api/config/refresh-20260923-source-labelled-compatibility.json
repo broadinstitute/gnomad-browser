@@ -1,0 +1,2124 @@
+{
+  "schema_version": 1,
+  "format": "source_labelled_methylation_candidate_compatibility_v1",
+  "status": "candidate_compatible",
+  "source_labelled_only": true,
+  "vcf_orientation_joined": false,
+  "vcf_strand_binding": null,
+  "phase_set_binding": null,
+  "cohort": "hgsvc_hprc",
+  "reference_genome": "GRCh38",
+  "source_product": {
+    "database": "gnomad_lr_y1_methylation_source_haplotype_full_genome_20260803_v3",
+    "run_id": "y1-hgsvc-hprc-methylation-source-haplotype-full-genome-20260803-v3-source-labelled-v1",
+    "table": "lr_y1_methylation_source_haplotype_presentation",
+    "serving_receipt_sha256": "be522cfe12455af49127ba8cf84ccb102af0c408112d6ec7b650892815aec218",
+    "completion_receipt_sha256": "f259273f4c66ae18f80884cfbb6640a603e0708765a059a68e75bb1b85d23f85",
+    "source_manifest_sha256": "cd12abd8ebef56f55d0c18c5d8db60bfe5672869a990c90932168d603cb2da69",
+    "original_primary_bundle_sha256": "7aee998adbb40b50d920c81061dcec7437db04fd8d4c72ff12dfc40abe160c9a"
+  },
+  "primary": {
+    "database": "gnomad_lr_y1_scratch_v6_refresh_20260923_nullable_af",
+    "bundle_sha256": "29cb1dc73670bdcfa993983931219bb0e6798a200152dffab890f702b464a57b",
+    "entries": [
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr1",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr1-r1",
+        "manifest_sha256": "c44fb0127bc3a060567890886f6518798448c2a7bc24f92cdd28754842030a29",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "5770a5521dd8615076aee6382a6977ebb806f78529cd68265445f80dca2567bd",
+        "header_sha256": "16e6d6f5fc143d2242db6341b6b1a6849233aa57c31ead22afe636d81bfabac6",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr1",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr1-r2",
+        "manifest_sha256": "c60069c596f3f13c6276b531f6fd7524ff6cacebe4cacff28e819869108f029d",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "04c3b5f656940bd54c457aaf77cca204afb114f55c41719a836e1a6e62a3db0c",
+        "header_sha256": "dc5d96f03d38b41da918f62d63d544ac8ef5637cee22a4c51b256dca1a0c315f",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr2",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr2-r1",
+        "manifest_sha256": "f922f9c0804c7afc42e7a33a21ee04eb3a4ca96a874c7e192ee3b918713ce2aa",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "7504b5a11e75d836861ca736031d9fcc20b6566e5d5efa2437b2bdd16f26b934",
+        "header_sha256": "a724ea3ad9e989ccde4ff1ae06626ff1bac95626e5990755c695cab3cdc2144a",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr2",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr2-r1",
+        "manifest_sha256": "0f57f6fde5f8047ec4ab0eaf824966328a254375db714907daf8bae2cb5517a3",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "4b32771528004a18ccf711c25e7b5767e910b2b2a40f59d3188c31e127c8d3fc",
+        "header_sha256": "1e728dd0b6934cb2dddbebe44c5dbcaae9c815c1b6ab0ac696ee7625bdeb733c",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr3",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr3-r1",
+        "manifest_sha256": "51d069c453048e08c3d439b0cee2180714419ca9cfa96e52afea027e0bb8e72a",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "e950243bb5204b5f36bd1cb7cd59b461dba1bfbb023578004c4eb1cfb42e3fc1",
+        "header_sha256": "6700a96cb7ab2a15afc30830dcd070943b2c238e580e9f629e1991180a80114b",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr3",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr3-r1",
+        "manifest_sha256": "fd343e54c89762bc3412f8abeb72762cdb4e7ca995f97a31573e1008f7f44706",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "a50d3725f65e3045736e9999fcc50e06fc00d56d3fced578d98cc4461e8ed391",
+        "header_sha256": "5824876f8c1dcdcf0eb1f11d88ee10bc63e98cd571665e7c3706025004ef24bf",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr4",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr4-r1",
+        "manifest_sha256": "d290a4df89fbdca7672a186464e6a3d123e3d9de26ac0b4d2e9b4831a19442bc",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "f260558937f52fdff49eb776346da14f73c82957c16311582dfad93598731d44",
+        "header_sha256": "74115a61956ba5559c4575f47980a0ddeeb5a8864f178325abff6592d0c64aed",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr4",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr4-r1",
+        "manifest_sha256": "261c7971f2b4576448a3c0ff5629953b9056e87ae981f6bdb9ed26e9f62a89c2",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "2ebe160fdd8ce43b51ebfa77bc99f1f7995364d84a83ce7b14657aba465abfc8",
+        "header_sha256": "7f63323ccd9db12da7a5786461a53bd582919b638f4566c56df52d44a7465d93",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr5",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr5-r1",
+        "manifest_sha256": "d76d99dd4a59a80ae07e01da32e058a4787d54312b76021d2d5db65e08d31660",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "ffa5c477235571ba1fbb83d225ac755e889d3c02ad84ed4385ea14ab35dc58fb",
+        "header_sha256": "2fe0b629c5c48b5e21ef5984bf888ed06767fcc033e8b1c682606a35e17d18ef",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr5",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr5-r1",
+        "manifest_sha256": "fb0bbaeb96f5beaf8d83fd352b4e81d7a9541649c52ae50c7efd78739d4814ae",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "6f05a09614ac6c3e906dc64367831dbd1ef851ff45e930caf115eb553a9e8ee9",
+        "header_sha256": "176141fd25e8caf51b17b68f37df49312e4e785685676624da5606317d10a6ff",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr6",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr6-r1",
+        "manifest_sha256": "ac7a19f3b88c32b290b8ec9d418188d5b2a8c8b50320344c6f09664fdd717d55",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "e4b34704ba84c2bb4636a4f2f3c73b8be1c15244c02bc5e986245e89b8514385",
+        "header_sha256": "2f82bf66f6cdb337e7fc0fc02f6fc7c94be016c768af8b370923f79bc0d6e40f",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr6",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr6-r1",
+        "manifest_sha256": "8975b991797cc184b40f5f63db695a59b9b5b793d49ec1d83a84301e04c8ddc1",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "1d6840c35c4bd1054eebddb4fe94ea0782a1a2b2deb714690650b4a95c0a1d7e",
+        "header_sha256": "497aafc5be56305e58d55938f16bf2ac17bd1e976fed52152816e065393b61d4",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr7",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr7-r1",
+        "manifest_sha256": "ba2447561af4d2fac2e954aa33def221b67804a31a2316c4a0880d959bece3f1",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "884cfc83136367abadbc70d7613264569dd343576f07e77860709a3f07f4443a",
+        "header_sha256": "e5c3fac136e83990d30f843dc2931ee66c335066de7c14f1b2d37c6a8e7862e4",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr7",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr7-r1",
+        "manifest_sha256": "1d308274959fa73a1b5035fefc36f8e867bd81c5a2535d0a8ec84f31877a44c9",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "d788892e7fad0959b6023bcdc45acc36a952f7c234f239652816ac24218c56fa",
+        "header_sha256": "ab78458a92e4d5786f26b4397b28d920182a71d022228a2ef692362fa254609e",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr8",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr8-r1",
+        "manifest_sha256": "052c1786148b687b8a81a3ad1182736d151948b7357603443335407f95c4a5d3",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "c3cb29768aeb630a5cfb768941ad92f76006cf81ac1206104f54926f1dbe1791",
+        "header_sha256": "57817f6079665d19361196fd5eb1e48d49bb5f05232c3ac36a204daa421de8a1",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr8",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr8-r1",
+        "manifest_sha256": "57057a9b0051a5911b8d984453f415734da826563306b158ce7cf68eba949403",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "000e1e4b5b48da91cfed473662c4374d771b60c5b407137d6cc41a9603cd301d",
+        "header_sha256": "ddd1c76f5e54b8181503f051692e262bcf55bc4abd88ec4aa3b9b169cf7e6a44",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr9",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr9-r1",
+        "manifest_sha256": "b357c9defeb413bdcbce5ad95d8196bc7a42775a3047db19124379e9207ba148",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "5c0f34a01dd8f0122ab14d69fbe2f8d0959766baaa2ea45cd7a9b12d44932399",
+        "header_sha256": "29dabf5a00b9a0006140b7edf55d662f64c0269c578cd2f60ea30c64abe0ca46",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr9",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr9-r1",
+        "manifest_sha256": "5c4d32913ab460319c81fcc5cd04210e900032493868b27b48467a94c9736701",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "ac8d2c9ad645c6dc723c5c0d586b2217fded7e6787fab045ddf1a55f35d6ebf6",
+        "header_sha256": "7f3c15c90bade3e2b860e42da01670debb3395f7472ad212bf7d465a5efd60a5",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr10",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr10-r1",
+        "manifest_sha256": "ca9c2cac262efa5c7bdfc6c785cb49ebdae25ef75c5b0416ad39366e7b7459fb",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "15ae62d2069326bccc89107cf70165dcecc54d5173bb1e440015f0ae474bd084",
+        "header_sha256": "310757a44e054add73973b2f03e0f01a1c0e33152ce6627ff68d1a2672f46113",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr10",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr10-r1",
+        "manifest_sha256": "db5c8ea5852ce635cb262b46c9fcb7cd55d0065b8315973661417e8d3a781e08",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "e694b8098ad225200c780a1e8a366cc4177a155152f6ed07e5ede1a5ce3de64e",
+        "header_sha256": "30f4af60aac39df805f422774876f929eaf771966a6c8ba6311e3f5cd5586913",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr11",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr11-r1",
+        "manifest_sha256": "8177728cfcb369052c5a4c58eb4f8e2e0c06862f70e62808577ebf573dc90180",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "efadb2c90f082e497f0c56fc3a7fff12542c7208d45d5547bc7f3230190795bb",
+        "header_sha256": "417d19765510acd32ab3319fd6acf648bb886a8acb8f8f7e54298efbb03afc87",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr11",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr11-r1",
+        "manifest_sha256": "954500149cc99d6a979361b2d628e10e8ef72cbb65d43430064fc4bc17173718",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "92e2f29c6ff655f8354033f75f88391508ccc4193bdbdc26f90ed02636be5f81",
+        "header_sha256": "745217b1b5fe81812e3a9ac61c42b1b9a8052270115ec2176609578b7d6a61ea",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr12",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr12-r1",
+        "manifest_sha256": "8eecc51054d95fe4154c78e5eddf6a9ce9cc8f47e693d57062429f3f2c5ce487",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "b652fbbb97d1e3b867a1904bed5d6fd935dd3dc71e1500e6bcef95be0e5204e9",
+        "header_sha256": "75459638e2be4fcf557752e9b837545edc758c9a363d3b5f6fbb1413a3ea6933",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr12",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr12-r1",
+        "manifest_sha256": "3807d7bfced59e1f4499b4848dfbc710cbc8499dc506b7eeaa90ae5850a79df4",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "6b0b5c7a298d9ca0f158874ade538b40131400cc6d36ad0700e9ee85f1417266",
+        "header_sha256": "b35b9aa61afe1b9592c4cbdd28f258d6b52efd1168cc08244bccb34f499e5ff7",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr13",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr13-r1",
+        "manifest_sha256": "41903e6fee2f630f1c25b83f7c1f7bae5a6d98091030d9f0c1598c39b406e9ff",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "68e67e1152e006bb5d5cea4277329e94c2d93bad7197c1c24aa9dc95f0800c9c",
+        "header_sha256": "f753013a95d76ce998a234dc9c2ecf2c266b34f9cfd83d7e2f2e39db8f695901",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr13",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr13-r1",
+        "manifest_sha256": "63b4ca1913b6310f6f361214d02acbb77e49a69abc38439c44d684207a2ab2f3",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "5538ebc105544c1194d7fc380e9757684c683fc4367fc3555bc062abc82df8d1",
+        "header_sha256": "4a7bcd22519b12caa673362ca9bec9ed59a8f84e869bc96afc8738a8a77807cc",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr14",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr14-r1",
+        "manifest_sha256": "eeffa09744f015a4b43589c38d2552aa945bfddbcd80a6b678f39e165b93ea1b",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "3cf854ca78c5f4078cd7d7d878337a80f359f1abbfdb66ef5a1e35e0c53539b2",
+        "header_sha256": "dfeae8eb26c0dfb681432ee3adc2167ba8d2b2123549c35fb13477f677aeb2db",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr14",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr14-r1",
+        "manifest_sha256": "63ce5067b645138643290fadf94e1934aa1ef9cca473f9979ff2334738ddb596",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "e0f4c4a343382a2079c43d3691f3fe23e5f2f3b76e22a7a96d55380f04189ec7",
+        "header_sha256": "fc64a0be852e8fc58ab3a7902d14762c8553ca16d74d00c5afbf45ad9e6b2a0d",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr15",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr15-r1",
+        "manifest_sha256": "076752c4fb13141cadc8a5a20857e527c106957c91e911808714cb9c9c31a88c",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "84f5c57bc7ac2b98101a783e29765ea9f29b4cab0babb21211d96cc6ddd160ee",
+        "header_sha256": "7d19d8b7f79d62a5153e4895af3a382b8ebbc407aa593d2ac1bcb099e34d034b",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr15",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr15-r1",
+        "manifest_sha256": "685dd4a11710a89762f1c8bc8ccb69c1e76f1adbaa48ac0f0a8cc4a0bc0fbf5e",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "0e4100615dca3fa65aa70de8a4ec12cfe4093967e92e70001595b6a6620b56fe",
+        "header_sha256": "184abe01f8aa2551b9c65373f38939ce34c10283a9efe377ae0ccb641a564c43",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr16",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr16-r1",
+        "manifest_sha256": "0036911f50358248fd69e4379bd1c6007144ea1d3fbe0f0292640d1c98a406b8",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "c06fe3de356a37a118e7be53737f2767b41b5851bd1369b9e120345e27f5341b",
+        "header_sha256": "544d1fe67ad087ee9f6ed72c4e6ced7ff5310b4705c47ce98d895855e4826b25",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr16",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr16-r1",
+        "manifest_sha256": "5b6acce7ceec0932dde2750daf61dce7cc6818add028c8e33cab93189ff5215b",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "0dd57b09b564adc2a3d007502663b402ccfa25cee9aae77b15193c274c6f7608",
+        "header_sha256": "4e32176b80694667602e291a3df520b4e5d3354d8f4c860ee78ad9973b8f83d0",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr17",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr17-r1",
+        "manifest_sha256": "818bba57577f71f39081819afc68cd76d12fffb0033f47b29e7f7e74151867fa",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "3c88a9c040fb1b29e6d87280351a77b0eeddf2b90858d8adbf696035c9fe5ef8",
+        "header_sha256": "24bd41e85436a5bb4f16e927b9cdfe22ea01995425452af1a33f926947649906",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr17",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr17-r1",
+        "manifest_sha256": "8f396ffab86c9f6c7efed36e744f97c6835472e4841411d577884156ceca758f",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "d0b153bd76d7b95c5188a0afd3a027574ff102e97f9000a199cb86811be58d89",
+        "header_sha256": "6409aa45a76aec7e9e8b05cb2e87676a179b1e92d85838459d0e056a63b5ccad",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr18",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr18-r1",
+        "manifest_sha256": "ce789436ad65aeac749081fa49ecc4b70b250f17e86c72637abd113be30d5fad",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "c1c9548b098804cb123cf99e1b86f4ed0dd7527d78b4284a4ec322b6dade7d2c",
+        "header_sha256": "eef8d0511b13a9b15ce774bae8297934562b665a4fc7db0d4415f4c8dc98ed96",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr18",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr18-r1",
+        "manifest_sha256": "3ddf01d9f770c8b78dc73b11e439ea06ff7b0c1fd9c6b46b0b07cacf52ace495",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "bb08548dbb2f1fcc0fd5562026587fa9d4b8025e102c739702f44ad27672d5eb",
+        "header_sha256": "d444349c6eaa06e5e2280d1db806f885d94b101225388cc61c7bd24cddbe2d27",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr19",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr19-r1",
+        "manifest_sha256": "2cf276645d3fbf736b950fa36e27e391699b5875c6092c96bf1127fb7395a360",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "7037fa1e2c1a5e1d24f3eaf235f3dd96f226085be4b70f5fe9ea1698df431876",
+        "header_sha256": "f974184b1be787be603c63dddf449f292c3a0e542c098d8717115c3bd9d18ce7",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr19",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr19-r1",
+        "manifest_sha256": "b5118b645479b7355768b80f5515d408eb38187f0242b77efd1187ff739460d6",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "5a3e83b9d0863f244286846545ebe75ec4f85512d875dd4c65e3096d971af7e3",
+        "header_sha256": "31c8bafe55ec5c7c79443e2e0d867a8f0951b667c4d536acf8525dc1f6721e61",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr20",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr20-r1",
+        "manifest_sha256": "3fe2bfc021628ef90860a2160f09399a08f430d1b418111bca13295a6e0e57bc",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "aaa3a5597a1b49d96da9cb901ddc242d0f06e2ca843195b074cb66d7fde3116d",
+        "header_sha256": "8d69e6da513a698ee757ae8a4264c4bcd27118041ff244db7b35ffecfdea6181",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr20",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr20-r1",
+        "manifest_sha256": "953c220e9efcbea92e59044f40429ca4bf370a0ff1c7ce3a2ff0da023fa925e5",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "d48643a75005e369fbedebf77fe7f8f6895fdce50795bdc134eb23d8bca65a87",
+        "header_sha256": "8b100a0e057026253b5213287ecd0b21335d11f6d8e55f2661d801729a1d186f",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr21",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr21-r1",
+        "manifest_sha256": "55583f36556727a5a4bdee005dcdcacd31fb53cfeed6ac59f9def12e394a451d",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "180c00f6c09e8db8003102302b6ede93f122bc0f8227316e41aa3e96088d3e61",
+        "header_sha256": "f7ce88643578fdd2be742437219580fefa1cce14f93760dc2f896490c5060330",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr21",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr21-r1",
+        "manifest_sha256": "105861251ee53fc972beee4b7225744c312b0544a59288ec9f8bef8bece525da",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "f2ee928dba9a34ad6ed121885243149e2665cb39f9f396076010b523c9066d9b",
+        "header_sha256": "5f7d1b55228805d0e5b952542db3e91618808e663fdf879b323a68b5d00bbf4c",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chr22",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chr22-r1",
+        "manifest_sha256": "645016879387fc93c860c5e88c3db92ce8c8649bdc6ae2fa3b5f2adc516ecf49",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "f37938f0c5aca9a9090343c120d7618965fe4f8e03c4b0184834389d11cb96ca",
+        "header_sha256": "5f31e41f910f73e748d3212ad35abf2b2d0b8caa6488a9de4c6cbdac88a4c070",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chr22",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chr22-r1",
+        "manifest_sha256": "d497c2facca045571c814a1a6eb338f967de1145f30ee4e2e15df6aba9cc9150",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "6dc92843719437405b75877cd152df0a5d161c6ef8fce63ef85aa2eaa6866fe1",
+        "header_sha256": "c510b49e0b16adbfb621bfff88618668ba6ef906c6a89561946f962cb7cf9b82",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chrX",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chrX-r1",
+        "manifest_sha256": "4b021671d4a4f287c3d6d5b16f21af7450891f65352288dccdfddcbde460d6e7",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "b2cab6d1ee612f0d66701aaa2bb5d7a4f55195d22be9893089edee4a87a0f214",
+        "header_sha256": "09dfc6e91725d757e9f54bc7b1eedd39038dd483aac0e70575306f07359b9ca7",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chrX",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chrX-r1",
+        "manifest_sha256": "8beb98359004aad65629e1c134183b8084687c6a0901984e63f3a4fc0b4dca6e",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "81e40ab76d24c7ae1ec37b92cb5d8cd076d17427c6ea11e779ff9b59533c3d3d",
+        "header_sha256": "59dc843de38fb5c03f6c0d16e685d0e0a889cd1521d96bfbc773516e193ba747",
+        "ordered_roster_sha256": null
+      },
+      {
+        "cohort": "hgsvc_hprc",
+        "chrom": "chrY",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-hgsvc-hprc-chrY-r1",
+        "manifest_sha256": "521a151a0b795ec174b2a15b3652bc691a37c3416d67bb7c5e4a4fbef4d464f3",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "01aa225d797fbd5670be106da3359e16a2d2fc8a1ef36592dbdeccc5b68447f1",
+        "header_sha256": "437bf00938cdf7e0ed7587e021a2a296e5795091ca97eedf3b3de6b2909e6fb7",
+        "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8"
+      },
+      {
+        "cohort": "aou",
+        "chrom": "chrY",
+        "run_id": "y1-refresh-20260923-3b137820bfbf-aou-chrY-r1",
+        "manifest_sha256": "3625d5637d0cb7491eb0cd531682e43d3a1a1083f1d07e508d34e76b4582a213",
+        "status": "accepted",
+        "acceptance_evidence_sha256": "1bed310623c597cca6918f5693a9ae63c68b47f024d76eebb44c3d72ec5dba08",
+        "header_sha256": "30a43d04956d9a362670cda189d902e469e07af264e9dc501a8963462f107be1",
+        "ordered_roster_sha256": null
+      }
+    ]
+  },
+  "coordinates": {
+    "status": "verified",
+    "reference_genome": "GRCh38",
+    "source_native": "BED_0_BASED_HALF_OPEN_ONE_BASE",
+    "primary_native": "VCF_1_BASED",
+    "transformation": "none_source_positions_unchanged",
+    "evidence_sha256": "03872770232d24fbaab9f811e08b557b53940c2ddd4eb148fb7ac8d5e8fb191e"
+  },
+  "ordered_sample_ids": [
+    "HG00096",
+    "HG00097",
+    "HG00099",
+    "HG00126",
+    "HG00128",
+    "HG00133",
+    "HG00140",
+    "HG00146",
+    "HG00171",
+    "HG002",
+    "HG00232",
+    "HG00235",
+    "HG00253",
+    "HG00268",
+    "HG00272",
+    "HG00280",
+    "HG00290",
+    "HG00320",
+    "HG00321",
+    "HG00323",
+    "HG00329",
+    "HG00344",
+    "HG00350",
+    "HG00358",
+    "HG00408",
+    "HG00423",
+    "HG00438",
+    "HG005",
+    "HG00512",
+    "HG00513",
+    "HG00514",
+    "HG00544",
+    "HG00558",
+    "HG00597",
+    "HG00609",
+    "HG00621",
+    "HG00639",
+    "HG00642",
+    "HG00658",
+    "HG00673",
+    "HG00706",
+    "HG00731",
+    "HG00732",
+    "HG00733",
+    "HG00735",
+    "HG00738",
+    "HG00741",
+    "HG00864",
+    "HG01071",
+    "HG01074",
+    "HG01081",
+    "HG01099",
+    "HG01106",
+    "HG01109",
+    "HG01114",
+    "HG01123",
+    "HG01150",
+    "HG01167",
+    "HG01175",
+    "HG01192",
+    "HG01243",
+    "HG01252",
+    "HG01255",
+    "HG01258",
+    "HG01261",
+    "HG01346",
+    "HG01352",
+    "HG01358",
+    "HG01361",
+    "HG01433",
+    "HG01457",
+    "HG01496",
+    "HG01505",
+    "HG01530",
+    "HG01573",
+    "HG01596",
+    "HG01784",
+    "HG01786",
+    "HG01884",
+    "HG01890",
+    "HG01891",
+    "HG01928",
+    "HG01934",
+    "HG01940",
+    "HG01943",
+    "HG01952",
+    "HG01960",
+    "HG01969",
+    "HG01975",
+    "HG01978",
+    "HG01981",
+    "HG01993",
+    "HG02004",
+    "HG02011",
+    "HG02015",
+    "HG02018",
+    "HG02027",
+    "HG02040",
+    "HG02055",
+    "HG02056",
+    "HG02059",
+    "HG02071",
+    "HG02074",
+    "HG02080",
+    "HG02083",
+    "HG02106",
+    "HG02109",
+    "HG02129",
+    "HG02132",
+    "HG02135",
+    "HG02145",
+    "HG02148",
+    "HG02155",
+    "HG02165",
+    "HG02178",
+    "HG02257",
+    "HG02258",
+    "HG02273",
+    "HG02280",
+    "HG02282",
+    "HG02293",
+    "HG02300",
+    "HG02391",
+    "HG02392",
+    "HG02451",
+    "HG02486",
+    "HG02492",
+    "HG02514",
+    "HG02523",
+    "HG02554",
+    "HG02559",
+    "HG02572",
+    "HG02583",
+    "HG02587",
+    "HG02602",
+    "HG02615",
+    "HG02622",
+    "HG02630",
+    "HG02647",
+    "HG02666",
+    "HG02668",
+    "HG02698",
+    "HG02717",
+    "HG02723",
+    "HG02735",
+    "HG02738",
+    "HG02769",
+    "HG02809",
+    "HG02818",
+    "HG02841",
+    "HG02886",
+    "HG02922",
+    "HG02953",
+    "HG02965",
+    "HG02976",
+    "HG02984",
+    "HG03009",
+    "HG03017",
+    "HG03041",
+    "HG03050",
+    "HG03065",
+    "HG03098",
+    "HG03130",
+    "HG03139",
+    "HG03195",
+    "HG03209",
+    "HG03225",
+    "HG03239",
+    "HG03248",
+    "HG03270",
+    "HG03369",
+    "HG03371",
+    "HG03452",
+    "HG03453",
+    "HG03456",
+    "HG03470",
+    "HG03471",
+    "HG03486",
+    "HG03516",
+    "HG03520",
+    "HG03521",
+    "HG03540",
+    "HG03579",
+    "HG03583",
+    "HG03654",
+    "HG03669",
+    "HG03683",
+    "HG03688",
+    "HG03704",
+    "HG03710",
+    "HG03732",
+    "HG03742",
+    "HG03784",
+    "HG03804",
+    "HG03807",
+    "HG03816",
+    "HG03831",
+    "HG03834",
+    "HG03874",
+    "HG03927",
+    "HG03942",
+    "HG04036",
+    "HG04115",
+    "HG04157",
+    "HG04160",
+    "HG04184",
+    "HG04187",
+    "HG04199",
+    "HG04204",
+    "HG04217",
+    "HG04228",
+    "HG06807",
+    "NA12329",
+    "NA18505",
+    "NA18508",
+    "NA18522",
+    "NA18534",
+    "NA18565",
+    "NA18570",
+    "NA18608",
+    "NA18620",
+    "NA18747",
+    "NA18879",
+    "NA18906",
+    "NA18939",
+    "NA18940",
+    "NA18943",
+    "NA18944",
+    "NA18945",
+    "NA18948",
+    "NA18952",
+    "NA18959",
+    "NA18960",
+    "NA18967",
+    "NA18970",
+    "NA18971",
+    "NA18974",
+    "NA18976",
+    "NA18982",
+    "NA18983",
+    "NA18989",
+    "NA19036",
+    "NA19043",
+    "NA19087",
+    "NA19129",
+    "NA19159",
+    "NA19185",
+    "NA19238",
+    "NA19239",
+    "NA19240",
+    "NA19317",
+    "NA19331",
+    "NA19338",
+    "NA19347",
+    "NA19384",
+    "NA19391",
+    "NA19434",
+    "NA19443",
+    "NA19468",
+    "NA19650",
+    "NA19682",
+    "NA19700",
+    "NA19705",
+    "NA19776",
+    "NA19835",
+    "NA19836",
+    "NA19909",
+    "NA19983",
+    "NA20129",
+    "NA20282",
+    "NA20346",
+    "NA20355",
+    "NA20503",
+    "NA20509",
+    "NA20752",
+    "NA20762",
+    "NA20799",
+    "NA20805",
+    "NA20806",
+    "NA20809",
+    "NA20827",
+    "NA20847",
+    "NA20850",
+    "NA20870",
+    "NA20905",
+    "NA21093",
+    "NA21102",
+    "NA21106",
+    "NA21110",
+    "NA21144",
+    "NA21309",
+    "NA21487"
+  ],
+  "ordered_roster_sha256": "297ed617dda7aaff9f9d920d41a8a340244fd315b5e212f16eff111787b264d8",
+  "source_availability": [
+    {
+      "sample_id": "HG00096",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00097",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00099",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00126",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00128",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00133",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00140",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00146",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00171",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG002",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00232",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00235",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00253",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00268",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00272",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00280",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00290",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00320",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00321",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00323",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00329",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00344",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00350",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00358",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00408",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00423",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00438",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG005",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00512",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00513",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00514",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00544",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00558",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00597",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00609",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00621",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00639",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00642",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00658",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00673",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00706",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00731",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00732",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG00733",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00735",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00738",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00741",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG00864",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG01071",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01074",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01081",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01099",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01106",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01109",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01114",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG01123",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01150",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01167",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01175",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01192",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01243",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01252",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01255",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01258",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01261",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01346",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01352",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG01358",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01361",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01433",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01457",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG01496",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01505",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG01530",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01573",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG01596",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG01784",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01786",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01884",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01890",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG01891",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01928",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01934",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01940",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01943",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01952",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01960",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01969",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01975",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01978",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01981",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG01993",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02004",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02011",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02015",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02018",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02027",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02040",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02055",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02056",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02059",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02071",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02074",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02080",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02083",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02106",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02109",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02129",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02132",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02135",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02145",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02148",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02155",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02165",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02178",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02257",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02258",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02273",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02280",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02282",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02293",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02300",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02391",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02392",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02451",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02486",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02492",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02514",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02523",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02554",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02559",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02572",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02583",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02587",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02602",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02615",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02622",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02630",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02647",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02666",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02668",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02698",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02717",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02723",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02735",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02738",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02769",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02809",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02818",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02841",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02886",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02922",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02953",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG02965",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02976",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG02984",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03009",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03017",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03041",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03050",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03065",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03098",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03130",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03139",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03195",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03209",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03225",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03239",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03248",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03270",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03369",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03371",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03452",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03453",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03456",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03470",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03471",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03486",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03516",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03520",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03521",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03540",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03579",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03583",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03654",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03669",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03683",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03688",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03704",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03710",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03732",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03742",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03784",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03804",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03807",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG03816",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03831",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03834",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03874",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03927",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG03942",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG04036",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG04115",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG04157",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG04160",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG04184",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG04187",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG04199",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG04204",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG04217",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "HG04228",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "HG06807",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA12329",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA18505",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18508",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18522",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18534",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA18565",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18570",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18608",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18620",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18747",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18879",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18906",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18939",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA18940",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18943",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18944",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18945",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18948",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18952",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18959",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18960",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18967",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18970",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18971",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18974",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18976",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18982",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18983",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA18989",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19036",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19043",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19087",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19129",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19159",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19185",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19238",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19239",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19240",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19317",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19331",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19338",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19347",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19384",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19391",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19434",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19443",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19468",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19650",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19682",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19700",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19705",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19776",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19835",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19836",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA19909",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA19983",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA20129",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20282",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20346",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20355",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA20503",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20509",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA20752",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20762",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20799",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20805",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20806",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20809",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20827",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20847",
+      "status": "no_methylation_output"
+    },
+    {
+      "sample_id": "NA20850",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20870",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA20905",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA21093",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA21102",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA21106",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA21110",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA21144",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA21309",
+      "status": "source_present"
+    },
+    {
+      "sample_id": "NA21487",
+      "status": "no_methylation_output"
+    }
+  ],
+  "physical": {
+    "status": "verified",
+    "evidence_sha256": "fa7187ba9de2f2f40d794c50dabcef832036216e224443c896d3c2deaf1a05fe",
+    "engine": "MergeTree",
+    "partition_key": "chrom",
+    "sorting_key": "chrom,pos1,sample_id,source_haplotype,stable_key",
+    "columns": [
+      [
+        "stable_key",
+        "FixedString(64)"
+      ],
+      [
+        "chrom",
+        "LowCardinality(String)"
+      ],
+      [
+        "pos1",
+        "UInt32"
+      ],
+      [
+        "pos2",
+        "UInt32"
+      ],
+      [
+        "sample_id",
+        "LowCardinality(String)"
+      ],
+      [
+        "source_haplotype",
+        "UInt8"
+      ],
+      [
+        "methylation",
+        "Float32"
+      ],
+      [
+        "coverage",
+        "UInt32"
+      ]
+    ],
+    "partitions": [
+      {
+        "chrom": "chr1",
+        "rows": 1017805241
+      },
+      {
+        "chrom": "chr10",
+        "rows": 604570734
+      },
+      {
+        "chrom": "chr11",
+        "rows": 572806126
+      },
+      {
+        "chrom": "chr12",
+        "rows": 570255944
+      },
+      {
+        "chrom": "chr13",
+        "rows": 362669558
+      },
+      {
+        "chrom": "chr14",
+        "rows": 381382475
+      },
+      {
+        "chrom": "chr15",
+        "rows": 380985254
+      },
+      {
+        "chrom": "chr16",
+        "rows": 482311637
+      },
+      {
+        "chrom": "chr17",
+        "rows": 516519992
+      },
+      {
+        "chrom": "chr18",
+        "rows": 305753098
+      },
+      {
+        "chrom": "chr19",
+        "rows": 462533029
+      },
+      {
+        "chrom": "chr2",
+        "rows": 961040785
+      },
+      {
+        "chrom": "chr20",
+        "rows": 328442963
+      },
+      {
+        "chrom": "chr21",
+        "rows": 172440789
+      },
+      {
+        "chrom": "chr22",
+        "rows": 257936320
+      },
+      {
+        "chrom": "chr3",
+        "rows": 729468070
+      },
+      {
+        "chrom": "chr4",
+        "rows": 658443045
+      },
+      {
+        "chrom": "chr5",
+        "rows": 669430571
+      },
+      {
+        "chrom": "chr6",
+        "rows": 664992815
+      },
+      {
+        "chrom": "chr7",
+        "rows": 694647988
+      },
+      {
+        "chrom": "chr8",
+        "rows": 578691450
+      },
+      {
+        "chrom": "chr9",
+        "rows": 526962066
+      },
+      {
+        "chrom": "chrX",
+        "rows": 262180036
+      }
+    ],
+    "detail_rows": 12162269986
+  },
+  "limits": {
+    "consumer": "standalone_source_labelled_only",
+    "joined_candidate": "unavailable_requires_separate_exact_vcf_orientation_evidence",
+    "autosomes": "sparse_observations_not_complete_assay_or_reference_calls",
+    "chrX": "114_source_samples_preserved_but_sample_contig_membership_not_bound_query_unavailable",
+    "chrY": "no_source_data",
+    "source_absent": "no_methylation_output_not_zero",
+    "sample_total_status": "separate_product_partial_skip_and_no_assay_statuses_not_promoted"
+  }
+}
