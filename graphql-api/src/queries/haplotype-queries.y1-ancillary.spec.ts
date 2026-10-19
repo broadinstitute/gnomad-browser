@@ -184,7 +184,11 @@ describe('Y1 ancillary query routing', () => {
     ).rejects.toThrow('ordered')
   })
 
-  test('binds the joined batch query to the exact admitted route and overflow sentinel', async () => {
+  test.each(['missing', 'unknown', 'historical'])(
+    '%s receipt retains historical settings, exact route and overflow sentinel', async (receipt) => {
+    const { JOINED_PHASED_ORIENTATION_RECEIPT_SHA256 } = require('../joined_phased_methylation_config')
+    mockJoinedRoute = receipt === 'missing' ? null : { orientation_receipt_sha256:
+      receipt === 'historical' ? JOINED_PHASED_ORIENTATION_RECEIPT_SHA256 : 'unknown-receipt' }
     const admittedRoute = {
       database: 'exact-source-product',
       run_id: 'exact-run',
@@ -214,7 +218,8 @@ describe('Y1 ancillary query routing', () => {
       rawStop0: 199,
       sampleIds: ['HG00097', 'HG00126'],
     })
-    expect(call.clickhouse_settings).toMatchObject({
+    expect(call).not.toHaveProperty('abort_signal')
+    expect(call.clickhouse_settings).toEqual({
       max_execution_time: 30,
       max_result_rows: '250001',
       result_overflow_mode: 'throw',
@@ -224,22 +229,35 @@ describe('Y1 ancillary query routing', () => {
     })
   })
 
-  test('separate local receipt uses readonly-safe SQL, a client deadline and tighter input limits', async () => {
-    const { LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 } = require('../joined_phased_methylation_config')
-    mockJoinedRoute = { orientation_receipt_sha256: LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 }
+  test.each(['local', 'public'])(
+    'exact %s receipt uses readonly-safe SQL, a client deadline and tighter input limits', async (receipt) => {
+    const { LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256, PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256 } = require('../joined_phased_methylation_config')
+    mockJoinedRoute = { orientation_receipt_sha256: receipt === 'local'
+      ? LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256 : PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256 }
+    const timeoutSpy = jest.spyOn(AbortSignal, 'timeout')
     const admittedRoute = { database: 'exact', run_id: 'exact', receipt_path: '/exact',
       receipt: { route_run_id: 'exact', completion_receipt_sha256: 'c', source_manifest_sha256: 'm' } } as any
     mockRoute.mockReturnValue(admittedRoute)
     mockQuery.mockImplementation(async () => ({ json: async () => [] }))
     await fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 1, 10000, ['HG00097'])
     const call = mockQuery.mock.calls[0][0] as any
+    expect(timeoutSpy).toHaveBeenCalledWith(15_000)
+    timeoutSpy.mockRestore()
     expect(call).not.toHaveProperty('clickhouse_settings')
     expect(call.abort_signal).toBeInstanceOf(AbortSignal)
+    expect(call.query).not.toMatch(/\bSETTINGS\b/)
+    expect(call.query).toContain('pos1 BETWEEN {rawStart0:UInt32} AND {rawStop0:UInt32}')
+    expect(call.query).toContain('sample_id IN ({sampleIds:Array(String)})')
+    expect(call.query).toContain('source_haplotype IN (1, 2)')
     expect(call.query).toContain('LIMIT 250001')
     expect(call.query_params).toEqual({ chrom: 'chr22', rawStart0: 0, rawStop0: 9999, sampleIds: ['HG00097'] })
     await expect(fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 1, 10001, ['HG00097'])).rejects.toThrow('at most 10,000')
     await expect(fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chrX', 1, 100, ['HG00097'])).rejects.toThrow('autosomal')
     await expect(fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 1, 100, Array(26).fill('HG00097'))).rejects.toThrow('1–25')
+    for (const [start, stop] of [[0, 100], [2, 1], [1.5, 100], [1, Number.NaN]]) {
+      await expect(fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', start, stop, ['HG00097'])).rejects.toThrow('at most 10,000')
+    }
+    await expect(fetchJoinedPhasedMethylationForRegion(admittedRoute, 'chr22', 1, 100, [])).resolves.toEqual([])
     expect(mockQuery).toHaveBeenCalledTimes(1)
   })
 
