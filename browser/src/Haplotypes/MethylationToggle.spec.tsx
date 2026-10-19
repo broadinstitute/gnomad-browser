@@ -59,13 +59,16 @@ test('loading is not absence; an API failure is unavailable, not still loading o
   expect(view.container.innerHTML).not.toContain(diagnostic)
 })
 
-test('available assumption has a visible concise disclosure without opening methods', () => {
+test('available assumption omits the inline notice but preserves truthful help', () => {
   render(<MethylationToggle capability={{ ...capability, available: true, joinable_to_vcf: true,
     status: 'AVAILABLE_OPERATOR_ASSUMPTION' }} usable checked={false} onChange={jest.fn()} />)
   expect(screen.getByRole('checkbox', { name: 'Methylation' })).toBeEnabled()
-  expect(screen.getByText('Operator-assumed alignment; not independently validated.')).toBeVisible()
+  expect(screen.queryByText('Operator-assumed alignment; not independently validated.')).toBeNull()
   expect(document.body.textContent).not.toContain(diagnostic)
   expect(document.body.textContent).not.toContain('AVAILABLE_CONFIRMED')
+  fireEvent.click(screen.getByRole('button', { name: /Methylation/ }))
+  expect(screen.getByText('Haplotype alignment assumes phasing is unchanged in the refreshed release; confirmation pending.')).toBeVisible()
+  expect(document.body.textContent).toContain('This assumption is not independent scientific lineage validation.')
 })
 
 test('only region usability enables the control, and scope loss clears its visible checked state', () => {

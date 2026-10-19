@@ -6,6 +6,7 @@ import { resolveSourcePhasedMethylationRoute } from '../../source_phased_methyla
 
 import {
   JOINED_PHASED_ORIENTATION_RECEIPT_SHA256,
+  PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256,
   resolveJoinedPhasedMethylationRoute,
 } from '../../joined_phased_methylation_config'
 import {
@@ -344,6 +345,26 @@ describe('joined phased methylation projection contract', () => {
     ).toMatchObject({
       extensions: { code: 'JOINED_METHYLATION_RESULT_TOO_LARGE', isUserVisible: true },
     })
+  })
+
+  test('advertises the readonly query span bound for the exact admitted public receipt', async () => {
+    const publicEnv = JSON.parse(readFileSync(path.join(root,
+      'deploy/terraform/lr-viewer/refresh-20260923-api-env.json'), 'utf8')
+      .split('/app/').join(`${root}/`))
+    const publicRoute = resolveJoinedPhasedMethylationRoute({ ...publicEnv,
+      LR_Y1_CLICKHOUSE_URL: 'http://synthetic_reader:synthetic_password@192.168.0.2:8123',
+    })!
+    const snapshot = async () => ({ carriers_available: true,
+      run_id: publicRoute.receipt.browser_product.entries.find(entry => entry.chrom === 'chr22')!.run_id,
+    } as any)
+    expect(publicRoute.orientation_receipt_sha256).toBe(PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256)
+    await expect(joinedPhasedCapability('hgsvc_hprc', 'chr22', publicRoute, snapshot))
+      .resolves.toMatchObject({ available: true, joinable_to_vcf: true,
+        status: 'AVAILABLE_OPERATOR_ASSUMPTION', max_span_bp: 10_000,
+        max_samples: 25, max_records: 250_000,
+        identity: { orientation_receipt_sha256: PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256,
+          approval_basis: 'operator_direct_mapping_assumption', independently_machine_verified_lineage: false },
+      })
   })
 
   test('exposes the exact receipt roster only for admitted HGSVC/HPRC autosomes', async () => {

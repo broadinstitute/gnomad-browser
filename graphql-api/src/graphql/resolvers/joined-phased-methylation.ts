@@ -2,6 +2,7 @@ import { joinedPhasedMethylationRoute, y1PrimaryManifests } from '../../clickhou
 import {
   JOINED_PHASED_MAX_RECORDS,
   LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256,
+  PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256,
   JOINED_PHASED_MAX_SAMPLES,
   type JoinedBrowserEntry,
   type JoinedPhasedMethylationRoute,
@@ -175,8 +176,8 @@ export const joinedPhasedCapability = async (
     available: true,
     joinable_to_vcf: true,
     status: 'AVAILABLE_OPERATOR_ASSUMPTION',
-    ...(route.orientation_receipt_sha256 === LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256
-      ? { max_span_bp: 10_000 } : {}),
+    ...([LOCAL_JOINED_ORIENTATION_RECEIPT_SHA256, PUBLIC_JOINED_ORIENTATION_RECEIPT_SHA256]
+      .includes(route.orientation_receipt_sha256) ? { max_span_bp: 10_000 } : {}),
     identity: joinedIdentity(route, chrom),
     source_sample_ids: route.receipt.coverage.roster
       .filter((row) => row.source_status === 'source_present')

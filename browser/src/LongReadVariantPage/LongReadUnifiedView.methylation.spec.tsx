@@ -1,6 +1,7 @@
 import React from 'react'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
+import publicOrientationReceipt from '../../../graphql-api/config/refresh-20260923-public-orientation-assumption.json'
 
 const mockCarrierSampleIds = [
   'carrier-a',
@@ -815,6 +816,57 @@ describe('LongReadUnifiedView haplotype request ownership', () => {
 })
 
 describe('LongReadUnifiedView bounded coordinate completion', () => {
+  test('loads a public-receipt-bound 50kb view with both methylation controls enabled', async () => {
+    const sourceSampleIds = publicOrientationReceipt.coverage.roster
+      .filter(row => row.source_status === 'source_present').map(row => row.sample_id).sort()
+    const sampleIds = sourceSampleIds.slice(0, 27)
+    const browser = publicOrientationReceipt.browser_product.entries.find(entry => entry.chrom === 'chr22')!
+    const identity = { ...joinedIdentity,
+      source_run_id: publicOrientationReceipt.source_product.route_run_id,
+      source_completion_receipt_sha256: publicOrientationReceipt.source_product.completion_receipt_sha256,
+      source_manifest_sha256: publicOrientationReceipt.source_product.source_manifest_sha256,
+      browser_vcf_manifest_bundle_sha256: publicOrientationReceipt.browser_product.primary_manifest_bundle_sha256,
+      browser_vcf_manifest_sha256: browser.manifest_sha256, browser_vcf_run_id: browser.run_id,
+      orientation_receipt_id: publicOrientationReceipt.receipt_id,
+      orientation_receipt_sha256: '81898149a1731577ebe21b21582b786cd3f32784410f8a1a2d6f35e460053ed6',
+      approval_basis: 'operator_direct_mapping_assumption', independently_machine_verified_lineage: false,
+    }
+    mockVisibleSampleIds = sampleIds
+    workerDataOverride = workerData()
+    workerDataOverride.groups[0].samples = sampleIds.map(sample_id => ({ sample_id,
+      strand_mapping: { strandA: 1, strandB: 2 }, phase_set_mapping: { phaseSetA: null, phaseSetB: null } }))
+    mockJoinedCapability = confirmedCapability({ status: 'AVAILABLE_OPERATOR_ASSUMPTION',
+      identity, source_sample_ids: sourceSampleIds, max_span_bp: 10000 })
+    renderView({ chrom: 'chr22', start: 47040000, stop: 47090000 })
+    fireEvent.click(await screen.findByLabelText('Methylation samples only'))
+    await enablePerCopyMethylation()
+    const chunks = [[47040000, 47049999], [47050000, 47059999], [47060000, 47069999],
+      [47070000, 47079999], [47080000, 47089999], [47090000, 47090000]]
+    for (let i = 0; i < 12; i += 1) {
+      await waitFor(() => expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(i + 1))
+      const request = requestsNamed('RegionJoinedPhasedMethylation')[i]
+      const [start, stop] = chunks[i % 6]
+      const batch = i < 6 ? sampleIds.slice(0, 25) : sampleIds.slice(25)
+      expect(request.variables).toMatchObject({ start, stop, sample_ids: batch,
+        expected_orientation_receipt_sha256: identity.orientation_receipt_sha256 })
+      expect(stop - start + 1).toBeLessThanOrEqual(10000)
+      expect(batch.length).toBeLessThanOrEqual(25)
+      await resolveRequest(request, { data: { joined_phased_methylation_region: {
+        ...joinedRegion(batch, batch, [], batch.map(id => ({ ...joinedRecord(id, start),
+          pos1: start, pos2: start + 1 }))), identity,
+      } } })
+      if (i < 5) expect(mockHaplotypeTrackProps.at(-1).perCopyMethylationRecords).toHaveLength(0)
+    }
+    await waitFor(() => expect(mockHaplotypeTrackProps.at(-1).perCopyMethylationRecords).toHaveLength(162))
+    expect(screen.getByLabelText('Methylation')).toBeChecked()
+    expect(screen.getByLabelText('Methylation samples only')).toBeChecked()
+    const props = mockHaplotypeTrackProps.at(-1)
+    expect(perCopyMethylationForReadyRow(props.perCopyMethylationRecords,
+      workerDataOverride.groups[0].samples, props.perCopyMethylationSampleStates).readiness).toBe('ready')
+    expect(requestsNamed('RegionJoinedPhasedMethylation')).toHaveLength(12)
+    expect(screen.queryByText(/Methylation loading error|BAD_USER_INPUT/)).toBeNull()
+  })
+
   test('sample batches × chunks remain incomplete on failure and retry atomically', async () => {
     const sampleIds = mockSourceSampleIds.slice(0, 27)
     mockVisibleSampleIds = sampleIds

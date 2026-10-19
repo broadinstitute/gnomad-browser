@@ -50,11 +50,6 @@ const MethylationToggle = ({ capability, usable, unavailableReason, checked, onC
       {!usable && <span id={statusId} role="status" style={{ color: '#666', fontSize: '11px' }}>
         {checking ? 'Checking…' : zoomNeeded ? 'Zoom in' : 'Unavailable'}
       </span>}
-      {usable && capability?.status === 'AVAILABLE_OPERATOR_ASSUMPTION' && (
-        <span style={{ color: '#666', fontSize: '11px' }}>
-          Operator-assumed alignment; not independently validated.
-        </span>
-      )}
       <HaplotypeHelpButton title="Methylation">
         {usable ? <PerCopyMethylationHelp capability={capability} /> : <>
           <p>{help}</p>
