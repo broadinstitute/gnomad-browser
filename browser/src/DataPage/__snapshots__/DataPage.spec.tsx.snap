@@ -70,13 +70,13 @@ exports[`Data Page has no unexpected changes 1`] = `
   text-decoration: underline;
 }
 
-.c20 {
+.c18 {
   padding-left: 20px;
   list-style-type: disc;
   margin-bottom: 1em;
 }
 
-.c22 {
+.c20 {
   margin-bottom: 0.5em;
 }
 
@@ -197,7 +197,7 @@ exports[`Data Page has no unexpected changes 1`] = `
   visibility: visible;
 }
 
-.c21 li {
+.c19 li {
   line-height: 1.25;
 }
 
@@ -217,17 +217,17 @@ exports[`Data Page has no unexpected changes 1`] = `
   padding-bottom: 1rem;
 }
 
-.c18 {
+.c21 {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
 }
 
-.c19 {
+.c22 {
   flex-basis: calc(50% - 25px);
 }
 
-.c19 >h3 {
+.c22 >h3 {
   margin-top: 0;
 }
 
@@ -302,7 +302,7 @@ exports[`Data Page has no unexpected changes 1`] = `
 }
 
 @media (max-width:900px) {
-  .c19 {
+  .c22 {
     flex-basis: 100%;
   }
 }
@@ -631,6 +631,1750 @@ exports[`Data Page has no unexpected changes 1`] = `
         <a
           aria-hidden="true"
           className="c11 c12"
+          href="#lr"
+          id="lr"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        LR Downloads
+      </h2>
+    </span>
+    <p
+      className="c13"
+    >
+      The gnomAD LR dataset contains long-read genome sequencing from 1,319 samples mapped to the GRCh38 reference sequence. The release includes two complementary datasets: site-level data from 1,027 participants in Phase I of the All of Us Research Program (AoU), and site and genotype-level information from 292 publicly available samples with high-coverage from the Human Pangenome Reference Consortium (HPRC) and the Human Genome Structural Variation Consortium (HGSVC).
+      <br />
+      For more information about this dataset, see our
+       
+      <a
+        className="c8"
+        href="https://gnomad.broadinstitute.org/news/2026-10-long-read-genome-data-in-gnomad/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        blog post
+      </a>
+      .
+    </p>
+    <span
+      className="c9"
+    >
+      <h2
+        className="c10 "
+        subject="datasets"
+      >
+        <a
+          aria-hidden="true"
+          className="c11 c12"
+          href="#lr-core-dataset"
+          id="lr-core-dataset"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            height={12}
+            src="test-file-stub"
+            width={12}
+          />
+        </a>
+        Core Dataset
+      </h2>
+    </span>
+    <p
+      className="c13"
+    >
+      gnomAD database and features created and maintained by the gnomAD production team.
+    </p>
+    <section
+      className="c16"
+    >
+      <span
+        className="c9"
+      >
+        <h2
+          className="c17 "
+        >
+          <a
+            aria-hidden="true"
+            className="c11 c12"
+            href="#lr-variants"
+            id="lr-variants"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              height={12}
+              src="test-file-stub"
+              width={12}
+            />
+          </a>
+          Variants
+        </h2>
+      </span>
+      <ul
+        className="c18 c19"
+      >
+        <li
+          className="c20"
+        >
+          <span>
+            README
+          </span>
+          <br />
+          <span>
+            Download from
+             
+            <a
+              aria-label="Download README from Google"
+              className="c8"
+              href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/README.md"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Google
+            </a>
+             / 
+            <a
+              aria-label="Download README from Amazon"
+              className="c8"
+              href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/README.md"
+              onClick={[Function]}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Amazon
+            </a>
+          </span>
+        </li>
+      </ul>
+      <div
+        className="c21"
+      >
+        <div
+          className="c22"
+        >
+          <h3>
+            HGSVC/HPRC
+          </h3>
+          <ul
+            className="c18 c19"
+          >
+            <li
+              className="c20"
+            >
+              <span>
+                chr1 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr1 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr1.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr1 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr1.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr2 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr2 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr2.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr2 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr2.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr3 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr3 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr3.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr3 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr3.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr4 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr4 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr4.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr4 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr4.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr5 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr5 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr5.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr5 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr5.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr6 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr6 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr6.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr6 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr6.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr7 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr7 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr7.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr7 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr7.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr8 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr8 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr8.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr8 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr8.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr9 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr9 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr9.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr9 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr9.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr10 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr10 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr10.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr10 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr10.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr11 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr11 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr11.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr11 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr11.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr12 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr12 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr12.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr12 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr12.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr13 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr13 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr13.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr13 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr13.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr14 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr14 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr14.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr14 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr14.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr15 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr15 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr15.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr15 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr15.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr16 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr16 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr16.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr16 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr16.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr17 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr17 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr17.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr17 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr17.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr18 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr18 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr18.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr18 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr18.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr19 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr19 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr19.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr19 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr19.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr20 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr20 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr20.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr20 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr20.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr21 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr21 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr21.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr21 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr21.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr22 VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr22 VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr22.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr22 VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chr22.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chrX VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chrX VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chrX.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chrX VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chrX.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chrY VCF with genotypes
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chrY VCF with genotypes from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chrY.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chrY VCF with genotypes from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/hgsvc_hprc/gnomad.lr.genomes.0.1.sites.chrY.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div
+          className="c22"
+        >
+          <h3>
+            All of Us
+          </h3>
+          <ul
+            className="c18 c19"
+          >
+            <li
+              className="c20"
+            >
+              <span>
+                chr1 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr1 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr1.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr1 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr1.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr2 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr2 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr2.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr2 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr2.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr3 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr3 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr3.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr3 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr3.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr4 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr4 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr4.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr4 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr4.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr5 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr5 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr5.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr5 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr5.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr6 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr6 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr6.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr6 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr6.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr7 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr7 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr7.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr7 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr7.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr8 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr8 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr8.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr8 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr8.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr9 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr9 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr9.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr9 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr9.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr10 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr10 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr10.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr10 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr10.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr11 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr11 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr11.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr11 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr11.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr12 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr12 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr12.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr12 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr12.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr13 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr13 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr13.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr13 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr13.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr14 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr14 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr14.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr14 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr14.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr15 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr15 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr15.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr15 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr15.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr16 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr16 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr16.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr16 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr16.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr17 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr17 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr17.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr17 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr17.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr18 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr18 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr18.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr18 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr18.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr19 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr19 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr19.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr19 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr19.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr20 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr20 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr20.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr20 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr20.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr21 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr21 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr21.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr21 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr21.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chr22 sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chr22 sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr22.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chr22 sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chr22.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chrX sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chrX sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chrX.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chrX sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chrX.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+            <li
+              className="c20"
+            >
+              <span>
+                chrY sites VCF
+              </span>
+              <br />
+              <span>
+                Download from
+                 
+                <a
+                  aria-label="Download chrY sites VCF from Google"
+                  className="c8"
+                  href="https://storage.googleapis.com/gcp-public-data--gnomad/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chrY.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Google
+                </a>
+                 / 
+                <a
+                  aria-label="Download chrY sites VCF from Amazon"
+                  className="c8"
+                  href="https://gnomad-public-us-east-1.s3.amazonaws.com/release/lr/0.1/vcf/aou/gnomad.lr.genomes.0.1.sites.chrY.vcf.gz"
+                  onClick={[Function]}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Amazon
+                </a>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <span
+      className="c9"
+    >
+      <h2
+        className="c15 "
+        subject="release"
+      >
+        <a
+          aria-hidden="true"
+          className="c11 c12"
           href="#v4"
           id="v4"
         >
@@ -730,19 +2474,19 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <div
-        className="c18"
+        className="c21"
       >
         <div
-          className="c19"
+          className="c22"
         >
           <h3>
             Exomes
           </h3>
           <ul
-            className="c20 c21"
+            className="c18 c19"
           >
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Sites Hail Table
@@ -769,7 +2513,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </button>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr1 sites VCF
@@ -834,7 +2578,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr2 sites VCF
@@ -899,7 +2643,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr3 sites VCF
@@ -964,7 +2708,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr4 sites VCF
@@ -1029,7 +2773,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr5 sites VCF
@@ -1094,7 +2838,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr6 sites VCF
@@ -1159,7 +2903,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr7 sites VCF
@@ -1224,7 +2968,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr8 sites VCF
@@ -1289,7 +3033,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr9 sites VCF
@@ -1354,7 +3098,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr10 sites VCF
@@ -1419,7 +3163,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr11 sites VCF
@@ -1484,7 +3228,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr12 sites VCF
@@ -1549,7 +3293,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr13 sites VCF
@@ -1614,7 +3358,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr14 sites VCF
@@ -1679,7 +3423,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr15 sites VCF
@@ -1744,7 +3488,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr16 sites VCF
@@ -1809,7 +3553,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr17 sites VCF
@@ -1874,7 +3618,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr18 sites VCF
@@ -1939,7 +3683,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr19 sites VCF
@@ -2004,7 +3748,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr20 sites VCF
@@ -2069,7 +3813,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr21 sites VCF
@@ -2134,7 +3878,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr22 sites VCF
@@ -2199,7 +3943,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrX sites VCF
@@ -2264,7 +4008,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrY sites VCF
@@ -2331,16 +4075,16 @@ exports[`Data Page has no unexpected changes 1`] = `
           </ul>
         </div>
         <div
-          className="c19"
+          className="c22"
         >
           <h3>
             Genomes
           </h3>
           <ul
-            className="c20 c21"
+            className="c18 c19"
           >
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Sites Hail Table
@@ -2367,7 +4111,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </button>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr1 sites VCF
@@ -2432,7 +4176,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr2 sites VCF
@@ -2497,7 +4241,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr3 sites VCF
@@ -2562,7 +4306,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr4 sites VCF
@@ -2627,7 +4371,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr5 sites VCF
@@ -2692,7 +4436,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr6 sites VCF
@@ -2757,7 +4501,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr7 sites VCF
@@ -2822,7 +4566,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr8 sites VCF
@@ -2887,7 +4631,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr9 sites VCF
@@ -2952,7 +4696,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr10 sites VCF
@@ -3017,7 +4761,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr11 sites VCF
@@ -3082,7 +4826,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr12 sites VCF
@@ -3147,7 +4891,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr13 sites VCF
@@ -3212,7 +4956,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr14 sites VCF
@@ -3277,7 +5021,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr15 sites VCF
@@ -3342,7 +5086,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr16 sites VCF
@@ -3407,7 +5151,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr17 sites VCF
@@ -3472,7 +5216,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr18 sites VCF
@@ -3537,7 +5281,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr19 sites VCF
@@ -3602,7 +5346,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr20 sites VCF
@@ -3667,7 +5411,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr21 sites VCF
@@ -3732,7 +5476,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr22 sites VCF
@@ -3797,7 +5541,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrX sites VCF
@@ -3862,7 +5606,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrY sites VCF
@@ -3957,10 +5701,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Joint sites Hail Table
@@ -3987,7 +5731,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr1 sites VCF
@@ -4052,7 +5796,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr2 sites VCF
@@ -4117,7 +5861,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr3 sites VCF
@@ -4182,7 +5926,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr4 sites VCF
@@ -4247,7 +5991,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr5 sites VCF
@@ -4312,7 +6056,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr6 sites VCF
@@ -4377,7 +6121,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr7 sites VCF
@@ -4442,7 +6186,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr8 sites VCF
@@ -4507,7 +6251,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr9 sites VCF
@@ -4572,7 +6316,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr10 sites VCF
@@ -4637,7 +6381,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr11 sites VCF
@@ -4702,7 +6446,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr12 sites VCF
@@ -4767,7 +6511,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr13 sites VCF
@@ -4832,7 +6576,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr14 sites VCF
@@ -4897,7 +6641,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr15 sites VCF
@@ -4962,7 +6706,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr16 sites VCF
@@ -5027,7 +6771,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr17 sites VCF
@@ -5092,7 +6836,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr18 sites VCF
@@ -5157,7 +6901,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr19 sites VCF
@@ -5222,7 +6966,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr20 sites VCF
@@ -5287,7 +7031,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr21 sites VCF
@@ -5352,7 +7096,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr22 sites VCF
@@ -5417,7 +7161,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrX sites VCF
@@ -5482,7 +7226,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrY sites VCF
@@ -5575,19 +7319,19 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <div
-        className="c18"
+        className="c21"
       >
         <div
-          className="c19"
+          className="c22"
         >
           <h3>
             Exomes
           </h3>
           <ul
-            className="c20 c21"
+            className="c18 c19"
           >
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Exomes all site allele number Hail Table
@@ -5614,7 +7358,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </button>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Exomes all site allele number TSV
@@ -5655,16 +7399,16 @@ exports[`Data Page has no unexpected changes 1`] = `
           </ul>
         </div>
         <div
-          className="c19"
+          className="c22"
         >
           <h3>
             Genomes
           </h3>
           <ul
-            className="c20 c21"
+            className="c18 c19"
           >
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Genomes all site allele number Hail Table
@@ -5691,7 +7435,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </button>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Genomes all site allele number TSV
@@ -5785,10 +7529,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         Browser variants
       </h3>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Browser variants Hail Table
@@ -5815,7 +7559,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome copy number variant Hail Table
@@ -5842,7 +7586,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome structural variant Hail Table
@@ -5873,10 +7617,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         Browser gene models
       </h3>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Browser GRCh38 gene models Hail Table
@@ -5931,10 +7675,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome coverage Hail Table
@@ -5961,7 +7705,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome coverage summary TSV
@@ -6041,10 +7785,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Principal component analysis (PCA) variant loadings
@@ -6071,7 +7815,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Random forest (RF) .pkl model
@@ -6104,7 +7848,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Random forest (RF) .onnx model
@@ -6175,10 +7919,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </a>
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             README
@@ -6211,7 +7955,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Constraint metrics Hail Table
@@ -6238,7 +7982,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Constraint metrics TSV
@@ -6271,7 +8015,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             LOEUF gene percentile TSV
@@ -6304,7 +8048,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Mutation rate Hail Table
@@ -6331,7 +8075,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Mutation rate TSV
@@ -6364,7 +8108,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Mutation rate README
@@ -6397,7 +8141,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Methylation rate Hail Table
@@ -6424,7 +8168,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Methylation rate README
@@ -6496,10 +8240,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </a>
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome SV VCF
@@ -6564,7 +8308,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome SV non neuro controls VCF
@@ -6629,7 +8373,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome SV BED
@@ -6668,7 +8412,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome SV non neuro controls BED
@@ -6746,10 +8490,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </a>
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome CNV VCF
@@ -6788,7 +8532,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome CNV non neuro VCF
@@ -6827,7 +8571,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome CNV non neuro controls VCF
@@ -6910,10 +8654,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </a>
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Annotation-level pext for all possible SNVs Hail table
@@ -6940,7 +8684,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Annotation-level pext for all possible SNVs TSV
@@ -6973,7 +8717,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Base-level pext Hail table
@@ -7000,7 +8744,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Base-level pext TSV
@@ -7074,10 +8818,10 @@ exports[`Data Page has no unexpected changes 1`] = `
          
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             High-quality coding DNVs Hail table
@@ -7104,7 +8848,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             High-quality coding DNVs TSV
@@ -7137,7 +8881,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             High-quality coding DNVs README
@@ -7204,10 +8948,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Latest ClinVar GRCh38 Browser Hail Table
@@ -7253,10 +8997,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome sex ploidy cutoffs TSV
@@ -7289,7 +9033,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome calling intervals Hail Table
@@ -7316,7 +9060,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome calling intervals flat file
@@ -7349,7 +9093,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             REVEL v4.1 README
@@ -7382,7 +9126,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exomes REVEL supplementary TSV
@@ -7415,7 +9159,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genomes REVEL supplementary TSV
@@ -7552,10 +9296,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Incomplete penetrance LoF curation results
@@ -7699,10 +9443,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         Genomes
       </h3>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Sites Hail Table
@@ -7729,7 +9473,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr1 sites VCF
@@ -7794,7 +9538,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr2 sites VCF
@@ -7859,7 +9603,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr3 sites VCF
@@ -7924,7 +9668,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr4 sites VCF
@@ -7989,7 +9733,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr5 sites VCF
@@ -8054,7 +9798,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr6 sites VCF
@@ -8119,7 +9863,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr7 sites VCF
@@ -8184,7 +9928,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr8 sites VCF
@@ -8249,7 +9993,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr9 sites VCF
@@ -8314,7 +10058,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr10 sites VCF
@@ -8379,7 +10123,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr11 sites VCF
@@ -8444,7 +10188,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr12 sites VCF
@@ -8509,7 +10253,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr13 sites VCF
@@ -8574,7 +10318,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr14 sites VCF
@@ -8639,7 +10383,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr15 sites VCF
@@ -8704,7 +10448,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr16 sites VCF
@@ -8769,7 +10513,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr17 sites VCF
@@ -8834,7 +10578,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr18 sites VCF
@@ -8899,7 +10643,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr19 sites VCF
@@ -8964,7 +10708,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr20 sites VCF
@@ -9029,7 +10773,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr21 sites VCF
@@ -9094,7 +10838,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr22 sites VCF
@@ -9159,7 +10903,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrX sites VCF
@@ -9224,7 +10968,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrY sites VCF
@@ -9317,10 +11061,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome coverage Hail Table
@@ -9347,7 +11091,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome coverage summary TSV
@@ -9440,10 +11184,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         Genomes
       </h3>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Dense Hail MatrixTable
@@ -9470,7 +11214,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Sparse Hail MatrixTable
@@ -9497,7 +11241,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variant annotations Hail Table
@@ -9524,7 +11268,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Sample metadata Hail Table
@@ -9551,7 +11295,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Sample metadata TSV
@@ -9584,7 +11328,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr1 VCF
@@ -9649,7 +11393,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr2 VCF
@@ -9714,7 +11458,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr3 VCF
@@ -9779,7 +11523,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr4 VCF
@@ -9844,7 +11588,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr5 VCF
@@ -9909,7 +11653,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr6 VCF
@@ -9974,7 +11718,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr7 VCF
@@ -10039,7 +11783,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr8 VCF
@@ -10104,7 +11848,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr9 VCF
@@ -10169,7 +11913,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr10 VCF
@@ -10234,7 +11978,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr11 VCF
@@ -10299,7 +12043,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr12 VCF
@@ -10364,7 +12108,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr13 VCF
@@ -10429,7 +12173,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr14 VCF
@@ -10494,7 +12238,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr15 VCF
@@ -10559,7 +12303,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr16 VCF
@@ -10624,7 +12368,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr17 VCF
@@ -10689,7 +12433,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr18 VCF
@@ -10754,7 +12498,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr19 VCF
@@ -10819,7 +12563,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr20 VCF
@@ -10884,7 +12628,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr21 VCF
@@ -10949,7 +12693,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr22 VCF
@@ -11014,7 +12758,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrX VCF
@@ -11079,7 +12823,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrY VCF
@@ -11185,10 +12929,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrM sites Hail Table
@@ -11215,7 +12959,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrM sites VCF
@@ -11280,7 +13024,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrM coverage Hail Table
@@ -11307,7 +13051,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrM sites TSV (reduced annotations)
@@ -11387,10 +13131,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Principal component analysis (PCA) variant loadings
@@ -11417,7 +13161,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Random forest (RF) model
@@ -11503,10 +13247,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         samples in gnomAD.
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Admixed American Sites VCF
@@ -11540,10 +13284,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </li>
       </ul>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
              African/African American Sites VCF
@@ -11637,10 +13381,10 @@ exports[`Data Page has no unexpected changes 1`] = `
       </a>
       ]
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             README
@@ -11673,7 +13417,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genotypes (TSV)
@@ -11706,7 +13450,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distributions (JSON)
@@ -11744,10 +13488,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         Original release:
       </b>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             README
@@ -11780,7 +13524,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genotypes (TSV)
@@ -11813,7 +13557,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distributions (JSON)
@@ -11906,10 +13650,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         For more information about these files, see the README included in the download.
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             README
@@ -11942,7 +13686,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Raw genomic constraint by 1kb regions
@@ -11975,7 +13719,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             QCed genomic constraint by 1kb regions
@@ -12008,7 +13752,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Non-coding constraint for gene tissue enhancers
@@ -12105,10 +13849,10 @@ exports[`Data Page has no unexpected changes 1`] = `
          files above, the quality control steps may differ slightly. This would lead to minor differences in sample counts. See the tutorials for details.
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <a
             className="c8"
@@ -12120,7 +13864,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </a>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <a
             className="c8"
@@ -12132,7 +13876,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </a>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Dense Hail MatrixTable
@@ -12159,7 +13903,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Sample metadata TSV
@@ -12192,7 +13936,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Subset of the HGDP+1KG callset MatrixTable
@@ -12219,7 +13963,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Related sample IDs Hail Table
@@ -12246,7 +13990,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Principal component analysis (PCA) PC score tables GCS Bucket
@@ -12273,7 +14017,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             PCA outliers table
@@ -12306,7 +14050,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             PCA PC score tables without outliers GCS Buckets
@@ -12333,7 +14077,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variants and unrelated samples MatrixTable
@@ -12360,7 +14104,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variants and related samples MatrixTable
@@ -12387,7 +14131,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Population-level statistical summary TSV
@@ -12420,7 +14164,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Doubleton counts CSV
@@ -12453,7 +14197,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variants and unrelated sample PLINK files - .bed
@@ -12480,7 +14224,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variants and unrelated sample PLINK files - .bim
@@ -12507,7 +14251,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variants and unrelated sample PLINK files - .fam
@@ -12534,7 +14278,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Population-level mean fixation index table
@@ -12567,7 +14311,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Gambian Genome Variation Project MatrixTable
@@ -12594,7 +14338,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Principal component analysis (PCA) variant loadings Hail Table
@@ -12621,7 +14365,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Random forest (RF) model PKL
@@ -12654,7 +14398,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             HGDP+1KG and GVV intersection Matrix Table
@@ -12681,7 +14425,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Super population labels TSV
@@ -12714,7 +14458,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Phased haplotypes of HGDP+1KG dataset GCS Bucket
@@ -12744,7 +14488,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           Pre-QC plotting tables
         </h3>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Pre-QC column fields Hail Table
@@ -12771,7 +14515,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Pre-QC expected heterozygosity Hail Table
@@ -12798,7 +14542,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Pre-QC actual heterozygosity Hail Table
@@ -12828,7 +14572,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           Post-QC plotting tables
         </h3>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Post-QC column fields Hail Table
@@ -12855,7 +14599,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Post-QC expected heterozygosity Hail Table
@@ -12882,7 +14626,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Post-QC actual heterozygosity Hail Table
@@ -12909,7 +14653,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Post-QC site frequency spectrum table
@@ -12942,7 +14686,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Phased haplotype ChrX PAR1
@@ -13001,7 +14745,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Phased haplotype ChrX PAR2
@@ -13060,7 +14804,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Phased haplotype ChrX Non-PAR
@@ -13163,10 +14907,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Mitochondrial gene constraint README
@@ -13199,7 +14943,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Mitochondrial regional constraint README
@@ -13232,7 +14976,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Mitochondrial gene constraint TSV
@@ -13265,7 +15009,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Mitochondrial regional constraint TSV
@@ -13387,19 +15131,19 @@ exports[`Data Page has no unexpected changes 1`] = `
         The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only, and non-TOPMed).
       </p>
       <div
-        className="c18"
+        className="c21"
       >
         <div
-          className="c19"
+          className="c22"
         >
           <h3>
             Exomes
           </h3>
           <ul
-            className="c20 c21"
+            className="c18 c19"
           >
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Sites Hail Table
@@ -13426,7 +15170,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </button>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 All chromosomes VCF
@@ -13491,7 +15235,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr1 sites VCF
@@ -13556,7 +15300,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr2 sites VCF
@@ -13621,7 +15365,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr3 sites VCF
@@ -13686,7 +15430,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr4 sites VCF
@@ -13751,7 +15495,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr5 sites VCF
@@ -13816,7 +15560,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr6 sites VCF
@@ -13881,7 +15625,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr7 sites VCF
@@ -13946,7 +15690,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr8 sites VCF
@@ -14011,7 +15755,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr9 sites VCF
@@ -14076,7 +15820,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr10 sites VCF
@@ -14141,7 +15885,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr11 sites VCF
@@ -14206,7 +15950,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr12 sites VCF
@@ -14271,7 +16015,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr13 sites VCF
@@ -14336,7 +16080,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr14 sites VCF
@@ -14401,7 +16145,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr15 sites VCF
@@ -14466,7 +16210,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr16 sites VCF
@@ -14531,7 +16275,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr17 sites VCF
@@ -14596,7 +16340,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr18 sites VCF
@@ -14661,7 +16405,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr19 sites VCF
@@ -14726,7 +16470,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr20 sites VCF
@@ -14791,7 +16535,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr21 sites VCF
@@ -14856,7 +16600,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr22 sites VCF
@@ -14921,7 +16665,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrX sites VCF
@@ -14986,7 +16730,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrY sites VCF
@@ -15053,16 +16797,16 @@ exports[`Data Page has no unexpected changes 1`] = `
           </ul>
         </div>
         <div
-          className="c19"
+          className="c22"
         >
           <h3>
             Genomes
           </h3>
           <ul
-            className="c20 c21"
+            className="c18 c19"
           >
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Sites Hail Table
@@ -15089,7 +16833,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </button>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 All chromosomes VCF
@@ -15154,7 +16898,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr1 sites VCF
@@ -15219,7 +16963,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr2 sites VCF
@@ -15284,7 +17028,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr3 sites VCF
@@ -15349,7 +17093,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr4 sites VCF
@@ -15414,7 +17158,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr5 sites VCF
@@ -15479,7 +17223,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr6 sites VCF
@@ -15544,7 +17288,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr7 sites VCF
@@ -15609,7 +17353,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr8 sites VCF
@@ -15674,7 +17418,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr9 sites VCF
@@ -15739,7 +17483,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr10 sites VCF
@@ -15804,7 +17548,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr11 sites VCF
@@ -15869,7 +17613,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr12 sites VCF
@@ -15934,7 +17678,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr13 sites VCF
@@ -15999,7 +17743,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr14 sites VCF
@@ -16064,7 +17808,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr15 sites VCF
@@ -16129,7 +17873,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr16 sites VCF
@@ -16194,7 +17938,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr17 sites VCF
@@ -16259,7 +18003,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr18 sites VCF
@@ -16324,7 +18068,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr19 sites VCF
@@ -16389,7 +18133,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr20 sites VCF
@@ -16454,7 +18198,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr21 sites VCF
@@ -16519,7 +18263,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr22 sites VCF
@@ -16584,7 +18328,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrX sites VCF
@@ -16688,10 +18432,10 @@ exports[`Data Page has no unexpected changes 1`] = `
          The lifted over structural variant dataset was created by dbVar and has not been assessed by the gnomAD production team.
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <a
             className="c8"
@@ -16811,19 +18555,19 @@ exports[`Data Page has no unexpected changes 1`] = `
         The variant dataset files below contain all subsets (non-neuro, non-cancer, controls-only, and non-TOPMed).
       </p>
       <div
-        className="c18"
+        className="c21"
       >
         <div
-          className="c19"
+          className="c22"
         >
           <h3>
             Exomes
           </h3>
           <ul
-            className="c20 c21"
+            className="c18 c19"
           >
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Sites Hail Table
@@ -16850,7 +18594,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </button>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 All chromosomes sites VCF
@@ -16915,7 +18659,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr1 sites VCF
@@ -16980,7 +18724,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr2 sites VCF
@@ -17045,7 +18789,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr3 sites VCF
@@ -17110,7 +18854,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr4 sites VCF
@@ -17175,7 +18919,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr5 sites VCF
@@ -17240,7 +18984,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr6 sites VCF
@@ -17305,7 +19049,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr7 sites VCF
@@ -17370,7 +19114,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr8 sites VCF
@@ -17435,7 +19179,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr9 sites VCF
@@ -17500,7 +19244,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr10 sites VCF
@@ -17565,7 +19309,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr11 sites VCF
@@ -17630,7 +19374,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr12 sites VCF
@@ -17695,7 +19439,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr13 sites VCF
@@ -17760,7 +19504,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr14 sites VCF
@@ -17825,7 +19569,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr15 sites VCF
@@ -17890,7 +19634,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr16 sites VCF
@@ -17955,7 +19699,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr17 sites VCF
@@ -18020,7 +19764,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr18 sites VCF
@@ -18085,7 +19829,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr19 sites VCF
@@ -18150,7 +19894,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr20 sites VCF
@@ -18215,7 +19959,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr21 sites VCF
@@ -18280,7 +20024,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr22 sites VCF
@@ -18345,7 +20089,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrX sites VCF
@@ -18410,7 +20154,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrY sites VCF
@@ -18477,16 +20221,16 @@ exports[`Data Page has no unexpected changes 1`] = `
           </ul>
         </div>
         <div
-          className="c19"
+          className="c22"
         >
           <h3>
             Genomes
           </h3>
           <ul
-            className="c20 c21"
+            className="c18 c19"
           >
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Sites Hail Table
@@ -18513,7 +20257,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </button>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 All chromosomes sites VCF
@@ -18578,7 +20322,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 Exome calling intervals VCF
@@ -18643,7 +20387,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr1 sites VCF
@@ -18708,7 +20452,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr2 sites VCF
@@ -18773,7 +20517,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr3 sites VCF
@@ -18838,7 +20582,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr4 sites VCF
@@ -18903,7 +20647,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr5 sites VCF
@@ -18968,7 +20712,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr6 sites VCF
@@ -19033,7 +20777,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr7 sites VCF
@@ -19098,7 +20842,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr8 sites VCF
@@ -19163,7 +20907,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr9 sites VCF
@@ -19228,7 +20972,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr10 sites VCF
@@ -19293,7 +21037,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr11 sites VCF
@@ -19358,7 +21102,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr12 sites VCF
@@ -19423,7 +21167,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr13 sites VCF
@@ -19488,7 +21232,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr14 sites VCF
@@ -19553,7 +21297,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr15 sites VCF
@@ -19618,7 +21362,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr16 sites VCF
@@ -19683,7 +21427,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr17 sites VCF
@@ -19748,7 +21492,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr18 sites VCF
@@ -19813,7 +21557,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr19 sites VCF
@@ -19878,7 +21622,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr20 sites VCF
@@ -19943,7 +21687,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr21 sites VCF
@@ -20008,7 +21752,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chr22 sites VCF
@@ -20073,7 +21817,7 @@ exports[`Data Page has no unexpected changes 1`] = `
               </span>
             </li>
             <li
-              className="c22"
+              className="c20"
             >
               <span>
                 chrX sites VCF
@@ -20192,10 +21936,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         Browser gene models
       </h3>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Browser GRCh37 gene models Hail Table
@@ -20250,10 +21994,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome coverage Hail Table
@@ -20280,7 +22024,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome coverage summary TSV
@@ -20319,7 +22063,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome coverage Hail Table
@@ -20346,7 +22090,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome coverage summary TSV
@@ -20428,10 +22172,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </a>
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             SV 2.1 sites VCF
@@ -20490,7 +22234,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             SV 2.1 sites BED
@@ -20549,7 +22293,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             SV 2.1 (controls) sites VCF
@@ -20608,7 +22352,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             SV 2.1 (controls) sites BED
@@ -20667,7 +22411,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             SV 2.1 (non-neuro) sites VCF
@@ -20726,7 +22470,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             SV 2.1 (non-neuro) sites BED
@@ -20877,10 +22621,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </label>
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             LD matrix Hail BlockMatrix for African/African American population
@@ -20907,7 +22651,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variant indices Hail Table for African/African American population
@@ -20934,7 +22678,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             LD scores Hail Table for African/African American population
@@ -20961,7 +22705,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             LDSC .ldscore.bgz file for African/African American population
@@ -20994,7 +22738,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             LDSC .M file for African/African American population
@@ -21027,7 +22771,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             LDSC .M_5_50 file for African/African American population
@@ -21101,10 +22845,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Principal component analysis (PCA) variant loadings
@@ -21131,7 +22875,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Random forest (RF) model
@@ -21192,10 +22936,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Regional missense constraint Hail Table
@@ -21222,7 +22966,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Regional missense constraint TSV (transcripts with RMC)
@@ -21255,7 +22999,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Regional missense constraint TSV (transcripts without RMC)
@@ -21328,10 +23072,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Latest ClinVar GRCh37 Browser Hail Table
@@ -21377,10 +23121,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome calling regions
@@ -21413,7 +23157,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Genome calling regions
@@ -21446,7 +23190,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             All pLoF variants
@@ -21479,7 +23223,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Browser pipeline GTEx Hail Table
@@ -21506,7 +23250,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Browser pipeline pext Hail Table
@@ -21618,10 +23362,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         .
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             pLoF Metrics by Transcript Hail Table
@@ -21648,7 +23392,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             pLoF Metrics by Transcript TSV
@@ -21681,7 +23425,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             pLoF Metrics by Gene TSV
@@ -21714,7 +23458,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             pLoF Metrics Downsamplings TSV
@@ -21791,10 +23535,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </a>
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             README
@@ -21827,7 +23571,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Coding MNVs TSV
@@ -21860,7 +23604,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Coding MNVs consisting of 3 SNVs TSV
@@ -21897,10 +23641,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         MNVs genome wide
       </h3>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 1 Hail Table
@@ -21927,7 +23671,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 1 TSV
@@ -21960,7 +23704,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 2 Hail Table
@@ -21987,7 +23731,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 2 TSV
@@ -22020,7 +23764,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 3 Hail Table
@@ -22047,7 +23791,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 3 TSV
@@ -22080,7 +23824,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 4 Hail Table
@@ -22107,7 +23851,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 4 TSV
@@ -22140,7 +23884,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 5 Hail Table
@@ -22167,7 +23911,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 5 TSV
@@ -22200,7 +23944,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 6 Hail Table
@@ -22227,7 +23971,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 6 TSV
@@ -22260,7 +24004,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 7 Hail Table
@@ -22287,7 +24031,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 7 TSV
@@ -22320,7 +24064,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 8 Hail Table
@@ -22347,7 +24091,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 8 TSV
@@ -22380,7 +24124,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 9 Hail Table
@@ -22407,7 +24151,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 9 TSV
@@ -22440,7 +24184,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 10 Hail Table
@@ -22467,7 +24211,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Distance = 10 TSV
@@ -22544,10 +24288,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </a>
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Annotation-level pext for all possible SNVs Hail table
@@ -22574,7 +24318,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Annotation-level pext for all possible SNVs TSV
@@ -22607,7 +24351,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Base-level pext Hail table
@@ -22634,7 +24378,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Base-level pext TSV
@@ -22695,10 +24439,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             README
@@ -22731,7 +24475,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variant co-occurrence Hail Table
@@ -22758,7 +24502,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variant co-occurrence by gene (homozygous rare variants)
@@ -22791,7 +24535,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Variant co-occurrence by gene (two heterozygous rare variants)
@@ -22885,10 +24629,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         (haploinsufficient genes LoF curation results).
       </p>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             All homozygous LoF curation results
@@ -22921,7 +24665,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Lysosomal storage disease genes LoF curation results
@@ -22954,7 +24698,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             AP4 LoF curation results
@@ -22987,7 +24731,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             FIG4 LoF curation results
@@ -23020,7 +24764,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             MCOLN1 LoF curation results
@@ -23053,7 +24797,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Haploinsufficient genes LoF curation results
@@ -23086,7 +24830,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Metabolic conditions genes LoF curation results
@@ -23119,7 +24863,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             gnomAD addendum LoF curation results
@@ -23152,7 +24896,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             NSD1 LoF curation results
@@ -23274,10 +25018,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         Exomes
       </h3>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             All chromosomes VCF
@@ -23370,10 +25114,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr1 exome coverage summary TSV
@@ -23412,7 +25156,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr2 exome coverage summary TSV
@@ -23451,7 +25195,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr3 exome coverage summary TSV
@@ -23490,7 +25234,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr4 exome coverage summary TSV
@@ -23529,7 +25273,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr5 exome coverage summary TSV
@@ -23568,7 +25312,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr6 exome coverage summary TSV
@@ -23607,7 +25351,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr7 exome coverage summary TSV
@@ -23646,7 +25390,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr8 exome coverage summary TSV
@@ -23685,7 +25429,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr9 exome coverage summary TSV
@@ -23724,7 +25468,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr10 exome coverage summary TSV
@@ -23763,7 +25507,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr11 exome coverage summary TSV
@@ -23802,7 +25546,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr12 exome coverage summary TSV
@@ -23841,7 +25585,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr13 exome coverage summary TSV
@@ -23880,7 +25624,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr14 exome coverage summary TSV
@@ -23919,7 +25663,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr15 exome coverage summary TSV
@@ -23958,7 +25702,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr16 exome coverage summary TSV
@@ -23997,7 +25741,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr17 exome coverage summary TSV
@@ -24036,7 +25780,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr18 exome coverage summary TSV
@@ -24075,7 +25819,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr19 exome coverage summary TSV
@@ -24114,7 +25858,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr20 exome coverage summary TSV
@@ -24153,7 +25897,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr21 exome coverage summary TSV
@@ -24192,7 +25936,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chr22 exome coverage summary TSV
@@ -24231,7 +25975,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrX exome coverage summary TSV
@@ -24270,7 +26014,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </span>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             chrY exome coverage summary TSV
@@ -24337,10 +26081,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Gene constraint scores TSV
@@ -24401,10 +26145,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Regional missense constraint TSV
@@ -24465,10 +26209,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Exome calling regions
@@ -24527,10 +26271,10 @@ exports[`Data Page has no unexpected changes 1`] = `
         </h2>
       </span>
       <ul
-        className="c20 c21"
+        className="c18 c19"
       >
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Manuscript data
@@ -24557,7 +26301,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             Subset VCFs (non-TCGA and non-psych)
@@ -24584,7 +26328,7 @@ exports[`Data Page has no unexpected changes 1`] = `
           </button>
         </li>
         <li
-          className="c22"
+          className="c20"
         >
           <span>
             CNV counts and intolerance scores
