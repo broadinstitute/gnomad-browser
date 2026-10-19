@@ -4,7 +4,7 @@ import Highlighter from 'react-highlight-words'
 import { ExternalLink, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { Gene } from '../GenePage/GenePage'
+import { VariantTableContext } from './VariantTableContext'
 import Link from '../Link'
 import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
@@ -451,7 +451,7 @@ export const getColumnsForContext = (context: any): Record<string, VariantTableC
 }
 
 export const getRenderedVariantTableColumns = (
-  context: Gene,
+  context: VariantTableContext,
   selectedColumns: string[],
   clinvarReleaseDate: string
 ): (VariantTableColumn & { isSortable: boolean; tooltip: string | undefined })[] => {

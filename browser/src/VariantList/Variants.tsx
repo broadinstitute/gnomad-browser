@@ -20,7 +20,11 @@ import variantTableColumns, { DEFAULT_COLUMNS } from './variantTableColumns'
 import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
 import { Variant } from '../VariantPage/VariantPage'
-import { Gene } from '../GenePage/GenePage'
+import { VariantTableContext } from './VariantTableContext'
+import VariantSyncControl, {
+  NO_SHARED_VARIANTS_MESSAGE,
+  VariantSyncState,
+} from './VariantSyncControl'
 
 const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   const sortColumn = variantTableColumns.find((column: any) => column.key === sortKey)
@@ -31,7 +35,7 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
 type OwnVariantsProps = {
   children?: any
   clinvarReleaseDate: string
-  context: Gene
+  context: VariantTableContext
   datasetId: DatasetId
   exportFileName?: string
   variants: Variant[]
@@ -67,6 +71,7 @@ export const getFirstIndexFromSearchText = (
 
 type ControlledVariantsProps = Omit<OwnVariantsProps, 'clinvarReleaseDate' | 'variants'> & {
   selection: VariantFiltering
+  sync?: VariantSyncState
 }
 
 export const ControlledVariants = ({
@@ -75,6 +80,7 @@ export const ControlledVariants = ({
   datasetId,
   exportFileName = 'variants',
   selection,
+  sync,
 }: ControlledVariantsProps) => {
   const table = useRef(null)
   const {
@@ -210,6 +216,8 @@ export const ControlledVariants = ({
       <TrackPageSection>
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
         <p>No gnomAD variants found.</p>
+        {sync && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
+        {sync?.enabled && sync.available && <p role="status">{NO_SHARED_VARIANTS_MESSAGE}</p>}
       </TrackPageSection>
     )
   }
@@ -247,6 +255,7 @@ export const ControlledVariants = ({
           value={filter}
           jumpToRow={onSearchResult}
           position={currentSearchIndex}
+          sync={sync}
         />
         <div>
           <ExportVariantsButton
@@ -286,7 +295,13 @@ export const ControlledVariants = ({
               variants={renderedVariants}
             />
           </div>
-          {renderedVariants.length === 0 && <StatusMessage>No matching variants</StatusMessage>}
+          {renderedVariants.length === 0 && (
+            <StatusMessage>
+              {sync?.enabled && sync.available
+                ? NO_SHARED_VARIANTS_MESSAGE
+                : 'No matching variants'}
+            </StatusMessage>
+          )}
         </div>
       </TrackPageSection>
 

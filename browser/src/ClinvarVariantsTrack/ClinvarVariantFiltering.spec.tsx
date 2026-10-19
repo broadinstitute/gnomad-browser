@@ -199,34 +199,14 @@ describe('ClinVar variant filtering', () => {
     expectExpandedVariantIds(container, expected)
   })
 
-  test('shows only variants marked in gnomAD when the membership filter is enabled', async () => {
-    const user = userEvent.setup()
-    const { container } = renderClinvarFilters()
-    await user.click(
-      screen.getByRole('checkbox', { name: 'Only show ClinVar variants that are in gnomAD' })
-    )
-    await expandVariants(user)
-    expectExpandedVariantIds(container, [
-      '1-100-A-C',
-      '1-200-A-C',
-      '1-300-A-C',
-      '1-500-A-C',
-      '1-600-A-C',
-      '1-700-A-C',
-    ])
-  })
-
   test('requires variants to pass every active ClinVar filter', async () => {
     const user = userEvent.setup()
     const { container } = renderClinvarFilters()
     await selectOnlyClinicalCategory(user, 'Pathogenic / likely pathogenic')
-    await user.click(
-      screen.getByRole('checkbox', { name: 'Only show ClinVar variants that are in gnomAD' })
-    )
     await user.selectOptions(screen.getByRole('combobox'), '3')
     await user.click(screen.getByRole('checkbox', { name: 'pLoF' }))
     await expandVariants(user)
-    expectExpandedVariantIds(container, ['1-200-A-C'])
+    expectExpandedVariantIds(container, ['1-200-A-C', '1-800-A-C'])
   })
 
   test('restores ClinVar variants when an excluding filter is relaxed', async () => {

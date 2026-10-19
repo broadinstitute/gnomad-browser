@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction, useMemo, useState } from 'react'
 
 import { DatasetId } from '@gnomad/dataset-metadata/metadata'
-import { Gene } from '../GenePage/GenePage'
 import { showNotification } from '../Notifications'
 import userPreferences from '../userPreferences'
 import { Variant } from '../VariantPage/VariantPage'
 import { getCategoryFromConsequence } from '../vepConsequences'
 import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
+import { VariantTableContext } from './VariantTableContext'
 import {
   DEFAULT_COLUMNS,
   getRenderedVariantTableColumns,
@@ -152,7 +152,7 @@ export type VariantFiltering = {
 
 type VariantFilteringOptions = {
   variants: Variant[]
-  context: Gene
+  context: VariantTableContext
   datasetId: DatasetId
   clinvarReleaseDate: string
 }

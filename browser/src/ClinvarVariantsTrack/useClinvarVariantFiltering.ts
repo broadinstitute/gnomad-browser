@@ -10,7 +10,6 @@ import {
 export type ClinvarFilterState = {
   includedClinicalSignificanceCategories: Record<string, boolean>
   includedConsequenceCategories: Record<string, boolean>
-  showOnlyGnomad: boolean
   starFilter: number
 }
 
@@ -31,7 +30,6 @@ export const DEFAULT_CLINVAR_FILTER_STATE: ClinvarFilterState = {
     }),
     {}
   ),
-  showOnlyGnomad: false,
   starFilter: 0,
 }
 
@@ -45,7 +43,6 @@ export const filterClinvarVariants = (
         clinvarVariantClinicalSignificanceCategory(variant)
       ] &&
       filter.includedConsequenceCategories[getCategoryFromConsequence(variant.major_consequence)] &&
-      (!filter.showOnlyGnomad || variant.in_gnomad) &&
       variant.gold_stars >= filter.starFilter
   )
 }
@@ -56,18 +53,8 @@ export type ClinvarVariantFiltering = {
   filteredVariants: ClinvarVariant[]
 }
 
-const useClinvarVariantFiltering = (
-  variants: ClinvarVariant[],
-  isTrackMounted = true
-): ClinvarVariantFiltering => {
+const useClinvarVariantFiltering = (variants: ClinvarVariant[]): ClinvarVariantFiltering => {
   const [filter, setFilter] = useState(DEFAULT_CLINVAR_FILTER_STATE)
-  const [wasTrackMounted, setWasTrackMounted] = useState(isTrackMounted)
-  if (wasTrackMounted !== isTrackMounted) {
-    setWasTrackMounted(isTrackMounted)
-    if (!isTrackMounted) {
-      setFilter(DEFAULT_CLINVAR_FILTER_STATE)
-    }
-  }
   const filteredVariants = useMemo(
     () => filterClinvarVariants(variants, filter),
     [variants, filter]

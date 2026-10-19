@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { Badge } from '@gnomad/ui'
 
@@ -39,7 +39,7 @@ type VariantsInTranscriptProps = OwnVariantsInTranscriptProps &
   typeof VariantsInTranscript.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'VariantsInTranscript' implicitly has type 'any' b... Remove this comment to see the full error message
-const VariantsInTranscript = ({
+export const VariantsInTranscript = ({
   clinvarReleaseDate,
   clinvarVariants,
   datasetId,
@@ -51,6 +51,7 @@ const VariantsInTranscript = ({
   const isCodingTranscript = transcript.exons.some((exon: any) => exon.feature_type === 'CDS')
 
   const datasetLabel = labelForDataset(datasetId)
+  const transcripts = useMemo(() => [transcript], [transcript])
   const selection = useLinkedVariantSelection({
     clinvarVariants,
     variants,
@@ -66,14 +67,16 @@ const VariantsInTranscript = ({
         clinvarVariants={clinvarVariants}
         clinvarReleaseDate={clinvarReleaseDate}
         referenceGenome={referenceGenome(datasetId)}
-        transcripts={[transcript]}
+        transcripts={transcripts}
         zoomRegion={zoomRegion}
         pageType="transcript"
         selection={selection.clinvar}
+        sync={selection.sync}
       />
 
       <ControlledVariants
         selection={selection.gnomad}
+        sync={selection.sync}
         context={transcript}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
@@ -264,6 +267,7 @@ const ConnectedVariantsInTranscript = ({
     {({ data }: any) => {
       return (
         <VariantsInTranscript
+          key={`${datasetId}:${referenceGenome(datasetId)}:${transcript.transcript_id}`}
           {...otherProps}
           clinvarReleaseDate={data.meta.clinvar_release_date}
           clinvarVariants={data.transcript.clinvar_variants}

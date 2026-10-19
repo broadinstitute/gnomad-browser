@@ -22,6 +22,10 @@ import useClinvarVariantFiltering, { ClinvarVariantFiltering } from './useClinva
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import { ReferenceGenome } from '../../../dataset-metadata/metadata'
+import VariantSyncControl, {
+  NO_SHARED_VARIANTS_MESSAGE,
+  VariantSyncState,
+} from '../VariantList/VariantSyncControl'
 
 const TopPanel = styled.div`
   display: flex;
@@ -87,8 +91,10 @@ const SelectCategoryButton = styled(Button)`
 
 const FilterRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5em 1em;
 `
 
 type Props = {
@@ -99,22 +105,20 @@ type Props = {
 
 type ControlledClinvarVariantTrackProps = Omit<Props, 'variants'> & {
   selection: ClinvarVariantFiltering
+  sync?: VariantSyncState
 }
 
-export const ControlledClinvarVariantTrack = ({
+const UnmemoizedControlledClinvarVariantTrack = ({
   referenceGenome,
   transcripts,
   selection,
+  sync,
 }: ControlledClinvarVariantTrackProps) => {
   const [selectedVariant, setSelectedVariant] = useState(null)
   const [isExpanded, setIsExpanded] = useState(false)
   const { filter, setFilter, filteredVariants } = selection
-  const {
-    includedClinicalSignificanceCategories,
-    includedConsequenceCategories,
-    showOnlyGnomad,
-    starFilter,
-  } = filter
+  const { includedClinicalSignificanceCategories, includedConsequenceCategories, starFilter } =
+    filter
 
   const setIncludedClinicalSignificanceCategories = (categories: Record<string, boolean>) => {
     setFilter((previousFilter) => ({
@@ -127,9 +131,6 @@ export const ControlledClinvarVariantTrack = ({
       ...previousFilter,
       includedConsequenceCategories: categories,
     }))
-  }
-  const setShowOnlyGnomad = (value: boolean) => {
-    setFilter((previousFilter) => ({ ...previousFilter, showOnlyGnomad: value }))
   }
   const setStarFilter = (value: number) => {
     setFilter((previousFilter) => ({ ...previousFilter, starFilter: value }))
@@ -217,13 +218,8 @@ export const ControlledClinvarVariantTrack = ({
             </Button>
           </ControlRow>
           <FilterRow>
-            <Checkbox
-              id="clinvar-track-in-gnomad"
-              label="Only show ClinVar variants that are in gnomAD"
-              checked={showOnlyGnomad}
-              onChange={setShowOnlyGnomad}
-            />
-            <label htmlFor="star-filtering">
+            {sync && <VariantSyncControl id="clinvar-variant-sync" state={sync} />}
+            <label htmlFor="clinvar-star-filter">
               Filter by{' '}
               <ExternalLink href="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/">
                 review status
@@ -244,6 +240,11 @@ export const ControlledClinvarVariantTrack = ({
           </FilterRow>
         </TopPanel>
       </TrackPageSection>
+      {sync?.enabled && sync.available && filteredVariants.length === 0 && (
+        <TrackPageSection as="p" role="status">
+          {NO_SHARED_VARIANTS_MESSAGE}
+        </TrackPageSection>
+      )}
       <Track
         renderLeftPanel={() => (
           <TitlePanel>ClinVar variants ({filteredVariants.length})</TitlePanel>
@@ -287,6 +288,8 @@ export const ControlledClinvarVariantTrack = ({
   )
 }
 
+export const ControlledClinvarVariantTrack = React.memo(UnmemoizedControlledClinvarVariantTrack)
+
 const UnmemoizedClinvarVariantTrack = ({ variants, ...props }: Props) => {
   const selection = useClinvarVariantFiltering(variants)
   return <ControlledClinvarVariantTrack {...props} selection={selection} />
@@ -302,6 +305,7 @@ type ClinvarVariantsProps = {
   zoomRegion?: { start: number; stop: number } | null
   pageType: PageType
   selection?: ClinvarVariantFiltering
+  sync?: VariantSyncState
 }
 
 const ClinvarVariants = ({
@@ -312,6 +316,7 @@ const ClinvarVariants = ({
   zoomRegion = null,
   pageType,
   selection,
+  sync,
 }: ClinvarVariantsProps) => {
   const heading = (
     <TrackPageSection>
@@ -330,6 +335,11 @@ const ClinvarVariants = ({
       <>
         {heading}
         {clinvarUnavailableMessage}
+        {sync && (
+          <TrackPageSection>
+            <VariantSyncControl id="clinvar-variant-sync" state={sync} />
+          </TrackPageSection>
+        )}
       </>
     )
   }
@@ -346,6 +356,7 @@ const ClinvarVariants = ({
       referenceGenome={referenceGenome}
       transcripts={transcripts}
       selection={selection}
+      sync={sync}
     />
   )
 
@@ -359,7 +370,15 @@ const ClinvarVariants = ({
   )
 
   const noClinvarVariantsFoundMessage = (
-    <TrackPageSection as="p">{`No ClinVar variants found in this ${pageType}.`}</TrackPageSection>
+    <>
+      <TrackPageSection as="p">{`No ClinVar variants found in this ${pageType}.`}</TrackPageSection>
+      {sync && (
+        <TrackPageSection>
+          <VariantSyncControl id="clinvar-variant-sync" state={sync} />
+          {sync.enabled && sync.available && <p role="status">{NO_SHARED_VARIANTS_MESSAGE}</p>}
+        </TrackPageSection>
+      )}
+    </>
   )
 
   return (

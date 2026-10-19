@@ -86,7 +86,7 @@ type OwnVariantsInGeneProps = {
 type VariantsInGeneProps = OwnVariantsInGeneProps & typeof VariantsInGene.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'VariantsInGene' implicitly has type 'any' because... Remove this comment to see the full error message
-const VariantsInGene = ({
+export const VariantsInGene = ({
   clinvarReleaseDate,
   clinvarVariants,
   datasetId,
@@ -119,10 +119,12 @@ const VariantsInGene = ({
         zoomRegion={zoomRegion}
         pageType="gene"
         selection={selection.clinvar}
+        sync={selection.sync}
       />
 
       <ControlledVariants
         selection={selection.gnomad}
+        sync={selection.sync}
         context={gene}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${gene.gene_id}`}
@@ -354,6 +356,7 @@ const ConnectedVariantsInGene = ({
 
         return (
           <VariantsInGene
+            key={`${datasetId}:${referenceGenome(datasetId)}:${gene.gene_id}`}
             {...otherProps}
             clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.gene.clinvar_variants}
