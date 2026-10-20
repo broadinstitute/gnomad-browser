@@ -406,7 +406,6 @@ const AllelicLandscapeHelp = ({
   showRepeatCountControls = false,
   sourceContext = false,
   repeatMeasureOffered = false,
-  alleleRepeatsCountedInSequences = false,
   showLengthAxisControl = false,
   showAncestryControl = false,
   showSexControl = false,
@@ -415,10 +414,8 @@ const AllelicLandscapeHelp = ({
 }: {
   showRepeatCountControls?: boolean
   sourceContext?: boolean
-  // Whether some plot offers a repeats measure, and whether the allele plot's repeats come from
-  // counting each ALT sequence.
+  // Whether some plot offers a repeats measure.
   repeatMeasureOffered?: boolean
-  alleleRepeatsCountedInSequences?: boolean
   showLengthAxisControl?: boolean
   showAncestryControl?: boolean
   showSexControl?: boolean
@@ -434,16 +431,15 @@ const AllelicLandscapeHelp = ({
     <HaplotypeHelpButton title="Allelic Landscape">
       <p style={{ marginTop: 0 }}>
         These plots summarize the alleles observed at this locus. Selecting part of a plot filters
-        the Allele Details Table below to the matching ALT alleles, and choosing{' '}
-        <strong>Details</strong> in a table row shows that allele&apos;s sequence. Plot selections
-        do not change the page URL, but choosing <strong>Details</strong> does.
+        the Allele Details Table below to the matching ALT alleles, and clicking{' '}
+        <strong>Details</strong> in a table row shows that allele&apos;s sequence.
       </p>
       <h4>Allele length distribution</h4>
       <p>
-        Each bar counts the alleles of one size: ALT alleles in blue and REF alleles in orange.
-        Hover over the number above a bar to see how many distinct ALT sequences it holds. Click a
-        bar, drag across bars, or use Shift+arrow keys to select a range, and press Escape or choose{' '}
-        <strong>Show all ALT alleles</strong> to clear the selection.
+        Each bar counts alleles of the same size. Alleles that exactly match the reference sequence
+        are shown in orange. Click a bar, drag across bars, or use Shift+arrow keys to select a
+        range, and press Escape or click <strong>Show all ALT alleles</strong> to clear the
+        selection.
       </p>
       {repeatMeasureOffered && (
         <>
@@ -451,17 +447,12 @@ const AllelicLandscapeHelp = ({
           <p>
             {sourceContext
               ? 'Bars show measured allele sizes in source units, and squares count size pairs. Pairs are not phased, and an n/n pair may stand for one or two observed alleles.'
-              : "Switching a plot's measure to repeats shows each allele's longest pure run of the motif: its largest number of consecutive exact copies, from precomputed repeat-count distributions when the locus has them."}
-            {!sourceContext &&
-              alleleRepeatsCountedInSequences &&
-              ' Otherwise the allele plot counts them in each ALT sequence; a Motif menu picks the motif at a locus with several, and its bars filter the table like the length bars.'}
+              : "Switching a plot's allele size measure from base pairs to repeats shows each allele's longest pure run of the motif: the largest number of consecutive repeat copies."}
             {!sourceContext &&
               showPrimaryMotif &&
-              ' A plot without these instead shows the reviewed primary-motif measurement described below, which counts every exact copy of the motif across the whole allele and cannot filter the table.'}
+              ' Some plots instead show the reviewed primary-motif measurement described below, which counts every exact copy of the motif across the whole allele and cannot filter the table.'}
             {showRepeatCountControls &&
-              ' Each repeat-count card has its own ancestry, sex, color and scale controls.'}{' '}
-            Precomputed repeat counts do not record which ALT sequences they hold, so their marks
-            cannot filter the table.
+              ' Each repeat-count card has its own ancestry, sex, color and scale controls.'}
           </p>
         </>
       )}
@@ -530,20 +521,22 @@ const AllelicLandscapeHelp = ({
       )}
       <h4>Genotype length distribution</h4>
       <p>
-        Each square counts the people with one pair of allele sizes, the shorter allele on one axis
-        and the longer allele on the other. Only people with both alleles called are counted. Click
-        a square or drag a rectangle to filter the table to those people&apos;s ALT alleles.
+        Each square counts the number of people with one pair of allele sizes, the shorter allele on
+        one axis and the longer allele on the other. Only people with both alleles called are
+        counted. Click a square or select by dragging to filter the table to those people&apos;s ALT
+        alleles.
       </p>
       <h4>Repeat sequence purity</h4>
       <p style={showControlsNote ? undefined : { marginBottom: 0 }}>
-        Each point is one ALT allele, placed by its size and by its repeat sequence purity as
-        reported by TRGT. Larger points stand for more alleles, and the REF allele is drawn in
-        orange. Click a point or drag a rectangle to filter the table.
+        Each point represents one ALT allele sequence reported by TRGT, placed by its size and by
+        its repeat sequence purity as reported by TRGT. The size of a point is based on its allele
+        count, which is the number of genotyped chromosomes that carry this allele sequence. The REF
+        allele is drawn in orange. Click on a point or select by dragging to filter the table below.
       </p>
       {showControlsNote && (
         <p style={{ marginBottom: 0 }}>
           {showLengthAxisControl &&
-            "The menu at the bottom of each plot switches between the ALT allele's size and its change from REF, in base pairs or, where available, in repeats; the purity plot uses base pairs only. "}
+            "The menu at the bottom of each plot switches the plot's axes from the ALT allele's total size to its size minus the size of the REF allele, in base pairs or, where available, in repeats of the longest pure run. "}
           {(showAncestryControl || showSexControl) &&
             `The ${[showAncestryControl ? 'ancestry' : null, showSexControl ? 'sex' : null]
               .filter(Boolean)
@@ -563,10 +556,11 @@ const ExactAlleleIndexHelp = () => (
     <p style={{ marginTop: 0, marginBottom: 0 }}>
       Each row is one ALT allele observed at this locus, with its sequence, its size and change in
       size from REF in base pairs, its repeat sequence purity as reported by TRGT, and its allele
-      count (AC) and frequency (AF). The colored sequence preview highlights copies of the motif and
-      may not match TRGT&apos;s purity. Click a column heading to sort. Selections in the plots
-      above filter the rows, and <strong>Show all ALT alleles</strong> clears the filter. Choose{' '}
-      <strong>Details</strong> to see an allele&apos;s full sequence below.
+      count (AC) and frequency (AF). The colored sequence preview highlights copies of the annotated
+      motif(s). Selecting scatter plot points or histogram bars in the plots above filters this
+      table, while clicking <strong>Show all ALT alleles</strong> clears those filters. To sort the
+      table, click a column heading. Click the <strong>Details</strong> button to see an
+      allele&apos;s full sequence below.
     </p>
   </HaplotypeHelpButton>
 )
@@ -2407,9 +2401,7 @@ const MotifOccurrencePlotCard = ({
                         }}
                         onKeyDown={(event) => markProps.onKeyDown(event)}
                       >
-                        <BarExactCount title={exactAltSequences(bin.allele_ids.length)}>
-                          {bin.allele_ids.length}
-                        </BarExactCount>
+                        <BarExactCount>{bin.allele_ids.length}</BarExactCount>
                         {(selectionStart || selectionStop) && (
                           <HistogramSelectionBoundary
                             aria-hidden="true"
@@ -3108,7 +3100,6 @@ export const WholeRecordAlleleLandscape = ({
             showRepeatCountControls={Boolean(admittedRepeatCountPlots)}
             sourceContext={admittedRepeatCountPlots?.status === 'AVAILABLE_SOURCE_CONTEXT'}
             repeatMeasureOffered={repeatMeasureOffered}
-            alleleRepeatsCountedInSequences={Boolean(admittedMotifDistribution)}
             primaryMotifMeasurement={admittedPrimaryMotifMeasurement}
           />
         </HeadingWithHelp>
@@ -3275,7 +3266,6 @@ export const WholeRecordAlleleLandscape = ({
         <AllelicLandscapeHelp
           sourceContext={admittedRepeatCountPlots?.status === 'AVAILABLE_SOURCE_CONTEXT'}
           repeatMeasureOffered={repeatMeasureOffered}
-          alleleRepeatsCountedInSequences={Boolean(admittedMotifDistribution)}
           showLengthAxisControl={Boolean(
             alleleLengthAxisControl || genotypeLengthAxisControl || purityLengthAxisControl
           )}
@@ -3582,14 +3572,6 @@ export const WholeRecordAlleleLandscape = ({
                                 true
                               )} in this view; ${exactAltSequences(bin.exact_alt_count)}`
                               let ariaLabel = `${lengthLabel}; ${referenceCopiesText} in this view`
-                              let barTitle = [
-                                lengthLabel,
-                                referenceOnly || referenceCount > 0 ? referenceCopiesText : null,
-                                referenceOnly ? null : calledAlleleCopies(count, true),
-                                referenceOnly ? null : exactAltSequences(bin.exact_alt_count),
-                              ]
-                                .filter(Boolean)
-                                .join(' · ')
                               // Repeat-count bars carry no allele ids, so they only report counts.
                               if (repeatCountHistogram && !referenceOnly) {
                                 ariaLabel = `${lengthLabel}; ${counted(
@@ -3597,7 +3579,6 @@ export const WholeRecordAlleleLandscape = ({
                                   'allele',
                                   'alleles'
                                 )} in this view`
-                                barTitle = `${lengthLabel} · ${counted(count, 'allele', 'alleles')}`
                               } else if (!referenceOnly) {
                                 ariaLabel = `${lengthLabel}; ${
                                   referenceCount > 0 ? `${referenceCopiesText}; ` : ''
@@ -3624,7 +3605,6 @@ export const WholeRecordAlleleLandscape = ({
                                   $selected={selected}
                                   aria-pressed={selected}
                                   aria-label={ariaLabel}
-                                  title={barTitle}
                                   onClick={(event) => {
                                     if (!markProps.onClick(event)) filterIndexToLengthBins([bin])
                                   }}
@@ -3670,18 +3650,7 @@ export const WholeRecordAlleleLandscape = ({
                                       </BarSegments>
                                     )}
                                   {barLabelsFit && (
-                                    <BarExactCount
-                                      style={{ fontSize: barLabelFontPx }}
-                                      title={
-                                        referenceOnly || repeatCountHistogram
-                                          ? barTitle
-                                          : `${counted(
-                                              barTotal,
-                                              'allele',
-                                              'alleles'
-                                            )} · ${exactAltSequences(bin.exact_alt_count)}`
-                                      }
-                                    >
+                                    <BarExactCount style={{ fontSize: barLabelFontPx }}>
                                       {/* The label is the bar height: alleles in this view. */}
                                       {referenceOnly && (
                                         <>

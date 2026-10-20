@@ -1997,7 +1997,7 @@ describe('long-read TR visualization fidelity', () => {
     ).toBeNull()
     // No plot here offers a repeats measure, so the help does not describe one.
     expect(within(help).queryByText('Repeat counts')).toBeNull()
-    expect(within(help).queryByText(/Switching a plot's measure to repeats/)).toBeNull()
+    expect(within(help).queryByText(/allele size measure from base pairs to repeats/)).toBeNull()
   })
 
   test('shows only the positively admitted dimension for a partial filter contract', () => {

@@ -1181,12 +1181,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(help).getByText('Allele length distribution')).not.toBeNull()
     expect(within(help).getByText('Repeat counts')).not.toBeNull()
     expect(within(help).getByText(/longest pure run of the motif/)).not.toBeNull()
-    expect(
-      within(help).getByText(/a Motif menu picks the motif .* its bars filter the table/)
-    ).not.toBeNull()
+    expect(within(help).queryByText(/Motif menu|Precomputed repeat counts/)).toBeNull()
     expect(within(help).getByText('Genotype length distribution')).not.toBeNull()
     expect(within(help).getByText('Repeat sequence purity')).not.toBeNull()
-    expect(within(help).getByText(/Plot selections do not change the page URL/)).not.toBeNull()
+    expect(within(help).getByText(/Selecting part of a plot filters/)).not.toBeNull()
     expect(
       within(help).queryByText(/color and scale controls apply only to the allele length/)
     ).toBeNull()
@@ -1319,7 +1317,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(within(help).getByText('Reviewed exact primary-motif product')).not.toBeNull()
     expect(
       within(help).getByText(
-        /instead shows the reviewed primary-motif measurement described below.*cannot filter the table/
+        /Some plots instead show the reviewed primary-motif measurement described below.*cannot filter the table/
       )
     ).not.toBeNull()
     expect(
