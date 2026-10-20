@@ -451,7 +451,7 @@ const AllelicLandscapeHelp = ({
           <p>
             {sourceContext
               ? 'Bars show measured allele sizes in source units, and squares count size pairs. Pairs are not phased, and an n/n pair may stand for one or two observed alleles.'
-              : "Switching a plot's allele size measure from base pairs to repeats shows each allele's longest pure run of the motif: the largest number of consecutive repeat copies."}
+              : "Switching a plot's allele size measure from base pairs to repeats will display each allele's longest pure run of the motif: the largest number of consecutive repeat copies."}
             {!sourceContext &&
               showPrimaryMotif &&
               ' Some plots instead show the reviewed primary-motif measurement described below, which counts every exact copy of the motif across the whole allele and cannot filter the table.'}
