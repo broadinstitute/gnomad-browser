@@ -424,7 +424,7 @@ const LongReadTandemRepeatPage = ({
               {referencePurity != null && (
                 <AttributeListItem
                   label="Reference sequence purity"
-                  tooltip="Allele purity (AP) as reported by TRGT: the fraction of the REF allele's bases that match perfect copies of this locus's motifs, after TRGT aligns the allele to them. Bases that fit no motif copy, such as spacer sequence between repeats, lower the purity."
+                  tooltip="Allele purity (AP): the fraction of the REF allele's bases that match perfect copies of this locus's motifs, after TRGT aligns the allele to them. Bases that fit no motif copy, such as spacer sequence between repeats, lower the purity."
                 >
                   {referencePurity.toFixed(2)}
                 </AttributeListItem>
