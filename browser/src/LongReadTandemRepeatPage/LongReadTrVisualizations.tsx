@@ -755,8 +755,8 @@ export const LongReadTrComponentTrack = ({
   return (
     <Panel aria-labelledby="lr-tr-components-heading">
       <HeadingWithHelp>
-        <h2 id="lr-tr-components-heading">Variation Cluster Reference Region</h2>
-        <HaplotypeHelpButton title="Variation Cluster Reference Region">
+        <h2 id="lr-tr-components-heading">VC Reference Region</h2>
+        <HaplotypeHelpButton title="VC Reference Region">
           <p style={{ marginTop: 0 }}>
             <strong>What this shows.</strong> LR reference components are the callset&apos;s ordered
             coordinate-and-motif intervals. Coordinates are zero-based and half-open, as in the
@@ -1857,7 +1857,7 @@ const PurityScatter = ({
   onClear,
   lengthAxisMode = 'delta',
   representedRefLength = null,
-  alleleAxisLabel = 'Allele',
+  alleleAxisLabelPrefix = '',
   referencePurity = null,
   referenceCalledAlleles = 0,
 }: {
@@ -1876,7 +1876,7 @@ const PurityScatter = ({
   onClear: () => void
   lengthAxisMode?: LengthAxisMode
   representedRefLength?: number | null
-  alleleAxisLabel?: string
+  alleleAxisLabelPrefix?: string
 }) => {
   const brushMarks: DiscreteBrushMark<PurityPoint>[] = points.map((point) => ({
     id: `purity:${point.allele_id}`,
@@ -2151,7 +2151,10 @@ const PurityScatter = ({
                   </div>
                   <HistogramXAxis
                     role="group"
-                    aria-label={`${lengthAxisTitle(alleleAxisLabel, lengthAxisMode)} axis`}
+                    aria-label={`${lengthAxisTitle(
+                      `${alleleAxisLabelPrefix}Allele`,
+                      lengthAxisMode
+                    )} axis`}
                     data-testid="purity-x-axis"
                     $height={xAxisHeight}
                     $width={plotWidth}
@@ -2171,7 +2174,7 @@ const PurityScatter = ({
                 </div>
               </HistogramChartWithXAxisTitle>
               <HistogramXAxisTitle aria-hidden="true">
-                {lengthAxisTitle(alleleAxisLabel, lengthAxisMode)}
+                {lengthAxisTitle(`${alleleAxisLabelPrefix}Allele`, lengthAxisMode)}
               </HistogramXAxisTitle>
             </HistogramSizer>
           )
@@ -2723,9 +2726,9 @@ export const WholeRecordAlleleLandscape = ({
     if (choices.includes('exact-motif')) return 'exact-motif' as const
     return null
   }
-  // On a variation cluster page each allele spans the whole cluster, not one repeat.
-  const alleleAxisLabel =
-    presentation?.locus_type === 'VARIATION_CLUSTER' ? 'Cluster Allele' : 'Allele'
+  // On a variation cluster (VC) page each allele spans the whole cluster, not one repeat, so the
+  // allele size axes read "VC: Allele (bp)", "VC: Long Allele (bp)" and so on.
+  const alleleAxisLabelPrefix = presentation?.locus_type === 'VARIATION_CLUSTER' ? 'VC: ' : ''
   // The precomputed repeat-count histograms size each allele by its longest pure run of the
   // motif, so the REF sits at its own longest pure run. It is left unknown when the histogram
   // holds fewer alleles at that size than there are REF alleles, which would mean the two
@@ -3149,7 +3152,7 @@ export const WholeRecordAlleleLandscape = ({
               landscape={admittedGenotypeLandscape}
               lengthAxisMode={genotypeLengthAxisMode}
               representedRefLength={representedRefLength}
-              alleleAxisLabel={alleleAxisLabel}
+              alleleAxisLabelPrefix={alleleAxisLabelPrefix}
               lengthAxisControl={genotypeLengthAxisControl}
             />
           )}
@@ -3740,7 +3743,11 @@ export const WholeRecordAlleleLandscape = ({
                       </HistogramScroller>
                     </HistogramChartWithXAxisTitle>
                     <HistogramXAxisTitle aria-hidden="true">
-                      {lengthAxisTitle(alleleAxisLabel, alleleLengthAxisMode, histogramUnit)}
+                      {lengthAxisTitle(
+                        `${alleleAxisLabelPrefix}Allele`,
+                        alleleLengthAxisMode,
+                        histogramUnit
+                      )}
                     </HistogramXAxisTitle>
                   </HistogramSizer>
                 )
@@ -3767,7 +3774,7 @@ export const WholeRecordAlleleLandscape = ({
             unit={repeatCountGenotypes ? 'longest-pure-run' : 'bp'}
             referenceSizeKnown={repeatCountGenotypes ? histogramReferenceUnits != null : true}
             cellsClickable={!repeatCountGenotypes}
-            alleleAxisLabel={alleleAxisLabel}
+            alleleAxisLabelPrefix={alleleAxisLabelPrefix}
             onPlotHeightChange={setGenotypePlotHeightPx}
             lengthAxisControl={genotypeLengthAxisControl}
           />
@@ -3796,7 +3803,7 @@ export const WholeRecordAlleleLandscape = ({
               onClear={clearIndexFilter}
               lengthAxisMode={purityLengthAxisMode}
               representedRefLength={representedRefLength}
-              alleleAxisLabel={alleleAxisLabel}
+              alleleAxisLabelPrefix={alleleAxisLabelPrefix}
               referencePurity={landscape.reference_purity ?? null}
               referenceCalledAlleles={referenceCopiesForPurity}
             />
@@ -3932,7 +3939,7 @@ export const WholeRecordGenotypeLandscape = ({
   unit = 'bp',
   referenceSizeKnown = true,
   cellsClickable = true,
-  alleleAxisLabel = 'Allele',
+  alleleAxisLabelPrefix = '',
   onPlotHeightChange,
   lengthAxisControl = null,
 }: {
@@ -3951,8 +3958,8 @@ export const WholeRecordGenotypeLandscape = ({
   // False for the repeat-count histograms, which carry no allele ids to filter the source-ALT
   // index by; their squares then only show their counts on hover.
   cellsClickable?: boolean
-  // "Cluster Allele" on a variation cluster page, where each allele spans the whole cluster.
-  alleleAxisLabel?: string
+  // "VC: " on a variation cluster page, where each allele spans the whole cluster.
+  alleleAxisLabelPrefix?: string
   // Receives the on-screen height in pixels of the square of cells, so the other plots can match.
   onPlotHeightChange?: (heightPx: number) => void
   // The plot's own Length axis menu, drawn at the bottom of the card.
@@ -4415,7 +4422,7 @@ export const WholeRecordGenotypeLandscape = ({
                       fontSize={axisFontSize}
                       textAnchor="middle"
                     >
-                      {lengthAxisTitle(`Long ${alleleAxisLabel}`, lengthAxisMode, unit)}
+                      {lengthAxisTitle(`${alleleAxisLabelPrefix}Long Allele`, lengthAxisMode, unit)}
                     </text>
                     <text
                       x={yAxisTitleX}
@@ -4425,7 +4432,11 @@ export const WholeRecordGenotypeLandscape = ({
                       textAnchor="middle"
                       transform={`rotate(-90 ${yAxisTitleX} ${heatmapTop + plotSize / 2})`}
                     >
-                      {lengthAxisTitle(`Short ${alleleAxisLabel}`, lengthAxisMode, unit)}
+                      {lengthAxisTitle(
+                        `${alleleAxisLabelPrefix}Short Allele`,
+                        lengthAxisMode,
+                        unit
+                      )}
                     </text>
                   </HeatmapSvg>
                 </HeatmapSizer>

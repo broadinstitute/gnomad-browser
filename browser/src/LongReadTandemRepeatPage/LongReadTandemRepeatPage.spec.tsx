@@ -711,7 +711,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
 
   test('renders grounded source attributes without technical component provenance', () => {
     renderPage()
-    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: 'Tandem Repeat Variation Cluster (VC)' })
+    ).not.toBeNull()
     expect(motifAttributeValue()).toBe('CAG (3 bp)')
     expect(screen.queryByText(/Compound source representation/)).toBeNull()
     expect(screen.getByText('chr4:3,074,876–3,075,040 (GRCh38)')).not.toBeNull()
@@ -1013,7 +1015,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: 'Tandem Repeat Variation Cluster (VC)' })
+    ).not.toBeNull()
     expect(screen.queryByText(/Primary repeat unavailable/)).toBeNull()
     expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
     expect(screen.queryByText(/All ordered source components and provenance/)).toBeNull()
@@ -1050,7 +1054,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: 'Tandem Repeat Variation Cluster (VC)' })
+    ).not.toBeNull()
     expect(screen.queryByText(/Compound source representation/)).toBeNull()
     expect(screen.getByText('Locus component-envelope length')).not.toBeNull()
   })
@@ -1068,13 +1074,16 @@ describe('canonical long-read tandem-repeat locus page', () => {
     }
     renderPage({ locus, selectedAllele: undefined })
 
-    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: 'Tandem Repeat Variation Cluster (VC)' })
+    ).not.toBeNull()
     expect(screen.getByText('chr4:3,074,870–3,075,040 (GRCh38)')).not.toBeNull()
     expect(screen.getByText('Cluster length')).not.toBeNull()
     expect(screen.getByText('170 bp')).not.toBeNull()
     expect(screen.queryByText('Reference sequence purity')).toBeNull()
-    expect(screen.getAllByText(/^Cluster Allele \(bp/).length).toBeGreaterThan(0)
-    expect(screen.getAllByText(/^Long Cluster Allele \(bp/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/^VC: Allele \(bp/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/^VC: Long Allele \(bp/).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/^VC: Short Allele \(bp/).length).toBeGreaterThan(0)
     expect(screen.queryByText(/^Allele \(bp/)).toBeNull()
   })
 
@@ -2059,7 +2068,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       (within(retainedFrame).getByLabelText('Long-read cohort') as HTMLSelectElement).value
     ).toBe('hgsvc_hprc')
-    expect(screen.getByRole('heading', { name: 'TR variation cluster' })).not.toBeNull()
+    expect(
+      screen.getByRole('heading', { name: 'Tandem Repeat Variation Cluster (VC)' })
+    ).not.toBeNull()
   })
 
   test('container pushes exact selection while preserving unrelated parameters', () => {

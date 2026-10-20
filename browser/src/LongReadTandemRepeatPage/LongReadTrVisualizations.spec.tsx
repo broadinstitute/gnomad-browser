@@ -2307,11 +2307,9 @@ describe('long-read TR visualization fidelity', () => {
           .getAttribute('width')
       )
     ).toBeCloseTo(8.8)
-    expect(
-      screen.getByRole('heading', { name: 'Variation Cluster Reference Region' })
-    ).not.toBeNull()
+    expect(screen.getByRole('heading', { name: 'VC Reference Region' })).not.toBeNull()
     // The section heading has the same name, so the help button is found by its role.
-    fireEvent.click(screen.getByRole('button', { name: 'Variation Cluster Reference Region' }))
+    fireEvent.click(screen.getByRole('button', { name: 'VC Reference Region' }))
     expect(screen.getByText(/callset.*ordered coordinate-and-motif intervals/)).not.toBeNull()
     expect(screen.getByText(/zero-based and half-open, as in the locus ID/)).not.toBeNull()
     expect(screen.getByText(/Overlapping intervals use separate lanes/)).not.toBeNull()

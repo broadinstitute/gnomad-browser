@@ -159,7 +159,7 @@ const MotifAttributeValue = ({ motif }: { motif: string }) => {
 
 export const longReadTrLocusTitle = (locus: LongReadTrLocus) => {
   if (locus.presentation?.locus_type === 'VARIATION_CLUSTER') {
-    return 'TR variation cluster'
+    return 'Tandem Repeat Variation Cluster (VC)'
   }
   if (!locus.primary_repeat?.motif) {
     const soleMotif = locus.components.length === 1 ? locus.components[0].motif : null
