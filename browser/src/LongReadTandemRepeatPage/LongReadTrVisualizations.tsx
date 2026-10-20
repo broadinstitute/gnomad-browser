@@ -533,10 +533,10 @@ const AllelicLandscapeHelp = ({
       <h4>Repeat sequence purity</h4>
       <p style={showControlsNote ? undefined : { marginBottom: 0 }}>
         Each point represents one ALT allele sequence reported by TRGT, placed by its size and by
-        its repeat sequence purity as reported by TRGT. Purity is the fraction of the allele&apos;s
-        bases that match perfect copies of the motif. The size of a point is based on its allele
-        count, which is the number of genotyped chromosomes that carry this allele sequence. The REF
-        allele is drawn in orange. Click on a point or select by dragging to filter the table below.
+        its repeat sequence purity. Purity is the fraction of the allele&apos;s bases that match
+        perfect copies of the motif. The size of a point is based on its allele count, which is the
+        number of genotyped chromosomes that carry this allele sequence. The REF allele is drawn in
+        orange. Click on a point or select by dragging to filter the table below.
       </p>
       {showControlsNote && (
         <p style={{ marginBottom: 0 }}>

@@ -1190,7 +1190,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     ).toBeNull()
     expect(within(help).queryByText(/Each repeat-count card has its own/)).toBeNull()
     expect(within(help).getByText(/The menu at the bottom of each plot switches/)).not.toBeNull()
-    expect(within(help).getByText(/purity as reported\s+by TRGT/)).not.toBeNull()
+    expect(within(help).getByText(/allele sequence reported by TRGT/)).not.toBeNull()
     expect(screen.queryByRole('heading', { name: 'Measurement availability' })).toBeNull()
     expect(screen.queryByRole('heading', { name: 'Data availability' })).toBeNull()
     expect(

@@ -397,7 +397,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(helpHeading('Repeat sequence purity')).toBeVisible()
     await expect(help.getByText(/longest pure run of the motif/)).toBeVisible()
     await expect(help.getByText(/Selecting part of a plot filters/)).toBeVisible()
-    await expect(help.getByText(/purity as reported\s+by TRGT/)).toBeVisible()
+    await expect(help.getByText(/allele sequence reported by TRGT/)).toBeVisible()
     await page.getByRole('button', { name: 'Close' }).click()
     await expect(helpTrigger).toBeFocused()
   })
