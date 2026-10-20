@@ -1140,7 +1140,7 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       screen.queryByRole('button', { name: 'About known disease-associated TR locus' })
     ).toBeNull()
-    const helpTitles = ['About the allelic landscape', 'Allele Details Table', 'ALT Allele Details']
+    const helpTitles = ['Allelic Landscape', 'Allele Details Table', 'ALT Allele Details']
     expect(screen.queryByRole('heading', { name: 'Unavailable data' })).toBeNull()
     expect(screen.queryByRole('button', { name: 'About unavailable data' })).toBeNull()
 
@@ -1151,9 +1151,9 @@ describe('canonical long-read tandem-repeat locus page', () => {
     helpTitles.forEach((title) => {
       fireEvent.click(screen.getByRole('button', { name: title }))
       const dialog = screen.getByRole('dialog', { name: title })
-      if (title === 'About the allelic landscape') {
+      if (title === 'Allelic Landscape') {
         expect(
-          within(dialog).getByText(/These plots summarize long-read observations at this locus/)
+          within(dialog).getByText(/These plots summarize the alleles observed at this locus/)
         ).not.toBeNull()
       } else if (title === 'ALT Allele Details') {
         expect(
@@ -1162,9 +1162,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
           )
         ).not.toBeNull()
       } else {
-        expect(within(dialog).getByText('What this shows.')).not.toBeNull()
-        expect(within(dialog).getByText('How to use it.')).not.toBeNull()
-        expect(within(dialog).getByText('What it does not show.')).not.toBeNull()
+        expect(
+          within(dialog).getByText(/Each row is one ALT allele observed at this locus/)
+        ).not.toBeNull()
+        expect(within(dialog).queryByText('What this shows.')).toBeNull()
       }
     })
   })
@@ -1175,32 +1176,23 @@ describe('canonical long-read tandem-repeat locus page', () => {
     expect(
       screen.queryByText(/compound loci do not have one unambiguous component repeat count/)
     ).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
-    const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
-    expect(within(help).getByText('Repeat-count distributions (simple loci only)')).not.toBeNull()
-    expect(within(help).getByText('Total allele length change (ALT − REF, bp)')).not.toBeNull()
-    expect(within(help).getByText('Motif occurrences')).not.toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Allelic Landscape' }))
+    const help = screen.getByRole('dialog', { name: 'Allelic Landscape' })
+    expect(within(help).getByText('Allele length distribution')).not.toBeNull()
+    expect(within(help).getByText('Repeat counts')).not.toBeNull()
+    expect(within(help).getByText(/longest pure run of the motif/)).not.toBeNull()
     expect(
-      within(help).getByText(/not component repeat counts, genotypes, or a clinical measure/)
+      within(help).getByText(/a Motif menu picks the motif .* its bars filter the table/)
     ).not.toBeNull()
-    expect(within(help).getByText('Length change × motif purity')).not.toBeNull()
     expect(within(help).getByText('Genotype length distribution')).not.toBeNull()
-    expect(within(help).getByText(/Only index row selection changes the URL/)).not.toBeNull()
+    expect(within(help).getByText('Repeat sequence purity')).not.toBeNull()
+    expect(within(help).getByText(/Plot selections do not change the page URL/)).not.toBeNull()
     expect(
-      within(help).queryByText(/Color and y-scale controls affect only the total-length histogram/)
+      within(help).queryByText(/color and scale controls apply only to the allele length/)
     ).toBeNull()
-    expect(within(help).queryByText(/Repeat-count controls are card-local/)).toBeNull()
-    expect(
-      within(help).getByText(
-        /Each plot has its own allele size measure menu at the bottom of its card/
-      )
-    ).not.toBeNull()
-    expect(
-      within(help).getByText(
-        /Purity is source-reported; the colored motif preview is a separate browser decomposition/
-      )
-    ).not.toBeNull()
-    expect(within(help).getByText(/do not classify an LR allele/)).not.toBeNull()
+    expect(within(help).queryByText(/Each repeat-count card has its own/)).toBeNull()
+    expect(within(help).getByText(/The menu at the bottom of each plot switches/)).not.toBeNull()
+    expect(within(help).getByText(/purity as reported\s+by TRGT/)).not.toBeNull()
     expect(screen.queryByRole('heading', { name: 'Measurement availability' })).toBeNull()
     expect(screen.queryByRole('heading', { name: 'Data availability' })).toBeNull()
     expect(
@@ -1322,16 +1314,22 @@ describe('canonical long-read tandem-repeat locus page', () => {
     })
 
     expect(screen.queryByText(/Whole-record, non-clinical measurement/)).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
-    const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
+    fireEvent.click(screen.getByRole('button', { name: 'Allelic Landscape' }))
+    const help = screen.getByRole('dialog', { name: 'Allelic Landscape' })
     expect(within(help).getByText('Reviewed exact primary-motif product')).not.toBeNull()
     expect(
-      within(help).getByText(/exact, non-overlapping primary-motif units across the complete/)
+      within(help).getByText(
+        /instead shows the reviewed primary-motif measurement described below.*cannot filter the table/
+      )
     ).not.toBeNull()
     expect(
-      within(help).getByText(/not a component repeat count, total length change, source MC\/LPS/)
+      within(help).getByText(/exact, non-overlapping copies of that motif across the whole/)
     ).not.toBeNull()
-    expect(help.textContent).toMatch(/allele Exact motif plot is different/)
+    expect(
+      within(help).getByText(/not a component repeat\s+count, total length change, source MC\/LPS/)
+    ).not.toBeNull()
+    expect(help.textContent).toMatch(/for the allele plot when it cannot count longest pure runs/)
+    expect(help.textContent).not.toMatch(/literal occurrences|Exact motif/)
     expect(within(help).getByText('584')).not.toBeNull()
     expect(within(help).getByText('72')).not.toBeNull()
     expect(within(help).getByText('primary-motif-hgsvc-htt')).not.toBeNull()
@@ -1754,10 +1752,10 @@ describe('canonical long-read tandem-repeat locus page', () => {
   test('distinguishes reference identity from a zero-delta exact ALT in the genotype heatmap', () => {
     renderPage()
     selectChangeFromRefAxis()
-    fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Allelic Landscape' }))
     expect(
-      within(screen.getByRole('dialog', { name: 'About the allelic landscape' })).getByText(
-        /Reference remains distinct from a zero-change source ALT/
+      within(screen.getByRole('dialog', { name: 'Allelic Landscape' })).getByText(
+        /Only people with both alleles called are counted/
       )
     ).not.toBeNull()
     const zeroDeltaCell = screen.getByRole('button', {

@@ -405,6 +405,8 @@ const unavailableReason = (reason: string | null | undefined) =>
 const AllelicLandscapeHelp = ({
   showRepeatCountControls = false,
   sourceContext = false,
+  repeatMeasureOffered = false,
+  alleleRepeatsCountedInSequences = false,
   showLengthAxisControl = false,
   showAncestryControl = false,
   showSexControl = false,
@@ -413,172 +415,158 @@ const AllelicLandscapeHelp = ({
 }: {
   showRepeatCountControls?: boolean
   sourceContext?: boolean
+  // Whether some plot offers a repeats measure, and whether the allele plot's repeats come from
+  // counting each ALT sequence.
+  repeatMeasureOffered?: boolean
+  alleleRepeatsCountedInSequences?: boolean
   showLengthAxisControl?: boolean
   showAncestryControl?: boolean
   showSexControl?: boolean
   showHistogramDisplayControl?: boolean
   primaryMotifMeasurement?: PrimaryMotifMeasurementData
-}) => (
-  <HaplotypeHelpButton title="About the allelic landscape">
-    <p style={{ marginTop: 0 }}>
-      These plots summarize long-read observations at this locus and connect them to the source-ALT
-      index below. Choosing a mark filters the index; dragging between identity-backed marks selects
-      a range or region. A new plot selection replaces the previous one and never changes the URL.
-      Choose <strong>Details</strong> in the index to update allele details.
-    </p>
-    <h4>
-      {sourceContext
-        ? 'Source-size distributions (simple loci only)'
-        : 'Repeat-count distributions (simple loci only)'}
-    </h4>
-    <p>
-      {sourceContext
-        ? 'Bars show measured allele observations; squares count source pair entries in source units. Pairs are not phased; n/n may encode one or two observed alleles, not necessarily a diploid genotype.'
-        : 'Bars show called allele copies; squares show people by shorter and longer repeat count.'}
-      {showRepeatCountControls &&
-        ' Use the ancestry, sex, color, and scale controls within each card.'}{' '}
-      These marks are read-only when the source does not identify the contributing exact ALT
-      sequences or allele pairs.
-    </p>
-    <h4>Total allele length change (ALT − REF, bp)</h4>
-    <p>
-      Bar height shows called allele copies: ALT copies in blue and REF copies in orange at the
-      reference length. The number above each bar is its height, the number of alleles in that bin,
-      and a bar holding only REF copies is also labeled REF. Hover over the number to see how many
-      distinct source ALT sequences the bin holds. Choose a bar to filter the index, drag between
-      bars, or activate one bar then use Shift+Arrow to select a contiguous range. Choose a single
-      selected bar again, press Escape, or use <strong>Show all ALT alleles</strong> to clear.
-    </p>
-    <h4>Motif occurrences</h4>
-    <p>
-      Bars count exact literal matches of the selected motif across whole represented source ALT
-      alleles; they are not component repeat counts, genotypes, or a clinical measure. Bar height
-      shows called source ALT copies and the number above shows contributing source ALT identities.
-      Drag between bars, or activate one bar then use Shift+Arrow, to replace the current plot
-      selection. Escape clears it.
-    </p>
-    {primaryMotifMeasurement && primaryMotifMeasurementAvailable(primaryMotifMeasurement) && (
-      <>
-        <h4>Reviewed exact primary-motif product</h4>
-        <p>
-          The genotype <strong>Exact motif</strong> plot uses the fixed, reviewed primary motif{' '}
-          <strong>{primaryMotifMeasurement.motif}</strong>. Each value counts exact, non-overlapping
-          primary-motif units across the complete represented REF or ALT allele. This whole-record
-          aggregate research measurement is not a component repeat count, total length change,
-          source MC/LPS value, short-read estimate, diagnostic result, or clinical classification.
-          The allele <strong>Exact motif</strong> plot is different when it offers a motif selector:
-          it counts literal occurrences of the selected stored motif in represented source ALT
-          identities only. If that source-ALT distribution is unavailable, the allele slot may
-          instead show the reviewed primary-product allele-copy histogram.
-        </p>
-        <details>
-          <summary>Exact primary-motif totals and provenance</summary>
-          <dl>
-            {primaryMotifMeasurement.called_alleles != null && (
-              <>
-                <dt>Allele copies</dt>
-                <dd>{primaryMotifMeasurement.called_alleles.toLocaleString()}</dd>
-              </>
-            )}
-            {primaryMotifMeasurement.alternate_identities_checked != null && (
-              <>
-                <dt>Complete source ALT identities checked</dt>
-                <dd>{primaryMotifMeasurement.alternate_identities_checked.toLocaleString()}</dd>
-              </>
-            )}
-            {primaryMotifMeasurement.biological_role && (
-              <>
-                <dt>Source-backed motif role</dt>
-                <dd>{primaryMotifMeasurement.biological_role}</dd>
-              </>
-            )}
-            {primaryMotifMeasurement.provenance && (
-              <>
-                <dt>Product run</dt>
-                <dd>
-                  <code>{primaryMotifMeasurement.provenance.product_run_id}</code>
-                </dd>
-                <dt>Source record</dt>
-                <dd>
-                  <code>{primaryMotifMeasurement.provenance.source_variant_id}</code>
-                </dd>
-                <dt>Reviewed registry digest</dt>
-                <dd>
-                  <code>{primaryMotifMeasurement.provenance.registry_digest}</code>
-                </dd>
-                <dt>Algorithm</dt>
-                <dd>
-                  <code>{primaryMotifMeasurement.provenance.algorithm_version}</code>
-                </dd>
-                <dt>Anchor rule</dt>
-                <dd>
-                  <code>{primaryMotifMeasurement.provenance.anchor_rule}</code>
-                </dd>
-                <dt>Bounds status</dt>
-                <dd>{primaryMotifMeasurement.provenance.bounds_status}</dd>
-              </>
-            )}
-          </dl>
-        </details>
-      </>
-    )}
-    <h4>Length change × motif purity</h4>
-    <p>
-      Each point is one source ALT identity; point area shows allele count. Choose a point or drag a
-      rectangle to filter without selecting an ALT. Purity is source-reported; the colored motif
-      preview is a separate browser decomposition and may differ.
-    </p>
-    <h4>Genotype length distribution</h4>
-    <p>
-      Each populated square summarizes people with complete called genotypes containing both plotted
-      alleles, grouped by the shorter and longer allele&apos;s total length change. Choose a square,
-      drag a rectangle, or activate one square then use Shift+Arrow to union exact contributors.
-      Escape clears the selection. Reference remains distinct from a zero-change source ALT and
-      reference sentinel identities are excluded.
-    </p>
-    {(showLengthAxisControl ||
-      showAncestryControl ||
-      showSexControl ||
-      showHistogramDisplayControl ||
-      showRepeatCountControls) && (
-      <p>
-        {showLengthAxisControl &&
-          'Each plot has its own allele size measure menu at the bottom of its card, offering only the measures that plot can draw: the ALT allele size or its change from REF, in base pairs or in repeat units. Purity is measured from each exact ALT sequence, so the purity plot uses base pairs only. '}
-        {(showAncestryControl || showSexControl) &&
-          `The shared ${[showAncestryControl ? 'ancestry' : null, showSexControl ? 'sex' : null]
-            .filter(Boolean)
-            .join(' and ')} ${
-            showAncestryControl && showSexControl ? 'controls affect' : 'control affects'
-          } the visible allelic-landscape plots that support those slices. `}
-        {showHistogramDisplayControl &&
-          'Color and y-scale controls affect only the total-length histogram. '}
-        {showRepeatCountControls && 'Repeat-count controls are card-local. '}
-        Only index row selection changes the URL and selected detail.
+}) => {
+  const showControlsNote =
+    showLengthAxisControl || showAncestryControl || showSexControl || showHistogramDisplayControl
+  const showPrimaryMotif = Boolean(
+    primaryMotifMeasurement && primaryMotifMeasurementAvailable(primaryMotifMeasurement)
+  )
+  return (
+    <HaplotypeHelpButton title="Allelic Landscape">
+      <p style={{ marginTop: 0 }}>
+        These plots summarize the alleles observed at this locus. Selecting part of a plot filters
+        the Allele Details Table below to the matching ALT alleles, and choosing{' '}
+        <strong>Details</strong> in a table row shows that allele&apos;s sequence. Plot selections
+        do not change the page URL, but choosing <strong>Details</strong> does.
       </p>
-    )}
-    <p style={{ marginBottom: 0 }}>
-      Plot position, color, outlines, and catalog ranges do not classify an LR allele, genotype,
-      component, person, or total allele length change.
-    </p>
-  </HaplotypeHelpButton>
-)
+      <h4>Allele length distribution</h4>
+      <p>
+        Each bar counts the alleles of one size: ALT alleles in blue and REF alleles in orange.
+        Hover over the number above a bar to see how many distinct ALT sequences it holds. Click a
+        bar, drag across bars, or use Shift+arrow keys to select a range, and press Escape or choose{' '}
+        <strong>Show all ALT alleles</strong> to clear the selection.
+      </p>
+      {repeatMeasureOffered && (
+        <>
+          <h4>{sourceContext ? 'Repeat sizes' : 'Repeat counts'}</h4>
+          <p>
+            {sourceContext
+              ? 'Bars show measured allele sizes in source units, and squares count size pairs. Pairs are not phased, and an n/n pair may stand for one or two observed alleles.'
+              : "Switching a plot's measure to repeats shows each allele's longest pure run of the motif: its largest number of consecutive exact copies, from precomputed repeat-count distributions when the locus has them."}
+            {!sourceContext &&
+              alleleRepeatsCountedInSequences &&
+              ' Otherwise the allele plot counts them in each ALT sequence; a Motif menu picks the motif at a locus with several, and its bars filter the table like the length bars.'}
+            {!sourceContext &&
+              showPrimaryMotif &&
+              ' A plot without these instead shows the reviewed primary-motif measurement described below, which counts every exact copy of the motif across the whole allele and cannot filter the table.'}
+            {showRepeatCountControls &&
+              ' Each repeat-count card has its own ancestry, sex, color and scale controls.'}{' '}
+            Precomputed repeat counts do not record which ALT sequences they hold, so their marks
+            cannot filter the table.
+          </p>
+        </>
+      )}
+      {showPrimaryMotif && primaryMotifMeasurement && (
+        <>
+          <h4>Reviewed exact primary-motif product</h4>
+          <p>
+            When a plot has no precomputed repeat counts, its repeats measure uses the fixed,
+            reviewed primary motif <strong>{primaryMotifMeasurement.motif}</strong>: always for the
+            genotype plot, and for the allele plot when it cannot count longest pure runs in the ALT
+            sequences. Each value counts exact, non-overlapping copies of that motif across the
+            whole REF or ALT allele. This is a whole-record research measurement, not a component
+            repeat count, total length change, source MC/LPS value, short-read estimate, diagnostic
+            result, or clinical classification.
+          </p>
+          <details>
+            <summary>Exact primary-motif totals and provenance</summary>
+            <dl>
+              {primaryMotifMeasurement.called_alleles != null && (
+                <>
+                  <dt>Allele copies</dt>
+                  <dd>{primaryMotifMeasurement.called_alleles.toLocaleString()}</dd>
+                </>
+              )}
+              {primaryMotifMeasurement.alternate_identities_checked != null && (
+                <>
+                  <dt>Complete source ALT identities checked</dt>
+                  <dd>{primaryMotifMeasurement.alternate_identities_checked.toLocaleString()}</dd>
+                </>
+              )}
+              {primaryMotifMeasurement.biological_role && (
+                <>
+                  <dt>Source-backed motif role</dt>
+                  <dd>{primaryMotifMeasurement.biological_role}</dd>
+                </>
+              )}
+              {primaryMotifMeasurement.provenance && (
+                <>
+                  <dt>Product run</dt>
+                  <dd>
+                    <code>{primaryMotifMeasurement.provenance.product_run_id}</code>
+                  </dd>
+                  <dt>Source record</dt>
+                  <dd>
+                    <code>{primaryMotifMeasurement.provenance.source_variant_id}</code>
+                  </dd>
+                  <dt>Reviewed registry digest</dt>
+                  <dd>
+                    <code>{primaryMotifMeasurement.provenance.registry_digest}</code>
+                  </dd>
+                  <dt>Algorithm</dt>
+                  <dd>
+                    <code>{primaryMotifMeasurement.provenance.algorithm_version}</code>
+                  </dd>
+                  <dt>Anchor rule</dt>
+                  <dd>
+                    <code>{primaryMotifMeasurement.provenance.anchor_rule}</code>
+                  </dd>
+                  <dt>Bounds status</dt>
+                  <dd>{primaryMotifMeasurement.provenance.bounds_status}</dd>
+                </>
+              )}
+            </dl>
+          </details>
+        </>
+      )}
+      <h4>Genotype length distribution</h4>
+      <p>
+        Each square counts the people with one pair of allele sizes, the shorter allele on one axis
+        and the longer allele on the other. Only people with both alleles called are counted. Click
+        a square or drag a rectangle to filter the table to those people&apos;s ALT alleles.
+      </p>
+      <h4>Repeat sequence purity</h4>
+      <p style={showControlsNote ? undefined : { marginBottom: 0 }}>
+        Each point is one ALT allele, placed by its size and by its repeat sequence purity as
+        reported by TRGT. Larger points stand for more alleles, and the REF allele is drawn in
+        orange. Click a point or drag a rectangle to filter the table.
+      </p>
+      {showControlsNote && (
+        <p style={{ marginBottom: 0 }}>
+          {showLengthAxisControl &&
+            "The menu at the bottom of each plot switches between the ALT allele's size and its change from REF, in base pairs or, where available, in repeats; the purity plot uses base pairs only. "}
+          {(showAncestryControl || showSexControl) &&
+            `The ${[showAncestryControl ? 'ancestry' : null, showSexControl ? 'sex' : null]
+              .filter(Boolean)
+              .join(' and ')} ${
+              showAncestryControl && showSexControl ? 'filters apply' : 'filter applies'
+            } to every plot that can be split that way. `}
+          {showHistogramDisplayControl &&
+            'The color and scale controls apply only to the allele length distribution.'}
+        </p>
+      )}
+    </HaplotypeHelpButton>
+  )
+}
 
 const ExactAlleleIndexHelp = () => (
   <HaplotypeHelpButton title="Allele Details Table">
-    <p style={{ marginTop: 0 }}>
-      <strong>What this shows.</strong> One row per source ALT identity, with an exact stored-motif
-      string preview, total allele length change (ALT − REF, bp), source-reported motif purity,
-      allele count, and allele frequency. The exact stored-motif string preview marks only literal
-      occurrences of the displayed stored motif strings and may differ from source purity.
-    </p>
-    <p>
-      <strong>How to use it.</strong> Sort with a column heading. Plot marks can temporarily filter
-      these rows; <strong>Show all ALT alleles</strong> clears that filter. Choose{' '}
-      <strong>Details</strong> to update the allele detail and URL without reloading the page.
-    </p>
-    <p style={{ marginBottom: 0 }}>
-      <strong>What it does not show.</strong> A row is one exact source ALT identity, not a
-      component projection, clinical classification, or person.
+    <p style={{ marginTop: 0, marginBottom: 0 }}>
+      Each row is one ALT allele observed at this locus, with its sequence, its size and change in
+      size from REF in base pairs, its repeat sequence purity as reported by TRGT, and its allele
+      count (AC) and frequency (AF). The colored sequence preview highlights copies of the motif and
+      may not match TRGT&apos;s purity. Click a column heading to sort. Selections in the plots
+      above filter the rows, and <strong>Show all ALT alleles</strong> clears the filter. Choose{' '}
+      <strong>Details</strong> to see an allele&apos;s full sequence below.
     </p>
   </HaplotypeHelpButton>
 )
@@ -759,18 +747,18 @@ export const LongReadTrComponentTrack = ({
         <HaplotypeHelpButton title="VC Reference Region">
           <p style={{ marginTop: 0, marginBottom: 0 }}>
             Variation clusters (VCs) are wider polymorphic regions surrounding some tandem repeats
-            in the human genome. These regions were defined by surveying the flanking regions of
-            tandem repeats in the TRExplorer catalog and measuring the polymorphism observed in
-            these regions within 100 PacBio samples from the Human Pangenome Reference Consortium
-            (see{' '}
+            in the human genome. VCs were defined by surveying the sequence flanking each tandem
+            repeat in the TRExplorer catalog and measuring the polymorphism observed there within
+            100 PacBio HiFi samples from the Human Pangenome Reference Consortium (see{' '}
             <ExternalLink href="https://pubmed.ncbi.nlm.nih.gov/42025159/">
               Weisburd, Dolzhenko et al. 2026
             </ExternalLink>
-            ). These regions can pose both technical and conceptual challenges to the interpretation
-            of repeat copy numbers, particularly where multiple similar TRs occur in close
-            proximity. Therefore, it is often better to genotype and analyze a variation cluster as
-            a single locus, rather than analyzing the repeat copy numbers of the tandem repeat(s)
-            embedded within it in isolation.
+            ). Variation within a VC can pose both technical and conceptual challenges to the
+            interpretation of repeat copy numbers, particularly where multiple similar tandem
+            repeats occur in close proximity. Therefore, it is often better to genotype and analyze
+            a variation cluster as a single locus, rather than looking at the repeat copy numbers of
+            each embedded tandem repeat in isolation. gnomAD-LR uses TRGT to genotype each VC as a
+            single locus, so allele sizes on this page are lengths of the whole VC.
           </p>
         </HaplotypeHelpButton>
       </HeadingWithHelp>
@@ -2725,6 +2713,10 @@ export const WholeRecordAlleleLandscape = ({
     if (choices.includes('exact-motif')) return 'exact-motif' as const
     return null
   }
+  // The help describes repeat measures only where some plot offers one.
+  const repeatMeasureOffered = Boolean(
+    repeatViewFor(alleleDistributionChoices) || repeatViewFor(genotypeDistributionChoices)
+  )
   // On a variation cluster (VC) page each allele spans the whole cluster, not one repeat, so the
   // allele size axes read "VC: Allele (bp)", "VC: Long Allele (bp)" and so on.
   const alleleAxisLabelPrefix = presentation?.locus_type === 'VARIATION_CLUSTER' ? 'VC: ' : ''
@@ -3115,6 +3107,8 @@ export const WholeRecordAlleleLandscape = ({
           <AllelicLandscapeHelp
             showRepeatCountControls={Boolean(admittedRepeatCountPlots)}
             sourceContext={admittedRepeatCountPlots?.status === 'AVAILABLE_SOURCE_CONTEXT'}
+            repeatMeasureOffered={repeatMeasureOffered}
+            alleleRepeatsCountedInSequences={Boolean(admittedMotifDistribution)}
             primaryMotifMeasurement={admittedPrimaryMotifMeasurement}
           />
         </HeadingWithHelp>
@@ -3280,6 +3274,8 @@ export const WholeRecordAlleleLandscape = ({
             controls, so the help does not describe card controls. */}
         <AllelicLandscapeHelp
           sourceContext={admittedRepeatCountPlots?.status === 'AVAILABLE_SOURCE_CONTEXT'}
+          repeatMeasureOffered={repeatMeasureOffered}
+          alleleRepeatsCountedInSequences={Boolean(admittedMotifDistribution)}
           showLengthAxisControl={Boolean(
             alleleLengthAxisControl || genotypeLengthAxisControl || purityLengthAxisControl
           )}

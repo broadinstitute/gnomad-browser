@@ -1988,11 +1988,16 @@ describe('long-read TR visualization fidelity', () => {
       /^Sizes of [\d,]+ alleles( from [\d,]+ individuals)?$/
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'About the allelic landscape' }))
-    const help = screen.getByRole('dialog', { name: 'About the allelic landscape' })
+    fireEvent.click(screen.getByRole('button', { name: 'Allelic Landscape' }))
+    const help = screen.getByRole('dialog', { name: 'Allelic Landscape' })
     expect(
-      within(help).queryByText(/length-axis control|shared ancestry|y-scale controls/)
+      within(help).queryByText(
+        /menu at the bottom of each plot|to every plot that can be split|color and scale controls/
+      )
     ).toBeNull()
+    // No plot here offers a repeats measure, so the help does not describe one.
+    expect(within(help).queryByText('Repeat counts')).toBeNull()
+    expect(within(help).queryByText(/Switching a plot's measure to repeats/)).toBeNull()
   })
 
   test('shows only the positively admitted dimension for a partial filter contract', () => {
@@ -2319,6 +2324,7 @@ describe('long-read TR visualization fidelity', () => {
     expect(
       screen.getByText(/genotype and analyze a variation cluster\s+as a single locus/)
     ).not.toBeNull()
+    expect(screen.getByText(/allele sizes on this page are lengths of the whole VC/)).not.toBeNull()
     expect(screen.queryByText(/variation clusters span more than one tandem repeat/)).toBeNull()
     expect(screen.queryByText('How to use it.')).toBeNull()
     expect(screen.queryByText('What it does not show.')).toBeNull()

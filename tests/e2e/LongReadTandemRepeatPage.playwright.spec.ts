@@ -385,21 +385,20 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await page.setViewportSize({ width: 390, height: 844 })
     await expect(page.getByRole('heading', { name: 'ARX_1 (ARX) NGC tandem repeat' })).toBeVisible()
     await expectNarrowControlsContained(page)
-    const helpTrigger = page.getByRole('button', { name: 'About the allelic landscape' })
+    const helpTrigger = page.getByRole('button', { name: 'Allelic Landscape', exact: true })
     await helpTrigger.focus()
     await helpTrigger.click()
-    const help = page.getByRole('dialog', { name: 'About the allelic landscape' })
-    await expect(help.getByText('Repeat-count distributions (simple loci only)')).toBeVisible()
-    await expect(help.getByText('Total allele length change (ALT − REF, bp)')).toBeVisible()
-    await expect(help.getByText('Motif occurrences')).toBeVisible()
-    await expect(
-      help.getByText(/not component repeat counts, genotypes, or a clinical measure/)
-    ).toBeVisible()
-    await expect(help.getByText('Length change × motif purity')).toBeVisible()
-    await expect(help.getByText('Genotype length distribution')).toBeVisible()
-    await expect(help.getByText(/These marks are read-only/)).toBeVisible()
-    await expect(help.getByText(/Only index row selection changes the URL/)).toBeVisible()
-    await expect(help.getByText(/Purity is source-reported/)).toBeVisible()
+    const help = page.getByRole('dialog', { name: 'Allelic Landscape', exact: true })
+    // Each heading's words also appear in the help paragraphs, so headings are matched exactly.
+    const helpHeading = (name: string) => help.getByRole('heading', { name, exact: true })
+    await expect(helpHeading('Allele length distribution')).toBeVisible()
+    await expect(helpHeading('Repeat counts')).toBeVisible()
+    await expect(helpHeading('Genotype length distribution')).toBeVisible()
+    await expect(helpHeading('Repeat sequence purity')).toBeVisible()
+    await expect(help.getByText(/longest pure run of the motif/)).toBeVisible()
+    await expect(help.getByText(/Precomputed repeat counts do not record which ALT/)).toBeVisible()
+    await expect(help.getByText(/Plot selections do not change the page URL/)).toBeVisible()
+    await expect(help.getByText(/purity as reported\s+by TRGT/)).toBeVisible()
     await page.getByRole('button', { name: 'Close' }).click()
     await expect(helpTrigger).toBeFocused()
   })
@@ -681,7 +680,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const cases = [
       {
         locus: COMPOUND_LOCUS,
-        title: 'TR variation cluster',
+        title: 'Tandem Repeat Variation Cluster (VC)',
         catalogId: 'HTT',
         motif: 'CAG',
         components: 6,
@@ -841,7 +840,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     test.setTimeout(120_000)
 
     const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
-    await expect(page.getByRole('heading', { name: 'TR variation cluster' })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: 'Tandem Repeat Variation Cluster (VC)' })
+    ).toBeVisible()
     await expect(page.getByLabel(/Primary repeat CAG/)).toHaveCount(0)
     await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
     await page.setViewportSize({ width: 390, height: 844 })
