@@ -2310,11 +2310,18 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.getByRole('heading', { name: 'VC Reference Region' })).not.toBeNull()
     // The section heading has the same name, so the help button is found by its role.
     fireEvent.click(screen.getByRole('button', { name: 'VC Reference Region' }))
-    expect(screen.getByText(/callset.*ordered coordinate-and-motif intervals/)).not.toBeNull()
-    expect(screen.getByText(/zero-based and half-open, as in the locus ID/)).not.toBeNull()
-    expect(screen.getByText(/Overlapping intervals use separate lanes/)).not.toBeNull()
-    expect(screen.getByText(/interval and order are part of their identity/)).not.toBeNull()
-    expect(screen.getByText(/do not classify an LR component/)).not.toBeNull()
+    expect(
+      screen.getByText(/Variation clusters \(VCs\) are wider polymorphic regions/)
+    ).not.toBeNull()
+    expect(
+      screen.getByRole('link', { name: 'Weisburd, Dolzhenko et al. 2026' }).getAttribute('href')
+    ).toBe('https://pubmed.ncbi.nlm.nih.gov/42025159/')
+    expect(
+      screen.getByText(/genotype and analyze a variation cluster\s+as a single locus/)
+    ).not.toBeNull()
+    expect(screen.queryByText(/variation clusters span more than one tandem repeat/)).toBeNull()
+    expect(screen.queryByText('How to use it.')).toBeNull()
+    expect(screen.queryByText('What it does not show.')).toBeNull()
   })
 
   test('labels a long motif by its ends and length, and leaves a box too narrow for its label empty', () => {

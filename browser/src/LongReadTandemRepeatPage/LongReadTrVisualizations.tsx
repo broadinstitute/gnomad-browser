@@ -2,7 +2,7 @@ import React, { RefObject, useEffect, useLayoutEffect, useMemo, useRef, useState
 import { FixedSizeList } from 'react-window'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
-import { Modal, Select } from '@gnomad/ui'
+import { ExternalLink, Modal, Select } from '@gnomad/ui'
 import {
   MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL,
   repeatCopyText,
@@ -757,21 +757,20 @@ export const LongReadTrComponentTrack = ({
       <HeadingWithHelp>
         <h2 id="lr-tr-components-heading">VC Reference Region</h2>
         <HaplotypeHelpButton title="VC Reference Region">
-          <p style={{ marginTop: 0 }}>
-            <strong>What this shows.</strong> LR reference components are the callset&apos;s ordered
-            coordinate-and-motif intervals. Coordinates are zero-based and half-open, as in the
-            locus ID.
-          </p>
-          <p>
-            <strong>How to use it.</strong> Read components from left to right. Overlapping
-            intervals use separate lanes, and repeated motifs remain separate because interval and
-            order are part of their identity. A neutral black dotted outline marks a verified unique
-            exact short-read catalog reference match. Click a component to see its coordinates and
-            full motif.
-          </p>
-          <p style={{ marginBottom: 0 }}>
-            <strong>What it does not show.</strong> Motif fills and outlines do not classify an LR
-            component, exact ALT sequence, genotype, person, or total allele length change.
+          <p style={{ marginTop: 0, marginBottom: 0 }}>
+            Variation clusters (VCs) are wider polymorphic regions surrounding some tandem repeats
+            in the human genome. These regions were defined by surveying the flanking regions of
+            tandem repeats in the TRExplorer catalog and measuring the polymorphism observed in
+            these regions within 100 PacBio samples from the Human Pangenome Reference Consortium
+            (see{' '}
+            <ExternalLink href="https://pubmed.ncbi.nlm.nih.gov/42025159/">
+              Weisburd, Dolzhenko et al. 2026
+            </ExternalLink>
+            ). These regions can pose both technical and conceptual challenges to the interpretation
+            of repeat copy numbers, particularly where multiple similar TRs occur in close
+            proximity. Therefore, it is often better to genotype and analyze a variation cluster as
+            a single locus, rather than analyzing the repeat copy numbers of the tandem repeat(s)
+            embedded within it in isolation.
           </p>
         </HaplotypeHelpButton>
       </HeadingWithHelp>
