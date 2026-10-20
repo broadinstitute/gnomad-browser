@@ -175,7 +175,7 @@ const CohortCell = styled.div`
 `
 
 const Status = styled.strong<{
-  $kind: 'exact' | 'multiple' | 'none' | 'unavailable' | 'ambiguous'
+  $kind: 'exact' | 'multiple' | 'none' | 'unavailable'
 }>`
   display: inline-block;
   justify-self: start;
@@ -187,7 +187,6 @@ const Status = styled.strong<{
         multiple: '#d7b14d',
         none: '#aab2b9',
         unavailable: '#d99090',
-        ambiguous: '#d99a68',
       }[props.$kind])};
   border-radius: 999px;
   background: ${(props) =>
@@ -196,7 +195,6 @@ const Status = styled.strong<{
       multiple: '#fff7dd',
       none: '#f1f3f4',
       unavailable: '#fceded',
-      ambiguous: '#fff1e7',
     }[props.$kind])};
   color: ${(props) =>
     ({
@@ -204,7 +202,6 @@ const Status = styled.strong<{
       multiple: '#674d09',
       none: '#3f4a53',
       unavailable: '#7b1d1d',
-      ambiguous: '#74380d',
     }[props.$kind])};
   font-size: 0.82em;
   line-height: 1.3;
@@ -369,6 +366,15 @@ const fallbackDiagnosticLabel = (code: string) => {
   return `${words.charAt(0).toLocaleUpperCase()}${words.slice(1)}`
 }
 
+// How a diagnostic component's motif relates to the short-read motif. Said in full, since the
+// candidate is headed as not an exact match and a bare 'Exact' would read as contradicting that.
+const motifRelationLabels: Record<string, string> = {
+  EXACT: 'Same motif as the short-read locus',
+  CYCLIC_ROTATION: 'Motif is a cyclic rotation of the short-read motif',
+  REVERSE_COMPLEMENT_ROTATION: 'Motif is a reverse-complement rotation of the short-read motif',
+  DIFFERENT: 'Different motif from the short-read locus',
+}
+
 const locusIdentity = (canonicalId: string) => {
   const components = canonicalId.split('+')
   if (components.length > 1) return `${components.length}-component locus`
@@ -379,6 +385,7 @@ const locusIdentity = (canonicalId: string) => {
   if (!chrom || !Number.isFinite(numericStart) || !Number.isFinite(numericStop)) return 'LR locus'
 
   const motif = motifParts.join('-')
+  // Zero-based start, as in the canonical id and on the long-read TR page it links to.
   return `chr${chrom}:${numericStart.toLocaleString('en-US')}–${numericStop.toLocaleString(
     'en-US'
   )}${motif ? ` · ${motif}` : ''}`
@@ -391,7 +398,7 @@ const CohortResult = ({
   cohort: keyof typeof cohortLabel
   result: LongReadTrReferenceCohortResult
 }) => {
-  let kind: 'exact' | 'multiple' | 'none' | 'unavailable' | 'ambiguous'
+  let kind: 'exact' | 'multiple' | 'none' | 'unavailable'
   let label: string
   if (isExact(result)) {
     kind = 'exact'
@@ -445,7 +452,7 @@ const CohortResult = ({
                 preserveSelectedDataset={false}
                 to={trLocusUrl(candidate.canonical_id, cohort)}
               >
-                {isExact(result) ? 'Open LR locus' : `Open locus ${index + 1}`}
+                Open LR locus
               </Link>
               <LocusIdentity>{locusIdentity(candidate.canonical_id)}</LocusIdentity>
             </li>
@@ -470,10 +477,11 @@ const CohortResult = ({
               <LocusIdentity>
                 Component {candidate.ordered_component_index + 1}: chr
                 {candidate.ordered_component.chrom}:
-                {(candidate.ordered_component.start0 + 1).toLocaleString('en-US')}–
+                {candidate.ordered_component.start0.toLocaleString('en-US')}–
                 {candidate.ordered_component.end0.toLocaleString('en-US')} ·{' '}
                 {candidate.ordered_component.motif} ·{' '}
-                {fallbackDiagnosticLabel(candidate.motif_relation)}
+                {motifRelationLabels[candidate.motif_relation] ||
+                  `Motif relation: ${fallbackDiagnosticLabel(candidate.motif_relation)}`}
               </LocusIdentity>
             </li>
           ))}
@@ -510,8 +518,8 @@ const CohortResult = ({
               key={`diagnostic-id-${candidate.canonical_id}-${candidate.ordered_component_index}`}
             >
               Diagnostic canonical ID: <code>{candidate.canonical_id}</code> · component{' '}
-              {candidate.ordered_component_index} · source records {candidate.source_records.length}
-              /{candidate.source_record_count}
+              {candidate.ordered_component_index + 1} · source records{' '}
+              {candidate.source_records.length}/{candidate.source_record_count}
               {candidate.source_records_truncated ? ' (bounded list truncated)' : ''}
               {candidate.source_records.map((sourceRecord) => (
                 <div key={`${candidate.canonical_id}-${sourceRecord.source_record_id}`}>
@@ -672,8 +680,8 @@ export const LongReadTandemRepeatReferencePage = ({
             <option value="id">Known STR ID</option>
             <option value="genomic">Genomic coordinate</option>
             <option value="motif">Repeat-unit length and text</option>
-            <option value="hgsvc_hprc">HGSVC/HPRC status and count</option>
-            <option value="aou">All of Us status and count</option>
+            <option value="hgsvc_hprc">HGSVC/HPRC match status</option>
+            <option value="aou">All of Us match status</option>
           </select>
         </label>
       </Filters>
@@ -720,7 +728,7 @@ export const LongReadTandemRepeatReferencePage = ({
                         <div>{record.gene.symbol}</div>
                       </th>
                       <td>
-                        chr{region.chrom}:{(region.start + 1).toLocaleString('en-US')}–
+                        chr{region.chrom}:{region.start.toLocaleString('en-US')}–
                         {region.stop.toLocaleString('en-US')}
                         <AuditDetails>
                           <summary>Technical reference identity</summary>

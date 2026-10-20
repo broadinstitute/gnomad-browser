@@ -16,8 +16,6 @@ export type LongReadTrAllele = {
   ref: string | null
   alt: string | null
   length: number | null
-  repeat_count: number | null
-  repeat_count_source: string | null
   motif_purity: number | null
   freq: ExactAlleleFrequency
 }
@@ -28,11 +26,6 @@ export type LongReadTrSelectedAllele = Omit<LongReadTrAllele, 'ref' | 'alt'> & {
   motif_purity_source: string | null
   decomposition_status: string
   decomposition_reason: string
-  rsids: string[]
-  filters: string[]
-  major_consequence: string | null
-  cadd_phred: number | null
-  phylop: number | null
   short_read_match_id: string | null
   short_read_match_type: string | null
   short_read_match_source: string | null
@@ -68,13 +61,13 @@ export type WholeRecordAlleleLandscapeData = {
   called_alleles: number | null
   non_reference_called_alleles: number | null
   reference_called_alleles: number | null
+  // REF allele copies per ancestry and sex stratum, shaped like each bin's ALT stacks.
+  reference_stacks?: AlleleStack[] | null
   exact_alt_count: number | null
-  stratified_available: boolean | null
-  stratified_unavailable_reason: string | null
-  ancestry_groups: string[] | null
-  sexes: string[] | null
   bins: AlleleBin[] | null
   purity_points: PurityPoint[] | null
+  // The REF allele's source purity; absent in older fixtures.
+  reference_purity?: number | null
   purity_available: boolean | null
   purity_unavailable_reason: string | null
 }
@@ -103,8 +96,6 @@ export type WholeRecordGenotypeLandscapeData = {
   reference_allele_id: string | null
   called_samples: number | null
   called_alleles: number | null
-  ancestry_groups: string[] | null
-  sexes: string[] | null
   cells: GenotypeCell[] | null
 }
 
@@ -117,23 +108,7 @@ export type RepeatCountPlots = {
   pair_status?: string | null
   pair_encoding?: string | null
   pair_observations?: number | null
-  source_context?: {
-    source_uri: string
-    source_generation: string
-    source_md5_base64: string
-    source_row_ordinal: string
-    source_locus_id: string
-    interval_raw: string
-    vc_raw: string
-    context_relation: string
-    measurement_kind: string
-    unit: string
-    semantics_evidence_status: string
-    projection_version: string
-    receipt_digest: string
-  } | null
-  primary_binding?: { status: string; an_concordance: string } | null
-  primary_an_comparison?: 'MATCH' | 'MISMATCH' | 'NOT_COMPARABLE' | null
+  source_context?: { source_locus_id: string } | null
   allele_size_distribution: any[]
   genotype_distribution: any[]
   interaction: {
@@ -359,10 +334,6 @@ export type LongReadTrLocus = {
   accepted_task_attempt_digest: string
   presentation: LongReadTrPresentation
   bounds: LongReadTrBounds
-  component_summary: {
-    ordered_component_count: number
-    distinct_stored_motif_count: number
-  }
   sequence_cardinality: LongReadTrSequenceCardinality
   represented_length: LongReadTrRepresentedLength
   filter_contract: LongReadTrFilterContract
@@ -396,7 +367,6 @@ export type LongReadTrLocus = {
     attempt_id: string | null
     position: number
     alt_count: number
-    ref: string | null
     non_reference_ac: number
     an: number
     non_reference_af: number | null

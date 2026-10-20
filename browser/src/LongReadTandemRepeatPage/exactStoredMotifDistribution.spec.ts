@@ -19,8 +19,6 @@ const allele = (
   ref: 'A',
   alt,
   length: alt.length - 1,
-  repeat_count: null,
-  repeat_count_source: null,
   motif_purity: null,
   freq: { all: { ac, an: 40, af: ac / 40 }, populations },
 })
@@ -66,7 +64,7 @@ const build = (
   })
 
 describe('exactStoredMotifDistribution', () => {
-  test('groups each stored motif by exact whole-ALT occurrences and weights by source ALT AC', () => {
+  test('groups each stored motif by its longest pure run in the whole ALT and weights by source ALT AC', () => {
     const result = build(
       [allele(1, 'ACAGCAGCAA', 5), allele(2, 'ACAACAA', 3), allele(3, 'ACCG', 2)],
       ['CAG', 'CAA', 'CCG']
@@ -79,20 +77,20 @@ describe('exactStoredMotifDistribution', () => {
           motif_index: 0,
           bins: [
             {
-              occurrence_count: 0,
+              longest_pure_run: 0,
               allele_copies: 5,
               allele_ids: [`${sourceId}~2`, `${sourceId}~3`],
             },
-            { occurrence_count: 2, allele_copies: 5, allele_ids: [`${sourceId}~1`] },
+            { longest_pure_run: 2, allele_copies: 5, allele_ids: [`${sourceId}~1`] },
           ],
         },
         {
           motif: 'CAA',
           motif_index: 1,
           bins: [
-            { occurrence_count: 0, allele_copies: 2, allele_ids: [`${sourceId}~3`] },
-            { occurrence_count: 1, allele_copies: 5, allele_ids: [`${sourceId}~1`] },
-            { occurrence_count: 2, allele_copies: 3, allele_ids: [`${sourceId}~2`] },
+            { longest_pure_run: 0, allele_copies: 2, allele_ids: [`${sourceId}~3`] },
+            { longest_pure_run: 1, allele_copies: 5, allele_ids: [`${sourceId}~1`] },
+            { longest_pure_run: 2, allele_copies: 3, allele_ids: [`${sourceId}~2`] },
           ],
         },
         {
@@ -100,18 +98,28 @@ describe('exactStoredMotifDistribution', () => {
           motif_index: 2,
           bins: [
             {
-              occurrence_count: 0,
+              longest_pure_run: 0,
               allele_copies: 8,
               allele_ids: [`${sourceId}~1`, `${sourceId}~2`],
             },
-            { occurrence_count: 1, allele_copies: 2, allele_ids: [`${sourceId}~3`] },
+            { longest_pure_run: 1, allele_copies: 2, allele_ids: [`${sourceId}~3`] },
           ],
         },
       ],
     })
   })
 
-  test('preserves duplicate vocabulary positions and longest-match precedence', () => {
+  test('counts the longest run of consecutive copies, not every copy in the ALT', () => {
+    // Five CAG copies, interrupted after the second: the longest pure run is the last three.
+    const result = build([{ ...allele(1, 'ACAGCAGTTCAGCAGCAG', 4), alt_count: 1 }], ['CAG'])
+    expect(result.status).toBe('available')
+    if (result.status !== 'available') return
+    expect(result.motifs[0].bins).toEqual([
+      { longest_pure_run: 3, allele_copies: 4, allele_ids: [`${sourceId}~1`] },
+    ])
+  })
+
+  test('measures each vocabulary position on its own, including duplicates and a motif inside another', () => {
     const result = build(
       [allele(1, 'ACAGCAG', 5), allele(2, 'ACAG', 3), allele(3, 'AC', 2)],
       ['CAG', 'CAG', 'CA']
@@ -119,18 +127,20 @@ describe('exactStoredMotifDistribution', () => {
     expect(result.status).toBe('available')
     if (result.status !== 'available') return
     expect(result.motifs[0].bins).toEqual([
-      { occurrence_count: 0, allele_copies: 2, allele_ids: [`${sourceId}~3`] },
-      { occurrence_count: 1, allele_copies: 3, allele_ids: [`${sourceId}~2`] },
-      { occurrence_count: 2, allele_copies: 5, allele_ids: [`${sourceId}~1`] },
+      { longest_pure_run: 0, allele_copies: 2, allele_ids: [`${sourceId}~3`] },
+      { longest_pure_run: 1, allele_copies: 3, allele_ids: [`${sourceId}~2`] },
+      { longest_pure_run: 2, allele_copies: 5, allele_ids: [`${sourceId}~1`] },
     ])
-    expect(result.motifs[1].bins).toEqual([
+    expect(result.motifs[1].bins).toEqual(result.motifs[0].bins)
+    // CA occurs inside each CAG, but never twice in a row.
+    expect(result.motifs[2].bins).toEqual([
+      { longest_pure_run: 0, allele_copies: 2, allele_ids: [`${sourceId}~3`] },
       {
-        occurrence_count: 0,
-        allele_copies: 10,
-        allele_ids: [`${sourceId}~1`, `${sourceId}~2`, `${sourceId}~3`],
+        longest_pure_run: 1,
+        allele_copies: 8,
+        allele_ids: [`${sourceId}~1`, `${sourceId}~2`],
       },
     ])
-    expect(result.motifs[2].bins).toEqual(result.motifs[1].bins)
   })
 
   test('uses the selected frequency slice and excludes zero-AC identities from bins', () => {
@@ -149,7 +159,7 @@ describe('exactStoredMotifDistribution', () => {
         {
           motif: 'CAG',
           motif_index: 0,
-          bins: [{ occurrence_count: 1, allele_copies: 2, allele_ids: [`${sourceId}~2`] }],
+          bins: [{ longest_pure_run: 1, allele_copies: 2, allele_ids: [`${sourceId}~2`] }],
         },
       ],
     })

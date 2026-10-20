@@ -22,6 +22,10 @@ const clickhouseUrl = process.env.CLICKHOUSE_URL || 'http://127.0.0.1:8123'
 const readonlyClientOptions = {
   clickhouse_settings: { readonly: '1' as const },
   keep_alive: { enabled: true, idle_socket_ttl: 2000 },
+  // The SDK implements response compression by adding enable_http_compression=1
+  // to every query. The production readonly=1 CONST reader cannot change that
+  // setting. Keep compression off rather than relaxing readonly or its grants.
+  compression: { response: false },
 }
 
 export const clickhouseClient = createClient({
@@ -57,10 +61,7 @@ export const joinedPhasedMethylationRoute = isY1PilotEnabled
 
 const y1ClientOptions = {
   ...readonlyClientOptions,
-  ...resolveY1ClickHouseRequestOptions(
-    y1ClickhouseConfig.url,
-    isY1PilotEnabled ? process.env : {}
-  ),
+  ...resolveY1ClickHouseRequestOptions(y1ClickhouseConfig.url, isY1PilotEnabled ? process.env : {}),
 }
 
 export const y1ClickhouseClient = createClient({

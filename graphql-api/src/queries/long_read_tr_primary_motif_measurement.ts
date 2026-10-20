@@ -179,10 +179,13 @@ export const containedPrimaryMotifFailureReason = (
   error: unknown
 ): PrimaryMotifUnavailableReason => {
   const message = error instanceof Error ? error.message.toLowerCase() : ''
-  if (/exceed|bound|serialized-byte/.test(message)) return 'PRODUCT_BOUND_EXCEEDED'
-  if (/stale|cross-bound|identity|registry digests differ/.test(message)) {
+  // Identity first, and only real overflows as bounds: 'cross-bound' is an identity mismatch and
+  // 'within bounds' (an incomplete receipt) is not an overflow. Stale or contradictory product
+  // data counts as an identity mismatch.
+  if (/stale|cross-bound|identit(y|ies)|registry digests|contradict/.test(message)) {
     return 'PRODUCT_IDENTITY_MISMATCH'
   }
+  if (/exceed|serialized-byte|failed bounds/.test(message)) return 'PRODUCT_BOUND_EXCEEDED'
   if (/reconcile|receipt|empty|incomplete|not complete/.test(message)) {
     return 'PRODUCT_INCOMPLETE'
   }
@@ -480,6 +483,67 @@ const selectLocusReceipt = async (identity: ProductIdentity, run: any, queryRows
   }
 }
 
+// The locus receipt's bin and genotype cell counts cover every population and sex stratum the
+// producer wrote, while the page reads only the overall stratum, so they are checked against
+// counts over all strata. Returns the one value the given query selects as `count`.
+const countAllStrataRows = async (
+  identity: ProductIdentity,
+  productRunId: string,
+  registryDigest: string,
+  queryRows: QueryRows,
+  countExpression: string,
+  table: string
+) => {
+  const rows = await queryRows(
+    `
+      SELECT ${countExpression} AS all_strata_row_count
+      FROM ${table}
+      WHERE product_run_id = {productRunId:String}
+        AND release = 'y1' AND cohort = {cohort:String}
+        AND reference_genome = 'GRCh38' AND chrom = {chrom:String}
+        AND primary_run_id = {primaryRunId:String}
+        AND source_variant_id = {sourceVariantId:String}
+        AND canonical_locus_id = {canonicalLocusId:String}
+        AND registry_digest = {registryDigest:String}
+        AND metric = {metric:String}
+    `,
+    { ...identityParams(identity), productRunId, registryDigest, metric: PRIMARY_MOTIF_METRIC }
+  )
+  return nonnegativeInteger(rows[0]?.all_strata_row_count, `${table} all-stratum row count`)
+}
+
+const countAllStrataBins = (
+  identity: ProductIdentity,
+  productRunId: string,
+  registryDigest: string,
+  queryRows: QueryRows
+) =>
+  countAllStrataRows(
+    identity,
+    productRunId,
+    registryDigest,
+    queryRows,
+    'count()',
+    'lr_y1_primary_motif_allele_bins'
+  )
+
+// A genotype cell is a distinct pair of exact unit counts within a stratum, as the producer
+// builds its cells.
+const countAllStrataGenotypeCells = (
+  identity: ProductIdentity,
+  productRunId: string,
+  registryDigest: string,
+  queryRows: QueryRows
+) =>
+  countAllStrataRows(
+    identity,
+    productRunId,
+    registryDigest,
+    queryRows,
+    'uniqExact(division, shorter_exact_units, longer_exact_units)',
+    'lr_y1_primary_motif_genotype_pairs'
+  )
+
 const selectAlleleBins = async (
   identity: ProductIdentity,
   productRunId: string,
@@ -711,7 +775,15 @@ export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
     invariant('run and locus registry digests or completion reasons differ')
   }
   const bins = await selectAlleleBins(identity, run.product_run_id, run.registry_digest, queryRows)
-  if (bins.length !== receipt.binCount) invariant('returned bin count differs from locus receipt')
+  const allStrataBinCount = await countAllStrataBins(
+    identity,
+    run.product_run_id,
+    run.registry_digest,
+    queryRows
+  )
+  if (allStrataBinCount !== receipt.binCount) {
+    invariant('all-stratum bin count differs from locus receipt')
+  }
   const binAn = new Set(bins.map((bin) => bin.stratum_an))
   const binAltAc = new Set(bins.map((bin) => bin.stratum_alt_ac))
   const binRef = new Set(bins.map((bin) => bin.stratum_ref_copies))
@@ -740,7 +812,7 @@ export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
       run.genotype_margin_rows !== 0 ||
       run.genotype_margin_content_sha256 != null
     ) {
-      invariant('AoU genotype status is not typed aggregate-only unavailable')
+      invariant('AoU locus receipt contradicts aggregate-only genotype unavailability')
     }
     genotype = {
       status: 'UNAVAILABLE',
@@ -785,11 +857,17 @@ export const fetchLongReadTrPrimaryMotifMeasurementUncached = async (
       receipt.genotypeMarginCount,
       queryRows
     )
+    const allStrataCellCount = await countAllStrataGenotypeCells(
+      identity,
+      run.product_run_id,
+      run.registry_digest,
+      queryRows
+    )
     const refMargin = marginResult.margins[0]
     const altMargins = marginResult.margins.slice(1)
     if (
       pairResult.receiptSha256 !== marginResult.receiptSha256 ||
-      pairResult.cells.length !== receipt.genotypeCellCount ||
+      allStrataCellCount !== receipt.genotypeCellCount ||
       pairResult.cells.reduce((sum, cell) => sum + cell.people, 0) !==
         receipt.calledDiploidPeople ||
       refMargin.expectedCopies !== receipt.overallRefCopies ||

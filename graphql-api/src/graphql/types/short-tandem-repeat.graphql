@@ -85,6 +85,16 @@ type ShortTandemRepeat {
   main_reference_region: ShortTandemRepeatReferenceRegion!
   reference_regions: [ShortTandemRepeatReferenceRegion!]!
   reference_repeat_unit: String!
+  # Average manual review quality of the locus's genotypes, from 1 (low) to 5 (high), computed by the
+  # API from genotype_distribution. Null when none of its genotypes were manually reviewed.
+  average_quality_of_manually_reviewed_genotypes: Float
+  # Number of manually reviewed genotypes in each quality, from low to high, including zero counts
+  manually_reviewed_genotype_counts_by_quality: [ShortTandemRepeatManuallyReviewedGenotypeCount!]!
+}
+
+type ShortTandemRepeatManuallyReviewedGenotypeCount {
+  quality_description: String!
+  genotype_count: Int!
 }
 
 type ShortTandemRepeatDetails {

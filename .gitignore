@@ -37,8 +37,6 @@ hail-*.log
 /tests/playwright/
 /playwright/.cache/
 
-# Reads metadata databases
-reads/*.db
 # Local agent state and evidence
 .playwright-mcp/
 .agent/
@@ -55,3 +53,17 @@ reads/*.db
 
 # Local pointer used by the guarded lr-viewer Terraform apply workflow.
 deploy/terraform/lr-viewer/.latest-release-evidence.json
+
+# Local databases and large inputs (str_reads*.db, reads/reads-data/*.db,
+# redis dumps, tabix indexes for locally fetched VCFs)
+*.db
+*.rdb
+*.vcf.gz.tbi
+
+# Local run artifacts
+out.log
+.lr_api.local.env
+
+# JetBrains
+.idea/
+*.iml

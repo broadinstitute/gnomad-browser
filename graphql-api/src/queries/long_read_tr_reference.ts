@@ -114,6 +114,12 @@ const exactRegion = (region: any, component: Component) =>
   Number(region.start) === component.start0 &&
   Number(region.stop) === component.end0
 
+// Indexes of a catalog record's reference regions with exactly this component's bounds. The
+// artifact's stored matched_reference_region_index is not trusted: for some records it names a
+// neighboring region.
+const exactRegionIndices = (regions: any[], component: Component) =>
+  regions.flatMap((region, index) => (exactRegion(region, component) ? [index] : []))
+
 const requireOwn = (value: any, key: string, context: string) => {
   if (value == null || !Object.prototype.hasOwnProperty.call(value, key)) {
     throw new Error(`${context} is missing required transfer field ${key}`)
@@ -316,6 +322,8 @@ if (
               candidate.matched_component_index < 0 ||
               !Number.isInteger(candidate.matched_reference_region_index) ||
               candidate.matched_reference_region_index < 0 ||
+              exactRegionIndices(row.short.reference_regions, candidate.matched_component)
+                .length !== 1 ||
               !Number.isInteger(candidate.source_record_count) ||
               candidate.source_record_count < 1 ||
               !/^[0-9a-f]{64}$/.test(candidate.source_record_membership_sha256 || '')
@@ -376,6 +384,13 @@ const loadCatalogState = async (esClient: object): Promise<CatalogState> => {
     }
   })()
   catalogCache.set(esClient, { expires: now + CATALOG_CACHE_MS, promise })
+  // CATALOG_UNAVAILABLE means the search itself failed, usually for a passing reason such as an
+  // Elasticsearch timeout or a full request queue, so it is not kept: the next request retries.
+  promise.then((state) => {
+    if (state.reason === 'CATALOG_UNAVAILABLE' && catalogCache.get(esClient)?.promise === promise) {
+      catalogCache.delete(esClient)
+    }
+  })
   return promise
 }
 
@@ -479,13 +494,15 @@ const matchesStatusFilter = (row: ArtifactRow, filter?: string | null) => {
     return Object.values(row.cohorts).some((result) => result.status === 'EXACT_UNIQUE')
   const hgsvc = row.cohorts.hgsvc_hprc.status
   const aou = row.cohorts.aou.status
-  if (filter === 'BOTH') return hgsvc === 'EXACT_UNIQUE' && aou === 'EXACT_UNIQUE'
-  if (filter === 'HGSVC_HPRC_ONLY') return hgsvc === 'EXACT_UNIQUE' && aou !== 'EXACT_UNIQUE'
-  if (filter === 'AOU_ONLY') return aou === 'EXACT_UNIQUE' && hgsvc !== 'EXACT_UNIQUE'
+  // A cohort counts as lacking the match only when it durably does not match; an unavailable or
+  // ambiguous result asserts no absence.
   const durableNonmatch = (status: ReferenceStatus) =>
     ['COORDINATE_MISMATCH', 'ORIENTATION_DIAGNOSTIC', 'MOTIF_MISMATCH', 'SOURCE_ABSENT'].includes(
       status
     )
+  if (filter === 'BOTH') return hgsvc === 'EXACT_UNIQUE' && aou === 'EXACT_UNIQUE'
+  if (filter === 'HGSVC_HPRC_ONLY') return hgsvc === 'EXACT_UNIQUE' && durableNonmatch(aou)
+  if (filter === 'AOU_ONLY') return aou === 'EXACT_UNIQUE' && durableNonmatch(hgsvc)
   if (filter === 'NONE') return durableNonmatch(hgsvc) && durableNonmatch(aou)
   if (filter === 'MULTIPLE') return hgsvc === 'AMBIGUOUS' || aou === 'AMBIGUOUS'
   if (filter === 'UNAVAILABLE_OR_AMBIGUOUS')
@@ -537,8 +554,7 @@ const referenceStatusRank: Record<ReferenceStatus, number> = {
 }
 
 const compareCohortResult = (left: CohortResult, right: CohortResult) =>
-  referenceStatusRank[left.status] - referenceStatusRank[right.status] ||
-  right.candidates.length - left.candidates.length
+  referenceStatusRank[left.status] - referenceStatusRank[right.status]
 
 const compareRows = (sort: string) => (left: ArtifactRow, right: ArtifactRow) => {
   const stable = left.short.id.localeCompare(right.short.id)
@@ -623,6 +639,13 @@ export const buildLongReadTrReferenceConnection = async (
           cohort,
           {
             ...validated,
+            candidates: validated.candidates.map((candidate) => ({
+              ...candidate,
+              matched_reference_region_index: exactRegionIndices(
+                row.short.reference_regions,
+                candidate.matched_component
+              )[0],
+            })),
             canonical_ids: [
               ...new Set(validated.candidates.map((candidate) => candidate.canonical_id)),
             ],
@@ -752,24 +775,12 @@ export const resolveLongReadTrShortReadContext = (
         candidates,
       }
     }
-    if (containing.some(({ result }) => result.status === 'AMBIGUOUS')) {
-      const reasons = [
-        ...new Set(containing.map(({ result }) => result.reason_code).filter(Boolean)),
-      ]
-      return {
-        ...base,
-        status: 'AMBIGUOUS',
-        reason_code: reasons.length === 1 ? reasons[0] : 'NON_BIJECTIVE_EXACT_IDENTITY',
-        candidates,
-      }
-    }
-
+    // The startup check admits candidates only on EXACT_UNIQUE results, so every result here is
+    // one; a locus is still ambiguous when more than one candidate names it.
     const valid = containing.flatMap(({ row, result }) =>
-      result.status === 'EXACT_UNIQUE'
-        ? result.candidates
-            .filter((candidate) => candidate.canonical_id === locus.id)
-            .map((candidate) => ({ row, result, candidate }))
-        : []
+      result.candidates
+        .filter((candidate) => candidate.canonical_id === locus.id)
+        .map((candidate) => ({ row, candidate }))
     )
     if (valid.length !== 1 || containing.length !== 1 || candidates.length !== 1) {
       return {
@@ -821,12 +832,10 @@ export const resolveLongReadTrShortReadContext = (
         reason_code: 'CATALOG_DETAIL_DIGEST_MISMATCH',
       }
     }
-    const exactIndices = normalizedRecord.reference_regions.flatMap((region: any, index: number) =>
-      exactRegion(region, candidate.matched_component) &&
+    const exactIndices =
       normalizedRecord.reference_repeat_unit === candidate.matched_component.motif
-        ? [index]
+        ? exactRegionIndices(normalizedRecord.reference_regions, candidate.matched_component)
         : []
-    )
     // The validated detail record's unique exact index is authoritative for the response.
     if (exactIndices.length !== 1) {
       return {
@@ -881,9 +890,5 @@ export const legacyMatchesFromContext = async (contextPromise: Promise<any>) => 
   ]
 }
 
-export const resetLongReadTrReferenceCachesForTests = () => {
-  // WeakMap entries are tied to test-local clients and response objects; this function
-  // exists as an explicit lifecycle seam without retaining those objects globally.
-}
-
-export const longReadTrReferenceArtifactForTests = artifact
+// The parsed crosswalk artifact, which the short-read distribution query also serves from.
+export const longReadTrReferenceCrosswalkArtifact = artifact

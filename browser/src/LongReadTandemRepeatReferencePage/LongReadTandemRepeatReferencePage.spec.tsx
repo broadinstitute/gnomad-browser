@@ -303,4 +303,77 @@ describe('LongReadTandemRepeatReferencePage', () => {
     expect(screen.getAllByTestId('long-read-tr-reference-row')).toHaveLength(1)
     expect(screen.queryByRole('link', { name: /diagnostic long-read locus/ })).toBeNull()
   })
+
+  test('shows every start zero-based, still finds the one-based short-read start, and numbers diagnostic components from 1', () => {
+    renderPage(rows)
+    // ARX_1's canonical id starts at 25013649, shown zero-based like the TR page it links to, and
+    // so is its short-read interval, like the short-read STR page.
+    expect(screen.getAllByText('chrX:25,013,649–25,013,697 · NGC').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('chrX:25,013,649–25,013,697').length).toBeGreaterThan(0)
+    expect(screen.queryByText(/25,013,650/)).toBeNull()
+    expect(screen.getAllByText(/· component 1 · source records/).length).toBeGreaterThan(0)
+    expect(screen.queryByText(/· component 0 · source records/)).toBeNull()
+    // A diagnostic component starts where its zero-based locus line above it does.
+    expect(screen.getAllByText('chr16:66,490,398–66,490,453 · TAAAA').length).toBeGreaterThan(0)
+    expect(
+      screen.getAllByText(
+        'Component 1: chr16:66,490,398–66,490,453 · TAAAA · Motif is a cyclic rotation of the short-read motif'
+      ).length
+    ).toBeGreaterThan(0)
+
+    // Other sites, such as UCSC, write ARX_1's start one-based, as 25,013,650.
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
+      target: { value: '25013650' },
+    })
+    expect(screen.getByRole('status').textContent).toMatch(/^1 matching loci/)
+  })
+
+  test('orders rows with the same match status by Known STR ID in natural order', () => {
+    const exact = result('EXACT_UNIQUE', { canonicalId: '5-100-120-CAG' })
+    renderPage([
+      row('ATXN10', '5', 100, 120, 'CAG', exact),
+      row('ATXN2', '5', 100, 120, 'CAG', exact),
+    ])
+    fireEvent.change(screen.getByLabelText('Sort'), { target: { value: 'hgsvc_hprc' } })
+    expect(
+      screen
+        .getAllByTestId('long-read-tr-reference-row')
+        .map((element) => (element.textContent?.includes('ATXN10') ? 'ATXN10' : 'ATXN2'))
+    ).toEqual(['ATXN2', 'ATXN10'])
+  })
+
+  test('counts a cohort as lacking the match only when it durably does not match', () => {
+    const exact = result('EXACT_UNIQUE', { canonicalId: '5-100-120-CAG' })
+    renderPage([
+      row('ABSENT_IN_AOU', '5', 100, 120, 'CAG', exact, result('SOURCE_ABSENT')),
+      row(
+        'UNAVAILABLE_IN_AOU',
+        '5',
+        100,
+        120,
+        'CAG',
+        exact,
+        result('UNAVAILABLE', { reasonCode: 'SOURCE_PROVENANCE_MISMATCH' })
+      ),
+    ])
+    fireEvent.change(screen.getByLabelText('Match status'), {
+      target: { value: 'hgsvc_hprc_only' },
+    })
+    expect(screen.getByRole('status').textContent).toMatch(/^1 matching loci/)
+    expect(screen.getByTestId('long-read-tr-reference-row').textContent).toContain('ABSENT_IN_AOU')
+  })
+
+  test.each([
+    ['a chromosome', 'chr16', 'BEAN1'],
+    ['a short-read interval', 'chrX:25,013,649–25,013,697', 'ARX_1'],
+    ['a long-read locus', 'chrX:25,013,649–25,013,697 · NGC', 'ARX_1'],
+    ['a diagnostic component', 'chr16:66,490,398–66,490,453 · TAAAA', 'BEAN1'],
+  ])('finds %s typed as the table shows it', (_description, searchText, id) => {
+    renderPage(rows)
+    fireEvent.change(screen.getByRole('searchbox', { name: 'Search' }), {
+      target: { value: searchText },
+    })
+    expect(screen.getByRole('status').textContent).toMatch(/^1 matching loci/)
+    expect(screen.getByTestId('long-read-tr-reference-row').textContent).toContain(id)
+  })
 })

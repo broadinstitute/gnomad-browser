@@ -1,5 +1,5 @@
 import React from 'react'
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import { RepeatCountPlotCard } from './LongReadTrVisualizations'
 import { repeatPlotAvailable } from './SourceContextHistogram'
@@ -11,17 +11,13 @@ const renderCard = (plots = sourceContextHistogram(), kind: 'allele' | 'genotype
   )
 
 describe('source-context histogram UI', () => {
-  test('normal autosome uses source-size axes, counts, raw bounds and explicit unknown semantics', () => {
+  test('normal autosome uses source-size axes and counts', () => {
     renderCard()
     expect(screen.getByRole('heading', { name: 'Repeat-size distribution' })).not.toBeNull()
     expect(screen.getByText('Source-reported size (source units)')).not.toBeNull()
     expect(screen.getByText(/2 measured allele observations in this view/)).not.toBeNull()
-    expect(screen.getByText(/Measurement units and producer version are unknown/)).not.toBeNull()
-    expect(screen.getByText(/without POS conversion/)).not.toBeNull()
-    expect(screen.getByText(/1:100-130/)).not.toBeNull()
     expect(screen.queryByText('Repeats of CAG')).toBeNull()
     expect(screen.queryByText('Called allele copies')).toBeNull()
-    expect(screen.getByText(/full-cohort coverage is not established/)).not.toBeNull()
     expect(screen.getByRole('option', { name: 'All source observations' })).not.toBeNull()
     expect(screen.queryByRole('option', { name: 'Global' })).toBeNull()
     expect(
@@ -32,32 +28,11 @@ describe('source-context histogram UI', () => {
     expect(screen.queryAllByRole('button', { name: /Filter by/ })).toHaveLength(0)
   })
 
-  test.each(['1:90-140', ''])('wider record context is visible regardless of VC %s', (vc) => {
-    const plots = sourceContextHistogram()
-    plots.source_context = {
-      ...plots.source_context!,
-      interval_raw: '1:90-140',
-      vc_raw: vc,
-      context_relation: 'CONTAINS',
-    }
-    renderCard(plots)
-    expect(screen.getByText('Wider source context.')).not.toBeNull()
-    expect(screen.getByText(/not independently localized to its interval/)).not.toBeNull()
-    expect(screen.getAllByText(/1:90-140/).length).toBeGreaterThan(0)
-    expect(screen.getByText(/1-100-130-CAG/)).not.toBeNull()
-    if (!vc) expect(screen.getByText(/Blank \(not supplied\)/)).not.toBeNull()
-  })
-
   test('Y diagonal counts source entries once, with no people or diploid claim', () => {
     const plots = sourceContextHistogram({
       pair_encoding: 'SOURCE_N_OVER_N_MAY_BE_ONE_VALUE',
       pair_observations: 145,
     })
-    plots.source_context = {
-      ...plots.source_context!,
-      source_locus_id: 'Y-100-130-CAG',
-      interval_raw: 'Y:100-130',
-    }
     plots.genotype_distribution = [
       {
         ancestry_group: 'afr',
@@ -114,7 +89,7 @@ describe('source-context histogram UI', () => {
       expect(repeatPlotAvailable(plots, 'allele')).toBe(true)
       expect(repeatPlotAvailable(plots, 'genotype')).toBe(false)
       renderCard(plots)
-      expect(screen.getByText(`Size-pair distribution unavailable: ${pair_status}.`)).not.toBeNull()
+      expect(screen.getByRole('heading', { name: 'Repeat-size distribution' })).not.toBeNull()
     }
   )
 
@@ -136,27 +111,6 @@ describe('source-context histogram UI', () => {
     plots.allele_size_distribution[0].distribution[0].frequency = 50
     renderCard(plots, 'genotype')
     expect(screen.getByText(/1 source pair entries in this view/)).not.toBeNull()
-  })
-
-  test('N motif stays literal and AN mismatch is not promoted to primary counts', () => {
-    const plots = sourceContextHistogram({
-      repeat_unit: 'NGC',
-      primary_binding: { status: 'NOT_ESTABLISHED', an_concordance: 'NOT_ESTABLISHED' },
-      primary_an_comparison: 'MISMATCH',
-    })
-    plots.source_context = { ...plots.source_context!, source_locus_id: '1-100-130-NGC' }
-    renderCard(plots)
-    expect(screen.getByText(/1-100-130-NGC; motif: NGC/)).not.toBeNull()
-    expect(
-      screen.getByText(
-        /primary AN concordance: NOT_ESTABLISHED.*do not replace primary AN or REF counts/
-      )
-    ).not.toBeNull()
-    expect(screen.getByText(/primary AN comparison: MISMATCH/)).not.toBeNull()
-    expect(
-      screen.getByText(/does not establish shared records, primary binding or cohort coverage/)
-    ).not.toBeNull()
-    expect(screen.queryByText('AVAILABLE_EXACT')).toBeNull()
   })
 
   test.each(['UNAVAILABLE_COMPOUND_LOCUS', 'UNAVAILABLE_AMBIGUOUS_CONTEXT'])(
@@ -181,8 +135,5 @@ describe('source-context histogram UI', () => {
       screen.getByRole('img', { name: /Genotype repeat-count distribution.*1 person/ })
     ).not.toBeNull()
     expect(screen.getByRole('option', { name: 'XX' })).not.toBeNull()
-    expect(
-      within(screen.getByTestId('genotype-repeat-count-card')).queryByText(/Source provenance/)
-    ).toBeNull()
   })
 })

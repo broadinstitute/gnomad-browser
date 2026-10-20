@@ -15,6 +15,7 @@ import DataPageTableOfContents from './TableOfContents'
 // @ts-expect-error
 import styles from './DataPage.module.css'
 
+import GnomadLongReadDownloads from './GnomadLongReadDownloads'
 import GnomadV4Downloads from './GnomadV4Downloads'
 import GnomadV3Downloads from './GnomadV3Downloads'
 import GnomadV2Downloads from './GnomadV2Downloads'
@@ -196,6 +197,8 @@ const DataPage = () => {
         </div>
 
         <hr />
+
+        <GnomadLongReadDownloads />
 
         <GnomadV4Downloads />
 

@@ -58,10 +58,8 @@ const farthestMarkPair = (marks: Locator) =>
     return pair
   })
 
-const exactIndexForCount = (page: Page, exactAlleleCount: number) => {
-  const heading = page.getByRole('heading', {
-    name: `${exactAlleleCount} source ALT ${exactAlleleCount === 1 ? 'allele' : 'alleles'}`,
-  })
+const exactIndex = (page: Page) => {
+  const heading = page.getByRole('heading', { name: 'Allele Details', exact: true })
   return { heading, index: page.getByTestId('lr-tr-exact-allele-browser').locator('..') }
 }
 
@@ -73,7 +71,7 @@ const openLocus = async (
 ) => {
   const responsePromise = waitForLocusResponse(page)
   await page.goto(`/tandem-repeat/${locusId}?${datasetQuery(cohort)}`)
-  const { heading, index } = exactIndexForCount(page, exactAlleleCount)
+  const { heading, index } = exactIndex(page)
   await expect(heading).toBeVisible({ timeout: 30_000 })
   await expect(index.getByRole('table', { name: 'Source ALT allele index' })).toBeVisible()
   await expect(page.getByRole('table', { name: 'Source ALT allele index' })).toHaveCount(1)
@@ -85,7 +83,12 @@ const openLocus = async (
   )
   const response = await responsePromise
   expect(response.status()).toBe(200)
-  expect((await response.json()).errors).toBeUndefined()
+  const payload = await response.json()
+  expect(payload.errors).toBeUndefined()
+  // Preserve identity/count assertions independently of the presentation heading.
+  expect(payload.data.long_read_tandem_repeat_locus.id).toBe(locusId)
+  expect(payload.data.long_read_tandem_repeat_locus.exact_alt_count).toBe(exactAlleleCount)
+  expect(payload.data.long_read_tandem_repeat_locus.alleles.nodes).toHaveLength(exactAlleleCount)
 
   return index
 }
@@ -98,7 +101,7 @@ const selectExactAllele = async (
   cohort: Cohort = 'hgsvc_hprc',
   activation: 'pointer' | 'keyboard' = 'pointer'
 ) => {
-  const { index } = exactIndexForCount(page, exactAlleleCount)
+  const { index } = exactIndex(page)
   const indexScroller = index.locator('.lr-tr-exact-index-scroll')
   const exactRow = index.locator(`[role="row"][title$="~${altIndex}"]`)
   const exactLink = exactRow.getByRole('link', {
@@ -189,7 +192,7 @@ const selectExactAllele = async (
   await expect(page.locator('[data-revalidating="true"]')).toHaveAttribute('inert', '')
   const clickedScrollTop = await indexScroller.evaluate((element) => element.scrollTop)
   expect(Math.abs(clickedScrollTop - beforeSelection.listScrollTop)).toBeLessThanOrEqual(1)
-  await expect(page.getByRole('heading', { name: /^Allelic landscape$/ })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Allelic Landscape', exact: true })).toBeVisible()
   await expect(index).toBeVisible()
   await expect(page.getByText('Loading tandem-repeat locus')).toBeHidden()
   expect(await page.evaluate(() => (window as any).__lrTrDocumentMarker)).toBe(documentMarker)
@@ -237,13 +240,10 @@ const selectExactAllele = async (
   page.off('request', recordSelectionRequest)
   await page.unroute('**/api/**', gateSelectedDetail)
   await expect(exactLink).toBeFocused()
-  await expect(
-    page.getByRole('heading', {
-      name: `${exactAlleleCount.toLocaleString()} source ALT ${
-        exactAlleleCount === 1 ? 'allele' : 'alleles'
-      }`,
-    })
-  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Allele Details', exact: true })).toBeVisible()
+  await expect(index.getByRole('table', { name: 'Source ALT allele index' })).toHaveAttribute(
+    'aria-rowcount', String(exactAlleleCount + 1)
+  )
 
   return selected.variant_id as string
 }
@@ -361,9 +361,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(page.getByText('Allele copies with a genotype call')).toHaveCount(0)
     await expect(page.getByText('−9 bp')).toBeVisible()
     await expect(page.getByText('+25 bp', { exact: true })).toBeVisible()
-    await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
-      'NGC (3 bp)'
-    )
+    await expect(
+      page
+        .locator('dt')
+        .filter({ hasText: /^Motif$/ })
+        .locator('+ dd')
+    ).toHaveText('NGC (3 bp)')
     await expect(page.getByRole('heading', { name: 'External Resources' })).toBeVisible()
     await expect(page.getByRole('link', { name: 'TRExplorer' })).toBeVisible()
 
@@ -374,7 +377,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(response.status()).toBe(200)
     expect(payload.errors).toBeUndefined()
     expect(payload.data.long_read_tandem_repeat_locus.id).toBe(ARX_1_LOCUS)
-    await expect(page.getByRole('heading', { name: '2 source ALT alleles' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Allele Details', exact: true })).toBeVisible()
+    await expect(page.getByRole('table', { name: 'Source ALT allele index' })).toHaveAttribute('aria-rowcount', '3')
     await expect(page.getByText('Unable to load tandem-repeat locus')).toHaveCount(0)
 
     await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
@@ -382,21 +386,19 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await page.setViewportSize({ width: 390, height: 844 })
     await expect(page.getByRole('heading', { name: 'ARX_1 (ARX) NGC tandem repeat' })).toBeVisible()
     await expectNarrowControlsContained(page)
-    const helpTrigger = page.getByRole('button', { name: 'About the allelic landscape' })
+    const helpTrigger = page.getByRole('button', { name: 'Allelic Landscape', exact: true })
     await helpTrigger.focus()
     await helpTrigger.click()
-    const help = page.getByRole('dialog', { name: 'About the allelic landscape' })
-    await expect(help.getByText('Repeat-count distributions (simple loci only)')).toBeVisible()
-    await expect(help.getByText('Total allele length change (ALT − REF, bp)')).toBeVisible()
-    await expect(help.getByText('Motif occurrences')).toBeVisible()
-    await expect(
-      help.getByText(/not component repeat counts, genotypes, or a clinical measure/)
-    ).toBeVisible()
-    await expect(help.getByText('Length change × motif purity')).toBeVisible()
-    await expect(help.getByText('Genotype length distribution')).toBeVisible()
-    await expect(help.getByText(/These marks are read-only/)).toBeVisible()
-    await expect(help.getByText(/Only index row selection changes the URL/)).toBeVisible()
-    await expect(help.getByText(/Purity is source-reported/)).toBeVisible()
+    const help = page.getByRole('dialog', { name: 'Allelic Landscape', exact: true })
+    // Each heading's words also appear in the help paragraphs, so headings are matched exactly.
+    const helpHeading = (name: string) => help.getByRole('heading', { name, exact: true })
+    await expect(helpHeading('Allele length distribution')).toBeVisible()
+    await expect(helpHeading('Repeat counts')).toBeVisible()
+    await expect(helpHeading('Genotype length distribution')).toBeVisible()
+    await expect(helpHeading('Repeat sequence purity')).toBeVisible()
+    await expect(help.getByText(/longest pure run of the motif/)).toBeVisible()
+    await expect(help.getByText(/Selecting part of a plot filters/)).toBeVisible()
+    await expect(help.getByText(/allele sequence reported by TRGT/)).toBeVisible()
     await page.getByRole('button', { name: 'Close' }).click()
     await expect(helpTrigger).toBeFocused()
   })
@@ -523,9 +525,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const index = await openLocus(page, GCA_LOCUS, 16)
     await expect(page.getByRole('heading', { name: 'ATXN7 GCA tandem repeat' })).toBeVisible()
     await expect(page.getByLabel('Primary repeat GCA', { exact: true })).toHaveCount(0)
-    await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
-      'GCA (3 bp)'
-    )
+    await expect(
+      page
+        .locator('dt')
+        .filter({ hasText: /^Motif$/ })
+        .locator('+ dd')
+    ).toHaveText('GCA (3 bp)')
     const selected = await selectExactAllele(page, GCA_LOCUS, 15, 16)
     expect(selected).toBe(GCA_ALT)
 
@@ -675,7 +680,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     const cases = [
       {
         locus: COMPOUND_LOCUS,
-        title: 'TR variation cluster',
+        title: 'Tandem Repeat Variation Cluster (VC)',
         catalogId: 'HTT',
         motif: 'CAG',
         components: 6,
@@ -737,9 +742,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       await expect(page.getByRole('heading', { name: item.title })).toBeVisible()
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1)
       await expect(page.getByLabel(`Primary repeat ${item.motif}`, { exact: true })).toHaveCount(0)
-      await expect(page.locator('dt').filter({ hasText: /^Motif$/ }).locator('+ dd')).toHaveText(
-        `${item.motif} (${item.motif.length} bp)`
-      )
+      await expect(
+        page
+          .locator('dt')
+          .filter({ hasText: /^Motif$/ })
+          .locator('+ dd')
+      ).toHaveText(`${item.motif} (${item.motif.length} bp)`)
       await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
       const diseaseSection = page
         .getByRole('heading', { name: /Known disease-associated TR locus/ })
@@ -832,7 +840,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     test.setTimeout(120_000)
 
     const httIndex = await openLocus(page, COMPOUND_LOCUS, 72)
-    await expect(page.getByRole('heading', { name: 'TR variation cluster' })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: 'Tandem Repeat Variation Cluster (VC)' })
+    ).toBeVisible()
     await expect(page.getByLabel(/Primary repeat CAG/)).toHaveCount(0)
     await expect(page.getByText(/All ordered source components and provenance/)).toHaveCount(0)
     await page.setViewportSize({ width: 390, height: 844 })
@@ -886,12 +896,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     )
     const firstRowCells = indexTable.locator('[role="row"][aria-rowindex="2"] > [role="cell"]')
     await expect(indexTable.getByRole('columnheader', { name: 'Source ID' })).toBeVisible()
-    await expect(indexTable.getByRole('columnheader', { name: 'Motifs' })).toBeVisible()
+    await expect(indexTable.getByRole('columnheader', { name: 'Allele Sequence' })).toBeVisible()
     await expect(
-      indexTable.getByRole('columnheader', { name: 'Represented length (bp)' })
+      indexTable.getByRole('columnheader', { name: 'Allele Size (bp)', exact: true })
     ).toBeVisible()
     await expect(
-      indexTable.getByRole('columnheader', { name: 'Change from REF (bp)' })
+      indexTable.getByRole('columnheader', { name: 'Allele Size vs REF (bp)' })
     ).toBeVisible()
     await expect(firstRowCells.nth(0)).toHaveText(/^chr4-\d+-TRV-\d+~\d+$/)
     await expect(firstRowCells.nth(2)).toHaveText(/^\d[\d,]*$/)
@@ -940,7 +950,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(motifSelector).toHaveValue('1')
     const motifBin = motifCard
       .getByRole('button', {
-        name: /CAA; \d+ exact literal occurrences?.*source ALT cop(?:y|ies).*source ALT alleles?; filter/,
+        name: /CAA; longest pure run of \d+ cop(?:y|ies).*source ALT cop(?:y|ies).*source ALT alleles?; filter/,
       })
       .first()
     const motifBinLabel = await motifBin.getAttribute('aria-label')
@@ -955,7 +965,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       String(Number(motifContributorMatch![1]) + 1)
     )
     expect(page.url()).toBe(urlBeforeMotifFilter)
-    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+    await page.getByRole('button', { name: 'Show all ALT alleles' }).click()
     await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
 
     const purityCard = page
@@ -1020,7 +1030,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
       'allelic-landscape-three-panel-wide.png'
     )
     await alleleMeasurement.getByRole('radio', { name: 'Length' }).check()
-    await expect(page.getByRole('heading', { name: '72 source ALT alleles' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Allele Details', exact: true })).toBeVisible()
+    await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
     const histogramCard = page
       .getByRole('heading', { level: 3, name: 'Allele length distribution' })
       .locator('..')
@@ -1034,9 +1045,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(desktopHistogramMarks.nth(1)).toHaveAttribute('aria-pressed', 'true')
     await expect(page.getByTestId('total-length-selection-boundary')).toHaveCount(2)
     await expect(
-      page.getByRole('heading', { name: /of 72 source ALT alleles — .+ to .+ bp vs REF/ })
+      page.getByRole('heading', { name: /\d+ of 72 non-reference alleles selected/ })
     ).toBeFocused()
-    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+    await page.getByRole('button', { name: 'Show all ALT alleles' }).click()
 
     const genotypeBrushMarks = genotypeCard.locator(
       '[role="button"][aria-label*="filter the source-ALT index to this square"]'
@@ -1047,8 +1058,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(genotypeBrushMarks.nth(1)).toHaveAttribute('aria-pressed', 'true')
     await expect(page.getByTestId('genotype-length-selection-boundary')).toHaveCount(1)
     expect(await genotypeCard.locator('rect[fill="#e9781c"]').count()).toBeGreaterThanOrEqual(2)
-    await expect(page.getByRole('heading', { name: /genotype region longer/ })).toBeFocused()
-    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+    await expect(page.getByRole('heading', { name: /\d+ of 72 non-reference alleles selected/ })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all ALT alleles' }).click()
 
     const selectableGenotypeCell = genotypeCard
       .locator('[role="button"][aria-label*="filter the source-ALT index to this square"]')
@@ -1060,11 +1071,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await selectableGenotypeCell.click()
     await expect(
       page.getByRole('heading', {
-        name: /of 72 source ALT alleles — selected genotype cell \(.+ bp vs REF × .+ bp vs REF\)/,
+        name: /\d+ of 72 non-reference alleles selected/,
       })
     ).toBeFocused()
-    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
-    await expect(page.getByRole('heading', { name: '72 source ALT alleles' })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all ALT alleles' }).click()
+    await expect(page.getByRole('heading', { name: 'Allele Details', exact: true })).toBeFocused()
+    await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
 
     const histogram = page.getByTestId('whole-record-delta-histogram')
     const histogramButtons = histogram.getByRole('button')
@@ -1124,15 +1136,15 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(deltaAxis.locator(`[data-delta="${filteredNumericDelta}"]`)).toBeVisible()
     await expect(
       page.getByRole('heading', {
-        name: `${filteredCount.toLocaleString()} of 72 source ALT alleles at ${filteredDelta} bp vs REF`,
+        name: `${filteredCount.toLocaleString()} of 72 non-reference alleles selected`,
       })
     ).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', String(filteredCount + 1))
     await expect(page.getByRole('table', { name: 'Source ALT allele index' })).toHaveCount(1)
     await expect(page.getByRole('table', { name: /Exact ALTs at/ })).toHaveCount(0)
     await attachAlleleBrowserScreenshot(page, testInfo, 'htt-72-filtered-exact-alts-wide.png')
-    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
-    await expect(page.getByRole('heading', { name: '72 source ALT alleles' })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all ALT alleles' }).click()
+    await expect(page.getByRole('heading', { name: 'Allele Details', exact: true })).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
 
     const httPurityPlot = page.getByRole('group', {
@@ -1170,7 +1182,7 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await purityFilterPoint.press('Enter')
     await expect(purityFilterPoint).toHaveAttribute('aria-pressed', 'true')
     await expect(
-      page.getByRole('heading', { name: /1 of 72 source ALT alleles — Sequence [0-9]+/ })
+      page.getByRole('heading', { name: '1 of 72 non-reference alleles selected' })
     ).toBeFocused()
     await expect(indexTable).toHaveAttribute('aria-rowcount', '2')
     expect(await page.evaluate(() => window.location.href)).toBe(filterBefore.url)
@@ -1190,7 +1202,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     ).toBeLessThanOrEqual(1)
     await purityFilterPoint.focus()
     await purityFilterPoint.press('Enter')
-    await expect(page.getByRole('heading', { name: '72 source ALT alleles' })).toBeFocused()
+    await expect(page.getByRole('heading', { name: 'Allele Details', exact: true })).toBeFocused()
+    await expect(indexTable).toHaveAttribute('aria-rowcount', '73')
 
     const httAlt72 = await selectExactAllele(page, COMPOUND_LOCUS, 72, 72)
     expect(httAlt72).toMatch(/~72$/)
@@ -1301,9 +1314,9 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     await expect(narrowMotifMarks.nth(0)).toHaveAttribute('aria-pressed', 'true')
     await expect(narrowMotifMarks.nth(1)).toHaveAttribute('aria-pressed', 'true')
     await expect(
-      page.getByRole('heading', { name: /source ALT alleles — .+ exact literal occurrences/ })
+      page.getByRole('heading', { name: /\d+ of 497 non-reference alleles selected/ })
     ).toBeFocused()
-    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+    await page.getByRole('button', { name: 'Show all ALT alleles' }).click()
 
     const narrowPurityMarks = httPurityPlot.getByRole('button')
     expect(await narrowPurityMarks.count()).toBeGreaterThan(1)
@@ -1318,8 +1331,8 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
         (points) => points.filter((point) => point.getAttribute('aria-pressed') === 'true').length
       )
     ).toBeGreaterThan(1)
-    await expect(page.getByRole('heading', { name: /purity region/ })).toBeFocused()
-    await page.getByRole('button', { name: 'Show all source ALT alleles' }).click()
+    await expect(page.getByRole('heading', { name: /\d+ of 497 non-reference alleles selected/ })).toBeFocused()
+    await page.getByRole('button', { name: 'Show all ALT alleles' }).click()
 
     const histogramScroller = page.getByTestId('whole-record-delta-histogram-scroller')
     const narrowHistogramMetrics = await histogramScroller.evaluate((scroller) => {
@@ -1350,12 +1363,12 @@ test.describe('Long-read tandem-repeat locus exact navigation', () => {
     expect(Math.abs(lastBarCenter - lastTickCenter)).toBeLessThanOrEqual(1)
     await expect(indexTable.getByRole('columnheader', { name: 'Source ID' })).toBeVisible()
     await expect(indexTable.getByRole('columnheader', { name: 'Details' })).toBeVisible()
-    await expect(indexTable.getByRole('columnheader', { name: 'Motifs' })).toBeHidden()
+    await expect(indexTable.getByRole('columnheader', { name: 'Allele Sequence' })).toBeHidden()
     await expect(
-      indexTable.getByRole('columnheader', { name: 'Represented length (bp)' })
+      indexTable.getByRole('columnheader', { name: 'Allele Size (bp)', exact: true })
     ).toBeHidden()
     await expect(
-      indexTable.getByRole('columnheader', { name: 'Change from REF (bp)' })
+      indexTable.getByRole('columnheader', { name: 'Allele Size vs REF (bp)' })
     ).toBeHidden()
     await expect(indexTable.getByRole('columnheader', { name: 'Purity' })).toBeHidden()
     await expect(indexTable.getByRole('columnheader', { name: 'AC', exact: true })).toBeHidden()

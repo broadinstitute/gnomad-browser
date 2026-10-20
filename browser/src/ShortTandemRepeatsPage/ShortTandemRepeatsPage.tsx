@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { BaseTable, Page } from '@gnomad/ui'
+import { BaseTable, Page, TooltipAnchor } from '@gnomad/ui'
 
 import {
   DatasetId,
@@ -13,6 +13,12 @@ import Link from '../Link'
 import Query from '../Query'
 import StatusMessage from '../StatusMessage'
 import TableWrapper from '../TableWrapper'
+import {
+  colorForAverageGenotypeQuality,
+  GenotypeQuality,
+  qualityDescriptionLabels,
+  reviewedGenotypeQualitiesFromLowToHigh,
+} from '../ShortTandemRepeatPage/qualityDescription'
 
 import useTableSort, { stringCompareFunction, ColumnSpecifier } from '../useTableSort'
 
@@ -36,6 +42,13 @@ type ShortTandemRepeat = {
     omim_id?: string
     inheritance_mode: string
   }[]
+  average_quality_of_manually_reviewed_genotypes: number | null
+  manually_reviewed_genotype_counts_by_quality: ManuallyReviewedGenotypeCount[]
+}
+
+type ManuallyReviewedGenotypeCount = {
+  quality_description: GenotypeQuality
+  genotype_count: number
 }
 
 type ShortTandemRepeatsPageProps = {
@@ -55,6 +68,8 @@ type NormalizedShortTandemRepeat = {
     name: string
     omim_id?: string
   }[]
+  average_quality_of_manually_reviewed_genotypes: number | null
+  manually_reviewed_genotype_counts_by_quality: ManuallyReviewedGenotypeCount[]
   // These two could be recomputed on the fly, but it's simpler and more
   // efficient to do so once up front.
   reference_repeat_unit_compare_key: string
@@ -68,6 +83,14 @@ const INHERITANCE_MODE_ABBREVIATIONS = {
   'X-linked dominant': 'XD',
   'X-linked recessive': 'XR',
 } as const
+
+// Loci with no manually reviewed genotypes count as lower than every reviewed locus.
+const compareAverageQualityOfManuallyReviewedGenotypes = (
+  a: NormalizedShortTandemRepeat,
+  b: NormalizedShortTandemRepeat
+) =>
+  (a.average_quality_of_manually_reviewed_genotypes ?? 0) -
+  (b.average_quality_of_manually_reviewed_genotypes ?? 0)
 
 const columnSpecifiers: ColumnSpecifier<NormalizedShortTandemRepeat>[] = [
   { key: 'id', label: 'ID', tooltip: null, compareValueFunction: stringCompareFunction('id') },
@@ -100,6 +123,13 @@ const columnSpecifiers: ColumnSpecifier<NormalizedShortTandemRepeat>[] = [
     label: 'Associated disease(s)',
     tooltip: null,
     compareValueFunction: stringCompareFunction('associated_disease_name_compare_key'),
+  },
+  {
+    key: 'average_quality_of_manually_reviewed_genotypes',
+    label: 'GQ',
+    tooltip:
+      'Genotype quality (GQ): the average manual review quality of the genotypes at this locus, from 1 (Low) to 5 (High). Blank if no genotypes were manually reviewed.',
+    compareValueFunction: compareAverageQualityOfManuallyReviewedGenotypes,
   },
 ]
 
@@ -146,10 +176,59 @@ const normalizeShortTandemRepeat = (
     region,
     links,
     associated_diseases,
+    average_quality_of_manually_reviewed_genotypes:
+      shortTandemRepeat.average_quality_of_manually_reviewed_genotypes,
+    manually_reviewed_genotype_counts_by_quality:
+      shortTandemRepeat.manually_reviewed_genotype_counts_by_quality,
     reference_repeat_unit_compare_key,
     inheritance_mode_compare_key,
     associated_disease_name_compare_key,
   }
+}
+
+const AverageGenotypeQualitySquare = ({
+  averageQuality,
+  genotypeCountsByQuality,
+}: {
+  averageQuality: number
+  genotypeCountsByQuality: ManuallyReviewedGenotypeCount[]
+}) => {
+  const genotypeCount = (quality: GenotypeQuality) =>
+    genotypeCountsByQuality.find((count) => count.quality_description === quality)
+      ?.genotype_count ?? 0
+  // For example "15 = High, 3 = Medium-high, 2 = Medium-low, 9 = Low", leaving out qualities
+  // with no genotypes
+  const countsText = [...reviewedGenotypeQualitiesFromLowToHigh]
+    .reverse()
+    .filter((quality) => genotypeCount(quality) > 0)
+    .map((quality) => `${genotypeCount(quality)} = ${qualityDescriptionLabels[quality]}`)
+    .join(', ')
+  const numberOfReviewedGenotypes = reviewedGenotypeQualitiesFromLowToHigh.reduce(
+    (sum, quality) => sum + genotypeCount(quality),
+    0
+  )
+  const reviewedGenotypesText =
+    numberOfReviewedGenotypes === 1
+      ? '1 genotype that is the largest outlier'
+      : `${numberOfReviewedGenotypes} genotypes that are the largest outliers`
+  const roundedAverageQuality = averageQuality.toFixed(2)
+  const description = `Average genotype quality is ${roundedAverageQuality} at this locus (${countsText}). This is based on manual review of read visualizations from ${reviewedGenotypesText} relative to the overall allele size distribution at this locus. On the locus page, select 'Color by: "GQ: manual review"' to see this in more detail.`
+  return (
+    // @ts-expect-error TS(2322) -- error from gnomad-browser-toolkit component
+    <TooltipAnchor tooltip={description}>
+      <span
+        role="img"
+        aria-label={description}
+        style={{
+          display: 'inline-block',
+          width: '15px',
+          height: '15px',
+          verticalAlign: 'middle',
+          backgroundColor: colorForAverageGenotypeQuality(averageQuality),
+        }}
+      />
+    </TooltipAnchor>
+  )
 }
 
 const ShortTandemRepeatsPage = ({ shortTandemRepeats }: ShortTandemRepeatsPageProps) => {
@@ -216,6 +295,18 @@ const ShortTandemRepeatsPage = ({ shortTandemRepeats }: ShortTandemRepeatsPagePr
                       .flatMap((el: any) => [<br />, el])
                       .slice(1)}
                   </td>
+                  <td>
+                    {shortTandemRepeat.average_quality_of_manually_reviewed_genotypes !== null && (
+                      <AverageGenotypeQualitySquare
+                        averageQuality={
+                          shortTandemRepeat.average_quality_of_manually_reviewed_genotypes
+                        }
+                        genotypeCountsByQuality={
+                          shortTandemRepeat.manually_reviewed_genotype_counts_by_quality
+                        }
+                      />
+                    )}
+                  </td>
                 </tr>
               )
             })}
@@ -248,6 +339,11 @@ query ${operationName}($datasetId: DatasetId!) {
       name
       omim_id
       inheritance_mode
+    }
+    average_quality_of_manually_reviewed_genotypes
+    manually_reviewed_genotype_counts_by_quality {
+      quality_description
+      genotype_count
     }
   }
 }

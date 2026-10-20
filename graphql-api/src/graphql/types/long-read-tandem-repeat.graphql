@@ -21,13 +21,14 @@ type LongReadTrPrimaryRepeat {
 }
 
 type LongReadTrSourceRecord {
+  # Retained for cached browsers; source records need not carry a reference sequence.
+  ref: String @deprecated(reason: "Use bounded allele sequences; source record REF may be unavailable.")
   record_index: Int!
   source_variant_id: String!
   task_id: String!
   attempt_id: String!
   position: Int!
   alt_count: Int!
-  ref: String
   non_reference_ac: Int!
   an: Int!
   # Unavailable when any source ALT frequency is missing; never derived from AC/AN.
@@ -473,6 +474,8 @@ type LongReadTrWholeRecordAlleleLandscape {
   called_alleles: Int
   non_reference_called_alleles: Int
   reference_called_alleles: Int
+  # REF allele copies per ancestry and sex stratum, in the same shape as each bin's ALT stacks.
+  reference_stacks: [LongReadTrAlleleStack!]
   exact_alt_count: Int
   stratified_available: Boolean
   stratified_unavailable_reason: String
@@ -480,6 +483,13 @@ type LongReadTrWholeRecordAlleleLandscape {
   sexes: [String!]
   bins: [LongReadTrAlleleBin!]
   purity_points: [LongReadTrPurityPoint!]
+  # The REF allele's TRGT purity, for a locus with one source record. HGSVC/HPRC: the most common
+  # carrier FORMAT AP value matched to the REF by allele length, or else the source INFO
+  # AP_allele's first entry unless a carrier written ALT|REF stores a different value; null when
+  # carrier calls are unavailable. AoU: the source INFO AP_allele's first entry; null when the
+  # source has none.
+  reference_purity: Float
+  # True when the REF or any ALT has a purity, so a REF-only purity is still shown.
   purity_available: Boolean
   purity_unavailable_reason: String
   stratified_view: LongReadTrAlleleStratifiedView
@@ -619,8 +629,10 @@ enum LongReadTrLocusType {
   VARIATION_CLUSTER
 }
 
-# Scientific source kind and visual layout are separate. Positive source kinds and
-# reviewed overrides require immutable receipts; missing receipts fail to UNKNOWN.
+# VARIATION_CLUSTER when the locus has more than one component, or, on the locus query, when its
+# single source record's REF span (without the padding base) is longer than its component
+# envelope; ISOLATED_REPEAT otherwise. Variant rows have no REF span, so there a single-component
+# locus is always ISOLATED_REPEAT.
 type LongReadTrPresentation {
   locus_type: LongReadTrLocusType!
 }
@@ -634,8 +646,9 @@ enum LongReadTrSourceRefSpanStatus {
   UNAVAILABLE_NO_APPROVED_COORDINATE_CONTRACT
 }
 
-# Component geometry, source REF span, and source-declared cluster bounds are never
-# substituted for one another. The latter two remain null without approved provenance.
+# Component geometry and the source REF span are never substituted for one another. The source
+# REF span is the interval of the locus's single source VCF record without its padding base, and
+# stays null when the locus has several source records.
 type LongReadTrBounds {
   component_envelope_start0: Int!
   component_envelope_end0: Int!
@@ -657,7 +670,7 @@ enum LongReadTrSequenceCardinalityStatus {
 }
 
 enum LongReadTrSequenceCardinalityReason {
-  ALT_COUNT_EXCEEDS_600
+  ALT_COUNT_EXCEEDS_2500
   MISSING_OR_DUPLICATE_ALT_INDEX
   SOURCE_RECORD_PROVENANCE_MISMATCH
   SOURCE_RECEIPT_MISMATCH
@@ -681,7 +694,7 @@ enum LongReadTrRepresentedLengthStatus {
 }
 
 enum LongReadTrRepresentedLengthReason {
-  ALT_COUNT_EXCEEDS_600
+  ALT_COUNT_EXCEEDS_2500
   MISSING_OR_DUPLICATE_ALT_INDEX
   SOURCE_RECORD_PROVENANCE_MISMATCH
   SOURCE_RECEIPT_MISMATCH

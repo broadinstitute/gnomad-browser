@@ -265,7 +265,11 @@ const LocalHaplotypeBackgroundsSection = ({
 }) => {
   const { width: windowWidth } = useWindowSize()
   const workerRef = useRef<Worker | null>(null)
-  const [data, setData] = useState<ComputedHaplotypeData | null>(null)
+  // The computed data together with the target it was computed for (see data below).
+  const [computed, setComputed] = useState<{
+    descriptor: ReturnType<typeof buildLocalHaplotypeTargetDescriptor>
+    data: ComputedHaplotypeData
+  } | null>(null)
   const [metadata, setMetadata] = useState<
     Map<string, { subpopulation: string; superpopulation: string }>
   >(new Map())
@@ -296,9 +300,12 @@ const LocalHaplotypeBackgroundsSection = ({
     locus.source_records,
     selected,
   ])
+  // Data computed for another target (the render right after a new allele is selected, before
+  // the effect below clears it) is treated as absent, so it is never drawn for the new allele.
+  const data = computed && computed.descriptor === descriptor ? computed.data : null
 
   useEffect(() => {
-    setData(null)
+    setComputed(null)
     setError(null)
     if (!descriptor) return undefined
     const controller = new AbortController()
@@ -330,7 +337,7 @@ const LocalHaplotypeBackgroundsSection = ({
           if (event.data.type === 'PROGRESS') setStatus(event.data.status)
           if (event.data.type === 'READY' || event.data.type === 'UPDATED') {
             const normalized = normalizeHaplotypeWorkerData(event.data.data)
-            setData(normalized)
+            setComputed({ descriptor, data: normalized })
             setStatus('')
           }
           if (event.data.type === 'ERROR') {
@@ -546,7 +553,7 @@ const LocalHaplotypeBackgroundsSection = ({
   if (!selected) {
     return statusPanel(
       <p role="status">
-        Select an exact ALT sequence in the Allelic landscape to explore its local haplotype
+        Select an exact ALT sequence in the Allelic Landscape to explore its local haplotype
         backgrounds.
       </p>
     )

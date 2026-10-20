@@ -29,10 +29,27 @@ export type TrLocusRowDisplay = {
   detailsAccessibleLabel: string
 }
 
-const simpleMotifContext = (motif: string) => (motif.length <= 80 ? motif : 'long motif')
+// Motifs named inline stay short so a row or heading cannot grow with the stored sequence; a
+// longer motif is named by its size instead. Single-locus rows and the tandem repeat page name one
+// motif, so they can afford a longer one than a cluster row, which can name two.
+export const MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL = 35
+const MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL_IN_CLUSTER_ROWS = 20
 
-// Motifs named inline stay short so a row cannot grow with the stored sequence.
-const boundedMotif = (motif: string) => (motif.length <= 20 ? motif : `${motif.length}bp motif`)
+const MOTIF_BASES_SHOWN_AT_EACH_END = 8
+
+// Where a motif has to appear as a sequence (the tandem repeat page's motif row and menus), a long
+// one keeps only its first and last bases.
+export const shortenLongMotifToItsEnds = (motif: string) =>
+  motif.length > MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL
+    ? `${motif.slice(0, MOTIF_BASES_SHOWN_AT_EACH_END)}…${motif.slice(
+        -MOTIF_BASES_SHOWN_AT_EACH_END
+      )}`
+    : motif
+
+// A long motif becomes its size alone, since every phrase that names motifs already supplies
+// the word "motif".
+const boundedMotif = (motif: string) =>
+  motif.length <= MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL_IN_CLUSTER_ROWS ? motif : `${motif.length}bp`
 
 // Distinct stored motifs, shortest first and alphabetical within a length. At most two are
 // named; the rest are summarized so the row stays bounded no matter how many components a
@@ -51,11 +68,13 @@ const motifPhrase = (motifs: string[]) => {
 
 // Repeat copies implied by the exact component envelope. Envelopes that are not a whole
 // multiple of the motif keep one decimal rather than rounding to a count the coordinates
-// do not support.
-const repeatCopyText = (lengthBp: number, motifLength: number) => {
+// do not support, so 9bp of TG reads 4.5 and 64bp of a 21bp motif reads 3.0. Whole multiples
+// are checked in whole numbers rather than on the floating-point quotient.
+export const repeatCopyText = (lengthBp: number, motifLength: number) => {
   if (motifLength <= 0) return null
   const copies = lengthBp / motifLength
-  return Number.isInteger(copies) ? String(copies) : copies.toFixed(1)
+  if (lengthBp % motifLength === 0) return String(copies)
+  return copies.toFixed(1)
 }
 
 // Zero-based half-open bounds, matching the canonical locus id rather than 1-based display.
@@ -124,10 +143,14 @@ export const getTrLocusRowDisplay = ({
     const motif = locus.components[0].motif
     const copyText = repeatCopyText(facts.length, motif.length)
     const plainEnvelope = formatPlainInterval(locus.components[0].chrom, facts.start0, facts.end0)
-    const motifSize = motif.length >= 7 ? ` (${motif.length}bp motif)` : ''
-    label = `${plainEnvelope} TR locus (${facts.length}bp): ${
-      copyText ? `${copyText} x ` : ''
-    }${simpleMotifContext(motif)}${motifSize}`
+    // A long motif is already named by its size, so only a printed motif gets the size note.
+    const motifText =
+      motif.length > MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL
+        ? `${motif.length}bp motif`
+        : `${motif}${motif.length >= 7 ? ` (${motif.length}bp motif)` : ''}`
+    label = `${plainEnvelope} TR locus (${facts.length}bp): ${motifText}${
+      copyText ? ` x ${copyText}` : ''
+    }`
   } else {
     const recordSpan = recordSpansBeyondRepeat ? refSpan : null
     const clusterStart0 = recordSpan?.start0
@@ -148,7 +171,8 @@ export const getTrLocusRowDisplay = ({
   const accessibleLabel = label
 
   const interval = facts
-  const intervalKind = facts.componentCount === 1 ? 'exact component interval' : 'component envelope'
+  const intervalKind =
+    facts.componentCount === 1 ? 'exact component interval' : 'component envelope'
   const intervalLabel = `GRCh38 ${intervalKind} ${
     locus.components[0].chrom
   }:[${interval.start0.toLocaleString('en-US')}, ${interval.end0.toLocaleString(

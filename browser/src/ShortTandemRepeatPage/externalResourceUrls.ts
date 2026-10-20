@@ -7,6 +7,12 @@ export const trExplorerGeneUrl = (geneSymbol: string) =>
     geneSymbol
   )}&showColumns=0i1i2i3i4i7i21i17`
 
+// Highlights the one-based interval and shows 25 bp on either side, like the variant page's UCSC link.
+export const ucscBrowserUrlHighlightingRegion = (chrom: string, start: number, stop: number) =>
+  `https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg38&highlight=hg38.chr${chrom}%3A${start}-${stop}&position=chr${chrom}%3A${
+    start - 25
+  }-${stop + 25}`
+
 export const trExplorerRegionUrl = (chrom: string, start: number, stop: number) => {
   const startWithCommas = start.toLocaleString('en-US')
   const stopWithCommas = stop.toLocaleString('en-US')

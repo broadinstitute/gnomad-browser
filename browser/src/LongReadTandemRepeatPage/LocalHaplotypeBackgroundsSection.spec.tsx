@@ -20,8 +20,6 @@ const allele = (overrides: Partial<LongReadTrAllele> = {}): LongReadTrAllele => 
   ref: 'CAG',
   alt: 'CAGCAGCAG',
   length: 6,
-  repeat_count: null,
-  repeat_count_source: null,
   motif_purity: null,
   freq: { all: { ac: 2, an: 100, af: 0.02 }, populations: [] },
   ...overrides,

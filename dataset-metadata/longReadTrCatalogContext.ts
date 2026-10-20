@@ -1,5 +1,4 @@
 import { TrLocusComponent, TrLocusId } from './longReadTrLocusId'
-import { condenseLongReadMotifs } from './longReadTablePresentation'
 
 export type LongReadTrCatalogCohort = 'hgsvc_hprc' | 'aou'
 
@@ -38,21 +37,6 @@ export type LongReadTrTableCatalogContext = Omit<LongReadTrCatalogContext, 'cata
         repeat_units: CatalogRepeatUnit[]
       })
     | null
-}
-
-/**
- * Optional metadata carried by the dedicated gene query. Provenance fields are
- * independent accepted-row projections, NOT aliases of the catalog response.
- * Other entry points/REST rows may omit all fields and must fail admission closed.
- */
-export type LongReadTrTableCatalogRow = {
-  tr_locus_id?: string | null
-  lr_cohort?: LongReadTrCatalogCohort | null
-  data_source?: string | null
-  reference_genome?: string | null
-  source_release?: string | null
-  source_run_id?: string | null
-  tr_locus_short_read_context?: LongReadTrTableCatalogContext | null
 }
 
 type CompleteExactContext<T extends LongReadTrCatalogContext> = T & {
@@ -122,46 +106,4 @@ export const isCompleteExactTableContext = (
       context.lr_release === scope.lrRelease &&
       Array.isArray(context.catalog_record.repeat_units)
   )
-}
-
-/**
- * Exact catalog strings only, never observed-allele classification. A conflicting
- * classification for ANY exact string fails the entire pathogenic list closed.
- * null denotes conflict; [] denotes a valid catalog with no pathogenic motifs.
- */
-export const selectCatalogPathogenicMotifs = (
-  units: readonly CatalogRepeatUnit[]
-): string[] | null => {
-  const classifications = new Map<string, string>()
-  for (const unit of units) {
-    if (
-      classifications.has(unit.repeat_unit) &&
-      classifications.get(unit.repeat_unit) !== unit.classification
-    ) {
-      return null
-    }
-    classifications.set(unit.repeat_unit, unit.classification)
-  }
-  return [...classifications.entries()]
-    .filter(([, classification]) => classification === 'pathogenic')
-    .map(([motif]) => motif)
-}
-
-export const CATALOG_PATHOGENIC_CONTEXT_EXPLANATION =
-  'Motifs reported as pathogenic when expanded at this catalog locus. Reference/disease context only; not evidence that an LR allele contains this motif or meets a pathogenic threshold.'
-
-/** Null denies all catalog context/link; a null line alone does not deny the catalog. */
-export const getTrTableCatalogPresentation = (
-  context: LongReadTrTableCatalogContext | null | undefined,
-  scope: LongReadTrTableCatalogScope
-) => {
-  if (!isCompleteExactTableContext(context, scope)) return null
-  const motifs = selectCatalogPathogenicMotifs(context.catalog_record.repeat_units)
-  return {
-    context,
-    pathogenicMotifs: motifs,
-    pathogenicLine:
-      motifs && motifs.length > 0 ? condenseLongReadMotifs(motifs, 'Catalog pathogenic: ') : null,
-    explanation: CATALOG_PATHOGENIC_CONTEXT_EXPLANATION,
-  }
 }

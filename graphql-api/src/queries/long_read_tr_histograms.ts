@@ -279,7 +279,12 @@ const parseExactRow = (row: any, expected: ExactHistogramIdentity) => {
   }
 
   const aggregateAlleles = parseAlleleBins(row.allele_size_histogram, 'allele_size_histogram')
-  const aggregateGenotypes = parseGenotypeBins(row.biallelic_histogram, 'biallelic_histogram', true)
+  // Every autosomal stratum needs genotypes (checked below), so only a sex chromosome may lack them.
+  const aggregateGenotypes = parseGenotypeBins(
+    row.biallelic_histogram,
+    'biallelic_histogram',
+    !isAutosome(expected.component.chrom)
+  )
   const populations = parsePopulations(row.populations)
   if (!populations.alleles.length) invariant('population allele strata are empty')
   requireEqualCounts(

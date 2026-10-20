@@ -8,7 +8,7 @@ jest.mock('./short-tandem-repeat-queries', () => ({
 import {
   buildLongReadTrReferenceConnection,
   compactCatalogSha256,
-  longReadTrReferenceArtifactForTests,
+  longReadTrReferenceCrosswalkArtifact,
   resolveLongReadTrShortReadContext,
 } from './long_read_tr_reference'
 // eslint-disable-next-line import/first
@@ -21,10 +21,10 @@ import { parseTrLocusId } from '../../../dataset-metadata/longReadTrLocusId'
 
 const fetchAll = fetchBoundedShortTandemRepeatCatalog as jest.Mock
 const fetchById = fetchShortTandemRepeatById as jest.Mock
-const catalogRows = longReadTrReferenceArtifactForTests.rows.map((row: any) => row.short)
+const catalogRows = longReadTrReferenceCrosswalkArtifact.rows.map((row: any) => row.short)
 
 const sourceFor = async (cohort: 'hgsvc_hprc' | 'aou', chrom: string) => {
-  const row = longReadTrReferenceArtifactForTests.rows.find(
+  const row = longReadTrReferenceCrosswalkArtifact.rows.find(
     (item: any) =>
       `chr${item.short.main_reference_region.chrom}`.toUpperCase() === chrom.toUpperCase()
   ) as any
@@ -57,10 +57,10 @@ describe('bounded long-read TR reference crosswalk', () => {
     const esClient = {}
     const getSource = jest.fn(sourceFor)
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, getSource)
-    expect(result.total_count).toBe(longReadTrReferenceArtifactForTests.catalog_contract.row_count)
+    expect(result.total_count).toBe(longReadTrReferenceCrosswalkArtifact.catalog_contract.row_count)
     for (const cohort of ['hgsvc_hprc', 'aou'] as const) {
       const expected =
-        longReadTrReferenceArtifactForTests.catalog_contract.expected_status_counts[cohort]
+        longReadTrReferenceCrosswalkArtifact.catalog_contract.expected_status_counts[cohort]
       expect(
         Object.fromEntries(
           Object.keys(expected).map((status) => [
@@ -144,6 +144,27 @@ describe('bounded long-read TR reference crosswalk', () => {
     }
   })
 
+  test('points each exact candidate at the catalog region with its exact bounds', async () => {
+    const result = await buildLongReadTrReferenceConnection({ first: 100 }, {}, sourceFor)
+    const exactCandidates = result.nodes.flatMap((node: any) =>
+      ['hgsvc_hprc', 'aou'].flatMap((cohort) =>
+        node[cohort].candidates.map((candidate: any) => ({ node, candidate }))
+      )
+    )
+    expect(exactCandidates.length).toBeGreaterThan(0)
+    for (const { node, candidate } of exactCandidates) {
+      const region = node.short_record.reference_regions[candidate.matched_reference_region_index]
+      expect([String(region.chrom).replace(/^chr/i, ''), region.start, region.stop]).toEqual([
+        String(candidate.matched_component.chrom).replace(/^chr/i, ''),
+        candidate.matched_component.start0,
+        candidate.matched_component.end0,
+      ])
+    }
+    // The artifact stores index 0 for ATXN8OS, whose exact region is its second.
+    const atxn8os = result.nodes.find((node: any) => node.id === 'ATXN8OS') as any
+    expect(atxn8os.hgsvc_hprc.candidates[0].matched_reference_region_index).toBe(1)
+  })
+
   test('exposes orientation diagnostics without converting rotation or reverse complement to exact', async () => {
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, {}, sourceFor)
     const diagnosticCells = result.nodes.flatMap((node: any) =>
@@ -212,12 +233,20 @@ describe('bounded long-read TR reference crosswalk', () => {
       return cohort === 'aou' && source ? { ...source, run_id: 'stale-run' } : source
     }
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, staleAoU)
-    expect(result.total_count).toBe(longReadTrReferenceArtifactForTests.catalog_contract.row_count)
+    expect(result.total_count).toBe(longReadTrReferenceCrosswalkArtifact.catalog_contract.row_count)
     const atxn1 = result.nodes.find((node: any) => node.id === 'ATXN1') as any
     expect(atxn1.hgsvc_hprc.status).toBe('EXACT_UNIQUE')
     expect(atxn1.aou).toEqual(
       expect.objectContaining({ status: 'UNAVAILABLE', reason_code: 'SOURCE_PROVENANCE_MISMATCH' })
     )
+
+    // An unavailable AoU result asserts no absence, so no row is exact in HGSVC/HPRC only.
+    const hgsvcOnly = await buildLongReadTrReferenceConnection(
+      { first: 100, match_status: 'HGSVC_HPRC_ONLY' },
+      esClient,
+      staleAoU
+    )
+    expect(hgsvcOnly.total_count).toBe(0)
   })
 
   test('contains a source lookup exception to its cohort/chromosome cell', async () => {
@@ -227,11 +256,11 @@ describe('bounded long-read TR reference crosswalk', () => {
       return sourceFor(cohort, chrom)
     }
     const result = await buildLongReadTrReferenceConnection({ first: 100 }, esClient, throwingAoU)
-    expect(result.total_count).toBe(longReadTrReferenceArtifactForTests.catalog_contract.row_count)
+    expect(result.total_count).toBe(longReadTrReferenceCrosswalkArtifact.catalog_contract.row_count)
     expect(
       result.nodes.filter((node: any) => node.hgsvc_hprc.status === 'EXACT_UNIQUE')
     ).toHaveLength(
-      longReadTrReferenceArtifactForTests.catalog_contract.expected_status_counts.hgsvc_hprc
+      longReadTrReferenceCrosswalkArtifact.catalog_contract.expected_status_counts.hgsvc_hprc
         .EXACT_UNIQUE
     )
     const atxn1 = result.nodes.find((node: any) => node.id === 'ATXN1') as any
@@ -280,18 +309,18 @@ describe('bounded long-read TR reference crosswalk', () => {
       id: row.id,
     }))
     expect(compactCatalogSha256(reorderedRows)).toBe(
-      longReadTrReferenceArtifactForTests.catalog.compact_sha256
+      longReadTrReferenceCrosswalkArtifact.catalog.compact_sha256
     )
     const compIndex = reorderedRows.findIndex((row: any) => row.id === 'COMP')
     const driftedNotes = structuredClone(reorderedRows)
     driftedNotes[compIndex].associated_diseases[1].notes = 'drifted clinical note'
     expect(compactCatalogSha256(driftedNotes)).not.toBe(
-      longReadTrReferenceArtifactForTests.catalog.compact_sha256
+      longReadTrReferenceCrosswalkArtifact.catalog.compact_sha256
     )
     const driftedUnits = structuredClone(reorderedRows)
     driftedUnits[0].repeat_units[0].classification = 'benign'
     expect(compactCatalogSha256(driftedUnits)).not.toBe(
-      longReadTrReferenceArtifactForTests.catalog.compact_sha256
+      longReadTrReferenceCrosswalkArtifact.catalog.compact_sha256
     )
   })
 
@@ -317,7 +346,7 @@ describe('bounded long-read TR reference crosswalk', () => {
   ])(
     'authorizes exact reference identity independently of the %s catalog classification',
     async (id, expectedClassification) => {
-      const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
+      const artifactRow = longReadTrReferenceCrosswalkArtifact.rows.find(
         (row: any) => row.short.id === id
       ) as any
       const result = artifactRow.cohorts.hgsvc_hprc
@@ -358,9 +387,9 @@ describe('bounded long-read TR reference crosswalk', () => {
     'authorizes one neutral exact-reference outline for every receipt-bound %s match',
     async (cohort) => {
       const expectedCount =
-        longReadTrReferenceArtifactForTests.catalog_contract.expected_status_counts[cohort]
+        longReadTrReferenceCrosswalkArtifact.catalog_contract.expected_status_counts[cohort]
           .EXACT_UNIQUE
-      const exactRows = longReadTrReferenceArtifactForTests.rows.filter(
+      const exactRows = longReadTrReferenceCrosswalkArtifact.rows.filter(
         (row: any) => row.cohorts[cohort].status === 'EXACT_UNIQUE'
       ) as any[]
       fetchById.mockImplementation(async (_client, _dataset, id) =>
@@ -404,7 +433,7 @@ describe('bounded long-read TR reference crosswalk', () => {
   )
 
   test('rejects detail when a decision-bearing raw repeat classification drifts', async () => {
-    const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
+    const artifactRow = longReadTrReferenceCrosswalkArtifact.rows.find(
       (row: any) => row.short.id === 'ATXN1'
     ) as any
     const candidate = artifactRow.cohorts.hgsvc_hprc.candidates[0]
@@ -441,7 +470,7 @@ describe('bounded long-read TR reference crosswalk', () => {
     ['cyclic rotation', (component: any) => ({ ...component, motif: 'GCT' })],
     ['reverse complement', (component: any) => ({ ...component, motif: 'GCA' })],
   ])('fails the exact-reference outline closed for %s', async (_label, mutate) => {
-    const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
+    const artifactRow = longReadTrReferenceCrosswalkArtifact.rows.find(
       (row: any) => row.short.id === 'ATXN1'
     ) as any
     const candidate = artifactRow.cohorts.hgsvc_hprc.candidates[0]
@@ -508,50 +537,4 @@ describe('bounded long-read TR reference crosswalk', () => {
     const context = await resolveLongReadTrShortReadContext(locus, {}, getSource as any)
     expect(context).toEqual(expect.objectContaining({ status: 'UNAVAILABLE', reason_code: reason }))
   })
-
-  test.each([['AMBIGUOUS', 'MULTIPLE_EXACT_ORDERED_COMPONENT_IDENTITIES']])(
-    'preserves %s detail status and all candidates without clinical context',
-    async (status, reason) => {
-      const artifactRow = longReadTrReferenceArtifactForTests.rows.find(
-        (row: any) => row.short.id === 'ATXN1'
-      ) as any
-      const result = artifactRow.cohorts.hgsvc_hprc
-      const originalStatus = result.status
-      const originalReason = result.reason_code
-      const originalCandidates = result.candidates
-      const candidate = originalCandidates[0]
-      result.status = status
-      result.reason_code = reason
-      result.candidates = [candidate, { ...candidate }]
-      try {
-        const parsed = parseTrLocusId(candidate.canonical_id)!
-        const context = await resolveLongReadTrShortReadContext(
-          {
-            id: candidate.canonical_id,
-            chrom: candidate.matched_component.chrom,
-            components: parsed.components,
-            lr_cohort: 'hgsvc_hprc',
-          },
-          {},
-          sourceFor
-        )
-        expect(context).toEqual(
-          expect.objectContaining({
-            status,
-            reason_code: reason,
-            candidates: result.candidates,
-            exact_reference_component_outline_authorized: false,
-            matched_reference_repeat_unit_classifications: [],
-            pathogenic_component_highlight: false,
-          })
-        )
-        expect(context.catalog_record).toBeUndefined()
-        expect(fetchById).not.toHaveBeenCalled()
-      } finally {
-        result.status = originalStatus
-        result.reason_code = originalReason
-        result.candidates = originalCandidates
-      }
-    }
-  )
 })

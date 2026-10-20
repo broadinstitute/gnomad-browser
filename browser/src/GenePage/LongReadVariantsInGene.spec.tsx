@@ -1,13 +1,12 @@
 import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
-import type { LongReadTrTableCatalogRow } from '@gnomad/dataset-metadata/longReadTrCatalogContext'
 
 import geneFactory from '../__factories__/Gene'
 
 const queryProps: any[] = []
 const unifiedViewProps: any[] = []
-const mockCatalogRow: LongReadTrTableCatalogRow & { variant_id: string } = {
+const mockCatalogRow = {
   variant_id: 'RFC1-source-alt-1',
   tr_locus_id: '4-39348424-39348479-AAAAG',
   data_source: 'Y1_ACCEPTED',
@@ -165,5 +164,27 @@ describe('LongReadVariantsInGene', () => {
     expect(unifiedViewProps[0].variants[2]).toBe(mockCatalogRow)
     expect(unifiedViewProps[0].variants[2].source_run_id).toBe('row-run')
     expect(unifiedViewProps[0].variants[2].source_release).toBe('row-release')
+  })
+
+  test('treats a failed long-read variant query as an error rather than an empty gene', () => {
+    const gene = geneFactory.build({ chrom: '22', start: 100, stop: 200 })
+    render(
+      <MemoryRouter initialEntries={['/gene/ENSG1?dataset=gnomad_r4_lr']}>
+        <LongReadVariantsInGene
+          datasetId={'gnomad_r4_lr' as any}
+          gene={gene}
+          zoomRegion={null}
+          onChangeZoomRegion={jest.fn()}
+          onSetRegion={jest.fn()}
+          lrCohort="hgsvc_hprc"
+          onChangeLrCohort={jest.fn()}
+          onGenealogyPanelVisibilityChange={jest.fn()}
+        />
+      </MemoryRouter>
+    )
+
+    // The API returns null for long_read_variants when its database query fails
+    expect(queryProps[0].success({ region: { long_read_variants: null } })).toBeFalsy()
+    expect(queryProps[0].success({ region: { long_read_variants: [] } })).toBeTruthy()
   })
 })

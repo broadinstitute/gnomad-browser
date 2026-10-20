@@ -22,6 +22,79 @@ const SUMMARY_FIELDS = [
   'value.repeat_units',
 ]
 
+// Only the parts of each locus's genotype counts that the manual review summary needs. Reading these
+// instead of the whole genotype distribution cuts the response for all loci from about 9 MB to about 2 MB.
+const SUMMARY_FIELDS_WITH_GENOTYPE_QUALITY_COUNTS = [
+  ...SUMMARY_FIELDS,
+  'value.genotype_distribution.quality_description',
+  'value.genotype_distribution.distribution.frequency',
+]
+
+// Manual review qualities from low to high, scored 1 (low) to 5 (high)
+const MANUAL_REVIEW_GENOTYPE_QUALITIES_FROM_LOW_TO_HIGH = [
+  'low',
+  'medium-low',
+  'medium',
+  'medium-high',
+  'high',
+]
+
+type GenotypeQualityCounts = {
+  quality_description: string
+  distribution: { frequency: number }[]
+}
+
+// Counts a locus's manually reviewed genotypes in each quality and averages their quality, from
+// 1 (low) to 5 (high). Each genotype is counted once, since the genotype distribution splits
+// genotypes by ancestry group, sex, repeat units, quality, and Q score without any combined groups.
+export const summarizeManualReviewGenotypeQuality = (
+  genotypeDistribution: GenotypeQualityCounts[]
+) => {
+  const genotypeCountsByQuality: Record<string, number> = Object.fromEntries(
+    MANUAL_REVIEW_GENOTYPE_QUALITIES_FROM_LOW_TO_HIGH.map((quality) => [quality, 0])
+  )
+  genotypeDistribution.forEach((cohort) => {
+    // Indexes built before the pipeline lowercased this field contain values like "medium-Low".
+    const quality = cohort.quality_description.toLowerCase()
+    if (quality === 'not-reviewed') {
+      return
+    }
+    if (!MANUAL_REVIEW_GENOTYPE_QUALITIES_FROM_LOW_TO_HIGH.includes(quality)) {
+      throw new Error(`Unexpected genotype quality "${cohort.quality_description}"`)
+    }
+    genotypeCountsByQuality[quality] += cohort.distribution.reduce(
+      (sum, item) => sum + item.frequency,
+      0
+    )
+  })
+
+  let totalQualityScore = 0
+  let numberOfReviewedGenotypes = 0
+  MANUAL_REVIEW_GENOTYPE_QUALITIES_FROM_LOW_TO_HIGH.forEach((quality, index) => {
+    totalQualityScore += (index + 1) * genotypeCountsByQuality[quality]
+    numberOfReviewedGenotypes += genotypeCountsByQuality[quality]
+  })
+  return {
+    average_quality_of_manually_reviewed_genotypes:
+      numberOfReviewedGenotypes > 0 ? totalQualityScore / numberOfReviewedGenotypes : null,
+    manually_reviewed_genotype_counts_by_quality:
+      MANUAL_REVIEW_GENOTYPE_QUALITIES_FROM_LOW_TO_HIGH.map((quality) => ({
+        quality_description: quality,
+        genotype_count: genotypeCountsByQuality[quality],
+      })),
+  }
+}
+
+// Replaces the partial genotype distribution fetched with SUMMARY_FIELDS_WITH_GENOTYPE_QUALITY_COUNTS
+// by its manual review summary.
+export const withManualReviewGenotypeQualitySummary = ({
+  genotype_distribution: genotypeDistribution,
+  ...shortTandemRepeat
+}: any) => ({
+  ...shortTandemRepeat,
+  ...summarizeManualReviewGenotypeQuality(genotypeDistribution || []),
+})
+
 type ExactComponent = { chrom: string; start0: number; end0: number; motif: string }
 
 export const classifyExactShortTandemRepeatCatalogContext = (
@@ -154,7 +227,7 @@ export const fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) 
     index: SHORT_TANDEM_REPEAT_INDICES[datasetId],
     type: '_doc',
     size: 10000,
-    _source: SUMMARY_FIELDS,
+    _source: SUMMARY_FIELDS_WITH_GENOTYPE_QUALITY_COUNTS,
     body: {
       query: {
         match_all: {},
@@ -163,7 +236,7 @@ export const fetchAllShortTandemRepeats = async (esClient: any, datasetId: any) 
     },
   })
 
-  return hits.map((hit: any) => hit._source.value)
+  return hits.map((hit: any) => withManualReviewGenotypeQualitySummary(hit._source.value))
 }
 
 export const fetchShortTandemRepeatDetailReceipt = async (
@@ -214,7 +287,7 @@ export const fetchShortTandemRepeatsByGene = async (
     index: SHORT_TANDEM_REPEAT_INDICES[datasetId],
     type: '_doc',
     size: 100,
-    _source: SUMMARY_FIELDS,
+    _source: SUMMARY_FIELDS_WITH_GENOTYPE_QUALITY_COUNTS,
     body: {
       query: {
         bool: {
@@ -229,7 +302,9 @@ export const fetchShortTandemRepeatsByGene = async (
     },
   })
 
-  return response.body.hits.hits.map((hit: any) => hit._source.value)
+  return response.body.hits.hits.map((hit: any) =>
+    withManualReviewGenotypeQualitySummary(hit._source.value)
+  )
 }
 
 export const fetchShortTandemRepeatsByRegion = async (
@@ -250,7 +325,7 @@ export const fetchShortTandemRepeatsByRegion = async (
     index: SHORT_TANDEM_REPEAT_INDICES[datasetId],
     type: '_doc',
     size: 100,
-    _source: SUMMARY_FIELDS,
+    _source: SUMMARY_FIELDS_WITH_GENOTYPE_QUALITY_COUNTS,
     body: {
       query: {
         bool: {
@@ -281,5 +356,7 @@ export const fetchShortTandemRepeatsByRegion = async (
     },
   })
 
-  return response.body.hits.hits.map((hit: any) => hit._source.value)
+  return response.body.hits.hits.map((hit: any) =>
+    withManualReviewGenotypeQualitySummary(hit._source.value)
+  )
 }

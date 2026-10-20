@@ -104,7 +104,7 @@ query ${operationName}(
     region { chrom start0 end0 size }
     components { chrom start0 end0 motif }
     source_records {
-      record_index source_variant_id task_id attempt_id position alt_count ref
+      record_index source_variant_id task_id attempt_id position alt_count
       non_reference_ac an non_reference_af source region
     }
     short_read_context {
@@ -130,16 +130,18 @@ query ${operationName}(
     }
     whole_record_allele_landscape {
       status reason_code unit called_alleles non_reference_called_alleles reference_called_alleles
-      exact_alt_count stratified_available stratified_unavailable_reason ancestry_groups sexes
+      reference_stacks { ancestry_group sex called_alleles }
+      exact_alt_count
       bins {
         delta called_alleles exact_alt_count allele_ids
         stacks { ancestry_group sex called_alleles }
       }
       purity_points { allele_id delta motif_purity called_alleles }
+      reference_purity
       purity_available purity_unavailable_reason
     }
     whole_record_genotype_landscape {
-      status reason_code unit reference_allele_id called_samples called_alleles ancestry_groups sexes
+      status reason_code unit reference_allele_id called_samples called_alleles
       cells {
         shorter_delta longer_delta people
         pairs {
@@ -148,9 +150,8 @@ query ${operationName}(
       }
     }
     selected_allele {
-      variant_id source_variant_id alt_index alt_count ref alt length repeat_count repeat_count_source
+      variant_id source_variant_id alt_index alt_count ref alt length
       motif_purity motif_purity_source decomposition_status decomposition_reason
-      rsids filters major_consequence cadd_phred phylop
       short_read_match_id short_read_match_type short_read_match_source
       source_release source_run_id
       freq { all { ac an af } populations { id ac an af } }
@@ -158,13 +159,7 @@ query ${operationName}(
     repeat_count_plots {
       status reason_code unit repeat_unit max_repunits
       allele_status pair_status pair_encoding pair_observations
-      source_context {
-        source_uri source_generation source_md5_base64 source_row_ordinal
-        source_locus_id interval_raw vc_raw context_relation
-        measurement_kind unit semantics_evidence_status projection_version receipt_digest
-      }
-      primary_binding { status an_concordance }
-      primary_an_comparison
+      source_context { source_locus_id }
       interaction { interaction_status reason }
       allele_size_distribution {
         ancestry_group sex repunit distribution { repunit_count frequency }
@@ -176,8 +171,8 @@ query ${operationName}(
     }
     alleles {
       nodes {
-        variant_id source_variant_id alt_index alt_count ref alt length repeat_count
-        repeat_count_source motif_purity freq { all { ac an af } populations { id ac an af } }
+        variant_id source_variant_id alt_index alt_count ref alt length
+        motif_purity freq { all { ac an af } populations { id ac an af } }
       }
       page_info { has_next_page }
     }
@@ -221,18 +216,21 @@ const LongReadTandemRepeatPageContainer = ({
   const history = useHistory()
   const location = useLocation()
   const selectionScroll = useRef<{
+    // The locus page the allele was picked on; another locus page opens at the top instead.
+    pathname: string
     x: number
     y: number
     list: { element: HTMLElement; top: number } | null
   } | null>(null)
   const restoreSelectionScroll = useCallback(() => {
-    if (selectionScroll.current) {
-      window.scrollTo(selectionScroll.current.x, selectionScroll.current.y)
-      if (selectionScroll.current.list) {
-        selectionScroll.current.list.element.scrollTop = selectionScroll.current.list.top
+    const savedSelectionScroll = selectionScroll.current
+    if (savedSelectionScroll && savedSelectionScroll.pathname === location.pathname) {
+      window.scrollTo(savedSelectionScroll.x, savedSelectionScroll.y)
+      if (savedSelectionScroll.list) {
+        savedSelectionScroll.list.element.scrollTop = savedSelectionScroll.list.top
       }
     }
-  }, [])
+  }, [location.pathname])
 
   useLayoutEffect(restoreSelectionScroll, [location.key, restoreSelectionScroll])
 
@@ -263,6 +261,7 @@ const LongReadTandemRepeatPageContainer = ({
       delete list.dataset.activationWindowY
     }
     selectionScroll.current = {
+      pathname: location.pathname,
       x: Number.isFinite(activationWindowX) ? activationWindowX : window.scrollX,
       y: Number.isFinite(activationWindowY) ? activationWindowY : window.scrollY,
       list: list

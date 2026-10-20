@@ -1,4 +1,5 @@
 import { exactStoredMotifPreview } from './exactStoredMotifPreview'
+import { longestPureMotifRun } from './referenceSequencePurity'
 import {
   LongReadTrAllele,
   LongReadTrRepresentedLength,
@@ -6,7 +7,9 @@ import {
 } from './types'
 
 export type ExactStoredMotifDistributionBin = {
-  occurrence_count: number
+  // The most consecutive exact copies of the motif anywhere in the ALT, as in the precomputed
+  // repeat-count histograms.
+  longest_pure_run: number
   allele_copies: number
   allele_ids: string[]
 }
@@ -73,7 +76,8 @@ const frequencyCount = (allele: LongReadTrAllele, selectedFrequencyId: string | 
     : allele.freq.all.ac
 
 /**
- * Build an ALT-only, identity-backed distribution from exact bounded source bytes.
+ * Build an ALT-only, identity-backed distribution of each motif's longest pure run (the most
+ * consecutive exact copies) in the exact bounded source bytes, without the VCF padding base.
  *
  * Admission is all-or-nothing: every expected source ALT must have a unique, complete
  * identity and an available exactStoredMotifPreview under the reconciled shared-padding
@@ -141,19 +145,32 @@ export const exactStoredMotifDistribution = ({
     return unavailable('invalid_frequency')
   }
 
+  // Each ALT's longest pure run of each motif: 0 for an ALT that is only the padding base, and
+  // null for a sequence or motif with characters other than bases.
+  const longestPureRunsByAllele = weightedPreviews.map(({ preview }) =>
+    motifs.map((motif) =>
+      preview.status === 'available' && preview.representedSequence
+        ? longestPureMotifRun(preview.representedSequence, motif)
+        : 0
+    )
+  )
+  if (longestPureRunsByAllele.some((runs) => runs.some((run) => run == null))) {
+    return unavailable('stored_motif_preview_unavailable')
+  }
+
   const binsByMotif = motifs.map(() => new Map<number, ExactStoredMotifDistributionBin>())
-  weightedPreviews.forEach(({ allele, alleleCopies, preview }) => {
-    if (alleleCopies > 0 && preview.status === 'available') {
-      preview.occurrenceCounts.forEach((occurrenceCount, motifIndex) => {
+  weightedPreviews.forEach(({ allele, alleleCopies }, alleleIndex) => {
+    if (alleleCopies > 0) {
+      longestPureRunsByAllele[alleleIndex].forEach((longestPureRun, motifIndex) => {
         const bins = binsByMotif[motifIndex]
-        const bin = bins.get(occurrenceCount) || {
-          occurrence_count: occurrenceCount,
+        const bin = bins.get(longestPureRun!) || {
+          longest_pure_run: longestPureRun!,
           allele_copies: 0,
           allele_ids: [],
         }
         bin.allele_copies += alleleCopies
         bin.allele_ids.push(allele.variant_id)
-        bins.set(occurrenceCount, bin)
+        bins.set(longestPureRun!, bin)
       })
     }
   })
@@ -164,7 +181,7 @@ export const exactStoredMotifDistribution = ({
       motif,
       motif_index: motifIndex,
       bins: [...binsByMotif[motifIndex].values()].sort(
-        (left, right) => left.occurrence_count - right.occurrence_count
+        (left, right) => left.longest_pure_run - right.longest_pure_run
       ),
     })),
   }

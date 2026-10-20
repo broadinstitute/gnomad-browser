@@ -16,6 +16,7 @@ import {
 } from '@gnomad/dataset-metadata/gnomadPopulations'
 import { colorByLabels } from './ShortTandemRepeatColorBySelect'
 import {
+  genotypeQualityColors,
   genotypeQualityKeys,
   GenotypeQuality,
   qualityDescriptionLabels,
@@ -69,14 +70,7 @@ const colorMap: Record<ColorBy | '', Record<string, string>> = {
   '': {
     '': defaultColor,
   },
-  quality_description: {
-    low: '#d73027',
-    'medium-low': '#fc8d59',
-    medium: '#fee08b',
-    'medium-high': '#d9ef8b',
-    high: '#1a9850',
-    'not-reviewed': '#aaaaaa',
-  },
+  quality_description: genotypeQualityColors,
   q_score: {
     '0': '#ff0000',
     '0.1': '#ff3300',

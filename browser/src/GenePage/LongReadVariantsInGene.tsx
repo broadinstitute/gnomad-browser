@@ -97,7 +97,9 @@ const LongReadVariantsInGene = ({
       loadingMessage="Loading variants"
       errorMessage="Unable to load variants"
       retainPreviousData
-      success={(data: any) => data.region}
+      // long_read_variants is null when its database query failed, so treat that as an error
+      // rather than as a gene with no variants
+      success={(data: any) => data.region && data.region.long_read_variants}
     >
       {({ data, requestVariables, stale }: any) => {
         const loadedLrCohort = requestVariables?.lrCohort || lrCohort
@@ -114,7 +116,7 @@ const LongReadVariantsInGene = ({
               key={loadedLrCohort}
               datasetId={datasetId}
               gene={gene}
-              variants={data.region.long_read_variants || []}
+              variants={data.region.long_read_variants}
               variantSearch={variantSearch}
               lrCohort={loadedLrCohort}
               onChangeLrCohort={onChangeLrCohort}

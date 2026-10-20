@@ -106,7 +106,7 @@ def _parse_allele_scatter_plot_histogram_section(cohort_key, distribution):
         "sex": sex,
         "short_allele_repunit": short_allele_repunit,
         "long_allele_repunit": long_allele_repunit,
-        "quality_description": quality_description,
+        "quality_description": quality_description.lower(),
         "q_score": float(q_score),
         "distribution": _parse_allele_scatter_plot_distribution(distribution),
     }

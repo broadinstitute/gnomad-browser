@@ -63,6 +63,8 @@ const DataPageTableOfContents = () => {
       setActiveSection('v3')
     } else if (activeId.indexOf('exac') > -1) {
       setActiveSection('exac')
+    } else if (activeId.indexOf('lr') > -1) {
+      setActiveSection('lr')
     } else {
       setActiveSection('summary')
     }

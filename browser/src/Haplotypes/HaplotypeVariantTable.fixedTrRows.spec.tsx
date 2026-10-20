@@ -117,13 +117,13 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
   test('uses the authoritative locus for an explicit, bounded locus link', () => {
     renderTable()
     const link = screen.getByRole('link', {
-      name: /Details for 4:39348424–39348479 TR locus \(55bp\): 11 x AAAAG/,
+      name: /Details for 4:39348424–39348479 TR locus \(55bp\): AAAAG x 11/,
     })
     expect(link.getAttribute('href')).toBe(
       `/tandem-repeat/${locusId}?dataset=gnomad_r4_lr&lr_cohort=hgsvc_hprc`
     )
     expect(link.getAttribute('aria-label')).not.toContain(locusId)
-    expect(link.textContent).toBe('4:39348424–39348479 TR locus (55bp): 11 x AAAAG')
+    expect(link.textContent).toBe('4:39348424–39348479 TR locus (55bp): AAAAG x 11')
   })
 
   test('labels a compound locus as a variation cluster regardless of ALT contracts', () => {
@@ -174,9 +174,9 @@ describe('TR locus rows use the dedicated fixed-height experience', () => {
 
   test('shows exact interval semantics and allows the bounded identity cell to wrap safely', () => {
     const { container } = renderTable()
-    expect(container.textContent).toContain('4:39348424–39348479 TR locus (55bp): 11 x AAAAG')
+    expect(container.textContent).toContain('4:39348424–39348479 TR locus (55bp): AAAAG x 11')
     const locusLink = screen.getByRole('link', {
-      name: /Details for 4:39348424–39348479 TR locus \(55bp\): 11 x AAAAG/,
+      name: /Details for 4:39348424–39348479 TR locus \(55bp\): AAAAG x 11/,
     })
     expect(locusLink.getAttribute('title')).toContain(
       'GRCh38 exact component interval 4:[39,348,424, 39,348,479) · 55 bp'

@@ -54,14 +54,6 @@ export const parseTrLocusId = (value: string): TrLocusId | null => {
   }
 }
 
-export const isTrLocusId = (value: string) => parseTrLocusId(value) !== null
-
-export const trComponentDisplayRegion = (component: TrLocusComponent) => ({
-  chrom: component.chrom,
-  start1: component.start0 + 1,
-  end1: component.end0,
-})
-
 export const trLocusDisplayEnvelope = (locus: TrLocusId) => ({
   chrom: locus.components[0].chrom,
   start1: Math.min(...locus.components.map((component) => component.start0)) + 1,
