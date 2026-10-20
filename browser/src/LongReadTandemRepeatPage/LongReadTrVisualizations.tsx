@@ -400,8 +400,11 @@ const UNAVAILABLE_REASON_COPY: Record<string, string> = {
     'the selected allele sequence is too large to display safely',
 }
 
-const unavailableReason = (reason: string | null | undefined) =>
-  (reason && UNAVAILABLE_REASON_COPY[reason]) || 'the required source data are unavailable'
+// All of Us releases no per-person calls; for HGSVC/HPRC the same reason means they were not loaded.
+const unavailableReason = (reason: string | null | undefined, cohort?: string) =>
+  (reason === 'CARRIER_CALLS_NOT_AVAILABLE' && cohort === 'aou'
+    ? 'the per-person calls for this cohort are not releasable'
+    : reason && UNAVAILABLE_REASON_COPY[reason]) || 'the required source data are unavailable'
 
 const AllelicLandscapeHelp = ({
   showRepeatCountControls = false,
@@ -530,7 +533,8 @@ const AllelicLandscapeHelp = ({
       <h4>Repeat sequence purity</h4>
       <p style={showControlsNote ? undefined : { marginBottom: 0 }}>
         Each point represents one ALT allele sequence reported by TRGT, placed by its size and by
-        its repeat sequence purity as reported by TRGT. The size of a point is based on its allele
+        its repeat sequence purity as reported by TRGT. Purity is the fraction of the allele&apos;s
+        bases that match perfect copies of the motif. The size of a point is based on its allele
         count, which is the number of genotyped chromosomes that carry this allele sequence. The REF
         allele is drawn in orange. Click on a point or select by dragging to filter the table below.
       </p>
@@ -3751,6 +3755,7 @@ export const WholeRecordAlleleLandscape = ({
         {genotypeHeatmapLandscape && (
           <WholeRecordGenotypeLandscape
             landscape={genotypeHeatmapLandscape}
+            cohort={scope.cohort}
             selectedPopulations={selectedGenotypeAncestries}
             selectedSexes={selectedGenotypeSexes}
             activeMarkIds={repeatCountGenotypes ? undefined : activeMarkIds}
@@ -3931,8 +3936,11 @@ export const WholeRecordGenotypeLandscape = ({
   alleleAxisLabelPrefix = '',
   onPlotHeightChange,
   lengthAxisControl = null,
+  cohort,
 }: {
   landscape: WholeRecordGenotypeLandscapeData
+  // The page's cohort, which decides how an unavailable landscape is explained.
+  cohort?: string
   // The source metadata keys of the selected ancestry and sex groups; empty for all.
   selectedPopulations?: readonly string[]
   selectedSexes?: readonly string[]
@@ -3989,7 +3997,7 @@ export const WholeRecordGenotypeLandscape = ({
       <PlotCard data-plot-card="total-length-genotype" data-testid="genotype-length-card">
         <h3>Genotype length distribution</h3>
         <p role="status">
-          Genotype landscape unavailable: {unavailableReason(landscape.reason_code)}.
+          Genotype landscape unavailable: {unavailableReason(landscape.reason_code, cohort)}.
         </p>
       </PlotCard>
     )

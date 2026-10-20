@@ -1945,6 +1945,31 @@ describe('long-read TR visualization fidelity', () => {
     expect(screen.queryByRole('region', { name: 'Exact genotype pairs table' })).toBeNull()
   })
 
+  test('explains missing per-person calls as not releasable only for All of Us', () => {
+    const landscape: WholeRecordGenotypeLandscapeData = {
+      status: 'UNAVAILABLE',
+      reason_code: 'CARRIER_CALLS_NOT_AVAILABLE',
+      unit: 'WHOLE_RECORD_DELTA_BP',
+      reference_allele_id: '__REFERENCE__',
+      called_samples: 0,
+      called_alleles: 0,
+      cells: [],
+    }
+    const { unmount } = render(<WholeRecordGenotypeLandscape landscape={landscape} cohort="aou" />)
+    expect(
+      screen.getByText(
+        'Genotype landscape unavailable: the per-person calls for this cohort are not releasable.'
+      )
+    ).not.toBeNull()
+    unmount()
+    render(<WholeRecordGenotypeLandscape landscape={landscape} cohort="hgsvc_hprc" />)
+    expect(
+      screen.getByText(
+        'Genotype landscape unavailable: the per-person calls for this cohort are not loaded.'
+      )
+    ).not.toBeNull()
+  })
+
   test('keeps mismatch bases opaque with readable selected-sequence contrast', () => {
     render(
       <MotifHighlightedSequence
