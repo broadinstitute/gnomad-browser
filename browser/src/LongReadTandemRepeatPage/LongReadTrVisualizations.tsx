@@ -2,6 +2,7 @@ import React, { RefObject, useEffect, useLayoutEffect, useMemo, useRef, useState
 import { FixedSizeList } from 'react-window'
 import { withSize } from 'react-sizeme'
 import styled from 'styled-components'
+import { scaleLinear } from 'd3-scale'
 import { ExternalLink, Modal, Select } from '@gnomad/ui'
 import {
   MAX_MOTIF_LENGTH_TO_PRINT_IN_FULL,
@@ -1802,6 +1803,9 @@ export const purityTickDecimals = (
 // histogram's slots.
 export const PURITY_POINT_CLEARANCE = 25
 export const PURITY_MAX_JITTER = 32
+// Points that share an allele size and purity spread over at most this fraction of the distance
+// between neighboring sizes, so each point stays closer to its own size than to the next one.
+export const PURITY_OVERLAP_MAX_FRACTION_OF_SLOT = 0.8
 
 export const purityScalePosition = (
   value: number,
@@ -1816,10 +1820,18 @@ export const purityScalePosition = (
   }
 }
 
-export const purityOverlapOffset = (index: number, count: number) => {
-  if (count <= 1) return 0
-  const span = Math.min((count - 1) * 24, PURITY_MAX_JITTER * 2)
-  return (index / (count - 1) - 0.5) * span
+// Sideways offset in pixels of the point ranked `rank` among `count` points that share an allele
+// size and purity, where rank 0 has the most called alleles. That point stays on its size's
+// center, and the others alternate right and left of it, at most maximumSpan / 2 pixels away.
+export const purityOverlapOffset = (
+  rank: number,
+  count: number,
+  maximumSpan = PURITY_MAX_JITTER * 2
+) => {
+  if (count <= 1 || rank === 0) return 0
+  const stepsToEachSide = Math.ceil((count - 1) / 2)
+  const step = Math.min(12, Math.min(PURITY_MAX_JITTER, maximumSpan / 2) / stepsToEachSide)
+  return (rank % 2 === 1 ? 1 : -1) * Math.ceil(rank / 2) * step
 }
 
 const purityPositionCss = ({ percent, pixelOffset }: ReturnType<typeof purityScalePosition>) => {
@@ -1895,25 +1907,24 @@ const PurityScatter = ({
       (slotIndex.get(delta)! + 0.5) / deltas.length
     } * (100% - ${2 * HISTOGRAM_SIDE_PADDING}px))`
   const [domainMinimum, domainMaximum] = purityDomain(allPoints.map((point) => point.motif_purity))
-  const domainSpan = domainMaximum - domainMinimum
-  const purityTicks = [domainMinimum, domainMinimum + domainSpan / 2, domainMaximum]
+  // Round values inside the domain, such as 0.90, 0.92, ... 0.98, rather than its ends.
+  const purityTicks = scaleLinear().domain([domainMinimum, domainMaximum]).ticks(3)
   const decimals = purityTickDecimals(purityTicks, domainMinimum, domainMaximum)
-  const overlapCounts = allPoints.reduce((counts, point) => {
-    const key = `${point.delta}\u0000${point.motif_purity}`
-    counts.set(key, (counts.get(key) || 0) + 1)
-    return counts
-  }, new Map<string, number>())
-  // Each point's sideways offset among the points at its exact size and purity. It is worked out
+  // Each point's rank among the points at its exact size and purity, most called alleles first,
+  // so the point that stands for the most alleles is drawn on its size's center. It is worked out
   // here rather than while drawing, because MeasuredWidth redraws the plot below on every width
-  // measurement, and a counter advanced while drawing would keep counting across those redraws.
-  const overlapIndexByKey = new Map<string, number>()
-  const overlapOffsetByAlleleId = new Map(
-    allPoints.map((point) => {
-      const key = `${point.delta}\u0000${point.motif_purity}`
-      const overlapIndex = overlapIndexByKey.get(key) || 0
-      overlapIndexByKey.set(key, overlapIndex + 1)
-      return [point.allele_id, purityOverlapOffset(overlapIndex, overlapCounts.get(key) || 1)]
-    })
+  // measurement.
+  const overlapGroups = allPoints.reduce((groups, point) => {
+    const key = `${point.delta}\u0000${point.motif_purity}`
+    groups.set(key, [...(groups.get(key) || []), point])
+    return groups
+  }, new Map<string, PurityPoint[]>())
+  const overlapPlaceByAlleleId = new Map(
+    Array.from(overlapGroups.values()).flatMap((group) =>
+      [...group]
+        .sort((left, right) => right.called_alleles - left.called_alleles)
+        .map((point, rank) => [point.allele_id, { rank, count: group.length }] as const)
+    )
   )
   const minimumCalledAlleles = Math.min(...allPoints.map((point) => point.called_alleles))
   const maximumCalledAlleles = Math.max(...allPoints.map((point) => point.called_alleles))
@@ -1987,6 +1998,20 @@ const PurityScatter = ({
             measuredWidth > 0
               ? `${slotsLeft + slotIndex.get(delta)! * (slotWidth + slotGap) + slotWidth / 2}px`
               : slotCenterCss(delta)
+          // Points that share a size and purity spread sideways within their size's column.
+          // Before the first width measurement the column width is unknown, so the spread is not
+          // limited by it.
+          const overlapOffsetForAllele = (alleleId: string) => {
+            const overlapPlace = overlapPlaceByAlleleId.get(alleleId)
+            if (!overlapPlace) return 0
+            return purityOverlapOffset(
+              overlapPlace.rank,
+              overlapPlace.count,
+              measuredWidth > 0
+                ? (slotWidth + slotGap) * PURITY_OVERLAP_MAX_FRACTION_OF_SLOT
+                : undefined
+            )
+          }
           const xAxisTicks = histogramDeltaAxisTicks(deltas, slotWidth, slotGap, (delta) =>
             lengthAxisTickLabel(delta, lengthAxisMode, representedRefLength)
           )
@@ -2063,9 +2088,9 @@ const PurityScatter = ({
                         style={{
                           left: slotCenter(referencePoint.delta),
                           bottom: purityTickBottom(referencePoint.motif_purity),
-                          transform: `translate(calc(-50% + ${
-                            overlapOffsetByAlleleId.get(REFERENCE_PURITY_POINT_ID) || 0
-                          }px), 50%)`,
+                          transform: `translate(calc(-50% + ${overlapOffsetForAllele(
+                            REFERENCE_PURITY_POINT_ID
+                          )}px), 50%)`,
                         }}
                       />
                     )}
@@ -2088,7 +2113,7 @@ const PurityScatter = ({
                         minimumCalledAlleles,
                         maximumCalledAlleles
                       )
-                      const overlapOffset = overlapOffsetByAlleleId.get(point.allele_id) || 0
+                      const overlapOffset = overlapOffsetForAllele(point.allele_id)
                       return (
                         <PurityPointButton
                           key={point.allele_id}

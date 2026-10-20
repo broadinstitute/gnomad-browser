@@ -13,6 +13,7 @@ import {
   LongReadTrComponentTrack,
   motifColor,
   PURITY_MAX_JITTER,
+  PURITY_OVERLAP_MAX_FRACTION_OF_SLOT,
   PURITY_POINT_CLEARANCE,
   purityDomain,
   purityOverlapOffset,
@@ -1352,9 +1353,10 @@ describe('long-read TR visualization fidelity', () => {
       name: /Filter the source-ALT index to Sequence/,
     })
     expect(points).toHaveLength(3)
+    // The coincident point with more called alleles stays on its size's center.
     expect(
       points.slice(0, 2).map((candidate) => candidate.getAttribute('data-overlap-offset'))
-    ).toEqual(['-12', '12'])
+    ).toEqual(['0', '12'])
     expect(screen.queryByText(/Overlapping points are separated/)).toBeNull()
     const point = within(scatter).getByRole('button', {
       name: /Filter the source-ALT index to Sequence 3; \+12 bp vs REF; source-reported motif purity 1.0000/,
@@ -1441,6 +1443,54 @@ describe('long-read TR visualization fidelity', () => {
         { cardTop: 700, xAxisY: 900 },
       ])
     ).toEqual([20, 0, 110, 0])
+  })
+
+  test('labels the purity axis with round values inside the domain', () => {
+    const landscape: WholeRecordAlleleLandscapeData = {
+      ...alleleLandscape,
+      purity_available: true,
+      purity_unavailable_reason: null,
+      // Spread like the chr1:149,460,836 variation cluster's, whose axis once read 0.900, 0.940
+      // and 0.981 (the padded domain's ends and middle).
+      purity_points: alleles.map((allele, index) => ({
+        allele_id: allele.variant_id,
+        delta: allele.length as number,
+        motif_purity: [0.905, 0.94, 0.975][index % 3],
+        called_alleles: allele.freq.all.ac,
+      })),
+    }
+    render(
+      <WholeRecordAlleleLandscape landscape={landscape} alleles={alleles} navigation={navigation} />
+    )
+
+    const purityCard = screen
+      .getByRole('heading', { name: 'Repeat sequence purity' })
+      .closest('[data-plot-card="motif-purity"]') as HTMLElement
+    expect(
+      within(purityCard)
+        .getAllByTestId('purity-axis-tick')
+        .map((tick) => tick.textContent)
+    ).toEqual(['0.90', '0.92', '0.94', '0.96', '0.98'])
+  })
+
+  test('keeps points that share a size and purity inside that size column', () => {
+    // A 14 px column, as on the chr1:149,460,836 variation cluster, where 24 px steps once put a
+    // 121 bp allele's dot (AC 116) over the 120 bp tick.
+    const columnWidth = 14
+    const maximumSpan = columnWidth * PURITY_OVERLAP_MAX_FRACTION_OF_SLOT
+    const rounded = (offset: number) => Math.round(offset * 10) / 10 + 0
+    const pairOffsets = [0, 1].map((rank) => purityOverlapOffset(rank, 2, maximumSpan))
+    const tripleOffsets = [0, 1, 2].map((rank) => purityOverlapOffset(rank, 3, maximumSpan))
+
+    // The point with the most called alleles (rank 0) stays on its size's center.
+    expect(pairOffsets.map(rounded)).toEqual([0, 5.6])
+    expect(tripleOffsets.map(rounded)).toEqual([0, 5.6, -5.6])
+    // Every point stays closer to its own column's center than to a neighboring one's.
+    expect(Math.max(...[...pairOffsets, ...tripleOffsets].map(Math.abs))).toBeLessThan(
+      columnWidth / 2
+    )
+    // Wide columns use 12 px steps.
+    expect([0, 1, 2].map((rank) => purityOverlapOffset(rank, 3, 100))).toEqual([0, 12, -12])
   })
 
   test('drops trailing zeros that every purity tick shares', () => {
