@@ -4,25 +4,20 @@ import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
-import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
-import useClinvarVariantFiltering from '../ClinvarVariantsTrack/useClinvarVariantFiltering'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { selectLinkedVariants } from '../VariantList/useLinkedVariantSelection'
-import VariantSyncControl, { NO_SHARED_VARIANTS_MESSAGE } from '../VariantList/VariantSyncControl'
-import { showNotification } from '../Notifications'
+import VariantSyncControl, {
+  NO_SHARED_VARIANTS_MESSAGE,
+  VariantSyncState,
+} from '../VariantList/VariantSyncControl'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
-import userPreferences from '../userPreferences'
 import VariantTableConfigurationModal from '../VariantList/VariantTableConfigurationModal'
 import VariantTrack from '../VariantList/VariantTrack'
 
 import ExportMitochondrialVariantsButton from './ExportMitochondrialVariantsButton'
-import filterMitochondrialVariants from './filterMitochondrialVariants'
 import MitochondrialVariantFilterControls from './MitochondrialVariantFilterControls'
-import mitochondrialVariantTableColumns, {
-  getColumnsForContext,
-} from './mitochondrialVariantTableColumns'
+import mitochondrialVariantTableColumns from './mitochondrialVariantTableColumns'
+import { DEFAULT_COLUMNS, MitochondrialVariantFiltering } from './useMitochondrialVariantFiltering'
 import MitochondrialVariantsTable from './MitochondrialVariantsTable'
 
 const NUM_ROWS_RENDERED = 20
@@ -31,21 +26,6 @@ const Wrapper = styled.div`
   margin-bottom: 1em;
 `
 
-const DEFAULT_COLUMNS = [
-  'source',
-  'gene',
-  'hgvs',
-  'consequence',
-  'clinical_significance',
-  'flags',
-  'an',
-  'ac_hom',
-  'af_hom',
-  'ac_het',
-  'af_het',
-  'max_heteroplasmy',
-]
-
 const sortMitochondrialVariants = (variants: any, { sortKey, sortOrder }: any) => {
   const sortColumn = mitochondrialVariantTableColumns.find((column: any) => column.key === sortKey)
   // @ts-expect-error TS(2532) FIXME: Object is possibly 'undefined'.
@@ -53,67 +33,28 @@ const sortMitochondrialVariants = (variants: any, { sortKey, sortOrder }: any) =
 }
 
 type MitochondrialVariantsProps = {
-  clinvarReleaseDate: string
   context: any
   exportFileName: string
-  // @ts-expect-error TS(2749) FIXME: 'StructrualVariantPropType' refers to a value, but... Remove this comment to see the full error message
-  variants: StructrualVariantPropType[]
-  clinvar?: Pick<
-    React.ComponentProps<typeof ClinvarVariants>,
-    'clinvarVariants' | 'referenceGenome' | 'transcripts' | 'pageType'
-  >
+  selection: MitochondrialVariantFiltering
+  sync?: VariantSyncState
 }
 
 const MitochondrialVariants = ({
-  clinvarReleaseDate,
   context,
   exportFileName,
-  variants,
-  clinvar,
+  selection,
+  sync,
 }: MitochondrialVariantsProps) => {
   const table = useRef(null)
-
-  const [selectedColumns, setSelectedColumns] = useState(() => {
-    try {
-      return userPreferences.getPreference('mitochondrialVariantTableColumns') || DEFAULT_COLUMNS
-    } catch (error) {
-      return DEFAULT_COLUMNS
-    }
-  })
-
-  const renderedTableColumns = useMemo(() => {
-    const columnsForContext = getColumnsForContext(context)
-    if ((columnsForContext as any).clinical_significance) {
-      ;(
-        columnsForContext as any
-      ).clinical_significance.description = `ClinVar germline classification, formerly called clinical significance. Based on ClinVar's ${formatClinvarDate(
-        clinvarReleaseDate
-      )} release`
-    }
-
-    return (
-      ['variant_id', ...selectedColumns]
-        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        .map((columnKey) => columnsForContext[columnKey])
-        .filter(Boolean)
-        .map((column) => ({
-          ...column,
-          isSortable: Boolean(column.compareFunction),
-          tooltip: column.description,
-        }))
-    )
-  }, [clinvarReleaseDate, context, selectedColumns])
-
-  const [filter, setFilter] = useState({
-    includeCategories: {
-      lof: true,
-      missense: true,
-      synonymous: true,
-      other: true,
-    },
-    includeFilteredVariants: false,
-    searchText: '',
-  })
+  const {
+    variants,
+    filter,
+    setFilter,
+    selectedColumns,
+    saveSelectedColumns,
+    renderedTableColumns,
+    filteredVariants,
+  } = selection
 
   const [sortState, setSortState] = useState({
     sortKey: 'variant_id',
@@ -137,46 +78,9 @@ const MitochondrialVariants = ({
     })
   }, [])
 
-  const filteredVariants = useMemo(
-    () => filterMitochondrialVariants(variants, filter, renderedTableColumns),
-    [variants, filter, renderedTableColumns]
-  )
-  const [syncEnabled, setSyncEnabled] = useState(false)
-  const syncAvailable = clinvar?.clinvarVariants !== null && clinvar?.clinvarVariants !== undefined
-  const clinvarSelection = useClinvarVariantFiltering(clinvar?.clinvarVariants ?? [])
-  const selected = useMemo(() => {
-    return selectLinkedVariants(
-      clinvarSelection.filteredVariants,
-      filteredVariants,
-      syncEnabled && syncAvailable
-    )
-  }, [clinvarSelection.filteredVariants, filteredVariants, syncEnabled, syncAvailable])
-  const sync = useMemo(
-    () => ({ enabled: syncEnabled, available: syncAvailable, onChange: setSyncEnabled }),
-    [syncEnabled, syncAvailable]
-  )
-  const linkedClinvarSelection = useMemo(
-    () => ({
-      filter: clinvarSelection.filter,
-      setFilter: clinvarSelection.setFilter,
-      filteredVariants: selected.clinvar,
-    }),
-    [clinvarSelection.filter, clinvarSelection.setFilter, selected.clinvar]
-  )
   const renderedVariants = useMemo(
-    () => sortMitochondrialVariants(selected.gnomad, sortState),
-    [selected.gnomad, sortState]
-  )
-  const clinvarContent = clinvar && (
-    <ClinvarVariants
-      clinvarVariants={clinvar.clinvarVariants}
-      clinvarReleaseDate={clinvarReleaseDate}
-      referenceGenome={clinvar.referenceGenome}
-      transcripts={clinvar.transcripts}
-      pageType={clinvar.pageType}
-      selection={linkedClinvarSelection}
-      sync={sync}
-    />
+    () => sortMitochondrialVariants(filteredVariants, sortState),
+    [filteredVariants, sortState]
   )
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
@@ -243,24 +147,20 @@ const MitochondrialVariants = ({
 
   if (variants.length === 0) {
     return (
-      <>
-        {clinvarContent}
-        <TrackPageSection>
-          <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
-          {clinvar && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
-          <p>No gnomAD variants found.</p>
-        </TrackPageSection>
-      </>
+      <TrackPageSection>
+        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+        {sync && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
+        <p>No gnomAD variants found.</p>
+      </TrackPageSection>
     )
   }
 
   const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
   const noMatchingVariantsMessage =
-    syncEnabled && syncAvailable ? NO_SHARED_VARIANTS_MESSAGE : 'No matching variants'
+    sync?.enabled && sync.available ? NO_SHARED_VARIANTS_MESSAGE : 'No matching variants'
 
   return (
     <div>
-      {clinvarContent}
       <TrackPageSection>
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
       </TrackPageSection>
@@ -293,7 +193,7 @@ const MitochondrialVariants = ({
       <TrackPageSection style={{ fontSize: '14px' }}>
         <Wrapper>
           <MitochondrialVariantFilterControls value={filter} onChange={setFilter} />
-          {clinvar && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
+          {sync && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
           <div>
             <ExportMitochondrialVariantsButton
               exportFileName={exportFileName}
@@ -339,18 +239,8 @@ const MitochondrialVariants = ({
             setShowTableConfigurationModal(false)
           }}
           onSave={(newSelectedColumns) => {
-            setSelectedColumns(newSelectedColumns)
+            saveSelectedColumns(newSelectedColumns)
             setShowTableConfigurationModal(false)
-
-            userPreferences
-              .savePreference('mitochondrialVariantTableColumns', newSelectedColumns)
-              .then(null, (error: any) => {
-                showNotification({
-                  title: 'Error',
-                  message: error.message,
-                  status: 'error',
-                })
-              })
           }}
         />
       )}
