@@ -201,7 +201,6 @@ const Variants = ({
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
         <p>No gnomAD variants found.</p>
         {sync && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
-        {sync?.enabled && sync.available && <p role="status">{NO_SHARED_VARIANTS_MESSAGE}</p>}
       </TrackPageSection>
     )
   }

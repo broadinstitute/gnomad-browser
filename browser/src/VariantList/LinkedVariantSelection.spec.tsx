@@ -322,9 +322,13 @@ describe('linked variant filters', () => {
     expect(tableIds()).toEqual([])
     expect(markerIds(container)).toEqual([])
     expect(screen.getByText('ClinVar variants (0)')).toBeVisible()
-    expect(screen.getByText('No gnomAD variants found.')).toBeVisible()
+    const emptyGnomadMessage = screen.getByText('No gnomAD variants found.')
+    expect(emptyGnomadMessage).toBeVisible()
+    expect(emptyGnomadMessage.parentElement).not.toHaveTextContent(NO_SHARED_VARIANTS_MESSAGE)
+    expect(screen.getAllByText(NO_SHARED_VARIANTS_MESSAGE)).toHaveLength(1)
     await user.click(toggles()[1])
     expect(markerIds(container)).toHaveLength(7)
+    expect(screen.queryByText(NO_SHARED_VARIANTS_MESSAGE)).not.toBeInTheDocument()
   })
 
   test('preserves filters across zoom', async () => {
