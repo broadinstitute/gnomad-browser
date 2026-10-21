@@ -8,7 +8,7 @@ import Link from '../Link'
 import Query from '../Query'
 import useLinkedVariantSelection from '../VariantList/useLinkedVariantSelection'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
-import { ControlledVariants } from '../VariantList/Variants'
+import Variants from '../VariantList/Variants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Gene } from './GenePage'
 
@@ -122,7 +122,7 @@ export const VariantsInGene = ({
         sync={selection.sync}
       />
 
-      <ControlledVariants
+      <Variants
         selection={selection.gnomad}
         sync={selection.sync}
         context={gene}
@@ -165,7 +165,7 @@ export const VariantsInGene = ({
             }}
           />
         )}
-      </ControlledVariants>
+      </Variants>
     </>
   )
 }

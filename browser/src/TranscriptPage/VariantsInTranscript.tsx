@@ -8,7 +8,7 @@ import Link from '../Link'
 import Query from '../Query'
 import useLinkedVariantSelection from '../VariantList/useLinkedVariantSelection'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
-import { ControlledVariants } from '../VariantList/Variants'
+import Variants from '../VariantList/Variants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 
 type OwnVariantsInTranscriptProps = {
@@ -74,7 +74,7 @@ export const VariantsInTranscript = ({
         sync={selection.sync}
       />
 
-      <ControlledVariants
+      <Variants
         selection={selection.gnomad}
         sync={selection.sync}
         context={transcript}
@@ -103,7 +103,7 @@ export const VariantsInTranscript = ({
             .
           </p>
         )}
-      </ControlledVariants>
+      </Variants>
     </>
   )
 }

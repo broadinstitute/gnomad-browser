@@ -9,11 +9,7 @@ import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
 import ExportVariantsButton from './ExportVariantsButton'
-import useVariantFiltering, {
-  VariantFiltering,
-  VariantFilterState,
-  getFilteredVariants,
-} from './useVariantFiltering'
+import { VariantFiltering, VariantFilterState, getFilteredVariants } from './useVariantFiltering'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
 import variantTableColumns, { DEFAULT_COLUMNS } from './variantTableColumns'
@@ -32,21 +28,14 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
-type OwnVariantsProps = {
+type VariantsProps = {
   children?: any
-  clinvarReleaseDate: string
   context: VariantTableContext
   datasetId: DatasetId
   exportFileName?: string
-  variants: Variant[]
+  selection: VariantFiltering
+  sync?: VariantSyncState
 }
-
-const variantsDefaultProps = {
-  children: null,
-  exportFileName: 'variants',
-}
-
-type VariantsProps = OwnVariantsProps & typeof variantsDefaultProps
 
 export const getFirstIndexFromSearchText = (
   searchFilter: VariantFilterState,
@@ -69,19 +58,14 @@ export const getFirstIndexFromSearchText = (
   return variantWindow[0]
 }
 
-type ControlledVariantsProps = Omit<OwnVariantsProps, 'clinvarReleaseDate' | 'variants'> & {
-  selection: VariantFiltering
-  sync?: VariantSyncState
-}
-
-export const ControlledVariants = ({
+const Variants = ({
   children,
   context,
   datasetId,
   exportFileName = 'variants',
   selection,
   sync,
-}: ControlledVariantsProps) => {
+}: VariantsProps) => {
   const table = useRef(null)
   const {
     variants,
@@ -323,12 +307,5 @@ export const ControlledVariants = ({
     </div>
   )
 }
-
-const Variants = (props: VariantsProps) => {
-  const selection = useVariantFiltering(props)
-  return <ControlledVariants {...props} selection={selection} />
-}
-
-Variants.defaultProps = variantsDefaultProps
 
 export default Variants
