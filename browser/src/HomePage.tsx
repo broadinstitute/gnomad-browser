@@ -64,6 +64,11 @@ export default () => (
 
     <List style={{ marginBottom: '2em' }}>
       <ListItem>
+        <ExternalLink href="https://long-read-beta.gnomad.broadinstitute.org/">
+          Explore the gnomAD LR beta release
+        </ExternalLink>
+      </ListItem>
+      <ListItem>
         <Link to="/downloads">Download gnomAD data</Link>
       </ListItem>
       <ListItem>

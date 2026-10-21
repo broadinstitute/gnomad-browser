@@ -283,6 +283,18 @@ exports[`Home Page has no unexpected changes 1`] = `
     >
       <a
         className="c11"
+        href="https://long-read-beta.gnomad.broadinstitute.org/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Explore the gnomAD LR beta release
+      </a>
+    </li>
+    <li
+      className="c10"
+    >
+      <a
+        className="c11"
         href="/downloads"
         onClick={[Function]}
       >
