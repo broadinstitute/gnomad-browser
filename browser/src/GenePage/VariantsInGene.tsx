@@ -6,9 +6,9 @@ import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-met
 import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Link from '../Link'
 import Query from '../Query'
-import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import useLinkedVariantSelection from '../VariantList/useLinkedVariantSelection'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
-import Variants from '../VariantList/Variants'
+import { ControlledVariants } from '../VariantList/Variants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Gene } from './GenePage'
 
@@ -86,7 +86,7 @@ type OwnVariantsInGeneProps = {
 type VariantsInGeneProps = OwnVariantsInGeneProps & typeof VariantsInGene.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'VariantsInGene' implicitly has type 'any' because... Remove this comment to see the full error message
-const VariantsInGene = ({
+export const VariantsInGene = ({
   clinvarReleaseDate,
   clinvarVariants,
   datasetId,
@@ -98,6 +98,14 @@ const VariantsInGene = ({
   hasOnlyNonCodingTranscripts,
 }: VariantsInGeneProps) => {
   const datasetLabel = labelForDataset(datasetId)
+  const selection = useLinkedVariantSelection({
+    clinvarVariants,
+    variants,
+    context: gene,
+    datasetId,
+    clinvarReleaseDate,
+    zoomRegion,
+  })
 
   const [isTranscriptsModalOpen, setIsTranscriptsModalOpen] = useState(false)
 
@@ -110,14 +118,16 @@ const VariantsInGene = ({
         transcripts={gene.transcripts}
         zoomRegion={zoomRegion}
         pageType="gene"
+        selection={selection.clinvar}
+        sync={selection.sync}
       />
 
-      <Variants
-        clinvarReleaseDate={clinvarReleaseDate}
+      <ControlledVariants
+        selection={selection.gnomad}
+        sync={selection.sync}
         context={gene}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${gene.gene_id}`}
-        variants={filterVariantsInZoomRegion(variants, zoomRegion)}
       >
         <p>
           <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>
@@ -155,7 +165,7 @@ const VariantsInGene = ({
             }}
           />
         )}
-      </Variants>
+      </ControlledVariants>
     </>
   )
 }
@@ -346,6 +356,7 @@ const ConnectedVariantsInGene = ({
 
         return (
           <VariantsInGene
+            key={`${datasetId}:${referenceGenome(datasetId)}:${gene.gene_id}`}
             {...otherProps}
             clinvarReleaseDate={data.meta.clinvar_release_date}
             clinvarVariants={data.gene.clinvar_variants}

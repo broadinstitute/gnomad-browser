@@ -1,6 +1,17 @@
+import { Dispatch, SetStateAction, useMemo, useState } from 'react'
+
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
+import { showNotification } from '../Notifications'
+import userPreferences from '../userPreferences'
 import { Variant } from '../VariantPage/VariantPage'
 import { getCategoryFromConsequence } from '../vepConsequences'
-import { VariantTableColumn } from './variantTableColumns'
+import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
+import { VariantTableContext } from './VariantTableContext'
+import {
+  DEFAULT_COLUMNS,
+  getRenderedVariantTableColumns,
+  VariantTableColumn,
+} from './variantTableColumns'
 
 type Categories = {
   lof: boolean
@@ -20,11 +31,27 @@ export type VariantFilterState = {
   searchText: string
 }
 
-export function getFilteredVariants(
+export const DEFAULT_VARIANT_FILTER_STATE: VariantFilterState = {
+  includeCategories: {
+    lof: true,
+    missense: true,
+    synonymous: true,
+    other: true,
+  },
+  includeFilteredVariants: false,
+  includeSNVs: true,
+  includeIndels: true,
+  includeExomes: true,
+  includeGenomes: true,
+  includeContext: true,
+  searchText: '',
+}
+
+export const getFilteredVariants = (
   filter: VariantFilterState,
   variants: Variant[],
   variantTableColumns: VariantTableColumn[]
-) {
+): Variant[] => {
   const searchColumns = variantTableColumns.filter((column) => !!column.getSearchTerms)
   const getVariantSearchTerms = (variant: Variant) =>
     searchColumns
@@ -50,7 +77,11 @@ export function getFilteredVariants(
   )
 }
 
-const filterVariants = (variants: Variant[], filter: VariantFilterState, selectedColumns: any) => {
+export const filterVariants = (
+  variants: Variant[],
+  filter: VariantFilterState,
+  selectedColumns: any
+): Variant[] => {
   let filteredVariants = variants
 
   const isEveryConsequenceCategorySelected =
@@ -95,10 +126,8 @@ const filterVariants = (variants: Variant[], filter: VariantFilterState, selecte
     filteredVariants = getFilteredVariants(filter, filteredVariants, selectedColumns)
   }
 
-  // Indel and Snp filters.
   filteredVariants = filteredVariants.filter((v: Variant) => {
     const splits = v.variant_id.split('-')
-    // ref and alt are extracted from variant id.
     const refLength = splits[2].length
     const altLength = splits[3].length
 
@@ -111,4 +140,73 @@ const filterVariants = (variants: Variant[], filter: VariantFilterState, selecte
   return filteredVariants
 }
 
-export default filterVariants
+export type VariantFiltering = {
+  variants: Variant[]
+  filter: VariantFilterState
+  setFilter: Dispatch<SetStateAction<VariantFilterState>>
+  selectedColumns: string[]
+  saveSelectedColumns: (columns: string[]) => void
+  renderedTableColumns: ReturnType<typeof getRenderedVariantTableColumns>
+  filteredVariants: ReturnType<typeof mergeExomeAndGenomeData>
+}
+
+type VariantFilteringOptions = {
+  variants: Variant[]
+  context: VariantTableContext
+  datasetId: DatasetId
+  clinvarReleaseDate: string
+}
+
+const useVariantFiltering = ({
+  variants,
+  context,
+  datasetId,
+  clinvarReleaseDate,
+}: VariantFilteringOptions): VariantFiltering => {
+  const [selectedColumns, setSelectedColumns] = useState<string[]>(() => {
+    try {
+      return userPreferences.getPreference('variantTableColumns') || DEFAULT_COLUMNS
+    } catch (error) {
+      return DEFAULT_COLUMNS
+    }
+  })
+
+  const renderedTableColumns = useMemo(() => {
+    return getRenderedVariantTableColumns(context, selectedColumns, clinvarReleaseDate)
+  }, [clinvarReleaseDate, context, selectedColumns])
+
+  const [filter, setFilter] = useState(DEFAULT_VARIANT_FILTER_STATE)
+
+  const filteredVariants = useMemo(() => {
+    return mergeExomeAndGenomeData({
+      datasetId,
+      variants: filterVariants(variants, filter, renderedTableColumns),
+      preferJointData: filter.includeExomes && filter.includeGenomes,
+    })
+  }, [datasetId, variants, filter, renderedTableColumns])
+
+  const saveSelectedColumns = (columns: string[]) => {
+    setSelectedColumns(columns)
+    userPreferences
+      .savePreference('variantTableColumns', columns)
+      .then(null, (error: { message: string }) => {
+        showNotification({
+          title: 'Error',
+          message: error.message,
+          status: 'error',
+        })
+      })
+  }
+
+  return {
+    variants,
+    filter,
+    setFilter,
+    selectedColumns,
+    saveSelectedColumns,
+    renderedTableColumns,
+    filteredVariants,
+  }
+}
+
+export default useVariantFiltering
