@@ -27,7 +27,7 @@ import {
   VariantSyncControl,
   NO_SHARED_VARIANTS_MESSAGE,
   VARIANT_SYNC_LABEL,
-} from './useLinkedVariantSelection'
+} from './VariantSyncControl'
 
 jest.mock('../Query', () => ({
   __esModule: true,

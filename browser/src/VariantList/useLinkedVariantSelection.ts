@@ -10,13 +10,6 @@ import useVariantFiltering, { VariantFiltering } from './useVariantFiltering'
 import { VariantTableContext } from './VariantTableContext'
 import { VariantSyncState } from './VariantSyncControl'
 
-export {
-  VariantSyncControl,
-  VARIANT_SYNC_LABEL,
-  NO_SHARED_VARIANTS_MESSAGE,
-} from './VariantSyncControl'
-export type { VariantSyncState } from './VariantSyncControl'
-
 export const selectLinkedVariants = <
   C extends { variant_id: string },
   G extends { variant_id: string }
