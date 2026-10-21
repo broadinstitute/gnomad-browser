@@ -10,7 +10,7 @@ steps:
         gcloud compute instance-groups managed all-instances-config update \
           "${_MIG_NAME}" \
           --zone="${_SERVICE_ZONE}" \
-          --metadata="api-image-tag=${_IMAGE_TAG},server-image-tag=${_IMAGE_TAG}"
+          --metadata="api-image-tag=${_IMAGE_TAG},frontend-image-tag=${_IMAGE_TAG}"
 
         echo "Waiting for ${_SERVICE_NAME} MIG rollout to complete and become healthy..."
 
