@@ -555,6 +555,7 @@ describe('shared sync control copy', () => {
       <VariantSyncControl id="test-sync" state={{ enabled: false, available: true, onChange }} />
     )
     expect(screen.getByRole('checkbox', { name: VARIANT_SYNC_LABEL })).not.toBeChecked()
+    expect(screen.queryByRole('group', { name: VARIANT_SYNC_LABEL })).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'More information' })).toBeVisible()
     rerender(
       <VariantSyncControl id="test-sync" state={{ enabled: true, available: true, onChange }} />

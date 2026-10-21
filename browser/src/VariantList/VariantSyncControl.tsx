@@ -35,7 +35,7 @@ export const VariantSyncControl = ({ id, state }: VariantSyncControlProps): Reac
     : 'Sync is unavailable because ClinVar data is unavailable.'
 
   return (
-    <VariantSyncControlWrapper role="group" aria-label={VARIANT_SYNC_LABEL}>
+    <VariantSyncControlWrapper>
       <Checkbox
         id={id}
         label={VARIANT_SYNC_LABEL}

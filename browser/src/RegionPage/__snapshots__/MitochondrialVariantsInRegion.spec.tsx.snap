@@ -36,9 +36,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_cnv_r4 has no unexpec
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -97,9 +95,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_cnv_r4 has no unexpec
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -259,9 +255,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3 has no unexpected 
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -320,9 +314,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3 has no unexpected 
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -392,9 +384,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_controls_and_bioba
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -453,9 +443,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_controls_and_bioba
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -525,9 +513,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_cancer has no 
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -586,9 +572,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_cancer has no 
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -658,9 +642,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_neuro has no u
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -719,9 +701,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_neuro has no u
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -791,9 +771,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_topmed has no 
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -852,9 +830,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_topmed has no 
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -924,9 +900,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_v2 has no unex
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -985,9 +959,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r3_non_v2 has no unex
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1057,9 +1029,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r4 has no unexpected 
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1118,9 +1088,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r4 has no unexpected 
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1190,9 +1158,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r4_non_ukb has no une
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1251,9 +1217,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_r4_non_ukb has no une
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1323,9 +1287,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1 has no unexpe
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1384,9 +1346,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1 has no unexpe
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1456,9 +1416,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1_controls has 
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1517,9 +1475,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1_controls has 
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1589,9 +1545,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1_non_neuro has
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1650,9 +1604,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r2_1_non_neuro has
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1722,9 +1674,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r4 has no unexpect
     className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
   >
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
@@ -1783,9 +1733,7 @@ exports[`MitochondrialVariantsInRegion with dataset gnomad_sv_r4 has no unexpect
       gnomAD variants
     </h2>
     <div
-      aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
       className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
-      role="group"
     >
       <label
         className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
