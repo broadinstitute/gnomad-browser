@@ -4,7 +4,11 @@ import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
+import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import useClinvarVariantFiltering from '../ClinvarVariantsTrack/useClinvarVariantFiltering'
 import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import { selectLinkedVariants } from '../VariantList/useLinkedVariantSelection'
+import VariantSyncControl, { NO_SHARED_VARIANTS_MESSAGE } from '../VariantList/VariantSyncControl'
 import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
@@ -54,6 +58,10 @@ type MitochondrialVariantsProps = {
   exportFileName: string
   // @ts-expect-error TS(2749) FIXME: 'StructrualVariantPropType' refers to a value, but... Remove this comment to see the full error message
   variants: StructrualVariantPropType[]
+  clinvar?: Pick<
+    React.ComponentProps<typeof ClinvarVariants>,
+    'clinvarVariants' | 'referenceGenome' | 'transcripts' | 'pageType'
+  >
 }
 
 const MitochondrialVariants = ({
@@ -61,6 +69,7 @@ const MitochondrialVariants = ({
   context,
   exportFileName,
   variants,
+  clinvar,
 }: MitochondrialVariantsProps) => {
   const table = useRef(null)
 
@@ -132,9 +141,42 @@ const MitochondrialVariants = ({
     () => filterMitochondrialVariants(variants, filter, renderedTableColumns),
     [variants, filter, renderedTableColumns]
   )
+  const [syncEnabled, setSyncEnabled] = useState(false)
+  const syncAvailable = clinvar?.clinvarVariants !== null && clinvar?.clinvarVariants !== undefined
+  const clinvarSelection = useClinvarVariantFiltering(clinvar?.clinvarVariants ?? [])
+  const selected = useMemo(() => {
+    return selectLinkedVariants(
+      clinvarSelection.filteredVariants,
+      filteredVariants,
+      syncEnabled && syncAvailable
+    )
+  }, [clinvarSelection.filteredVariants, filteredVariants, syncEnabled, syncAvailable])
+  const sync = useMemo(
+    () => ({ enabled: syncEnabled, available: syncAvailable, onChange: setSyncEnabled }),
+    [syncEnabled, syncAvailable]
+  )
+  const linkedClinvarSelection = useMemo(
+    () => ({
+      filter: clinvarSelection.filter,
+      setFilter: clinvarSelection.setFilter,
+      filteredVariants: selected.clinvar,
+    }),
+    [clinvarSelection.filter, clinvarSelection.setFilter, selected.clinvar]
+  )
   const renderedVariants = useMemo(
-    () => sortMitochondrialVariants(filteredVariants, sortState),
-    [filteredVariants, sortState]
+    () => sortMitochondrialVariants(selected.gnomad, sortState),
+    [selected.gnomad, sortState]
+  )
+  const clinvarContent = clinvar && (
+    <ClinvarVariants
+      clinvarVariants={clinvar.clinvarVariants}
+      clinvarReleaseDate={clinvarReleaseDate}
+      referenceGenome={clinvar.referenceGenome}
+      transcripts={clinvar.transcripts}
+      pageType={clinvar.pageType}
+      selection={linkedClinvarSelection}
+      sync={sync}
+    />
   )
 
   const [showTableConfigurationModal, setShowTableConfigurationModal] = useState(false)
@@ -201,17 +243,24 @@ const MitochondrialVariants = ({
 
   if (variants.length === 0) {
     return (
-      <TrackPageSection>
-        <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
-        <p>No gnomAD variants found.</p>
-      </TrackPageSection>
+      <>
+        {clinvarContent}
+        <TrackPageSection>
+          <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+          {clinvar && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
+          <p>No gnomAD variants found.</p>
+        </TrackPageSection>
+      </>
     )
   }
 
   const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
+  const noMatchingVariantsMessage =
+    syncEnabled && syncAvailable ? NO_SHARED_VARIANTS_MESSAGE : 'No matching variants'
 
   return (
     <div>
+      {clinvarContent}
       <TrackPageSection>
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
       </TrackPageSection>
@@ -244,6 +293,7 @@ const MitochondrialVariants = ({
       <TrackPageSection style={{ fontSize: '14px' }}>
         <Wrapper>
           <MitochondrialVariantFilterControls value={filter} onChange={setFilter} />
+          {clinvar && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
           <div>
             <ExportMitochondrialVariantsButton
               exportFileName={exportFileName}
@@ -274,7 +324,7 @@ const MitochondrialVariants = ({
               onVisibleRowsChange={onVisibleRowsChange}
             />
           ) : (
-            <StatusMessage>No matching variants</StatusMessage>
+            <StatusMessage>{noMatchingVariantsMessage}</StatusMessage>
           )}
         </Wrapper>
       </TrackPageSection>

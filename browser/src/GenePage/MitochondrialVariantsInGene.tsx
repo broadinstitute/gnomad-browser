@@ -5,7 +5,6 @@ import {
   referenceGenome,
   hasMitochondrialVariants,
 } from '@gnomad/dataset-metadata/metadata'
-import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -130,17 +129,17 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: P
 
         return (
           <>
-            <ClinvarVariants
-              clinvarVariants={data.gene.clinvar_variants}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-              referenceGenome={referenceGenome(datasetId)}
-              transcripts={gene.transcripts}
-              zoomRegion={zoomRegion}
-              pageType="gene"
-            />
-
             <MitochondrialVariants
+              key={`${datasetId}:${referenceGenome(datasetId)}:${gene.gene_id}`}
               {...rest}
+              clinvar={{
+                clinvarVariants:
+                  data.gene.clinvar_variants &&
+                  filterVariantsInZoomRegion(data.gene.clinvar_variants, zoomRegion),
+                referenceGenome: referenceGenome(datasetId),
+                transcripts: gene.transcripts,
+                pageType: 'gene',
+              }}
               clinvarReleaseDate={data.meta.clinvar_release_date}
               context={gene}
               datasetId={datasetId}

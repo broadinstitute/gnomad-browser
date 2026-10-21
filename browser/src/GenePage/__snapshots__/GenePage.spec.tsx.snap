@@ -34428,6 +34428,58 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          role="group"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -34437,6 +34489,54 @@ exports[`gene page for a mitochondrial gene doesn't include a show-transcripts b
         >
           gnomAD variants
         </h2>
+        <div
+          aria-label="Filter to variants present in both gnomAD and ClinVar tracks"
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          role="group"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
         <p>
           No gnomAD variants found.
         </p>
