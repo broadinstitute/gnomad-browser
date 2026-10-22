@@ -1,0 +1,1191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CoverageTrack has no unexpected changes 1`] = `
+<div
+  className="sc-ggWZvA faMivF"
+>
+  <div
+    className="sc-jwTyAe cTLZpt"
+    style={
+      {
+        "marginLeft": 100,
+        "marginRight": 160,
+        "width": 1440,
+      }
+    }
+  >
+    <div
+      className="CoverageTrack__TopPanel-sc-1kumbsx-0 cLbDZX"
+    >
+      <ul
+        className="CoverageTrack__LegendWrapper-sc-1kumbsx-1 jLTtQ"
+      >
+        <li
+          className="CoverageTrack__LegendItem-sc-1kumbsx-2 iyLhwF"
+        >
+          <span
+            className="CoverageTrack__LegendSwatch-sc-1kumbsx-3 oLsXH"
+            color="green"
+          />
+          genome
+        </li>
+      </ul>
+      <label
+        htmlFor="coverage-metric"
+      >
+        Metric:
+         
+        <select
+          className="Select-sc-1lkyg9e-0 iPbHsk"
+          id="coverage-metric"
+          onChange={[Function]}
+          value="over_20"
+        >
+          <optgroup
+            label="Per-base depth of coverage"
+          >
+            <option
+              value="mean"
+            >
+              Mean
+            </option>
+            <option
+              value="median"
+            >
+              Median
+            </option>
+          </optgroup>
+        </select>
+      </label>
+      <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
+        className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+        onClick={[Function]}
+        style={
+          {
+            "marginLeft": "1em",
+          }
+        }
+        type="button"
+      >
+        Save plot
+      </button>
+    </div>
+  </div>
+  <div
+    className="sc-dTvVRJ ejoLSV"
+  >
+    <div
+      className="sc-hjsuWn ccbdKG"
+      style={
+        {
+          "width": 100,
+        }
+      }
+    >
+      <div
+        className="CoverageTrack__TitlePanel-sc-1kumbsx-4 kxMCgi"
+      >
+        Fraction of individuals with coverage over 20
+      </div>
+    </div>
+    <div
+      className="sc-jJLAfE KfhrV"
+      style={
+        {
+          "width": 1440,
+        }
+      }
+    >
+      <div
+        style={
+          {
+            "marginLeft": -60,
+          }
+        }
+      >
+        <svg
+          height={190}
+          width={1500}
+        >
+          <g
+            className="visx-group visx-axis visx-axis-left"
+            transform="translate(60, 0)"
+          >
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={171.7}
+                y2={171.7}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={171.7}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.1
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={153.4}
+                y2={153.4}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={153.4}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.2
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={135.1}
+                y2={135.1}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={135.1}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.3
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={116.8}
+                y2={116.8}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={116.8}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.4
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={98.5}
+                y2={98.5}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={98.5}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.5
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={80.2}
+                y2={80.2}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={80.2}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.6
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={61.900000000000006}
+                y2={61.900000000000006}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={61.900000000000006}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.7
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={43.599999999999994}
+                y2={43.599999999999994}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={43.599999999999994}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.8
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={25.299999999999997}
+                y2={25.299999999999997}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={25.299999999999997}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    0.9
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={7}
+                y2={7}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={7}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    1.0
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <line
+              className="visx-line visx-axis-line"
+              fill="transparent"
+              shapeRendering="crispEdges"
+              stroke="#333"
+              strokeWidth={1}
+              x1={0}
+              x2={0}
+              y1={190.5}
+              y2={7.5}
+            />
+          </g>
+          <g
+            transform="translate(60,0)"
+          >
+            <g />
+            <line
+              stroke="#333"
+              x1={0}
+              x2={1440}
+              y1={190}
+              y2={190}
+            />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CoverageTrack has no unexpected changes with AN datasets 1`] = `
+<div
+  className="sc-ggWZvA faMivF"
+>
+  <div
+    className="sc-jwTyAe cTLZpt"
+    style={
+      {
+        "marginLeft": 100,
+        "marginRight": 160,
+        "width": 1440,
+      }
+    }
+  >
+    <div
+      className="CoverageTrack__TopPanel-sc-1kumbsx-0 cLbDZX"
+    >
+      <ul
+        className="CoverageTrack__LegendWrapper-sc-1kumbsx-1 jLTtQ"
+      >
+        <li
+          className="CoverageTrack__LegendItem-sc-1kumbsx-2 iyLhwF"
+        >
+          <span
+            className="CoverageTrack__LegendSwatch-sc-1kumbsx-3 oLsXH"
+            color="green"
+          />
+          genome
+        </li>
+      </ul>
+      <label
+        htmlFor="coverage-metric"
+      >
+        Metric:
+         
+        <select
+          className="Select-sc-1lkyg9e-0 iPbHsk"
+          id="coverage-metric"
+          onChange={[Function]}
+          value="an_percent"
+        >
+          <optgroup
+            label="Per-base depth of coverage"
+          >
+            <option
+              value="mean"
+            >
+              Mean
+            </option>
+            <option
+              value="median"
+            >
+              Median
+            </option>
+          </optgroup>
+          <optgroup
+            label="Allele number"
+          >
+            <option
+              value="an_percent"
+            >
+              Callrate
+            </option>
+            <option
+              value="an"
+            >
+              Allele number (AN)
+            </option>
+          </optgroup>
+        </select>
+      </label>
+      <button
+        backgroundColor="#f8f9fa"
+        borderColor="#6c757d"
+        className="Button__BaseButton-sc-1eobygi-0 Button-sc-1eobygi-1 VaScf"
+        onClick={[Function]}
+        style={
+          {
+            "marginLeft": "1em",
+          }
+        }
+        type="button"
+      >
+        Save plot
+      </button>
+    </div>
+  </div>
+  <div
+    className="sc-dTvVRJ ejoLSV"
+  >
+    <div
+      className="sc-hjsuWn ccbdKG"
+      style={
+        {
+          "width": 100,
+        }
+      }
+    >
+      <div
+        className="CoverageTrack__TitlePanel-sc-1kumbsx-4 kxMCgi"
+      >
+        Callrate (Allele Number %)
+        <button
+          className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+          onClick={[Function]}
+          type="button"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="test-file-stub"
+          />
+          <span
+            style={
+              {
+                "border": "0",
+                "clip": "rect(0 0 0 0)",
+                "height": "1px",
+                "margin": "-1px",
+                "overflow": "hidden",
+                "padding": "0",
+                "position": "absolute",
+                "whiteSpace": "nowrap",
+                "width": "1px",
+              }
+            }
+          >
+            More information
+          </span>
+        </button>
+      </div>
+    </div>
+    <div
+      className="sc-jJLAfE KfhrV"
+      style={
+        {
+          "width": 1440,
+        }
+      }
+    >
+      <div
+        style={
+          {
+            "marginLeft": -60,
+          }
+        }
+      >
+        <svg
+          height={190}
+          width={1500}
+        >
+          <g
+            className="visx-group visx-axis visx-axis-left"
+            transform="translate(60, 0)"
+          >
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={171.7}
+                y2={171.7}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={171.7}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    10%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={153.4}
+                y2={153.4}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={153.4}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    20%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={135.1}
+                y2={135.1}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={135.1}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    30%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={116.8}
+                y2={116.8}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={116.8}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    40%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={98.5}
+                y2={98.5}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={98.5}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    50%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={80.2}
+                y2={80.2}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={80.2}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    60%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={61.900000000000006}
+                y2={61.900000000000006}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={61.900000000000006}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    70%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={43.599999999999994}
+                y2={43.599999999999994}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={43.599999999999994}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    80%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={25.299999999999997}
+                y2={25.299999999999997}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={25.299999999999997}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    90%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <g
+              className="visx-group visx-axis-tick"
+              transform="translate(0, 0)"
+            >
+              <line
+                className="visx-line"
+                fill="transparent"
+                shapeRendering="crispEdges"
+                stroke="#222"
+                strokeLinecap="square"
+                strokeWidth={1}
+                x1={0}
+                x2={-8}
+                y1={7}
+                y2={7}
+              />
+              <svg
+                fontSize={10}
+                style={
+                  {
+                    "overflow": "visible",
+                  }
+                }
+                x="-0.25em"
+                y="0.25em"
+              >
+                <text
+                  fill="#000"
+                  fontSize={10}
+                  textAnchor="end"
+                  transform=""
+                  x={-8}
+                  y={7}
+                >
+                  <tspan
+                    dy="0em"
+                    x={-8}
+                  >
+                    100%
+                  </tspan>
+                </text>
+              </svg>
+            </g>
+            <line
+              className="visx-line visx-axis-line"
+              fill="transparent"
+              shapeRendering="crispEdges"
+              stroke="#333"
+              strokeWidth={1}
+              x1={0}
+              x2={0}
+              y1={190.5}
+              y2={7.5}
+            />
+          </g>
+          <g
+            transform="translate(60,0)"
+          >
+            <g />
+            <line
+              stroke="#333"
+              x1={0}
+              x2={1440}
+              y1={190}
+              y2={190}
+            />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+`;
