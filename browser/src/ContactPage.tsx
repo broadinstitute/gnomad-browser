@@ -46,8 +46,10 @@ export default () => (
     </p>
 
     <p>
-      Follow us on Twitter{' '}
-      <ExternalLink href="https://twitter.com/gnomad_project">@gnomad_project</ExternalLink>.
+      <ExternalLink href="https://www.linkedin.com/company/gnomad-project">
+        Follow us on LinkedIn
+      </ExternalLink>
+      .
     </p>
 
     <br />
