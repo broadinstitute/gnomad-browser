@@ -46,16 +46,20 @@ export default () => (
     </p>
 
     <p>
-      Follow us on Twitter{' '}
-      <ExternalLink href="https://twitter.com/gnomad_project">@gnomad_project</ExternalLink>.
+      <ExternalLink href="https://www.linkedin.com/company/gnomad-project">
+        Follow us on LinkedIn
+      </ExternalLink>
+      .
     </p>
 
     <br />
     <p>
       *Alternately, you can{' '}
-      <ExternalLink href="mailto:gnomad@broadinstitute.org">email us</ExternalLink>. Please note
-      that we prioritize answering issues on Github and topics on the Forum, so if you choose to
-      email it may take us longer to respond.
+      <ExternalLink href="mailto:gnomad@broadinstitute.org">email us</ExternalLink>. We prioritize
+      questions on GitHub and the{' '}
+      <ExternalLink href="https://discuss.gnomad.broadinstitute.org">forum</ExternalLink>, so email
+      responses may take longer; consider cross-posting your question on the forum if you&apos;d
+      like a faster reply.
     </p>
   </InfoPage>
 )
