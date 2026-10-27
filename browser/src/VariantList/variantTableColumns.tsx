@@ -3,6 +3,8 @@ import Highlighter from 'react-highlight-words'
 
 import { ExternalLink, TooltipAnchor, TooltipHint } from '@gnomad/ui'
 
+import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
+import { VariantTableContext } from './VariantTableContext'
 import Link from '../Link'
 import { Cell, NumericCell, renderAlleleCountCell, renderAlleleFrequencyCell } from '../tableCells'
 import { getCategoryFromConsequence, getLabelForConsequenceTerm } from '../vepConsequences'
@@ -389,7 +391,20 @@ const variantTableColumns: VariantTableColumn[] = [
   },
 ]
 
-export default variantTableColumns
+export const DEFAULT_COLUMNS = [
+  'source',
+  'gene',
+  'hgvs',
+  'consequence',
+  'lof_curation',
+  'clinical_significance',
+  'flags',
+  'ac',
+  'an',
+  'af',
+  'homozygote_count',
+  'hemizygote_count',
+]
 
 const getContextType = (context: any) => {
   if (context.transcript_id) {
@@ -401,7 +416,7 @@ const getContextType = (context: any) => {
   return 'region'
 }
 
-export const getColumnsForContext = (context: any) => {
+export const getColumnsForContext = (context: any): Record<string, VariantTableColumn> => {
   const contextType = getContextType(context)
   const columns = variantTableColumns
     .filter(
@@ -414,14 +429,16 @@ export const getColumnsForContext = (context: any) => {
         ? column.descriptionInContext(context, contextType)
         : column.description,
     }))
-    .reduce((acc, column) => ({ ...acc, [column.key]: column }), {})
+    .reduce<Record<string, VariantTableColumn>>(
+      (acc, column) => ({ ...acc, [column.key]: column }),
+      {}
+    )
 
   if (contextType === 'gene') {
     const primaryTranscriptId = context.mane_select_transcript
       ? context.mane_select_transcript.ensembl_id
       : context.canonical_transcript_id
 
-    // @ts-expect-error TS(2339) Property 'hgvs' does not exist on type '{}'.
     columns.hgvs.render = (variant: any, _: any, { highlightWords }: any) => (
       <Cell>
         <Highlighter autoEscape searchWords={highlightWords} textToHighlight={variant.hgvs || ''} />
@@ -432,3 +449,27 @@ export const getColumnsForContext = (context: any) => {
 
   return columns
 }
+
+export const getRenderedVariantTableColumns = (
+  context: VariantTableContext,
+  selectedColumns: string[],
+  clinvarReleaseDate: string
+): (VariantTableColumn & { isSortable: boolean; tooltip: string | undefined })[] => {
+  const columnsForContext = getColumnsForContext(context)
+  if (columnsForContext.clinical_significance) {
+    columnsForContext.clinical_significance.description = `ClinVar germline classification, formerly called clinical significance. Based on ClinVar's ${formatClinvarDate(
+      clinvarReleaseDate
+    )} release`
+  }
+
+  return ['variant_id', ...selectedColumns]
+    .map((columnKey) => columnsForContext[columnKey])
+    .filter(Boolean)
+    .map((column) => ({
+      ...column,
+      isSortable: Boolean(column.compareFunction),
+      tooltip: column.description,
+    }))
+}
+
+export default variantTableColumns

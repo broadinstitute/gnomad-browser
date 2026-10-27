@@ -7,25 +7,25 @@ import CategoryFilterControl from '../CategoryFilterControl'
 import InfoButton from '../help/InfoButton'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import { PageType, TrackPageSection } from '../TrackPage'
-import {
-  VEP_CONSEQUENCE_CATEGORIES,
-  VEP_CONSEQUENCE_CATEGORY_LABELS,
-  getCategoryFromConsequence,
-} from '../vepConsequences'
+import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 
 import {
   CLINICAL_SIGNIFICANCE_CATEGORIES,
   CLINICAL_SIGNIFICANCE_CATEGORY_LABELS,
   CLINICAL_SIGNIFICANCE_CATEGORY_COLORS,
-  clinvarVariantClinicalSignificanceCategory,
 } from './clinvarVariantCategories'
 import ClinvarAllVariantsPlot from './ClinvarAllVariantsPlot'
 import ClinvarBinnedVariantsPlot from './ClinvarBinnedVariantsPlot'
 import ClinvarVariantDetails from './ClinvarVariantDetails'
 import formatClinvarDate from './formatClinvarDate'
+import useClinvarVariantFiltering, { ClinvarVariantFiltering } from './useClinvarVariantFiltering'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import { ReferenceGenome } from '../../../dataset-metadata/metadata'
+import VariantSyncControl, {
+  NO_SHARED_VARIANTS_MESSAGE,
+  VariantSyncState,
+} from '../VariantList/VariantSyncControl'
 
 const TopPanel = styled.div`
   display: flex;
@@ -91,8 +91,10 @@ const SelectCategoryButton = styled(Button)`
 
 const FilterRow = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5em 1em;
 `
 
 type Props = {
@@ -101,43 +103,38 @@ type Props = {
   variants: ClinvarVariant[]
 }
 
-const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) => {
+type ControlledClinvarVariantTrackProps = Omit<Props, 'variants'> & {
+  selection: ClinvarVariantFiltering
+  sync?: VariantSyncState
+}
+
+const UnmemoizedControlledClinvarVariantTrack = ({
+  referenceGenome,
+  transcripts,
+  selection,
+  sync,
+}: ControlledClinvarVariantTrackProps) => {
   const [selectedVariant, setSelectedVariant] = useState(null)
-
-  const [includedClinicalSignificanceCategories, setIncludedClinicalSignificanceCategories] =
-    useState(
-      CLINICAL_SIGNIFICANCE_CATEGORIES.reduce(
-        (acc, category) => ({
-          ...acc,
-          [category]: true,
-        }),
-        {}
-      )
-    )
-
-  const [includedConsequenceCategories, setIncludedConsequenceCategories] = useState(
-    VEP_CONSEQUENCE_CATEGORIES.reduce(
-      (acc, category) => ({
-        ...acc,
-        [category]: true,
-      }),
-      {}
-    )
-  )
-
-  const [showOnlyGnomad, setShowOnlyGnomad] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
-  const [starFilter, setStarFilter] = useState(0)
+  const { filter, setFilter, filteredVariants } = selection
+  const { includedClinicalSignificanceCategories, includedConsequenceCategories, starFilter } =
+    filter
 
-  const filteredVariants = variants.filter(
-    (v) =>
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      includedClinicalSignificanceCategories[clinvarVariantClinicalSignificanceCategory(v)] &&
-      // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-      includedConsequenceCategories[getCategoryFromConsequence(v.major_consequence)] &&
-      (!showOnlyGnomad || v.in_gnomad) &&
-      v.gold_stars >= starFilter
-  )
+  const setIncludedClinicalSignificanceCategories = (categories: Record<string, boolean>) => {
+    setFilter((previousFilter) => ({
+      ...previousFilter,
+      includedClinicalSignificanceCategories: categories,
+    }))
+  }
+  const setIncludedConsequenceCategories = (categories: Record<string, boolean>) => {
+    setFilter((previousFilter) => ({
+      ...previousFilter,
+      includedConsequenceCategories: categories,
+    }))
+  }
+  const setStarFilter = (value: number) => {
+    setFilter((previousFilter) => ({ ...previousFilter, starFilter: value }))
+  }
 
   return (
     <>
@@ -168,7 +165,6 @@ const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants 
                     id={`clinvar-track-include-${category}`}
                     // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                     label={VEP_CONSEQUENCE_CATEGORY_LABELS[category]}
-                    // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
                     checked={includedConsequenceCategories[category]}
                     onChange={(value) => {
                       setIncludedConsequenceCategories({
@@ -222,13 +218,8 @@ const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants 
             </Button>
           </ControlRow>
           <FilterRow>
-            <Checkbox
-              id="clinvar-track-in-gnomad"
-              label="Only show ClinVar variants that are in gnomAD"
-              checked={showOnlyGnomad}
-              onChange={setShowOnlyGnomad}
-            />
-            <label htmlFor="star-filtering">
+            {sync && <VariantSyncControl id="clinvar-variant-sync" state={sync} />}
+            <label htmlFor="clinvar-star-filter">
               Filter by{' '}
               <ExternalLink href="https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/">
                 review status
@@ -249,6 +240,11 @@ const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants 
           </FilterRow>
         </TopPanel>
       </TrackPageSection>
+      {sync?.enabled && sync.available && filteredVariants.length === 0 && (
+        <TrackPageSection as="p" role="status">
+          {NO_SHARED_VARIANTS_MESSAGE}
+        </TrackPageSection>
+      )}
       <Track
         renderLeftPanel={() => (
           <TitlePanel>ClinVar variants ({filteredVariants.length})</TitlePanel>
@@ -292,6 +288,13 @@ const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants 
   )
 }
 
+export const ControlledClinvarVariantTrack = React.memo(UnmemoizedControlledClinvarVariantTrack)
+
+const UnmemoizedClinvarVariantTrack = ({ variants, ...props }: Props) => {
+  const selection = useClinvarVariantFiltering(variants)
+  return <ControlledClinvarVariantTrack {...props} selection={selection} />
+}
+
 export const ClinvarVariantTrack = React.memo(UnmemoizedClinvarVariantTrack)
 
 type ClinvarVariantsProps = {
@@ -301,6 +304,8 @@ type ClinvarVariantsProps = {
   transcripts: Transcript[]
   zoomRegion?: { start: number; stop: number } | null
   pageType: PageType
+  selection?: ClinvarVariantFiltering
+  sync?: VariantSyncState
 }
 
 const ClinvarVariants = ({
@@ -310,6 +315,8 @@ const ClinvarVariants = ({
   transcripts,
   zoomRegion = null,
   pageType,
+  selection,
+  sync,
 }: ClinvarVariantsProps) => {
   const heading = (
     <TrackPageSection>
@@ -328,17 +335,34 @@ const ClinvarVariants = ({
       <>
         {heading}
         {clinvarUnavailableMessage}
+        {sync && (
+          <TrackPageSection>
+            <VariantSyncControl id="clinvar-variant-sync" state={sync} />
+          </TrackPageSection>
+        )}
       </>
     )
   }
 
+  const standaloneTrack = !selection && (
+    <ClinvarVariantTrack
+      referenceGenome={referenceGenome}
+      transcripts={transcripts}
+      variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
+    />
+  )
+  const controlledTrack = selection && (
+    <ControlledClinvarVariantTrack
+      referenceGenome={referenceGenome}
+      transcripts={transcripts}
+      selection={selection}
+      sync={sync}
+    />
+  )
+
   const clinvarVariantTrack = (
     <>
-      <ClinvarVariantTrack
-        referenceGenome={referenceGenome}
-        transcripts={transcripts}
-        variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
-      />
+      {selection ? controlledTrack : standaloneTrack}
       <TrackPageSection as="p">
         Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
       </TrackPageSection>
@@ -346,7 +370,15 @@ const ClinvarVariants = ({
   )
 
   const noClinvarVariantsFoundMessage = (
-    <TrackPageSection as="p">{`No ClinVar variants found in this ${pageType}.`}</TrackPageSection>
+    <>
+      <TrackPageSection as="p">{`No ClinVar variants found in this ${pageType}.`}</TrackPageSection>
+      {sync && (
+        <TrackPageSection>
+          <VariantSyncControl id="clinvar-variant-sync" state={sync} />
+          {sync.enabled && sync.available && <p role="status">{NO_SHARED_VARIANTS_MESSAGE}</p>}
+        </TrackPageSection>
+      )}
+    </>
   )
 
   return (

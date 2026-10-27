@@ -7,6 +7,8 @@ import CategoryFilterControl from '../CategoryFilterControl'
 import { VEP_CONSEQUENCE_CATEGORIES, VEP_CONSEQUENCE_CATEGORY_LABELS } from '../vepConsequences'
 import InfoButton from '../help/InfoButton'
 import useSearchHotkeys from '../useSearchHotkeys'
+import { VariantFilterState } from './useVariantFiltering'
+import VariantSyncControl, { VariantSyncState } from './VariantSyncControl'
 
 const consequenceCategoryColors = {
   lof: '#FF583F',
@@ -61,26 +63,13 @@ const keyboardShortcuts = {
 
 type Props = {
   onChange: (...args: any[]) => any
-  value: {
-    includeCategories: {
-      lof: boolean
-      missense: boolean
-      synonymous: boolean
-      other: boolean
-    }
-    includeExomes: boolean
-    includeGenomes: boolean
-    includeFilteredVariants: boolean
-    includeSNVs: boolean
-    includeIndels: boolean
-    includeContext: boolean
-    searchText: string
-  }
+  value: VariantFilterState
   jumpToRow: (...args: any[]) => any
   position: number
+  sync?: VariantSyncState
 }
 
-const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) => {
+const VariantFilterControls = ({ onChange, value, jumpToRow, position, sync }: Props) => {
   const { searchInputRef, searchHotkeys } = useSearchHotkeys()
 
   return (
@@ -184,6 +173,11 @@ const VariantFilterControls = ({ onChange, value, jumpToRow, position }: Props) 
             />
           </span>
         </CheckboxSection>
+        {sync && (
+          <div style={{ flexBasis: '100%' }}>
+            <VariantSyncControl id="gnomad-variant-sync" state={sync} />
+          </div>
+        )}
       </CheckboxFiltersWrapper>
 
       <SearchWrapper>

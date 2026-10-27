@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Query from '../Query'
-import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import useLinkedVariantSelection from '../VariantList/useLinkedVariantSelection'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
@@ -31,7 +31,7 @@ type OwnVariantsInRegionProps = {
 type VariantsInRegionProps = OwnVariantsInRegionProps & typeof VariantsInRegion.defaultProps
 
 // @ts-expect-error TS(7022) FIXME: 'VariantsInRegion' implicitly has type 'any' becau... Remove this comment to see the full error message
-const VariantsInRegion = ({
+export const VariantsInRegion = ({
   clinvarReleaseDate,
   clinvarVariants,
   datasetId,
@@ -40,6 +40,18 @@ const VariantsInRegion = ({
   zoomRegion,
 }: VariantsInRegionProps) => {
   const datasetLabel = labelForDataset(datasetId)
+  const transcripts = useMemo(
+    () => region.genes.flatMap((gene: any) => gene.transcripts),
+    [region.genes]
+  )
+  const selection = useLinkedVariantSelection({
+    clinvarVariants,
+    variants,
+    context: region,
+    datasetId,
+    clinvarReleaseDate,
+    zoomRegion,
+  })
 
   return (
     <>
@@ -47,17 +59,19 @@ const VariantsInRegion = ({
         clinvarVariants={clinvarVariants}
         clinvarReleaseDate={clinvarReleaseDate}
         referenceGenome={referenceGenome(datasetId)}
-        transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
+        transcripts={transcripts}
         zoomRegion={zoomRegion}
         pageType="region"
+        selection={selection.clinvar}
+        sync={selection.sync}
       />
 
       <Variants
-        clinvarReleaseDate={clinvarReleaseDate}
+        selection={selection.gnomad}
+        sync={selection.sync}
         context={region}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${region.chrom}-${region.start}-${region.stop}`}
-        variants={filterVariantsInZoomRegion(variants, zoomRegion)}
       />
     </>
   )
@@ -226,6 +240,9 @@ const ConnectedVariantsInRegion = ({ datasetId, region }: ConnectedVariantsInReg
     {({ data }: any) => {
       return (
         <VariantsInRegion
+          key={`${datasetId}:${referenceGenome(datasetId)}:${region.chrom}:${region.start}-${
+            region.stop
+          }`}
           clinvarReleaseDate={data.meta.clinvar_release_date}
           clinvarVariants={data.region.clinvar_variants}
           datasetId={datasetId}
