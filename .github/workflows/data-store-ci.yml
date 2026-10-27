@@ -1,0 +1,48 @@
+name: Data Store CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data-store/**'
+      - '.tool-versions'
+      - '.github/workflows/data-store-ci.yml'
+  pull_request:
+    paths:
+      - 'data-store/**'
+      - '.tool-versions'
+      - '.github/workflows/data-store-ci.yml'
+permissions:
+  contents: read
+jobs:
+  data-store-checks:
+    name: Data Store Checks
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: data-store
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Read Rust version
+        id: rust-version
+        working-directory: .
+        run: |
+          version=$(awk '$1 == "rust" { print $2 }' .tool-versions)
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ steps.rust-version.outputs.version }}
+          components: rustfmt, clippy
+      - name: Cache Rust build
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: 'data-store -> target'
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Lint
+        run: cargo clippy --locked --all-targets -- -D warnings
+      - name: Run tests
+        run: cargo test --locked
