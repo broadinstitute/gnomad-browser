@@ -46,9 +46,11 @@ const BugReportControls = ({ error, context }: Props) => {
         <br />
         <br />
         <p>
-          Alternately, you can <ExternalLink href={emailURL}>email us</ExternalLink>. Please note
-          that we prioritize answering issues on Github and topics on the Forum, so if you choose to
-          email it may take us longer to respond.
+          *Alternately, you can <ExternalLink href={emailURL}>email us</ExternalLink>. We prioritize
+          questions on GitHub and the{' '}
+          <ExternalLink href="https://discuss.gnomad.broadinstitute.org">forum</ExternalLink>, so
+          email responses may take longer; consider cross-posting your question on the forum if
+          you&apos;d like a faster reply.
         </p>
       </p>
     </>

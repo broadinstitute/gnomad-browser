@@ -146,15 +146,13 @@ exports[`Contact Page has no unexpected changes 1`] = `
     Note that, for many reasons (including consent and data usage restrictions), we do not have (and cannot share) phenotype information. Overall, we have limited information that we can share for some cohorts, such as last known age in bins of 5 years (when known) and chromosomal sex.
   </p>
   <p>
-    Follow us on Twitter
-     
     <a
       className="c4"
-      href="https://twitter.com/gnomad_project"
+      href="https://www.linkedin.com/company/gnomad-project"
       rel="noopener noreferrer"
       target="_blank"
     >
-      @gnomad_project
+      Follow us on LinkedIn
     </a>
     .
   </p>
@@ -170,7 +168,17 @@ exports[`Contact Page has no unexpected changes 1`] = `
     >
       email us
     </a>
-    . Please note that we prioritize answering issues on Github and topics on the Forum, so if you choose to email it may take us longer to respond.
+    . We prioritize questions on GitHub and the
+     
+    <a
+      className="c4"
+      href="https://discuss.gnomad.broadinstitute.org"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      forum
+    </a>
+    , so email responses may take longer; consider cross-posting your question on the forum if you'd like a faster reply.
   </p>
 </div>
 `;
