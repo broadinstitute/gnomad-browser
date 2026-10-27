@@ -7,6 +7,8 @@
 		validate-data-pipeline fix-data-pipeline \
         check-format-deploy lint-deploy \
 		validate-deploy fix-deploy \
+	check-format-data-store lint-data-store test-data-store \
+		validate-data-store fix-data-store \
 		validate-all
 
 # Dependencies
@@ -105,5 +107,22 @@ fix-deploy:
 	uv run ruff format deploy/deployctl
 	uv run ruff check --fix deploy/deployctl
 
+# Data store
 # ===
-validate-all: validate-browser validate-graphql-api validate-data-pipeline validate-deploy
+check-format-data-store:
+	cd data-store && cargo fmt --all -- --check
+
+lint-data-store:
+	cd data-store && cargo clippy --locked --all-targets -- -D warnings
+
+test-data-store:
+	cd data-store && cargo test --locked
+
+validate-data-store: check-format-data-store lint-data-store test-data-store
+
+fix-data-store:
+	cd data-store && cargo fmt --all
+	cd data-store && cargo clippy --locked --all-targets --fix --allow-dirty -- -D warnings
+
+# ===
+validate-all: validate-browser validate-graphql-api validate-data-pipeline validate-deploy validate-data-store

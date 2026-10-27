@@ -17,7 +17,7 @@ them into Elasticsearch, and the GraphQL API serves narrow slices to the React f
 
 ## Toolchain versions
 
-Pinned in `.tool-versions` / `volta`: Node 18.17.1, pnpm 8.14.3, Python 3.9.17. Use pnpm (not npm/yarn)
+Pinned in `.tool-versions` / `volta`: Node 18.17.1, pnpm 8.14.3, Python 3.9.17, Rust 1.99.1. Use pnpm (not npm/yarn)
 for the JS workspace.
 
 ## Common commands
@@ -66,6 +66,13 @@ make fix-data-pipeline                         # Run all automated check and wri
 
 ```
 
+**Rust data store (run from repo root)**:
+
+```
+make validate-data-store                       # cargo fmt --check, clippy, and tests, as in CI
+make fix-data-store                            # cargo fmt and clippy --fix
+```
+
 The `Makefile` in the project root contains targets for common tasks, including installing dependencies, linting, formatting, checking types, and running tests.
 
 The `make` targets:
@@ -74,6 +81,7 @@ The `make` targets:
 - `validate-graphql-api`
 - `validate-data-pipeline`
 - `validate-deploy`
+- `validate-data-store`
 
 Can be used to easily replicate what will be run in the production CI, and each contain validation steps relevant to the named directory, e.g. `browser`. The target `validate-all` can be used to ensure all checks pass if you're unsure of which scoped `validate` targets to run.
 
@@ -111,6 +119,11 @@ Node GraphQL server backed by Elasticsearch, with a Redis cache.
 - `queries/` — Elasticsearch queries and result transformation (this is where ES index access lives;
   `variant-datasets/` and `mitochondrial-variant-datasets/` hold per-dataset query variants).
 - `rate-limiting.ts` — IP-level rate limiting; certain IPs are whitelisted via `gs://gnomad-browser/whitelist.json`.
+
+### data-store (`data-store/`)
+
+Rust crate for reading browser data from Parquet. Lints are strict (`[lints.clippy]` in
+`Cargo.toml`): pedantic and nursery groups plus panic-prone lints are denied.
 
 ### browser (`browser/src/`)
 
