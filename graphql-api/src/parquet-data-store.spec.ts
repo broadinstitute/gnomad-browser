@@ -1,0 +1,63 @@
+import { beforeEach, describe, expect, jest, test } from '@jest/globals'
+import { openClinvarStore } from '@gnomad/data-store'
+
+import config from './config'
+import logger from './logger'
+import initializeParquetDataStoreIfEnabled from './parquet-data-store'
+
+jest.mock('./config', () => ({
+  PARQUET_DATA_STORE_ENABLED: true,
+  PARQUET_DATA_ROOT: '/test/parquet',
+}))
+jest.mock('./logger', () => ({ info: jest.fn(), warn: jest.fn() }))
+// The addon is only built by the data-store CI, so the real package entry point may not exist here.
+jest.mock(
+  '@gnomad/data-store',
+  () => ({
+    openClinvarStore: jest.fn(async () => ({})),
+  }),
+  { virtual: true }
+)
+
+beforeEach(() => {
+  jest.clearAllMocks()
+  config.PARQUET_DATA_STORE_ENABLED = true
+  config.PARQUET_DATA_ROOT = '/test/parquet'
+})
+
+describe('Parquet data store initialization', () => {
+  test('opens the ClinVar dataset from the configured root', async () => {
+    const store = await initializeParquetDataStoreIfEnabled()
+
+    expect(openClinvarStore).toHaveBeenCalledWith('/test/parquet')
+    expect(store).toEqual({ clinvarGrch38: {} })
+    expect(logger.info).toHaveBeenCalledWith({
+      event: 'parquetDataStoreInitialized',
+      datasets: ['clinvar_variants_grch38'],
+    })
+  })
+
+  test('does not open native stores when disabled', async () => {
+    config.PARQUET_DATA_STORE_ENABLED = false
+
+    expect(await initializeParquetDataStoreIfEnabled()).toBeNull()
+    expect(openClinvarStore).not.toHaveBeenCalled()
+  })
+
+  test('rejects an empty root before opening any stores', async () => {
+    config.PARQUET_DATA_ROOT = ' '
+
+    await expect(initializeParquetDataStoreIfEnabled()).rejects.toThrow(
+      'PARQUET_DATA_ROOT is required'
+    )
+    expect(openClinvarStore).not.toHaveBeenCalled()
+  })
+
+  test('propagates an initialization failure instead of starting without the dataset', async () => {
+    const error = new Error('clinvar_variants_grch38 is missing')
+    jest.mocked(openClinvarStore).mockRejectedValueOnce(error)
+
+    await expect(initializeParquetDataStoreIfEnabled()).rejects.toBe(error)
+    expect(logger.info).not.toHaveBeenCalled()
+  })
+})

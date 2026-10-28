@@ -372,6 +372,9 @@ importers:
       '@elastic/elasticsearch':
         specifier: '6'
         version: 6.8.8
+      '@gnomad/data-store':
+        specifier: workspace:*
+        version: link:../data-store
       '@gnomad/dataset-metadata':
         specifier: '*'
         version: link:../dataset-metadata

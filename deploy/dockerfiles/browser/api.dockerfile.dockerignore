@@ -8,3 +8,5 @@
 !pnpm-workspace-api-docker.yaml
 !package.json
 !graphql-api/static_data
+!data-store/package.json
+!data-store/index.d.ts
