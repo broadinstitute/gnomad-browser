@@ -3,5 +3,8 @@ mod clinvar_variant;
 mod datafusion_context;
 
 pub use clinvar_reader::ClinvarReader;
-pub use clinvar_variant::ClinvarVariant;
+pub use clinvar_variant::{
+    ClinvarCondition, ClinvarGnomadData, ClinvarGnomadSequencingData, ClinvarSubmission,
+    ClinvarVariant,
+};
 pub use datafusion_context::create_datafusion_context;
