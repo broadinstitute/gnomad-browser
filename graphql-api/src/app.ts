@@ -139,47 +139,54 @@ app.use((req: any, res: any, next: any) => {
 
 loadWhitelist()
 
-const context: GraphQLContext = {
-  esClient,
-  requestId: requestStore.getStore()?.requestId ?? null,
-}
+const startServer = async (): Promise<void> => {
+  const context: GraphQLContext = {
+    esClient,
+    requestId: requestStore.getStore()?.requestId ?? null,
+  }
 
-app.use('/api/', graphQLApi({ context }))
+  app.use('/api/', graphQLApi({ context }))
 
-// On shutdown (SIGTERM/SIGINT) or fatal error (uncaughtException/unhandledRejection), stop accepting
-// requests, drain connections, and close ES/cache clients before exiting. A 10-second timeout forces
-// exit if graceful teardown stalls.
-const server = app.listen(config.PORT, () => {
-  logger.info({ event: 'serverStart', port: config.PORT })
-})
+  // On shutdown (SIGTERM/SIGINT) or fatal error (uncaughtException/unhandledRejection), stop accepting
+  // requests, drain connections, and close ES/cache clients before exiting. A 10-second timeout forces
+  // exit if graceful teardown stalls.
+  const server = app.listen(config.PORT, () => {
+    logger.info({ event: 'serverStart', port: config.PORT })
+  })
 
-const shutdown = (signal: string, exitCode = 0) => {
-  logger.info({ event: 'shutdown', signal })
+  const shutdown = (signal: string, exitCode = 0) => {
+    logger.info({ event: 'shutdown', signal })
 
-  const forceExit = setTimeout(() => {
-    logger.error({ event: 'shutdownTimeout' })
-    process.exit(1)
-  }, 10_000)
-  forceExit.unref()
+    const forceExit = setTimeout(() => {
+      logger.error({ event: 'shutdownTimeout' })
+      process.exit(1)
+    }, 10_000)
+    forceExit.unref()
 
-  server.close(async () => {
-    try {
-      await Promise.all([closeEsClient(), closeCache()])
-    } catch (err) {
-      logger.error(err)
-    }
-    clearTimeout(forceExit)
-    process.exit(exitCode)
+    server.close(async () => {
+      try {
+        await Promise.all([closeEsClient(), closeCache()])
+      } catch (err) {
+        logger.error(err)
+      }
+      clearTimeout(forceExit)
+      process.exit(exitCode)
+    })
+  }
+
+  process.on('SIGTERM', () => shutdown('SIGTERM'))
+  process.on('SIGINT', () => shutdown('SIGINT'))
+  process.on('uncaughtException', (error) => {
+    logger.error(error)
+    shutdown('uncaughtException', 1)
+  })
+  process.on('unhandledRejection', (error) => {
+    logger.error(error)
+    shutdown('unhandledRejection', 1)
   })
 }
 
-process.on('SIGTERM', () => shutdown('SIGTERM'))
-process.on('SIGINT', () => shutdown('SIGINT'))
-process.on('uncaughtException', (error) => {
+startServer().catch((error) => {
   logger.error(error)
-  shutdown('uncaughtException', 1)
-})
-process.on('unhandledRejection', (error) => {
-  logger.error(error)
-  shutdown('unhandledRejection', 1)
+  process.exit(1)
 })
