@@ -69,8 +69,8 @@ make fix-data-pipeline                         # Run all automated check and wri
 **Rust data store (run from repo root)**:
 
 ```
-make validate-data-store                       # cargo fmt --check, clippy, and tests, as in CI
-make fix-data-store                            # cargo fmt and clippy --fix
+make validate-data-store                       # cargo fmt --check, clippy, Rust tests, index.d.ts check, Node tests, as in CI
+make fix-data-store                            # cargo fmt, clippy --fix, and regenerate index.d.ts
 ```
 
 The `Makefile` in the project root contains targets for common tasks, including installing dependencies, linting, formatting, checking types, and running tests.

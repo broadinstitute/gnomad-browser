@@ -1,5 +1,6 @@
 packages:
   - 'browser'
   - 'dataset-metadata'
+  - 'data-store'
   - 'graphql-api'
   - 'reads'
