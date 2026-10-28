@@ -10,12 +10,13 @@ import {
 } from '../../queries/clinvar-variant-queries'
 
 import { UserVisibleError } from '../../errors'
+import type { GraphQLContext } from '../context'
 
 const resolveClinvarReleaseDate = (_: any, _args: any, ctx: any) => {
   return fetchClinvarReleaseDate(ctx.esClient)
 }
 
-const resolveClinVarVariant = async (_: any, args: any, ctx: any) => {
+const resolveClinVarVariant = async (_: any, args: any, ctx: GraphQLContext) => {
   if (!isVariantId(args.variant_id)) {
     throw new UserVisibleError('Invalid variant ID')
   }
