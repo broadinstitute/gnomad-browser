@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+datafusion = "55.2.0"
 
 [lints.clippy]
 pedantic = { level = "deny", priority = -1 }   # UM, ACTUALLY
