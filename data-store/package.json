@@ -1,0 +1,17 @@
+{
+  "name": "@gnomad/data-store",
+  "version": "0.1.0",
+  "private": true,
+  "main": "bindings/index.js",
+  "types": "bindings/index.d.ts",
+  "scripts": {
+    "build:native": "napi build --platform --output-dir bindings",
+    "test:node": "node --test tests/node/*.test.js"
+  },
+  "napi": {
+    "binaryName": "gnomad-data-store"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "3.1.0"
+  }
+}
