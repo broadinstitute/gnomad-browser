@@ -122,7 +122,8 @@ Node GraphQL server backed by Elasticsearch, with a Redis cache.
 
 ### data-store (`data-store/`)
 
-Rust crate for reading browser data from Parquet. Lints are strict (`[lints.clippy]` in
+Rust crate for reading browser data from Parquet with DataFusion. Datasets live under one root
+directory, one subdirectory per dataset (`ParquetDataset` in `src/parquet_dataset.rs`). Lints are strict (`[lints.clippy]` in
 `Cargo.toml`): pedantic and nursery groups plus panic-prone lints are denied.
 
 ### browser (`browser/src/`)
