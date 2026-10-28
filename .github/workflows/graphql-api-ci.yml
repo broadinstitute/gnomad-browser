@@ -6,12 +6,16 @@ on:
     paths:
       - 'graphql-api/**'
       - 'dataset-metadata/**'
+      - 'data-store/index.d.ts'
+      - 'data-store/package.json'
       - 'package.json'
       - 'pnpm-lock.yaml'
   pull_request:
     paths:
       - 'graphql-api/**'
       - 'dataset-metadata/**'
+      - 'data-store/index.d.ts'
+      - 'data-store/package.json'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - '.github/workflows/**'

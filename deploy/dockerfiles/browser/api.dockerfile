@@ -12,6 +12,8 @@ ENV NODE_ENV=production
 COPY --chown=node:node package.json /app/package.json
 COPY --chown=node:node dataset-metadata/package.json /app/dataset-metadata/package.json
 COPY --chown=node:node graphql-api/package.json /app/graphql-api/package.json
+COPY --chown=node:node data-store/package.json /app/data-store/package.json
+COPY --chown=node:node data-store/index.d.ts /app/data-store/index.d.ts
 COPY --chown=node:node pnpm-lock.yaml .
 COPY --chown=node:node pnpm-workspace-api-docker.yaml ./pnpm-workspace.yaml
 RUN pnpm install --production --frozen-lockfile

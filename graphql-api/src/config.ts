@@ -52,6 +52,10 @@ const config: Record<string, any> = {
 
   // GCP
   GCP_PROJECT: env.GCP_PROJECT,
+
+  // Parquet datastore
+  PARQUET_DATA_STORE_ENABLED: env.PARQUET_DATA_STORE_ENABLED === 'true' || false,
+  PARQUET_DATA_ROOT: env.PARQUET_DATA_ROOT,
 }
 
 const requiredConfig = ['ELASTICSEARCH_URL']

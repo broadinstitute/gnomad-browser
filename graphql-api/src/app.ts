@@ -11,6 +11,7 @@ import { requestStore } from './request-context'
 import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
 import type { GraphQLContext } from './graphql/context'
+import initializeParquetDataStoreIfEnabled from './parquet-data-store'
 
 // Extract the original trace ID from the request for Node's logs.
 // NGINX independently extracts the same ID for its own logs, so both logs
@@ -140,8 +141,11 @@ app.use((req: any, res: any, next: any) => {
 loadWhitelist()
 
 const startServer = async (): Promise<void> => {
+  const parquetDataStore = await initializeParquetDataStoreIfEnabled()
+
   const context: GraphQLContext = {
     esClient,
+    parquetDataStore,
     requestId: requestStore.getStore()?.requestId ?? null,
   }
 
