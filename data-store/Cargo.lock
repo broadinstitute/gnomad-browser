@@ -1567,6 +1567,7 @@ name = "gnomad-data-store"
 version = "0.1.0"
 dependencies = [
  "datafusion",
+ "tokio",
 ]
 
 [[package]]
