@@ -8,6 +8,7 @@
         check-format-deploy lint-deploy \
 		validate-deploy fix-deploy \
 	check-format-data-store lint-data-store test-data-store \
+		build-native-data-store check-types-data-store test-node-data-store \
 		validate-data-store fix-data-store \
 		validate-all
 
@@ -118,11 +119,22 @@ lint-data-store:
 test-data-store:
 	cd data-store && cargo test --locked
 
-validate-data-store: check-format-data-store lint-data-store test-data-store
+build-native-data-store:
+	cd data-store && pnpm build:native
+
+check-types-data-store: build-native-data-store
+	git diff --exit-code -- data-store/index.d.ts
+
+test-node-data-store: build-native-data-store
+	cd data-store && pnpm test:node
+
+validate-data-store: check-format-data-store lint-data-store test-data-store \
+	check-types-data-store test-node-data-store
 
 fix-data-store:
 	cd data-store && cargo fmt --all
 	cd data-store && cargo clippy --locked --all-targets --fix --allow-dirty -- -D warnings
+	cd data-store && pnpm build:native
 
 # ===
 validate-all: validate-browser validate-graphql-api validate-data-pipeline validate-deploy validate-data-store

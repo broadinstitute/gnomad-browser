@@ -6,11 +6,15 @@ on:
     paths:
       - 'data-store/**'
       - '.tool-versions'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
       - '.github/workflows/data-store-ci.yml'
   pull_request:
     paths:
       - 'data-store/**'
       - '.tool-versions'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
       - '.github/workflows/data-store-ci.yml'
 permissions:
   contents: read
@@ -24,17 +28,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Read Rust version
-        id: rust-version
+      - name: Read toolchain versions
+        id: toolchain-versions
         working-directory: .
         run: |
-          version=$(awk '$1 == "rust" { print $2 }' .tool-versions)
-          test -n "$version"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          for tool in rust nodejs pnpm; do
+            version=$(awk -v tool="$tool" '$1 == tool { print $2 }' .tool-versions)
+            test -n "$version"
+            echo "$tool=$version" >> "$GITHUB_OUTPUT"
+          done
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ steps.toolchain-versions.outputs.pnpm }}
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.toolchain-versions.outputs.nodejs }}
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+      - name: Install Node dependencies
+        working-directory: .
+        run: pnpm install --frozen-lockfile --filter @gnomad/data-store...
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: ${{ steps.rust-version.outputs.version }}
+          toolchain: ${{ steps.toolchain-versions.outputs.rust }}
           components: rustfmt, clippy
       - name: Cache Rust build
         uses: Swatinem/rust-cache@v2
@@ -44,5 +63,12 @@ jobs:
         run: cargo fmt --all -- --check
       - name: Lint
         run: cargo clippy --locked --all-targets -- -D warnings
-      - name: Run tests
+      - name: Run Rust tests
         run: cargo test --locked
+      - name: Build native addon
+        run: pnpm build:native
+      - name: Check generated type declarations
+        working-directory: .
+        run: git diff --exit-code -- data-store/index.d.ts
+      - name: Run Node tests
+        run: pnpm test:node

@@ -3,6 +3,7 @@
 mod clinvar_reader;
 mod clinvar_variant;
 mod datafusion_context;
+mod node_bindings;
 mod parquet_dataset;
 mod record_batch_decoding;
 
