@@ -8,6 +8,8 @@ crate-type = ["rlib"]
 
 [dependencies]
 datafusion = "55.2.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_arrow = { version = "0.15.1", features = ["arrow-59"] }
 tokio = { version = "1.54.1", features = ["macros", "rt-multi-thread"] }
 
 [lints.clippy]
