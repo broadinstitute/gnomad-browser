@@ -3,8 +3,13 @@ name = "gnomad-data-store"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
 datafusion = "55.2.0"
+napi = { version = "3.15.0", features = ["tokio_rt"] }
+napi-derive = "3.6.13"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_arrow = { version = "0.15.1", features = ["arrow-59"] }
 tokio = { version = "1.54.1", features = ["macros", "rt-multi-thread"] }
@@ -26,3 +31,6 @@ panic_in_result_fn = "deny"
 panic = "deny"
 exit = "deny"
 as_conversions = "deny"
+
+[build-dependencies]
+napi-build = "2.6.0"
