@@ -33,18 +33,47 @@ impl ClinvarReader {
         let dataframe = self
             .context
             .sql(&format!(
-                r"
+                r#"
                 SELECT
                     variant_id,
                     chrom AS chromosome,
                     pos AS position,
                     ref AS reference_allele,
-                    alt AS alternate_allele
+                    alt AS alternate_allele,
+                    reference_genome,
+                    clinvar_variation_id,
+                    clinical_significance,
+                    review_status,
+                    gold_stars,
+                    in_gnomad,
+                    last_evaluated,
+                    rsid,
+                    submissions,
+                    named_struct(
+                        'exome',
+                        CASE
+                            WHEN "gnomad.exome.ac" IS NULL THEN NULL
+                            ELSE named_struct(
+                                'ac', "gnomad.exome.ac",
+                                'an', "gnomad.exome.an",
+                                'filters', "gnomad.exome.filters"
+                            )
+                        END,
+                        'genome',
+                        CASE
+                            WHEN "gnomad.genome.ac" IS NULL THEN NULL
+                            ELSE named_struct(
+                                'ac', "gnomad.genome.ac",
+                                'an', "gnomad.genome.an",
+                                'filters', "gnomad.genome.filters"
+                            )
+                        END
+                    ) AS gnomad
                 FROM {table_name}
                 WHERE variant_id = $1
                   AND chrom = $2
                   AND pos = $3
-                ",
+                "#,
             ))
             .await?;
 
