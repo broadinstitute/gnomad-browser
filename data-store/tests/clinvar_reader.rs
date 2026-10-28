@@ -3,15 +3,59 @@
     reason = "Test assertions must fail the test; Result propagates setup errors."
 )]
 
+use datafusion::common::config::Dialect;
 use datafusion::error::Result;
-use datafusion::prelude::SessionContext;
+use datafusion::prelude::{SessionConfig, SessionContext};
 use gnomad_data_store::{ClinvarReader, ParquetDataset, create_datafusion_context_from_root};
 
 mod fixtures;
 
-/// Supply rows as (`variant_id`, `chromosome`, `position`, `reference_allele`, `alternate_allele`).
-async fn create_synthetic_reader(variant_rows: &str) -> Result<ClinvarReader> {
-    let context = SessionContext::new();
+/// Derive every detail column from `annotation_state`: `populated` fills each field and
+/// collection, `empty` leaves collections empty with exome-only gnomAD data, and `null` leaves
+/// optional fields and gnomAD data absent.
+const SYNTHETIC_DETAIL_COLUMNS: &str = r#"
+    'GRCh38' AS reference_genome,
+    concat('variation-', CAST(position AS VARCHAR)) AS clinvar_variation_id,
+    'Pathogenic' AS clinical_significance,
+    'reviewed by expert panel' AS review_status,
+    CAST(3 AS INT) AS gold_stars,
+    annotation_state = 'populated' AS in_gnomad,
+    CASE WHEN annotation_state <> 'null' THEN '2024-01-31' END AS last_evaluated,
+    CASE WHEN annotation_state <> 'null' THEN 'rs123' END AS rsid,
+    CASE WHEN annotation_state = 'populated' THEN [
+        named_struct(
+            'clinical_significance', 'Pathogenic',
+            'last_evaluated', '2024-01-31',
+            'review_status', 'reviewed by expert panel',
+            'submitter_name', 'Submitter A',
+            'conditions', [
+                named_struct('name', 'Condition A', 'medgen_id', 'C0000001'),
+                named_struct('name', 'Condition B', 'medgen_id', CAST(NULL AS VARCHAR))
+            ]
+        ),
+        named_struct(
+            'clinical_significance', CAST(NULL AS VARCHAR),
+            'last_evaluated', CAST(NULL AS VARCHAR),
+            'review_status', 'no assertion criteria provided',
+            'submitter_name', 'Submitter B',
+            'conditions', [named_struct('name', 'Condition C', 'medgen_id', 'C0000003')]
+        )
+    ] ELSE [] END AS submissions,
+    CASE WHEN annotation_state <> 'null' THEN CAST(3 AS INT) END AS "gnomad.exome.ac",
+    CASE WHEN annotation_state <> 'null' THEN CAST(1000 AS INT) END AS "gnomad.exome.an",
+    CASE
+        WHEN annotation_state = 'populated' THEN ['AS_VQSR']
+        WHEN annotation_state = 'empty' THEN []
+    END AS "gnomad.exome.filters",
+    CASE WHEN annotation_state = 'populated' THEN CAST(5 AS INT) END AS "gnomad.genome.ac",
+    CASE WHEN annotation_state = 'populated' THEN CAST(2000 AS INT) END AS "gnomad.genome.an",
+    CASE WHEN annotation_state = 'populated' THEN ['AC0', 'RF'] END AS "gnomad.genome.filters"
+"#;
+
+async fn create_reader_from_rows(supplied_rows: &str) -> Result<ClinvarReader> {
+    let mut config = SessionConfig::new();
+    config.options_mut().sql_parser.dialect = Dialect::DuckDB;
+    let context = SessionContext::new_with_config(config);
     let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
     let query = format!(
         r"
@@ -21,14 +65,34 @@ async fn create_synthetic_reader(variant_rows: &str) -> Result<ClinvarReader> {
             chromosome AS chrom,
             CAST(position AS INT) AS pos,
             reference_allele AS ref,
-            alternate_allele AS alt
-        FROM ({variant_rows}) AS supplied(
-            variant_id, chromosome, position, reference_allele, alternate_allele
-        )
+            alternate_allele AS alt,
+            {SYNTHETIC_DETAIL_COLUMNS}
+        FROM ({supplied_rows})
         "
     );
     context.sql(&query).await?.collect().await?;
     Ok(ClinvarReader::new(context))
+}
+
+/// Supply rows as (`variant_id`, `chromosome`, `position`, `reference_allele`, `alternate_allele`).
+async fn create_synthetic_reader(variant_rows: &str) -> Result<ClinvarReader> {
+    create_reader_from_rows(&format!(
+        "SELECT *, 'populated' AS annotation_state
+        FROM ({variant_rows}) AS supplied(
+            variant_id, chromosome, position, reference_allele, alternate_allele
+        )"
+    ))
+    .await
+}
+
+/// Supply rows as (`variant_id`, `annotation_state`).
+async fn create_synthetic_detail_reader(detail_rows: &str) -> Result<ClinvarReader> {
+    create_reader_from_rows(&format!(
+        "SELECT variant_id, '1' AS chromosome, 100 AS position,
+            'A' AS reference_allele, 'G' AS alternate_allele, annotation_state
+        FROM ({detail_rows}) AS supplied(variant_id, annotation_state)"
+    ))
+    .await
 }
 
 #[tokio::test]
@@ -76,6 +140,92 @@ async fn matches_the_exact_variant_id_without_interpreting_sql_in_input() -> Res
     for variant_id in ["1-100-A-C", "1-100-A", "1-100-A-G' OR TRUE --"] {
         assert!(reader.fetch_single_variant(variant_id).await?.is_none());
     }
+    Ok(())
+}
+
+#[tokio::test]
+async fn decodes_populated_details_in_supplied_order() -> Result<()> {
+    let reader = create_synthetic_detail_reader("VALUES ('1-100-A-G', 'populated')").await?;
+
+    let variant = reader
+        .fetch_single_variant("1-100-A-G")
+        .await?
+        .expect("supplied variant should exist");
+
+    assert_eq!(variant.reference_genome, "GRCh38");
+    assert_eq!(variant.clinvar_variation_id, "variation-100");
+    assert_eq!(variant.clinical_significance, "Pathogenic");
+    assert_eq!(variant.review_status, "reviewed by expert panel");
+    assert_eq!(variant.gold_stars, 3);
+    assert!(variant.in_gnomad);
+    assert_eq!(variant.last_evaluated.as_deref(), Some("2024-01-31"));
+    assert_eq!(variant.rsid.as_deref(), Some("rs123"));
+
+    let submitters: Vec<&str> = variant
+        .submissions
+        .iter()
+        .map(|submission| submission.submitter_name.as_str())
+        .collect();
+    assert_eq!(submitters, ["Submitter A", "Submitter B"]);
+
+    let first = variant.submissions.first().expect("first submission");
+    assert_eq!(first.clinical_significance.as_deref(), Some("Pathogenic"));
+    assert_eq!(first.last_evaluated.as_deref(), Some("2024-01-31"));
+    let conditions: Vec<(&str, Option<&str>)> = first
+        .conditions
+        .iter()
+        .map(|condition| (condition.name.as_str(), condition.medgen_id.as_deref()))
+        .collect();
+    assert_eq!(
+        conditions,
+        [("Condition A", Some("C0000001")), ("Condition B", None)]
+    );
+
+    let second = variant.submissions.get(1).expect("second submission");
+    assert!(second.clinical_significance.is_none());
+    assert!(second.last_evaluated.is_none());
+    assert_eq!(second.review_status, "no assertion criteria provided");
+
+    let exome = variant.gnomad.exome.expect("exome data should exist");
+    assert_eq!((exome.ac, exome.an), (3, 1000));
+    assert_eq!(exome.filters, ["AS_VQSR"]);
+    let genome = variant.gnomad.genome.expect("genome data should exist");
+    assert_eq!((genome.ac, genome.an), (5, 2000));
+    assert_eq!(genome.filters, ["AC0", "RF"]);
+    Ok(())
+}
+
+#[tokio::test]
+async fn decodes_empty_collections_and_exome_only_gnomad_data() -> Result<()> {
+    let reader = create_synthetic_detail_reader("VALUES ('1-100-A-G', 'empty')").await?;
+
+    let variant = reader
+        .fetch_single_variant("1-100-A-G")
+        .await?
+        .expect("supplied variant should exist");
+
+    assert!(variant.submissions.is_empty());
+    let exome = variant.gnomad.exome.expect("exome data should exist");
+    assert_eq!(exome.filters, Vec::<String>::new());
+    assert!(variant.gnomad.genome.is_none());
+    Ok(())
+}
+
+#[tokio::test]
+async fn decodes_missing_optional_fields_and_gnomad_data_as_absent() -> Result<()> {
+    let reader = create_synthetic_detail_reader("VALUES ('1-100-A-G', 'null')").await?;
+
+    let variant = reader
+        .fetch_single_variant("1-100-A-G")
+        .await?
+        .expect("supplied variant should exist");
+
+    assert!(!variant.in_gnomad);
+    assert!(variant.last_evaluated.is_none());
+    assert!(variant.rsid.is_none());
+    assert!(variant.submissions.is_empty());
+    assert!(variant.gnomad.exome.is_none());
+    assert!(variant.gnomad.genome.is_none());
     Ok(())
 }
 
@@ -156,5 +306,26 @@ async fn reads_variants_from_each_chromosome_partition_of_the_real_export() -> R
             .expect("fixture variant should exist");
         assert_eq!(variant.chromosome, chromosome);
     }
+    Ok(())
+}
+
+#[tokio::test]
+async fn decodes_details_from_the_real_export() -> Result<()> {
+    let context = create_datafusion_context_from_root(
+        fixtures::root_directory(),
+        ParquetDataset::ClinvarVariantsGrch38,
+    )
+    .await?;
+    let reader = ClinvarReader::new(context);
+
+    let variant = reader
+        .fetch_single_variant("1-69134-A-G")
+        .await?
+        .expect("fixture variant should exist");
+
+    assert!(variant.in_gnomad);
+    assert!(!variant.submissions.is_empty());
+    assert!(variant.gnomad.exome.is_some());
+    assert!(variant.gnomad.genome.is_some());
     Ok(())
 }
