@@ -12,6 +12,10 @@ import {
 import { UserVisibleError } from '../../errors'
 import type { GraphQLContext } from '../context'
 
+const MAX_CLINVAR_VARIANTS_IN_REGION = 30_000
+const TOO_MANY_CLINVAR_VARIANTS_IN_REGION_MESSAGE =
+  'This region has too many ClinVar variants to display. Select a smaller region to view ClinVar variants.'
+
 const resolveClinvarReleaseDate = (_: any, _args: any, ctx: any) => {
   return fetchClinvarReleaseDate(ctx.esClient)
 }
@@ -44,16 +48,32 @@ const resolveClinVarVariantsInGene = (obj: any, _args: any, ctx: any) => {
   return fetchClinvarVariantsByGene(ctx.esClient, obj.reference_genome, obj)
 }
 
-const resolveClinVarVariantsInRegion = async (obj: any, _args: any, ctx: any) => {
+const resolveClinVarVariantsInRegion = async (obj: any, _args: any, ctx: GraphQLContext) => {
+  const { parquetDataStore } = ctx
+  if (obj.reference_genome === 'GRCh38' && parquetDataStore) {
+    const numVariantsInRegion = await parquetDataStore.clinvarGrch38.countVariantsInRegion(
+      obj.chrom,
+      obj.start,
+      obj.stop
+    )
+    if (numVariantsInRegion > MAX_CLINVAR_VARIANTS_IN_REGION) {
+      throw new UserVisibleError(TOO_MANY_CLINVAR_VARIANTS_IN_REGION_MESSAGE)
+    }
+    return parquetDataStore.clinvarGrch38.fetchVariantsInRegion(
+      obj.chrom,
+      obj.start,
+      obj.stop,
+      MAX_CLINVAR_VARIANTS_IN_REGION
+    )
+  }
+
   const numVariantsInRegion = await countClinvarVariantsInRegion(
     ctx.esClient,
     obj.reference_genome,
     obj
   )
-  if (numVariantsInRegion > 30000) {
-    throw new UserVisibleError(
-      'This region has too many ClinVar variants to display. Select a smaller region to view ClinVar variants.'
-    )
+  if (numVariantsInRegion > MAX_CLINVAR_VARIANTS_IN_REGION) {
+    throw new UserVisibleError(TOO_MANY_CLINVAR_VARIANTS_IN_REGION_MESSAGE)
   }
 
   return fetchClinvarVariantsByRegion(ctx.esClient, obj.reference_genome, obj)
