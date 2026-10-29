@@ -6,6 +6,18 @@ export declare class ClinvarStore {
    * Returns an error if query execution, decoding, or uniqueness checks fail.
    */
   fetchSingleVariant(variantId: string): Promise<ClinvarVariant | null>
+  /**
+   * # Errors
+   * Rejects invalid intervals and propagates query failures.
+   */
+  countVariantsInRegion(chromosome: string, start: number, stop: number): Promise<number>
+  /**
+   * Return at most `limit` variants, ordered by position then variant ID.
+   *
+   * # Errors
+   * Rejects invalid intervals and propagates query or result-decoding failures.
+   */
+  fetchVariantsInRegion(chromosome: string, start: number, stop: number, limit: number): Promise<Array<ClinvarVariantListEntry>>
 }
 
 export interface ClinvarCondition {
@@ -32,6 +44,13 @@ export interface ClinvarSubmission {
   conditions: Array<ClinvarCondition>
 }
 
+export interface ClinvarTranscriptConsequence {
+  transcript_id: string | null
+  major_consequence: string | null
+  hgvsc: string | null
+  hgvsp: string | null
+}
+
 export interface ClinvarVariant {
   variant_id: string
   chrom: string
@@ -48,6 +67,22 @@ export interface ClinvarVariant {
   rsid: string | null
   submissions: Array<ClinvarSubmission>
   gnomad: ClinvarGnomadData
+}
+
+export interface ClinvarVariantListEntry {
+  variant_id: string
+  reference_genome: string
+  chrom: string
+  pos: number
+  ref: string
+  alt: string
+  clinvar_variation_id: string
+  clinical_significance: string
+  review_status: string
+  gold_stars: number
+  in_gnomad: boolean
+  gnomad: ClinvarGnomadData
+  transcript_consequence: ClinvarTranscriptConsequence | null
 }
 
 /**

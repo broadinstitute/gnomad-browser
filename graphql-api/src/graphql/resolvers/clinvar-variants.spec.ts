@@ -39,6 +39,8 @@ const createNativeStore = () => ({
   fetchSingleVariant: jest
     .fn<ClinvarStore['fetchSingleVariant']>()
     .mockResolvedValue(nativeVariant),
+  countVariantsInRegion: jest.fn<ClinvarStore['countVariantsInRegion']>().mockResolvedValue(0),
+  fetchVariantsInRegion: jest.fn<ClinvarStore['fetchVariantsInRegion']>().mockResolvedValue([]),
 })
 
 const createContext = (store: ClinvarStore | null): GraphQLContext => ({
