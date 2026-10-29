@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@elastic/elasticsearch": "6",
+    "@gnomad/data-store": "workspace:*",
     "@gnomad/dataset-metadata": "*",
     "@gnomad/identifiers": "3.0.0",
     "@google-cloud/storage": "^7.7.0",

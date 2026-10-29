@@ -360,7 +360,7 @@ importers:
     devDependencies:
       '@napi-rs/cli':
         specifier: 3.1.0
-        version: 3.1.0(@emnapi/runtime@1.11.2)(@types/node@20.7.0)
+        version: 3.1.0(@emnapi/runtime@1.9.2)(@types/node@20.7.0)
 
   dataset-metadata: {}
 
@@ -369,6 +369,9 @@ importers:
       '@elastic/elasticsearch':
         specifier: '6'
         version: 6.8.8
+      '@gnomad/data-store':
+        specifier: workspace:^
+        version: link:../data-store
       '@gnomad/dataset-metadata':
         specifier: '*'
         version: link:../dataset-metadata
@@ -2821,6 +2824,7 @@ packages:
     dependencies:
       tslib: 2.8.1
     dev: true
+    optional: true
 
   /@emnapi/runtime@1.9.2:
     resolution: {integrity: sha512-3U4+MIWHImeyu1wnmVygh5WlgfYDtyf0k8AbLhMFxOipihf6nrWC4syIm/SwEeec0mNSafiiNnMJwbza/Is6Lw==}
@@ -2828,7 +2832,6 @@ packages:
     dependencies:
       tslib: 2.8.1
     dev: true
-    optional: true
 
   /@emnapi/wasi-threads@1.2.1:
     resolution: {integrity: sha512-uTII7OYF+/Mes/MrcIOYp5yOtSMLBWSIoLPpcgwipoiKbli6k322tcoFsxoIIxPDqW01SQGAgko4EzZi2BNv2w==}
@@ -3957,7 +3960,7 @@ packages:
       - supports-color
     dev: false
 
-  /@napi-rs/cli@3.1.0(@emnapi/runtime@1.11.2)(@types/node@20.7.0):
+  /@napi-rs/cli@3.1.0(@emnapi/runtime@1.9.2)(@types/node@20.7.0):
     resolution: {integrity: sha512-vOJdydokWLN/YGSVKFfF8wAaslA2Lb4bcVNsgtA/phC1u/FCJZn1Ghkmb/pNoLXgNsSEwZ+7T0R1KupA4HdZpQ==}
     engines: {node: '>= 16'}
     hasBin: true
@@ -3970,7 +3973,7 @@ packages:
       emnapi:
         optional: true
     dependencies:
-      '@emnapi/runtime': 1.11.2
+      '@emnapi/runtime': 1.9.2
       '@inquirer/prompts': 7.10.1(@types/node@20.7.0)
       '@napi-rs/cross-toolchain': 1.0.3
       '@napi-rs/wasm-tools': 1.1.0
