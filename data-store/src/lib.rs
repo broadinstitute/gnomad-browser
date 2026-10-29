@@ -10,4 +10,6 @@ pub use clinvar_variant::{
     ClinvarTranscriptConsequence, ClinvarVariant, ClinvarVariantListEntry,
 };
 pub use datafusion_context::create_datafusion_context;
-pub use genomic_interval::{Chromosome, GenomicInterval, GenomicIntervalError};
+pub use genomic_interval::{
+    Chromosome, GenomicInterval, GenomicIntervalError, pad_and_merge_intervals,
+};

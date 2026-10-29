@@ -1,4 +1,4 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Chromosome {
     Chr1,
     Chr2,
@@ -107,6 +107,7 @@ pub enum GenomicIntervalError {
     InvalidChromosome,
     NonPositiveStart,
     StopBeforeStart,
+    PaddingOverflow,
 }
 
 impl GenomicInterval {
@@ -144,4 +145,62 @@ impl GenomicInterval {
     pub const fn stop(&self) -> i32 {
         self.stop
     }
+}
+
+/// Clamp padded starts to one; merge overlapping or adjacent intervals within each chromosome.
+///
+/// # Errors
+/// Returns an error if a padded stop cannot be represented as an `i32`.
+pub fn pad_and_merge_intervals(
+    intervals: &[GenomicInterval],
+    padding: u32,
+) -> Result<Vec<GenomicInterval>, GenomicIntervalError> {
+    let padded_intervals = intervals
+        .iter()
+        .map(|interval| pad_interval(interval, padding))
+        .collect::<Result<Vec<_>, _>>()?;
+
+    Ok(merge_overlapping_or_adjacent_intervals(padded_intervals))
+}
+
+fn pad_interval(
+    interval: &GenomicInterval,
+    padding: u32,
+) -> Result<GenomicInterval, GenomicIntervalError> {
+    let padding = i32::try_from(padding).map_err(|_| GenomicIntervalError::PaddingOverflow)?;
+
+    let padded_clamped_start = interval.start.saturating_sub(padding).max(1);
+
+    let padded_stop = interval
+        .stop
+        .checked_add(padding)
+        .ok_or(GenomicIntervalError::PaddingOverflow)?;
+
+    Ok(GenomicInterval {
+        chromosome: interval.chromosome,
+        start: padded_clamped_start,
+        stop: padded_stop,
+    })
+}
+
+fn merge_overlapping_or_adjacent_intervals(
+    mut intervals: Vec<GenomicInterval>,
+) -> Vec<GenomicInterval> {
+    intervals.sort_unstable_by_key(|interval| (interval.chromosome, interval.start, interval.stop));
+    let mut merged: Vec<GenomicInterval> = Vec::with_capacity(intervals.len());
+
+    for interval in intervals {
+        if let Some(previous) = merged.last_mut() {
+            let mergeable_start_limit = previous.stop.saturating_add(1);
+            if previous.chromosome == interval.chromosome && interval.start <= mergeable_start_limit
+            {
+                previous.stop = previous.stop.max(interval.stop);
+                continue;
+            }
+        }
+
+        merged.push(interval);
+    }
+
+    merged
 }
