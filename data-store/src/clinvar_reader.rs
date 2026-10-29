@@ -1,8 +1,42 @@
 use crate::record_batch_decoding::{at_most_one, decode_record_batches};
-use crate::{ClinvarVariant, ParquetDataset};
+use crate::{ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset};
 use datafusion::common::ScalarValue;
 use datafusion::error::DataFusionError;
 use datafusion::prelude::SessionContext;
+
+const CLINVAR_LIST_ENTRY_FIELDS: &str = r#"
+    variant_id,
+    reference_genome,
+    chrom AS chromosome,
+    pos AS position,
+    ref AS reference_allele,
+    alt AS alternate_allele,
+    clinvar_variation_id,
+    clinical_significance,
+    review_status,
+    gold_stars,
+    in_gnomad,
+    named_struct(
+        'exome',
+        CASE
+            WHEN "gnomad.exome.ac" IS NULL THEN NULL
+            ELSE named_struct(
+                'ac', "gnomad.exome.ac",
+                'an', "gnomad.exome.an",
+                'filters', "gnomad.exome.filters"
+            )
+        END,
+        'genome',
+        CASE
+            WHEN "gnomad.genome.ac" IS NULL THEN NULL
+            ELSE named_struct(
+                'ac', "gnomad.genome.ac",
+                'an', "gnomad.genome.an",
+                'filters', "gnomad.genome.filters"
+            )
+        END
+    ) AS gnomad
+"#;
 
 pub struct ClinvarReader {
     context: SessionContext,
@@ -45,6 +79,14 @@ fn parse_variant_id(variant_id: &str) -> datafusion::error::Result<(&str, i32)> 
     }
 }
 
+fn region_parameters(interval: &GenomicInterval) -> Vec<ScalarValue> {
+    vec![
+        ScalarValue::Utf8(Some(interval.chromosome().as_str().to_owned())),
+        ScalarValue::Int32(Some(interval.start())),
+        ScalarValue::Int32(Some(interval.stop())),
+    ]
+}
+
 impl ClinvarReader {
     #[must_use]
     pub const fn new(context: SessionContext) -> Self {
@@ -65,47 +107,13 @@ impl ClinvarReader {
         let dataframe = self
             .context
             .sql(&format!(
-                r#"
-                SELECT
-                    variant_id,
-                    chrom AS chromosome,
-                    pos AS position,
-                    ref AS reference_allele,
-                    alt AS alternate_allele,
-                    reference_genome,
-                    clinvar_variation_id,
-                    clinical_significance,
-                    review_status,
-                    gold_stars,
-                    in_gnomad,
-                    last_evaluated,
-                    rsid,
-                    submissions,
-                    named_struct(
-                        'exome',
-                        CASE
-                            WHEN "gnomad.exome.ac" IS NULL THEN NULL
-                            ELSE named_struct(
-                                'ac', "gnomad.exome.ac",
-                                'an', "gnomad.exome.an",
-                                'filters', "gnomad.exome.filters"
-                            )
-                        END,
-                        'genome',
-                        CASE
-                            WHEN "gnomad.genome.ac" IS NULL THEN NULL
-                            ELSE named_struct(
-                                'ac', "gnomad.genome.ac",
-                                'an', "gnomad.genome.an",
-                                'filters', "gnomad.genome.filters"
-                            )
-                        END
-                    ) AS gnomad
+                "
+                SELECT {CLINVAR_LIST_ENTRY_FIELDS}, last_evaluated, rsid, submissions
                 FROM {table_name}
                 WHERE variant_id = $1
                   AND chrom = $2
                   AND pos = $3
-                "#,
+                ",
             ))
             .await?;
 
@@ -124,5 +132,63 @@ impl ClinvarReader {
         at_most_one(variants, || {
             format!("Multiple ClinVar records found for variant ID: {variant_id}")
         })
+    }
+
+    /// # Errors
+    /// Returns an error if query execution fails.
+    pub async fn count_variants_in_region(
+        &self,
+        interval: &GenomicInterval,
+    ) -> datafusion::error::Result<usize> {
+        let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
+        self.context
+            .sql(&format!(
+                "
+                SELECT pos
+                FROM {table_name}
+                WHERE chrom = $1
+                  AND pos BETWEEN $2 AND $3
+                "
+            ))
+            .await?
+            .with_param_values(region_parameters(interval))?
+            .count()
+            .await
+    }
+
+    /// Return at most `limit` variants, ordered by position then variant ID.
+    ///
+    /// # Errors
+    /// Returns an error if query execution or list-entry decoding fails.
+    pub async fn fetch_variants_in_region(
+        &self,
+        interval: &GenomicInterval,
+        limit: usize,
+    ) -> datafusion::error::Result<Vec<ClinvarVariantListEntry>> {
+        let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
+
+        let query = format!(
+            r"
+            SELECT {CLINVAR_LIST_ENTRY_FIELDS},
+                array_first(
+                    transcript_consequences,
+                    consequence -> starts_with(consequence['gene_id'], 'ENSG')
+                ) AS transcript_consequence
+            FROM {table_name}
+            WHERE chrom = $1
+              AND pos BETWEEN $2 AND $3
+            ORDER BY pos, variant_id
+            "
+        );
+        let batches = self
+            .context
+            .sql(&query)
+            .await?
+            .with_param_values(region_parameters(interval))?
+            .limit(0, Some(limit))?
+            .collect()
+            .await?;
+
+        decode_record_batches(&batches, format_args!("ClinVar results for {interval:?}"))
     }
 }
