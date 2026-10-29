@@ -6,12 +6,15 @@
 use napi::bindgen_prelude::{Either, Null};
 use napi_derive::napi;
 
-use super::{into_napi_error, into_nullable};
+use super::{into_napi_error, into_nullable, map_interval_error};
 use crate::{
     ClinvarCondition as ReaderClinvarCondition, ClinvarGnomadData as ReaderClinvarGnomadData,
     ClinvarGnomadSequencingData as ReaderClinvarGnomadSequencingData, ClinvarReader,
-    ClinvarSubmission as ReaderClinvarSubmission, ClinvarVariant as ReaderClinvarVariant,
-    ParquetDataset, create_datafusion_context_from_root,
+    ClinvarSubmission as ReaderClinvarSubmission,
+    ClinvarTranscriptConsequence as ReaderClinvarTranscriptConsequence,
+    ClinvarVariant as ReaderClinvarVariant,
+    ClinvarVariantListEntry as ReaderClinvarVariantListEntry, GenomicInterval, ParquetDataset,
+    create_datafusion_context_from_root,
 };
 
 #[napi]
@@ -50,6 +53,52 @@ impl ClinvarStore {
             .map_err(|error| into_napi_error(&error))?;
 
         Ok(into_nullable(variant.map(ClinvarVariant::from)))
+    }
+
+    /// # Errors
+    /// Rejects invalid intervals and propagates query failures.
+    #[napi]
+    pub async fn count_variants_in_region(
+        &self,
+        chromosome: String,
+        start: i32,
+        stop: i32,
+    ) -> napi::Result<u32> {
+        let interval = GenomicInterval::new(&chromosome, start, stop)
+            .map_err(|error| map_interval_error(&error))?;
+
+        let count = self
+            .reader
+            .count_variants_in_region(&interval)
+            .await
+            .map_err(|error| into_napi_error(&error))?;
+
+        u32::try_from(count).map_err(|error| into_napi_error(&error))
+    }
+
+    /// Return at most `limit` variants, ordered by position then variant ID.
+    ///
+    /// # Errors
+    /// Rejects invalid intervals and propagates query or result-decoding failures.
+    #[napi]
+    pub async fn fetch_variants_in_region(
+        &self,
+        chromosome: String,
+        start: i32,
+        stop: i32,
+        limit: u32,
+    ) -> napi::Result<Vec<ClinvarVariantListEntry>> {
+        let interval = GenomicInterval::new(&chromosome, start, stop)
+            .map_err(|error| map_interval_error(&error))?;
+        let limit = usize::try_from(limit).map_err(|error| into_napi_error(&error))?;
+
+        let variants = self
+            .reader
+            .fetch_variants_in_region(&interval, limit)
+            .await
+            .map_err(|error| into_napi_error(&error))?;
+
+        Ok(variants.into_iter().map(Into::into).collect())
     }
 }
 
@@ -172,6 +221,73 @@ impl From<ReaderClinvarGnomadSequencingData> for ClinvarGnomadSequencingData {
             ac: data.ac,
             an: data.an,
             filters: data.filters,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct ClinvarTranscriptConsequence {
+    #[napi(js_name = "transcript_id")]
+    pub transcript_id: Either<String, Null>,
+    #[napi(js_name = "major_consequence")]
+    pub major_consequence: Either<String, Null>,
+    pub hgvsc: Either<String, Null>,
+    pub hgvsp: Either<String, Null>,
+}
+
+impl From<ReaderClinvarTranscriptConsequence> for ClinvarTranscriptConsequence {
+    fn from(consequence: ReaderClinvarTranscriptConsequence) -> Self {
+        Self {
+            transcript_id: into_nullable(consequence.transcript_id),
+            major_consequence: into_nullable(consequence.major_consequence),
+            hgvsc: into_nullable(consequence.hgvsc),
+            hgvsp: into_nullable(consequence.hgvsp),
+        }
+    }
+}
+
+#[napi(object)]
+pub struct ClinvarVariantListEntry {
+    #[napi(js_name = "variant_id")]
+    pub variant_id: String,
+    #[napi(js_name = "reference_genome")]
+    pub reference_genome: String,
+    pub chrom: String,
+    pub pos: i32,
+    #[napi(js_name = "ref")]
+    pub reference_allele: String,
+    pub alt: String,
+    #[napi(js_name = "clinvar_variation_id")]
+    pub clinvar_variation_id: String,
+    #[napi(js_name = "clinical_significance")]
+    pub clinical_significance: String,
+    #[napi(js_name = "review_status")]
+    pub review_status: String,
+    #[napi(js_name = "gold_stars")]
+    pub gold_stars: i32,
+    #[napi(js_name = "in_gnomad")]
+    pub in_gnomad: bool,
+    pub gnomad: ClinvarGnomadData,
+    #[napi(js_name = "transcript_consequence")]
+    pub transcript_consequence: Either<ClinvarTranscriptConsequence, Null>,
+}
+
+impl From<ReaderClinvarVariantListEntry> for ClinvarVariantListEntry {
+    fn from(variant: ReaderClinvarVariantListEntry) -> Self {
+        Self {
+            variant_id: variant.variant_id,
+            reference_genome: variant.reference_genome,
+            chrom: variant.chromosome,
+            pos: variant.position,
+            reference_allele: variant.reference_allele,
+            alt: variant.alternate_allele,
+            clinvar_variation_id: variant.clinvar_variation_id,
+            clinical_significance: variant.clinical_significance,
+            review_status: variant.review_status,
+            gold_stars: variant.gold_stars,
+            in_gnomad: variant.in_gnomad,
+            gnomad: variant.gnomad.into(),
+            transcript_consequence: into_nullable(variant.transcript_consequence.map(Into::into)),
         }
     }
 }
