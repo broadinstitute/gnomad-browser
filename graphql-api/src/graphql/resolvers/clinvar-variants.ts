@@ -23,6 +23,16 @@ const resolveClinVarVariant = async (_: any, args: any, ctx: GraphQLContext) => 
 
   const variantId = normalizeVariantId(args.variant_id)
 
+  // ===
+
+  const parquetDataStore = ctx.parquetDataStore
+
+  if (args.reference_genome === 'GRCh38' && parquetDataStore !== null) {
+    return parquetDataStore.clinvarGrch38.fetchSingleVariant(variantId)
+  }
+
+  // ===
+
   const variant = await fetchClinvarVariantById(ctx.esClient, args.reference_genome, variantId)
 
   // Previously, we would return an error from the API if a variant was not found in ClinVar

@@ -10,9 +10,11 @@ import logger from './logger'
 import { requestStore } from './request-context'
 import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
+import initializeParquetDataStoreIfEnabled, { ParquetDataStore } from './parquet-data-store'
 
 export interface GraphQLContext {
   esClient: typeof esClient
+  parquetDataStore: ParquetDataStore | null
   requestId: string | null
 }
 
@@ -143,47 +145,57 @@ app.use((req: any, res: any, next: any) => {
 
 loadWhitelist()
 
-const context: GraphQLContext = {
-  esClient,
-  requestId: requestStore.getStore()?.requestId ?? null,
-}
+const startServer = async (): Promise<void> => {
+  const parquetDataStore = await initializeParquetDataStoreIfEnabled()
 
-app.use('/api/', graphQLApi({ context }))
+  const context: GraphQLContext = {
+    esClient,
+    parquetDataStore,
+    requestId: requestStore.getStore()?.requestId ?? null,
+  }
 
-// On shutdown (SIGTERM/SIGINT) or fatal error (uncaughtException/unhandledRejection), stop accepting
-// requests, drain connections, and close ES/cache clients before exiting. A 10-second timeout forces
-// exit if graceful teardown stalls.
-const server = app.listen(config.PORT, () => {
-  logger.info({ event: 'serverStart', port: config.PORT })
-})
+  app.use('/api/', graphQLApi({ context }))
 
-const shutdown = (signal: string, exitCode = 0) => {
-  logger.info({ event: 'shutdown', signal })
+  // On shutdown (SIGTERM/SIGINT) or fatal error (uncaughtException/unhandledRejection), stop accepting
+  // requests, drain connections, and close ES/cache clients before exiting. A 10-second timeout forces
+  // exit if graceful teardown stalls.
+  const server = app.listen(config.PORT, () => {
+    logger.info({ event: 'serverStart', port: config.PORT })
+  })
 
-  const forceExit = setTimeout(() => {
-    logger.error({ event: 'shutdownTimeout' })
-    process.exit(1)
-  }, 10_000)
-  forceExit.unref()
+  const shutdown = (signal: string, exitCode = 0) => {
+    logger.info({ event: 'shutdown', signal })
 
-  server.close(async () => {
-    try {
-      await Promise.all([closeEsClient(), closeCache()])
-    } catch (err) {
-      logger.error(err)
-    }
-    clearTimeout(forceExit)
-    process.exit(exitCode)
+    const forceExit = setTimeout(() => {
+      logger.error({ event: 'shutdownTimeout' })
+      process.exit(1)
+    }, 10_000)
+    forceExit.unref()
+
+    server.close(async () => {
+      try {
+        await Promise.all([closeEsClient(), closeCache()])
+      } catch (err) {
+        logger.error(err)
+      }
+      clearTimeout(forceExit)
+      process.exit(exitCode)
+    })
+  }
+
+  process.on('SIGTERM', () => shutdown('SIGTERM'))
+  process.on('SIGINT', () => shutdown('SIGINT'))
+  process.on('uncaughtException', (error) => {
+    logger.error(error)
+    shutdown('uncaughtException', 1)
+  })
+  process.on('unhandledRejection', (error) => {
+    logger.error(error)
+    shutdown('unhandledRejection', 1)
   })
 }
 
-process.on('SIGTERM', () => shutdown('SIGTERM'))
-process.on('SIGINT', () => shutdown('SIGINT'))
-process.on('uncaughtException', (error) => {
+startServer().catch((error) => {
   logger.error(error)
-  shutdown('uncaughtException', 1)
-})
-process.on('unhandledRejection', (error) => {
-  logger.error(error)
-  shutdown('unhandledRejection', 1)
+  process.exit(1)
 })
