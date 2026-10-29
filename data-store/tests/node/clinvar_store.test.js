@@ -4,7 +4,8 @@ const { test } = require('node:test')
 
 const { openClinvarStore } = require('../../bindings')
 
-const FIXTURE_PATH = path.resolve(__dirname, '../fixtures/clinvar_grch38_variants.parquet')
+const FIXTURE_DIRECTORY = path.resolve(__dirname, '../fixtures/clinvar_grch38_variants')
+const FIXTURE_PATH = path.join(FIXTURE_DIRECTORY, 'chrom=1/data_0.parquet')
 
 test('fetches a variant as a JavaScript object', async () => {
   const store = await openClinvarStore(FIXTURE_PATH)
@@ -82,6 +83,29 @@ test('preserves empty filters and a missing genome annotation', async () => {
     exome: { ac: 3, an: 1457038, filters: [] },
     genome: null,
   })
+})
+
+test('reads both chromosomes through one directory-backed store', async () => {
+  const store = await openClinvarStore(FIXTURE_DIRECTORY)
+
+  const variants = [
+    ['1-1456298-G-A', '1', 'G', 'A'],
+    ['2-1456298-C-G', '2', 'C', 'G'],
+    ['2-1456298-C-T', '2', 'C', 'T'],
+  ]
+
+  await Promise.all(
+    variants.map(async ([variantId, chromosome, referenceAllele, alternateAllele]) => {
+      const variant = await store.fetchSingleVariant(variantId)
+
+      assert.ok(variant, `fixture variant should exist: ${variantId}`)
+      assert.strictEqual(variant.variant_id, variantId)
+      assert.strictEqual(variant.chrom, chromosome)
+      assert.strictEqual(variant.pos, 1456298)
+      assert.strictEqual(variant.ref, referenceAllele)
+      assert.strictEqual(variant.alt, alternateAllele)
+    })
+  )
 })
 
 test('returns null for an absent variant', async () => {

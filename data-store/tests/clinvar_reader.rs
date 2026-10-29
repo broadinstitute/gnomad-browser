@@ -7,8 +7,12 @@ use gnomad_data_store::{ClinvarReader, create_datafusion_context};
 
 const CLINVAR_TABLE_NAME: &str = "clinvar_grch38_variants";
 
+fn fixture_directory() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/clinvar_grch38_variants")
+}
+
 fn fixture_path() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/clinvar_grch38_variants.parquet")
+    fixture_directory().join("chrom=1/data_0.parquet")
 }
 
 #[tokio::test]
@@ -18,7 +22,35 @@ async fn registers_clinvar_table_with_fixture_records() -> Result<()> {
 
     let row_count = context.table(CLINVAR_TABLE_NAME).await?.count().await?;
 
-    assert_eq!(row_count, 4);
+    assert_eq!(row_count, 11);
+    Ok(())
+}
+
+#[tokio::test]
+async fn reads_both_chromosomes_from_one_registered_directory() -> Result<()> {
+    let path = fixture_directory();
+    let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
+    let row_count = context.table(CLINVAR_TABLE_NAME).await?.count().await?;
+    assert_eq!(row_count, 19);
+    let reader = ClinvarReader::new(context);
+
+    for (variant_id, chromosome, reference_allele, alternate_allele) in [
+        ("1-1456298-G-A", "1", "G", "A"),
+        ("2-1456298-C-G", "2", "C", "G"),
+        ("2-1456298-C-T", "2", "C", "T"),
+    ] {
+        let variant = reader
+            .fetch_single_variant(variant_id)
+            .await?
+            .expect("fixture variant should exist");
+
+        assert_eq!(variant.variant_id, variant_id);
+        assert_eq!(variant.chromosome, chromosome);
+        assert_eq!(variant.position, 1_456_298);
+        assert_eq!(variant.reference_allele, reference_allele);
+        assert_eq!(variant.alternate_allele, alternate_allele);
+    }
+
     Ok(())
 }
 
