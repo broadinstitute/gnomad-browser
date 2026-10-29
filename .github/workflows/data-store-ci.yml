@@ -67,5 +67,8 @@ jobs:
         run: cargo test --locked
       - name: Build native addon
         run: pnpm build:native
+      - name: Check generated type declarations
+        working-directory: .
+        run: git diff --exit-code -- data-store/index.d.ts
       - name: Run Node tests
         run: pnpm test:node

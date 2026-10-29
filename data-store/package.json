@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "main": "bindings/index.js",
-  "types": "bindings/index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
-    "build:native": "napi build --platform --output-dir bindings",
+    "build:native": "napi build --platform --output-dir bindings && cp bindings/index.d.ts index.d.ts",
     "test:node": "node --test tests/node/*.test.js"
   },
   "napi": {

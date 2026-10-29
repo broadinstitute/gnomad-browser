@@ -7,8 +7,10 @@ use napi::bindgen_prelude::{Either, Null};
 use napi_derive::napi;
 
 use crate::{
-    ClinvarCondition, ClinvarGnomadData, ClinvarGnomadSequencingData, ClinvarReader,
-    ClinvarSubmission, ClinvarVariant, create_datafusion_context,
+    ClinvarCondition as ReaderClinvarCondition, ClinvarGnomadData as ReaderClinvarGnomadData,
+    ClinvarGnomadSequencingData as ReaderClinvarGnomadSequencingData, ClinvarReader,
+    ClinvarSubmission as ReaderClinvarSubmission, ClinvarVariant as ReaderClinvarVariant,
+    create_datafusion_context,
 };
 
 #[napi]
@@ -31,7 +33,7 @@ pub async fn open_clinvar_store(parquet_path: String) -> napi::Result<ClinvarSto
 }
 
 #[napi(object)]
-pub struct JsClinvarVariant {
+pub struct ClinvarVariant {
     #[napi(js_name = "variant_id")]
     pub variant_id: String,
     pub chrom: String,
@@ -54,12 +56,12 @@ pub struct JsClinvarVariant {
     #[napi(js_name = "last_evaluated")]
     pub last_evaluated: Either<String, Null>,
     pub rsid: Either<String, Null>,
-    pub submissions: Vec<JsClinvarSubmission>,
-    pub gnomad: JsClinvarGnomadData,
+    pub submissions: Vec<ClinvarSubmission>,
+    pub gnomad: ClinvarGnomadData,
 }
 
-impl From<ClinvarVariant> for JsClinvarVariant {
-    fn from(variant: ClinvarVariant) -> Self {
+impl From<ReaderClinvarVariant> for ClinvarVariant {
+    fn from(variant: ReaderClinvarVariant) -> Self {
         Self {
             variant_id: variant.variant_id,
             chrom: variant.chromosome,
@@ -81,7 +83,7 @@ impl From<ClinvarVariant> for JsClinvarVariant {
 }
 
 #[napi(object)]
-pub struct JsClinvarSubmission {
+pub struct ClinvarSubmission {
     #[napi(js_name = "clinical_significance")]
     pub clinical_significance: Either<String, Null>,
     #[napi(js_name = "last_evaluated")]
@@ -90,11 +92,11 @@ pub struct JsClinvarSubmission {
     pub review_status: String,
     #[napi(js_name = "submitter_name")]
     pub submitter_name: String,
-    pub conditions: Vec<JsClinvarCondition>,
+    pub conditions: Vec<ClinvarCondition>,
 }
 
-impl From<ClinvarSubmission> for JsClinvarSubmission {
-    fn from(submission: ClinvarSubmission) -> Self {
+impl From<ReaderClinvarSubmission> for ClinvarSubmission {
+    fn from(submission: ReaderClinvarSubmission) -> Self {
         Self {
             clinical_significance: into_nullable(submission.clinical_significance),
             last_evaluated: into_nullable(submission.last_evaluated),
@@ -106,14 +108,14 @@ impl From<ClinvarSubmission> for JsClinvarSubmission {
 }
 
 #[napi(object)]
-pub struct JsClinvarCondition {
+pub struct ClinvarCondition {
     pub name: String,
     #[napi(js_name = "medgen_id")]
     pub medgen_id: Either<String, Null>,
 }
 
-impl From<ClinvarCondition> for JsClinvarCondition {
-    fn from(condition: ClinvarCondition) -> Self {
+impl From<ReaderClinvarCondition> for ClinvarCondition {
+    fn from(condition: ReaderClinvarCondition) -> Self {
         Self {
             name: condition.name,
             medgen_id: into_nullable(condition.medgen_id),
@@ -122,13 +124,13 @@ impl From<ClinvarCondition> for JsClinvarCondition {
 }
 
 #[napi(object)]
-pub struct JsClinvarGnomadData {
-    pub exome: Either<JsClinvarGnomadSequencingData, Null>,
-    pub genome: Either<JsClinvarGnomadSequencingData, Null>,
+pub struct ClinvarGnomadData {
+    pub exome: Either<ClinvarGnomadSequencingData, Null>,
+    pub genome: Either<ClinvarGnomadSequencingData, Null>,
 }
 
-impl From<ClinvarGnomadData> for JsClinvarGnomadData {
-    fn from(gnomad: ClinvarGnomadData) -> Self {
+impl From<ReaderClinvarGnomadData> for ClinvarGnomadData {
+    fn from(gnomad: ReaderClinvarGnomadData) -> Self {
         Self {
             exome: into_nullable(gnomad.exome.map(Into::into)),
             genome: into_nullable(gnomad.genome.map(Into::into)),
@@ -137,14 +139,14 @@ impl From<ClinvarGnomadData> for JsClinvarGnomadData {
 }
 
 #[napi(object)]
-pub struct JsClinvarGnomadSequencingData {
+pub struct ClinvarGnomadSequencingData {
     pub ac: i32,
     pub an: i32,
     pub filters: Vec<String>,
 }
 
-impl From<ClinvarGnomadSequencingData> for JsClinvarGnomadSequencingData {
-    fn from(data: ClinvarGnomadSequencingData) -> Self {
+impl From<ReaderClinvarGnomadSequencingData> for ClinvarGnomadSequencingData {
+    fn from(data: ReaderClinvarGnomadSequencingData) -> Self {
         Self {
             ac: data.ac,
             an: data.an,
@@ -165,13 +167,13 @@ impl ClinvarStore {
     pub async fn fetch_single_variant(
         &self,
         variant_id: String,
-    ) -> napi::Result<Either<JsClinvarVariant, Null>> {
+    ) -> napi::Result<Either<ClinvarVariant, Null>> {
         let variant = self
             .reader
             .fetch_single_variant(&variant_id)
             .await
             .map_err(|error| napi::Error::from_reason(error.to_string()))?;
 
-        Ok(into_nullable(variant.map(JsClinvarVariant::from)))
+        Ok(into_nullable(variant.map(ClinvarVariant::from)))
     }
 }
