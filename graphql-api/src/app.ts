@@ -11,6 +11,11 @@ import { requestStore } from './request-context'
 import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
 
+export interface GraphQLContext {
+  esClient: typeof esClient
+  requestId: string | null
+}
+
 // Extract the original trace ID from the request for Node's logs.
 // NGINX independently extracts the same ID for its own logs, so both logs
 // can be correlated to the original request. Prefer W3C Trace Context and
@@ -138,15 +143,12 @@ app.use((req: any, res: any, next: any) => {
 
 loadWhitelist()
 
-app.use(
-  '/api/',
-  graphQLApi({
-    context: {
-      esClient,
-      requestId: requestStore.getStore()?.requestId ?? null,
-    },
-  })
-)
+const context: GraphQLContext = {
+  esClient,
+  requestId: requestStore.getStore()?.requestId ?? null,
+}
+
+app.use('/api/', graphQLApi({ context }))
 
 // On shutdown (SIGTERM/SIGINT) or fatal error (uncaughtException/unhandledRejection), stop accepting
 // requests, drain connections, and close ES/cache clients before exiting. A 10-second timeout forces
