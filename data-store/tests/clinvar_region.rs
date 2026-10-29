@@ -2,24 +2,32 @@
 
 use std::path::PathBuf;
 
-use datafusion::error::Result;
+use datafusion::error::{DataFusionError, Result};
 use gnomad_data_store::{ClinvarReader, GenomicInterval, create_datafusion_context};
 
 async fn fixture_reader() -> Result<ClinvarReader> {
-    let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("tests/fixtures/clinvar_grch38_variants");
-    let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
+    let path =
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/clinvar_grch38_variants");
+    let fixture_path = path
+        .to_str()
+        .ok_or_else(|| DataFusionError::Execution("Fixture path is not valid UTF-8".to_owned()))?;
+
+    let context = create_datafusion_context(fixture_path).await?;
+
     Ok(ClinvarReader::new(context))
 }
 
 #[tokio::test]
 async fn includes_variants_at_both_interval_boundaries() -> Result<()> {
     let reader = fixture_reader().await?;
-    let interval = GenomicInterval::new("1", 1_452_067, 1_452_068)
-        .expect("fixture interval should be valid");
+    let interval =
+        GenomicInterval::new("1", 1_452_067, 1_452_068).expect("fixture interval should be valid");
 
     let variants = reader.fetch_variants_in_region(&interval).await?;
-    let ids: Vec<_> = variants.iter().map(|variant| variant.variant_id.as_str()).collect();
+    let ids: Vec<_> = variants
+        .iter()
+        .map(|variant| variant.variant_id.as_str())
+        .collect();
 
     assert_eq!(ids, ["1-1452067-C-T", "1-1452068-G-A"]);
     Ok(())
@@ -28,11 +36,14 @@ async fn includes_variants_at_both_interval_boundaries() -> Result<()> {
 #[tokio::test]
 async fn excludes_other_chromosomes_and_retains_multiple_alleles() -> Result<()> {
     let reader = fixture_reader().await?;
-    let interval = GenomicInterval::new("2", 1_456_298, 1_456_298)
-        .expect("fixture interval should be valid");
+    let interval =
+        GenomicInterval::new("2", 1_456_298, 1_456_298).expect("fixture interval should be valid");
 
     let variants = reader.fetch_variants_in_region(&interval).await?;
-    let ids: Vec<_> = variants.iter().map(|variant| variant.variant_id.as_str()).collect();
+    let ids: Vec<_> = variants
+        .iter()
+        .map(|variant| variant.variant_id.as_str())
+        .collect();
 
     assert_eq!(ids, ["2-1456298-C-G", "2-1456298-C-T"]);
     assert!(variants.iter().all(|variant| variant.chromosome == "2"));
@@ -42,11 +53,14 @@ async fn excludes_other_chromosomes_and_retains_multiple_alleles() -> Result<()>
 #[tokio::test]
 async fn orders_results_by_position_then_variant_id() -> Result<()> {
     let reader = fixture_reader().await?;
-    let interval = GenomicInterval::new("1", 926_026, 1_477_343)
-        .expect("fixture interval should be valid");
+    let interval =
+        GenomicInterval::new("1", 926_026, 1_477_343).expect("fixture interval should be valid");
 
     let variants = reader.fetch_variants_in_region(&interval).await?;
-    let ids: Vec<_> = variants.iter().map(|variant| variant.variant_id.as_str()).collect();
+    let ids: Vec<_> = variants
+        .iter()
+        .map(|variant| variant.variant_id.as_str())
+        .collect();
 
     assert_eq!(
         ids,
@@ -68,8 +82,8 @@ async fn orders_results_by_position_then_variant_id() -> Result<()> {
 #[tokio::test]
 async fn returns_empty_results_for_interval_without_variants() -> Result<()> {
     let reader = fixture_reader().await?;
-    let interval = GenomicInterval::new("1", 1_452_069, 1_452_070)
-        .expect("fixture interval should be valid");
+    let interval =
+        GenomicInterval::new("1", 1_452_069, 1_452_070).expect("fixture interval should be valid");
 
     let variants = reader.fetch_variants_in_region(&interval).await?;
 
@@ -80,8 +94,8 @@ async fn returns_empty_results_for_interval_without_variants() -> Result<()> {
 #[tokio::test]
 async fn decodes_list_entry_and_selected_transcript_consequence() -> Result<()> {
     let reader = fixture_reader().await?;
-    let interval = GenomicInterval::new("1", 66_926, 66_926)
-        .expect("fixture interval should be valid");
+    let interval =
+        GenomicInterval::new("1", 66_926, 66_926).expect("fixture interval should be valid");
 
     let variants = reader.fetch_variants_in_region(&interval).await?;
 
@@ -105,8 +119,14 @@ async fn decodes_list_entry_and_selected_transcript_consequence() -> Result<()> 
         .transcript_consequence
         .as_ref()
         .expect("selected transcript consequence should exist");
-    assert_eq!(consequence.transcript_id.as_deref(), Some("ENST00000641515"));
-    assert_eq!(consequence.major_consequence.as_deref(), Some("intron_variant"));
+    assert_eq!(
+        consequence.transcript_id.as_deref(),
+        Some("ENST00000641515")
+    );
+    assert_eq!(
+        consequence.major_consequence.as_deref(),
+        Some("intron_variant")
+    );
     assert_eq!(consequence.hgvsc.as_deref(), Some("c.9+1354del"));
     assert!(consequence.hgvsp.is_none());
     Ok(())
@@ -115,19 +135,27 @@ async fn decodes_list_entry_and_selected_transcript_consequence() -> Result<()> 
 #[tokio::test]
 async fn decodes_populated_gnomad_data_in_list_entry() -> Result<()> {
     let reader = fixture_reader().await?;
-    let interval = GenomicInterval::new("1", 69_134, 69_134)
-        .expect("fixture interval should be valid");
+    let interval =
+        GenomicInterval::new("1", 69_134, 69_134).expect("fixture interval should be valid");
 
     let variants = reader.fetch_variants_in_region(&interval).await?;
 
     assert_eq!(variants.len(), 1);
     let variant = variants.first().expect("fixture variant should exist");
     assert!(variant.in_gnomad);
-    let exome = variant.gnomad.exome.as_ref().expect("exome data should exist");
+    let exome = variant
+        .gnomad
+        .exome
+        .as_ref()
+        .expect("exome data should exist");
     assert_eq!(exome.ac, 1373);
     assert_eq!(exome.an, 315_270);
     assert_eq!(exome.filters, ["AS_VQSR"]);
-    let genome = variant.gnomad.genome.as_ref().expect("genome data should exist");
+    let genome = variant
+        .gnomad
+        .genome
+        .as_ref()
+        .expect("genome data should exist");
     assert_eq!(genome.ac, 10);
     assert_eq!(genome.an, 31_428);
     assert_eq!(genome.filters, ["AS_VQSR"]);

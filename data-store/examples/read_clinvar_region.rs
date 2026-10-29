@@ -5,10 +5,20 @@ use gnomad_data_store::{ClinvarReader, GenomicInterval, create_datafusion_contex
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut arguments = std::env::args().skip(1);
-    let path = arguments.next().ok_or("provide a Parquet file or directory path")?;
-    let chromosome = arguments.next().ok_or("provide a chromosome, such as 1 or X")?;
-    let start = arguments.next().ok_or("provide a start coordinate")?.parse::<i32>()?;
-    let stop = arguments.next().ok_or("provide a stop coordinate")?.parse::<i32>()?;
+    let path = arguments
+        .next()
+        .ok_or("provide a Parquet file or directory path")?;
+    let chromosome = arguments
+        .next()
+        .ok_or("provide a chromosome, such as 1 or X")?;
+    let start = arguments
+        .next()
+        .ok_or("provide a start coordinate")?
+        .parse::<i32>()?;
+    let stop = arguments
+        .next()
+        .ok_or("provide a stop coordinate")?
+        .parse::<i32>()?;
 
     if arguments.next().is_some() {
         return Err("usage: read_clinvar_region <path> <chromosome> <start> <stop>".into());
