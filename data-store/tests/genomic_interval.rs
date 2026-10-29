@@ -103,6 +103,10 @@ fn describes_each_error_for_callers() {
             GenomicIntervalError::StopBeforeStart,
             "stop must not be before start",
         ),
+        (
+            GenomicIntervalError::PaddingOverflow,
+            "padded stop exceeds the largest supported position",
+        ),
     ] {
         assert_eq!(error.to_string(), message);
     }
