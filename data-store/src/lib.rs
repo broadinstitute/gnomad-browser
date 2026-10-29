@@ -7,7 +7,7 @@ mod node_bindings;
 pub use clinvar_reader::ClinvarReader;
 pub use clinvar_variant::{
     ClinvarCondition, ClinvarGnomadData, ClinvarGnomadSequencingData, ClinvarSubmission,
-    ClinvarVariant,
+    ClinvarTranscriptConsequence, ClinvarVariant, ClinvarVariantListEntry,
 };
 pub use datafusion_context::create_datafusion_context;
 pub use genomic_interval::{Chromosome, GenomicInterval, GenomicIntervalError};

@@ -69,6 +69,39 @@ impl std::str::FromStr for Chromosome {
     }
 }
 
+impl Chromosome {
+    #[must_use]
+    pub const fn as_str(&self) -> &'static str {
+        match self {
+            Self::Chr1 => "1",
+            Self::Chr2 => "2",
+            Self::Chr3 => "3",
+            Self::Chr4 => "4",
+            Self::Chr5 => "5",
+            Self::Chr6 => "6",
+            Self::Chr7 => "7",
+            Self::Chr8 => "8",
+            Self::Chr9 => "9",
+            Self::Chr10 => "10",
+            Self::Chr11 => "11",
+            Self::Chr12 => "12",
+            Self::Chr13 => "13",
+            Self::Chr14 => "14",
+            Self::Chr15 => "15",
+            Self::Chr16 => "16",
+            Self::Chr17 => "17",
+            Self::Chr18 => "18",
+            Self::Chr19 => "19",
+            Self::Chr20 => "20",
+            Self::Chr21 => "21",
+            Self::Chr22 => "22",
+            Self::ChrX => "X",
+            Self::ChrY => "Y",
+            Self::ChrM => "M",
+        }
+    }
+}
+
 #[derive(Debug, PartialEq, Eq)]
 pub enum GenomicIntervalError {
     InvalidChromosome,
