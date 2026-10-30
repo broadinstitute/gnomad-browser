@@ -7,13 +7,14 @@ use napi::bindgen_prelude::{Either, Null};
 use napi_derive::napi;
 
 use crate::{
-    ClinvarCondition as ReaderClinvarCondition, ClinvarGnomadData as ReaderClinvarGnomadData,
+    Chromosome, ClinvarCondition as ReaderClinvarCondition,
+    ClinvarGnomadData as ReaderClinvarGnomadData,
     ClinvarGnomadSequencingData as ReaderClinvarGnomadSequencingData, ClinvarReader,
     ClinvarSubmission as ReaderClinvarSubmission,
     ClinvarTranscriptConsequence as ReaderClinvarTranscriptConsequence,
     ClinvarVariant as ReaderClinvarVariant,
     ClinvarVariantListEntry as ReaderClinvarVariantListEntry, GenomicInterval,
-    create_datafusion_context,
+    GenomicIntervalError, create_datafusion_context,
 };
 
 #[napi]
@@ -225,6 +226,36 @@ impl From<ReaderClinvarVariantListEntry> for ClinvarVariantListEntry {
     }
 }
 
+/// Use unpadded, one-based, inclusive coordinates.
+#[napi(object)]
+pub struct GenomicIntervalBounds {
+    pub start: i32,
+    pub stop: i32,
+}
+
+fn map_interval_error(error: &GenomicIntervalError) -> napi::Error {
+    napi::Error::new(
+        napi::Status::InvalidArg,
+        format!("Invalid genomic interval: {error:?}"),
+    )
+}
+
+fn parse_genomic_intervals(
+    chromosome: &str,
+    intervals: &[GenomicIntervalBounds],
+) -> napi::Result<Vec<GenomicInterval>> {
+    let chromosome = chromosome
+        .parse::<Chromosome>()
+        .map_err(|error| map_interval_error(&error))?;
+    intervals
+        .iter()
+        .map(|interval| {
+            GenomicInterval::new(chromosome.as_str(), interval.start, interval.stop)
+                .map_err(|error| map_interval_error(&error))
+        })
+        .collect()
+}
+
 fn into_nullable<T>(value: Option<T>) -> Either<T, Null> {
     value.map_or(Either::B(Null), Either::A)
 }
@@ -245,6 +276,48 @@ impl ClinvarStore {
             .map_err(|error| napi::Error::from_reason(error.to_string()))?;
 
         Ok(into_nullable(variant.map(ClinvarVariant::from)))
+    }
+
+    /// Pad each interval by 75 bases and select the requested gene's consequence.
+    ///
+    /// # Errors
+    /// Rejects invalid chromosomes or bounds and propagates annotation, padding, and query errors.
+    #[napi]
+    pub async fn fetch_variants_in_gene(
+        &self,
+        gene_id: String,
+        chromosome: String,
+        intervals: Vec<GenomicIntervalBounds>,
+    ) -> napi::Result<Vec<ClinvarVariantListEntry>> {
+        let intervals = parse_genomic_intervals(&chromosome, &intervals)?;
+        let variants = self
+            .reader
+            .fetch_variants_in_gene(&gene_id, &intervals)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+
+        Ok(variants.into_iter().map(Into::into).collect())
+    }
+
+    /// Pad each interval by 75 bases and select the requested transcript's consequence.
+    ///
+    /// # Errors
+    /// Rejects invalid chromosomes or bounds and propagates annotation, padding, and query errors.
+    #[napi]
+    pub async fn fetch_variants_in_transcript(
+        &self,
+        transcript_id: String,
+        chromosome: String,
+        intervals: Vec<GenomicIntervalBounds>,
+    ) -> napi::Result<Vec<ClinvarVariantListEntry>> {
+        let intervals = parse_genomic_intervals(&chromosome, &intervals)?;
+        let variants = self
+            .reader
+            .fetch_variants_in_transcript(&transcript_id, &intervals)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+
+        Ok(variants.into_iter().map(Into::into).collect())
     }
 
     /// # Errors
