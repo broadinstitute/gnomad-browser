@@ -27,7 +27,6 @@ if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
 }
 
 export const createUnlimitedElasticClient = () => new elasticsearch.Client(elasticsearchConfig)
-const elastic = createUnlimitedElasticClient()
 
 const esLimiter = new Bottleneck({
   maxConcurrent: config.MAX_CONCURRENT_ELASTICSEARCH_REQUESTS,
@@ -137,45 +136,52 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
 }
 
 // This wraps the ES methods used by the API and sends them through the rate limiter
-const limitedElastic = {
-  indices: elastic.indices,
-  clearScroll: elastic.clearScroll.bind(elastic),
-  search: (...args: Parameters<typeof elastic.search>) =>
-    scheduleElasticsearchRequest(() => elastic.search(...args), 'search').then((response) => {
-      if (response.body.timed_out) {
-        throw new Error('Elasticsearch search timed out')
-      }
-      // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.successful < response.body._shards.total) {
-        throw new Error('Elasticsearch search partially failed')
-      }
-      return response
-    }),
-  scroll: (...args: Parameters<typeof elastic.scroll>) =>
-    scheduleElasticsearchRequest(() => elastic.scroll(...args), 'scroll').then((response) => {
-      if (response.body.timed_out) {
-        throw new Error('Elasticsearch scroll timed out')
-      }
-      // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.successful < response.body._shards.total) {
-        throw new Error('Elasticsearch scroll partially failed')
-      }
-      return response
-    }),
-  count: (...args: Parameters<typeof elastic.count>) =>
-    scheduleElasticsearchRequest(() => elastic.count(...args), 'count').then((response) => {
-      // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.successful < response.body._shards.total) {
-        throw new Error('Elasticsearch count partially failed')
-      }
-      return response
-    }),
-  get: (...args: Parameters<typeof elastic.get>) =>
-    scheduleElasticsearchRequest(() => elastic.get(...args), 'get'),
-  mget: (...args: Parameters<typeof elastic.mget>) =>
-    scheduleElasticsearchRequest(() => elastic.mget(...args), 'mget'),
+const createLimitedElasticClient = () => {
+  const elastic = createUnlimitedElasticClient()
+
+  return {
+    indices: {
+      getMapping: elastic.indices.getMapping.bind(elastic.indices),
+    },
+    clearScroll: elastic.clearScroll.bind(elastic),
+    search: (...args: Parameters<typeof elastic.search>) =>
+      scheduleElasticsearchRequest(() => elastic.search(...args), 'search').then((response) => {
+        if (response.body.timed_out) {
+          throw new Error('Elasticsearch search timed out')
+        }
+        // eslint-disable-next-line no-underscore-dangle
+        if (response.body._shards.successful < response.body._shards.total) {
+          throw new Error('Elasticsearch search partially failed')
+        }
+        return response
+      }),
+    scroll: (...args: Parameters<typeof elastic.scroll>) =>
+      scheduleElasticsearchRequest(() => elastic.scroll(...args), 'scroll').then((response) => {
+        if (response.body.timed_out) {
+          throw new Error('Elasticsearch scroll timed out')
+        }
+        // eslint-disable-next-line no-underscore-dangle
+        if (response.body._shards.successful < response.body._shards.total) {
+          throw new Error('Elasticsearch scroll partially failed')
+        }
+        return response
+      }),
+    count: (...args: Parameters<typeof elastic.count>) =>
+      scheduleElasticsearchRequest(() => elastic.count(...args), 'count').then((response) => {
+        // eslint-disable-next-line no-underscore-dangle
+        if (response.body._shards.successful < response.body._shards.total) {
+          throw new Error('Elasticsearch count partially failed')
+        }
+        return response
+      }),
+    get: (...args: Parameters<typeof elastic.get>) =>
+      scheduleElasticsearchRequest(() => elastic.get(...args), 'get'),
+    mget: (...args: Parameters<typeof elastic.mget>) =>
+      scheduleElasticsearchRequest(() => elastic.mget(...args), 'mget'),
+    close: () => elastic.close(),
+  }
 }
 
-export { limitedElastic as client }
+export const client = createLimitedElasticClient()
 
-export const closeClient = () => elastic.close()
+export const closeClient = () => client.close()
