@@ -1,4 +1,4 @@
-import elasticsearch from '@elastic/elasticsearch'
+import elasticsearch, { type Client } from '@elastic/elasticsearch'
 import Bottleneck from 'bottleneck'
 import { performance } from 'perf_hooks'
 import config from './config'
@@ -12,7 +12,7 @@ const elasticsearchConfig = {
   maxRetries: 0,
 }
 
-if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
+if (!config.PARQUET_ONLY && (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD)) {
   if (!(config.ELASTICSEARCH_USERNAME && config.ELASTICSEARCH_PASSWORD)) {
     throw Error(
       'Both ELASTICSEARCH_USERNAME and ELASTICSEARCH_PASSWORD are required if one is provided'
@@ -26,8 +26,25 @@ if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
   }
 }
 
-export const createUnlimitedElasticClient = () => new elasticsearch.Client(elasticsearchConfig)
-const elastic = createUnlimitedElasticClient()
+const rejectElasticsearchOperation = (operation: string): never => {
+  logger.warn({
+    requestId: getRequestContext()?.requestId,
+    event: 'esDisabledOperation',
+    operation,
+  })
+
+  throw new UserVisibleError(
+    'Elasticsearch is disabled in Parquet-only mode. This query is not supported by the Parquet client yet.'
+  )
+}
+
+export const createUnlimitedElasticClient = (): Client => {
+  if (config.PARQUET_ONLY) {
+    return rejectElasticsearchOperation('createClient')
+  }
+
+  return new elasticsearch.Client(elasticsearchConfig)
+}
 
 const esLimiter = new Bottleneck({
   maxConcurrent: config.MAX_CONCURRENT_ELASTICSEARCH_REQUESTS,
@@ -137,45 +154,73 @@ const scheduleElasticsearchRequest = (fn: any, operation: string) => {
 }
 
 // This wraps the ES methods used by the API and sends them through the rate limiter
-const limitedElastic = {
-  indices: elastic.indices,
-  clearScroll: elastic.clearScroll.bind(elastic),
-  search: (...args: Parameters<typeof elastic.search>) =>
-    scheduleElasticsearchRequest(() => elastic.search(...args), 'search').then((response) => {
-      if (response.body.timed_out) {
-        throw new Error('Elasticsearch search timed out')
-      }
-      // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.successful < response.body._shards.total) {
-        throw new Error('Elasticsearch search partially failed')
-      }
-      return response
-    }),
-  scroll: (...args: Parameters<typeof elastic.scroll>) =>
-    scheduleElasticsearchRequest(() => elastic.scroll(...args), 'scroll').then((response) => {
-      if (response.body.timed_out) {
-        throw new Error('Elasticsearch scroll timed out')
-      }
-      // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.successful < response.body._shards.total) {
-        throw new Error('Elasticsearch scroll partially failed')
-      }
-      return response
-    }),
-  count: (...args: Parameters<typeof elastic.count>) =>
-    scheduleElasticsearchRequest(() => elastic.count(...args), 'count').then((response) => {
-      // eslint-disable-next-line no-underscore-dangle
-      if (response.body._shards.successful < response.body._shards.total) {
-        throw new Error('Elasticsearch count partially failed')
-      }
-      return response
-    }),
-  get: (...args: Parameters<typeof elastic.get>) =>
-    scheduleElasticsearchRequest(() => elastic.get(...args), 'get'),
-  mget: (...args: Parameters<typeof elastic.mget>) =>
-    scheduleElasticsearchRequest(() => elastic.mget(...args), 'mget'),
+// const limitedElastic = {
+
+const createLimitedElasticClient = () => {
+  const elastic = createUnlimitedElasticClient()
+
+  return {
+    indices: {
+      getMapping: elastic.indices.getMapping.bind(elastic.indices),
+    },
+    clearScroll: elastic.clearScroll.bind(elastic),
+    search: (...args: Parameters<typeof elastic.search>) =>
+      scheduleElasticsearchRequest(() => elastic.search(...args), 'search').then((response) => {
+        if (response.body.timed_out) {
+          throw new Error('Elasticsearch search timed out')
+        }
+        // eslint-disable-next-line no-underscore-dangle
+        if (response.body._shards.successful < response.body._shards.total) {
+          throw new Error('Elasticsearch search partially failed')
+        }
+        return response
+      }),
+    scroll: (...args: Parameters<typeof elastic.scroll>) =>
+      scheduleElasticsearchRequest(() => elastic.scroll(...args), 'scroll').then((response) => {
+        if (response.body.timed_out) {
+          throw new Error('Elasticsearch scroll timed out')
+        }
+        // eslint-disable-next-line no-underscore-dangle
+        if (response.body._shards.successful < response.body._shards.total) {
+          throw new Error('Elasticsearch scroll partially failed')
+        }
+        return response
+      }),
+    count: (...args: Parameters<typeof elastic.count>) =>
+      scheduleElasticsearchRequest(() => elastic.count(...args), 'count').then((response) => {
+        // eslint-disable-next-line no-underscore-dangle
+        if (response.body._shards.successful < response.body._shards.total) {
+          throw new Error('Elasticsearch count partially failed')
+        }
+        return response
+      }),
+    get: (...args: Parameters<typeof elastic.get>) =>
+      scheduleElasticsearchRequest(() => elastic.get(...args), 'get'),
+    mget: (...args: Parameters<typeof elastic.mget>) =>
+      scheduleElasticsearchRequest(() => elastic.mget(...args), 'mget'),
+    close: () => elastic.close(),
+  }
 }
 
-export { limitedElastic as client }
+type ApiElasticClient = ReturnType<typeof createLimitedElasticClient>
 
-export const closeClient = () => elastic.close()
+const createDisabledElasticClient = (): ApiElasticClient => {
+  return {
+    indices: {
+      getMapping: () => rejectElasticsearchOperation('indices.getMapping'),
+    },
+    clearScroll: () => rejectElasticsearchOperation('clearScroll'),
+    search: () => rejectElasticsearchOperation('search'),
+    scroll: () => rejectElasticsearchOperation('scroll'),
+    count: () => rejectElasticsearchOperation('count'),
+    get: () => rejectElasticsearchOperation('get'),
+    mget: () => rejectElasticsearchOperation('mget'),
+    close: () => Promise.resolve(),
+  }
+}
+
+export const client = config.PARQUET_ONLY
+  ? createDisabledElasticClient()
+  : createLimitedElasticClient()
+
+export const closeClient = (): Promise<void> | void => client.close()
