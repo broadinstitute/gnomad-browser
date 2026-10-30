@@ -7,6 +7,20 @@ export declare class ClinvarStore {
    */
   fetchSingleVariant(variantId: string): Promise<ClinvarVariant | null>
   /**
+   * Pad each interval and select the requested gene's consequence.
+   *
+   * # Errors
+   * Rejects invalid chromosomes or bounds and propagates annotation, padding, and query errors.
+   */
+  fetchVariantsInGene(geneId: string, chromosome: string, intervals: Array<GenomicIntervalBounds>): Promise<Array<ClinvarVariantListEntry>>
+  /**
+   * Pad each interval and select the requested transcript's consequence.
+   *
+   * # Errors
+   * Rejects invalid chromosomes or bounds and propagates annotation, padding, and query errors.
+   */
+  fetchVariantsInTranscript(transcriptId: string, chromosome: string, intervals: Array<GenomicIntervalBounds>): Promise<Array<ClinvarVariantListEntry>>
+  /**
    * # Errors
    * Rejects invalid intervals and propagates query failures.
    */
@@ -83,6 +97,12 @@ export interface ClinvarVariantListEntry {
   in_gnomad: boolean
   gnomad: ClinvarGnomadData
   transcript_consequence: ClinvarTranscriptConsequence | null
+}
+
+/** Use unpadded, one-based, inclusive coordinates. */
+export interface GenomicIntervalBounds {
+  start: number
+  stop: number
 }
 
 /**
