@@ -81,8 +81,8 @@ cargo run --example read_clinvar_variant -- tests/fixtures 1-66926-AG-A
 
 ## Run a local graphql-api on Parquet (experimental)
 
-The API can serve GRCh38 ClinVar variants (single variants and regions) from this crate instead of
-Elasticsearch.
+The API can serve GRCh38 ClinVar variants (single variants, regions, genes and transcripts) from this
+crate instead of Elasticsearch.
 
 1. Build the bindings in release mode:
 
@@ -122,5 +122,5 @@ Elasticsearch.
    }'
    ```
 
-Only GRCh38 ClinVar single variants and regions are served from Parquet so far. In `PARQUET_ONLY` mode every other query
+Only GRCh38 ClinVar variants are served from Parquet so far. In `PARQUET_ONLY` mode every other query
 returns an error saying it isn't supported by the Parquet client yet.
