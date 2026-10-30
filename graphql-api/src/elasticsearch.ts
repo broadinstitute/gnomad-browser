@@ -1,4 +1,8 @@
-import elasticsearch from '@elastic/elasticsearch'
+import elasticsearch, {
+  type ApiResponse,
+  type Client,
+  type RequestParams,
+} from '@elastic/elasticsearch'
 import Bottleneck from 'bottleneck'
 import { performance } from 'perf_hooks'
 import config from './config'
@@ -12,7 +16,7 @@ const elasticsearchConfig = {
   maxRetries: 0,
 }
 
-if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
+if (!config.PARQUET_ONLY && (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD)) {
   if (!(config.ELASTICSEARCH_USERNAME && config.ELASTICSEARCH_PASSWORD)) {
     throw Error(
       'Both ELASTICSEARCH_USERNAME and ELASTICSEARCH_PASSWORD are required if one is provided'
@@ -26,7 +30,22 @@ if (config.ELASTICSEARCH_USERNAME || config.ELASTICSEARCH_PASSWORD) {
   }
 }
 
-export const createUnlimitedElasticClient = () => new elasticsearch.Client(elasticsearchConfig)
+const rejectElasticsearchOperation = (operation: string): Promise<never> => {
+  logger.warn({
+    requestId: getRequestContext()?.requestId,
+    event: 'esDisabledOperation',
+    operation,
+  })
+
+  return Promise.reject(
+    new UserVisibleError(
+      'Elasticsearch is disabled in Parquet-only mode. This query is not supported by the Parquet client yet.'
+    )
+  )
+}
+
+export const createUnlimitedElasticClient = (): Client =>
+  new elasticsearch.Client(elasticsearchConfig)
 
 const esLimiter = new Bottleneck({
   maxConcurrent: config.MAX_CONCURRENT_ELASTICSEARCH_REQUESTS,
@@ -141,9 +160,11 @@ const createLimitedElasticClient = () => {
 
   return {
     indices: {
-      getMapping: elastic.indices.getMapping.bind(elastic.indices),
+      getMapping: (params: RequestParams.IndicesGetMapping): Promise<ApiResponse> =>
+        elastic.indices.getMapping(params),
     },
-    clearScroll: elastic.clearScroll.bind(elastic),
+    clearScroll: (params: RequestParams.ClearScroll): Promise<ApiResponse> =>
+      elastic.clearScroll(params),
     search: (...args: Parameters<typeof elastic.search>) =>
       scheduleElasticsearchRequest(() => elastic.search(...args), 'search').then((response) => {
         if (response.body.timed_out) {
@@ -182,6 +203,25 @@ const createLimitedElasticClient = () => {
   }
 }
 
-export const client = createLimitedElasticClient()
+type ApiElasticClient = ReturnType<typeof createLimitedElasticClient>
 
-export const closeClient = () => client.close()
+const createDisabledElasticClient = (): ApiElasticClient => {
+  return {
+    indices: {
+      getMapping: () => rejectElasticsearchOperation('indices.getMapping'),
+    },
+    clearScroll: () => rejectElasticsearchOperation('clearScroll'),
+    search: () => rejectElasticsearchOperation('search'),
+    scroll: () => rejectElasticsearchOperation('scroll'),
+    count: () => rejectElasticsearchOperation('count'),
+    get: () => rejectElasticsearchOperation('get'),
+    mget: () => rejectElasticsearchOperation('mget'),
+    close: () => Promise.resolve(),
+  }
+}
+
+export const client = config.PARQUET_ONLY
+  ? createDisabledElasticClient()
+  : createLimitedElasticClient()
+
+export const closeClient = (): Promise<void> | void => client.close()
