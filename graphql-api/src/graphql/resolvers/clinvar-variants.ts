@@ -1,4 +1,5 @@
 import { isVariantId, normalizeVariantId } from '@gnomad/identifiers'
+import type { GenomicIntervalBounds } from '@gnomad/data-store'
 
 import {
   fetchClinvarReleaseDate,
@@ -11,6 +12,25 @@ import {
 
 import { UserVisibleError } from '../../errors'
 import type { GraphQLContext } from '../../app'
+import {
+  getFilteredRegions,
+  type Exon,
+} from '../../queries/variant-datasets/gnomad-v4-variant-queries'
+
+const selectClinvarExonIntervals = (exons: Exon[]): GenomicIntervalBounds[] => {
+  return getFilteredRegions(exons).map((exon) => {
+    if (
+      !('start' in exon) ||
+      typeof exon.start !== 'number' ||
+      !('stop' in exon) ||
+      typeof exon.stop !== 'number'
+    ) {
+      throw new Error('ClinVar exon intervals require numeric start and stop coordinates')
+    }
+
+    return { start: exon.start, stop: exon.stop }
+  })
+}
 
 const resolveClinvarReleaseDate = (_: any, _args: any, ctx: any) => {
   return fetchClinvarReleaseDate(ctx.esClient)
@@ -45,7 +65,13 @@ const resolveClinVarVariant = async (_: any, args: any, ctx: GraphQLContext) => 
   return variant
 }
 
-const resolveClinVarVariantsInGene = (obj: any, _args: any, ctx: any) => {
+const resolveClinVarVariantsInGene = (obj: any, _args: any, ctx: GraphQLContext) => {
+  const parquetDataStore = ctx.parquetDataStore
+  if (obj.reference_genome === 'GRCh38' && parquetDataStore !== null) {
+    const intervals = selectClinvarExonIntervals(obj.exons)
+    return parquetDataStore.clinvarGrch38.fetchVariantsInGene(obj.gene_id, obj.chrom, intervals)
+  }
+
   return fetchClinvarVariantsByGene(ctx.esClient, obj.reference_genome, obj)
 }
 
@@ -84,7 +110,17 @@ const resolveClinVarVariantsInRegion = async (obj: any, _args: any, ctx: GraphQL
   return fetchClinvarVariantsByRegion(ctx.esClient, obj.reference_genome, obj)
 }
 
-const resolveClinVarVariantsInTranscript = (obj: any, _args: any, ctx: any) => {
+const resolveClinVarVariantsInTranscript = (obj: any, _args: any, ctx: GraphQLContext) => {
+  const parquetDataStore = ctx.parquetDataStore
+  if (obj.reference_genome === 'GRCh38' && parquetDataStore !== null) {
+    const intervals = selectClinvarExonIntervals(obj.exons)
+    return parquetDataStore.clinvarGrch38.fetchVariantsInTranscript(
+      obj.transcript_id,
+      obj.chrom,
+      intervals
+    )
+  }
+
   return fetchClinvarVariantsByTranscript(ctx.esClient, obj.reference_genome, obj)
 }
 

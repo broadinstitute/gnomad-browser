@@ -12,8 +12,7 @@ type NativeDataStoreAddon = typeof import('@gnomad/data-store')
 
 const loadNativeDataStoreAddon = (): NativeDataStoreAddon => {
   try {
-    // this is the actual runtime import, only called after a few flag checks
-    //     and wrapped in a try-catch for safety and a good error message
+    // eslint-disable-next-line global-require -- Avoid loading an unbuilt addon when disabled.
     return require('@gnomad/data-store')
   } catch (error) {
     throw Object.assign(
