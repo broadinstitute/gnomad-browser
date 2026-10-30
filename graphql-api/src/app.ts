@@ -138,7 +138,11 @@ app.use((req: any, res: any, next: any) => {
   next()
 })
 
-loadWhitelist()
+if (config.PARQUET_ONLY) {
+  logger.info({ event: 'parquetOnlyModeEnabledSkippedWhitelistLoad' })
+} else {
+  loadWhitelist()
+}
 
 const startServer = async (): Promise<void> => {
   const parquetDataStore = await initializeParquetDataStoreIfEnabled()

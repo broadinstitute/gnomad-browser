@@ -76,3 +76,48 @@ Against the fixtures:
 ```bash
 cargo run --example read_clinvar_variant -- tests/fixtures 1-66926-AG-A
 ```
+
+## Run a local graphql-api on Parquet (experimental)
+
+The API can serve GRCh38 `clinvar_variant` queries from this crate instead of Elasticsearch.
+
+1. Build the bindings in release mode:
+
+   ```bash
+   pnpm build:native:release
+   ```
+
+2. Start the API without Elasticsearch, Redis or GCP access (from `data-store/`):
+
+   ```bash
+   cd ../graphql-api
+   PARQUET_DATA_STORE_ENABLED=true \
+   PARQUET_ONLY=true \
+   PARQUET_DATA_ROOT=<DATA_ROOT> \
+   ./start.sh
+   ```
+
+   | Variable                     | Effect                                                                                  |
+   | ---------------------------- | --------------------------------------------------------------------------------------- |
+   | `PARQUET_DATA_STORE_ENABLED` | Load the addon and route supported queries to it. Without it the API behaves as before. |
+   | `PARQUET_ONLY`               | Never contact Elasticsearch; skips the IP whitelist load. Requires the flag above.      |
+   | `PARQUET_DATA_ROOT`          | Parquet root directory. Required when the store is enabled.                             |
+
+   `PARQUET_ONLY` refuses to start if `REDIS_HOST`, `JSON_CACHE_ENABLE_ALL` or `JSON_CACHE_LARGE_GENES`
+   is set. To use Parquet alongside a real Elasticsearch cluster, leave out `PARQUET_ONLY` and set the
+   usual `ELASTICSEARCH_URL`.
+
+   Browser pages that show ClinVar data also request `meta { clinvar_release_date }`, which is still read
+   from Elasticsearch. The field is non-null, so in `PARQUET_ONLY` mode its error discards the whole
+   response: those pages fail, and only direct API queries such as the one below work.
+
+3. Query it (GraphiQL is also served at <http://localhost:8010/api>):
+
+   ```bash
+   curl -s localhost:8010/api -H 'Content-Type: application/json' -d '{
+     "query": "{ clinvar_variant(variant_id: \"1-66926-AG-A\", reference_genome: GRCh38) { variant_id clinical_significance } }"
+   }'
+   ```
+
+Only GRCh38 `clinvar_variant` is served from Parquet so far. In `PARQUET_ONLY` mode every other query
+returns an error saying it isn't supported by the Parquet client yet.
