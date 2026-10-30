@@ -1,8 +1,16 @@
 mod clinvar;
 
 use napi::bindgen_prelude::{Either, Null};
+use napi_derive::napi;
 
-use crate::GenomicIntervalError;
+use crate::{Chromosome, GenomicInterval, GenomicIntervalError};
+
+/// Use unpadded, one-based, inclusive coordinates.
+#[napi(object)]
+pub struct GenomicIntervalBounds {
+    pub start: i32,
+    pub stop: i32,
+}
 
 fn into_nullable<T>(value: Option<T>) -> Either<T, Null> {
     value.map_or(Either::B(Null), Either::A)
@@ -17,4 +25,20 @@ fn map_interval_error(error: &GenomicIntervalError) -> napi::Error {
         napi::Status::InvalidArg,
         format!("Invalid genomic interval: {error}"),
     )
+}
+
+fn parse_genomic_intervals(
+    chromosome: &str,
+    intervals: &[GenomicIntervalBounds],
+) -> napi::Result<Vec<GenomicInterval>> {
+    let chromosome = chromosome
+        .parse::<Chromosome>()
+        .map_err(|error| map_interval_error(&error))?;
+    intervals
+        .iter()
+        .map(|interval| {
+            GenomicInterval::new(chromosome.as_str(), interval.start, interval.stop)
+                .map_err(|error| map_interval_error(&error))
+        })
+        .collect()
 }

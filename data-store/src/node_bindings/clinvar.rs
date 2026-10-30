@@ -6,7 +6,10 @@
 use napi::bindgen_prelude::{Either, Null};
 use napi_derive::napi;
 
-use super::{into_napi_error, into_nullable, map_interval_error};
+use super::{
+    GenomicIntervalBounds, into_napi_error, into_nullable, map_interval_error,
+    parse_genomic_intervals,
+};
 use crate::{
     ClinvarCondition as ReaderClinvarCondition, ClinvarGnomadData as ReaderClinvarGnomadData,
     ClinvarGnomadSequencingData as ReaderClinvarGnomadSequencingData, ClinvarReader,
@@ -53,6 +56,48 @@ impl ClinvarStore {
             .map_err(|error| into_napi_error(&error))?;
 
         Ok(into_nullable(variant.map(ClinvarVariant::from)))
+    }
+
+    /// Pad each interval and select the requested gene's consequence.
+    ///
+    /// # Errors
+    /// Rejects invalid chromosomes or bounds and propagates annotation, padding, and query errors.
+    #[napi]
+    pub async fn fetch_variants_in_gene(
+        &self,
+        gene_id: String,
+        chromosome: String,
+        intervals: Vec<GenomicIntervalBounds>,
+    ) -> napi::Result<Vec<ClinvarVariantListEntry>> {
+        let intervals = parse_genomic_intervals(&chromosome, &intervals)?;
+        let variants = self
+            .reader
+            .fetch_variants_in_gene(&gene_id, &intervals)
+            .await
+            .map_err(|error| into_napi_error(&error))?;
+
+        Ok(variants.into_iter().map(Into::into).collect())
+    }
+
+    /// Pad each interval and select the requested transcript's consequence.
+    ///
+    /// # Errors
+    /// Rejects invalid chromosomes or bounds and propagates annotation, padding, and query errors.
+    #[napi]
+    pub async fn fetch_variants_in_transcript(
+        &self,
+        transcript_id: String,
+        chromosome: String,
+        intervals: Vec<GenomicIntervalBounds>,
+    ) -> napi::Result<Vec<ClinvarVariantListEntry>> {
+        let intervals = parse_genomic_intervals(&chromosome, &intervals)?;
+        let variants = self
+            .reader
+            .fetch_variants_in_transcript(&transcript_id, &intervals)
+            .await
+            .map_err(|error| into_napi_error(&error))?;
+
+        Ok(variants.into_iter().map(Into::into).collect())
     }
 
     /// # Errors
