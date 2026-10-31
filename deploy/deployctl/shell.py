@@ -1,7 +1,9 @@
+import json
 import subprocess
 import typing
 
 from deployctl.config import config
+from deployctl.tag import PARQUET_TAG_SUFFIX
 
 
 def gcloud(args: typing.List[str], **kwargs) -> str:
@@ -12,10 +14,25 @@ def gcloud(args: typing.List[str], **kwargs) -> str:
 
 
 def get_most_recent_tag(gcr_image_repository: str) -> str:
-    tag = gcloud(["container", "images", "list-tags", gcr_image_repository, "--format=value(tags[0])", "--limit=1"])
-    if not tag:
-        raise RuntimeError(f"no tags found for '{gcr_image_repository}'")
-    return tag
+    images = json.loads(
+        gcloud(
+            [
+                "container",
+                "images",
+                "list-tags",
+                gcr_image_repository,
+                "--sort-by=~timestamp",
+                "--limit=20",
+                "--format=json",
+            ]
+        )
+    )
+    # Images with the Parquet data store are for deliberate demo deployments, so never pick one implicitly.
+    for image in images:
+        tags = image.get("tags") or []
+        if tags and not any(tag.endswith(PARQUET_TAG_SUFFIX) for tag in tags):
+            return tags[0]
+    raise RuntimeError(f"no tags found for '{gcr_image_repository}' (tags ending in {PARQUET_TAG_SUFFIX} are skipped)")
 
 
 def image_exists(gcr_image_repository: str, tag: str) -> bool:

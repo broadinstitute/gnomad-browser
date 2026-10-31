@@ -1,6 +1,8 @@
 import re
 import subprocess
 
+PARQUET_TAG_SUFFIX = "-parquet"
+
 
 def get_tag_from_git_revision() -> str:
     commit_hash = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], encoding="utf-8").strip()
