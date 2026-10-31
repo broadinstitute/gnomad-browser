@@ -1,11 +1,11 @@
 #![allow(clippy::panic_in_result_fn)]
 
 use datafusion::common::config::Dialect;
-use datafusion::error::{DataFusionError, Result};
+use datafusion::error::Result;
 use datafusion::prelude::{SessionConfig, SessionContext};
 use gnomad_data_store::{
     ClinvarReader, ClinvarVariantListEntry, GenomicInterval, ParquetDataset,
-    create_datafusion_context,
+    create_datafusion_context_from_root,
 };
 
 mod fixtures;
@@ -16,9 +16,10 @@ async fn create_synthetic_reader(variant_annotations: &str) -> Result<ClinvarRea
     let mut config = SessionConfig::new();
     config.options_mut().sql_parser.dialect = Dialect::DuckDB;
     let context = SessionContext::new_with_config(config);
+    let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
     let query = format!(
         r#"
-        CREATE TABLE clinvar_grch38_variants AS
+        CREATE TABLE {table_name} AS
         SELECT
             variant_id,
             concat('chr', chromosome) AS "locus.contig",
@@ -57,11 +58,11 @@ async fn create_synthetic_reader(variant_annotations: &str) -> Result<ClinvarRea
 }
 
 async fn create_parquet_reader() -> Result<ClinvarReader> {
-    let path = fixtures::resolve_dataset_directory(ParquetDataset::ClinvarVariantsGrch38)?;
-    let path = path
-        .to_str()
-        .ok_or_else(|| DataFusionError::Execution("Fixture path is not valid UTF-8".to_owned()))?;
-    let context = create_datafusion_context(path).await?;
+    let context = create_datafusion_context_from_root(
+        fixtures::root_directory(),
+        ParquetDataset::ClinvarVariantsGrch38,
+    )
+    .await?;
     Ok(ClinvarReader::new(context))
 }
 

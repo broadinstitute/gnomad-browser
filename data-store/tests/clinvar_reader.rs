@@ -3,14 +3,16 @@
 use std::path::PathBuf;
 
 use datafusion::error::Result;
-use gnomad_data_store::{ClinvarReader, ParquetDataset, create_datafusion_context};
+use gnomad_data_store::{
+    ClinvarReader, ParquetDataset, create_datafusion_context, create_datafusion_context_from_root,
+};
 
 mod fixtures;
 
-const CLINVAR_TABLE_NAME: &str = "clinvar_grch38_variants";
+const CLINVAR_TABLE_NAME: &str = ParquetDataset::ClinvarVariantsGrch38.name();
 
 fn fixture_directory() -> std::io::Result<PathBuf> {
-    fixtures::resolve_dataset_directory(ParquetDataset::ClinvarVariantsGrch38)
+    ParquetDataset::ClinvarVariantsGrch38.resolve_directory(fixtures::root_directory())
 }
 
 fn fixture_path() -> std::io::Result<PathBuf> {
@@ -30,8 +32,11 @@ async fn registers_clinvar_table_with_fixture_records() -> Result<()> {
 
 #[tokio::test]
 async fn reads_both_chromosomes_from_one_registered_directory() -> Result<()> {
-    let path = fixture_directory()?;
-    let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
+    let context = create_datafusion_context_from_root(
+        fixtures::root_directory(),
+        ParquetDataset::ClinvarVariantsGrch38,
+    )
+    .await?;
     let row_count = context.table(CLINVAR_TABLE_NAME).await?.count().await?;
     assert_eq!(row_count, 19);
     let reader = ClinvarReader::new(context);

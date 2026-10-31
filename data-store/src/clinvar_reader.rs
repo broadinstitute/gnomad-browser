@@ -1,4 +1,6 @@
-use crate::{ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, pad_and_merge_intervals};
+use crate::{
+    ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset, pad_and_merge_intervals,
+};
 use datafusion::common::ScalarValue;
 use datafusion::error::DataFusionError;
 use datafusion::prelude::SessionContext;
@@ -70,9 +72,10 @@ impl ClinvarReader {
         &self,
         variant_id: &str,
     ) -> datafusion::error::Result<Option<ClinvarVariant>> {
+        let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
         let dataframe = self
             .context
-            .sql(
+            .sql(&format!(
                 r#"
                 SELECT
                     variant_id,
@@ -113,10 +116,10 @@ impl ClinvarReader {
                             )
                         END
                     ) AS gnomad
-                FROM clinvar_grch38_variants
+                FROM {table_name}
                 WHERE variant_id = $1
                 "#,
-            )
+            ))
             .await?;
 
         let dataframe =
@@ -223,6 +226,7 @@ impl ClinvarReader {
             ));
         }
         let interval_predicate = interval_predicates.join(" OR ");
+        let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
         let query = format!(
             r"
             WITH candidates AS (
@@ -231,7 +235,7 @@ impl ClinvarReader {
                         transcript_consequences,
                         consequence -> consequence['{annotation_field}'] = {annotation_parameter}
                     ) AS transcript_consequence
-                FROM clinvar_grch38_variants
+                FROM {table_name}
                 WHERE {interval_predicate}
             )
             SELECT * FROM candidates
@@ -261,6 +265,7 @@ impl ClinvarReader {
         interval: &GenomicInterval,
     ) -> datafusion::error::Result<Vec<ClinvarVariantListEntry>> {
         let contig = format!("chr{}", interval.chromosome().as_str());
+        let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
 
         let query = format!(
             r#"
@@ -269,7 +274,7 @@ impl ClinvarReader {
                     transcript_consequences,
                     consequence -> starts_with(consequence['gene_id'], 'ENSG')
                 ) AS transcript_consequence
-            FROM clinvar_grch38_variants
+            FROM {table_name}
             WHERE "locus.contig" = $1
               AND pos BETWEEN $2 AND $3
             ORDER BY pos, variant_id

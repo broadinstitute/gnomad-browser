@@ -1,19 +1,18 @@
 #![allow(clippy::panic_in_result_fn)]
 
-use datafusion::error::{DataFusionError, Result};
+use datafusion::error::Result;
 use gnomad_data_store::{
-    ClinvarReader, GenomicInterval, ParquetDataset, create_datafusion_context,
+    ClinvarReader, GenomicInterval, ParquetDataset, create_datafusion_context_from_root,
 };
 
 mod fixtures;
 
 async fn fixture_reader() -> Result<ClinvarReader> {
-    let path = fixtures::resolve_dataset_directory(ParquetDataset::ClinvarVariantsGrch38)?;
-    let fixture_path = path
-        .to_str()
-        .ok_or_else(|| DataFusionError::Execution("Fixture path is not valid UTF-8".to_owned()))?;
-
-    let context = create_datafusion_context(fixture_path).await?;
+    let context = create_datafusion_context_from_root(
+        fixtures::root_directory(),
+        ParquetDataset::ClinvarVariantsGrch38,
+    )
+    .await?;
 
     Ok(ClinvarReader::new(context))
 }

@@ -10,7 +10,7 @@ pub use clinvar_variant::{
     ClinvarCondition, ClinvarGnomadData, ClinvarGnomadSequencingData, ClinvarSubmission,
     ClinvarTranscriptConsequence, ClinvarVariant, ClinvarVariantListEntry,
 };
-pub use datafusion_context::create_datafusion_context;
+pub use datafusion_context::{create_datafusion_context, create_datafusion_context_from_root};
 pub use genomic_interval::{
     Chromosome, GenomicInterval, GenomicIntervalError, pad_and_merge_intervals,
 };

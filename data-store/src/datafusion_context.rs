@@ -1,3 +1,6 @@
+use std::path::Path;
+
+use crate::ParquetDataset;
 use datafusion::common::config::Dialect;
 use datafusion::prelude::{ParquetReadOptions, SessionConfig, SessionContext};
 
@@ -6,20 +9,32 @@ use datafusion::prelude::{ParquetReadOptions, SessionConfig, SessionContext};
 pub async fn create_datafusion_context(
     clinvar_parquet_path: &str,
 ) -> datafusion::error::Result<SessionContext> {
-    let mut config = SessionConfig::new();
-    config.options_mut().sql_parser.dialect = Dialect::DuckDB;
-
-    let context = SessionContext::new_with_config(config);
-
-    let clinvar_table_name = "clinvar_grch38_variants";
+    let context = create_session_context();
 
     context
         .register_parquet(
-            clinvar_table_name,
+            ParquetDataset::ClinvarVariantsGrch38.name(),
             clinvar_parquet_path,
             ParquetReadOptions::default(),
         )
         .await?;
 
     Ok(context)
+}
+
+/// # Errors
+/// Return an error if the requested dataset directory cannot be resolved or registered.
+pub async fn create_datafusion_context_from_root(
+    root: impl AsRef<Path>,
+    dataset: ParquetDataset,
+) -> datafusion::error::Result<SessionContext> {
+    let context = create_session_context();
+    dataset.register(&context, root).await?;
+    Ok(context)
+}
+
+fn create_session_context() -> SessionContext {
+    let mut config = SessionConfig::new();
+    config.options_mut().sql_parser.dialect = Dialect::DuckDB;
+    SessionContext::new_with_config(config)
 }
