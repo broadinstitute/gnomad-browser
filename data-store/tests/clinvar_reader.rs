@@ -3,21 +3,23 @@
 use std::path::PathBuf;
 
 use datafusion::error::Result;
-use gnomad_data_store::{ClinvarReader, create_datafusion_context};
+use gnomad_data_store::{ClinvarReader, ParquetDataset, create_datafusion_context};
+
+mod fixtures;
 
 const CLINVAR_TABLE_NAME: &str = "clinvar_grch38_variants";
 
-fn fixture_directory() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/clinvar_grch38_variants")
+fn fixture_directory() -> std::io::Result<PathBuf> {
+    fixtures::resolve_dataset_directory(ParquetDataset::ClinvarVariantsGrch38)
 }
 
-fn fixture_path() -> PathBuf {
-    fixture_directory().join("chrom=1/data_0.parquet")
+fn fixture_path() -> std::io::Result<PathBuf> {
+    Ok(fixture_directory()?.join("chrom=1/data_0.parquet"))
 }
 
 #[tokio::test]
 async fn registers_clinvar_table_with_fixture_records() -> Result<()> {
-    let path = fixture_path();
+    let path = fixture_path()?;
     let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
 
     let row_count = context.table(CLINVAR_TABLE_NAME).await?.count().await?;
@@ -28,7 +30,7 @@ async fn registers_clinvar_table_with_fixture_records() -> Result<()> {
 
 #[tokio::test]
 async fn reads_both_chromosomes_from_one_registered_directory() -> Result<()> {
-    let path = fixture_directory();
+    let path = fixture_directory()?;
     let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
     let row_count = context.table(CLINVAR_TABLE_NAME).await?.count().await?;
     assert_eq!(row_count, 19);
@@ -55,18 +57,19 @@ async fn reads_both_chromosomes_from_one_registered_directory() -> Result<()> {
 }
 
 #[tokio::test]
-async fn registration_fails_for_missing_file() {
-    let path = fixture_path().with_file_name("missing_clinvar.parquet");
+async fn registration_fails_for_missing_file() -> Result<()> {
+    let path = fixture_path()?.with_file_name("missing_clinvar.parquet");
     assert!(!path.exists());
 
     let result = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await;
 
     assert!(result.is_err());
+    Ok(())
 }
 
 #[tokio::test]
 async fn fetches_expected_fields_for_each_variant_id() -> Result<()> {
-    let path = fixture_path();
+    let path = fixture_path()?;
     let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
     let reader = ClinvarReader::new(context);
 
@@ -93,7 +96,7 @@ async fn fetches_expected_fields_for_each_variant_id() -> Result<()> {
 
 #[tokio::test]
 async fn decodes_submissions_and_absent_gnomad_data() -> Result<()> {
-    let path = fixture_path();
+    let path = fixture_path()?;
     let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
     let reader = ClinvarReader::new(context);
 
@@ -143,7 +146,7 @@ async fn decodes_submissions_and_absent_gnomad_data() -> Result<()> {
 
 #[tokio::test]
 async fn decodes_exome_only_gnomad_data_with_empty_filters() -> Result<()> {
-    let path = fixture_path();
+    let path = fixture_path()?;
     let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
     let reader = ClinvarReader::new(context);
 
@@ -169,7 +172,7 @@ async fn decodes_exome_only_gnomad_data_with_empty_filters() -> Result<()> {
 
 #[tokio::test]
 async fn decodes_exome_and_genome_gnomad_data_with_filters() -> Result<()> {
-    let path = fixture_path();
+    let path = fixture_path()?;
     let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
     let reader = ClinvarReader::new(context);
 
@@ -204,7 +207,7 @@ async fn decodes_exome_and_genome_gnomad_data_with_filters() -> Result<()> {
 
 #[tokio::test]
 async fn returns_none_for_unknown_variant_id() -> Result<()> {
-    let path = fixture_path();
+    let path = fixture_path()?;
     let context = create_datafusion_context(path.to_str().expect("UTF-8 fixture path")).await?;
     let reader = ClinvarReader::new(context);
 

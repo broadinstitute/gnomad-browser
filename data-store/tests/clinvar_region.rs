@@ -1,13 +1,14 @@
 #![allow(clippy::panic_in_result_fn)]
 
-use std::path::PathBuf;
-
 use datafusion::error::{DataFusionError, Result};
-use gnomad_data_store::{ClinvarReader, GenomicInterval, create_datafusion_context};
+use gnomad_data_store::{
+    ClinvarReader, GenomicInterval, ParquetDataset, create_datafusion_context,
+};
+
+mod fixtures;
 
 async fn fixture_reader() -> Result<ClinvarReader> {
-    let path =
-        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/clinvar_grch38_variants");
+    let path = fixtures::resolve_dataset_directory(ParquetDataset::ClinvarVariantsGrch38)?;
     let fixture_path = path
         .to_str()
         .ok_or_else(|| DataFusionError::Execution("Fixture path is not valid UTF-8".to_owned()))?;

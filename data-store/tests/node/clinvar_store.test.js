@@ -4,7 +4,7 @@ const { describe, test } = require('node:test')
 
 const { openClinvarStore } = require('../../bindings')
 
-const FIXTURE_DIRECTORY = path.resolve(__dirname, '../fixtures/clinvar_grch38_variants')
+const FIXTURE_DIRECTORY = path.resolve(__dirname, '../fixtures/clinvar_variants_grch38')
 const FIXTURE_PATH = path.join(FIXTURE_DIRECTORY, 'chrom=1/data_0.parquet')
 
 describe('ClinVar single-variant queries', () => {

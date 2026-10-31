@@ -1,13 +1,14 @@
 #![allow(clippy::panic_in_result_fn)]
 
-use std::path::PathBuf;
-
 use datafusion::common::config::Dialect;
 use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::{SessionConfig, SessionContext};
 use gnomad_data_store::{
-    ClinvarReader, ClinvarVariantListEntry, GenomicInterval, create_datafusion_context,
+    ClinvarReader, ClinvarVariantListEntry, GenomicInterval, ParquetDataset,
+    create_datafusion_context,
 };
+
+mod fixtures;
 
 /// Supply one SQL row per consequence as (`variant_id`, `chromosome`, `position`,
 /// `gene_id`, `transcript_id`, `consequence_order`).
@@ -56,8 +57,7 @@ async fn create_synthetic_reader(variant_annotations: &str) -> Result<ClinvarRea
 }
 
 async fn create_parquet_reader() -> Result<ClinvarReader> {
-    let path =
-        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/clinvar_grch38_variants");
+    let path = fixtures::resolve_dataset_directory(ParquetDataset::ClinvarVariantsGrch38)?;
     let path = path
         .to_str()
         .ok_or_else(|| DataFusionError::Execution("Fixture path is not valid UTF-8".to_owned()))?;
