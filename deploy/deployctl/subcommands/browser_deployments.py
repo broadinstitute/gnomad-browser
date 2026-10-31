@@ -9,6 +9,7 @@ import time
 
 from deployctl.config import config
 from deployctl.shell import kubectl, get_most_recent_tag, image_exists, get_k8s_deployments
+from deployctl.tag import PARQUET_TAG_SUFFIX
 from deployctl.subcommands.ingress_production import get_current_browser_deployment
 
 
@@ -188,7 +189,9 @@ def list_deployments() -> None:
     print()
 
 
-def create_deployment(name: str, browser_tag: str = None, api_tag: str = None, demo: bool = False) -> None:
+def create_deployment(
+    name: str, browser_tag: str = None, api_tag: str = None, demo: bool = False, allow_parquet_api: bool = False
+) -> None:
     if not name:
         name = datetime.datetime.now().strftime("%Y%m%d-%H%M")
     else:
@@ -217,6 +220,11 @@ def create_deployment(name: str, browser_tag: str = None, api_tag: str = None, d
     else:
         api_tag = get_most_recent_tag(config.api_image_repository)
         print(f"No API tag provided, using most recent ({api_tag})")
+
+    if api_tag.endswith(PARQUET_TAG_SUFFIX) and not (demo or allow_parquet_api):
+        raise RuntimeError(
+            f"API image {api_tag} includes the Parquet data store; pass --demo, or --allow-parquet-api to deploy it"
+        )
 
     os.makedirs(deployment_directory)
 
@@ -301,6 +309,11 @@ def main(argv: typing.List[str]) -> None:
     create_parser.add_argument("--browser-tag")
     create_parser.add_argument("--api-tag")
     create_parser.add_argument("--demo", action="store_true")
+    create_parser.add_argument(
+        "--allow-parquet-api",
+        action="store_true",
+        help=f"Allow a non-demo deployment of an API image tagged *{PARQUET_TAG_SUFFIX}",
+    )
 
     apply_parser = subparsers.add_parser("apply")
     apply_parser.set_defaults(action=apply_deployment)

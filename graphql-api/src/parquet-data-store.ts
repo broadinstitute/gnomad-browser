@@ -17,7 +17,8 @@ const loadNativeDataStoreAddon = (): NativeDataStoreAddon => {
     throw Object.assign(
       new Error(
         'Parquet data store is enabled, but its native addon could not be loaded. ' +
-          'Run: pnpm --filter @gnomad/data-store build:native'
+          'Locally, run: pnpm --filter @gnomad/data-store build:native. ' +
+          'In Docker, build the parquet-api target of api.dockerfile.'
       ),
       { cause: error }
     )
