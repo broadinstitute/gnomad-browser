@@ -1607,6 +1607,7 @@ dependencies = [
  "napi-derive",
  "serde",
  "serde_arrow",
+ "tempfile",
  "tokio",
 ]
 
