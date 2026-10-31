@@ -8,28 +8,39 @@ from deployctl.config import config
 from deployctl.tag import get_tag_from_git_revision
 
 
-def build_images(tag: str = None, push: bool = False) -> None:
+def build_images(tag: str = None, push: bool = False, with_parquet: bool = False) -> None:
     repository_root = os.path.realpath(os.path.join(os.path.dirname(__file__), "../../.."))
 
     if not tag:
         tag = get_tag_from_git_revision()
+        if with_parquet:
+            tag = f"{tag}-parquet"
+
+    frontend_dockerfile_path = "deploy/dockerfiles/browser/browser.dockerfile"
+    api_dockerfile_path = "deploy/dockerfiles/browser/api.dockerfile"
 
     images = [
-        ("deploy/dockerfiles/browser/browser.dockerfile", config.browser_image_repository),
-        ("deploy/dockerfiles/browser/api.dockerfile", config.api_image_repository),
+        (frontend_dockerfile_path, config.browser_image_repository),
+        (api_dockerfile_path, config.api_image_repository),
     ]
 
     for dockerfile_path, image_repository in images:
+        build_command = [
+            "docker",
+            "build",
+            "--pull",
+            f"--file={dockerfile_path}",
+            f"--tag={image_repository}:{tag}",
+            f"--tag={image_repository}:latest",
+        ]
+
+        if with_parquet and dockerfile_path == api_dockerfile_path:
+            build_command.extend(["--target", "parquet-api"])
+
+        build_command.append(".")
+
         subprocess.check_call(
-            [
-                "docker",
-                "build",
-                "--pull",
-                f"--file={dockerfile_path}",
-                f"--tag={image_repository}:{tag}",
-                f"--tag={image_repository}:latest",
-                ".",
-            ],
+            build_command,
             cwd=repository_root,
             env=dict(os.environ, DOCKER_BUILDKIT="1"),
         )
@@ -55,6 +66,11 @@ def main(argv: typing.List[str]) -> None:
     build_parser.set_defaults(action=build_images)
     build_parser.add_argument("--tag")
     build_parser.add_argument("--push", action="store_true")
+    build_parser.add_argument(
+        "--with-parquet",
+        action="store_true",
+        help="Include the release compiled rust parquet reader addon in a .node file in the API image",
+    )
 
     args = parser.parse_args(argv)
 
