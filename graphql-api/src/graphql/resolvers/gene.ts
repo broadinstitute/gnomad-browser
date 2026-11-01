@@ -1,3 +1,5 @@
+import type { GraphQLContext } from '../../app'
+
 const { UserVisibleError } = require('../../errors')
 const {
   fetchGeneById,
@@ -13,9 +15,13 @@ const addDefaultVariantCooccurrenceCounts = (gene: any) => {
   }
 }
 
-const resolveGene = async (_: any, args: any, ctx: any) => {
+const resolveGene = async (_: any, args: any, ctx: GraphQLContext) => {
   if (args.gene_id) {
-    const gene = await fetchGeneById(ctx.esClient, args.gene_id, args.reference_genome)
+    const geneModelsGrch38 = ctx.parquetDataStore?.geneModelsGrch38
+    const gene =
+      args.reference_genome === 'GRCh38' && geneModelsGrch38 !== undefined
+        ? await geneModelsGrch38.fetchGeneById(args.gene_id)
+        : await fetchGeneById(ctx.esClient, args.gene_id, args.reference_genome)
     if (!gene) {
       throw new UserVisibleError('Gene not found')
     }

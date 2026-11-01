@@ -19,8 +19,7 @@ use crate::{
     GeneLocus as ReaderGeneLocus, GeneManeSelectTranscript as ReaderGeneManeSelectTranscript,
     GenePext as ReaderGenePext, GenePextRegion as ReaderGenePextRegion, GeneReader,
     GeneTissueExpression as ReaderGeneTissueExpression, GeneTranscript as ReaderGeneTranscript,
-    GenomicInterval, GenomicIntervalError, ParquetDataset, create_datafusion_context,
-    create_datafusion_context_from_root,
+    GenomicInterval, GenomicIntervalError, ParquetDataset, create_datafusion_context_from_root,
 };
 
 #[napi]
@@ -32,10 +31,13 @@ pub struct ClinvarStore {
 /// Returns an error if the configured Parquet dataset cannot be registered.
 #[allow(dead_code, reason = "Called from JavaScript through Node-API.")]
 #[napi]
-pub async fn open_clinvar_store(parquet_path: String) -> napi::Result<ClinvarStore> {
-    let context = create_datafusion_context(&parquet_path)
-        .await
-        .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+pub async fn open_clinvar_store(parquet_root: String) -> napi::Result<ClinvarStore> {
+    let context = create_datafusion_context_from_root(
+        parquet_root,
+        ParquetDataset::ClinvarVariantsGrch38,
+    )
+    .await
+    .map_err(|error| napi::Error::from_reason(error.to_string()))?;
 
     Ok(ClinvarStore {
         reader: ClinvarReader::new(context),

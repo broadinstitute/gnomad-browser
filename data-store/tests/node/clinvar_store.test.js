@@ -4,12 +4,11 @@ const { describe, test } = require('node:test')
 
 const { openClinvarStore } = require('../../bindings')
 
-const FIXTURE_DIRECTORY = path.resolve(__dirname, '../fixtures/clinvar_variants_grch38')
-const FIXTURE_PATH = path.join(FIXTURE_DIRECTORY, 'chrom=1/data_0.parquet')
+const FIXTURE_DIRECTORY = path.resolve(__dirname, '../fixtures')
 
 describe('ClinVar single-variant queries', () => {
   test('fetches a variant as a JavaScript object', async () => {
-    const store = await openClinvarStore(FIXTURE_PATH)
+    const store = await openClinvarStore(FIXTURE_DIRECTORY)
 
     const variant = await store.fetchSingleVariant('1-66926-AG-A')
 
@@ -42,7 +41,7 @@ describe('ClinVar single-variant queries', () => {
   })
 
   test('returns nested submissions and exome and genome annotations', async () => {
-    const store = await openClinvarStore(FIXTURE_PATH)
+    const store = await openClinvarStore(FIXTURE_DIRECTORY)
 
     const variant = await store.fetchSingleVariant('1-69134-A-G')
 
@@ -77,7 +76,7 @@ describe('ClinVar single-variant queries', () => {
   })
 
   test('preserves empty filters and a missing genome annotation', async () => {
-    const store = await openClinvarStore(FIXTURE_PATH)
+    const store = await openClinvarStore(FIXTURE_DIRECTORY)
 
     const variant = await store.fetchSingleVariant('1-926026-G-A')
 
@@ -111,7 +110,7 @@ describe('ClinVar single-variant queries', () => {
   })
 
   test('returns null for an absent variant', async () => {
-    const store = await openClinvarStore(FIXTURE_PATH)
+    const store = await openClinvarStore(FIXTURE_DIRECTORY)
     const variant = await store.fetchSingleVariant('1-926026-G-C')
 
     assert.strictEqual(variant, null)
@@ -119,8 +118,8 @@ describe('ClinVar single-variant queries', () => {
 })
 
 describe('ClinVar store initialization', () => {
-  test('rejects opening a missing file', async () => {
-    const missingPath = path.join(__dirname, 'missing-path.parquet')
-    await assert.rejects(() => openClinvarStore(missingPath))
+  test('rejects opening a missing root', async () => {
+    const missingRoot = path.join(__dirname, 'missing-parquet-root')
+    await assert.rejects(() => openClinvarStore(missingRoot))
   })
 })

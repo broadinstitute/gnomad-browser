@@ -55,7 +55,7 @@ const config: Record<string, any> = {
 
   // Parquet datastore
   PARQUET_DATA_STORE_ENABLED: env.PARQUET_DATA_STORE_ENABLED === 'true' || false,
-  CLINVAR_GRCH38_PARQUET_PATH: env.CLINVAR_GRCH38_PARQUET_PATH,
+  PARQUET_DATA_ROOT: env.PARQUET_DATA_ROOT,
 
   PARQUET_ONLY: env.PARQUET_ONLY === 'true' || false,
 }
@@ -71,7 +71,7 @@ if (
   throw new Error('Please disable Redis and JSON data caches in Parquet-only mode')
 }
 
-const requiredConfig = config.PARQUET_ONLY ? ['CLINVAR_GRCH38_PARQUET_PATH'] : ['ELASTICSEARCH_URL']
+const requiredConfig = config.PARQUET_ONLY ? ['PARQUET_DATA_ROOT'] : ['ELASTICSEARCH_URL']
 
 for (const setting of requiredConfig) {
   if (!config[setting]) {

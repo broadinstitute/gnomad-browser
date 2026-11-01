@@ -4,7 +4,7 @@ const { describe, test } = require('node:test')
 
 const { openClinvarStore } = require('../../bindings')
 
-const FIXTURE_DIRECTORY = path.resolve(__dirname, '../fixtures/clinvar_variants_grch38')
+const FIXTURE_DIRECTORY = path.resolve(__dirname, '../fixtures')
 
 describe('ClinVar region queries', () => {
   test('returns a list entry with GraphQL field names and explicit nulls', async () => {

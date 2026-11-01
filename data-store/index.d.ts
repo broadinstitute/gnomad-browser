@@ -236,7 +236,7 @@ export interface GenomicIntervalBounds {
  * # Errors
  * Returns an error if the configured Parquet dataset cannot be registered.
  */
-export declare function openClinvarStore(parquetPath: string): Promise<ClinvarStore>
+export declare function openClinvarStore(parquetRoot: string): Promise<ClinvarStore>
 
 /**
  * # Errors

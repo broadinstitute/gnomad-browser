@@ -1,10 +1,11 @@
 import config from './config'
 
-import type { ClinvarStore } from '@gnomad/data-store'
+import type { ClinvarStore, GeneStore } from '@gnomad/data-store'
 import logger from './logger'
 
 export interface ParquetDataStore {
   clinvarGrch38: ClinvarStore
+  geneModelsGrch38: GeneStore
 }
 
 // note: despite how it looks at first glance, this is a type, not a runtime import
@@ -33,21 +34,22 @@ const initializeParquetDataStoreIfEnabled = async (): Promise<ParquetDataStore |
     return null
   }
 
-  const path = config.CLINVAR_GRCH38_PARQUET_PATH
+  const parquetRoot = config.PARQUET_DATA_ROOT
 
-  if (typeof path !== 'string' || path.trim() === '') {
-    throw new Error('CLINVAR_GRCH38_PARQUET_PATH is required when PARQUET_DATA_STORE_ENABLED=true')
+  if (typeof parquetRoot !== 'string' || parquetRoot.trim() === '') {
+    throw new Error('PARQUET_DATA_ROOT is required when PARQUET_DATA_STORE_ENABLED=true')
   }
 
   const addon = loadNativeDataStoreAddon()
-  const clinvarGrch38 = await addon.openClinvarStore(path)
+  const clinvarGrch38 = await addon.openClinvarStore(parquetRoot)
+  const geneModelsGrch38 = await addon.openGeneStore(parquetRoot)
 
   logger.info({
     event: 'parquetDataStoreInitialized',
-    datasets: ['clinvar_grch38'],
+    datasets: ['clinvar_variants_grch38', 'gene_models_grch38'],
   })
 
-  return { clinvarGrch38 }
+  return { clinvarGrch38, geneModelsGrch38 }
 }
 
 export default initializeParquetDataStoreIfEnabled
