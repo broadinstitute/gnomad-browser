@@ -27,6 +27,14 @@ export declare class ClinvarStore {
   fetchVariantsInRegion(chromosome: string, start: number, stop: number): Promise<Array<ClinvarVariantListEntry>>
 }
 
+export declare class GeneStore {
+  /**
+   * # Errors
+   * Reject query, decoding, duplicate-ID, or unsafe JavaScript integer conversions.
+   */
+  fetchGeneById(geneId: string): Promise<Gene | null>
+}
+
 export interface ClinvarCondition {
   name: string
   medgen_id: string | null
@@ -92,6 +100,132 @@ export interface ClinvarVariantListEntry {
   transcript_consequence: ClinvarTranscriptConsequence | null
 }
 
+export interface Gene {
+  gene_id: string
+  gene_version: string
+  symbol: string
+  gencode_symbol: string
+  reference_genome: string
+  chrom: string
+  strand: string
+  start: number
+  stop: number
+  xstart: number
+  xstop: number
+  interval: GeneInterval
+  exons: Array<GeneExon>
+  transcripts: Array<GeneTranscript>
+  hgnc_id: string | null
+  ncbi_id: string | null
+  omim_id: string | null
+  name: string | null
+  flags: Array<string>
+  canonical_transcript_id: string | null
+  mane_select_transcript: GeneManeSelectTranscript | null
+  pext: GenePext | null
+  gnomad_constraint: GeneGnomadConstraint | null
+  previous_symbols: Array<string> | null
+  alias_symbols: Array<string> | null
+  symbol_upper_case: string
+  search_terms: Array<string>
+  preferred_transcript_id: string | null
+  preferred_transcript_source: string | null
+}
+
+export interface GeneExon {
+  feature_type: string
+  start: number
+  stop: number
+  xstart: number
+  xstop: number
+}
+
+export interface GeneGnomadConstraint {
+  gene: string | null
+  gene_id: string | null
+  transcript: string | null
+  canonical: boolean | null
+  mane_select: boolean | null
+  exp_lof: number | null
+  exp_mis: number | null
+  exp_syn: number | null
+  obs_lof: number | null
+  obs_mis: number | null
+  obs_syn: number | null
+  oe_lof: number | null
+  oe_lof_lower: number | null
+  oe_lof_upper: number | null
+  oe_lof_percentile: number | null
+  oe_mis: number | null
+  oe_mis_lower: number | null
+  oe_mis_upper: number | null
+  oe_syn: number | null
+  oe_syn_lower: number | null
+  oe_syn_upper: number | null
+  lof_z: number | null
+  mis_z: number | null
+  syn_z: number | null
+  pli: number | null
+  flags: Array<string> | null
+}
+
+export interface GeneInterval {
+  start: GeneLocus
+  end: GeneLocus
+  includes_start: boolean
+  includes_end: boolean
+}
+
+export interface GeneLocus {
+  contig: string
+  position: number
+}
+
+export interface GeneManeSelectTranscript {
+  matched_gene_version: string
+  ensembl_id: string
+  ensembl_version: string
+  refseq_id: string
+  refseq_version: string
+}
+
+export interface GenePext {
+  regions: Array<GenePextRegion>
+  flags: Array<string>
+}
+
+export interface GenePextRegion {
+  chrom: string
+  start: number
+  stop: number
+  mean: number
+  tissues: Array<GeneTissueExpression>
+}
+
+export interface GeneTissueExpression {
+  tissue: string
+  value: number | null
+}
+
+export interface GeneTranscript {
+  transcript_id: string
+  transcript_version: string
+  gene_id: string
+  gene_version: string
+  reference_genome: string
+  chrom: string
+  strand: string
+  start: number
+  stop: number
+  xstart: number
+  xstop: number
+  interval: GeneInterval
+  exons: Array<GeneExon>
+  gtex_tissue_expression: Array<GeneTissueExpression> | null
+  refseq_id: string | null
+  refseq_version: string | null
+}
+
 /** Use unpadded, one-based, inclusive coordinates. */
 export interface GenomicIntervalBounds {
   start: number
@@ -103,3 +237,9 @@ export interface GenomicIntervalBounds {
  * Returns an error if the configured Parquet dataset cannot be registered.
  */
 export declare function openClinvarStore(parquetPath: string): Promise<ClinvarStore>
+
+/**
+ * # Errors
+ * Return an error if `gene_models_grch38` cannot be resolved or registered under the supplied root.
+ */
+export declare function openGeneStore(parquetRoot: string): Promise<GeneStore>
