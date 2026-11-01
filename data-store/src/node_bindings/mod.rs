@@ -1,4 +1,5 @@
 mod clinvar;
+mod gene;
 
 use napi::bindgen_prelude::{Either, Null};
 use napi_derive::napi;
