@@ -53,9 +53,11 @@ Readers take a root directory containing one subdirectory per dataset:
 
 ```
 <DATA_ROOT>
-└── clinvar_variants_grch38
-    ├── chrom=1/*.parquet
-    └── chrom=2/*.parquet
+├── clinvar_variants_grch38
+│   ├── chrom=1/*.parquet
+│   └── chrom=2/*.parquet
+└── gene_models_grch38
+    └── data.parquet
 ```
 
 The `chrom=` directory names are read as the `chrom` column, and queries filter on it to skip
@@ -71,6 +73,7 @@ permissions, copy its `parquet` directory to your machine to use as `<DATA_ROOT>
 cargo run --release --example read_clinvar_variant -- <DATA_ROOT> 1-66926-AG-A
 cargo run --release --example read_clinvar_region -- <DATA_ROOT> 1 926026 1477343
 cargo run --release --example read_clinvar_exons -- <DATA_ROOT> transcript ENST00000423320 2 1453500:1477400
+cargo run --release --example read_gene -- <DATA_ROOT> ENSG00000169174
 ```
 
 Against the fixtures:

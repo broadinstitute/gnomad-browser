@@ -105,6 +105,29 @@ async fn a_bound_chromosome_filter_scans_only_that_partition() -> Result<()> {
 }
 
 #[tokio::test]
+async fn registers_gene_models_with_their_own_chromosome_column() -> Result<()> {
+    let dataset = ParquetDataset::GeneModelsGrch38;
+    let partition_columns = dataset.partition_columns();
+    assert!(
+        partition_columns.is_empty(),
+        "gene models must not declare partition columns, got {partition_columns:?}"
+    );
+    let context = create_datafusion_context_from_root(fixtures::root_directory(), dataset).await?;
+
+    let genes_on_chromosome_22 = context
+        .sql(&format!(
+            "SELECT gene_id FROM {} WHERE chrom = '22'",
+            dataset.name()
+        ))
+        .await?
+        .count()
+        .await?;
+
+    assert_eq!(genes_on_chromosome_22, 2);
+    Ok(())
+}
+
+#[tokio::test]
 async fn contexts_filter_rows_while_decoding_parquet() -> Result<()> {
     let context = create_datafusion_context_from_root(
         fixtures::root_directory(),
