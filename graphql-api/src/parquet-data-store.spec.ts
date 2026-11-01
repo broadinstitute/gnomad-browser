@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals'
-import { openClinvarStore } from '@gnomad/data-store'
+import { openClinvarStore, openGeneStore } from '@gnomad/data-store'
 
 import config from './config'
 import logger from './logger'
@@ -14,7 +14,8 @@ jest.mock('./logger', () => ({ info: jest.fn(), warn: jest.fn() }))
 jest.mock(
   '@gnomad/data-store',
   () => ({
-    openClinvarStore: jest.fn(async () => ({})),
+    openClinvarStore: jest.fn(async () => ({ dataset: 'clinvar' })),
+    openGeneStore: jest.fn(async () => ({ dataset: 'genes' })),
   }),
   { virtual: true }
 )
@@ -26,14 +27,18 @@ beforeEach(() => {
 })
 
 describe('Parquet data store initialization', () => {
-  test('opens the ClinVar dataset from the configured root', async () => {
+  test('opens every dataset from the configured root', async () => {
     const store = await initializeParquetDataStoreIfEnabled()
 
     expect(openClinvarStore).toHaveBeenCalledWith('/test/parquet')
-    expect(store).toEqual({ clinvarGrch38: {} })
+    expect(openGeneStore).toHaveBeenCalledWith('/test/parquet')
+    expect(store).toEqual({
+      clinvarGrch38: { dataset: 'clinvar' },
+      geneModelsGrch38: { dataset: 'genes' },
+    })
     expect(logger.info).toHaveBeenCalledWith({
       event: 'parquetDataStoreInitialized',
-      datasets: ['clinvar_variants_grch38'],
+      datasets: ['clinvar_variants_grch38', 'gene_models_grch38'],
     })
   })
 
@@ -42,6 +47,7 @@ describe('Parquet data store initialization', () => {
 
     expect(await initializeParquetDataStoreIfEnabled()).toBeNull()
     expect(openClinvarStore).not.toHaveBeenCalled()
+    expect(openGeneStore).not.toHaveBeenCalled()
   })
 
   test('rejects an empty root before opening any stores', async () => {
@@ -51,11 +57,20 @@ describe('Parquet data store initialization', () => {
       'PARQUET_DATA_ROOT is required'
     )
     expect(openClinvarStore).not.toHaveBeenCalled()
+    expect(openGeneStore).not.toHaveBeenCalled()
   })
 
   test('propagates an initialization failure instead of starting without the dataset', async () => {
     const error = new Error('clinvar_variants_grch38 is missing')
     jest.mocked(openClinvarStore).mockRejectedValueOnce(error)
+
+    await expect(initializeParquetDataStoreIfEnabled()).rejects.toBe(error)
+    expect(logger.info).not.toHaveBeenCalled()
+  })
+
+  test('fails to start when the gene dataset cannot be opened', async () => {
+    const error = new Error('gene_models_grch38 is missing')
+    jest.mocked(openGeneStore).mockRejectedValueOnce(error)
 
     await expect(initializeParquetDataStoreIfEnabled()).rejects.toBe(error)
     expect(logger.info).not.toHaveBeenCalled()

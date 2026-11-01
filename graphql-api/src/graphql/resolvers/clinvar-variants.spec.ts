@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals'
-import type { ClinvarStore, ClinvarVariant, ClinvarVariantListEntry } from '@gnomad/data-store'
+import type {
+  ClinvarStore,
+  ClinvarVariant,
+  ClinvarVariantListEntry,
+  GeneStore,
+} from '@gnomad/data-store'
 
 import type { GraphQLContext } from '../context'
 import { client as esClient } from '../../elasticsearch'
@@ -74,9 +79,14 @@ const createNativeStore = () => ({
     .mockResolvedValue([listEntry]),
 })
 
+const unusedGeneStore: GeneStore = {
+  fetchGeneById: jest.fn<GeneStore['fetchGeneById']>(),
+}
+
 const createContext = (store: ClinvarStore | null): GraphQLContext => ({
   esClient,
-  parquetDataStore: store === null ? null : { clinvarGrch38: store },
+  parquetDataStore:
+    store === null ? null : { clinvarGrch38: store, geneModelsGrch38: unusedGeneStore },
   requestId: null,
 })
 
