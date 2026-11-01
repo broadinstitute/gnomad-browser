@@ -1,5 +1,6 @@
 use crate::{
-    ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset, pad_and_merge_intervals,
+    ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset,
+    pad_and_merge_intervals,
 };
 use datafusion::common::ScalarValue;
 use datafusion::error::DataFusionError;
