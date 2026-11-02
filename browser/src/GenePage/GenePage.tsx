@@ -404,6 +404,12 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
                 )}
               </>
             )}
+            {gene.short_tandem_repeats === null && (
+              <p>
+                <Badge level="warning">Warning</Badge> Unable to determine whether tandem repeat
+                data is available for this gene.
+              </p>
+            )}
           </GeneInfoColumn>
           <ConstraintOrCooccurrenceColumn>
             <TableSelectorWrapper>
