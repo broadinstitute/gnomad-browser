@@ -4,7 +4,8 @@ import { useEffect } from 'react'
 const DocumentTitle = ({ title }: any) => {
   useEffect(() => {
     const fullTitle = title ? `${title} | gnomAD` : 'gnomAD'
-    document.title = fullTitle
+    const prefix = process.env.NODE_ENV === 'development' ? '[DEV] ' : ''
+    document.title = `${prefix}${fullTitle}`
   }, [title])
   return null
 }

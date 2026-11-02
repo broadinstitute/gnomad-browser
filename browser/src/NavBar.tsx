@@ -6,6 +6,9 @@ import { Button } from '@gnomad/ui'
 
 import Searchbox from './Searchbox'
 
+const isDevelopment = process.env.NODE_ENV === 'development'
+const headerBackgroundColor = isDevelopment ? '#3b1d5e' : '#000'
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -15,7 +18,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
   padding: 10px 30px;
-  background-color: black;
+  background-color: ${headerBackgroundColor};
 
   a {
     color: white;
@@ -47,7 +50,7 @@ const Logo = styled.div`
 
 const ToggleMenuButton = styled(Button)`
   border: 1px solid #fafafa;
-  background: black;
+  background: ${headerBackgroundColor};
   color: white;
 
   @media (min-width: 901px) {
@@ -92,7 +95,7 @@ const NavBar = () => {
     <Wrapper>
       <LogoWrapper>
         <Link to="/" onClick={closeMenu}>
-          <Logo>gnomAD browser</Logo>
+          <Logo>{isDevelopment ? '[DEV] gnomAD browser' : 'gnomAD browser'}</Logo>
         </Link>
         <ToggleMenuButton onClick={toggleMenu}>☰</ToggleMenuButton>
       </LogoWrapper>
