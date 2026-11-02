@@ -6,6 +6,7 @@
   "types": "index.d.ts",
   "scripts": {
     "build:native": "napi build --platform --output-dir bindings && cp bindings/index.d.ts index.d.ts",
+    "build:native:release": "napi build --platform --output-dir bindings --release && cp bindings/index.d.ts index.d.ts",
     "test:node": "node --test tests/node/*.test.js"
   },
   "napi": {
