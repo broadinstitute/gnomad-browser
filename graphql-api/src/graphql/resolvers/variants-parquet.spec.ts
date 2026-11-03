@@ -83,7 +83,9 @@ const createSources = (): GnomadV4VariantListEntry[] => {
 
 const createNativeStore = () => ({
   fetchSingleVariant: jest.fn<GnomadV4Store['fetchSingleVariant']>(),
-  fetchVariantsInRegion: jest.fn<GnomadV4Store['fetchVariantsInRegion']>(),
+  fetchVariantsInRegion: jest
+    .fn<GnomadV4Store['fetchVariantsInRegion']>()
+    .mockResolvedValue(createSources()),
   fetchVariantsInGene: jest
     .fn<GnomadV4Store['fetchVariantsInGene']>()
     .mockResolvedValue(createSources()),
@@ -310,4 +312,216 @@ describe('Parquet v4 gene/transcript variants', () => {
       expect(parquetTranscript).toEqual(esTranscript)
     }
   )
+})
+
+const region = {
+  chrom: '22',
+  start: 100,
+  stop: 200,
+  reference_genome: 'GRCh38',
+  xstart: 22000000100,
+  xstop: 22000000200,
+}
+
+describe('Parquet v4 region variants', () => {
+  test.each([
+    ['gnomad_r4', 'all', 2],
+    ['gnomad_r4_non_ukb', 'non_ukb', 1],
+  ])(
+    'routes %s through unpadded native bounds and shared summary shaping',
+    async (dataset, subset, ac) => {
+      const store = createNativeStore()
+      const result = await resolvers.Region.variants(region, { dataset }, createContext(store))
+      expect(store.fetchVariantsInRegion).toHaveBeenCalledWith('22', 100, 200, subset)
+      expect(result).toHaveLength(1)
+      expect(result[0]).toMatchObject({
+        variant_id: '22-100-A-G',
+        chrom: '22',
+        pos: 100,
+        ref: 'A',
+        alt: 'G',
+        flags: ['source-flag', 'segdup'],
+        transcript_consequence: { gene_id: 'ENSG002', transcript_id: 'ENST002' },
+        exome: { ac, populations: [{ id: 'nfe', ac: 2, an: 80 }] },
+        in_silico_predictors: [
+          { id: 'cadd', value: '10.0', flags: [] },
+          { id: 'spliceai_ds_max', value: '0.00', flags: [] },
+        ],
+      })
+      expect(result[0]).not.toHaveProperty('transcript_consequences')
+      expect(result[0].lof_curation).toBeUndefined()
+      expect(esClient.count).not.toHaveBeenCalled()
+      expect(esClient.search).not.toHaveBeenCalled()
+    }
+  )
+
+  test('keeps intergenic variants and skips consequences without a gene ID', async () => {
+    const store = createNativeStore()
+    const intergenic = createSourceVariant()
+    intergenic.transcript_consequences = []
+    const missingGene = createSourceVariant()
+    missingGene.variant_id = '22-101-A-G'
+    missingGene.transcript_consequences = [
+      { transcript_id: 'without-gene' },
+      { gene_id: 'source-refseq', transcript_id: 'NM_source' },
+      { gene_id: 'ENSG003', transcript_id: 'ENST003' },
+    ]
+    store.fetchVariantsInRegion.mockResolvedValue([intergenic, missingGene])
+    const result = await resolvers.Region.variants(
+      region,
+      { dataset: 'gnomad_r4' },
+      createContext(store)
+    )
+    expect(result).toHaveLength(2)
+    expect(result[0].transcript_consequence).toEqual({})
+    expect(result[1].transcript_consequence).toEqual({
+      gene_id: 'ENSG003',
+      transcript_id: 'ENST003',
+    })
+  })
+
+  test('returns every native result above the deferred 30,000-variant threshold', async () => {
+    const store = createNativeStore()
+    const source = createSourceVariant()
+    store.fetchVariantsInRegion.mockResolvedValue(
+      Array.from({ length: 30_001 }, (_, index) => ({
+        ...source,
+        variant_id: `22-${index + 100}-A-G`,
+        locus: { contig: 'chr22', position: index + 100 },
+      }))
+    )
+    const result = await resolvers.Region.variants(
+      { ...region, stop: 30_100 },
+      { dataset: 'gnomad_r4' },
+      createContext(store)
+    )
+    expect(result).toHaveLength(30_001)
+    expect(esClient.count).not.toHaveBeenCalled()
+    expect(esClient.search).not.toHaveBeenCalled()
+  })
+
+  test('returns an empty native region without falling back to ES', async () => {
+    const store = createNativeStore()
+    store.fetchVariantsInRegion.mockResolvedValue([])
+    expect(
+      await resolvers.Region.variants(region, { dataset: 'gnomad_r4' }, createContext(store))
+    ).toEqual([])
+    expect(esClient.count).not.toHaveBeenCalled()
+    expect(esClient.search).not.toHaveBeenCalled()
+  })
+
+  test('propagates native query failures without falling back to ES', async () => {
+    const store = createNativeStore()
+    const error = new Error('Native region reader failed')
+    store.fetchVariantsInRegion.mockRejectedValue(error)
+    await expect(
+      resolvers.Region.variants(region, { dataset: 'gnomad_r4' }, createContext(store))
+    ).rejects.toBe(error)
+    expect(esClient.count).not.toHaveBeenCalled()
+    expect(esClient.search).not.toHaveBeenCalled()
+  })
+
+  test('retains the existing region-width limit before querying native data', async () => {
+    const store = createNativeStore()
+    await expect(
+      resolvers.Region.variants(
+        { ...region, stop: region.start + 2_500_000 },
+        { dataset: 'gnomad_r4' },
+        createContext(store)
+      )
+    ).rejects.toThrow('Select a smaller region to view variants')
+    expect(store.fetchVariantsInRegion).not.toHaveBeenCalled()
+    expect(esClient.count).not.toHaveBeenCalled()
+  })
+
+  test('validates the native dataset/reference-genome combination before querying', async () => {
+    const store = createNativeStore()
+    await expect(
+      resolvers.Region.variants(
+        { ...region, reference_genome: 'GRCh37' },
+        { dataset: 'gnomad_r4' },
+        createContext(store)
+      )
+    ).rejects.toThrow('not available on reference genome GRCh37')
+    expect(store.fetchVariantsInRegion).not.toHaveBeenCalled()
+    expect(esClient.count).not.toHaveBeenCalled()
+  })
+
+  test('retains ES LoF curation enrichment for native regions in hybrid mode', async () => {
+    config.PARQUET_ONLY = false
+    const store = createNativeStore()
+    const curation = { gene_id: 'ENSG002', verdict: 'LoF', project: 'test', flags: null }
+    jest.mocked(esClient.search).mockResolvedValueOnce({
+      body: {
+        hits: {
+          hits: [{ _source: { value: { variant_id: '22-100-A-G', lof_curations: [curation] } } }],
+        },
+      },
+    })
+    const result = await resolvers.Region.variants(
+      region,
+      { dataset: 'gnomad_r4' },
+      createContext(store)
+    )
+    expect(result[0].lof_curation).toEqual(curation)
+    expect(esClient.search).toHaveBeenCalledTimes(1)
+    expect(esClient.search).toHaveBeenCalledWith(
+      expect.objectContaining({ index: 'gnomad_v4_lof_curation_results' })
+    )
+    expect(esClient.count).not.toHaveBeenCalled()
+  })
+
+  test.each(['gnomad_r4', 'gnomad_r4_non_ukb'])(
+    'matches the production ES summaries for %s with the same source records',
+    async (dataset) => {
+      config.PARQUET_ONLY = false
+      const store = createNativeStore()
+      const parquet = await resolvers.Region.variants(region, { dataset }, createContext(store))
+      jest.mocked(esClient.count).mockResolvedValue({ body: { count: 2 } })
+      jest.mocked(esClient.search).mockResolvedValueOnce({
+        body: {
+          _scroll_id: 'test-scroll',
+          hits: {
+            total: { value: 2 },
+            hits: createSources().map((value) => ({ _source: { value } })),
+          },
+        },
+      })
+      const elasticsearch = await resolvers.Region.variants(
+        region,
+        { dataset },
+        createContext(null)
+      )
+      expect(parquet).toEqual(elasticsearch)
+      expect(esClient.count).toHaveBeenCalledTimes(1)
+      expect(esClient.count).toHaveBeenCalledWith(
+        expect.objectContaining({ index: 'gnomad_v4_variants' })
+      )
+    }
+  )
+
+  test('preserves the ES density guard when the native store is disabled', async () => {
+    config.PARQUET_ONLY = false
+    jest.mocked(esClient.count).mockResolvedValue({ body: { count: 30_001 } })
+    await expect(
+      resolvers.Region.variants(region, { dataset: 'gnomad_r4_non_ukb' }, createContext(null))
+    ).rejects.toThrow(
+      'This region has too many variants to display. Select a smaller region to view variants.'
+    )
+    expect(esClient.search).not.toHaveBeenCalled()
+  })
+
+  test('leaves non-v4 datasets on the existing ES region path', async () => {
+    config.PARQUET_ONLY = false
+    const store = createNativeStore()
+    jest.mocked(esClient.count).mockResolvedValue({ body: { count: 0 } })
+    expect(
+      await resolvers.Region.variants(region, { dataset: 'gnomad_r3' }, createContext(store))
+    ).toEqual([])
+    expect(store.fetchVariantsInRegion).not.toHaveBeenCalled()
+    expect(esClient.count).toHaveBeenCalledWith(
+      expect.objectContaining({ index: 'gnomad_v3_variants' })
+    )
+    expect(esClient.search).toHaveBeenCalled()
+  })
 })

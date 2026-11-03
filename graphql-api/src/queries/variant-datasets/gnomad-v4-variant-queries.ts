@@ -573,42 +573,59 @@ const fetchVariantsByGene = async (
 // Region query
 // ================================================================================================
 
-const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset) => {
+const fetchVariantsByRegion = async (
+  esClient: any,
+  region: any,
+  subset: Subset,
+  parquetSource?: GnomadV4ParquetSource
+) => {
   const exomeSubset = subset
   const genomeSubset = 'all'
   const jointSubset = 'all'
 
-  const hits = await fetchAllSearchResults(esClient, {
-    index: GNOMAD_V4_VARIANT_INDEX,
-    type: '_doc',
-    size: 10000,
-    _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { 'locus.contig': `chr${region.chrom}` } },
-            {
-              range: {
-                'locus.position': {
-                  gte: region.start,
-                  lte: region.stop,
+  let sourceVariants: GnomadV4VariantListEntry[]
+  if (parquetSource) {
+    sourceVariants = await parquetSource.store.fetchVariantsInRegion(
+      region.chrom,
+      region.start,
+      region.stop,
+      subset
+    )
+  } else {
+    const hits = await fetchAllSearchResults(esClient, {
+      index: GNOMAD_V4_VARIANT_INDEX,
+      type: '_doc',
+      size: 10000,
+      _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
+      body: {
+        query: {
+          bool: {
+            filter: [
+              { term: { 'locus.contig': `chr${region.chrom}` } },
+              {
+                range: {
+                  'locus.position': {
+                    gte: region.start,
+                    lte: region.stop,
+                  },
                 },
               },
-            },
-          ],
+            ],
+          },
         },
+        sort: [{ 'locus.position': { order: 'asc' } }],
       },
-      sort: [{ 'locus.position': { order: 'asc' } }],
-    },
-  })
+    })
+    sourceVariants = hits.map((hit: any) => hit._source.value)
+  }
 
-  const variants = hits
-    .map((hit: any) => hit._source.value)
-    .filter((variant: any) => hasPositiveAC(variant, subset))
+  const variants = sourceVariants
+    .filter((variant) => hasPositiveAC(variant, subset))
     .map(shapeVariantSummary(subset, { type: 'region' }))
 
-  const lofCurationResults = await fetchLofCurationResultsByRegion(esClient, 'v4', region)
+  const lofCurationResults = parquetSource?.isParquetOnly
+    ? []
+    : await fetchLofCurationResultsByRegion(esClient, 'v4', region)
 
   const lofCurationsByVariantAndGene = new Map(
     lofCurationResults.map((result) => [

@@ -114,6 +114,18 @@ const resolveVariantsInRegion = async (obj: any, args: any, ctx: any) => {
     throw new UserVisibleError('Select a smaller region to view variants')
   }
 
+  const gnomadVariantsV4 = ctx.parquetDataStore?.gnomadVariantsV4
+  if (gnomadVariantsV4 && (dataset === 'gnomad_r4' || dataset === 'gnomad_r4_non_ukb')) {
+    assertDatasetAndReferenceGenomeMatch(dataset, obj.reference_genome)
+    // TK: Restore a fast native region-count guard before fetching variants.
+    return gnomadV4VariantQueries.fetchVariantsByRegion(
+      ctx.esClient,
+      obj,
+      dataset === 'gnomad_r4' ? 'all' : 'non_ukb',
+      { store: gnomadVariantsV4, isParquetOnly: config.PARQUET_ONLY }
+    )
+  }
+
   const numVariantsInRegion = await countVariantsInRegion(ctx.esClient, dataset, obj)
   if (numVariantsInRegion > 30000) {
     throw new UserVisibleError(

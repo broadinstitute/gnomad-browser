@@ -6,7 +6,7 @@ export const getConsequenceForContext = (context: any) => {
     case 'region':
       return (variant: any) =>
         (variant.transcript_consequences || []).filter((csq: any) =>
-          csq.gene_id.startsWith('ENSG')
+          csq.gene_id?.startsWith('ENSG')
         )[0]
     case 'transcript':
       return (variant: any) =>
