@@ -21,7 +21,7 @@ import { fetchNccConstraintRegionById } from '../../queries/genomic-constraint-q
 
 import { hasVRSData } from '../../../../dataset-metadata/metadata'
 
-const resolveVariant = async (_obj: any, args: any, ctx: any) => {
+const resolveVariant = async (_obj: any, args: any, ctx: GraphQLContext) => {
   // These are all "variant IDs" of one kind or another but `variantId` here
   // specifically refers to the chrom-pos-ref-alt style ubiquitous in gnomAD
   const { rsid, variantId, vrsId, dataset } = args
@@ -61,7 +61,23 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
     normalizedVariantId = /^ga4gh:/.test(vrsId) ? vrsId : `ga4gh:${vrsId}`
   }
 
-  const variant = await fetchVariantById(ctx.esClient, dataset, normalizedVariantId)
+  const gnomadVariantsV4 = ctx.parquetDataStore?.gnomadVariantsV4
+  const isGnomadV4Dataset = dataset === 'gnomad_r4' || dataset === 'gnomad_r4_non_ukb'
+  const variant =
+    gnomadVariantsV4 && isGnomadV4Dataset
+      ? await gnomadV4VariantQueries.fetchVariantById(
+          ctx.esClient,
+          normalizedVariantId,
+          dataset === 'gnomad_r4' ? 'all' : 'non_ukb',
+          { store: gnomadVariantsV4, isParquetOnly: config.PARQUET_ONLY }
+        )
+      : await fetchVariantById(ctx.esClient, dataset, normalizedVariantId)
+
+  if (gnomadVariantsV4 && isGnomadV4Dataset && config.PARQUET_ONLY) {
+    variant.non_coding_constraint = null
+    return variant
+  }
+
   const posRounded = Math.floor(variant.pos / 1000) * 1000
   const variantNCCId = `chr${variant.chrom}-${posRounded}-${posRounded + 1000}`
   const variantNCC = await fetchNccConstraintRegionById(ctx.esClient, variantNCCId)

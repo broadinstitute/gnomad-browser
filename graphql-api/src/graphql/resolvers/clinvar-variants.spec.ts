@@ -64,6 +64,7 @@ const createContext = (store: ClinvarStore | null): GraphQLContext => ({
             fetchGeneById: jest.fn<GeneStore['fetchGeneById']>().mockResolvedValue(null),
           },
           gnomadVariantsV4: {
+            fetchSingleVariant: jest.fn<GnomadV4Store['fetchSingleVariant']>(),
             fetchVariantsInGene: jest.fn<GnomadV4Store['fetchVariantsInGene']>(),
             fetchVariantsInTranscript: jest.fn<GnomadV4Store['fetchVariantsInTranscript']>(),
           },

@@ -2,6 +2,7 @@ import { omit } from 'lodash'
 import type {
   GenomicIntervalBounds,
   GnomadV4Store,
+  GnomadV4Variant,
   GnomadV4VariantListEntry,
 } from '@gnomad/data-store'
 
@@ -88,66 +89,88 @@ const chooseIdField = (variantId: string) => {
   return 'variant_id'
 }
 
-const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) => {
-  const idField = chooseIdField(variantId)
-  const response = await esClient.search({
-    index: GNOMAD_V4_VARIANT_INDEX,
-    body: {
-      query: {
-        bool: {
-          filter: { term: { [idField]: variantId } },
+const fetchVariantById = async (
+  esClient: any,
+  variantId: string,
+  subset: Subset,
+  parquetSource?: GnomadV4ParquetSource
+) => {
+  let variant: GnomadV4Variant | null
+  if (parquetSource) {
+    try {
+      variant = await parquetSource.store.fetchSingleVariant(variantId)
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message.includes('Multiple gnomAD v4 records found for variant ID:')
+      ) {
+        throw new UserVisibleError('Multiple variants found, query using variant ID to select one.')
+      }
+      throw error
+    }
+  } else {
+    const idField = chooseIdField(variantId)
+    const response = await esClient.search({
+      index: GNOMAD_V4_VARIANT_INDEX,
+      body: {
+        query: {
+          bool: {
+            filter: { term: { [idField]: variantId } },
+          },
         },
       },
-    },
-    size: 1,
-  })
+      size: 1,
+    })
 
-  if (response.body.hits.total.value === 0) {
+    if (response.body.hits.total.value === 0) {
+      throw new UserVisibleError('Variant not found')
+    }
+
+    if (response.body.hits.total.value > 1) {
+      throw new UserVisibleError('Multiple variants found, query using variant ID to select one.')
+    }
+
+    variant = response.body.hits.hits[0]._source.value
+  }
+
+  if (!variant) {
     throw new UserVisibleError('Variant not found')
   }
 
-  // An rsID may match multiple variants
-  if (response.body.hits.total.value > 1) {
-    throw new UserVisibleError('Multiple variants found, query using variant ID to select one.')
-  }
+  const subsetExomeFreq = variant.exome.freq[subset] ?? {}
+  const subsetGenomeFreq = variant.genome.freq.all ?? {}
+  const subsetJointFreq = variant.joint.freq[subset] ?? {}
 
-  const variant = response.body.hits.hits[0]._source.value
-
-  const subsetGenomeFreq = variant.genome.freq.all || {}
-  const subsetJointFreq = variant.joint.freq[subset] || {}
-
-  const hasExomeVariant = variant.exome.freq[subset].ac_raw
+  const hasExomeVariant = subsetExomeFreq.ac_raw
   const hasGenomeVariant = subsetGenomeFreq.ac_raw
   const hasJointFrequencyData = subsetJointFreq.ac_raw
 
-  if (!subsetGenomeFreq.ac_raw && !(variant.exome.freq[subset] || {}).ac_raw) {
+  if (!hasGenomeVariant && !hasExomeVariant) {
     throw new UserVisibleError('Variant not found in selected subset.')
   }
 
-  const exomeFilters = variant.exome.filters || []
-  const genomeFilters = variant.genome.filters || []
-  const jointFilters = variant.joint.flags || []
+  const exomeFilters = [...(variant.exome.filters ?? [])]
+  const genomeFilters = [...(variant.genome.filters ?? [])]
+  const jointFilters = variant.joint.flags ?? []
 
-  if (variant.exome.freq[subset].ac === 0 && !exomeFilters.includes('AC0')) {
+  if (subsetExomeFreq.ac === 0 && !exomeFilters.includes('AC0')) {
     exomeFilters.push('AC0')
   }
-  if (variant.genome.freq.all.ac === 0 && !genomeFilters.includes('AC0')) {
+  if (subsetGenomeFreq.ac === 0 && !genomeFilters.includes('AC0')) {
     genomeFilters.push('AC0')
   }
 
   const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
-  const lofCurationResults = await fetchLofCurationResultsByVariant(
-    esClient,
-    'v4',
-    variant.variant_id
-  )
+  const lofCurationResults = parquetSource?.isParquetOnly
+    ? null
+    : await fetchLofCurationResultsByVariant(esClient, 'v4', variant.variant_id)
 
   let genome_ancestry_groups = subsetGenomeFreq.ancestry_groups || []
   // Include HGDP and 1KG populations with gnomAD subsets
-  if (variant.genome.freq.hgdp.ac_raw > 0) {
+  if ((variant.genome.freq.hgdp?.ac_raw ?? 0) > 0) {
     genome_ancestry_groups = genome_ancestry_groups.concat(
-      variant.genome.freq.hgdp.ancestry_groups.map((pop: any) => ({
+      (variant.genome.freq.hgdp?.ancestry_groups ?? []).map((pop) => ({
         ...pop,
         id: `hgdp:${pop.id}`,
       }))
@@ -155,9 +178,9 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   }
   // Some 1KG samples are included in v2. Since the 1KG population frequencies are based on the full v3.1 dataset,
   // they are invalid for the non-v2 subset.
-  if (variant.genome.freq.tgp.ac_raw > 0) {
+  if ((variant.genome.freq.tgp?.ac_raw ?? 0) > 0) {
     genome_ancestry_groups = genome_ancestry_groups.concat(
-      variant.genome.freq.tgp.ancestry_groups.map((pop: any) => ({
+      (variant.genome.freq.tgp?.ancestry_groups ?? []).map((pop) => ({
         ...pop,
         id: `1kg:${pop.id}`,
       }))
@@ -166,11 +189,9 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
 
   const inSilicoPredictorsList = createInSilicoPredictorsList(variant)
 
-  const localAncestryPopulations = await fetchLocalAncestryPopulationsByVariant(
-    esClient,
-    'gnomad_r3',
-    variant.variant_id
-  )
+  const localAncestryPopulations = parquetSource?.isParquetOnly
+    ? null
+    : await fetchLocalAncestryPopulationsByVariant(esClient, 'gnomad_r3', variant.variant_id)
 
   const shapedVariant = {
     ...variant,
@@ -183,10 +204,10 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     exome: hasExomeVariant
       ? {
           ...variant.exome,
-          ...variant.exome.freq[subset],
+          ...subsetExomeFreq,
           filters: exomeFilters,
           flags: exomeFlags,
-          populations: variant.exome.freq[subset].ancestry_groups,
+          populations: subsetExomeFreq.ancestry_groups,
           faf95: hasExomeVariant &&
             variant.exome.faf95 && {
               popmax_population: variant.exome.faf95.grpmax_gen_anc,
@@ -197,19 +218,19 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
             // Maintain the same behavior by returning the adj version until the API schema is updated to allow
             // selecting which version to return.
             allele_balance: {
-              alt: variant.exome.quality_metrics.allele_balance.alt_adj,
+              alt: variant.exome.quality_metrics?.allele_balance.alt_adj,
             },
             genotype_depth: {
-              alt: variant.exome.quality_metrics.genotype_depth.alt_adj,
-              all: variant.exome.quality_metrics.genotype_depth.all_adj,
+              alt: variant.exome.quality_metrics?.genotype_depth.alt_adj,
+              all: variant.exome.quality_metrics?.genotype_depth.all_adj,
             },
             genotype_quality: {
-              alt: variant.exome.quality_metrics.genotype_quality.alt_adj,
-              all: variant.exome.quality_metrics.genotype_quality.all_adj,
+              alt: variant.exome.quality_metrics?.genotype_quality.alt_adj,
+              all: variant.exome.quality_metrics?.genotype_quality.all_adj,
             },
-            site_quality_metrics: variant.exome.quality_metrics.site_quality_metrics.filter(
-              (m: any) => Number.isFinite(m.value)
-            ),
+            site_quality_metrics: (
+              variant.exome.quality_metrics?.site_quality_metrics ?? []
+            ).filter((metric) => Number.isFinite(metric.value)),
           },
           local_ancestry_populations: [],
         }
@@ -231,19 +252,19 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
             // Maintain the same behavior by returning the adj version until the API schema is updated to allow
             // selecting which version to return.
             allele_balance: {
-              alt: variant.genome.quality_metrics.allele_balance.alt_adj,
+              alt: variant.genome.quality_metrics?.allele_balance.alt_adj,
             },
             genotype_depth: {
-              alt: variant.genome.quality_metrics.genotype_depth.alt_adj,
-              all: variant.genome.quality_metrics.genotype_depth.all_adj,
+              alt: variant.genome.quality_metrics?.genotype_depth.alt_adj,
+              all: variant.genome.quality_metrics?.genotype_depth.all_adj,
             },
             genotype_quality: {
-              alt: variant.genome.quality_metrics.genotype_quality.alt_adj,
-              all: variant.genome.quality_metrics.genotype_quality.all_adj,
+              alt: variant.genome.quality_metrics?.genotype_quality.alt_adj,
+              all: variant.genome.quality_metrics?.genotype_quality.all_adj,
             },
-            site_quality_metrics: variant.genome.quality_metrics.site_quality_metrics.filter(
-              (m: any) => Number.isFinite(m.value)
-            ),
+            site_quality_metrics: (
+              variant.genome.quality_metrics?.site_quality_metrics ?? []
+            ).filter((metric) => Number.isFinite(metric.value)),
           },
           local_ancestry_populations: localAncestryPopulations?.genome || null,
         }
@@ -251,7 +272,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     joint: hasJointFrequencyData
       ? {
           ...variant.joint,
-          ...variant.joint.freq[subset],
+          ...subsetJointFreq,
           filters: jointFilters,
           populations: subsetJointFreq.ancestry_groups,
           faf95: {
@@ -263,8 +284,8 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     flags: variantFlags,
     // TODO: Include RefSeq transcripts once the browser supports them.
     lof_curations: lofCurationResults,
-    transcript_consequences: (variant.transcript_consequences || []).filter((csq: any) =>
-      csq.gene_id.startsWith('ENSG')
+    transcript_consequences: (variant.transcript_consequences ?? []).filter((consequence) =>
+      consequence.gene_id?.startsWith('ENSG')
     ),
     in_silico_predictors: inSilicoPredictorsList,
   }
