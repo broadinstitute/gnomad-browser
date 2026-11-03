@@ -22,6 +22,7 @@ use crate::{
     GenePextRegion as ReaderGenePextRegion, GeneReader,
     GeneTissueExpression as ReaderGeneTissueExpression, GeneTranscript as ReaderGeneTranscript,
     GenomicInterval, GenomicIntervalError, GnomadV4Reader, GnomadV4Subset, ParquetDataset,
+    RegionGene as ReaderRegionGene, RegionGeneTranscript as ReaderRegionGeneTranscript,
     create_datafusion_context_from_root,
 };
 
@@ -1349,6 +1350,25 @@ impl GeneStore {
         })?;
         Ok(into_nullable(gene))
     }
+
+    /// # Errors
+    /// Reject invalid intervals, query or decoding failures, or unsafe JavaScript integer conversions.
+    #[napi]
+    pub async fn fetch_genes_in_region(
+        &self,
+        chromosome: String,
+        start: i32,
+        stop: i32,
+    ) -> napi::Result<Vec<RegionGene>> {
+        let interval = GenomicInterval::new(&chromosome, start, stop)
+            .map_err(|error| map_interval_error(&error))?;
+        let genes = self
+            .reader
+            .fetch_genes_in_region(&interval)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+        genes.into_iter().map(TryInto::try_into).collect()
+    }
 }
 
 #[allow(
@@ -1509,6 +1529,66 @@ impl TryFrom<ReaderGeneTranscript> for GeneTranscript {
             ),
             refseq_id: into_nullable(transcript.refseq_id),
             refseq_version: into_nullable(transcript.refseq_version),
+        })
+    }
+}
+
+#[napi(object)]
+pub struct RegionGene {
+    #[napi(js_name = "gene_id")]
+    pub gene_id: String,
+    pub symbol: String,
+    pub start: i32,
+    pub stop: i32,
+    pub exons: Vec<GeneExon>,
+    pub transcripts: Vec<RegionGeneTranscript>,
+}
+
+impl TryFrom<ReaderRegionGene> for RegionGene {
+    type Error = napi::Error;
+
+    fn try_from(gene: ReaderRegionGene) -> napi::Result<Self> {
+        Ok(Self {
+            gene_id: gene.gene_id,
+            symbol: gene.symbol,
+            start: gene.start,
+            stop: gene.stop,
+            exons: gene
+                .exons
+                .into_iter()
+                .map(TryInto::try_into)
+                .collect::<napi::Result<_>>()?,
+            transcripts: gene
+                .transcripts
+                .into_iter()
+                .map(TryInto::try_into)
+                .collect::<napi::Result<_>>()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct RegionGeneTranscript {
+    #[napi(js_name = "transcript_id")]
+    pub transcript_id: String,
+    pub start: i32,
+    pub stop: i32,
+    pub exons: Vec<GeneExon>,
+}
+
+impl TryFrom<ReaderRegionGeneTranscript> for RegionGeneTranscript {
+    type Error = napi::Error;
+
+    fn try_from(transcript: ReaderRegionGeneTranscript) -> napi::Result<Self> {
+        Ok(Self {
+            transcript_id: transcript.transcript_id,
+            start: transcript.start,
+            stop: transcript.stop,
+            exons: transcript
+                .exons
+                .into_iter()
+                .map(TryInto::try_into)
+                .collect::<napi::Result<_>>()?,
         })
     }
 }

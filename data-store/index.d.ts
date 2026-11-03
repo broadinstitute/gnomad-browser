@@ -33,6 +33,11 @@ export declare class GeneStore {
    * Reject query, decoding, duplicate-ID, or unsafe JavaScript integer conversions.
    */
   fetchGeneById(geneId: string): Promise<Gene | null>
+  /**
+   * # Errors
+   * Reject invalid intervals, query or decoding failures, or unsafe JavaScript integer conversions.
+   */
+  fetchGenesInRegion(chromosome: string, start: number, stop: number): Promise<Array<RegionGene>>
 }
 
 export declare class GnomadV4Store {
@@ -530,3 +535,19 @@ export declare function openGeneStore(parquetRoot: string): Promise<GeneStore>
  * Reject dataset registration failures under the supplied Parquet root.
  */
 export declare function openGnomadV4Store(parquetRoot: string): Promise<GnomadV4Store>
+
+export interface RegionGene {
+  gene_id: string
+  symbol: string
+  start: number
+  stop: number
+  exons: Array<GeneExon>
+  transcripts: Array<RegionGeneTranscript>
+}
+
+export interface RegionGeneTranscript {
+  transcript_id: string
+  start: number
+  stop: number
+  exons: Array<GeneExon>
+}

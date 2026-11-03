@@ -105,7 +105,10 @@ const createContext = (store: GnomadV4Store | null): GraphQLContext => {
             fetchVariantsInGene: jest.fn<ClinvarStore['fetchVariantsInGene']>(),
             fetchVariantsInTranscript: jest.fn<ClinvarStore['fetchVariantsInTranscript']>(),
           },
-          geneModelsGrch38: { fetchGeneById: jest.fn<GeneStore['fetchGeneById']>() },
+          geneModelsGrch38: {
+            fetchGeneById: jest.fn<GeneStore['fetchGeneById']>(),
+            fetchGenesInRegion: jest.fn<GeneStore['fetchGenesInRegion']>(),
+          },
           gnomadVariantsV4: store,
         }
   return { esClient, parquetDataStore, requestId: null }

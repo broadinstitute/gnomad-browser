@@ -127,7 +127,10 @@ const createContext = (store: GnomadV4Store | null): GraphQLContext => ({
             fetchVariantsInTranscript: jest.fn<ClinvarStore['fetchVariantsInTranscript']>(),
             fetchVariantsInRegion: jest.fn<ClinvarStore['fetchVariantsInRegion']>(),
           },
-          geneModelsGrch38: { fetchGeneById: jest.fn<GeneStore['fetchGeneById']>() },
+          geneModelsGrch38: {
+            fetchGeneById: jest.fn<GeneStore['fetchGeneById']>(),
+            fetchGenesInRegion: jest.fn<GeneStore['fetchGenesInRegion']>(),
+          },
         },
 })
 
