@@ -5,8 +5,8 @@ use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::SessionContext;
 
 use crate::{
-    GenomicInterval, GnomadV4VariantListEntry, ParquetDataset, create_datafusion_context_from_root,
-    pad_and_merge_intervals,
+    GenomicInterval, GnomadV4Variant, GnomadV4VariantListEntry, ParquetDataset,
+    create_datafusion_context_from_root, pad_and_merge_intervals,
 };
 
 const GNOMAD_V4_EXON_PADDING: u32 = 75;
@@ -48,6 +48,63 @@ impl GnomadV4Reader {
     #[must_use]
     pub const fn new(context: SessionContext) -> Self {
         Self { context }
+    }
+
+    /// Return all source frequency subsets; leave subset filtering and API shaping to the caller.
+    ///
+    /// # Errors
+    /// Return an error for an invalid ID, multiple matches, or query/decoding failure.
+    pub async fn fetch_single_variant(&self, variant_id: &str) -> Result<Option<GnomadV4Variant>> {
+        let mut parameters = vec![ScalarValue::Utf8(Some(variant_id.to_owned()))];
+        let predicate = bind_single_variant_lookup(variant_id, &mut parameters)?;
+        let table_name = ParquetDataset::GnomadVariantsV4.name();
+        let query = format!(
+            "SELECT variant_id, locus, alleles, rsids,
+                named_struct(
+                    'freq', exome.freq, 'filters', exome.filters, 'flags', exome.flags,
+                    'fafmax', exome.fafmax, 'faf95', exome.faf95, 'faf99', exome.faf99,
+                    'age_distribution', exome.age_distribution,
+                    'quality_metrics', exome.quality_metrics
+                ) AS exome,
+                named_struct(
+                    'freq', genome.freq, 'filters', genome.filters, 'flags', genome.flags,
+                    'fafmax', genome.fafmax, 'faf95', genome.faf95, 'faf99', genome.faf99,
+                    'age_distribution', genome.age_distribution,
+                    'quality_metrics', genome.quality_metrics
+                ) AS genome,
+                named_struct(
+                    'freq', joint.freq, 'fafmax', joint.fafmax, 'flags', joint.flags,
+                    'freq_comparison_stats', joint.freq_comparison_stats
+                ) AS joint,
+                transcript_consequences, in_silico_predictors, colocated_variants,
+                coverage, caid, vrs
+             FROM {table_name} WHERE {predicate} LIMIT 2"
+        );
+        let batches = self
+            .context
+            .sql(&query)
+            .await?
+            .with_param_values(parameters)?
+            .collect()
+            .await?;
+        let mut variants = Vec::new();
+        for batch in &batches {
+            let decoded: Vec<GnomadV4Variant> =
+                serde_arrow::from_record_batch(batch).map_err(|error| {
+                    DataFusionError::Execution(format!(
+                        "Failed to decode gnomAD v4 result for {variant_id}: {error}"
+                    ))
+                })?;
+            variants.extend(decoded);
+        }
+        let mut variants = variants.into_iter();
+        let variant = variants.next();
+        if variants.next().is_some() {
+            return Err(DataFusionError::Execution(format!(
+                "Multiple gnomAD v4 records found for variant ID: {variant_id}"
+            )));
+        }
+        Ok(variant)
     }
 
     /// Apply 75-base padding to unpadded CDS/exon intervals; leave frequency filtering to the API.
@@ -154,6 +211,44 @@ impl GnomadV4Reader {
         }
         predicates.join(" OR ")
     }
+}
+
+fn bind_single_variant_lookup(id: &str, parameters: &mut Vec<ScalarValue>) -> Result<String> {
+    if let Some(number) = id.strip_prefix("rs")
+        && !number.is_empty()
+        && number.bytes().all(|byte| byte.is_ascii_digit())
+    {
+        return Ok("array_has(rsids, $1)".to_owned());
+    }
+    if let Some(allele_id) = id.strip_prefix("ga4gh:")
+        && !allele_id.is_empty()
+        && !allele_id.chars().any(char::is_whitespace)
+    {
+        return Ok("vrs['alt']['allele_id'] = $1".to_owned());
+    }
+    let parts: Vec<_> = id.split('-').collect();
+    if let [chromosome, position, reference, alternate] = parts.as_slice() {
+        let position = position.parse::<i32>().ok();
+        let valid_alleles = [reference, alternate].iter().all(|allele| {
+            !allele.is_empty() && allele.bytes().all(|byte| b"ACGTN".contains(&byte))
+        });
+        if let Some(position) = position
+            && valid_alleles
+            && GenomicInterval::new(chromosome, position, position).is_ok()
+        {
+            let contig = bind_parameter(
+                parameters,
+                ScalarValue::Utf8(Some(format!("chr{chromosome}"))),
+            );
+            let position = bind_parameter(parameters, ScalarValue::Int32(Some(position)));
+            return Ok(format!(
+                r#"variant_id = $1 AND "locus.contig" = {contig} AND locus['contig'] = {contig} AND locus['position'] = {position}"#
+            ));
+        }
+    }
+    Err(DataFusionError::Plan(format!(
+        "Invalid gnomAD v4 variant ID: {id}"
+    )))
 }
 
 fn bind_parameter(parameters: &mut Vec<ScalarValue>, value: ScalarValue) -> String {

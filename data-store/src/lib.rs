@@ -5,6 +5,7 @@ mod gene;
 mod gene_reader;
 mod genomic_interval;
 mod gnomad_v4_reader;
+mod gnomad_v4_variant;
 mod gnomad_v4_variant_list_entry;
 mod node_bindings;
 mod parquet_dataset;
@@ -24,6 +25,14 @@ pub use genomic_interval::{
     Chromosome, GenomicInterval, GenomicIntervalError, pad_and_merge_intervals,
 };
 pub use gnomad_v4_reader::{GnomadV4Reader, GnomadV4Subset};
+pub use gnomad_v4_variant::{
+    GnomadV4AgeDistribution, GnomadV4CochranMantelHaenszelTest, GnomadV4ColocatedVariants,
+    GnomadV4ContingencyTableTest, GnomadV4Coverage, GnomadV4ExomeVariantData,
+    GnomadV4FrequencyComparisonStats, GnomadV4GenomeFrequencies, GnomadV4GenomeVariantData,
+    GnomadV4GroupMaximum, GnomadV4Histogram, GnomadV4JointVariantData, GnomadV4QualityHistograms,
+    GnomadV4QualityMetrics, GnomadV4SiteQualityMetric, GnomadV4StatUnion, GnomadV4Variant,
+    GnomadV4VariantCoverage, GnomadV4VrsAllele, GnomadV4VrsAlleles,
+};
 pub use gnomad_v4_variant_list_entry::{
     GnomadV4AncestryFrequency, GnomadV4Cadd, GnomadV4ExomeData,
     GnomadV4ExomeFilteringAlleleFrequencies, GnomadV4FilteringAlleleFrequency, GnomadV4Frequency,
