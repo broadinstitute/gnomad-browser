@@ -2,6 +2,8 @@ import { describe, expect, jest, test } from '@jest/globals'
 
 import resolvers from './variants'
 
+jest.mock('../../config', () => ({ PARQUET_ONLY: false }))
+
 jest.mock('../../cache', () => ({
   withCache: <QueryFunction>(query: QueryFunction) => query,
 }))

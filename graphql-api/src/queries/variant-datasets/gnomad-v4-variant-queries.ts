@@ -1,4 +1,9 @@
 import { omit } from 'lodash'
+import type {
+  GenomicIntervalBounds,
+  GnomadV4Store,
+  GnomadV4VariantListEntry,
+} from '@gnomad/data-store'
 
 import { isRsId } from '@gnomad/identifiers'
 
@@ -29,6 +34,11 @@ const IN_SILICO_PREDICTOR_IDS = [
 ]
 
 type Subset = 'all' | 'non_ukb'
+
+interface GnomadV4ParquetSource {
+  store: GnomadV4Store
+  isParquetOnly: boolean
+}
 
 // ================================================================================================
 // Count query
@@ -415,6 +425,20 @@ export const getFilteredRegions = (exons: Exon[]) => {
   return filteredRegions
 }
 
+const selectUnpaddedGnomadIntervals = (exons: Exon[]): GenomicIntervalBounds[] => {
+  return getFilteredRegions(exons).map((exon) => {
+    if (
+      !('start' in exon) ||
+      typeof exon.start !== 'number' ||
+      !('stop' in exon) ||
+      typeof exon.stop !== 'number'
+    ) {
+      throw new Error('gnomAD exon intervals require numeric start and stop coordinates')
+    }
+    return { start: exon.start, stop: exon.stop }
+  })
+}
+
 const hasPositiveAC = (variant: any, subset: string) => {
   try {
     return (
@@ -432,7 +456,12 @@ const hasPositiveAC = (variant: any, subset: string) => {
 // Gene query
 // ================================================================================================
 
-const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => {
+const fetchVariantsByGene = async (
+  esClient: any,
+  gene: any,
+  subset: Subset,
+  parquetSource?: GnomadV4ParquetSource
+) => {
   const exomeSubset = subset
   const genomeSubset = 'all'
   const jointSubset = 'all'
@@ -442,49 +471,61 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
   const pageSize = isLargeGene ? 500 : 10000
 
   try {
-    const filteredRegions = getFilteredRegions(gene.exons)
-    const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
-    const padding = 75
-    const paddedRegions = sortedRegions.map((r: any) => ({
-      ...r,
-      start: r.start - padding,
-      stop: r.stop + padding,
-      xstart: r.xstart - padding,
-      xstop: r.xstop + padding,
-    }))
+    let sourceVariants: GnomadV4VariantListEntry[]
+    if (parquetSource) {
+      sourceVariants = await parquetSource.store.fetchVariantsInGene(
+        gene.gene_id,
+        gene.chrom,
+        selectUnpaddedGnomadIntervals(gene.exons),
+        subset
+      )
+    } else {
+      const filteredRegions = getFilteredRegions(gene.exons)
+      const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
+      const padding = 75
+      const paddedRegions = sortedRegions.map((r: any) => ({
+        ...r,
+        start: r.start - padding,
+        stop: r.stop + padding,
+        xstart: r.xstart - padding,
+        xstop: r.xstop + padding,
+      }))
 
-    const mergedRegions = mergeOverlappingRegions(paddedRegions)
+      const mergedRegions = mergeOverlappingRegions(paddedRegions)
 
-    const rangeQueries = mergedRegions.map((region: any) => ({
-      range: {
-        'locus.position': {
-          gte: region.start,
-          lte: region.stop,
-        },
-      },
-    }))
-
-    const hits = await fetchAllSearchResults(esClient, {
-      index: GNOMAD_V4_VARIANT_INDEX,
-      type: '_doc',
-      size: pageSize,
-      _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
-      body: {
-        query: {
-          bool: {
-            filter: [{ term: { gene_id: gene.gene_id } }, { bool: { should: rangeQueries } }],
+      const rangeQueries = mergedRegions.map((region: any) => ({
+        range: {
+          'locus.position': {
+            gte: region.start,
+            lte: region.stop,
           },
         },
-        sort: [{ 'locus.position': { order: 'asc' } }],
-      },
-    })
+      }))
 
-    const shapedHits = hits
-      .map((hit: any) => hit._source.value)
-      .filter((variant: any) => hasPositiveAC(variant, subset))
+      const hits = await fetchAllSearchResults(esClient, {
+        index: GNOMAD_V4_VARIANT_INDEX,
+        type: '_doc',
+        size: pageSize,
+        _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
+        body: {
+          query: {
+            bool: {
+              filter: [{ term: { gene_id: gene.gene_id } }, { bool: { should: rangeQueries } }],
+            },
+          },
+          sort: [{ 'locus.position': { order: 'asc' } }],
+        },
+      })
+      sourceVariants = hits.map((hit: any) => hit._source.value)
+    }
+
+    const shapedHits = sourceVariants
+      .filter((variant) => hasPositiveAC(variant, subset))
       .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
 
-    const lofCurationResults = await fetchLofCurationResultsByGene(esClient, 'v4', gene)
+    const lofCurationResults = parquetSource?.isParquetOnly
+      ? []
+      : await fetchLofCurationResultsByGene(esClient, 'v4', gene)
 
     const lofCurationByVariantId = new Map(
       lofCurationResults.map((result) => [
@@ -569,7 +610,12 @@ const fetchVariantsByRegion = async (esClient: any, region: any, subset: Subset)
 // Transcript query
 // ================================================================================================
 
-const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset: Subset) => {
+const fetchVariantsByTranscript = async (
+  esClient: any,
+  transcript: any,
+  subset: Subset,
+  parquetSource?: GnomadV4ParquetSource
+) => {
   const exomeSubset = subset
   const genomeSubset = 'all'
   const jointSubset = 'all'
@@ -580,49 +626,59 @@ const fetchVariantsByTranscript = async (esClient: any, transcript: any, subset:
     )
   }
 
-  const filteredRegions = getFilteredRegions(transcript.exons)
-  const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
-  const padding = 75
-  const paddedRegions = sortedRegions.map((r: any) => ({
-    ...r,
-    start: r.start - padding,
-    stop: r.stop + padding,
-    xstart: r.xstart - padding,
-    xstop: r.xstop + padding,
-  }))
+  let sourceVariants: GnomadV4VariantListEntry[]
+  if (parquetSource) {
+    sourceVariants = await parquetSource.store.fetchVariantsInTranscript(
+      transcript.transcript_id,
+      transcript.chrom,
+      selectUnpaddedGnomadIntervals(transcript.exons),
+      subset
+    )
+  } else {
+    const filteredRegions = getFilteredRegions(transcript.exons)
+    const sortedRegions = filteredRegions.sort((r1: any, r2: any) => r1.xstart - r2.xstart)
+    const padding = 75
+    const paddedRegions = sortedRegions.map((r: any) => ({
+      ...r,
+      start: r.start - padding,
+      stop: r.stop + padding,
+      xstart: r.xstart - padding,
+      xstop: r.xstop + padding,
+    }))
 
-  const mergedRegions = mergeOverlappingRegions(paddedRegions)
+    const mergedRegions = mergeOverlappingRegions(paddedRegions)
 
-  const rangeQueries = mergedRegions.map((region: any) => ({
-    range: {
-      'locus.position': {
-        gte: region.start,
-        lte: region.stop,
-      },
-    },
-  }))
-
-  const hits = await fetchAllSearchResults(esClient, {
-    index: GNOMAD_V4_VARIANT_INDEX,
-    type: '_doc',
-    size: 10000,
-    _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
-    body: {
-      query: {
-        bool: {
-          filter: [
-            { term: { transcript_id: transcript.transcript_id } },
-            { bool: { should: rangeQueries } },
-          ],
+    const rangeQueries = mergedRegions.map((region: any) => ({
+      range: {
+        'locus.position': {
+          gte: region.start,
+          lte: region.stop,
         },
       },
-      sort: [{ 'locus.position': { order: 'asc' } }],
-    },
-  })
+    }))
 
-  return hits
-    .map((hit: any) => hit._source.value)
-    .filter((variant: any) => hasPositiveAC(variant, subset))
+    const hits = await fetchAllSearchResults(esClient, {
+      index: GNOMAD_V4_VARIANT_INDEX,
+      type: '_doc',
+      size: 10000,
+      _source: getMultiVariantSourceFields(exomeSubset, genomeSubset, jointSubset),
+      body: {
+        query: {
+          bool: {
+            filter: [
+              { term: { transcript_id: transcript.transcript_id } },
+              { bool: { should: rangeQueries } },
+            ],
+          },
+        },
+        sort: [{ 'locus.position': { order: 'asc' } }],
+      },
+    })
+    sourceVariants = hits.map((hit: any) => hit._source.value)
+  }
+
+  return sourceVariants
+    .filter((variant) => hasPositiveAC(variant, subset))
     .map(
       shapeVariantSummary(subset, { type: 'transcript', transcriptId: transcript.transcript_id })
     )

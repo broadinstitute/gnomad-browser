@@ -1,7 +1,11 @@
 import { isRsId, isVariantId, normalizeVariantId } from '@gnomad/identifiers'
 
+import config from '../../config'
 import { DATASET_REFERENCE_GENOMES } from '../../datasets'
 import { UserVisibleError } from '../../errors'
+import type { GraphQLContext } from '../../app'
+import { assertDatasetAndReferenceGenomeMatch } from '../../queries/helpers/validation-helpers'
+import gnomadV4VariantQueries from '../../queries/variant-datasets/gnomad-v4-variant-queries'
 import { fetchClinvarVariantByClinvarVariationId } from '../../queries/clinvar-variant-queries'
 
 import {
@@ -65,10 +69,20 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   return variant
 }
 
-const resolveVariantsInGene = (obj: any, args: any, ctx: any) => {
+const resolveVariantsInGene = (obj: any, args: any, ctx: GraphQLContext) => {
   const { dataset } = args
   if (!dataset) {
     throw new UserVisibleError('Dataset is required')
+  }
+
+  const gnomadVariantsV4 = ctx.parquetDataStore?.gnomadVariantsV4
+  if (gnomadVariantsV4 && (dataset === 'gnomad_r4' || dataset === 'gnomad_r4_non_ukb')) {
+    assertDatasetAndReferenceGenomeMatch(dataset, obj.reference_genome)
+    const subset = dataset === 'gnomad_r4' ? 'all' : 'non_ukb'
+    return gnomadV4VariantQueries.fetchVariantsByGene(ctx.esClient, obj, subset, {
+      store: gnomadVariantsV4,
+      isParquetOnly: config.PARQUET_ONLY,
+    })
   }
 
   return fetchVariantsByGene(ctx.esClient, dataset, obj)
@@ -94,10 +108,20 @@ const resolveVariantsInRegion = async (obj: any, args: any, ctx: any) => {
   return fetchVariantsByRegion(ctx.esClient, dataset, obj)
 }
 
-const resolveVariantsInTranscript = (obj: any, args: any, ctx: any) => {
+const resolveVariantsInTranscript = (obj: any, args: any, ctx: GraphQLContext) => {
   const { dataset } = args
   if (!dataset) {
     throw new UserVisibleError('Dataset is required')
+  }
+
+  const gnomadVariantsV4 = ctx.parquetDataStore?.gnomadVariantsV4
+  if (gnomadVariantsV4 && (dataset === 'gnomad_r4' || dataset === 'gnomad_r4_non_ukb')) {
+    assertDatasetAndReferenceGenomeMatch(dataset, obj.reference_genome)
+    const subset = dataset === 'gnomad_r4' ? 'all' : 'non_ukb'
+    return gnomadV4VariantQueries.fetchVariantsByTranscript(ctx.esClient, obj, subset, {
+      store: gnomadVariantsV4,
+      isParquetOnly: config.PARQUET_ONLY,
+    })
   }
 
   return fetchVariantsByTranscript(ctx.esClient, dataset, obj)
