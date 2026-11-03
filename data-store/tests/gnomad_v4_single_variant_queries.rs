@@ -361,7 +361,7 @@ async fn preserves_details_without_subset_filtering_or_api_shaping() -> Result<(
         ("/exome/freq/all/ac", json!(0)),
         ("/exome/freq/all/ac_raw", json!(2)),
         ("/exome/freq/non_ukb/ac_raw", json!(0)),
-        ("/exome/freq/all/homozygote_count", json!(4294967300_i64)),
+        ("/exome/freq/all/homozygote_count", json!(4_294_967_300_i64)),
         ("/exome/freq/all/ancestry_groups/0/id", json!("XX")),
         ("/genome/freq/hgdp/ac_raw", json!(3)),
         ("/genome/freq/tgp/ac_raw", json!(4)),
@@ -371,7 +371,7 @@ async fn preserves_details_without_subset_filtering_or_api_shaping() -> Result<(
         ("/exome/faf95/grpmax", json!(0.25)),
         (
             "/exome/age_distribution/het/bin_freq",
-            json!([4294967301_i64]),
+            json!([4_294_967_301_i64]),
         ),
         (
             "/exome/quality_metrics/genotype_depth/alt_raw/n_larger",
@@ -387,7 +387,7 @@ async fn preserves_details_without_subset_filtering_or_api_shaping() -> Result<(
         ),
         ("/colocated_variants/all", json!(["all-colocated"])),
         ("/colocated_variants/non_ukb", json!([])),
-        ("/coverage/exome/total_DP", json!(4294967302_i64)),
+        ("/coverage/exome/total_DP", json!(4_294_967_302_i64)),
         ("/coverage/genome/over_10", json!(0.5)),
         ("/in_silico_predictors/cadd/phred", json!(0.0)),
         ("/transcript_consequences/0/gene_id", json!("ENSG002")),

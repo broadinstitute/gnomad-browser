@@ -107,6 +107,48 @@ impl GnomadV4Reader {
         Ok(variant)
     }
 
+    /// Use inclusive bounds without padding; leave frequency filtering to the API.
+    ///
+    /// # Errors
+    /// Return an error if query execution or result decoding fails.
+    pub async fn fetch_variants_in_region(
+        &self,
+        interval: &GenomicInterval,
+        subset: GnomadV4Subset,
+    ) -> Result<Vec<GnomadV4VariantListEntry>> {
+        let mut parameters = Vec::new();
+        let predicate = Self::bind_intervals(std::slice::from_ref(interval), &mut parameters);
+        let fields = select_list_entry_fields(subset);
+        let table_name = ParquetDataset::GnomadVariantsV4.name();
+        let query = format!(
+            "WITH variants AS (
+                SELECT {fields} FROM {table_name} WHERE {predicate}
+             )
+             SELECT * REPLACE (
+                 COALESCE(transcript_consequences, []) AS transcript_consequences
+             ) FROM variants
+             ORDER BY locus['position'], variant_id"
+        );
+        let batches = self
+            .context
+            .sql(&query)
+            .await?
+            .with_param_values(parameters)?
+            .collect()
+            .await?;
+        let mut variants = Vec::new();
+        for batch in &batches {
+            let decoded: Vec<GnomadV4VariantListEntry> = serde_arrow::from_record_batch(batch)
+                .map_err(|error| {
+                    DataFusionError::Execution(format!(
+                        "Failed to decode gnomAD v4 results for {interval:?}: {error}"
+                    ))
+                })?;
+            variants.extend(decoded);
+        }
+        Ok(variants)
+    }
+
     /// Apply 75-base padding to unpadded CDS/exon intervals; leave frequency filtering to the API.
     ///
     /// # Errors
