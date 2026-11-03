@@ -15,6 +15,7 @@ import {
 
 import resolvers from './clinvar-variants'
 
+jest.mock('../../config', () => ({ PARQUET_ONLY: false }))
 jest.mock('../../elasticsearch', () => ({ client: {} }))
 jest.mock('../../queries/clinvar-variant-queries', () => ({
   fetchClinvarReleaseDate: jest.fn(),

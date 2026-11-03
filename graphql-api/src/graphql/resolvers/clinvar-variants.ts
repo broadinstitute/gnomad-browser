@@ -10,6 +10,7 @@ import {
   fetchClinvarVariantsByTranscript,
 } from '../../queries/clinvar-variant-queries'
 
+import config from '../../config'
 import { UserVisibleError } from '../../errors'
 import type { GraphQLContext } from '../../app'
 import {
@@ -33,7 +34,7 @@ const selectClinvarExonIntervals = (exons: Exon[]): GenomicIntervalBounds[] => {
 }
 
 const resolveClinvarReleaseDate = (_: any, _args: any, ctx: any) => {
-  return fetchClinvarReleaseDate(ctx.esClient)
+  return config.PARQUET_ONLY ? null : fetchClinvarReleaseDate(ctx.esClient)
 }
 
 const resolveClinVarVariant = async (_: any, args: any, ctx: GraphQLContext) => {
