@@ -16,7 +16,7 @@ fn parse_interval(
         .map_err(|error| format!("Invalid interval {bounds}: {error:?}").into())
 }
 
-fn select_exome_frequency(
+const fn select_exome_frequency(
     variant: &GnomadV4VariantListEntry,
     subset: GnomadV4Subset,
 ) -> Option<&GnomadV4Frequency> {
@@ -118,7 +118,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         let mut output = BufWriter::new(io::stdout().lock());
         writeln!(output, "{variants:#?}")?;
         output.flush()?;
-        eprintln!("Variant output completed: {:?}", output_started_at.elapsed());
+        eprintln!(
+            "Variant output completed: {:?}",
+            output_started_at.elapsed()
+        );
     }
     Ok(())
 }
