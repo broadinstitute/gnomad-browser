@@ -83,6 +83,7 @@ const createSources = (): GnomadV4VariantListEntry[] => {
 
 const createNativeStore = () => ({
   fetchSingleVariant: jest.fn<GnomadV4Store['fetchSingleVariant']>(),
+  fetchVariantsInRegion: jest.fn<GnomadV4Store['fetchVariantsInRegion']>(),
   fetchVariantsInGene: jest
     .fn<GnomadV4Store['fetchVariantsInGene']>()
     .mockResolvedValue(createSources()),

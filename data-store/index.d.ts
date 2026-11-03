@@ -45,6 +45,11 @@ export declare class GnomadV4Store {
    * # Errors
    * Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
    */
+  fetchVariantsInRegion(chromosome: string, start: number, stop: number, subset: string): Promise<Array<GnomadV4VariantListEntry>>
+  /**
+   * # Errors
+   * Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
+   */
   fetchVariantsInGene(geneId: string, chromosome: string, intervals: Array<GenomicIntervalBounds>, subset: string): Promise<Array<GnomadV4VariantListEntry>>
   /**
    * # Errors

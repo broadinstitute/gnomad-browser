@@ -410,6 +410,27 @@ impl GnomadV4Store {
     /// # Errors
     /// Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
     #[napi]
+    pub async fn fetch_variants_in_region(
+        &self,
+        chromosome: String,
+        start: i32,
+        stop: i32,
+        subset: String,
+    ) -> napi::Result<Vec<GnomadV4VariantListEntry>> {
+        let subset = parse_gnomad_v4_subset(&subset)?;
+        let interval = GenomicInterval::new(&chromosome, start, stop)
+            .map_err(|error| map_interval_error(&error))?;
+        let variants = self
+            .reader
+            .fetch_variants_in_region(&interval, subset)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+        variants.into_iter().map(TryInto::try_into).collect()
+    }
+
+    /// # Errors
+    /// Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
+    #[napi]
     pub async fn fetch_variants_in_gene(
         &self,
         gene_id: String,

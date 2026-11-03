@@ -65,6 +65,7 @@ const createContext = (store: ClinvarStore | null): GraphQLContext => ({
           },
           gnomadVariantsV4: {
             fetchSingleVariant: jest.fn<GnomadV4Store['fetchSingleVariant']>(),
+            fetchVariantsInRegion: jest.fn<GnomadV4Store['fetchVariantsInRegion']>(),
             fetchVariantsInGene: jest.fn<GnomadV4Store['fetchVariantsInGene']>(),
             fetchVariantsInTranscript: jest.fn<GnomadV4Store['fetchVariantsInTranscript']>(),
           },
