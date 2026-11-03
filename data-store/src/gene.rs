@@ -53,6 +53,24 @@ pub struct GeneTranscript {
     pub refseq_version: Option<String>,
 }
 
+#[derive(Debug, Deserialize)]
+pub struct RegionGene {
+    pub gene_id: String,
+    pub symbol: String,
+    pub start: i32,
+    pub stop: i32,
+    pub exons: Vec<GeneExon>,
+    pub transcripts: Vec<RegionGeneTranscript>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct RegionGeneTranscript {
+    pub transcript_id: String,
+    pub start: i32,
+    pub stop: i32,
+    pub exons: Vec<GeneExon>,
+}
+
 #[derive(Debug, Deserialize, PartialEq, Eq)]
 pub struct GeneExon {
     pub feature_type: String,

@@ -3,7 +3,7 @@ use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::SessionContext;
 
 use crate::record_batch_decoding::decode_record_batches;
-use crate::{Gene, ParquetDataset};
+use crate::{Gene, GenomicInterval, ParquetDataset, RegionGene};
 
 pub struct GeneReader {
     context: SessionContext,
@@ -63,5 +63,41 @@ impl GeneReader {
             )));
         }
         Ok(gene)
+    }
+
+    /// Return genes overlapping the inclusive interval, ordered by start then gene ID.
+    ///
+    /// # Errors
+    /// Return an error if query execution or result decoding fails.
+    pub async fn fetch_genes_in_region(
+        &self,
+        interval: &GenomicInterval,
+    ) -> Result<Vec<RegionGene>> {
+        let table_name = ParquetDataset::GeneModelsGrch38.name();
+        let query = format!(
+            "SELECT
+                gene_id, symbol, start, stop, exons,
+                array_transform(transcripts, transcript -> named_struct(
+                    'transcript_id', transcript['transcript_id'],
+                    'start', transcript['start'],
+                    'stop', transcript['stop'],
+                    'exons', transcript['exons']
+                )) AS transcripts
+            FROM {table_name}
+            WHERE chrom = $1 AND start <= $3 AND stop >= $2
+            ORDER BY start, gene_id"
+        );
+        let batches = self
+            .context
+            .sql(&query)
+            .await?
+            .with_param_values(vec![
+                ScalarValue::Utf8(Some(interval.chromosome().as_str().to_owned())),
+                ScalarValue::Int32(Some(interval.start())),
+                ScalarValue::Int32(Some(interval.stop())),
+            ])?
+            .collect()
+            .await?;
+        decode_record_batches(&batches, format_args!("gene results for {interval:?}"))
     }
 }

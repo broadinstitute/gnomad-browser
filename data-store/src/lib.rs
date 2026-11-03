@@ -19,7 +19,8 @@ pub use clinvar_variant::{
 pub use datafusion_context::{create_datafusion_context, create_datafusion_context_from_root};
 pub use gene::{
     Gene, GeneExon, GeneGnomadConstraint, GeneInterval, GeneLocus, GeneManeSelectTranscript,
-    GenePext, GenePextRegion, GeneTissueExpression, GeneTranscript,
+    GenePext, GenePextRegion, GeneTissueExpression, GeneTranscript, RegionGene,
+    RegionGeneTranscript,
 };
 pub use gene_reader::GeneReader;
 pub use genomic_interval::{
