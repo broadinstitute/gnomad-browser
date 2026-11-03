@@ -9,7 +9,8 @@ const daysInMonth = (year: number, month: number): number => {
 }
 
 // ClinVar dates are formatted YYYY-MM-DD
-const formatClinvarDate = (dateString: string): string => {
+const formatClinvarDate = (dateString: string | null): string => {
+  if (dateString === null) return 'unknown'
   const [year, month, day] = dateString.split('-').map(Number)
 
   const isRealDate =

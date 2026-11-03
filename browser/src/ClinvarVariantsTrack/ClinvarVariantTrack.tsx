@@ -296,7 +296,7 @@ export const ClinvarVariantTrack = React.memo(UnmemoizedClinvarVariantTrack)
 
 type ClinvarVariantsProps = {
   clinvarVariants: ClinvarVariant[] | null | undefined
-  clinvarReleaseDate: string
+  clinvarReleaseDate: string | null
   referenceGenome: ReferenceGenome
   transcripts: Transcript[]
   zoomRegion?: { start: number; stop: number } | null
@@ -332,6 +332,10 @@ const ClinvarVariants = ({
     )
   }
 
+  const knownReleaseMessage = `Data displayed here is from ClinVar's ${formatClinvarDate(
+    clinvarReleaseDate
+  )} release.`
+  const unknownReleaseMessage = 'Warning: ClinVar release date is unavailable.'
   const clinvarVariantTrack = (
     <>
       <ClinvarVariantTrack
@@ -340,7 +344,7 @@ const ClinvarVariants = ({
         variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
       />
       <TrackPageSection as="p">
-        Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
+        {clinvarReleaseDate === null ? unknownReleaseMessage : knownReleaseMessage}
       </TrackPageSection>
     </>
   )
