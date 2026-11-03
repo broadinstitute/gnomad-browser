@@ -4,6 +4,7 @@ use datafusion::common::ScalarValue;
 use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::SessionContext;
 
+use crate::record_batch_decoding::decode_record_batches;
 use crate::{
     GenomicInterval, GnomadV4Variant, GnomadV4VariantListEntry, ParquetDataset,
     create_datafusion_context_from_root, pad_and_merge_intervals,
@@ -87,16 +88,8 @@ impl GnomadV4Reader {
             .with_param_values(parameters)?
             .collect()
             .await?;
-        let mut variants = Vec::new();
-        for batch in &batches {
-            let decoded: Vec<GnomadV4Variant> =
-                serde_arrow::from_record_batch(batch).map_err(|error| {
-                    DataFusionError::Execution(format!(
-                        "Failed to decode gnomAD v4 result for {variant_id}: {error}"
-                    ))
-                })?;
-            variants.extend(decoded);
-        }
+        let variants: Vec<GnomadV4Variant> =
+            decode_record_batches(&batches, format_args!("gnomAD v4 result for {variant_id}"))?;
         let mut variants = variants.into_iter();
         let variant = variants.next();
         if variants.next().is_some() {
@@ -136,17 +129,7 @@ impl GnomadV4Reader {
             .with_param_values(parameters)?
             .collect()
             .await?;
-        let mut variants = Vec::new();
-        for batch in &batches {
-            let decoded: Vec<GnomadV4VariantListEntry> = serde_arrow::from_record_batch(batch)
-                .map_err(|error| {
-                    DataFusionError::Execution(format!(
-                        "Failed to decode gnomAD v4 results for {interval:?}: {error}"
-                    ))
-                })?;
-            variants.extend(decoded);
-        }
-        Ok(variants)
+        decode_record_batches(&batches, format_args!("gnomAD v4 results for {interval:?}"))
     }
 
     /// Apply 75-base padding to unpadded CDS/exon intervals; leave frequency filtering to the API.
@@ -224,17 +207,10 @@ impl GnomadV4Reader {
             .with_param_values(parameters)?
             .collect()
             .await?;
-        let mut variants = Vec::new();
-        for batch in &batches {
-            let batch_variants: Vec<GnomadV4VariantListEntry> =
-                serde_arrow::from_record_batch(batch).map_err(|error| {
-                    DataFusionError::Execution(format!(
-                        "Failed to decode gnomAD v4 results for {annotation_field}={annotation_id}: {error}"
-                    ))
-                })?;
-            variants.extend(batch_variants);
-        }
-        Ok(variants)
+        decode_record_batches(
+            &batches,
+            format_args!("gnomAD v4 results for {annotation_field}={annotation_id}"),
+        )
     }
 
     fn bind_intervals(intervals: &[GenomicInterval], parameters: &mut Vec<ScalarValue>) -> String {

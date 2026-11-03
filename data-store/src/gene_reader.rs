@@ -2,6 +2,7 @@ use datafusion::common::ScalarValue;
 use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::SessionContext;
 
+use crate::record_batch_decoding::decode_record_batches;
 use crate::{Gene, ParquetDataset};
 
 pub struct GeneReader {
@@ -51,16 +52,8 @@ impl GeneReader {
             .collect()
             .await?;
 
-        let mut genes = Vec::new();
-        for batch in &batches {
-            let batch_genes: Vec<Gene> =
-                serde_arrow::from_record_batch(batch).map_err(|error| {
-                    DataFusionError::Execution(format!(
-                        "Failed to decode gene result for {gene_id}: {error}"
-                    ))
-                })?;
-            genes.extend(batch_genes);
-        }
+        let genes: Vec<Gene> =
+            decode_record_batches(&batches, format_args!("gene result for {gene_id}"))?;
 
         let mut genes = genes.into_iter();
         let gene = genes.next();

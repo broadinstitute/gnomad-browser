@@ -1,3 +1,4 @@
+use crate::record_batch_decoding::decode_record_batches;
 use crate::{
     ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset,
     pad_and_merge_intervals,
@@ -128,18 +129,8 @@ impl ClinvarReader {
 
         let batches = dataframe.collect().await?;
 
-        let mut variants = Vec::new();
-
-        for batch in &batches {
-            let batch_variants: Vec<ClinvarVariant> = serde_arrow::from_record_batch(batch)
-                .map_err(|error| {
-                    DataFusionError::Execution(format!(
-                        "Failed to decode ClinVar result for {variant_id}: {error}"
-                    ))
-                })?;
-
-            variants.extend(batch_variants);
-        }
+        let variants: Vec<ClinvarVariant> =
+            decode_record_batches(&batches, format_args!("ClinVar result for {variant_id}"))?;
 
         let mut variants = variants.into_iter();
         let variant = variants.next();
@@ -246,17 +237,10 @@ impl ClinvarReader {
         );
         let dataframe = self.context.sql(&query).await?;
         let batches = dataframe.with_param_values(parameters)?.collect().await?;
-        let mut variants = Vec::new();
-        for batch in &batches {
-            let batch_variants: Vec<ClinvarVariantListEntry> = serde_arrow::from_record_batch(batch)
-                .map_err(|error| {
-                    DataFusionError::Execution(format!(
-                        "Failed to decode ClinVar results for {annotation_field}={annotation_id}: {error}"
-                    ))
-                })?;
-            variants.extend(batch_variants);
-        }
-        Ok(variants)
+        decode_record_batches(
+            &batches,
+            format_args!("ClinVar results for {annotation_field}={annotation_id}"),
+        )
     }
 
     /// # Errors
@@ -291,19 +275,6 @@ impl ClinvarReader {
 
         let batches = dataframe.collect().await?;
 
-        let mut variants = Vec::new();
-
-        for batch in &batches {
-            let batch_variants: Vec<ClinvarVariantListEntry> =
-                serde_arrow::from_record_batch(batch).map_err(|error| {
-                    DataFusionError::Execution(format!(
-                        "Failed to decode ClinVar results for {interval:?}: {error}"
-                    ))
-                })?;
-
-            variants.extend(batch_variants);
-        }
-
-        Ok(variants)
+        decode_record_batches(&batches, format_args!("ClinVar results for {interval:?}"))
     }
 }
