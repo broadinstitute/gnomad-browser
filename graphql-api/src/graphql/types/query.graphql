@@ -29,7 +29,7 @@ type Query {
     source_variant_id: String
     liftover_variant_id: String
     reference_genome: ReferenceGenomeId!
-  ): [LiftoverResult!]!
+  ): [LiftoverResult!]
 
   variant_cooccurrence(variants: [String!]!, dataset: DatasetId!): VariantCooccurrence
     @cost(value: 5)

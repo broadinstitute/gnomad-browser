@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import { Badge } from '@gnomad/ui'
 import { hasRelatedVariants } from '@gnomad/dataset-metadata/metadata'
 import Link from '../Link'
 import MNVSummaryList from '../MNVPage/MNVSummaryList'
@@ -99,6 +100,15 @@ const VariantRelatedVariants = ({ datasetId, variant }: VariantRelatedVariantsPr
           <p>This variant&apos;s consequence may be affected by other variants:</p>
           {/* @ts-expect-error TS(2322) FIXME: Type 'any[] | undefined' is not assignable to type... Remove this comment to see the full error message */}
           <MNVSummaryList multiNucleotideVariants={variant.multi_nucleotide_variants} />
+        </Item>
+      )}
+
+      {(variant.liftover === null || variant.liftover_sources === null) && (
+        <Item>
+          <h3>Liftover</h3>
+          <p>
+            <Badge level="warning">Warning</Badge> Liftover data is unavailable.
+          </p>
         </Item>
       )}
 
