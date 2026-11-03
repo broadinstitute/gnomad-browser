@@ -6,6 +6,7 @@
 use napi::bindgen_prelude::{Either, Null};
 use napi_derive::napi;
 
+use crate::gnomad_v4_variant_list_entry as gnomad_v4_source;
 use crate::{
     Chromosome, ClinvarCondition as ReaderClinvarCondition,
     ClinvarGnomadData as ReaderClinvarGnomadData,
@@ -13,13 +14,14 @@ use crate::{
     ClinvarSubmission as ReaderClinvarSubmission,
     ClinvarTranscriptConsequence as ReaderClinvarTranscriptConsequence,
     ClinvarVariant as ReaderClinvarVariant,
-    ClinvarVariantListEntry as ReaderClinvarVariantListEntry,
-    Gene as ReaderGene, GeneExon as ReaderGeneExon,
-    GeneGnomadConstraint as ReaderGeneGnomadConstraint, GeneInterval as ReaderGeneInterval,
-    GeneLocus as ReaderGeneLocus, GeneManeSelectTranscript as ReaderGeneManeSelectTranscript,
-    GenePext as ReaderGenePext, GenePextRegion as ReaderGenePextRegion, GeneReader,
+    ClinvarVariantListEntry as ReaderClinvarVariantListEntry, Gene as ReaderGene,
+    GeneExon as ReaderGeneExon, GeneGnomadConstraint as ReaderGeneGnomadConstraint,
+    GeneInterval as ReaderGeneInterval, GeneLocus as ReaderGeneLocus,
+    GeneManeSelectTranscript as ReaderGeneManeSelectTranscript, GenePext as ReaderGenePext,
+    GenePextRegion as ReaderGenePextRegion, GeneReader,
     GeneTissueExpression as ReaderGeneTissueExpression, GeneTranscript as ReaderGeneTranscript,
-    GenomicInterval, GenomicIntervalError, ParquetDataset, create_datafusion_context_from_root,
+    GenomicInterval, GenomicIntervalError, GnomadV4Reader, GnomadV4Subset, ParquetDataset,
+    create_datafusion_context_from_root,
 };
 
 #[napi]
@@ -32,12 +34,10 @@ pub struct ClinvarStore {
 #[allow(dead_code, reason = "Called from JavaScript through Node-API.")]
 #[napi]
 pub async fn open_clinvar_store(parquet_root: String) -> napi::Result<ClinvarStore> {
-    let context = create_datafusion_context_from_root(
-        parquet_root,
-        ParquetDataset::ClinvarVariantsGrch38,
-    )
-    .await
-    .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+    let context =
+        create_datafusion_context_from_root(parquet_root, ParquetDataset::ClinvarVariantsGrch38)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
 
     Ok(ClinvarStore {
         reader: ClinvarReader::new(context),
@@ -354,6 +354,426 @@ impl ClinvarStore {
     }
 }
 
+#[napi]
+pub struct GnomadV4Store {
+    reader: GnomadV4Reader,
+}
+
+/// # Errors
+/// Reject dataset registration failures under the supplied Parquet root.
+#[allow(dead_code, reason = "Called from JavaScript through Node-API.")]
+#[napi]
+pub async fn open_gnomad_v4_store(parquet_root: String) -> napi::Result<GnomadV4Store> {
+    let reader = GnomadV4Reader::open(parquet_root)
+        .await
+        .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+    Ok(GnomadV4Store { reader })
+}
+
+fn parse_gnomad_v4_subset(subset: &str) -> napi::Result<GnomadV4Subset> {
+    match subset {
+        "all" => Ok(GnomadV4Subset::All),
+        "non_ukb" => Ok(GnomadV4Subset::NonUkb),
+        _ => Err(napi::Error::new(
+            napi::Status::InvalidArg,
+            format!("Invalid gnomAD v4 subset: {subset}; expected all or non_ukb"),
+        )),
+    }
+}
+
+#[napi]
+impl GnomadV4Store {
+    /// # Errors
+    /// Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
+    #[napi]
+    pub async fn fetch_variants_in_gene(
+        &self,
+        gene_id: String,
+        chromosome: String,
+        intervals: Vec<GenomicIntervalBounds>,
+        subset: String,
+    ) -> napi::Result<Vec<GnomadV4VariantListEntry>> {
+        let subset = parse_gnomad_v4_subset(&subset)?;
+        let intervals = parse_genomic_intervals(&chromosome, &intervals)?;
+        let variants = self
+            .reader
+            .fetch_variants_in_gene(&gene_id, &intervals, subset)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+        variants.into_iter().map(TryInto::try_into).collect()
+    }
+
+    /// # Errors
+    /// Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
+    #[napi]
+    pub async fn fetch_variants_in_transcript(
+        &self,
+        transcript_id: String,
+        chromosome: String,
+        intervals: Vec<GenomicIntervalBounds>,
+        subset: String,
+    ) -> napi::Result<Vec<GnomadV4VariantListEntry>> {
+        let subset = parse_gnomad_v4_subset(&subset)?;
+        let intervals = parse_genomic_intervals(&chromosome, &intervals)?;
+        let variants = self
+            .reader
+            .fetch_variants_in_transcript(&transcript_id, &intervals, subset)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+        variants.into_iter().map(TryInto::try_into).collect()
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4VariantListEntry {
+    #[napi(js_name = "variant_id")]
+    pub variant_id: String,
+    pub locus: GnomadV4Locus,
+    pub alleles: Vec<String>,
+    pub rsids: Option<Vec<String>>,
+    pub flags: Option<Vec<String>>,
+    pub exome: GnomadV4ExomeData,
+    pub genome: GnomadV4GenomeData,
+    pub joint: GnomadV4JointData,
+    #[napi(js_name = "transcript_consequences")]
+    pub transcript_consequences: Vec<GnomadV4TranscriptConsequence>,
+    #[napi(js_name = "in_silico_predictors")]
+    pub in_silico_predictors: GnomadV4InSilicoPredictors,
+}
+
+impl TryFrom<gnomad_v4_source::GnomadV4VariantListEntry> for GnomadV4VariantListEntry {
+    type Error = napi::Error;
+
+    fn try_from(variant: gnomad_v4_source::GnomadV4VariantListEntry) -> napi::Result<Self> {
+        Ok(Self {
+            variant_id: variant.variant_id,
+            locus: variant.locus.into(),
+            alleles: variant.alleles,
+            rsids: variant.rsids,
+            flags: variant.flags,
+            exome: variant.exome.try_into()?,
+            genome: variant.genome.try_into()?,
+            joint: variant.joint.try_into()?,
+            transcript_consequences: variant
+                .transcript_consequences
+                .into_iter()
+                .map(Into::into)
+                .collect(),
+            in_silico_predictors: variant.in_silico_predictors.into(),
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4Locus {
+    pub contig: String,
+    pub position: i32,
+}
+
+impl From<gnomad_v4_source::GnomadV4Locus> for GnomadV4Locus {
+    fn from(locus: gnomad_v4_source::GnomadV4Locus) -> Self {
+        Self {
+            contig: locus.contig,
+            position: locus.position,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4ExomeData {
+    pub freq: GnomadV4FrequencySubsets,
+    pub filters: Option<Vec<String>>,
+    pub flags: Option<Vec<String>>,
+    pub fafmax: GnomadV4ExomeFilteringAlleleFrequencies,
+}
+
+impl TryFrom<gnomad_v4_source::GnomadV4ExomeData> for GnomadV4ExomeData {
+    type Error = napi::Error;
+
+    fn try_from(data: gnomad_v4_source::GnomadV4ExomeData) -> napi::Result<Self> {
+        Ok(Self {
+            freq: data.freq.try_into()?,
+            filters: data.filters,
+            flags: data.flags,
+            fafmax: data.fafmax.into(),
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4GenomeData {
+    pub freq: GnomadV4FrequencySubsets,
+    pub filters: Option<Vec<String>>,
+    pub flags: Option<Vec<String>>,
+}
+
+impl TryFrom<gnomad_v4_source::GnomadV4GenomeData> for GnomadV4GenomeData {
+    type Error = napi::Error;
+
+    fn try_from(data: gnomad_v4_source::GnomadV4GenomeData) -> napi::Result<Self> {
+        Ok(Self {
+            freq: data.freq.try_into()?,
+            filters: data.filters,
+            flags: data.flags,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4JointData {
+    pub freq: GnomadV4FrequencySubsets,
+    pub filters: Option<Vec<String>>,
+    pub fafmax: GnomadV4FilteringAlleleFrequency,
+}
+
+impl TryFrom<gnomad_v4_source::GnomadV4JointData> for GnomadV4JointData {
+    type Error = napi::Error;
+
+    fn try_from(data: gnomad_v4_source::GnomadV4JointData) -> napi::Result<Self> {
+        Ok(Self {
+            freq: data.freq.try_into()?,
+            filters: data.filters,
+            fafmax: data.fafmax.into(),
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4FrequencySubsets {
+    pub all: Option<GnomadV4Frequency>,
+    #[napi(js_name = "non_ukb")]
+    pub non_ukb: Option<GnomadV4Frequency>,
+}
+
+impl TryFrom<gnomad_v4_source::GnomadV4FrequencySubsets> for GnomadV4FrequencySubsets {
+    type Error = napi::Error;
+
+    fn try_from(frequencies: gnomad_v4_source::GnomadV4FrequencySubsets) -> napi::Result<Self> {
+        Ok(Self {
+            all: frequencies.all.map(TryInto::try_into).transpose()?,
+            non_ukb: frequencies.non_ukb.map(TryInto::try_into).transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4Frequency {
+    pub ac: Option<i32>,
+    #[napi(js_name = "ac_raw")]
+    pub ac_raw: Option<i32>,
+    pub an: Option<i32>,
+    #[napi(js_name = "hemizygote_count")]
+    pub hemizygote_count: Option<i32>,
+    #[napi(js_name = "homozygote_count")]
+    pub homozygote_count: Option<i64>,
+    #[napi(js_name = "ancestry_groups")]
+    pub ancestry_groups: Option<Vec<GnomadV4AncestryFrequency>>,
+}
+
+impl TryFrom<gnomad_v4_source::GnomadV4Frequency> for GnomadV4Frequency {
+    type Error = napi::Error;
+
+    fn try_from(frequency: gnomad_v4_source::GnomadV4Frequency) -> napi::Result<Self> {
+        Ok(Self {
+            ac: frequency.ac,
+            ac_raw: frequency.ac_raw,
+            an: frequency.an,
+            hemizygote_count: frequency.hemizygote_count,
+            homozygote_count: frequency
+                .homozygote_count
+                .map(|value| checked_js_integer(value, "freq.homozygote_count"))
+                .transpose()?,
+            ancestry_groups: frequency
+                .ancestry_groups
+                .map(|groups| {
+                    groups
+                        .into_iter()
+                        .map(TryInto::try_into)
+                        .collect::<napi::Result<Vec<_>>>()
+                })
+                .transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4AncestryFrequency {
+    pub id: String,
+    pub ac: Option<i32>,
+    pub an: Option<i32>,
+    #[napi(js_name = "hemizygote_count")]
+    pub hemizygote_count: Option<i32>,
+    #[napi(js_name = "homozygote_count")]
+    pub homozygote_count: Option<i64>,
+}
+
+impl TryFrom<gnomad_v4_source::GnomadV4AncestryFrequency> for GnomadV4AncestryFrequency {
+    type Error = napi::Error;
+
+    fn try_from(frequency: gnomad_v4_source::GnomadV4AncestryFrequency) -> napi::Result<Self> {
+        Ok(Self {
+            id: frequency.id,
+            ac: frequency.ac,
+            an: frequency.an,
+            hemizygote_count: frequency.hemizygote_count,
+            homozygote_count: frequency
+                .homozygote_count
+                .map(|value| checked_js_integer(value, "ancestry_groups.homozygote_count"))
+                .transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4ExomeFilteringAlleleFrequencies {
+    pub gnomad: GnomadV4FilteringAlleleFrequency,
+    #[napi(js_name = "non_ukb")]
+    pub non_ukb: GnomadV4FilteringAlleleFrequency,
+}
+
+impl From<gnomad_v4_source::GnomadV4ExomeFilteringAlleleFrequencies>
+    for GnomadV4ExomeFilteringAlleleFrequencies
+{
+    fn from(frequencies: gnomad_v4_source::GnomadV4ExomeFilteringAlleleFrequencies) -> Self {
+        Self {
+            gnomad: frequencies.gnomad.into(),
+            non_ukb: frequencies.non_ukb.into(),
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4FilteringAlleleFrequency {
+    #[napi(js_name = "faf95_max")]
+    pub faf95_max: Option<f64>,
+    #[napi(js_name = "faf95_max_gen_anc")]
+    pub faf95_max_gen_anc: Option<String>,
+    #[napi(js_name = "faf99_max")]
+    pub faf99_max: Option<f64>,
+    #[napi(js_name = "faf99_max_gen_anc")]
+    pub faf99_max_gen_anc: Option<String>,
+}
+
+impl From<gnomad_v4_source::GnomadV4FilteringAlleleFrequency> for GnomadV4FilteringAlleleFrequency {
+    fn from(frequency: gnomad_v4_source::GnomadV4FilteringAlleleFrequency) -> Self {
+        Self {
+            faf95_max: frequency.faf95_max,
+            faf95_max_gen_anc: frequency.faf95_max_gen_anc,
+            faf99_max: frequency.faf99_max,
+            faf99_max_gen_anc: frequency.faf99_max_gen_anc,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4TranscriptConsequence {
+    #[napi(js_name = "gene_id")]
+    pub gene_id: Option<String>,
+    #[napi(js_name = "gene_version")]
+    pub gene_version: Option<String>,
+    #[napi(js_name = "gene_symbol")]
+    pub gene_symbol: Option<String>,
+    #[napi(js_name = "transcript_id")]
+    pub transcript_id: Option<String>,
+    #[napi(js_name = "transcript_version")]
+    pub transcript_version: Option<String>,
+    pub biotype: Option<String>,
+    #[napi(js_name = "consequence_terms")]
+    pub consequence_terms: Option<Vec<String>>,
+    #[napi(js_name = "major_consequence")]
+    pub major_consequence: Option<String>,
+    pub hgvsc: Option<String>,
+    pub hgvsp: Option<String>,
+    #[napi(js_name = "is_canonical")]
+    pub is_canonical: Option<bool>,
+    #[napi(js_name = "is_mane_select")]
+    pub is_mane_select: Option<bool>,
+    #[napi(js_name = "is_mane_select_version")]
+    pub is_mane_select_version: Option<bool>,
+    #[napi(js_name = "refseq_id")]
+    pub refseq_id: Option<String>,
+    #[napi(js_name = "refseq_version")]
+    pub refseq_version: Option<String>,
+    pub domains: Option<Vec<String>>,
+    pub lof: Option<String>,
+    #[napi(js_name = "lof_filter")]
+    pub lof_filter: Option<String>,
+    #[napi(js_name = "lof_flags")]
+    pub lof_flags: Option<String>,
+}
+
+impl From<gnomad_v4_source::GnomadV4TranscriptConsequence> for GnomadV4TranscriptConsequence {
+    fn from(consequence: gnomad_v4_source::GnomadV4TranscriptConsequence) -> Self {
+        Self {
+            gene_id: consequence.gene_id,
+            gene_version: consequence.gene_version,
+            gene_symbol: consequence.gene_symbol,
+            transcript_id: consequence.transcript_id,
+            transcript_version: consequence.transcript_version,
+            biotype: consequence.biotype,
+            consequence_terms: consequence.consequence_terms,
+            major_consequence: consequence.major_consequence,
+            hgvsc: consequence.hgvsc,
+            hgvsp: consequence.hgvsp,
+            is_canonical: consequence.is_canonical,
+            is_mane_select: consequence.is_mane_select,
+            is_mane_select_version: consequence.is_mane_select_version,
+            refseq_id: consequence.refseq_id,
+            refseq_version: consequence.refseq_version,
+            domains: consequence.domains,
+            lof: consequence.lof,
+            lof_filter: consequence.lof_filter,
+            lof_flags: consequence.lof_flags,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4InSilicoPredictors {
+    pub cadd: GnomadV4Cadd,
+    #[napi(js_name = "revel_max")]
+    pub revel_max: Option<f64>,
+    #[napi(js_name = "spliceai_ds_max")]
+    pub spliceai_ds_max: Option<f64>,
+    #[napi(js_name = "pangolin_largest_ds")]
+    pub pangolin_largest_ds: Option<f64>,
+    pub phylop: Option<f64>,
+    #[napi(js_name = "sift_max")]
+    pub sift_max: Option<f64>,
+    #[napi(js_name = "polyphen_max")]
+    pub polyphen_max: Option<f64>,
+}
+
+impl From<gnomad_v4_source::GnomadV4InSilicoPredictors> for GnomadV4InSilicoPredictors {
+    fn from(predictors: gnomad_v4_source::GnomadV4InSilicoPredictors) -> Self {
+        Self {
+            cadd: predictors.cadd.into(),
+            revel_max: predictors.revel_max,
+            spliceai_ds_max: predictors.spliceai_ds_max.map(f64::from),
+            pangolin_largest_ds: predictors.pangolin_largest_ds,
+            phylop: predictors.phylop,
+            sift_max: predictors.sift_max,
+            polyphen_max: predictors.polyphen_max,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4Cadd {
+    pub phred: Option<f64>,
+    #[napi(js_name = "raw_score")]
+    pub raw_score: Option<f64>,
+}
+
+impl From<gnomad_v4_source::GnomadV4Cadd> for GnomadV4Cadd {
+    fn from(cadd: gnomad_v4_source::GnomadV4Cadd) -> Self {
+        Self {
+            phred: cadd.phred.map(f64::from),
+            raw_score: cadd.raw_score.map(f64::from),
+        }
+    }
+}
+
 const MAX_SAFE_JS_INTEGER: i64 = 9_007_199_254_740_991;
 
 #[napi]
@@ -366,12 +786,10 @@ pub struct GeneStore {
 #[allow(dead_code, reason = "Called from JavaScript through Node-API.")]
 #[napi]
 pub async fn open_gene_store(parquet_root: String) -> napi::Result<GeneStore> {
-    let context = create_datafusion_context_from_root(
-        parquet_root,
-        ParquetDataset::GeneModelsGrch38,
-    )
-    .await
-    .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+    let context =
+        create_datafusion_context_from_root(parquet_root, ParquetDataset::GeneModelsGrch38)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
     Ok(GeneStore {
         reader: GeneReader::new(context),
     })
@@ -397,6 +815,10 @@ impl GeneStore {
     }
 }
 
+#[allow(
+    clippy::struct_field_names,
+    reason = "Preserve gene_id and gene_version in the JavaScript API."
+)]
 #[napi(object)]
 pub struct Gene {
     #[napi(js_name = "gene_id")]
@@ -544,9 +966,11 @@ impl TryFrom<ReaderGeneTranscript> for GeneTranscript {
                 .into_iter()
                 .map(TryInto::try_into)
                 .collect::<napi::Result<_>>()?,
-            gtex_tissue_expression: into_nullable(transcript.gtex_tissue_expression.map(|tissues| {
-                tissues.into_iter().map(Into::into).collect()
-            })),
+            gtex_tissue_expression: into_nullable(
+                transcript
+                    .gtex_tissue_expression
+                    .map(|tissues| tissues.into_iter().map(Into::into).collect()),
+            ),
             refseq_id: into_nullable(transcript.refseq_id),
             refseq_version: into_nullable(transcript.refseq_version),
         })

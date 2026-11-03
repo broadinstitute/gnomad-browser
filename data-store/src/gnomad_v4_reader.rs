@@ -5,8 +5,8 @@ use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::SessionContext;
 
 use crate::{
-    GenomicInterval, GnomadV4VariantListEntry, ParquetDataset,
-    create_datafusion_context_from_root, pad_and_merge_intervals,
+    GenomicInterval, GnomadV4VariantListEntry, ParquetDataset, create_datafusion_context_from_root,
+    pad_and_merge_intervals,
 };
 
 const GNOMAD_V4_EXON_PADDING: u32 = 75;

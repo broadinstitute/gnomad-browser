@@ -35,6 +35,19 @@ export declare class GeneStore {
   fetchGeneById(geneId: string): Promise<Gene | null>
 }
 
+export declare class GnomadV4Store {
+  /**
+   * # Errors
+   * Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
+   */
+  fetchVariantsInGene(geneId: string, chromosome: string, intervals: Array<GenomicIntervalBounds>, subset: string): Promise<Array<GnomadV4VariantListEntry>>
+  /**
+   * # Errors
+   * Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
+   */
+  fetchVariantsInTranscript(transcriptId: string, chromosome: string, intervals: Array<GenomicIntervalBounds>, subset: string): Promise<Array<GnomadV4VariantListEntry>>
+}
+
 export interface ClinvarCondition {
   name: string
   medgen_id: string | null
@@ -232,6 +245,114 @@ export interface GenomicIntervalBounds {
   stop: number
 }
 
+export interface GnomadV4AncestryFrequency {
+  id: string
+  ac?: number
+  an?: number
+  hemizygote_count?: number
+  homozygote_count?: number
+}
+
+export interface GnomadV4Cadd {
+  phred?: number
+  raw_score?: number
+}
+
+export interface GnomadV4ExomeData {
+  freq: GnomadV4FrequencySubsets
+  filters?: Array<string>
+  flags?: Array<string>
+  fafmax: GnomadV4ExomeFilteringAlleleFrequencies
+}
+
+export interface GnomadV4ExomeFilteringAlleleFrequencies {
+  gnomad: GnomadV4FilteringAlleleFrequency
+  non_ukb: GnomadV4FilteringAlleleFrequency
+}
+
+export interface GnomadV4FilteringAlleleFrequency {
+  faf95_max?: number
+  faf95_max_gen_anc?: string
+  faf99_max?: number
+  faf99_max_gen_anc?: string
+}
+
+export interface GnomadV4Frequency {
+  ac?: number
+  ac_raw?: number
+  an?: number
+  hemizygote_count?: number
+  homozygote_count?: number
+  ancestry_groups?: Array<GnomadV4AncestryFrequency>
+}
+
+export interface GnomadV4FrequencySubsets {
+  all?: GnomadV4Frequency
+  non_ukb?: GnomadV4Frequency
+}
+
+export interface GnomadV4GenomeData {
+  freq: GnomadV4FrequencySubsets
+  filters?: Array<string>
+  flags?: Array<string>
+}
+
+export interface GnomadV4InSilicoPredictors {
+  cadd: GnomadV4Cadd
+  revel_max?: number
+  spliceai_ds_max?: number
+  pangolin_largest_ds?: number
+  phylop?: number
+  sift_max?: number
+  polyphen_max?: number
+}
+
+export interface GnomadV4JointData {
+  freq: GnomadV4FrequencySubsets
+  filters?: Array<string>
+  fafmax: GnomadV4FilteringAlleleFrequency
+}
+
+export interface GnomadV4Locus {
+  contig: string
+  position: number
+}
+
+export interface GnomadV4TranscriptConsequence {
+  gene_id?: string
+  gene_version?: string
+  gene_symbol?: string
+  transcript_id?: string
+  transcript_version?: string
+  biotype?: string
+  consequence_terms?: Array<string>
+  major_consequence?: string
+  hgvsc?: string
+  hgvsp?: string
+  is_canonical?: boolean
+  is_mane_select?: boolean
+  is_mane_select_version?: boolean
+  refseq_id?: string
+  refseq_version?: string
+  domains?: Array<string>
+  lof?: string
+  lof_filter?: string
+  lof_flags?: string
+}
+
+export interface GnomadV4VariantListEntry {
+  variant_id: string
+  locus: GnomadV4Locus
+  alleles: Array<string>
+  rsids?: Array<string>
+  flags?: Array<string>
+  exome: GnomadV4ExomeData
+  genome: GnomadV4GenomeData
+  joint: GnomadV4JointData
+  transcript_consequences: Array<GnomadV4TranscriptConsequence>
+  in_silico_predictors: GnomadV4InSilicoPredictors
+}
+
 /**
  * # Errors
  * Returns an error if the configured Parquet dataset cannot be registered.
@@ -243,3 +364,9 @@ export declare function openClinvarStore(parquetRoot: string): Promise<ClinvarSt
  * Return an error if `gene_models_grch38` cannot be resolved or registered under the supplied root.
  */
 export declare function openGeneStore(parquetRoot: string): Promise<GeneStore>
+
+/**
+ * # Errors
+ * Reject dataset registration failures under the supplied Parquet root.
+ */
+export declare function openGnomadV4Store(parquetRoot: string): Promise<GnomadV4Store>
