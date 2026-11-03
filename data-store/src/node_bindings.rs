@@ -6,6 +6,7 @@
 use napi::bindgen_prelude::{Either, Null};
 use napi_derive::napi;
 
+use crate::gnomad_v4_variant as source;
 use crate::gnomad_v4_variant_list_entry as gnomad_v4_source;
 use crate::{
     Chromosome, ClinvarCondition as ReaderClinvarCondition,
@@ -383,6 +384,29 @@ fn parse_gnomad_v4_subset(subset: &str) -> napi::Result<GnomadV4Subset> {
 
 #[napi]
 impl GnomadV4Store {
+    /// # Errors
+    /// Reject invalid IDs, query/decoding failures, multiple matches, or unsafe JavaScript integers.
+    #[napi]
+    pub async fn fetch_single_variant(
+        &self,
+        variant_id: String,
+    ) -> napi::Result<Either<GnomadV4Variant, Null>> {
+        let variant = self
+            .reader
+            .fetch_single_variant(&variant_id)
+            .await
+            .map_err(|error| napi::Error::from_reason(error.to_string()))?;
+        let variant = variant
+            .map(GnomadV4Variant::try_from)
+            .transpose()
+            .map_err(|error| {
+                napi::Error::from_reason(format!(
+                    "Cannot convert gnomAD v4 variant {variant_id} to JavaScript: {error}"
+                ))
+            })?;
+        Ok(into_nullable(variant))
+    }
+
     /// # Errors
     /// Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
     #[napi]
@@ -770,6 +794,497 @@ impl From<gnomad_v4_source::GnomadV4Cadd> for GnomadV4Cadd {
         Self {
             phred: cadd.phred.map(f64::from),
             raw_score: cadd.raw_score.map(f64::from),
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4Variant {
+    #[napi(js_name = "variant_id")]
+    pub variant_id: String,
+    pub locus: GnomadV4Locus,
+    pub alleles: Vec<String>,
+    pub rsids: Option<Vec<String>>,
+    pub exome: GnomadV4ExomeVariantData,
+    pub genome: GnomadV4GenomeVariantData,
+    pub joint: GnomadV4JointVariantData,
+    #[napi(js_name = "transcript_consequences")]
+    pub transcript_consequences: Option<Vec<GnomadV4TranscriptConsequence>>,
+    #[napi(js_name = "in_silico_predictors")]
+    pub in_silico_predictors: GnomadV4InSilicoPredictors,
+    #[napi(js_name = "colocated_variants")]
+    pub colocated_variants: GnomadV4ColocatedVariants,
+    pub coverage: GnomadV4VariantCoverage,
+    pub caid: Option<String>,
+    pub vrs: Option<GnomadV4VrsAlleles>,
+}
+
+impl TryFrom<source::GnomadV4Variant> for GnomadV4Variant {
+    type Error = napi::Error;
+
+    fn try_from(variant: source::GnomadV4Variant) -> napi::Result<Self> {
+        Ok(Self {
+            variant_id: variant.variant_id,
+            locus: variant.locus.into(),
+            alleles: variant.alleles,
+            rsids: variant.rsids,
+            exome: variant.exome.try_into()?,
+            genome: variant.genome.try_into()?,
+            joint: variant.joint.try_into()?,
+            transcript_consequences: variant
+                .transcript_consequences
+                .map(|consequences| consequences.into_iter().map(Into::into).collect()),
+            in_silico_predictors: variant.in_silico_predictors.into(),
+            colocated_variants: variant.colocated_variants.into(),
+            coverage: variant.coverage.try_into()?,
+            caid: variant.caid,
+            vrs: variant.vrs.map(Into::into),
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4ExomeVariantData {
+    pub freq: GnomadV4FrequencySubsets,
+    pub filters: Option<Vec<String>>,
+    pub flags: Option<Vec<String>>,
+    pub fafmax: GnomadV4ExomeFilteringAlleleFrequencies,
+    pub faf95: Option<GnomadV4GroupMaximum>,
+    pub faf99: Option<GnomadV4GroupMaximum>,
+    #[napi(js_name = "age_distribution")]
+    pub age_distribution: Option<GnomadV4AgeDistribution>,
+    #[napi(js_name = "quality_metrics")]
+    pub quality_metrics: Option<GnomadV4QualityMetrics>,
+}
+
+impl TryFrom<source::GnomadV4ExomeVariantData> for GnomadV4ExomeVariantData {
+    type Error = napi::Error;
+
+    fn try_from(data: source::GnomadV4ExomeVariantData) -> napi::Result<Self> {
+        Ok(Self {
+            freq: data.freq.try_into()?,
+            filters: data.filters,
+            flags: data.flags,
+            fafmax: data.fafmax.into(),
+            faf95: data.faf95.map(Into::into),
+            faf99: data.faf99.map(Into::into),
+            age_distribution: data.age_distribution.map(TryInto::try_into).transpose()?,
+            quality_metrics: data.quality_metrics.map(TryInto::try_into).transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4GenomeVariantData {
+    pub freq: GnomadV4GenomeFrequencies,
+    pub filters: Option<Vec<String>>,
+    pub flags: Option<Vec<String>>,
+    pub fafmax: GnomadV4FilteringAlleleFrequency,
+    pub faf95: Option<GnomadV4GroupMaximum>,
+    pub faf99: Option<GnomadV4GroupMaximum>,
+    #[napi(js_name = "age_distribution")]
+    pub age_distribution: Option<GnomadV4AgeDistribution>,
+    #[napi(js_name = "quality_metrics")]
+    pub quality_metrics: Option<GnomadV4QualityMetrics>,
+}
+
+impl TryFrom<source::GnomadV4GenomeVariantData> for GnomadV4GenomeVariantData {
+    type Error = napi::Error;
+
+    fn try_from(data: source::GnomadV4GenomeVariantData) -> napi::Result<Self> {
+        Ok(Self {
+            freq: data.freq.try_into()?,
+            filters: data.filters,
+            flags: data.flags,
+            fafmax: data.fafmax.into(),
+            faf95: data.faf95.map(Into::into),
+            faf99: data.faf99.map(Into::into),
+            age_distribution: data.age_distribution.map(TryInto::try_into).transpose()?,
+            quality_metrics: data.quality_metrics.map(TryInto::try_into).transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4GenomeFrequencies {
+    pub all: Option<GnomadV4Frequency>,
+    pub hgdp: Option<GnomadV4Frequency>,
+    pub tgp: Option<GnomadV4Frequency>,
+}
+
+impl TryFrom<source::GnomadV4GenomeFrequencies> for GnomadV4GenomeFrequencies {
+    type Error = napi::Error;
+
+    fn try_from(frequencies: source::GnomadV4GenomeFrequencies) -> napi::Result<Self> {
+        Ok(Self {
+            all: frequencies.all.map(TryInto::try_into).transpose()?,
+            hgdp: frequencies.hgdp.map(TryInto::try_into).transpose()?,
+            tgp: frequencies.tgp.map(TryInto::try_into).transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4JointVariantData {
+    pub freq: GnomadV4FrequencySubsets,
+    pub fafmax: GnomadV4FilteringAlleleFrequency,
+    pub flags: Option<Vec<String>>,
+    #[napi(js_name = "freq_comparison_stats")]
+    pub freq_comparison_stats: Option<GnomadV4FrequencyComparisonStats>,
+}
+
+impl TryFrom<source::GnomadV4JointVariantData> for GnomadV4JointVariantData {
+    type Error = napi::Error;
+
+    fn try_from(data: source::GnomadV4JointVariantData) -> napi::Result<Self> {
+        Ok(Self {
+            freq: data.freq.try_into()?,
+            fafmax: data.fafmax.into(),
+            flags: data.flags,
+            freq_comparison_stats: data.freq_comparison_stats.map(Into::into),
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4FrequencyComparisonStats {
+    #[napi(js_name = "contingency_table_test")]
+    pub contingency_table_test: Option<Vec<GnomadV4ContingencyTableTest>>,
+    #[napi(js_name = "cochran_mantel_haenszel_test")]
+    pub cochran_mantel_haenszel_test: Option<GnomadV4CochranMantelHaenszelTest>,
+    #[napi(js_name = "stat_union")]
+    pub stat_union: Option<GnomadV4StatUnion>,
+}
+
+impl From<source::GnomadV4FrequencyComparisonStats> for GnomadV4FrequencyComparisonStats {
+    fn from(stats: source::GnomadV4FrequencyComparisonStats) -> Self {
+        Self {
+            contingency_table_test: stats
+                .contingency_table_test
+                .map(|tests| tests.into_iter().map(Into::into).collect()),
+            cochran_mantel_haenszel_test: stats.cochran_mantel_haenszel_test.map(Into::into),
+            stat_union: stats.stat_union.map(Into::into),
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4ContingencyTableTest {
+    #[napi(js_name = "p_value")]
+    pub p_value: Option<f64>,
+    #[napi(js_name = "odds_ratio")]
+    pub odds_ratio: Option<f64>,
+}
+
+impl From<source::GnomadV4ContingencyTableTest> for GnomadV4ContingencyTableTest {
+    fn from(test: source::GnomadV4ContingencyTableTest) -> Self {
+        Self {
+            p_value: test.p_value,
+            odds_ratio: test.odds_ratio,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4CochranMantelHaenszelTest {
+    #[napi(js_name = "p_value")]
+    pub p_value: Option<f64>,
+    pub chisq: Option<f64>,
+}
+
+impl From<source::GnomadV4CochranMantelHaenszelTest> for GnomadV4CochranMantelHaenszelTest {
+    fn from(test: source::GnomadV4CochranMantelHaenszelTest) -> Self {
+        Self {
+            p_value: test.p_value,
+            chisq: test.chisq,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4StatUnion {
+    #[napi(js_name = "p_value")]
+    pub p_value: Option<f64>,
+    #[napi(js_name = "stat_test_name")]
+    pub stat_test_name: Option<String>,
+    #[napi(js_name = "gen_ancs")]
+    pub gen_ancs: Option<Vec<String>>,
+}
+
+impl From<source::GnomadV4StatUnion> for GnomadV4StatUnion {
+    fn from(stats: source::GnomadV4StatUnion) -> Self {
+        Self {
+            p_value: stats.p_value,
+            stat_test_name: stats.stat_test_name,
+            gen_ancs: stats.gen_ancs,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4GroupMaximum {
+    pub grpmax: Option<f64>,
+    #[napi(js_name = "grpmax_gen_anc")]
+    pub grpmax_gen_anc: Option<String>,
+}
+
+impl From<source::GnomadV4GroupMaximum> for GnomadV4GroupMaximum {
+    fn from(maximum: source::GnomadV4GroupMaximum) -> Self {
+        Self {
+            grpmax: maximum.grpmax,
+            grpmax_gen_anc: maximum.grpmax_gen_anc,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4Histogram {
+    #[napi(js_name = "bin_edges")]
+    pub bin_edges: Option<Vec<f64>>,
+    #[napi(js_name = "bin_freq")]
+    pub bin_freq: Option<Vec<i64>>,
+    #[napi(js_name = "n_smaller")]
+    pub n_smaller: Option<i64>,
+    #[napi(js_name = "n_larger")]
+    pub n_larger: Option<i64>,
+}
+
+impl TryFrom<source::GnomadV4Histogram> for GnomadV4Histogram {
+    type Error = napi::Error;
+
+    fn try_from(histogram: source::GnomadV4Histogram) -> napi::Result<Self> {
+        Ok(Self {
+            bin_edges: histogram.bin_edges,
+            bin_freq: histogram
+                .bin_freq
+                .map(|counts| {
+                    counts
+                        .into_iter()
+                        .map(|count| checked_js_integer(count, "histogram.bin_freq"))
+                        .collect::<napi::Result<Vec<_>>>()
+                })
+                .transpose()?,
+            n_smaller: histogram
+                .n_smaller
+                .map(|count| checked_js_integer(count, "histogram.n_smaller"))
+                .transpose()?,
+            n_larger: histogram
+                .n_larger
+                .map(|count| checked_js_integer(count, "histogram.n_larger"))
+                .transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4AgeDistribution {
+    pub het: Option<GnomadV4Histogram>,
+    pub hom: Option<GnomadV4Histogram>,
+}
+
+impl TryFrom<source::GnomadV4AgeDistribution> for GnomadV4AgeDistribution {
+    type Error = napi::Error;
+
+    fn try_from(distribution: source::GnomadV4AgeDistribution) -> napi::Result<Self> {
+        Ok(Self {
+            het: distribution.het.map(TryInto::try_into).transpose()?,
+            hom: distribution.hom.map(TryInto::try_into).transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4QualityMetrics {
+    #[napi(js_name = "allele_balance")]
+    pub allele_balance: GnomadV4QualityHistograms,
+    #[napi(js_name = "genotype_depth")]
+    pub genotype_depth: GnomadV4QualityHistograms,
+    #[napi(js_name = "genotype_quality")]
+    pub genotype_quality: GnomadV4QualityHistograms,
+    #[napi(js_name = "site_quality_metrics")]
+    pub site_quality_metrics: Option<Vec<GnomadV4SiteQualityMetric>>,
+}
+
+impl TryFrom<source::GnomadV4QualityMetrics> for GnomadV4QualityMetrics {
+    type Error = napi::Error;
+
+    fn try_from(metrics: source::GnomadV4QualityMetrics) -> napi::Result<Self> {
+        Ok(Self {
+            allele_balance: metrics.allele_balance.try_into()?,
+            genotype_depth: metrics.genotype_depth.try_into()?,
+            genotype_quality: metrics.genotype_quality.try_into()?,
+            site_quality_metrics: metrics
+                .site_quality_metrics
+                .map(|metrics| metrics.into_iter().map(Into::into).collect()),
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4QualityHistograms {
+    #[napi(js_name = "all_adj")]
+    pub all_adj: Option<GnomadV4Histogram>,
+    #[napi(js_name = "all_raw")]
+    pub all_raw: Option<GnomadV4Histogram>,
+    #[napi(js_name = "alt_adj")]
+    pub alt_adj: Option<GnomadV4Histogram>,
+    #[napi(js_name = "alt_raw")]
+    pub alt_raw: Option<GnomadV4Histogram>,
+}
+
+impl TryFrom<source::GnomadV4QualityHistograms> for GnomadV4QualityHistograms {
+    type Error = napi::Error;
+
+    fn try_from(histograms: source::GnomadV4QualityHistograms) -> napi::Result<Self> {
+        Ok(Self {
+            all_adj: histograms.all_adj.map(TryInto::try_into).transpose()?,
+            all_raw: histograms.all_raw.map(TryInto::try_into).transpose()?,
+            alt_adj: histograms.alt_adj.map(TryInto::try_into).transpose()?,
+            alt_raw: histograms.alt_raw.map(TryInto::try_into).transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4SiteQualityMetric {
+    pub metric: String,
+    pub value: Option<f64>,
+}
+
+impl From<source::GnomadV4SiteQualityMetric> for GnomadV4SiteQualityMetric {
+    fn from(metric: source::GnomadV4SiteQualityMetric) -> Self {
+        Self {
+            metric: metric.metric,
+            value: metric.value,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4ColocatedVariants {
+    pub all: Option<Vec<String>>,
+    #[napi(js_name = "non_ukb")]
+    pub non_ukb: Option<Vec<String>>,
+    pub hgdp: Option<Vec<String>>,
+    pub tgp: Option<Vec<String>>,
+}
+
+impl From<source::GnomadV4ColocatedVariants> for GnomadV4ColocatedVariants {
+    fn from(variants: source::GnomadV4ColocatedVariants) -> Self {
+        Self {
+            all: variants.all,
+            non_ukb: variants.non_ukb,
+            hgdp: variants.hgdp,
+            tgp: variants.tgp,
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4VariantCoverage {
+    pub exome: Option<GnomadV4Coverage>,
+    pub genome: Option<GnomadV4Coverage>,
+}
+
+impl TryFrom<source::GnomadV4VariantCoverage> for GnomadV4VariantCoverage {
+    type Error = napi::Error;
+
+    fn try_from(coverage: source::GnomadV4VariantCoverage) -> napi::Result<Self> {
+        Ok(Self {
+            exome: coverage.exome.map(TryInto::try_into).transpose()?,
+            genome: coverage.genome.map(TryInto::try_into).transpose()?,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4Coverage {
+    pub mean: Option<f64>,
+    #[napi(js_name = "median_approx")]
+    pub median_approx: Option<i32>,
+    #[napi(js_name = "total_DP")]
+    pub total_depth: Option<i64>,
+    #[napi(js_name = "over_1")]
+    pub over_1: Option<f64>,
+    #[napi(js_name = "over_5")]
+    pub over_5: Option<f64>,
+    #[napi(js_name = "over_10")]
+    pub over_10: Option<f64>,
+    #[napi(js_name = "over_15")]
+    pub over_15: Option<f64>,
+    #[napi(js_name = "over_20")]
+    pub over_20: Option<f64>,
+    #[napi(js_name = "over_25")]
+    pub over_25: Option<f64>,
+    #[napi(js_name = "over_30")]
+    pub over_30: Option<f64>,
+    #[napi(js_name = "over_50")]
+    pub over_50: Option<f64>,
+    #[napi(js_name = "over_100")]
+    pub over_100: Option<f64>,
+}
+
+impl TryFrom<source::GnomadV4Coverage> for GnomadV4Coverage {
+    type Error = napi::Error;
+
+    fn try_from(coverage: source::GnomadV4Coverage) -> napi::Result<Self> {
+        Ok(Self {
+            mean: coverage.mean,
+            median_approx: coverage.median_approx,
+            total_depth: coverage
+                .total_depth
+                .map(|value| checked_js_integer(value, "coverage.total_DP"))
+                .transpose()?,
+            over_1: coverage.over_1,
+            over_5: coverage.over_5,
+            over_10: coverage.over_10,
+            over_15: coverage.over_15,
+            over_20: coverage.over_20,
+            over_25: coverage.over_25,
+            over_30: coverage.over_30,
+            over_50: coverage.over_50,
+            over_100: coverage.over_100,
+        })
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4VrsAlleles {
+    #[napi(js_name = "ref")]
+    pub reference: Option<GnomadV4VrsAllele>,
+    pub alt: Option<GnomadV4VrsAllele>,
+}
+
+impl From<source::GnomadV4VrsAlleles> for GnomadV4VrsAlleles {
+    fn from(alleles: source::GnomadV4VrsAlleles) -> Self {
+        Self {
+            reference: alleles.reference.map(Into::into),
+            alt: alleles.alt.map(Into::into),
+        }
+    }
+}
+
+#[napi(object)]
+pub struct GnomadV4VrsAllele {
+    #[napi(js_name = "allele_id")]
+    pub allele_id: Option<String>,
+    pub start: Option<i32>,
+    pub end: Option<i32>,
+    pub state: Option<String>,
+    pub length: Option<i32>,
+    #[napi(js_name = "repeat_subunit_length")]
+    pub repeat_subunit_length: Option<i32>,
+}
+
+impl From<source::GnomadV4VrsAllele> for GnomadV4VrsAllele {
+    fn from(allele: source::GnomadV4VrsAllele) -> Self {
+        Self {
+            allele_id: allele.allele_id,
+            start: allele.start,
+            end: allele.end,
+            state: allele.state,
+            length: allele.length,
+            repeat_subunit_length: allele.repeat_subunit_length,
         }
     }
 }
@@ -1341,6 +1856,234 @@ mod tests {
             assert!(
                 matches!(GeneGnomadConstraint::try_from(constraint), Err(error) if error.reason.contains(field))
             );
+        }
+    }
+}
+
+#[cfg(test)]
+mod gnomad_v4_single_variant_tests {
+    use serde_json::{Value, json};
+
+    use super::{GnomadV4Coverage, GnomadV4Histogram, GnomadV4Variant, source};
+
+    const MAX_SAFE_JS_INTEGER: i64 = 9_007_199_254_740_991;
+    const UNSAFE_JS_INTEGER: i64 = 9_007_199_254_740_992;
+
+    fn sample_variant() -> Value {
+        let histogram = json!({"bin_freq": [0], "n_smaller": 0, "n_larger": 0});
+        let age = json!({"het": histogram, "hom": histogram});
+        let quality_histograms = json!({
+            "all_adj": histogram, "all_raw": histogram,
+            "alt_adj": histogram, "alt_raw": histogram
+        });
+        let metrics = json!({
+            "allele_balance": quality_histograms, "genotype_depth": quality_histograms,
+            "genotype_quality": quality_histograms,
+            "site_quality_metrics": [{"metric": "supplied", "value": -1.25}]
+        });
+        let frequency = json!({"ac": 0, "ac_raw": 2, "homozygote_count": 0,
+            "ancestry_groups": [{"id": "XX", "homozygote_count": 0}]});
+        json!({
+            "variant_id": "1-100-A-G", "locus": {"contig": "chr1", "position": 100},
+            "alleles": ["A", "G"], "rsids": [],
+            "exome": {
+                "freq": {"all": frequency, "non_ukb": frequency},
+                "filters": ["source-filter"], "flags": [],
+                "fafmax": {"gnomad": {}, "non_ukb": {}},
+                "faf95": {"grpmax": 0.25, "grpmax_gen_anc": "source-pop"},
+                "age_distribution": age, "quality_metrics": metrics
+            },
+            "genome": {"freq": {"all": frequency, "hgdp": frequency, "tgp": frequency},
+                "fafmax": {}, "age_distribution": age, "quality_metrics": metrics},
+            "joint": {"freq": {"all": frequency}, "fafmax": {}, "flags": ["joint-flag"],
+                "freq_comparison_stats": {
+                    "contingency_table_test": [{"p_value": 0.5, "odds_ratio": 2.0}],
+                    "cochran_mantel_haenszel_test": {"p_value": 0.25, "chisq": 3.0},
+                    "stat_union": {"p_value": 0.125, "stat_test_name": "source-test", "gen_ancs": []}
+                }},
+            "transcript_consequences": [{"gene_id": "ENSG002", "is_canonical": false},
+                {"gene_id": "ENSG001"}],
+            "in_silico_predictors": {"cadd": {"phred": 0.0}},
+            "colocated_variants": {"all": [], "non_ukb": ["source-colocated"]},
+            "coverage": {"exome": {"total_DP": 0}, "genome": {"total_DP": 0}},
+            "vrs": {"ref": {"repeat_subunit_lengths": 1},
+                "alt": {"allele_id": "ga4gh:VA.source", "repeat_subunit_lengths": 7}}
+        })
+    }
+
+    #[test]
+    fn preserves_histogram_absence_empty_bins_zero_and_safe_64_bit_counts() {
+        let missing: source::GnomadV4Histogram =
+            serde_json::from_value(json!({})).expect("histogram");
+        let missing = GnomadV4Histogram::try_from(missing).expect("missing histogram values");
+        assert!(missing.bin_freq.is_none());
+        assert!(missing.n_smaller.is_none());
+        let populated: source::GnomadV4Histogram = serde_json::from_value(json!({
+            "bin_edges": [], "bin_freq": [0, 4_294_967_300_i64, MAX_SAFE_JS_INTEGER],
+            "n_smaller": 0, "n_larger": MAX_SAFE_JS_INTEGER
+        }))
+        .expect("histogram");
+        let populated = GnomadV4Histogram::try_from(populated).expect("safe histogram values");
+        assert_eq!(populated.bin_edges, Some(Vec::new()));
+        assert_eq!(
+            populated.bin_freq,
+            Some(vec![0, 4_294_967_300, MAX_SAFE_JS_INTEGER])
+        );
+        assert_eq!(populated.n_smaller, Some(0));
+        assert_eq!(populated.n_larger, Some(MAX_SAFE_JS_INTEGER));
+        let empty: source::GnomadV4Histogram =
+            serde_json::from_value(json!({"bin_freq": []})).expect("histogram");
+        assert_eq!(
+            GnomadV4Histogram::try_from(empty)
+                .expect("empty bins")
+                .bin_freq,
+            Some(Vec::new())
+        );
+    }
+
+    #[test]
+    fn rejects_every_unsafe_histogram_count_with_its_field_name() {
+        for field in ["bin_freq", "n_smaller", "n_larger"] {
+            for unsafe_count in [i64::MIN, UNSAFE_JS_INTEGER, i64::MAX] {
+                let mut value = json!({});
+                value[field] = if field == "bin_freq" {
+                    json!([0, unsafe_count])
+                } else {
+                    json!(unsafe_count)
+                };
+                let histogram: source::GnomadV4Histogram =
+                    serde_json::from_value(value).expect("histogram");
+                let error = GnomadV4Histogram::try_from(histogram)
+                    .err()
+                    .expect("unsafe count");
+                assert!(error.reason.contains(field));
+                assert!(error.reason.contains(&unsafe_count.to_string()));
+            }
+        }
+    }
+
+    #[test]
+    fn preserves_safe_coverage_depth_and_rejects_unsafe_depth() {
+        for depth in [
+            None,
+            Some(0),
+            Some(4_294_967_300),
+            Some(MAX_SAFE_JS_INTEGER),
+        ] {
+            let coverage: source::GnomadV4Coverage =
+                serde_json::from_value(json!({"total_DP": depth})).expect("coverage");
+            assert_eq!(
+                GnomadV4Coverage::try_from(coverage)
+                    .expect("safe depth")
+                    .total_depth,
+                depth
+            );
+        }
+        let coverage: source::GnomadV4Coverage =
+            serde_json::from_value(json!({"total_DP": UNSAFE_JS_INTEGER})).expect("coverage");
+        let error = GnomadV4Coverage::try_from(coverage)
+            .err()
+            .expect("unsafe depth");
+        assert!(error.reason.contains("coverage.total_DP"));
+    }
+
+    #[test]
+    fn preserves_source_fields_and_singular_vrs_repeat_lengths() {
+        let source: source::GnomadV4Variant =
+            serde_json::from_value(sample_variant()).expect("source variant");
+        let variant = GnomadV4Variant::try_from(source).expect("safe variant");
+        assert_eq!(variant.variant_id, "1-100-A-G");
+        assert_eq!(variant.rsids, Some(Vec::new()));
+        assert_eq!(
+            variant.exome.freq.all.as_ref().expect("all frequency").ac,
+            Some(0)
+        );
+        assert!(variant.exome.freq.non_ukb.is_some());
+        assert_eq!(variant.exome.flags, Some(Vec::new()));
+        assert!(variant.genome.filters.is_none());
+        assert!(variant.genome.freq.hgdp.is_some());
+        assert!(variant.genome.freq.tgp.is_some());
+        assert_eq!(variant.joint.flags, Some(vec!["joint-flag".to_owned()]));
+        let stats = variant
+            .joint
+            .freq_comparison_stats
+            .expect("comparison statistics");
+        assert_eq!(
+            stats.contingency_table_test.expect("contingency test")[0].odds_ratio,
+            Some(2.0)
+        );
+        assert_eq!(
+            stats.cochran_mantel_haenszel_test.expect("CMH test").chisq,
+            Some(3.0)
+        );
+        assert_eq!(
+            stats.stat_union.expect("stat union").gen_ancs,
+            Some(Vec::new())
+        );
+        let consequences = variant.transcript_consequences.expect("consequences");
+        assert_eq!(consequences[0].gene_id.as_deref(), Some("ENSG002"));
+        assert_eq!(consequences[0].is_canonical, Some(false));
+        assert_eq!(consequences[1].gene_id.as_deref(), Some("ENSG001"));
+        assert_eq!(variant.in_silico_predictors.cadd.phred, Some(0.0));
+        assert_eq!(
+            variant.colocated_variants.non_ukb,
+            Some(vec!["source-colocated".to_owned()])
+        );
+        assert!(variant.caid.is_none());
+        let vrs = variant.vrs.expect("VRS alleles");
+        assert_eq!(
+            vrs.reference
+                .expect("reference allele")
+                .repeat_subunit_length,
+            Some(1)
+        );
+        assert_eq!(
+            vrs.alt.expect("alternate allele").repeat_subunit_length,
+            Some(7)
+        );
+    }
+
+    #[test]
+    fn propagates_unsafe_integers_through_every_nested_conversion_path() {
+        let mut paths = vec![
+            "/coverage/exome/total_DP".to_owned(),
+            "/coverage/genome/total_DP".to_owned(),
+        ];
+        for (sequencing_type, subsets) in [
+            ("exome", vec!["all", "non_ukb"]),
+            ("genome", vec!["all", "hgdp", "tgp"]),
+            ("joint", vec!["all"]),
+        ] {
+            for subset in subsets {
+                paths.push(format!("/{sequencing_type}/freq/{subset}/homozygote_count"));
+                paths.push(format!(
+                    "/{sequencing_type}/freq/{subset}/ancestry_groups/0/homozygote_count"
+                ));
+            }
+        }
+        for sequencing_type in ["exome", "genome"] {
+            for age_group in ["het", "hom"] {
+                paths.push(format!(
+                    "/{sequencing_type}/age_distribution/{age_group}/bin_freq/0"
+                ));
+            }
+            for metric in ["allele_balance", "genotype_depth", "genotype_quality"] {
+                for histogram in ["all_adj", "all_raw", "alt_adj", "alt_raw"] {
+                    paths.push(format!(
+                        "/{sequencing_type}/quality_metrics/{metric}/{histogram}/bin_freq/0"
+                    ));
+                }
+            }
+        }
+        for path in paths {
+            let mut value = sample_variant();
+            *value.pointer_mut(&path).expect("test count exists") = json!(UNSAFE_JS_INTEGER);
+            let source: source::GnomadV4Variant =
+                serde_json::from_value(value).expect("source variant");
+            let error = GnomadV4Variant::try_from(source)
+                .err()
+                .expect("reject unsafe nested count");
+            assert!(error.reason.contains("safe integer"), "{path}: {error}");
         }
     }
 }

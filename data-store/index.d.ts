@@ -38,6 +38,11 @@ export declare class GeneStore {
 export declare class GnomadV4Store {
   /**
    * # Errors
+   * Reject invalid IDs, query/decoding failures, multiple matches, or unsafe JavaScript integers.
+   */
+  fetchSingleVariant(variantId: string): Promise<GnomadV4Variant | null>
+  /**
+   * # Errors
    * Reject invalid subsets, intervals, query failures, or unsafe JavaScript integer conversions.
    */
   fetchVariantsInGene(geneId: string, chromosome: string, intervals: Array<GenomicIntervalBounds>, subset: string): Promise<Array<GnomadV4VariantListEntry>>
@@ -245,6 +250,11 @@ export interface GenomicIntervalBounds {
   stop: number
 }
 
+export interface GnomadV4AgeDistribution {
+  het?: GnomadV4Histogram
+  hom?: GnomadV4Histogram
+}
+
 export interface GnomadV4AncestryFrequency {
   id: string
   ac?: number
@@ -258,6 +268,38 @@ export interface GnomadV4Cadd {
   raw_score?: number
 }
 
+export interface GnomadV4CochranMantelHaenszelTest {
+  p_value?: number
+  chisq?: number
+}
+
+export interface GnomadV4ColocatedVariants {
+  all?: Array<string>
+  non_ukb?: Array<string>
+  hgdp?: Array<string>
+  tgp?: Array<string>
+}
+
+export interface GnomadV4ContingencyTableTest {
+  p_value?: number
+  odds_ratio?: number
+}
+
+export interface GnomadV4Coverage {
+  mean?: number
+  median_approx?: number
+  total_DP?: number
+  over_1?: number
+  over_5?: number
+  over_10?: number
+  over_15?: number
+  over_20?: number
+  over_25?: number
+  over_30?: number
+  over_50?: number
+  over_100?: number
+}
+
 export interface GnomadV4ExomeData {
   freq: GnomadV4FrequencySubsets
   filters?: Array<string>
@@ -268,6 +310,17 @@ export interface GnomadV4ExomeData {
 export interface GnomadV4ExomeFilteringAlleleFrequencies {
   gnomad: GnomadV4FilteringAlleleFrequency
   non_ukb: GnomadV4FilteringAlleleFrequency
+}
+
+export interface GnomadV4ExomeVariantData {
+  freq: GnomadV4FrequencySubsets
+  filters?: Array<string>
+  flags?: Array<string>
+  fafmax: GnomadV4ExomeFilteringAlleleFrequencies
+  faf95?: GnomadV4GroupMaximum
+  faf99?: GnomadV4GroupMaximum
+  age_distribution?: GnomadV4AgeDistribution
+  quality_metrics?: GnomadV4QualityMetrics
 }
 
 export interface GnomadV4FilteringAlleleFrequency {
@@ -286,6 +339,12 @@ export interface GnomadV4Frequency {
   ancestry_groups?: Array<GnomadV4AncestryFrequency>
 }
 
+export interface GnomadV4FrequencyComparisonStats {
+  contingency_table_test?: Array<GnomadV4ContingencyTableTest>
+  cochran_mantel_haenszel_test?: GnomadV4CochranMantelHaenszelTest
+  stat_union?: GnomadV4StatUnion
+}
+
 export interface GnomadV4FrequencySubsets {
   all?: GnomadV4Frequency
   non_ukb?: GnomadV4Frequency
@@ -295,6 +354,35 @@ export interface GnomadV4GenomeData {
   freq: GnomadV4FrequencySubsets
   filters?: Array<string>
   flags?: Array<string>
+}
+
+export interface GnomadV4GenomeFrequencies {
+  all?: GnomadV4Frequency
+  hgdp?: GnomadV4Frequency
+  tgp?: GnomadV4Frequency
+}
+
+export interface GnomadV4GenomeVariantData {
+  freq: GnomadV4GenomeFrequencies
+  filters?: Array<string>
+  flags?: Array<string>
+  fafmax: GnomadV4FilteringAlleleFrequency
+  faf95?: GnomadV4GroupMaximum
+  faf99?: GnomadV4GroupMaximum
+  age_distribution?: GnomadV4AgeDistribution
+  quality_metrics?: GnomadV4QualityMetrics
+}
+
+export interface GnomadV4GroupMaximum {
+  grpmax?: number
+  grpmax_gen_anc?: string
+}
+
+export interface GnomadV4Histogram {
+  bin_edges?: Array<number>
+  bin_freq?: Array<number>
+  n_smaller?: number
+  n_larger?: number
 }
 
 export interface GnomadV4InSilicoPredictors {
@@ -313,9 +401,41 @@ export interface GnomadV4JointData {
   fafmax: GnomadV4FilteringAlleleFrequency
 }
 
+export interface GnomadV4JointVariantData {
+  freq: GnomadV4FrequencySubsets
+  fafmax: GnomadV4FilteringAlleleFrequency
+  flags?: Array<string>
+  freq_comparison_stats?: GnomadV4FrequencyComparisonStats
+}
+
 export interface GnomadV4Locus {
   contig: string
   position: number
+}
+
+export interface GnomadV4QualityHistograms {
+  all_adj?: GnomadV4Histogram
+  all_raw?: GnomadV4Histogram
+  alt_adj?: GnomadV4Histogram
+  alt_raw?: GnomadV4Histogram
+}
+
+export interface GnomadV4QualityMetrics {
+  allele_balance: GnomadV4QualityHistograms
+  genotype_depth: GnomadV4QualityHistograms
+  genotype_quality: GnomadV4QualityHistograms
+  site_quality_metrics?: Array<GnomadV4SiteQualityMetric>
+}
+
+export interface GnomadV4SiteQualityMetric {
+  metric: string
+  value?: number
+}
+
+export interface GnomadV4StatUnion {
+  p_value?: number
+  stat_test_name?: string
+  gen_ancs?: Array<string>
 }
 
 export interface GnomadV4TranscriptConsequence {
@@ -340,6 +460,27 @@ export interface GnomadV4TranscriptConsequence {
   lof_flags?: string
 }
 
+export interface GnomadV4Variant {
+  variant_id: string
+  locus: GnomadV4Locus
+  alleles: Array<string>
+  rsids?: Array<string>
+  exome: GnomadV4ExomeVariantData
+  genome: GnomadV4GenomeVariantData
+  joint: GnomadV4JointVariantData
+  transcript_consequences?: Array<GnomadV4TranscriptConsequence>
+  in_silico_predictors: GnomadV4InSilicoPredictors
+  colocated_variants: GnomadV4ColocatedVariants
+  coverage: GnomadV4VariantCoverage
+  caid?: string
+  vrs?: GnomadV4VrsAlleles
+}
+
+export interface GnomadV4VariantCoverage {
+  exome?: GnomadV4Coverage
+  genome?: GnomadV4Coverage
+}
+
 export interface GnomadV4VariantListEntry {
   variant_id: string
   locus: GnomadV4Locus
@@ -351,6 +492,20 @@ export interface GnomadV4VariantListEntry {
   joint: GnomadV4JointData
   transcript_consequences: Array<GnomadV4TranscriptConsequence>
   in_silico_predictors: GnomadV4InSilicoPredictors
+}
+
+export interface GnomadV4VrsAllele {
+  allele_id?: string
+  start?: number
+  end?: number
+  state?: string
+  length?: number
+  repeat_subunit_length?: number
+}
+
+export interface GnomadV4VrsAlleles {
+  ref?: GnomadV4VrsAllele
+  alt?: GnomadV4VrsAllele
 }
 
 /**
