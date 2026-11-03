@@ -2,6 +2,7 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 
+use datafusion::arrow::datatypes::DataType;
 use datafusion::error::DataFusionError;
 use datafusion::prelude::{ParquetReadOptions, SessionContext};
 
@@ -9,6 +10,7 @@ use datafusion::prelude::{ParquetReadOptions, SessionContext};
 pub enum ParquetDataset {
     GeneModelsGrch38,
     ClinvarVariantsGrch38,
+    GnomadVariantsV4,
 }
 
 impl ParquetDataset {
@@ -17,6 +19,7 @@ impl ParquetDataset {
         match self {
             Self::GeneModelsGrch38 => "gene_models_grch38",
             Self::ClinvarVariantsGrch38 => "clinvar_variants_grch38",
+            Self::GnomadVariantsV4 => "gnomad_variants_v4",
         }
     }
 
@@ -35,8 +38,13 @@ impl ParquetDataset {
                 directory.display()
             ))
         })?;
+        let options = match self {
+            Self::GnomadVariantsV4 => ParquetReadOptions::default()
+                .table_partition_cols(vec![("locus.contig".to_owned(), DataType::Utf8)]),
+            _ => ParquetReadOptions::default(),
+        };
         context
-            .register_parquet(self.name(), path, ParquetReadOptions::default())
+            .register_parquet(self.name(), path, options)
             .await
             .map_err(|error| {
                 DataFusionError::Context(
