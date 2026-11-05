@@ -393,6 +393,10 @@ DATASETS_CONFIG = {
             "num_shards": 2,
             "block_size": 2_000,
         },
+        "parquet_args": {
+            "partition_count": 100,
+            "partition_fields": ["chrom"],
+        },
     },
     "clinvar_grch37_variants": {
         "get_table": lambda: truncate_clinvar_variant_ids(
@@ -411,6 +415,10 @@ DATASETS_CONFIG = {
             ],
             "num_shards": 2,
             "block_size": 2_000,
+        },
+        "parquet_args": {
+            "partition_count": 100,
+            "partition_fields": ["chrom"],
         },
     },
     ##############################################################################################################
