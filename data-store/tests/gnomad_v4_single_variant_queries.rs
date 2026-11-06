@@ -45,9 +45,9 @@ async fn create_synthetic_context(rows: &str) -> Result<SessionContext> {
             ) AS quality_metrics
             FROM metrics
         )
-        SELECT variant_id, concat('chr', chromosome) AS "locus.contig",
-            named_struct('contig', concat('chr', chromosome), 'position', CAST(position AS INT)) AS locus,
-            ['A', 'G'] AS alleles, rsids,
+        SELECT chromosome AS chrom, CAST((position - 1) / 1000000 AS BIGINT) AS posbin,
+            CAST(position AS INT) AS pos, split_part(variant_id, '-', 3) AS "ref",
+            split_part(variant_id, '-', 4) AS alt, rsids,
             named_struct(
                 'freq', named_struct('all', frequency, 'non_ukb', named_struct('ac_raw', CAST(0 AS INT))),
                 'filters', ['source-filter'], 'flags', ['source-flag'],
@@ -80,7 +80,7 @@ async fn create_synthetic_context(rows: &str) -> Result<SessionContext> {
             named_struct('all', ['all-colocated'], 'non_ukb', CAST([] AS VARCHAR[]),
                 'hgdp', CAST(NULL AS VARCHAR[]), 'tgp', ['tgp-colocated']) AS colocated_variants,
             named_struct('exome', named_struct('mean', CAST(12.5 AS DOUBLE),
-                'median_approx', CAST(12 AS INT), 'total_DP', CAST(4294967302 AS BIGINT)),
+                'median_approx', CAST(12 AS INT), 'total_dp', CAST(4294967302 AS BIGINT)),
                 'genome', named_struct('over_10', CAST(0.5 AS FLOAT))) AS coverage,
             CAST(NULL AS VARCHAR) AS caid,
             named_struct('ref', named_struct('allele_id', 'ga4gh:reference'),
@@ -155,7 +155,7 @@ async fn reads_real_parquet_details_and_both_exome_subsets() -> Result<()> {
     assert!(value.pointer("/vrs/ref/repeat_subunit_lengths").is_none());
     assert!(value.pointer("/vrs/alt/repeat_subunit_length").is_none());
     assert_eq!(
-        value.pointer("/coverage/exome/total_DP"),
+        value.pointer("/coverage/exome/total_dp"),
         Some(&json!(18_566_717))
     );
     assert_eq!(
@@ -387,7 +387,7 @@ async fn preserves_details_without_subset_filtering_or_api_shaping() -> Result<(
         ),
         ("/colocated_variants/all", json!(["all-colocated"])),
         ("/colocated_variants/non_ukb", json!([])),
-        ("/coverage/exome/total_DP", json!(4_294_967_302_i64)),
+        ("/coverage/exome/total_dp", json!(4_294_967_302_i64)),
         ("/coverage/genome/over_10", json!(0.5)),
         ("/in_silico_predictors/cadd/phred", json!(0.0)),
         ("/transcript_consequences/0/gene_id", json!("ENSG002")),

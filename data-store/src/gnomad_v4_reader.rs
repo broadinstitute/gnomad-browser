@@ -12,6 +12,13 @@ use crate::{
 
 const GNOMAD_V4_EXON_PADDING: u32 = 75;
 
+/// Rebuild the identity fields the source export no longer stores.
+const VARIANT_IDENTITY_FIELDS: &str = r#"
+    concat(chrom, '-', pos, '-', "ref", '-', alt) AS variant_id,
+    named_struct('contig', concat('chr', chrom), 'position', pos) AS locus,
+    ["ref", alt] AS alleles
+"#;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum GnomadV4Subset {
     All,
@@ -56,11 +63,11 @@ impl GnomadV4Reader {
     /// # Errors
     /// Return an error for an invalid ID, multiple matches, or query/decoding failure.
     pub async fn fetch_single_variant(&self, variant_id: &str) -> Result<Option<GnomadV4Variant>> {
-        let mut parameters = vec![ScalarValue::Utf8(Some(variant_id.to_owned()))];
+        let mut parameters = Vec::new();
         let predicate = bind_single_variant_lookup(variant_id, &mut parameters)?;
         let table_name = ParquetDataset::GnomadVariantsV4.name();
         let query = format!(
-            "SELECT variant_id, locus, alleles, rsids,
+            "SELECT {VARIANT_IDENTITY_FIELDS}, rsids,
                 named_struct(
                     'freq', exome.freq, 'filters', exome.filters, 'flags', exome.flags,
                     'fafmax', exome.fafmax, 'faf95', exome.faf95, 'faf99', exome.faf99,
@@ -189,7 +196,7 @@ impl GnomadV4Reader {
         let table_name = ParquetDataset::GnomadVariantsV4.name();
         let fields = select_list_entry_fields(subset);
         let query = format!(
-            r"
+            r#"
             SELECT {fields}
             FROM {table_name}
             WHERE ({interval_predicate})
@@ -197,8 +204,8 @@ impl GnomadV4Reader {
                   transcript_consequences,
                   consequence -> consequence['{annotation_field}'] = $1
               ) IS NOT NULL
-            ORDER BY locus['position'], variant_id
-            "
+            ORDER BY pos, "ref", alt
+            "#
         );
         let batches = self
             .context
@@ -216,15 +223,14 @@ impl GnomadV4Reader {
     fn bind_intervals(intervals: &[GenomicInterval], parameters: &mut Vec<ScalarValue>) -> String {
         let mut predicates = Vec::with_capacity(intervals.len());
         for interval in intervals {
-            let chromosome = interval.chromosome();
-            let contig = bind_parameter(
+            let chrom = bind_parameter(
                 parameters,
-                ScalarValue::Utf8(Some(format!("chr{}", chromosome.as_str()))),
+                ScalarValue::Utf8(Some(interval.chromosome().as_str().to_owned())),
             );
             let start = bind_parameter(parameters, ScalarValue::Int32(Some(interval.start())));
             let stop = bind_parameter(parameters, ScalarValue::Int32(Some(interval.stop())));
             predicates.push(format!(
-                r#"("locus.contig" = {contig} AND locus['contig'] = {contig} AND locus['position'] BETWEEN {start} AND {stop})"#
+                "(chrom = {chrom} AND pos BETWEEN {start} AND {stop})"
             ));
         }
         predicates.join(" OR ")
@@ -236,13 +242,15 @@ fn bind_single_variant_lookup(id: &str, parameters: &mut Vec<ScalarValue>) -> Re
         && !number.is_empty()
         && number.bytes().all(|byte| byte.is_ascii_digit())
     {
-        return Ok("array_has(rsids, $1)".to_owned());
+        let rsid = bind_parameter(parameters, ScalarValue::Utf8(Some(id.to_owned())));
+        return Ok(format!("array_has(rsids, {rsid})"));
     }
     if let Some(allele_id) = id.strip_prefix("ga4gh:")
         && !allele_id.is_empty()
         && !allele_id.chars().any(char::is_whitespace)
     {
-        return Ok("vrs['alt']['allele_id'] = $1".to_owned());
+        let allele_id = bind_parameter(parameters, ScalarValue::Utf8(Some(id.to_owned())));
+        return Ok(format!("vrs['alt']['allele_id'] = {allele_id}"));
     }
     let parts: Vec<_> = id.split('-').collect();
     if let [chromosome, position, reference, alternate] = parts.as_slice() {
@@ -254,13 +262,17 @@ fn bind_single_variant_lookup(id: &str, parameters: &mut Vec<ScalarValue>) -> Re
             && valid_alleles
             && GenomicInterval::new(chromosome, position, position).is_ok()
         {
-            let contig = bind_parameter(
+            let chrom = bind_parameter(
                 parameters,
-                ScalarValue::Utf8(Some(format!("chr{chromosome}"))),
+                ScalarValue::Utf8(Some((*chromosome).to_owned())),
             );
-            let position = bind_parameter(parameters, ScalarValue::Int32(Some(position)));
+            let pos = bind_parameter(parameters, ScalarValue::Int32(Some(position)));
+            let reference =
+                bind_parameter(parameters, ScalarValue::Utf8(Some((*reference).to_owned())));
+            let alternate =
+                bind_parameter(parameters, ScalarValue::Utf8(Some((*alternate).to_owned())));
             return Ok(format!(
-                r#"variant_id = $1 AND "locus.contig" = {contig} AND locus['contig'] = {contig} AND locus['position'] = {position}"#
+                r#"chrom = {chrom} AND pos = {pos} AND "ref" = {reference} AND alt = {alternate}"#
             ));
         }
     }
@@ -279,9 +291,7 @@ fn select_list_entry_fields(subset: GnomadV4Subset) -> String {
     // This export omits variant-level flags and joint filters; do not infer empty lists.
     format!(
         r"
-        variant_id,
-        locus,
-        alleles,
+        {VARIANT_IDENTITY_FIELDS},
         rsids,
         CAST(NULL AS VARCHAR[]) AS flags,
         named_struct(

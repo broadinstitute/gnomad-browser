@@ -39,10 +39,11 @@ named_struct(
 
 const SYNTHETIC_VARIANT_SELECT: &str = r#"
 SELECT
-    variant_id,
-    concat('chr', chromosome) AS "locus.contig",
-    named_struct('contig', concat('chr', chromosome), 'position', CAST(position AS INT)) AS locus,
-    ['C', 'CT'] AS alleles,
+    chromosome AS chrom,
+    CAST((position - 1) / 1000000 AS BIGINT) AS posbin,
+    CAST(position AS INT) AS pos,
+    'C' AS "ref",
+    variant_id AS alt,
     CASE WHEN NOT has_values THEN NULL
          WHEN annotation_state = 'populated' THEN ['rs-b', 'rs-a'] ELSE [] END AS rsids,
     named_struct(
@@ -139,9 +140,9 @@ FROM inputs
 "#;
 
 const EXPECTED_POPULATED_SOURCE: &str = r#"{
-    "variant_id": "source-id",
+    "variant_id": "1-100-C-source-id",
     "locus": {"contig": "chr1", "position": 100},
-    "alleles": ["C", "CT"],
+    "alleles": ["C", "source-id"],
     "rsids": ["rs-b", "rs-a"],
     "exome": {
         "freq": {"all": {
@@ -227,7 +228,7 @@ async fn create_single_variant_reader(state: &str) -> Result<GnomadV4Reader> {
 fn collect_variant_ids(variants: &[GnomadV4VariantListEntry]) -> Vec<&str> {
     variants
         .iter()
-        .map(|variant| variant.variant_id.as_str())
+        .map(|variant| variant.variant_id.splitn(4, '-').last().unwrap_or_default())
         .collect()
 }
 
@@ -804,8 +805,8 @@ async fn missing_fields_are_omitted_without_fabricating_pass_or_annotations() ->
     assert_eq!(
         actual,
         json!({
-            "variant_id": "source-id", "locus": {"contig": "chr1", "position": 100},
-            "alleles": ["C", "CT"],
+            "variant_id": "1-100-C-source-id", "locus": {"contig": "chr1", "position": 100},
+            "alleles": ["C", "source-id"],
             "exome": {"freq": {"all": {}}, "fafmax": {"gnomad": {}, "non_ukb": {}}},
             "genome": {"freq": {"all": {}}},
             "joint": {"freq": {"all": {}}, "fafmax": {}},

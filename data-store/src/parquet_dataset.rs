@@ -39,8 +39,10 @@ impl ParquetDataset {
             ))
         })?;
         let options = match self {
-            Self::GnomadVariantsV4 => ParquetReadOptions::default()
-                .table_partition_cols(vec![("locus.contig".to_owned(), DataType::Utf8)]),
+            Self::GnomadVariantsV4 => ParquetReadOptions::default().table_partition_cols(vec![
+                ("chrom".to_owned(), DataType::Utf8),
+                ("posbin".to_owned(), DataType::Int64),
+            ]),
             _ => ParquetReadOptions::default(),
         };
         context

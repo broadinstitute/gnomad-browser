@@ -201,7 +201,7 @@ pub struct GnomadV4Coverage {
     pub mean: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub median_approx: Option<i32>,
-    #[serde(rename = "total_DP", skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "total_dp", skip_serializing_if = "Option::is_none")]
     pub total_depth: Option<i64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub over_1: Option<f64>,

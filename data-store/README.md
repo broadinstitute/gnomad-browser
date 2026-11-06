@@ -85,6 +85,10 @@ Currently, the layout is:
     └── gnomad_variants_v4
 ```
 
+`gnomad_variants_v4` is Hive-partitioned by `chrom` (no `chr` prefix, e.g. `chrom=22`) and then
+`posbin`, which is `(pos - 1) // 1000000`. It has no `variant_id`, `locus`, or `alleles` columns; the
+reader derives them from `chrom`, `pos`, `ref`, and `alt`.
+
 If one has the proper permissions, you can copy the `demo-mirror/2026-11-02/parquet` dir to your machine to have a working copy of the dataset for local use.
 
 ## Run the examples against a Parquet directory

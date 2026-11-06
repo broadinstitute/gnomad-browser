@@ -2006,7 +2006,7 @@ mod gnomad_v4_single_variant_tests {
                 {"gene_id": "ENSG001"}],
             "in_silico_predictors": {"cadd": {"phred": 0.0}},
             "colocated_variants": {"all": [], "non_ukb": ["source-colocated"]},
-            "coverage": {"exome": {"total_DP": 0}, "genome": {"total_DP": 0}},
+            "coverage": {"exome": {"total_dp": 0}, "genome": {"total_dp": 0}},
             "vrs": {"ref": {"repeat_subunit_lengths": 1},
                 "alt": {"allele_id": "ga4gh:VA.source", "repeat_subunit_lengths": 7}}
         })
@@ -2072,7 +2072,7 @@ mod gnomad_v4_single_variant_tests {
             Some(MAX_SAFE_JS_INTEGER),
         ] {
             let coverage: source::GnomadV4Coverage =
-                serde_json::from_value(json!({"total_DP": depth})).expect("coverage");
+                serde_json::from_value(json!({"total_dp": depth})).expect("coverage");
             assert_eq!(
                 GnomadV4Coverage::try_from(coverage)
                     .expect("safe depth")
@@ -2081,7 +2081,7 @@ mod gnomad_v4_single_variant_tests {
             );
         }
         let coverage: source::GnomadV4Coverage =
-            serde_json::from_value(json!({"total_DP": UNSAFE_JS_INTEGER})).expect("coverage");
+            serde_json::from_value(json!({"total_dp": UNSAFE_JS_INTEGER})).expect("coverage");
         let error = GnomadV4Coverage::try_from(coverage)
             .err()
             .expect("unsafe depth");
@@ -2147,8 +2147,8 @@ mod gnomad_v4_single_variant_tests {
     #[test]
     fn propagates_unsafe_integers_through_every_nested_conversion_path() {
         let mut paths = vec![
-            "/coverage/exome/total_DP".to_owned(),
-            "/coverage/genome/total_DP".to_owned(),
+            "/coverage/exome/total_dp".to_owned(),
+            "/coverage/genome/total_dp".to_owned(),
         ];
         for (sequencing_type, subsets) in [
             ("exome", vec!["all", "non_ukb"]),

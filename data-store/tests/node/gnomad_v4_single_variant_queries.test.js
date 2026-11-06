@@ -104,13 +104,14 @@ describe('gnomAD v4 single-variant bindings', () => {
 
   test('propagates duplicate-record errors instead of returning the first match', async () => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'gnomad-v4-single-'))
-    const partition = path.join(root, 'gnomad_variants_v4', 'locus.contig=chr22')
+    const partition = path.join(root, 'gnomad_variants_v4', 'chrom=22', 'posbin=37')
     try {
       await fs.mkdir(partition, { recursive: true })
       const fixture = path.join(
         FIXTURE_DIRECTORY,
         'gnomad_variants_v4',
-        'locus.contig=chr22',
+        'chrom=22',
+        'posbin=37',
         'data.parquet'
       )
       await fs.copyFile(fixture, path.join(partition, 'first.parquet'))

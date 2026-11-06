@@ -29,9 +29,8 @@ async fn create_synthetic_reader(rows: &str) -> Result<GnomadV4Reader> {
                     'ancestry_groups', [named_struct('id', 'XX', 'ac', CAST(0 AS INT))]) AS frequency
             FROM inputs
         )
-        SELECT variant_id, concat('chr', chromosome) AS "locus.contig",
-            named_struct('contig', concat('chr', chromosome), 'position', CAST(position AS INT)) AS locus,
-            ['A', 'G'] AS alleles,
+        SELECT chromosome AS chrom, CAST((position - 1) / 1000000 AS BIGINT) AS posbin,
+            CAST(position AS INT) AS pos, 'A' AS "ref", variant_id AS alt,
             CAST([] AS VARCHAR[]) AS rsids,
             named_struct(
                 'freq', named_struct('all', frequency,
@@ -139,7 +138,7 @@ async fn uses_inclusive_unpadded_bounds_and_numeric_position_then_id_order() -> 
     assert_eq!(
         variants
             .iter()
-            .map(|variant| variant.variant_id.as_str())
+            .map(|variant| variant.variant_id.splitn(4, '-').last().unwrap_or_default())
             .collect::<Vec<_>>(),
         ["a-start", "z-start", "stop"]
     );
