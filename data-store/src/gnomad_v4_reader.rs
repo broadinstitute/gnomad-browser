@@ -11,6 +11,7 @@ use crate::{
 };
 
 const GNOMAD_V4_EXON_PADDING: u32 = 75;
+const GNOMAD_V4_POSBIN_SIZE: i64 = 1_000_000;
 
 /// Rebuild the identity fields the source export no longer stores.
 const VARIANT_IDENTITY_FIELDS: &str = r#"
@@ -227,10 +228,19 @@ impl GnomadV4Reader {
                 parameters,
                 ScalarValue::Utf8(Some(interval.chromosome().as_str().to_owned())),
             );
+            let first_posbin = bind_parameter(
+                parameters,
+                ScalarValue::Int64(Some(posbin(interval.start()))),
+            );
+            let last_posbin = bind_parameter(
+                parameters,
+                ScalarValue::Int64(Some(posbin(interval.stop()))),
+            );
             let start = bind_parameter(parameters, ScalarValue::Int32(Some(interval.start())));
             let stop = bind_parameter(parameters, ScalarValue::Int32(Some(interval.stop())));
             predicates.push(format!(
-                "(chrom = {chrom} AND pos BETWEEN {start} AND {stop})"
+                "(chrom = {chrom} AND posbin BETWEEN {first_posbin} AND {last_posbin} \
+                 AND pos BETWEEN {start} AND {stop})"
             ));
         }
         predicates.join(" OR ")
@@ -266,19 +276,25 @@ fn bind_single_variant_lookup(id: &str, parameters: &mut Vec<ScalarValue>) -> Re
                 parameters,
                 ScalarValue::Utf8(Some((*chromosome).to_owned())),
             );
+            let posbin_value =
+                bind_parameter(parameters, ScalarValue::Int64(Some(posbin(position))));
             let pos = bind_parameter(parameters, ScalarValue::Int32(Some(position)));
             let reference =
                 bind_parameter(parameters, ScalarValue::Utf8(Some((*reference).to_owned())));
             let alternate =
                 bind_parameter(parameters, ScalarValue::Utf8(Some((*alternate).to_owned())));
             return Ok(format!(
-                r#"chrom = {chrom} AND pos = {pos} AND "ref" = {reference} AND alt = {alternate}"#
+                r#"chrom = {chrom} AND posbin = {posbin_value} AND pos = {pos} AND "ref" = {reference} AND alt = {alternate}"#
             ));
         }
     }
     Err(DataFusionError::Plan(format!(
         "Invalid gnomAD v4 variant ID: {id}"
     )))
+}
+
+fn posbin(position: i32) -> i64 {
+    i64::from(position).saturating_sub(1) / GNOMAD_V4_POSBIN_SIZE
 }
 
 fn bind_parameter(parameters: &mut Vec<ScalarValue>, value: ScalarValue) -> String {

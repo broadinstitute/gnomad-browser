@@ -146,6 +146,28 @@ async fn uses_inclusive_unpadded_bounds_and_numeric_position_then_id_order() -> 
 }
 
 #[tokio::test]
+async fn reads_across_posbin_boundaries() -> Result<()> {
+    let reader = create_synthetic_reader(
+        "VALUES ('bin-0-last', '22', 1000000, 1, 1, 1, 'present'),
+            ('bin-1-first', '22', 1000001, 1, 1, 1, 'present'),
+            ('bin-2', '22', 2000001, 1, 1, 1, 'present')",
+    )
+    .await?;
+    let interval = GenomicInterval::new("22", 1_000_000, 1_000_001).expect("valid interval");
+    let variants = reader
+        .fetch_variants_in_region(&interval, GnomadV4Subset::All)
+        .await?;
+    assert_eq!(
+        variants
+            .iter()
+            .map(|variant| variant.variant_id.splitn(4, '-').last().unwrap_or_default())
+            .collect::<Vec<_>>(),
+        ["bin-0-last", "bin-1-first"]
+    );
+    Ok(())
+}
+
+#[tokio::test]
 async fn includes_intergenic_records_with_null_or_empty_consequences() -> Result<()> {
     let reader = create_synthetic_reader(
         "VALUES ('missing', '22', 100, 1, 1, 1, 'null'),
