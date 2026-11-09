@@ -4,6 +4,10 @@ import styled from 'styled-components'
 
 import { PositionAxisTrack } from '@gnomad/region-viewer'
 
+import VariantSyncControl, {
+  NO_SHARED_VARIANTS_MESSAGE,
+  VariantSyncState,
+} from '../VariantList/VariantSyncControl'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
@@ -32,12 +36,14 @@ type MitochondrialVariantsProps = {
   context: any
   exportFileName: string
   selection: MitochondrialVariantFiltering
+  sync?: VariantSyncState
 }
 
 const MitochondrialVariants = ({
   context,
   exportFileName,
   selection,
+  sync,
 }: MitochondrialVariantsProps) => {
   const table = useRef(null)
   const {
@@ -143,12 +149,15 @@ const MitochondrialVariants = ({
     return (
       <TrackPageSection>
         <h2 style={{ margin: '2em 0 0.25em' }}>gnomAD variants</h2>
+        {sync && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
         <p>No gnomAD variants found.</p>
       </TrackPageSection>
     )
   }
 
   const numRowsRendered = Math.min(renderedVariants.length, NUM_ROWS_RENDERED)
+  const noMatchingVariantsMessage =
+    sync?.enabled && sync.available ? NO_SHARED_VARIANTS_MESSAGE : 'No matching variants'
 
   return (
     <div>
@@ -184,6 +193,7 @@ const MitochondrialVariants = ({
       <TrackPageSection style={{ fontSize: '14px' }}>
         <Wrapper>
           <MitochondrialVariantFilterControls value={filter} onChange={setFilter} />
+          {sync && <VariantSyncControl id="gnomad-variant-sync" state={sync} />}
           <div>
             <ExportMitochondrialVariantsButton
               exportFileName={exportFileName}
@@ -214,7 +224,7 @@ const MitochondrialVariants = ({
               onVisibleRowsChange={onVisibleRowsChange}
             />
           ) : (
-            <StatusMessage>No matching variants</StatusMessage>
+            <StatusMessage>{noMatchingVariantsMessage}</StatusMessage>
           )}
         </Wrapper>
       </TrackPageSection>
