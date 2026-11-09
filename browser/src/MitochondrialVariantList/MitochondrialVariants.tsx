@@ -115,7 +115,7 @@ const MitochondrialVariants = ({
   }, [])
 
   useEffect(() => {
-    if (positionLastClicked === null) {
+    if (positionLastClicked === null || table.current === null) {
       return
     }
 
@@ -135,7 +135,7 @@ const MitochondrialVariants = ({
       index = renderedVariants.length - 1
     }
 
-    // @ts-expect-error TS(2531) FIXME: Object is possibly 'null'.
+    // @ts-expect-error TS(2339) FIXME: 'scrollToDataRow' does not exist on type 'never'.
     table.current.scrollToDataRow(index)
   }, [positionLastClicked]) // eslint-disable-line react-hooks/exhaustive-deps
 
