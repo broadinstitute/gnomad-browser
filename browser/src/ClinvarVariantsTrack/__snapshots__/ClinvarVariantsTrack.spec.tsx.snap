@@ -5169,7 +5169,9 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
           <g
             transform="translate(0, 25)"
           >
-            <g>
+            <g
+              data-variant-id="123-462-A-C"
+            >
               <rect
                 fill="transparent"
                 height="10"
@@ -5191,6 +5193,7 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
             </g>
             <path
               d="M-4.242640687119286,-1.4142135623730951L-1.4142135623730951,-1.4142135623730951L-1.4142135623730951,-4.242640687119286L1.4142135623730951,-4.242640687119286L1.4142135623730951,-1.4142135623730951L4.242640687119286,-1.4142135623730951L4.242640687119286,1.4142135623730951L1.4142135623730951,1.4142135623730951L1.4142135623730951,4.242640687119286L-1.4142135623730951,4.242640687119286L-1.4142135623730951,1.4142135623730951L-4.242640687119286,1.4142135623730951Z"
+              data-variant-id="123-463-A-C"
               fill="#E6573D"
               opacity="1"
               stroke="#666"
@@ -5200,6 +5203,7 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
             />
             <path
               d="M0,-4.963225915211198L4.298279727294167,2.481612957605599L-4.298279727294167,2.481612957605599Z"
+              data-variant-id="123-464-A-C"
               fill="#FAB470"
               opacity="1"
               stroke="#666"
@@ -5209,6 +5213,7 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
             />
             <path
               d="M0,-5.26429605180997L3.03934274260637,0L0,5.26429605180997L-3.03934274260637,0Z"
+              data-variant-id="123-465-A-C"
               fill="#FAB470"
               opacity="1"
               stroke="#666"
@@ -5218,6 +5223,7 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
             />
             <path
               d="M3.1915382432114616,0A3.1915382432114616,3.1915382432114616,0,1,1,-3.1915382432114616,0A3.1915382432114616,3.1915382432114616,0,1,1,3.1915382432114616,0"
+              data-variant-id="123-466-A-C"
               fill="#5E6F9E"
               opacity="1"
               stroke="#666"
@@ -5227,6 +5233,7 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
             />
             <path
               d="M0,-4.963225915211198L4.298279727294167,2.481612957605599L-4.298279727294167,2.481612957605599Z"
+              data-variant-id="123-467-A-C"
               fill="#5E6F9E"
               opacity="1"
               stroke="#666"
@@ -5236,6 +5243,7 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
             />
             <path
               d="M3.1915382432114616,0A3.1915382432114616,3.1915382432114616,0,1,1,-3.1915382432114616,0A3.1915382432114616,3.1915382432114616,0,1,1,3.1915382432114616,0"
+              data-variant-id="123-468-A-C"
               fill="#bababa"
               opacity="1"
               stroke="#666"

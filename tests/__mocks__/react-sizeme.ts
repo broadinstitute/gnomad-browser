@@ -1,4 +1,6 @@
-import { ReactNode } from 'react'
+import { ReactElement, ReactNode, useEffect, useState } from 'react'
+
+import { getSizeMeMockDimensions, SizeMeMockDimensions } from '../__helpers__/sizeMeMockDimensions'
 
 type PropsWithSize<P> = {
   size: {
@@ -9,6 +11,25 @@ type PropsWithSize<P> = {
 }
 
 type FnWithSize<P> = (...propsWithSize: PropsWithSize<P>[]) => ReactNode
+
+export const SizeMe = ({
+  children,
+}: {
+  children: (measurement: { size: SizeMeMockDimensions }) => ReactElement
+}): ReactElement | null => {
+  const [hasMeasured, setHasMeasured] = useState(false)
+
+  // Defer measurement until mount so Grid's outer ref exists before its rows render.
+  useEffect(() => {
+    setHasMeasured(true)
+  }, [])
+
+  if (!hasMeasured) {
+    return null
+  }
+
+  return children({ size: getSizeMeMockDimensions() })
+}
 
 export const withSize =
   <P>(_options: any) =>
