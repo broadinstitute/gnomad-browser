@@ -239,7 +239,7 @@ const VariantLine = ({
         // @ts-expect-error TS(2322) FIXME: Type '{ children: Element; key: any; tooltipCompon... Remove this comment to see the full error message
         variant={point.variant}
       >
-        <g onClick={() => onClickVariant(variant)}>
+        <g data-variant-id={variant.variant_id} onClick={() => onClickVariant(variant)}>
           <rect
             x={point.xStart}
             y={plotHeight - point.y - 5}
@@ -321,6 +321,7 @@ const VariantLine = ({
       <path
         // @ts-expect-error TS(2322) FIXME: Type 'string | null' is not assignable to type 'st... Remove this comment to see the full error message
         d={symbolPath}
+        data-variant-id={variant.variant_id}
         transform={`translate(${point.xStart},${
           plotHeight - point.y + symbolOffset
         }) rotate(${symbolRotation})`}

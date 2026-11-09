@@ -307,6 +307,9 @@ importers:
       '@types/react-window':
         specifier: ^1.8.5
         version: 1.8.5
+      '@types/testing-library__jest-dom':
+        specifier: 5.14.9
+        version: 5.14.9
       babel-loader:
         specifier: ^8.2.2
         version: 8.3.0(@babel/core@7.28.0)(webpack@5.94.0)
