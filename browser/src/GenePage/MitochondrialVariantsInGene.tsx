@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import {
   labelForDataset,
@@ -6,6 +6,9 @@ import {
   hasMitochondrialVariants,
 } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import { MitochondrialVariant } from '../MitochondrialVariantPage/MitochondrialVariantPage'
+import useMitochondrialVariantFiltering from '../MitochondrialVariantList/useMitochondrialVariantFiltering'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -84,8 +87,50 @@ type OwnProps = {
 // @ts-expect-error TS(2456) FIXME: Type alias 'Props' circularly references itself.
 type Props = OwnProps & typeof MitochondrialVariantsInGene.defaultProps
 
+type MitochondrialVariantsInGeneProps = Props & {
+  clinvarReleaseDate: string
+  clinvarVariants: ClinvarVariant[] | null | undefined
+  variants: MitochondrialVariant[]
+}
+
+const MitochondrialVariantsInGeneView = ({
+  datasetId,
+  gene,
+  clinvarReleaseDate,
+  clinvarVariants,
+  variants,
+  zoomRegion,
+}: MitochondrialVariantsInGeneProps) => {
+  const variantsInZoom = useMemo(() => {
+    return filterVariantsInZoomRegion(variants, zoomRegion)
+  }, [variants, zoomRegion])
+  const selection = useMitochondrialVariantFiltering({
+    variants: variantsInZoom,
+    context: gene,
+    clinvarReleaseDate,
+  })
+
+  return (
+    <>
+      <ClinvarVariants
+        clinvarVariants={clinvarVariants}
+        clinvarReleaseDate={clinvarReleaseDate}
+        referenceGenome={referenceGenome(datasetId)}
+        transcripts={gene.transcripts}
+        pageType="gene"
+        zoomRegion={zoomRegion}
+      />
+      <MitochondrialVariants
+        context={gene}
+        exportFileName={`gnomad_mitochondrial_variants_${gene.gene_id}`}
+        selection={selection}
+      />
+    </>
+  )
+}
+
 // @ts-expect-error TS(7022) FIXME: 'MitochondrialVariantsInGene' implicitly has type ... Remove this comment to see the full error message
-const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: Props) => {
+const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion }: Props) => {
   if (!hasMitochondrialVariants(datasetId)) {
     return (
       <StatusMessage>
@@ -129,31 +174,17 @@ const MitochondrialVariantsInGene = ({ datasetId, gene, zoomRegion, ...rest }: P
         })
 
         return (
-          <>
-            <ClinvarVariants
-              clinvarVariants={data.gene.clinvar_variants}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-              referenceGenome={referenceGenome(datasetId)}
-              transcripts={gene.transcripts}
-              zoomRegion={zoomRegion}
-              pageType="gene"
-            />
-
-            <MitochondrialVariants
-              {...rest}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-              context={gene}
-              datasetId={datasetId}
-              exportFileName={`gnomad_mitochondrial_variants_${gene.gene_id}`}
-              variants={filterVariantsInZoomRegion(
-                annotateVariantsWithClinvar(
-                  data.gene.mitochondrial_variants,
-                  data.gene.clinvar_variants
-                ),
-                zoomRegion
-              )}
-            />
-          </>
+          <MitochondrialVariantsInGeneView
+            datasetId={datasetId}
+            gene={gene}
+            clinvarReleaseDate={data.meta.clinvar_release_date}
+            clinvarVariants={data.gene.clinvar_variants}
+            variants={annotateVariantsWithClinvar(
+              data.gene.mitochondrial_variants,
+              data.gene.clinvar_variants
+            )}
+            zoomRegion={zoomRegion}
+          />
         )
       }}
     </Query>
