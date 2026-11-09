@@ -2,6 +2,8 @@ import { readFile } from 'fs/promises'
 import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
 
+import { sequencingFactory, variantFactory } from '../../browser/src/__factories__/Variant'
+
 const QUERY_TIMEOUT_MS = 30_000
 
 type SequencingSummary = { filters: string[] }
@@ -47,6 +49,101 @@ const passExomeVariantIds = (variants: LiveVariantSummary[]): string[] => {
     })
     .map((variant) => variant.variant_id)
 }
+
+test('recovers a scrolled table through empty results using existing filters', async ({ page }) => {
+  const errors: string[] = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  const variants = Array.from({ length: 30 }, (_, index) => {
+    const pos = 100 + index * 10
+    return {
+      ...variantFactory.build({
+        reference_genome: 'GRCh37',
+        variant_id: `1-${pos}-A-C`,
+        pos,
+        rsids: [],
+      }),
+      consequence: index === 0 ? 'synonymous_variant' : 'missense_variant',
+      exome: sequencingFactory.build({ ac: 2, an: 100, filters: [] }),
+      genome: null,
+      flags: [],
+      hgvs: '',
+      hgvsc: '',
+      hgvsp: '',
+      transcript_id: '',
+      transcript_version: '',
+      clinical_significance: '',
+      clinvar_variation_id: '',
+    }
+  })
+  await page.route('**/api/**', async (route) => {
+    if (route.request().method() !== 'POST') {
+      await route.fallback()
+      return
+    }
+    const { operationName } = route.request().postDataJSON()
+    if (operationName === 'Region') {
+      await route.fulfill({
+        json: {
+          data: { region: { genes: [], non_coding_constraints: [], short_tandem_repeats: [] } },
+        },
+      })
+    } else if (operationName === 'VariantInRegion') {
+      await route.fulfill({
+        json: {
+          data: {
+            meta: { clinvar_release_date: '2026-10-01' },
+            region: { variants, clinvar_variants: [] },
+          },
+        },
+      })
+    } else if (operationName === 'RegionCoverage') {
+      await route.fulfill({ json: { data: { region: { coverage: { exome: [], genome: [] } } } } })
+    } else {
+      await route.fallback()
+    }
+  })
+  await page.goto('/region/1-1-10000?dataset=gnomad_r2_1')
+  const grid = page.getByRole('grid')
+  await expect(grid).toHaveAttribute('aria-rowcount', '31')
+  await grid.evaluate((element) => {
+    const viewport = Array.from(element.querySelectorAll('div')).find(
+      (child) =>
+        child.scrollHeight > child.clientHeight && getComputedStyle(child).overflowY === 'auto'
+    )
+    if (!viewport) throw new Error('Missing scrollable variant table viewport')
+    viewport.scrollTop = viewport.scrollHeight
+  })
+  await expect(grid.getByRole('rowheader', { name: '1-390-A-C', exact: true })).toBeVisible()
+  const selectOnly = async (label: string) => {
+    await page
+      .getByRole('checkbox', { name: label, exact: true })
+      .locator('..')
+      .locator('..')
+      .getByRole('button', { name: 'only', exact: true })
+      .click()
+  }
+  await selectOnly('Synonymous')
+  await expect(grid.getByRole('rowheader')).toHaveText(['1-100-A-C'])
+  await selectOnly('Other')
+  await expect(grid).toHaveCount(0)
+  await expect(page.getByText('No matching variants', { exact: true })).toBeVisible()
+  await page.getByPlaceholder('Search variant table').fill('1-100-A-C')
+  expect(errors).toEqual([])
+  await selectOnly('Synonymous')
+  await expect(grid.getByRole('rowheader')).toHaveText(['1-100-A-C'])
+  await page.getByPlaceholder('Search variant table').clear()
+  await page
+    .getByRole('checkbox', { name: 'Missense / Inframe indel', exact: true })
+    .locator('..')
+    .click()
+  await expect(grid).toHaveAttribute('aria-rowcount', '31')
+  await expect(grid.getByRole('rowheader', { name: '1-100-A-C', exact: true })).toBeVisible()
+  await selectOnly('Other')
+  await page.getByPlaceholder('Search variant table').fill('1-390-A-C')
+  await selectOnly('Missense / Inframe indel')
+  await expect(grid.getByRole('rowheader', { name: '1-390-A-C', exact: true })).toBeVisible()
+  expect(errors).toEqual([])
+})
 
 test.describe('Variant filters with real API data', () => {
   let uncaughtErrors: string[]
