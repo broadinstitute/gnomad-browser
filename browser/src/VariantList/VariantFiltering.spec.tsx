@@ -12,6 +12,7 @@ import geneFactory from '../__factories__/Gene'
 import { sequencingFactory, variantFactory } from '../__factories__/Variant'
 import userPreferences from '../userPreferences'
 import Variants from './Variants'
+import useVariantFiltering from './useVariantFiltering'
 
 jest.setTimeout(15_000)
 
@@ -98,6 +99,28 @@ const buildTestGnomadVariantWithJointData = () => {
   }
 }
 
+type VariantFilteringHarnessProps = Parameters<typeof useVariantFiltering>[0] & {
+  exportFileName: string
+}
+
+const VariantFilteringHarness = ({
+  datasetId,
+  clinvarReleaseDate,
+  context,
+  variants,
+  exportFileName,
+}: VariantFilteringHarnessProps) => {
+  const selection = useVariantFiltering({ datasetId, clinvarReleaseDate, context, variants })
+  return (
+    <Variants
+      datasetId={datasetId}
+      context={context}
+      exportFileName={exportFileName}
+      selection={selection}
+    />
+  )
+}
+
 const renderGnomadVariantFilters = (
   datasetId: DatasetId = DEFAULT_TEST_DATASET_ID,
   testGnomadVariants = buildTestGnomadVariants(datasetId)
@@ -115,7 +138,7 @@ const renderGnomadVariantFilters = (
           isPositionDefined: () => true,
         }}
       >
-        <Variants
+        <VariantFilteringHarness
           datasetId={datasetId}
           clinvarReleaseDate="2026-10-01"
           context={geneFactory.build({ chrom: '1', reference_genome: referenceGenome(datasetId) })}

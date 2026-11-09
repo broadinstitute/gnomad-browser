@@ -6,7 +6,7 @@ import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-met
 import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Link from '../Link'
 import Query from '../Query'
-import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import useLinkedVariantSelection from '../VariantList/useLinkedVariantSelection'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
@@ -98,6 +98,14 @@ const VariantsInGene = ({
   hasOnlyNonCodingTranscripts,
 }: VariantsInGeneProps) => {
   const datasetLabel = labelForDataset(datasetId)
+  const selection = useLinkedVariantSelection({
+    clinvarVariants,
+    variants,
+    context: gene,
+    datasetId,
+    clinvarReleaseDate,
+    zoomRegion,
+  })
 
   const [isTranscriptsModalOpen, setIsTranscriptsModalOpen] = useState(false)
 
@@ -110,14 +118,14 @@ const VariantsInGene = ({
         transcripts={gene.transcripts}
         zoomRegion={zoomRegion}
         pageType="gene"
+        selection={selection.clinvar}
       />
 
       <Variants
-        clinvarReleaseDate={clinvarReleaseDate}
+        selection={selection.gnomad}
         context={gene}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${gene.gene_id}`}
-        variants={filterVariantsInZoomRegion(variants, zoomRegion)}
       >
         <p>
           <Badge level={includeNonCodingTranscripts || includeUTRs ? 'warning' : 'info'}>

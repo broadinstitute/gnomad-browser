@@ -6,7 +6,7 @@ import { DatasetId, labelForDataset, referenceGenome } from '@gnomad/dataset-met
 import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import Link from '../Link'
 import Query from '../Query'
-import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
+import useLinkedVariantSelection from '../VariantList/useLinkedVariantSelection'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
@@ -51,6 +51,14 @@ const VariantsInTranscript = ({
   const isCodingTranscript = transcript.exons.some((exon: any) => exon.feature_type === 'CDS')
 
   const datasetLabel = labelForDataset(datasetId)
+  const selection = useLinkedVariantSelection({
+    clinvarVariants,
+    variants,
+    context: transcript,
+    datasetId,
+    clinvarReleaseDate,
+    zoomRegion,
+  })
 
   return (
     <>
@@ -61,14 +69,14 @@ const VariantsInTranscript = ({
         transcripts={[transcript]}
         zoomRegion={zoomRegion}
         pageType="transcript"
+        selection={selection.clinvar}
       />
 
       <Variants
-        clinvarReleaseDate={clinvarReleaseDate}
+        selection={selection.gnomad}
         context={transcript}
         datasetId={datasetId}
         exportFileName={`${datasetLabel}_${transcript.transcript_id}`}
-        variants={filterVariantsInZoomRegion(variants, zoomRegion)}
       >
         {isCodingTranscript ? (
           <p>

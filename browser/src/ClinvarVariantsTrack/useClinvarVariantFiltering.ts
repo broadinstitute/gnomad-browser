@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction, useMemo, useState } from 'react'
+
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { VEP_CONSEQUENCE_CATEGORIES, getCategoryFromConsequence } from '../vepConsequences'
 import {
@@ -33,7 +35,7 @@ export const DEFAULT_CLINVAR_FILTER_STATE: ClinvarFilterState = {
   starFilter: 0,
 }
 
-const filterClinvarVariants = (
+export const filterClinvarVariants = (
   variants: ClinvarVariant[],
   filter: ClinvarFilterState
 ): ClinvarVariant[] => {
@@ -48,4 +50,30 @@ const filterClinvarVariants = (
   )
 }
 
-export default filterClinvarVariants
+export type ClinvarVariantFiltering = {
+  filter: ClinvarFilterState
+  setFilter: Dispatch<SetStateAction<ClinvarFilterState>>
+  filteredVariants: ClinvarVariant[]
+}
+
+const useClinvarVariantFiltering = (
+  variants: ClinvarVariant[],
+  isTrackMounted = true
+): ClinvarVariantFiltering => {
+  const [filter, setFilter] = useState(DEFAULT_CLINVAR_FILTER_STATE)
+  const [wasTrackMounted, setWasTrackMounted] = useState(isTrackMounted)
+  if (wasTrackMounted !== isTrackMounted) {
+    setWasTrackMounted(isTrackMounted)
+    if (!isTrackMounted) {
+      setFilter(DEFAULT_CLINVAR_FILTER_STATE)
+    }
+  }
+  const filteredVariants = useMemo(
+    () => filterClinvarVariants(variants, filter),
+    [variants, filter]
+  )
+
+  return { filter, setFilter, filteredVariants }
+}
+
+export default useClinvarVariantFiltering
