@@ -18,7 +18,7 @@ import ClinvarAllVariantsPlot from './ClinvarAllVariantsPlot'
 import ClinvarBinnedVariantsPlot from './ClinvarBinnedVariantsPlot'
 import ClinvarVariantDetails from './ClinvarVariantDetails'
 import formatClinvarDate from './formatClinvarDate'
-import filterClinvarVariants, { DEFAULT_CLINVAR_FILTER_STATE } from './filterClinvarVariants'
+import useClinvarVariantFiltering, { ClinvarVariantFiltering } from './useClinvarVariantFiltering'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Transcript } from '../TranscriptPage/TranscriptPage'
 import { ReferenceGenome } from '../../../dataset-metadata/metadata'
@@ -97,26 +97,43 @@ type Props = {
   variants: ClinvarVariant[]
 }
 
-const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants }: Props) => {
+type ControlledClinvarVariantTrackProps = Omit<Props, 'variants'> & {
+  selection: ClinvarVariantFiltering
+}
+
+export const ControlledClinvarVariantTrack = ({
+  referenceGenome,
+  transcripts,
+  selection,
+}: ControlledClinvarVariantTrackProps) => {
   const [selectedVariant, setSelectedVariant] = useState(null)
-
-  const [includedClinicalSignificanceCategories, setIncludedClinicalSignificanceCategories] =
-    useState(DEFAULT_CLINVAR_FILTER_STATE.includedClinicalSignificanceCategories)
-
-  const [includedConsequenceCategories, setIncludedConsequenceCategories] = useState(
-    DEFAULT_CLINVAR_FILTER_STATE.includedConsequenceCategories
-  )
-
-  const [showOnlyGnomad, setShowOnlyGnomad] = useState(DEFAULT_CLINVAR_FILTER_STATE.showOnlyGnomad)
   const [isExpanded, setIsExpanded] = useState(false)
-  const [starFilter, setStarFilter] = useState(DEFAULT_CLINVAR_FILTER_STATE.starFilter)
-
-  const filteredVariants = filterClinvarVariants(variants, {
+  const { filter, setFilter, filteredVariants } = selection
+  const {
     includedClinicalSignificanceCategories,
     includedConsequenceCategories,
     showOnlyGnomad,
     starFilter,
-  })
+  } = filter
+
+  const setIncludedClinicalSignificanceCategories = (categories: Record<string, boolean>) => {
+    setFilter((previousFilter) => ({
+      ...previousFilter,
+      includedClinicalSignificanceCategories: categories,
+    }))
+  }
+  const setIncludedConsequenceCategories = (categories: Record<string, boolean>) => {
+    setFilter((previousFilter) => ({
+      ...previousFilter,
+      includedConsequenceCategories: categories,
+    }))
+  }
+  const setShowOnlyGnomad = (value: boolean) => {
+    setFilter((previousFilter) => ({ ...previousFilter, showOnlyGnomad: value }))
+  }
+  const setStarFilter = (value: number) => {
+    setFilter((previousFilter) => ({ ...previousFilter, starFilter: value }))
+  }
 
   return (
     <>
@@ -270,6 +287,11 @@ const UnmemoizedClinvarVariantTrack = ({ referenceGenome, transcripts, variants 
   )
 }
 
+const UnmemoizedClinvarVariantTrack = ({ variants, ...props }: Props) => {
+  const selection = useClinvarVariantFiltering(variants)
+  return <ControlledClinvarVariantTrack {...props} selection={selection} />
+}
+
 export const ClinvarVariantTrack = React.memo(UnmemoizedClinvarVariantTrack)
 
 type ClinvarVariantsProps = {
@@ -279,6 +301,7 @@ type ClinvarVariantsProps = {
   transcripts: Transcript[]
   zoomRegion?: { start: number; stop: number } | null
   pageType: PageType
+  selection?: ClinvarVariantFiltering
 }
 
 const ClinvarVariants = ({
@@ -288,6 +311,7 @@ const ClinvarVariants = ({
   transcripts,
   zoomRegion = null,
   pageType,
+  selection,
 }: ClinvarVariantsProps) => {
   const heading = (
     <TrackPageSection>
@@ -310,13 +334,24 @@ const ClinvarVariants = ({
     )
   }
 
+  const standaloneTrack = !selection && (
+    <ClinvarVariantTrack
+      referenceGenome={referenceGenome}
+      transcripts={transcripts}
+      variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
+    />
+  )
+  const controlledTrack = selection && (
+    <ControlledClinvarVariantTrack
+      referenceGenome={referenceGenome}
+      transcripts={transcripts}
+      selection={selection}
+    />
+  )
+
   const clinvarVariantTrack = (
     <>
-      <ClinvarVariantTrack
-        referenceGenome={referenceGenome}
-        transcripts={transcripts}
-        variants={filterVariantsInZoomRegion(clinvarVariants, zoomRegion)}
-      />
+      {selection ? controlledTrack : standaloneTrack}
       <TrackPageSection as="p">
         Data displayed here is from ClinVar&apos;s {formatClinvarDate(clinvarReleaseDate)} release.
       </TrackPageSection>

@@ -5,37 +5,18 @@ import { PositionAxisTrack } from '@gnomad/region-viewer'
 import { Button } from '@gnomad/ui'
 
 import { DatasetId, labelForDataset } from '@gnomad/dataset-metadata/metadata'
-import formatClinvarDate from '../ClinvarVariantsTrack/formatClinvarDate'
-import { showNotification } from '../Notifications'
 import Cursor from '../RegionViewerCursor'
 import StatusMessage from '../StatusMessage'
 import { TrackPageSection } from '../TrackPage'
-import userPreferences from '../userPreferences'
 import ExportVariantsButton from './ExportVariantsButton'
-import filterVariants, { VariantFilterState, getFilteredVariants } from './filterVariants'
-import mergeExomeAndGenomeData from './mergeExomeAndGenomeData'
+import { VariantFiltering, VariantFilterState, getFilteredVariants } from './useVariantFiltering'
 import VariantFilterControls from './VariantFilterControls'
 import VariantTable from './VariantTable'
-import variantTableColumns, { getColumnsForContext } from './variantTableColumns'
+import variantTableColumns, { DEFAULT_COLUMNS } from './variantTableColumns'
 import VariantTableConfigurationModal from './VariantTableConfigurationModal'
 import VariantTrack from './VariantTrack'
 import { Variant } from '../VariantPage/VariantPage'
 import { Gene } from '../GenePage/GenePage'
-
-const DEFAULT_COLUMNS = [
-  'source',
-  'gene',
-  'hgvs',
-  'consequence',
-  'lof_curation',
-  'clinical_significance',
-  'flags',
-  'ac',
-  'an',
-  'af',
-  'homozygote_count',
-  'hemizygote_count',
-]
 
 const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   const sortColumn = variantTableColumns.find((column: any) => column.key === sortKey)
@@ -43,28 +24,20 @@ const sortVariants = (variants: any, { sortKey, sortOrder }: any) => {
   return [...variants].sort((v1, v2) => sortColumn.compareFunction(v1, v2, sortOrder))
 }
 
-type OwnVariantsProps = {
+type VariantsProps = {
   children?: any
-  clinvarReleaseDate: string
   context: Gene
   datasetId: DatasetId
   exportFileName?: string
-  variants: Variant[]
+  selection: VariantFiltering
 }
 
-const variantsDefaultProps = {
-  children: null,
-  exportFileName: 'variants',
-}
-
-type VariantsProps = OwnVariantsProps & typeof variantsDefaultProps
-
-export function getFirstIndexFromSearchText(
+export const getFirstIndexFromSearchText = (
   searchFilter: VariantFilterState,
   variantSearched: Variant[],
   variantsTableColumns: any,
   variantWindow: number[]
-) {
+): number => {
   const searchedVariants = getFilteredVariants(searchFilter, variantSearched, variantsTableColumns)
 
   if (searchedVariants.length > 0) {
@@ -82,60 +55,21 @@ export function getFirstIndexFromSearchText(
 
 const Variants = ({
   children,
-  clinvarReleaseDate,
   context,
   datasetId,
-  exportFileName,
-  variants,
+  exportFileName = 'variants',
+  selection,
 }: VariantsProps) => {
   const table = useRef(null)
-
-  const [selectedColumns, setSelectedColumns] = useState(() => {
-    try {
-      return userPreferences.getPreference('variantTableColumns') || DEFAULT_COLUMNS
-    } catch (error) {
-      return DEFAULT_COLUMNS
-    }
-  })
-
-  const renderedTableColumns = useMemo(() => {
-    const columnsForContext = getColumnsForContext(context)
-    if ((columnsForContext as any).clinical_significance) {
-      ;(
-        columnsForContext as any
-      ).clinical_significance.description = `ClinVar germline classification, formerly called clinical significance. Based on ClinVar's ${formatClinvarDate(
-        clinvarReleaseDate
-      )} release`
-    }
-
-    return (
-      ['variant_id', ...selectedColumns]
-        // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        .map((columnKey) => columnsForContext[columnKey])
-        .filter(Boolean)
-        .map((column) => ({
-          ...column,
-          isSortable: Boolean(column.compareFunction),
-          tooltip: column.description,
-        }))
-    )
-  }, [clinvarReleaseDate, context, selectedColumns])
-
-  const [filter, setFilter] = useState({
-    includeCategories: {
-      lof: true,
-      missense: true,
-      synonymous: true,
-      other: true,
-    },
-    includeFilteredVariants: false,
-    includeSNVs: true,
-    includeIndels: true,
-    includeExomes: true,
-    includeGenomes: true,
-    includeContext: true,
-    searchText: '',
-  })
+  const {
+    variants,
+    filter,
+    setFilter,
+    selectedColumns,
+    saveSelectedColumns,
+    renderedTableColumns,
+    filteredVariants,
+  } = selection
 
   const [sortState, setSortState] = useState({
     sortKey: 'variant_id',
@@ -158,14 +92,6 @@ const Variants = ({
       }
     })
   }, [])
-
-  const filteredVariants = useMemo(() => {
-    return mergeExomeAndGenomeData({
-      datasetId,
-      variants: filterVariants(variants, filter, renderedTableColumns),
-      preferJointData: filter.includeExomes && filter.includeGenomes,
-    })
-  }, [datasetId, variants, filter, renderedTableColumns])
 
   const renderedVariants = useMemo(() => {
     return sortVariants(filteredVariants, sortState)
@@ -359,25 +285,13 @@ const Variants = ({
             setShowTableConfigurationModal(false)
           }}
           onSave={(newSelectedColumns) => {
-            setSelectedColumns(newSelectedColumns)
+            saveSelectedColumns(newSelectedColumns)
             setShowTableConfigurationModal(false)
-
-            userPreferences
-              .savePreference('variantTableColumns', newSelectedColumns)
-              .then(null, (error: any) => {
-                showNotification({
-                  title: 'Error',
-                  message: error.message,
-                  status: 'error',
-                })
-              })
           }}
         />
       )}
     </div>
   )
 }
-
-Variants.defaultProps = variantsDefaultProps
 
 export default Variants
