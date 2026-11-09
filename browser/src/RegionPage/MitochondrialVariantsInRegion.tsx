@@ -8,11 +8,10 @@ import {
 } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
 import { MitochondrialVariant } from '../MitochondrialVariantPage/MitochondrialVariantPage'
-import useMitochondrialVariantFiltering from '../MitochondrialVariantList/useMitochondrialVariantFiltering'
+import useLinkedMitochondrialVariantSelection from '../MitochondrialVariantList/useLinkedMitochondrialVariantSelection'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import Link from '../Link'
 import Query from '../Query'
-import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
 import StatusMessage from '../StatusMessage'
 import MitochondrialVariants from '../MitochondrialVariantList/MitochondrialVariants'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
@@ -102,13 +101,12 @@ const MitochondrialVariantsInRegionView = ({
     () => region.genes.flatMap((gene) => gene.transcripts),
     [region.genes]
   )
-  const variantsInZoom = useMemo(() => {
-    return filterVariantsInZoomRegion(variants, zoomRegion)
-  }, [variants, zoomRegion])
-  const selection = useMitochondrialVariantFiltering({
-    variants: variantsInZoom,
+  const selection = useLinkedMitochondrialVariantSelection({
+    clinvarVariants,
+    variants,
     context: region,
     clinvarReleaseDate,
+    zoomRegion,
   })
 
   return (
@@ -119,12 +117,14 @@ const MitochondrialVariantsInRegionView = ({
         referenceGenome={referenceGenome(datasetId)}
         transcripts={transcripts}
         pageType="region"
-        zoomRegion={zoomRegion}
+        selection={selection.clinvar}
+        sync={selection.sync}
       />
       <MitochondrialVariants
         context={region}
         exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
-        selection={selection}
+        selection={selection.gnomad}
+        sync={selection.sync}
       />
     </>
   )
@@ -177,6 +177,7 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, zoomRegion }: Props)
 
         return (
           <MitochondrialVariantsInRegionView
+            key={`${datasetId}:${referenceGenome(datasetId)}:${regionId}`}
             datasetId={datasetId}
             region={region}
             clinvarReleaseDate={data.meta.clinvar_release_date}
