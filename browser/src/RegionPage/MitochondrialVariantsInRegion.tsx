@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import {
   labelForDataset,
@@ -7,6 +7,9 @@ import {
   hasMitochondrialVariants,
 } from '@gnomad/dataset-metadata/metadata'
 import ClinvarVariants from '../ClinvarVariantsTrack/ClinvarVariantTrack'
+import { MitochondrialVariant } from '../MitochondrialVariantPage/MitochondrialVariantPage'
+import useMitochondrialVariantFiltering from '../MitochondrialVariantList/useMitochondrialVariantFiltering'
+import { ClinvarVariant } from '../VariantPage/VariantPage'
 import Link from '../Link'
 import Query from '../Query'
 import filterVariantsInZoomRegion from '../RegionViewer/filterVariantsInZoomRegion'
@@ -80,7 +83,54 @@ type Props = {
   } | null
 }
 
-const MitochondrialVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest }: Props) => {
+type MitochondrialVariantsInRegionProps = Props & {
+  clinvarReleaseDate: string
+  clinvarVariants: ClinvarVariant[] | null | undefined
+  variants: MitochondrialVariant[]
+}
+
+const MitochondrialVariantsInRegionView = ({
+  datasetId,
+  region,
+  clinvarReleaseDate,
+  clinvarVariants,
+  variants,
+  zoomRegion,
+}: MitochondrialVariantsInRegionProps) => {
+  const regionId = `${region.chrom}-${region.start}-${region.stop}`
+  const transcripts = useMemo(
+    () => region.genes.flatMap((gene) => gene.transcripts),
+    [region.genes]
+  )
+  const variantsInZoom = useMemo(() => {
+    return filterVariantsInZoomRegion(variants, zoomRegion)
+  }, [variants, zoomRegion])
+  const selection = useMitochondrialVariantFiltering({
+    variants: variantsInZoom,
+    context: region,
+    clinvarReleaseDate,
+  })
+
+  return (
+    <>
+      <ClinvarVariants
+        clinvarVariants={clinvarVariants}
+        clinvarReleaseDate={clinvarReleaseDate}
+        referenceGenome={referenceGenome(datasetId)}
+        transcripts={transcripts}
+        pageType="region"
+        zoomRegion={zoomRegion}
+      />
+      <MitochondrialVariants
+        context={region}
+        exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
+        selection={selection}
+      />
+    </>
+  )
+}
+
+const MitochondrialVariantsInRegion = ({ datasetId, region, zoomRegion }: Props) => {
   const regionId = `${region.chrom}-${region.start}-${region.stop}`
   if (!hasMitochondrialVariants(datasetId)) {
     return (
@@ -126,30 +176,17 @@ const MitochondrialVariantsInRegion = ({ datasetId, region, zoomRegion, ...rest 
         })
 
         return (
-          <>
-            <ClinvarVariants
-              clinvarVariants={data.region.clinvar_variants}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-              referenceGenome={referenceGenome(datasetId)}
-              transcripts={region.genes.flatMap((gene: any) => gene.transcripts)}
-              zoomRegion={zoomRegion}
-              pageType="region"
-            />
-
-            <MitochondrialVariants
-              {...rest}
-              clinvarReleaseDate={data.meta.clinvar_release_date}
-              context={region}
-              exportFileName={`gnomad_mitochondrial_variants_${regionId}`}
-              variants={filterVariantsInZoomRegion(
-                annotateVariantsWithClinvar(
-                  data.region.mitochondrial_variants,
-                  data.region.clinvar_variants
-                ),
-                zoomRegion
-              )}
-            />
-          </>
+          <MitochondrialVariantsInRegionView
+            datasetId={datasetId}
+            region={region}
+            clinvarReleaseDate={data.meta.clinvar_release_date}
+            clinvarVariants={data.region.clinvar_variants}
+            variants={annotateVariantsWithClinvar(
+              data.region.mitochondrial_variants,
+              data.region.clinvar_variants
+            )}
+            zoomRegion={zoomRegion}
+          />
         )
       }}
     </Query>
