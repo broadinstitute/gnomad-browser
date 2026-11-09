@@ -44,7 +44,9 @@ export const filterClinvarVariants = (
       filter.includedClinicalSignificanceCategories[
         clinvarVariantClinicalSignificanceCategory(variant)
       ] &&
-      filter.includedConsequenceCategories[getCategoryFromConsequence(variant.major_consequence)] &&
+      filter.includedConsequenceCategories[
+        getCategoryFromConsequence(variant.major_consequence) || 'other'
+      ] &&
       (!filter.showOnlyGnomad || variant.in_gnomad) &&
       variant.gold_stars >= filter.starFilter
   )
