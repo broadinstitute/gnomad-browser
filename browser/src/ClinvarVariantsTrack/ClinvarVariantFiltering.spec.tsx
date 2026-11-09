@@ -78,9 +78,9 @@ const testClinvarVariantDefinitions: TestClinvarVariantDefinition[] = [
   },
 ]
 
-const renderClinvarFilters = () => {
+const renderClinvarFilters = (variantDefinitions = testClinvarVariantDefinitions) => {
   const regions = [{ start: 1, stop: 900 }]
-  const testClinvarVariants = testClinvarVariantDefinitions.map((testClinvarVariantDefinition) =>
+  const testClinvarVariants = variantDefinitions.map((testClinvarVariantDefinition) =>
     clinvarVariantFactory.build(
       { ...testClinvarVariantDefinition, variant_id: `1-${testClinvarVariantDefinition.pos}-A-C` },
       {
@@ -151,6 +151,23 @@ describe('ClinVar variant filtering', () => {
       '1-800-A-C',
     ])
   })
+
+  test.each([null, 'unrecognized_consequence'])(
+    'filters consequence %s as Other without dropping the variant',
+    async (majorConsequence) => {
+      const user = userEvent.setup()
+      const { container } = renderClinvarFilters([
+        { ...testClinvarVariantDefinitions[0], major_consequence: majorConsequence },
+      ])
+      await expandVariants(user)
+      expectExpandedVariantIds(container, ['1-100-A-C'])
+      const otherConsequence = screen.getAllByRole('checkbox', { name: 'Other', exact: true })[1]
+      await user.click(otherConsequence)
+      expectExpandedVariantIds(container, [])
+      await user.click(otherConsequence)
+      expectExpandedVariantIds(container, ['1-100-A-C'])
+    }
+  )
 
   test.each<[string, string[]]>([
     ['Pathogenic / likely pathogenic', ['1-100-A-C', '1-200-A-C', '1-700-A-C', '1-800-A-C']],
