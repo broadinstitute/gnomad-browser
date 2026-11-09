@@ -9181,6 +9181,57 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -9193,6 +9244,53 @@ exports[`GenePage with non-SV dataset "exac" has no unexpected changes 1`] = `
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -12375,6 +12473,57 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -12387,6 +12536,53 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1" has no unexpected changes 1`
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -14031,6 +14227,57 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -14043,6 +14290,53 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_controls" has no unexpected c
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -15687,6 +15981,57 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -15699,6 +16044,53 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_cancer" has no unexpected
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -17343,6 +17735,57 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -17355,6 +17798,53 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_neuro" has no unexpected 
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -18999,6 +19489,57 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -19011,6 +19552,53 @@ exports[`GenePage with non-SV dataset "gnomad_r2_1_non_topmed" has no unexpected
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -20560,6 +21148,57 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -20572,6 +21211,53 @@ exports[`GenePage with non-SV dataset "gnomad_r3" has no unexpected changes 1`] 
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -22121,6 +22807,57 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -22133,6 +22870,53 @@ exports[`GenePage with non-SV dataset "gnomad_r3_controls_and_biobanks" has no u
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -23682,6 +24466,57 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -23694,6 +24529,53 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_cancer" has no unexpected c
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -25243,6 +26125,57 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -25255,6 +26188,53 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_neuro" has no unexpected ch
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -26804,6 +27784,57 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -26816,6 +27847,53 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_topmed" has no unexpected c
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -28365,6 +29443,57 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -28377,6 +29506,53 @@ exports[`GenePage with non-SV dataset "gnomad_r3_non_v2" has no unexpected chang
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -29926,6 +31102,57 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -29938,6 +31165,53 @@ exports[`GenePage with non-SV dataset "gnomad_r4" has no unexpected changes 1`] 
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -31487,6 +32761,57 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
       <div
         className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
       >
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="clinvar-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="clinvar-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="clinvar-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        className="TrackPage__TrackPageSection-sc-1xq3qi7-1 enpsUz"
+      >
         <h2
           style={
             {
@@ -31499,6 +32824,53 @@ exports[`GenePage with non-SV dataset "gnomad_r4_non_ukb" has no unexpected chan
         <p>
           No gnomAD variants found.
         </p>
+        <div
+          className="VariantSyncControlWrapper-variant-sync-control fqFGZF"
+          data-testid="gnomad-variant-sync-control"
+        >
+          <label
+            className="Checkbox__Label-sc-hrpa6b-0 fjxQvU"
+            htmlFor="gnomad-variant-sync"
+          >
+            <input
+              checked={false}
+              className="Checkbox__CheckboxInput-sc-hrpa6b-1 kMALJs"
+              disabled={false}
+              id="gnomad-variant-sync"
+              onChange={[Function]}
+              type="checkbox"
+            />
+            Filter to variants present in both gnomAD and ClinVar tracks
+          </label>
+          <button
+            className="InfoButton__Button-sc-13t5e82-0 faZoWY"
+            onClick={[Function]}
+            type="button"
+          >
+            <img
+              alt=""
+              aria-hidden="true"
+              src="test-file-stub"
+            />
+            <span
+              style={
+                {
+                  "border": "0",
+                  "clip": "rect(0 0 0 0)",
+                  "height": "1px",
+                  "margin": "-1px",
+                  "overflow": "hidden",
+                  "padding": "0",
+                  "position": "absolute",
+                  "whiteSpace": "nowrap",
+                  "width": "1px",
+                }
+              }
+            >
+              More information
+            </span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

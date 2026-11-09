@@ -343,8 +343,10 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
 
 .c27 {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5em 1em;
 }
 
 @media (max-width:1200px) {
@@ -737,21 +739,7 @@ exports[`Clinvar Variants Track renders correctly with default props 1`] = `
         className="c27"
       >
         <label
-          className="c24"
-          htmlFor="clinvar-track-in-gnomad"
-        >
-          <input
-            checked={false}
-            className="c25"
-            disabled={false}
-            id="clinvar-track-in-gnomad"
-            onChange={[Function]}
-            type="checkbox"
-          />
-          Only show ClinVar variants that are in gnomAD
-        </label>
-        <label
-          htmlFor="star-filtering"
+          htmlFor="clinvar-star-filter"
         >
           Filter by
            
@@ -1291,8 +1279,10 @@ exports[`Clinvar Variants Track renders the collapsed binned-variants plot corre
 
 .c27 {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5em 1em;
 }
 
 @media (max-width:1200px) {
@@ -1641,18 +1631,7 @@ exports[`Clinvar Variants Track renders the collapsed binned-variants plot corre
         class="c27"
       >
         <label
-          class="c24"
-          for="clinvar-track-in-gnomad"
-        >
-          <input
-            class="c25"
-            id="clinvar-track-in-gnomad"
-            type="checkbox"
-          />
-          Only show ClinVar variants that are in gnomAD
-        </label>
-        <label
-          for="star-filtering"
+          for="clinvar-star-filter"
         >
           Filter by 
           <a
@@ -4597,8 +4576,10 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
 
 .c27 {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5em 1em;
 }
 
 @media (max-width:1200px) {
@@ -4947,18 +4928,7 @@ exports[`Clinvar Variants Track renders the expanded all-variants plot correctly
         class="c27"
       >
         <label
-          class="c24"
-          for="clinvar-track-in-gnomad"
-        >
-          <input
-            class="c25"
-            id="clinvar-track-in-gnomad"
-            type="checkbox"
-          />
-          Only show ClinVar variants that are in gnomAD
-        </label>
-        <label
-          for="star-filtering"
+          for="clinvar-star-filter"
         >
           Filter by 
           <a
@@ -5638,8 +5608,10 @@ exports[`ClinvarVariants renders the heading, the track and the release date whe
 
 .c27 {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5em 1em;
 }
 
 @media (max-width:1200px) {
@@ -5988,18 +5960,7 @@ exports[`ClinvarVariants renders the heading, the track and the release date whe
         class="c27"
       >
         <label
-          class="c24"
-          for="clinvar-track-in-gnomad"
-        >
-          <input
-            class="c25"
-            id="clinvar-track-in-gnomad"
-            type="checkbox"
-          />
-          Only show ClinVar variants that are in gnomAD
-        </label>
-        <label
-          for="star-filtering"
+          for="clinvar-star-filter"
         >
           Filter by 
           <a
