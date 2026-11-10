@@ -54,9 +54,7 @@ def export_variants_to_parquet(
     table = table.key_by()
 
     # Get chromosome/contig names directly from Hail.
-    chromosomes = table.aggregate(
-        hl.agg.collect_as_set(table.locus.contig)
-    )
+    chromosomes = table.aggregate(hl.agg.collect_as_set(table.locus.contig))
 
     chromosomes = sorted(chromosomes)
 
@@ -66,19 +64,14 @@ def export_variants_to_parquet(
         print(f"Exporting chromosome {chrom}")
 
         # Filter Hail Table before converting to Spark.
-        chrom_table = table.filter(
-            table.locus.contig == chrom
-        )
+        chrom_table = table.filter(table.locus.contig == chrom)
 
         # Convert only this chromosome to Spark.
         chrom_df = chrom_table.to_spark(flatten=False)
 
         # Export chromosome.
-        chrom_df.write \
-            .mode("overwrite") \
-            .option("compression", compression) \
-            .parquet(
-                f"{output_path}/locus.contig={chrom}"
-            )
+        chrom_df.write.mode("overwrite").option("compression", compression).parquet(
+            f"{output_path}/locus.contig={chrom}"
+        )
 
         print(f"Finished chromosome {chrom}")

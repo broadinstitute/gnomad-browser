@@ -4,7 +4,8 @@ import sys
 
 from data_pipeline.helpers.datasets_config import DATASETS_CONFIG
 from data_pipeline.helpers.parquet_export import (
-    export_table_to_parquet, export_variants_to_parquet,
+    export_table_to_parquet,
+    export_variants_to_parquet,
 )
 from data_pipeline.pipeline import _pipeline_config
 
@@ -33,7 +34,7 @@ def main(argv):
 
         if dataset == "gnomad_v4_variants":
             export_variants_to_parquet(table, output_path)
-        else:    
+        else:
             export_table_to_parquet(table, output_path, **dataset_config.get("parquet_args", {}))
 
 
