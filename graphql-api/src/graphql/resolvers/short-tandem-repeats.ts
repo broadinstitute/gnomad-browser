@@ -1,4 +1,6 @@
+import config from '../../config'
 import { UserVisibleError } from '../../errors'
+import { resolveParquetOnlyStub } from '../../parquet-only-stubs'
 import {
   fetchAllShortTandemRepeats,
   fetchShortTandemRepeatById,
@@ -21,10 +23,18 @@ const resolveShortTandemRepeat = async (_obj: any, args: any, ctx: any) => {
 }
 
 const resolveShortTandemRepeatsInGene = (obj: any, args: any, ctx: any) => {
+  if (config.PARQUET_ONLY) {
+    return resolveParquetOnlyStub('Gene.short_tandem_repeats')
+  }
+
   return fetchShortTandemRepeatsByGene(ctx.esClient, args.dataset, obj.gene_id)
 }
 
 const resolveShortTandemRepeatsInRegion = (obj: any, args: any, ctx: any) => {
+  if (config.PARQUET_ONLY) {
+    return resolveParquetOnlyStub('Region.short_tandem_repeats')
+  }
+
   return fetchShortTandemRepeatsByRegion(ctx.esClient, args.dataset, obj)
 }
 

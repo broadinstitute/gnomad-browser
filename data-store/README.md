@@ -122,10 +122,6 @@ gene models by Ensembl ID from this crate instead of Elasticsearch.
    is set. To use Parquet alongside a real Elasticsearch cluster, leave out `PARQUET_ONLY` and set the
    usual `ELASTICSEARCH_URL`.
 
-   Browser pages that show ClinVar data also request `meta { clinvar_release_date }`, which is still read
-   from Elasticsearch. The field is non-null, so in `PARQUET_ONLY` mode its error discards the whole
-   response: those pages fail, and only direct API queries such as the one below work.
-
 3. Query it (GraphiQL is also served at <http://localhost:8010/api>):
 
    ```bash
@@ -135,5 +131,7 @@ gene models by Ensembl ID from this crate instead of Elasticsearch.
    ```
 
 Only GRCh38 ClinVar variants and `gene(gene_id:)` are served from Parquet so far; the other fields of
-a gene (variants, coverage and so on) still come from Elasticsearch. In `PARQUET_ONLY` mode every other
-query returns an error saying it isn't supported by the Parquet client yet.
+a gene (variants, coverage and so on) still come from Elasticsearch. In `PARQUET_ONLY` mode, short tandem
+repeats come back empty and the ClinVar release date is the placeholder `unavailable in Parquet-only mode`
+(each logged as a `parquetOnlyStub` warning), so gene pages can load; every other query returns an error
+saying it isn't supported by the Parquet client yet.

@@ -10,7 +10,9 @@ import {
   fetchClinvarVariantsByTranscript,
 } from '../../queries/clinvar-variant-queries'
 
+import config from '../../config'
 import { UserVisibleError } from '../../errors'
+import { resolveParquetOnlyStub } from '../../parquet-only-stubs'
 import type { GraphQLContext } from '../context'
 import {
   getFilteredRegions,
@@ -25,6 +27,10 @@ const selectExonIntervals = (exons: (Exon & GenomicIntervalBounds)[]): GenomicIn
   getFilteredRegions(exons).map(({ start, stop }) => ({ start, stop }))
 
 const resolveClinvarReleaseDate = (_: any, _args: any, ctx: any) => {
+  if (config.PARQUET_ONLY) {
+    return resolveParquetOnlyStub('BrowserMetadata.clinvar_release_date')
+  }
+
   return fetchClinvarReleaseDate(ctx.esClient)
 }
 

@@ -7,9 +7,13 @@ import type {
 } from '@gnomad/data-store'
 
 import type { GraphQLContext } from '../context'
+import config from '../../config'
 import { client as esClient } from '../../elasticsearch'
+import logger from '../../logger'
+import { PARQUET_ONLY_STUBS } from '../../parquet-only-stubs'
 import {
   countClinvarVariantsInRegion,
+  fetchClinvarReleaseDate,
   fetchClinvarVariantById,
   fetchClinvarVariantsByGene,
   fetchClinvarVariantsByRegion,
@@ -19,7 +23,9 @@ import { UserVisibleError } from '../../errors'
 
 import resolvers from './clinvar-variants'
 
+jest.mock('../../config', () => ({ PARQUET_ONLY: false }))
 jest.mock('../../elasticsearch', () => ({ client: {} }))
+jest.mock('../../logger', () => ({ warn: jest.fn() }))
 jest.mock('../../queries/clinvar-variant-queries', () => ({
   fetchClinvarReleaseDate: jest.fn(),
   countClinvarVariantsInRegion: jest.fn(),
@@ -99,6 +105,34 @@ const resolveClinvarVariant = (referenceGenome: string, context: GraphQLContext)
 
 beforeEach(() => {
   jest.clearAllMocks()
+  config.PARQUET_ONLY = false
+})
+
+describe('BrowserMetadata.clinvar_release_date', () => {
+  const resolveReleaseDate = () =>
+    resolvers.BrowserMetadata.clinvar_release_date({}, {}, createContext(null))
+
+  test('reads the release date from Elasticsearch', async () => {
+    jest.mocked(fetchClinvarReleaseDate).mockResolvedValueOnce('2026-11-05')
+
+    expect(await resolveReleaseDate()).toBe('2026-11-05')
+    expect(fetchClinvarReleaseDate).toHaveBeenCalledWith(esClient)
+  })
+
+  test('returns a visible placeholder and warns in PARQUET_ONLY mode', async () => {
+    config.PARQUET_ONLY = true
+
+    expect(await resolveReleaseDate()).toBe(
+      PARQUET_ONLY_STUBS['BrowserMetadata.clinvar_release_date']
+    )
+    expect(fetchClinvarReleaseDate).not.toHaveBeenCalled()
+    expect(logger.warn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        event: 'parquetOnlyStub',
+        field: 'BrowserMetadata.clinvar_release_date',
+      })
+    )
+  })
 })
 
 describe('Query.clinvar_variant', () => {
