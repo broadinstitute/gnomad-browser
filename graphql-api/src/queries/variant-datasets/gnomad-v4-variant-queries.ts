@@ -407,7 +407,7 @@ export type Exon = {
   feature_type: 'CDS' | 'exon' | 'UTR'
 }
 
-export const getFilteredRegions = (exons: Exon[]) => {
+export const getFilteredRegions = <T extends Exon>(exons: T[]): T[] => {
   const hasCDS = exons.some((exon) => exon.feature_type === 'CDS')
   const filteredRegions = hasCDS
     ? exons.filter((exon) => exon.feature_type === 'CDS')
