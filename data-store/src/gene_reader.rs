@@ -3,7 +3,7 @@ use datafusion::error::Result;
 use datafusion::prelude::SessionContext;
 
 use crate::record_batch_decoding::{at_most_one, decode_record_batches};
-use crate::{Gene, ParquetDataset};
+use crate::{Gene, GeneIndex, GeneIndexRow, ParquetDataset};
 
 pub struct GeneReader {
     context: SessionContext,
@@ -13,6 +13,27 @@ impl GeneReader {
     #[must_use]
     pub const fn new(context: SessionContext) -> Self {
         Self { context }
+    }
+
+    /// Read every gene's identifiers and names; only these light columns are scanned.
+    ///
+    /// # Errors
+    /// Return an error if querying or decoding fails.
+    pub async fn load_gene_index(&self) -> Result<GeneIndex> {
+        let table_name = ParquetDataset::GeneModelsGrch38.name();
+        let batches = self
+            .context
+            .sql(&format!(
+                "SELECT gene_id, gene_version, symbol, symbol_upper_case, search_terms
+                FROM {table_name}"
+            ))
+            .await?
+            .collect()
+            .await?;
+
+        let rows: Vec<GeneIndexRow> =
+            decode_record_batches(&batches, format_args!("gene index rows"))?;
+        Ok(GeneIndex::new(rows))
     }
 
     /// # Errors
