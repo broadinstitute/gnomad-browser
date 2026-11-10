@@ -82,6 +82,15 @@ Against the fixtures:
 cargo run --example read_clinvar_variant -- tests/fixtures 1-66926-AG-A
 ```
 
+Each example prints its result to stdout and timings to stderr, one per line: time to open
+the dataset, the first (cold) query, then min, p50, p95 and p99 over `ITERATIONS` warm
+repeats (default 20; p99 equals the slowest run below 100 repeats). Time with a release
+build; set `ITERATIONS=0` to run the query once.
+
+```bash
+ITERATIONS=100 cargo run --release --example read_gene -- <DATA_ROOT> ENSG00000169174 > /dev/null
+```
+
 ## Run a local graphql-api on Parquet (experimental)
 
 The API can serve GRCh38 ClinVar variants (single variants, regions, genes and transcripts) from this
