@@ -13,6 +13,9 @@ pub async fn create_datafusion_context_from_root(
     let mut config = SessionConfig::new();
     // DuckDB syntax supports the lambdas used to select transcript consequences.
     config.options_mut().sql_parser.dialect = Dialect::DuckDB;
+    // decode only columns to filter on first, big speed up
+    config.options_mut().execution.parquet.pushdown_filters = true;
+    config.options_mut().execution.parquet.reorder_filters = true;
     let context = SessionContext::new_with_config(config);
     dataset.register(&context, root).await?;
     Ok(context)

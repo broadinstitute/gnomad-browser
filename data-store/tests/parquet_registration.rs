@@ -105,6 +105,21 @@ async fn a_bound_chromosome_filter_scans_only_that_partition() -> Result<()> {
 }
 
 #[tokio::test]
+async fn contexts_filter_rows_while_decoding_parquet() -> Result<()> {
+    let context = create_datafusion_context_from_root(
+        fixtures::root_directory(),
+        ParquetDataset::ClinvarVariantsGrch38,
+    )
+    .await?;
+
+    let config = context.copied_config();
+    let parquet_options = &config.options().execution.parquet;
+    assert!(parquet_options.pushdown_filters);
+    assert!(parquet_options.reorder_filters);
+    Ok(())
+}
+
+#[tokio::test]
 async fn registration_reports_missing_dataset_with_name_and_path() -> Result<()> {
     let root = tempdir()?;
     let dataset = ParquetDataset::ClinvarVariantsGrch38;
