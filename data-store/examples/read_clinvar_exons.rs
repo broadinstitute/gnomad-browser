@@ -1,4 +1,4 @@
-use std::time::Instant;
+mod timing;
 
 use gnomad_data_store::{
     ClinvarReader, GenomicInterval, ParquetDataset, create_datafusion_context_from_root,
@@ -32,24 +32,32 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     if intervals.is_empty() {
         return Err("provide at least one unpadded interval as start:stop".into());
     }
+    let iterations = timing::iterations_from_environment()?;
 
-    let context =
-        create_datafusion_context_from_root(root, ParquetDataset::ClinvarVariantsGrch38).await?;
-    let reader = ClinvarReader::new(context);
-    let query_started_at = Instant::now();
-    let variants = if annotation_kind == "gene" {
-        reader
-            .fetch_variants_in_gene(&annotation_id, &intervals)
-            .await?
-    } else {
-        reader
-            .fetch_variants_in_transcript(&annotation_id, &intervals)
-            .await?
-    };
-    let query_duration = query_started_at.elapsed();
+    let (context, open_duration) = timing::time_open(create_datafusion_context_from_root(
+        root,
+        ParquetDataset::ClinvarVariantsGrch38,
+    ))
+    .await?;
+    let reader = &ClinvarReader::new(context);
+    let is_gene = annotation_kind == "gene";
+    let annotation_id = annotation_id.as_str();
+    let intervals = intervals.as_slice();
+    let variants = timing::time_queries(open_duration, iterations, move || async move {
+        if is_gene {
+            reader
+                .fetch_variants_in_gene(annotation_id, intervals)
+                .await
+        } else {
+            reader
+                .fetch_variants_in_transcript(annotation_id, intervals)
+                .await
+        }
+    })
+    .await?;
 
     println!("{variants:#?}");
-    eprintln!("{} variants in {query_duration:?}", variants.len());
+    eprintln!("{} variants", variants.len());
 
     Ok(())
 }
