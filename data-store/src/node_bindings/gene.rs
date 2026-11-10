@@ -9,9 +9,10 @@ use napi_derive::napi;
 use super::{into_napi_error, into_nullable};
 use crate::{
     Gene as ReaderGene, GeneExon as ReaderGeneExon,
-    GeneGnomadConstraint as ReaderGeneGnomadConstraint, GeneInterval as ReaderGeneInterval,
-    GeneLocus as ReaderGeneLocus, GeneManeSelectTranscript as ReaderGeneManeSelectTranscript,
-    GenePext as ReaderGenePext, GenePextRegion as ReaderGenePextRegion, GeneReader,
+    GeneGnomadConstraint as ReaderGeneGnomadConstraint, GeneIndex, GeneIndexEntry,
+    GeneInterval as ReaderGeneInterval, GeneLocus as ReaderGeneLocus,
+    GeneManeSelectTranscript as ReaderGeneManeSelectTranscript, GenePext as ReaderGenePext,
+    GenePextRegion as ReaderGenePextRegion, GeneReader,
     GeneTissueExpression as ReaderGeneTissueExpression, GeneTranscript as ReaderGeneTranscript,
     ParquetDataset, create_datafusion_context_from_root,
 };
@@ -22,10 +23,12 @@ const MAX_SAFE_JS_INTEGER: i64 = 9_007_199_254_740_991;
 #[napi]
 pub struct GeneStore {
     reader: GeneReader,
+    index: GeneIndex,
 }
 
 /// # Errors
-/// Return an error if `gene_models_grch38` cannot be resolved or registered under the supplied root.
+/// Return an error if `gene_models_grch38` cannot be resolved or registered under the supplied root,
+/// or its search terms cannot be read.
 #[allow(dead_code, reason = "Called from JavaScript through Node-API.")]
 #[napi]
 pub async fn open_gene_store(parquet_root: String) -> napi::Result<GeneStore> {
@@ -33,9 +36,12 @@ pub async fn open_gene_store(parquet_root: String) -> napi::Result<GeneStore> {
         create_datafusion_context_from_root(parquet_root, ParquetDataset::GeneModelsGrch38)
             .await
             .map_err(|error| into_napi_error(&error))?;
-    Ok(GeneStore {
-        reader: GeneReader::new(context),
-    })
+    let reader = GeneReader::new(context);
+    let index = reader
+        .load_gene_index()
+        .await
+        .map_err(|error| into_napi_error(&error))?;
+    Ok(GeneStore { reader, index })
 }
 
 #[napi]
@@ -55,6 +61,40 @@ impl GeneStore {
             ))
         })?;
         Ok(into_nullable(gene))
+    }
+
+    /// Match an exact `ENSG` ID or a case-insensitive prefix of a gene's symbols, best match first.
+    #[allow(
+        clippy::needless_pass_by_value,
+        reason = "Node-API passes JavaScript strings to Rust as owned Strings."
+    )]
+    #[napi]
+    pub fn search_genes(&self, query: String, limit: u32) -> Vec<GeneSearchResult> {
+        let limit = usize::try_from(limit).unwrap_or(usize::MAX);
+        self.index
+            .search(&query, limit)
+            .into_iter()
+            .map(GeneSearchResult::from)
+            .collect()
+    }
+}
+
+#[napi(object)]
+pub struct GeneSearchResult {
+    #[napi(js_name = "ensembl_id")]
+    pub ensembl_id: String,
+    #[napi(js_name = "ensembl_version")]
+    pub ensembl_version: String,
+    pub symbol: String,
+}
+
+impl From<&GeneIndexEntry> for GeneSearchResult {
+    fn from(gene: &GeneIndexEntry) -> Self {
+        Self {
+            ensembl_id: gene.gene_id.clone(),
+            ensembl_version: gene.gene_version.clone(),
+            symbol: gene.symbol.clone(),
+        }
     }
 }
 

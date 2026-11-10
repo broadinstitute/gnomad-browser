@@ -87,6 +87,7 @@ const createNativeStore = () => ({
 
 const unusedGeneStore: GeneStore = {
   fetchGeneById: jest.fn<GeneStore['fetchGeneById']>(),
+  searchGenes: jest.fn<GeneStore['searchGenes']>(),
 }
 
 const createContext = (store: ClinvarStore | null): GraphQLContext => ({
