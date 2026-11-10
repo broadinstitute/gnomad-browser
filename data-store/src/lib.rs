@@ -4,6 +4,7 @@ mod clinvar_reader;
 mod clinvar_variant;
 mod datafusion_context;
 mod gene;
+mod gene_index;
 mod gene_reader;
 mod genomic_interval;
 mod node_bindings;
@@ -20,6 +21,7 @@ pub use gene::{
     Gene, GeneExon, GeneGnomadConstraint, GeneInterval, GeneLocus, GeneManeSelectTranscript,
     GenePext, GenePextRegion, GeneTissueExpression, GeneTranscript,
 };
+pub use gene_index::{GeneIndex, GeneIndexEntry, GeneIndexRow};
 pub use gene_reader::GeneReader;
 pub use genomic_interval::{
     Chromosome, GenomicInterval, GenomicIntervalError, pad_and_merge_intervals,

@@ -74,6 +74,7 @@ cargo run --release --example read_clinvar_variant -- <DATA_ROOT> 1-66926-AG-A
 cargo run --release --example read_clinvar_region -- <DATA_ROOT> 1 926026 1477343
 cargo run --release --example read_clinvar_exons -- <DATA_ROOT> transcript ENST00000423320 2 1453500:1477400
 cargo run --release --example read_gene -- <DATA_ROOT> ENSG00000169174
+cargo run --release --example read_gene_search -- <DATA_ROOT> PCSK
 ```
 
 Against the fixtures:
