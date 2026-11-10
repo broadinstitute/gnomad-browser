@@ -305,6 +305,27 @@ describe('Gene ID queries through Node-API', () => {
   })
 })
 
+describe('Gene search through Node-API', () => {
+  test('returns plain result objects with the GraphQL field names', async () => {
+    const store = await openGeneStore(FIXTURE_ROOT)
+
+    assert.deepStrictEqual(store.searchGenes('pcsk', 5), [
+      { ensembl_id: PCSK9_ID, ensembl_version: '11', symbol: 'PCSK9' },
+    ])
+  })
+
+  test('matches aliases and exact IDs, ranks shorter symbols first, and stops at the limit', async () => {
+    const store = await openGeneStore(FIXTURE_ROOT)
+    const symbols = (results) => results.map((result) => result.symbol)
+
+    assert.deepStrictEqual(symbols(store.searchGenes('T', 5)), ['TST', 'TTTY6B'])
+    assert.deepStrictEqual(symbols(store.searchGenes('T', 1)), ['TST'])
+    assert.deepStrictEqual(symbols(store.searchGenes('narc', 5)), ['PCSK9'])
+    assert.deepStrictEqual(symbols(store.searchGenes(TTTY6B_ID, 5)), ['TTTY6B'])
+    assert.deepStrictEqual(store.searchGenes('', 5), [])
+  })
+})
+
 describe('Gene store initialization', () => {
   test('opens genes without requiring ClinVar', async (t) => {
     const root = await createTemporaryRoot(t)

@@ -22,6 +22,7 @@ const nativeGene = { gene_id: GENE_ID, symbol: 'PCSK9' } as Gene
 
 const createNativeGeneStore = () => ({
   fetchGeneById: jest.fn<GeneStore['fetchGeneById']>().mockResolvedValue(nativeGene),
+  searchGenes: jest.fn<GeneStore['searchGenes']>().mockReturnValue([]),
 })
 
 const unusedClinvarStore = {} as ClinvarStore

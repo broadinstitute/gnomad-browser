@@ -40,6 +40,8 @@ export declare class GeneStore {
    * Reject query, decoding, duplicate-ID, or unsafe JavaScript integer conversions.
    */
   fetchGeneById(geneId: string): Promise<Gene | null>
+  /** Match an exact `ENSG` ID or a case-insensitive prefix of a gene's symbols, best match first. */
+  searchGenes(query: string, limit: number): Array<GeneSearchResult>
 }
 
 export interface ClinvarCondition {
@@ -209,6 +211,12 @@ export interface GenePextRegion {
   tissues: Array<GeneTissueExpression>
 }
 
+export interface GeneSearchResult {
+  ensembl_id: string
+  ensembl_version: string
+  symbol: string
+}
+
 export interface GeneTissueExpression {
   tissue: string
   value: number | null
@@ -247,6 +255,7 @@ export declare function openClinvarStore(parquetRoot: string): Promise<ClinvarSt
 
 /**
  * # Errors
- * Return an error if `gene_models_grch38` cannot be resolved or registered under the supplied root.
+ * Return an error if `gene_models_grch38` cannot be resolved or registered under the supplied root,
+ * or its search terms cannot be read.
  */
 export declare function openGeneStore(parquetRoot: string): Promise<GeneStore>
