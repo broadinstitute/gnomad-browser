@@ -4,6 +4,7 @@ import type {
   ClinvarVariant,
   ClinvarVariantListEntry,
   GeneStore,
+  GnomadV4Store,
 } from '@gnomad/data-store'
 
 import type { GraphQLContext } from '../context'
@@ -90,10 +91,18 @@ const unusedGeneStore: GeneStore = {
   searchGenes: jest.fn<GeneStore['searchGenes']>(),
 }
 
+const unusedGnomadV4Store = {} as GnomadV4Store
+
 const createContext = (store: ClinvarStore | null): GraphQLContext => ({
   esClient,
   parquetDataStore:
-    store === null ? null : { clinvarGrch38: store, geneModelsGrch38: unusedGeneStore },
+    store === null
+      ? null
+      : {
+          clinvarGrch38: store,
+          geneModelsGrch38: unusedGeneStore,
+          gnomadVariantsV4: unusedGnomadV4Store,
+        },
   requestId: null,
 })
 

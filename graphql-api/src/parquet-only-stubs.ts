@@ -8,6 +8,7 @@ export const PARQUET_ONLY_STUBS = {
   'BrowserMetadata.clinvar_release_date': 'unavailable in Parquet-only mode',
   'Gene.short_tandem_repeats': [],
   'Region.short_tandem_repeats': [],
+  'Variant.lof_curation': null,
 } as const
 
 export type ParquetOnlyStubbedField = keyof typeof PARQUET_ONLY_STUBS
