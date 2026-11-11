@@ -1,8 +1,14 @@
 import { isRsId, isVariantId, normalizeVariantId } from '@gnomad/identifiers'
 
+import config from '../../config'
 import { DATASET_REFERENCE_GENOMES } from '../../datasets'
 import { UserVisibleError } from '../../errors'
 import { fetchClinvarVariantByClinvarVariationId } from '../../queries/clinvar-variant-queries'
+import { assertDatasetAndReferenceGenomeMatch } from '../../queries/helpers/validation-helpers'
+import gnomadV4VariantQueries, {
+  type Subset as GnomadV4Subset,
+} from '../../queries/variant-datasets/gnomad-v4-variant-queries'
+import type { GraphQLContext } from '../context'
 
 import {
   countVariantsInRegion,
@@ -65,10 +71,28 @@ const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   return variant
 }
 
-const resolveVariantsInGene = (obj: any, args: any, ctx: any) => {
+const GNOMAD_V4_SUBSETS_BY_DATASET: Partial<Record<string, GnomadV4Subset>> = {
+  gnomad_r4: 'all',
+  gnomad_r4_non_ukb: 'non_ukb',
+}
+
+const resolveVariantsInGene = (obj: any, args: any, ctx: GraphQLContext) => {
   const { dataset } = args
   if (!dataset) {
     throw new UserVisibleError('Dataset is required')
+  }
+
+  const { parquetDataStore } = ctx
+  const gnomadV4Subset = GNOMAD_V4_SUBSETS_BY_DATASET[dataset]
+  if (parquetDataStore !== null && gnomadV4Subset !== undefined) {
+    assertDatasetAndReferenceGenomeMatch(dataset, obj.reference_genome)
+    return gnomadV4VariantQueries.fetchVariantsByGeneFromParquet(
+      ctx.esClient,
+      parquetDataStore.gnomadVariantsV4,
+      obj,
+      gnomadV4Subset,
+      { isParquetOnly: config.PARQUET_ONLY }
+    )
   }
 
   return fetchVariantsByGene(ctx.esClient, dataset, obj)

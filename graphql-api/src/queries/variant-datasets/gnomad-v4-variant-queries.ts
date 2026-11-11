@@ -1,8 +1,10 @@
 import { omit } from 'lodash'
+import type { GenomicIntervalBounds, GnomadV4Store } from '@gnomad/data-store'
 
 import { isRsId } from '@gnomad/identifiers'
 
 import { UserVisibleError } from '../../errors'
+import { resolveParquetOnlyStub } from '../../parquet-only-stubs'
 
 import { fetchLocalAncestryPopulationsByVariant } from '../local-ancestry-queries'
 import { fetchAllSearchResults } from '../helpers/elasticsearch-helpers'
@@ -28,7 +30,7 @@ const IN_SILICO_PREDICTOR_IDS = [
   'polyphen_max',
 ]
 
-type Subset = 'all' | 'non_ukb'
+export type Subset = 'all' | 'non_ukb'
 
 // ================================================================================================
 // Count query
@@ -507,6 +509,44 @@ const fetchVariantsByGene = async (esClient: any, gene: any, subset: Subset) => 
   }
 }
 
+const fetchVariantsByGeneFromParquet = async (
+  esClient: any,
+  store: GnomadV4Store,
+  gene: any,
+  subset: Subset,
+  { isParquetOnly }: { isParquetOnly: boolean }
+) => {
+  const exonIntervals = getFilteredRegions<Exon & GenomicIntervalBounds>(gene.exons).map(
+    ({ start, stop }) => ({ start, stop })
+  )
+  const sourceVariants = await store.fetchVariantsInGene(
+    gene.gene_id,
+    gene.chrom,
+    exonIntervals,
+    subset
+  )
+  const variants = sourceVariants
+    .filter((variant) => hasPositiveAC(variant, subset))
+    .map(shapeVariantSummary(subset, { type: 'gene', geneId: gene.gene_id }))
+
+  if (isParquetOnly) {
+    const lofCuration = resolveParquetOnlyStub('Variant.lof_curation')
+    return variants.map((variant) => ({ ...variant, lof_curation: lofCuration }))
+  }
+
+  const lofCurationResults = await fetchLofCurationResultsByGene(esClient, 'v4', gene)
+  const lofCurationByVariantId = new Map(
+    lofCurationResults.map((result) => [
+      result.variant_id,
+      result.lof_curations.find((c) => c.gene_id === gene.gene_id),
+    ])
+  )
+  return variants.map((variant) => ({
+    ...variant,
+    lof_curation: lofCurationByVariantId.get(variant.variant_id),
+  }))
+}
+
 // ================================================================================================
 // Region query
 // ================================================================================================
@@ -674,6 +714,7 @@ const gnomadV4VariantQueries = {
   countVariantsInRegion,
   fetchVariantById,
   fetchVariantsByGene,
+  fetchVariantsByGeneFromParquet,
   fetchVariantsByRegion,
   fetchVariantsByTranscript,
   fetchMatchingVariants,

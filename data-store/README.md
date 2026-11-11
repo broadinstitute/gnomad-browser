@@ -104,7 +104,8 @@ ITERATIONS=100 cargo run --release --example read_gene -- <DATA_ROOT> ENSG000001
 ## Run a local graphql-api on Parquet (experimental)
 
 The API can serve these from this crate instead of Elasticsearch: GRCh38 ClinVar variants (single
-variants, regions, genes and transcripts), GRCh38 genes by Ensembl ID, and GRCh38 gene search.
+variants, regions, genes and transcripts), GRCh38 genes by Ensembl ID, GRCh38 gene search, and gnomAD
+v4 variants in a gene (`gnomad_r4` and `gnomad_r4_non_ukb`).
 
 1. Build the bindings in release mode:
 
@@ -122,11 +123,11 @@ variants, regions, genes and transcripts), GRCh38 genes by Ensembl ID, and GRCh3
    ./start.sh
    ```
 
-   | Variable                     | Effect                                                                                                  |
-   | ---------------------------- | ------------------------------------------------------------------------------------------------------- |
-   | `PARQUET_DATA_STORE_ENABLED` | Load the addon and route supported queries to it. Without it the API behaves as before.                 |
-   | `PARQUET_ONLY`               | Never contact Elasticsearch; skips the IP whitelist load. Requires the flag above.                      |
-   | `PARQUET_DATA_ROOT`          | Root containing `clinvar_variants_grch38` and `gene_models_grch38`. Required when the store is enabled. |
+   | Variable                     | Effect                                                                                                                        |
+   | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+   | `PARQUET_DATA_STORE_ENABLED` | Load the addon and route supported queries to it. Without it the API behaves as before.                                       |
+   | `PARQUET_ONLY`               | Never contact Elasticsearch; skips the IP whitelist load. Requires the flag above.                                            |
+   | `PARQUET_DATA_ROOT`          | Root containing `clinvar_variants_grch38`, `gene_models_grch38` and `gnomad_variants_v4`. Required when the store is enabled. |
 
    `PARQUET_ONLY` refuses to start if `REDIS_HOST`, `JSON_CACHE_ENABLE_ALL` or `JSON_CACHE_LARGE_GENES`
    is set. To use Parquet alongside a real Elasticsearch cluster, leave out `PARQUET_ONLY` and set the
@@ -140,8 +141,9 @@ variants, regions, genes and transcripts), GRCh38 genes by Ensembl ID, and GRCh3
    }'
    ```
 
-Only GRCh38 ClinVar variants, `gene(gene_id:)` and `gene_search` are served from Parquet so far; the other fields of
-a gene (variants, coverage and so on) still come from Elasticsearch. In `PARQUET_ONLY` mode, short tandem
-repeats come back empty and the ClinVar release date is the placeholder `unavailable in Parquet-only mode`
-(each logged as a `parquetOnlyStub` warning), so gene pages can load; every other query returns an error
-saying it isn't supported by the Parquet client yet.
+Only GRCh38 ClinVar variants, `gene(gene_id:)`, `gene_search` and gnomAD v4 `Gene.variants` are served
+from Parquet so far; the other fields of a gene (coverage and so on) still come from Elasticsearch. In
+`PARQUET_ONLY` mode, short tandem repeats come back empty, gnomAD v4 variants have no LoF curation, and the
+ClinVar release date is the placeholder `unavailable in Parquet-only mode` (each logged as a
+`parquetOnlyStub` warning), so gene pages can load; every other query returns an error saying it isn't
+supported by the Parquet client yet.

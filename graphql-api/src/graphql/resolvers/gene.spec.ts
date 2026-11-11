@@ -1,5 +1,11 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals'
-import type { ClinvarStore, Gene, GeneSearchResult, GeneStore } from '@gnomad/data-store'
+import type {
+  ClinvarStore,
+  Gene,
+  GeneSearchResult,
+  GeneStore,
+  GnomadV4Store,
+} from '@gnomad/data-store'
 
 import type { GraphQLContext } from '../context'
 import { client as esClient } from '../../elasticsearch'
@@ -30,11 +36,18 @@ const createNativeGeneStore = () => ({
 })
 
 const unusedClinvarStore = {} as ClinvarStore
+const unusedGnomadV4Store = {} as GnomadV4Store
 
 const createContext = (geneStore: GeneStore | null): GraphQLContext => ({
   esClient,
   parquetDataStore:
-    geneStore === null ? null : { clinvarGrch38: unusedClinvarStore, geneModelsGrch38: geneStore },
+    geneStore === null
+      ? null
+      : {
+          clinvarGrch38: unusedClinvarStore,
+          geneModelsGrch38: geneStore,
+          gnomadVariantsV4: unusedGnomadV4Store,
+        },
   requestId: null,
 })
 
