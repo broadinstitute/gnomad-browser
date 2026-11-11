@@ -7,6 +7,9 @@ const {
   fetchGenesMatchingText,
 } = require('../../queries/gene-queries')
 
+// Matches the Elasticsearch query's page size.
+const GENE_SEARCH_RESULT_LIMIT = 5
+
 const addDefaultVariantCooccurrenceCounts = (gene: any) => {
   return {
     heterozygous_variant_cooccurrence_counts: [],
@@ -44,7 +47,12 @@ const resolveGene = async (_: any, args: any, ctx: GraphQLContext) => {
   throw new UserVisibleError("One of 'gene_id' or 'gene_symbol' is required")
 }
 
-const resolveGeneSearch = (_: any, args: any, ctx: any) => {
+const resolveGeneSearch = (_: any, args: any, ctx: GraphQLContext) => {
+  const { parquetDataStore } = ctx
+  if (args.reference_genome === 'GRCh38' && parquetDataStore !== null) {
+    return parquetDataStore.geneModelsGrch38.searchGenes(args.query, GENE_SEARCH_RESULT_LIMIT)
+  }
+
   return fetchGenesMatchingText(ctx.esClient, args.query, args.reference_genome)
 }
 
