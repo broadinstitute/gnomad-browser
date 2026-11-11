@@ -147,6 +147,12 @@ fn bind_position_bins(intervals: &[GenomicInterval], parameters: &mut Vec<Scalar
 /// Elasticsearch documents the API already shapes.
 fn select_list_entry_fields(subset: GnomadV4Subset) -> String {
     let exome_subset = subset.frequency_field();
+    let exome_frequency = select_frequency(&format!("exome.freq.{exome_subset}"));
+    let genome_frequency = select_frequency("genome.freq.all");
+    let joint_frequency = select_frequency("joint.freq.all");
+    let exome_gnomad_fafmax = select_filtering_allele_frequency("exome.fafmax.gnomad");
+    let exome_non_ukb_fafmax = select_filtering_allele_frequency("exome.fafmax.non_ukb");
+    let joint_fafmax = select_filtering_allele_frequency("joint.fafmax");
     // This export has no variant-level flags or joint filters; do not infer empty lists.
     format!(
         r"
@@ -156,24 +162,51 @@ fn select_list_entry_fields(subset: GnomadV4Subset) -> String {
         rsids,
         CAST(NULL AS VARCHAR[]) AS flags,
         named_struct(
-            'freq', named_struct('{exome_subset}', exome.freq.{exome_subset}),
+            'freq', named_struct('{exome_subset}', {exome_frequency}),
             'filters', exome.filters,
             'flags', exome.flags,
-            'fafmax', exome.fafmax
+            'fafmax', named_struct('gnomad', {exome_gnomad_fafmax}, 'non_ukb', {exome_non_ukb_fafmax})
         ) AS exome,
         named_struct(
-            'freq', named_struct('all', genome.freq.all),
+            'freq', named_struct('all', {genome_frequency}),
             'filters', genome.filters,
             'flags', genome.flags
         ) AS genome,
         named_struct(
-            'freq', named_struct('all', joint.freq.all),
+            'freq', named_struct('all', {joint_frequency}),
             'filters', CAST(NULL AS VARCHAR[]),
-            'fafmax', joint.fafmax
+            'fafmax', {joint_fafmax}
         ) AS joint,
         transcript_consequences,
         in_silico_predictors
         "
+    )
+}
+
+// Name leaves rather than structs nested in `exome`, `genome` and `joint`: selecting a struct
+// such as `exome.fafmax` made DataFusion 55 decode far more of the top-level column (BRCA1 scan
+// 1,149 -> 491 ms).
+fn select_frequency(path: &str) -> String {
+    format!(
+        r"named_struct(
+            'ac', {path}.ac,
+            'ac_raw', {path}.ac_raw,
+            'an', {path}.an,
+            'hemizygote_count', {path}.hemizygote_count,
+            'homozygote_count', {path}.homozygote_count,
+            'ancestry_groups', {path}.ancestry_groups
+        )"
+    )
+}
+
+fn select_filtering_allele_frequency(path: &str) -> String {
+    format!(
+        r"named_struct(
+            'faf95_max', {path}.faf95_max,
+            'faf95_max_gen_anc', {path}.faf95_max_gen_anc,
+            'faf99_max', {path}.faf99_max,
+            'faf99_max_gen_anc', {path}.faf99_max_gen_anc
+        )"
     )
 }
 
