@@ -94,8 +94,8 @@ ITERATIONS=100 cargo run --release --example read_gene -- <DATA_ROOT> ENSG000001
 
 ## Run a local graphql-api on Parquet (experimental)
 
-The API can serve GRCh38 ClinVar variants (single variants, regions, genes and transcripts) and GRCh38
-gene models by Ensembl ID from this crate instead of Elasticsearch.
+The API can serve these from this crate instead of Elasticsearch: GRCh38 ClinVar variants (single
+variants, regions, genes and transcripts), GRCh38 genes by Ensembl ID, and GRCh38 gene search.
 
 1. Build the bindings in release mode:
 
@@ -131,7 +131,7 @@ gene models by Ensembl ID from this crate instead of Elasticsearch.
    }'
    ```
 
-Only GRCh38 ClinVar variants and `gene(gene_id:)` are served from Parquet so far; the other fields of
+Only GRCh38 ClinVar variants, `gene(gene_id:)` and `gene_search` are served from Parquet so far; the other fields of
 a gene (variants, coverage and so on) still come from Elasticsearch. In `PARQUET_ONLY` mode, short tandem
 repeats come back empty and the ClinVar release date is the placeholder `unavailable in Parquet-only mode`
 (each logged as a `parquetOnlyStub` warning), so gene pages can load; every other query returns an error
