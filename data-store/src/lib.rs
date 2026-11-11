@@ -3,6 +3,7 @@
 mod clinvar_reader;
 mod clinvar_variant;
 mod datafusion_context;
+mod exon_query;
 mod gene;
 mod gene_index;
 mod gene_reader;
