@@ -56,8 +56,12 @@ Readers take a root directory containing one subdirectory per dataset:
 ├── clinvar_variants_grch38
 │   ├── chrom=1/*.parquet
 │   └── chrom=2/*.parquet
-└── gene_models_grch38
-    └── data.parquet
+├── gene_models_grch38
+│   └── data.parquet
+└── gnomad_variants_v4
+    └── chrom=17
+        ├── posbin=15/*.parquet
+        └── posbin=16/*.parquet
 ```
 
 The `chrom=` directory names are read as the `chrom` column, and queries filter on it to skip
@@ -66,6 +70,10 @@ other chromosomes' files; the files themselves need no chromosome column.
 Gene lookups by ID are fast only if `gene_models_grch38` is sorted by `gene_id` and written with
 small row groups (4,096 rows), small pages and a page index, so a lookup reads a few pages rather
 than the whole file. A file with default writer settings returns the same genes, more slowly.
+
+gnomAD v4 is also split into 1 Mb position bins: `posbin=b` holds positions
+`b * 1,000,000 + 1` to `(b + 1) * 1,000,000`, so a variant at exactly 16,000,000 is in
+`posbin=15`. Queries compute the bins they need and skip every other directory.
 
 `tests/fixtures/` follows this layout. A full copy of the data lives at
 `gs://gnomad-v4-data-pipeline/output/parquet/demo-mirror/2026-11-02`; with the right
@@ -79,6 +87,7 @@ cargo run --release --example read_clinvar_region -- <DATA_ROOT> 1 926026 147734
 cargo run --release --example read_clinvar_exons -- <DATA_ROOT> transcript ENST00000423320 2 1453500:1477400
 cargo run --release --example read_gene -- <DATA_ROOT> ENSG00000169174
 cargo run --release --example read_gene_search -- <DATA_ROOT> PCSK
+cargo run --release --example read_gnomad_v4_variants_in_exons -- <DATA_ROOT> gene ENSG00000011295 all 17 15999784:16000032 16000118:16000382
 ```
 
 Against the fixtures:
