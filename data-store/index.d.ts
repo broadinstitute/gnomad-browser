@@ -44,6 +44,27 @@ export declare class GeneStore {
   searchGenes(query: string, limit: number): Array<GeneSearchResult>
 }
 
+export declare class GnomadV4Store {
+  /**
+   * Pad each interval by 75 bases; `subset` is `all` or `non_ukb` and selects the exome
+   * frequencies.
+   *
+   * # Errors
+   * Rejects invalid subsets, chromosomes or bounds, and propagates annotation, padding, query
+   * and unsafe JavaScript integer errors.
+   */
+  fetchVariantsInGene(geneId: string, chromosome: string, intervals: Array<GenomicIntervalBounds>, subset: string): Promise<Array<GnomadV4VariantListEntry>>
+  /**
+   * Pad each interval by 75 bases; `subset` is `all` or `non_ukb` and selects the exome
+   * frequencies.
+   *
+   * # Errors
+   * Rejects invalid subsets, chromosomes or bounds, and propagates annotation, padding, query
+   * and unsafe JavaScript integer errors.
+   */
+  fetchVariantsInTranscript(transcriptId: string, chromosome: string, intervals: Array<GenomicIntervalBounds>, subset: string): Promise<Array<GnomadV4VariantListEntry>>
+}
+
 export interface ClinvarCondition {
   name: string
   medgen_id: string | null
@@ -247,6 +268,114 @@ export interface GenomicIntervalBounds {
   stop: number
 }
 
+export interface GnomadV4AncestryFrequency {
+  id: string
+  ac: number | null
+  an: number | null
+  hemizygote_count: number | null
+  homozygote_count: number | null
+}
+
+export interface GnomadV4Cadd {
+  phred: number | null
+  raw_score: number | null
+}
+
+export interface GnomadV4ExomeData {
+  freq: GnomadV4FrequencySubsets
+  filters: Array<string> | null
+  flags: Array<string> | null
+  fafmax: GnomadV4ExomeFilteringAlleleFrequencies
+}
+
+export interface GnomadV4ExomeFilteringAlleleFrequencies {
+  gnomad: GnomadV4FilteringAlleleFrequency
+  non_ukb: GnomadV4FilteringAlleleFrequency
+}
+
+export interface GnomadV4FilteringAlleleFrequency {
+  faf95_max: number | null
+  faf95_max_gen_anc: string | null
+  faf99_max: number | null
+  faf99_max_gen_anc: string | null
+}
+
+export interface GnomadV4Frequency {
+  ac: number | null
+  ac_raw: number | null
+  an: number | null
+  hemizygote_count: number | null
+  homozygote_count: number | null
+  ancestry_groups: Array<GnomadV4AncestryFrequency> | null
+}
+
+export interface GnomadV4FrequencySubsets {
+  all: GnomadV4Frequency | null
+  non_ukb: GnomadV4Frequency | null
+}
+
+export interface GnomadV4GenomeData {
+  freq: GnomadV4FrequencySubsets
+  filters: Array<string> | null
+  flags: Array<string> | null
+}
+
+export interface GnomadV4InSilicoPredictors {
+  cadd: GnomadV4Cadd
+  revel_max: number | null
+  spliceai_ds_max: number | null
+  pangolin_largest_ds: number | null
+  phylop: number | null
+  sift_max: number | null
+  polyphen_max: number | null
+}
+
+export interface GnomadV4JointData {
+  freq: GnomadV4FrequencySubsets
+  filters: Array<string> | null
+  fafmax: GnomadV4FilteringAlleleFrequency
+}
+
+export interface GnomadV4Locus {
+  contig: string
+  position: number
+}
+
+export interface GnomadV4TranscriptConsequence {
+  gene_id: string | null
+  gene_version: string | null
+  gene_symbol: string | null
+  transcript_id: string | null
+  transcript_version: string | null
+  biotype: string | null
+  consequence_terms: Array<string> | null
+  major_consequence: string | null
+  hgvsc: string | null
+  hgvsp: string | null
+  is_canonical: boolean | null
+  is_mane_select: boolean | null
+  is_mane_select_version: boolean | null
+  refseq_id: string | null
+  refseq_version: string | null
+  domains: Array<string> | null
+  lof: string | null
+  lof_filter: string | null
+  lof_flags: string | null
+}
+
+export interface GnomadV4VariantListEntry {
+  variant_id: string
+  locus: GnomadV4Locus
+  alleles: Array<string>
+  rsids: Array<string> | null
+  flags: Array<string> | null
+  exome: GnomadV4ExomeData
+  genome: GnomadV4GenomeData
+  joint: GnomadV4JointData
+  transcript_consequences: Array<GnomadV4TranscriptConsequence>
+  in_silico_predictors: GnomadV4InSilicoPredictors
+}
+
 /**
  * # Errors
  * Returns an error if the configured Parquet dataset cannot be registered.
@@ -259,3 +388,9 @@ export declare function openClinvarStore(parquetRoot: string): Promise<ClinvarSt
  * or its search terms cannot be read.
  */
 export declare function openGeneStore(parquetRoot: string): Promise<GeneStore>
+
+/**
+ * # Errors
+ * Returns an error if the configured Parquet dataset cannot be registered.
+ */
+export declare function openGnomadV4Store(parquetRoot: string): Promise<GnomadV4Store>
