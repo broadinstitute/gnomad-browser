@@ -12,11 +12,15 @@ pub enum VariantAnnotationFilter<'a> {
     Transcript(&'a str),
 }
 
+pub struct PaddedExonIntervals {
+    pub chromosome: Chromosome,
+    pub intervals: Vec<GenomicInterval>,
+}
+
 pub struct ExonQuery<'a> {
     pub annotation_field: &'static str,
     pub annotation_id: &'a str,
-    pub chromosome: Chromosome,
-    pub padded_intervals: Vec<GenomicInterval>,
+    pub padded_exons: PaddedExonIntervals,
 }
 
 impl<'a> ExonQuery<'a> {
@@ -39,10 +43,25 @@ impl<'a> ExonQuery<'a> {
             )));
         }
 
+        let padded_exons = PaddedExonIntervals::prepare(intervals, annotation_id)?;
+        Ok(padded_exons.map(|padded_exons| Self {
+            annotation_field,
+            annotation_id,
+            padded_exons,
+        }))
+    }
+}
+
+impl PaddedExonIntervals {
+    /// Return `None` when there are no exon intervals. `description` names the exons in errors.
+    ///
+    /// # Errors
+    /// Returns an error for padding overflow or intervals on more than one chromosome.
+    pub fn prepare(intervals: &[GenomicInterval], description: &str) -> Result<Option<Self>> {
         let padded_intervals =
             pad_and_merge_intervals(intervals, EXON_PADDING).map_err(|error| {
                 DataFusionError::Plan(format!(
-                    "Invalid padded exon intervals for {annotation_id}: {error}"
+                    "Invalid padded exon intervals for {description}: {error}"
                 ))
             })?;
         let Some(chromosome) = padded_intervals.first().map(GenomicInterval::chromosome) else {
@@ -53,21 +72,19 @@ impl<'a> ExonQuery<'a> {
             .any(|interval| interval.chromosome() != chromosome)
         {
             return Err(DataFusionError::Plan(format!(
-                "Exon intervals for {annotation_id} span more than one chromosome"
+                "Exon intervals for {description} span more than one chromosome"
             )));
         }
 
         Ok(Some(Self {
-            annotation_field,
-            annotation_id,
             chromosome,
-            padded_intervals,
+            intervals: padded_intervals,
         }))
     }
 
     pub fn bind_position_predicate(&self, parameters: &mut Vec<ScalarValue>) -> String {
-        let mut position_predicates = Vec::with_capacity(self.padded_intervals.len());
-        for interval in &self.padded_intervals {
+        let mut position_predicates = Vec::with_capacity(self.intervals.len());
+        for interval in &self.intervals {
             let start = bind_parameter(parameters, ScalarValue::Int32(Some(interval.start())));
             let stop = bind_parameter(parameters, ScalarValue::Int32(Some(interval.stop())));
             position_predicates.push(format!("pos BETWEEN {start} AND {stop}"));
