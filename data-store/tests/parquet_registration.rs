@@ -244,3 +244,22 @@ async fn one_file_schema_matches_inference_over_every_file() -> Result<()> {
     }
     Ok(())
 }
+
+#[tokio::test]
+async fn gnomad_v4_declared_file_order_replaces_the_sort() -> Result<()> {
+    let dataset = ParquetDataset::GnomadVariantsV4;
+    let context = create_datafusion_context_from_root(fixtures::root_directory(), dataset).await?;
+
+    let plan = context
+        .sql(&format!(
+            "SELECT pos, ref, alt FROM {} ORDER BY pos, ref, alt",
+            dataset.name()
+        ))
+        .await?
+        .create_physical_plan()
+        .await?;
+    let plan = displayable(plan.as_ref()).indent(true).to_string();
+
+    assert!(!plan.contains("SortExec:"), "{plan}");
+    Ok(())
+}

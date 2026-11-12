@@ -6,7 +6,8 @@ use datafusion::arrow::datatypes::{DataType, SchemaRef};
 use datafusion::datasource::file_format::options::ReadOptions;
 use datafusion::datasource::listing::ListingTableUrl;
 use datafusion::error::DataFusionError;
-use datafusion::prelude::{ParquetReadOptions, SessionContext};
+use datafusion::logical_expr::SortExpr;
+use datafusion::prelude::{ParquetReadOptions, SessionContext, col};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ParquetDataset {
@@ -39,6 +40,18 @@ impl ParquetDataset {
                 chromosome_partition(),
                 ("posbin".to_owned(), DataType::Utf8),
             ],
+        }
+    }
+
+    /// Every file of the dataset is written in this order; `DataFusion` trusts it instead of sorting.
+    #[must_use]
+    pub fn file_sort_order(self) -> Vec<SortExpr> {
+        match self {
+            Self::GnomadVariantsV4 => ["pos", "ref", "alt"]
+                .into_iter()
+                .map(|column| col(column).sort(true, false))
+                .collect(),
+            Self::ClinvarVariantsGrch38 | Self::GeneModelsGrch38 => Vec::new(),
         }
     }
 
@@ -77,8 +90,14 @@ impl ParquetDataset {
         directory: &Path,
         path: &str,
     ) -> datafusion::error::Result<()> {
-        let read_options =
-            ParquetReadOptions::default().table_partition_cols(self.partition_columns());
+        let file_sort_order = self.file_sort_order();
+        let read_options = ParquetReadOptions::default()
+            .table_partition_cols(self.partition_columns())
+            .file_sort_order(if file_sort_order.is_empty() {
+                Vec::new()
+            } else {
+                vec![file_sort_order]
+            });
         let file_schema = match find_first_parquet_file(directory)? {
             Some(file) => Some(infer_file_schema(context, &file, &read_options).await?),
             None => None,
