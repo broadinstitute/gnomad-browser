@@ -18,26 +18,32 @@ async fn create_synthetic_reader(variant_annotations: &str) -> Result<ClinvarRea
     let context = SessionContext::new_with_config(config);
     let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
     let query = format!(
-        r#"
+        r"
         CREATE TABLE {table_name} AS
         SELECT
-            variant_id,
             chromosome AS chrom,
+            CAST((CAST(position AS INT) - 1) / 1000000 AS VARCHAR) AS posbin,
             CAST(position AS INT) AS pos,
-            'A' AS ref,
-            'G' AS alt,
+            split_part(variant_id, '-', 3) AS ref,
+            split_part(variant_id, '-', 4) AS alt,
             'GRCh38' AS reference_genome,
             'synthetic' AS clinvar_variation_id,
             'Uncertain significance' AS clinical_significance,
             'criteria provided, single submitter' AS review_status,
             CAST(1 AS INT) AS gold_stars,
             false AS in_gnomad,
-            CAST(NULL AS INT) AS "gnomad.exome.ac",
-            CAST(NULL AS INT) AS "gnomad.exome.an",
-            CAST(NULL AS VARCHAR[]) AS "gnomad.exome.filters",
-            CAST(NULL AS INT) AS "gnomad.genome.ac",
-            CAST(NULL AS INT) AS "gnomad.genome.an",
-            CAST(NULL AS VARCHAR[]) AS "gnomad.genome.filters",
+            named_struct(
+                'exome', named_struct(
+                    'filters', CAST(NULL AS VARCHAR[]),
+                    'ac', CAST(NULL AS INT),
+                    'an', CAST(NULL AS INT)
+                ),
+                'genome', named_struct(
+                    'filters', CAST(NULL AS VARCHAR[]),
+                    'ac', CAST(NULL AS INT),
+                    'an', CAST(NULL AS INT)
+                )
+            ) AS gnomad,
             array_agg(
                 named_struct(
                     'gene_id', gene_id,
@@ -51,7 +57,7 @@ async fn create_synthetic_reader(variant_annotations: &str) -> Result<ClinvarRea
             variant_id, chromosome, position, gene_id, transcript_id, consequence_order
         )
         GROUP BY variant_id, chromosome, position
-        "#
+        "
     );
     context.sql(&query).await?.collect().await?;
     Ok(ClinvarReader::new(context))

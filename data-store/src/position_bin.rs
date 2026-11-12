@@ -8,7 +8,7 @@ use crate::exon_query::bind_parameter;
 /// Directory `posbin=b` holds positions `b * POSITION_BIN_SIZE + 1 ..= (b + 1) * POSITION_BIN_SIZE`.
 const POSITION_BIN_SIZE: i32 = 1_000_000;
 
-const fn position_bin(position: i32) -> i32 {
+pub const fn position_bin(position: i32) -> i32 {
     position.saturating_sub(1).saturating_div(POSITION_BIN_SIZE)
 }
 

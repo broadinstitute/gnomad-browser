@@ -1,12 +1,13 @@
 use crate::exon_query::{ExonQuery, VariantAnnotationFilter, bind_parameter};
+use crate::position_bin::{bind_position_bins, position_bin};
 use crate::record_batch_decoding::{at_most_one, decode_record_batches};
 use crate::{ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset};
 use datafusion::common::ScalarValue;
 use datafusion::error::DataFusionError;
 use datafusion::prelude::SessionContext;
 
-const CLINVAR_LIST_ENTRY_FIELDS: &str = r#"
-    variant_id,
+const CLINVAR_LIST_ENTRY_FIELDS: &str = r"
+    concat(chrom, '-', CAST(pos AS VARCHAR), '-', ref, '-', alt) AS variant_id,
     reference_genome,
     chrom AS chromosome,
     pos AS position,
@@ -20,32 +21,39 @@ const CLINVAR_LIST_ENTRY_FIELDS: &str = r#"
     named_struct(
         'exome',
         CASE
-            WHEN "gnomad.exome.ac" IS NULL THEN NULL
+            WHEN gnomad.exome.ac IS NULL THEN NULL
             ELSE named_struct(
-                'ac', "gnomad.exome.ac",
-                'an', "gnomad.exome.an",
-                'filters', "gnomad.exome.filters"
+                'ac', gnomad.exome.ac,
+                'an', gnomad.exome.an,
+                'filters', gnomad.exome.filters
             )
         END,
         'genome',
         CASE
-            WHEN "gnomad.genome.ac" IS NULL THEN NULL
+            WHEN gnomad.genome.ac IS NULL THEN NULL
             ELSE named_struct(
-                'ac', "gnomad.genome.ac",
-                'an', "gnomad.genome.an",
-                'filters', "gnomad.genome.filters"
+                'ac', gnomad.genome.ac,
+                'an', gnomad.genome.an,
+                'filters', gnomad.genome.filters
             )
         END
     ) AS gnomad
-"#;
+";
 
 pub struct ClinvarReader {
     context: SessionContext,
 }
 
+struct ParsedVariantId<'a> {
+    chromosome: &'a str,
+    position: i32,
+    reference_allele: &'a str,
+    alternate_allele: &'a str,
+}
+
 /// Accept the `chrom-pos-ref-alt` form the API's `normalizeVariantId` produces, which keeps `MT`
 /// and allows position 0.
-fn parse_variant_id(variant_id: &str) -> datafusion::error::Result<(&str, i32)> {
+fn parse_variant_id(variant_id: &str) -> datafusion::error::Result<ParsedVariantId<'_>> {
     let invalid = || {
         DataFusionError::Plan(format!(
             "Invalid ClinVar variant ID {variant_id:?}: expected chrom-pos-ref-alt"
@@ -74,18 +82,25 @@ fn parse_variant_id(variant_id: &str) -> datafusion::error::Result<(&str, i32)> 
         .flatten();
     match position {
         Some(position) if is_chromosome && is_allele(reference) && is_allele(alternate) => {
-            Ok((chromosome, position))
+            Ok(ParsedVariantId {
+                chromosome,
+                position,
+                reference_allele: reference,
+                alternate_allele: alternate,
+            })
         }
         _ => Err(invalid()),
     }
 }
 
-fn region_parameters(interval: &GenomicInterval) -> Vec<ScalarValue> {
-    vec![
+/// Bind `$1` chromosome, `$2` start, `$3` stop and the interval's bins; return the bin parameters.
+fn bind_region_parameters(interval: &GenomicInterval, parameters: &mut Vec<ScalarValue>) -> String {
+    parameters.extend([
         ScalarValue::Utf8(Some(interval.chromosome().as_str().to_owned())),
         ScalarValue::Int32(Some(interval.start())),
         ScalarValue::Int32(Some(interval.stop())),
-    ]
+    ]);
+    bind_position_bins(std::slice::from_ref(interval), parameters)
 }
 
 impl ClinvarReader {
@@ -103,7 +118,7 @@ impl ClinvarReader {
         &self,
         variant_id: &str,
     ) -> datafusion::error::Result<Option<ClinvarVariant>> {
-        let (chromosome, position) = parse_variant_id(variant_id)?;
+        let parsed = parse_variant_id(variant_id)?;
         let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
         let dataframe = self
             .context
@@ -111,18 +126,22 @@ impl ClinvarReader {
                 "
                 SELECT {CLINVAR_LIST_ENTRY_FIELDS}, last_evaluated, rsid, submissions
                 FROM {table_name}
-                WHERE variant_id = $1
-                  AND chrom = $2
+                WHERE chrom = $1
+                  AND posbin = $2
                   AND pos = $3
+                  AND ref = $4
+                  AND alt = $5
                 ",
             ))
             .await?;
 
         let batches = dataframe
             .with_param_values(vec![
-                ScalarValue::Utf8(Some(variant_id.to_owned())),
-                ScalarValue::Utf8(Some(chromosome.to_owned())),
-                ScalarValue::Int32(Some(position)),
+                ScalarValue::Utf8(Some(parsed.chromosome.to_owned())),
+                ScalarValue::Utf8(Some(position_bin(parsed.position).to_string())),
+                ScalarValue::Int32(Some(parsed.position)),
+                ScalarValue::Utf8(Some(parsed.reference_allele.to_owned())),
+                ScalarValue::Utf8(Some(parsed.alternate_allele.to_owned())),
             ])?
             .collect()
             .await?;
@@ -186,6 +205,7 @@ impl ClinvarReader {
             &mut parameters,
             ScalarValue::Utf8(Some(exon_query.chromosome.as_str().to_owned())),
         );
+        let bin_parameters = bind_position_bins(&exon_query.padded_intervals, &mut parameters);
         let position_predicate = exon_query.bind_position_predicate(&mut parameters);
         let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
         let query = format!(
@@ -198,6 +218,7 @@ impl ClinvarReader {
                     ) AS transcript_consequence
                 FROM {table_name}
                 WHERE chrom = {chromosome_parameter}
+                  AND posbin IN ({bin_parameters})
                   AND ({position_predicate})
             )
             SELECT * FROM candidates
@@ -220,17 +241,20 @@ impl ClinvarReader {
         interval: &GenomicInterval,
     ) -> datafusion::error::Result<usize> {
         let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
+        let mut parameters = Vec::new();
+        let bin_parameters = bind_region_parameters(interval, &mut parameters);
         self.context
             .sql(&format!(
                 "
                 SELECT pos
                 FROM {table_name}
                 WHERE chrom = $1
+                  AND posbin IN ({bin_parameters})
                   AND pos BETWEEN $2 AND $3
                 "
             ))
             .await?
-            .with_param_values(region_parameters(interval))?
+            .with_param_values(parameters)?
             .count()
             .await
     }
@@ -245,7 +269,8 @@ impl ClinvarReader {
         limit: usize,
     ) -> datafusion::error::Result<Vec<ClinvarVariantListEntry>> {
         let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
-
+        let mut parameters = Vec::new();
+        let bin_parameters = bind_region_parameters(interval, &mut parameters);
         let query = format!(
             r"
             SELECT {CLINVAR_LIST_ENTRY_FIELDS},
@@ -255,15 +280,16 @@ impl ClinvarReader {
                 ) AS transcript_consequence
             FROM {table_name}
             WHERE chrom = $1
+              AND posbin IN ({bin_parameters})
               AND pos BETWEEN $2 AND $3
-            ORDER BY pos, variant_id
+            ORDER BY pos, ref, alt
             "
         );
         let batches = self
             .context
             .sql(&query)
             .await?
-            .with_param_values(region_parameters(interval))?
+            .with_param_values(parameters)?
             .limit(0, Some(limit))?
             .collect()
             .await?;

@@ -24,26 +24,32 @@ async fn create_synthetic_reader(variant_rows: &str) -> Result<ClinvarReader> {
     let context = SessionContext::new_with_config(config);
     let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
     let query = format!(
-        r#"
+        r"
         CREATE TABLE {table_name} AS
         SELECT
-            variant_id,
             'GRCh38' AS reference_genome,
             chromosome AS chrom,
+            CAST((CAST(position AS INT) - 1) / 1000000 AS VARCHAR) AS posbin,
             CAST(position AS INT) AS pos,
-            'A' AS ref,
-            'G' AS alt,
+            split_part(variant_id, '-', 3) AS ref,
+            split_part(variant_id, '-', 4) AS alt,
             concat('variation-', variant_id) AS clinvar_variation_id,
             'Pathogenic' AS clinical_significance,
             'reviewed by expert panel' AS review_status,
             CAST(3 AS INT) AS gold_stars,
             annotation_state = 'populated' AS in_gnomad,
-            CASE WHEN annotation_state = 'populated' THEN CAST(3 AS INT) END AS "gnomad.exome.ac",
-            CASE WHEN annotation_state = 'populated' THEN CAST(1000 AS INT) END AS "gnomad.exome.an",
-            CASE WHEN annotation_state = 'populated' THEN ['AS_VQSR'] END AS "gnomad.exome.filters",
-            CASE WHEN annotation_state = 'populated' THEN CAST(5 AS INT) END AS "gnomad.genome.ac",
-            CASE WHEN annotation_state = 'populated' THEN CAST(2000 AS INT) END AS "gnomad.genome.an",
-            CASE WHEN annotation_state = 'populated' THEN [] END AS "gnomad.genome.filters",
+            named_struct(
+                'exome', named_struct(
+                    'filters', CASE WHEN annotation_state = 'populated' THEN ['AS_VQSR'] END,
+                    'ac', CASE WHEN annotation_state = 'populated' THEN CAST(3 AS INT) END,
+                    'an', CASE WHEN annotation_state = 'populated' THEN CAST(1000 AS INT) END
+                ),
+                'genome', named_struct(
+                    'filters', CASE WHEN annotation_state = 'populated' THEN [] END,
+                    'ac', CASE WHEN annotation_state = 'populated' THEN CAST(5 AS INT) END,
+                    'an', CASE WHEN annotation_state = 'populated' THEN CAST(2000 AS INT) END
+                )
+            ) AS gnomad,
             CASE WHEN annotation_state = 'populated' THEN [
                 named_struct(
                     'gene_id', '1234',
@@ -61,7 +67,7 @@ async fn create_synthetic_reader(variant_rows: &str) -> Result<ClinvarReader> {
                 )
             ] ELSE [] END AS transcript_consequences
         FROM ({variant_rows}) AS supplied(variant_id, chromosome, position, annotation_state)
-        "#
+        "
     );
     context.sql(&query).await?.collect().await?;
     Ok(ClinvarReader::new(context))

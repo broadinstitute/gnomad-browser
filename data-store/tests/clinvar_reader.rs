@@ -11,10 +11,10 @@ use gnomad_data_store::{ClinvarReader, ParquetDataset, create_datafusion_context
 mod fixtures;
 
 /// Derive every detail column from `annotation_state`: `populated` fills each field and
-/// collection, `empty` leaves collections empty with exome-only gnomAD data, and `null` leaves
-/// optional fields and gnomAD data absent.
-const SYNTHETIC_DETAIL_COLUMNS: &str = r#"
-    'GRCh38' AS reference_genome,
+/// collection, `empty` leaves collections empty with exome-only gnomAD data, `null` leaves
+/// optional fields and gnomAD data absent, and `undecodable` nulls a required field.
+const SYNTHETIC_DETAIL_COLUMNS: &str = r"
+    CASE WHEN annotation_state <> 'undecodable' THEN 'GRCh38' END AS reference_genome,
     concat('variation-', CAST(position AS VARCHAR)) AS clinvar_variation_id,
     'Pathogenic' AS clinical_significance,
     'reviewed by expert panel' AS review_status,
@@ -41,16 +41,22 @@ const SYNTHETIC_DETAIL_COLUMNS: &str = r#"
             'conditions', [named_struct('name', 'Condition C', 'medgen_id', 'C0000003')]
         )
     ] ELSE [] END AS submissions,
-    CASE WHEN annotation_state <> 'null' THEN CAST(3 AS INT) END AS "gnomad.exome.ac",
-    CASE WHEN annotation_state <> 'null' THEN CAST(1000 AS INT) END AS "gnomad.exome.an",
-    CASE
-        WHEN annotation_state = 'populated' THEN ['AS_VQSR']
-        WHEN annotation_state = 'empty' THEN []
-    END AS "gnomad.exome.filters",
-    CASE WHEN annotation_state = 'populated' THEN CAST(5 AS INT) END AS "gnomad.genome.ac",
-    CASE WHEN annotation_state = 'populated' THEN CAST(2000 AS INT) END AS "gnomad.genome.an",
-    CASE WHEN annotation_state = 'populated' THEN ['AC0', 'RF'] END AS "gnomad.genome.filters"
-"#;
+    named_struct(
+        'exome', named_struct(
+            'filters', CASE
+                WHEN annotation_state = 'populated' THEN ['AS_VQSR']
+                WHEN annotation_state = 'empty' THEN []
+            END,
+            'ac', CASE WHEN annotation_state <> 'null' THEN CAST(3 AS INT) END,
+            'an', CASE WHEN annotation_state <> 'null' THEN CAST(1000 AS INT) END
+        ),
+        'genome', named_struct(
+            'filters', CASE WHEN annotation_state = 'populated' THEN ['AC0', 'RF'] END,
+            'ac', CASE WHEN annotation_state = 'populated' THEN CAST(5 AS INT) END,
+            'an', CASE WHEN annotation_state = 'populated' THEN CAST(2000 AS INT) END
+        )
+    ) AS gnomad
+";
 
 async fn create_reader_from_rows(supplied_rows: &str) -> Result<ClinvarReader> {
     let mut config = SessionConfig::new();
@@ -61,8 +67,8 @@ async fn create_reader_from_rows(supplied_rows: &str) -> Result<ClinvarReader> {
         r"
         CREATE TABLE {table_name} AS
         SELECT
-            variant_id,
             chromosome AS chrom,
+            CAST((CAST(position AS INT) - 1) / 1000000 AS VARCHAR) AS posbin,
             CAST(position AS INT) AS pos,
             reference_allele AS ref,
             alternate_allele AS alt,
@@ -254,14 +260,12 @@ async fn rejects_duplicate_ids_instead_of_selecting_an_arbitrary_record() -> Res
 
 #[tokio::test]
 async fn reports_decode_errors_with_the_requested_variant_id() -> Result<()> {
-    let reader =
-        create_synthetic_reader("VALUES ('1-100-A-G', '1', 100, CAST(NULL AS VARCHAR), 'G')")
-            .await?;
+    let reader = create_synthetic_detail_reader("VALUES ('1-100-A-G', 'undecodable')").await?;
 
     let error = reader
         .fetch_single_variant("1-100-A-G")
         .await
-        .expect_err("missing reference allele must fail decoding");
+        .expect_err("missing reference genome must fail decoding");
 
     assert!(
         error

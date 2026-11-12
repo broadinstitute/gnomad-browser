@@ -19,7 +19,7 @@ async fn registers_every_partition_with_a_metadata_sidecar_present() -> Result<(
     let root = tempdir()?;
     let dataset = ParquetDataset::ClinvarVariantsGrch38;
     let directory = root.path().join(dataset.name());
-    for partition in ["chrom=1", "chrom=2"] {
+    for partition in ["chrom=1/posbin=0", "chrom=1/posbin=1", "chrom=2/posbin=1"] {
         let destination = directory.join(partition);
         fs::create_dir_all(&destination)?;
         fs::copy(
@@ -37,7 +37,7 @@ async fn registers_every_partition_with_a_metadata_sidecar_present() -> Result<(
     for chromosome in ["1", "2"] {
         let rows = context
             .sql(&format!(
-                "SELECT variant_id FROM {} WHERE chrom = '{chromosome}'",
+                "SELECT pos FROM {} WHERE chrom = '{chromosome}'",
                 dataset.name()
             ))
             .await?
@@ -49,22 +49,23 @@ async fn registers_every_partition_with_a_metadata_sidecar_present() -> Result<(
 }
 
 #[tokio::test]
-async fn reads_each_row_chromosome_from_its_partition_directory() -> Result<()> {
+async fn reads_each_row_chromosome_and_bin_from_its_partition_directories() -> Result<()> {
     let dataset = ParquetDataset::ClinvarVariantsGrch38;
     let context = create_datafusion_context_from_root(fixtures::root_directory(), dataset).await?;
 
     for chromosome in ["1", "2"] {
         let rows_in_partition = context
             .sql(&format!(
-                "SELECT variant_id FROM {} WHERE chrom = '{chromosome}'",
+                "SELECT pos FROM {} WHERE chrom = '{chromosome}'",
                 dataset.name()
             ))
             .await?
             .count()
             .await?;
-        let rows_with_other_contig = context
+        let rows_in_another_bin = context
             .sql(&format!(
-                r#"SELECT variant_id FROM {} WHERE chrom = '{chromosome}' AND "locus.contig" <> 'chr{chromosome}'"#,
+                "SELECT pos FROM {} WHERE chrom = '{chromosome}'
+                   AND posbin <> CAST((pos - 1) / 1000000 AS VARCHAR)",
                 dataset.name()
             ))
             .await?
@@ -72,7 +73,7 @@ async fn reads_each_row_chromosome_from_its_partition_directory() -> Result<()> 
             .await?;
 
         assert!(rows_in_partition > 0, "chrom={chromosome} has no rows");
-        assert_eq!(rows_with_other_contig, 0, "chrom={chromosome}");
+        assert_eq!(rows_in_another_bin, 0, "chrom={chromosome}");
     }
     Ok(())
 }
@@ -84,7 +85,7 @@ async fn a_bound_chromosome_filter_scans_only_that_partition() -> Result<()> {
 
     let plan = context
         .sql(&format!(
-            "SELECT variant_id FROM {} WHERE chrom = $1",
+            "SELECT pos FROM {} WHERE chrom = $1",
             dataset.name()
         ))
         .await?
@@ -166,7 +167,7 @@ async fn registration_rejects_invalid_parquet_with_name_and_path() -> Result<()>
     let root = tempdir()?;
     let dataset = ParquetDataset::ClinvarVariantsGrch38;
     let directory = root.path().join(dataset.name());
-    let partition = directory.join("chrom=1");
+    let partition = directory.join("chrom=1/posbin=0");
     fs::create_dir_all(&partition)?;
     fs::write(partition.join("invalid.parquet"), b"not Parquet")?;
     let context = SessionContext::new();
@@ -188,23 +189,26 @@ async fn registration_reads_the_schema_from_the_first_file_only() -> Result<()> 
     let root = tempdir()?;
     let dataset = ParquetDataset::ClinvarVariantsGrch38;
     let directory = root.path().join(dataset.name());
-    fs::create_dir_all(directory.join("chrom=1"))?;
+    fs::create_dir_all(directory.join("chrom=1/posbin=0"))?;
     fs::copy(
         fixtures::root_directory()
             .join(dataset.name())
-            .join("chrom=1/data_0.parquet"),
-        directory.join("chrom=1/data_0.parquet"),
+            .join("chrom=1/posbin=0/data_0.parquet"),
+        directory.join("chrom=1/posbin=0/data_0.parquet"),
     )?;
     // Inferring the schema from every footer would fail on this file.
-    fs::create_dir_all(directory.join("chrom=2"))?;
-    fs::write(directory.join("chrom=2/data_0.parquet"), b"not Parquet")?;
+    fs::create_dir_all(directory.join("chrom=2/posbin=1"))?;
+    fs::write(
+        directory.join("chrom=2/posbin=1/data_0.parquet"),
+        b"not Parquet",
+    )?;
     fs::write(directory.join(".DS_Store"), b"")?;
 
     let context = create_datafusion_context_from_root(root.path(), dataset).await?;
 
     let rows = context
         .sql(&format!(
-            "SELECT variant_id FROM {} WHERE chrom = '1'",
+            "SELECT pos FROM {} WHERE chrom = '1'",
             dataset.name()
         ))
         .await?
