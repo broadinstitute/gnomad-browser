@@ -8,7 +8,7 @@ use std::fs;
 use datafusion::common::ScalarValue;
 use datafusion::error::Result;
 use datafusion::physical_plan::displayable;
-use datafusion::prelude::SessionContext;
+use datafusion::prelude::{ParquetReadOptions, SessionContext};
 use gnomad_data_store::{ParquetDataset, create_datafusion_context_from_root};
 use tempfile::tempdir;
 
@@ -180,5 +180,67 @@ async fn registration_rejects_invalid_parquet_with_name_and_path() -> Result<()>
     assert!(message.contains(dataset.name()));
     assert!(message.contains(&directory.display().to_string()));
     assert!(!context.table_exist(dataset.name())?);
+    Ok(())
+}
+
+#[tokio::test]
+async fn registration_reads_the_schema_from_the_first_file_only() -> Result<()> {
+    let root = tempdir()?;
+    let dataset = ParquetDataset::ClinvarVariantsGrch38;
+    let directory = root.path().join(dataset.name());
+    fs::create_dir_all(directory.join("chrom=1"))?;
+    fs::copy(
+        fixtures::root_directory()
+            .join(dataset.name())
+            .join("chrom=1/data_0.parquet"),
+        directory.join("chrom=1/data_0.parquet"),
+    )?;
+    // Inferring the schema from every footer would fail on this file.
+    fs::create_dir_all(directory.join("chrom=2"))?;
+    fs::write(directory.join("chrom=2/data_0.parquet"), b"not Parquet")?;
+    fs::write(directory.join(".DS_Store"), b"")?;
+
+    let context = create_datafusion_context_from_root(root.path(), dataset).await?;
+
+    let rows = context
+        .sql(&format!(
+            "SELECT variant_id FROM {} WHERE chrom = '1'",
+            dataset.name()
+        ))
+        .await?
+        .count()
+        .await?;
+    assert!(rows > 0);
+    Ok(())
+}
+
+#[tokio::test]
+async fn one_file_schema_matches_inference_over_every_file() -> Result<()> {
+    for dataset in [
+        ParquetDataset::ClinvarVariantsGrch38,
+        ParquetDataset::GeneModelsGrch38,
+        ParquetDataset::GnomadVariantsV4,
+    ] {
+        let registered =
+            create_datafusion_context_from_root(fixtures::root_directory(), dataset).await?;
+        let inferred = SessionContext::new();
+        inferred
+            .register_parquet(
+                dataset.name(),
+                dataset
+                    .resolve_directory(fixtures::root_directory())?
+                    .display()
+                    .to_string(),
+                ParquetReadOptions::default().table_partition_cols(dataset.partition_columns()),
+            )
+            .await?;
+
+        assert_eq!(
+            registered.table(dataset.name()).await?.schema().as_arrow(),
+            inferred.table(dataset.name()).await?.schema().as_arrow(),
+            "{}",
+            dataset.name()
+        );
+    }
     Ok(())
 }
