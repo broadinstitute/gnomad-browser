@@ -315,7 +315,7 @@ export interface GenomicIntervalBounds {
 export declare function openClinvarStore(parquetRoot: string): Promise<ClinvarStore>
 
 /**
- * `dataset` is `gnomad_v4_exome`.
+ * `dataset` is `gnomad_v3_genome` or `gnomad_v4_exome`.
  *
  * # Errors
  * Rejects an unknown dataset and returns an error if its Parquet dataset cannot be registered.

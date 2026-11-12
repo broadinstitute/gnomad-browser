@@ -21,8 +21,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut arguments = std::env::args().skip(1);
     let root = arguments.next().ok_or("provide a Parquet root directory")?;
     let dataset = match arguments.next().as_deref() {
+        Some("gnomad_v3_genome") => CoverageDataset::GnomadV3Genome,
         Some("gnomad_v4_exome") => CoverageDataset::GnomadV4Exome,
-        _ => return Err("provide a coverage dataset: gnomad_v4_exome".into()),
+        _ => return Err("provide a coverage dataset: gnomad_v3_genome or gnomad_v4_exome".into()),
     };
     let gene_id = arguments.next().ok_or("provide a gene ID")?;
     let chromosome = arguments.next().ok_or("provide a chromosome")?;

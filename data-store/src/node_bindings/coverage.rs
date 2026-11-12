@@ -20,15 +20,18 @@ pub struct CoverageStore {
 
 fn parse_coverage_dataset(dataset: &str) -> napi::Result<CoverageDataset> {
     match dataset {
+        "gnomad_v3_genome" => Ok(CoverageDataset::GnomadV3Genome),
         "gnomad_v4_exome" => Ok(CoverageDataset::GnomadV4Exome),
         _ => Err(napi::Error::new(
             napi::Status::InvalidArg,
-            format!("Invalid coverage dataset: {dataset}; expected gnomad_v4_exome"),
+            format!(
+                "Invalid coverage dataset: {dataset}; expected gnomad_v3_genome or gnomad_v4_exome"
+            ),
         )),
     }
 }
 
-/// `dataset` is `gnomad_v4_exome`.
+/// `dataset` is `gnomad_v3_genome` or `gnomad_v4_exome`.
 ///
 /// # Errors
 /// Rejects an unknown dataset and returns an error if its Parquet dataset cannot be registered.
