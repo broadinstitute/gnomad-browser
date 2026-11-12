@@ -7,6 +7,7 @@ export const PARQUET_ONLY_STUBS = {
   // The browser renders anything that isn't YYYY-MM-DD as a visible "Malformed date string".
   'BrowserMetadata.clinvar_release_date': 'unavailable in Parquet-only mode',
   'Gene.short_tandem_repeats': [],
+  'Query.liftover': [],
   'Region.short_tandem_repeats': [],
   'Variant.lof_curation': null,
 } as const

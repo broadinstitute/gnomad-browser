@@ -1,6 +1,8 @@
 import { isVariantId, normalizeVariantId } from '@gnomad/identifiers'
 
+import config from '../../config'
 import { UserVisibleError } from '../../errors'
+import { resolveParquetOnlyStub } from '../../parquet-only-stubs'
 import {
   fetchLiftoverVariantsBySource,
   fetchLiftoverVariantsByTarget,
@@ -22,6 +24,10 @@ const resolveLiftover = (_obj: any, args: any, ctx: any) => {
       throw new UserVisibleError('Invalid variant ID')
     }
 
+    if (config.PARQUET_ONLY) {
+      return resolveParquetOnlyStub('Query.liftover')
+    }
+
     return fetchLiftoverVariantsByTarget(
       ctx.esClient,
       normalizeVariantId(args.liftover_variant_id),
@@ -31,6 +37,10 @@ const resolveLiftover = (_obj: any, args: any, ctx: any) => {
 
   if (!isVariantId(args.source_variant_id)) {
     throw new UserVisibleError('Invalid variant ID')
+  }
+
+  if (config.PARQUET_ONLY) {
+    return resolveParquetOnlyStub('Query.liftover')
   }
 
   return fetchLiftoverVariantsBySource(
