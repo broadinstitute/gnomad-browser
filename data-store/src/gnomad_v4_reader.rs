@@ -1,4 +1,3 @@
-use std::collections::BTreeSet;
 use std::sync::Arc;
 
 use datafusion::arrow::array::{Array, ArrayRef, AsArray, UInt32Array};
@@ -12,11 +11,9 @@ use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::SessionContext;
 
 use crate::exon_query::{ExonQuery, VariantAnnotationFilter, bind_parameter};
+use crate::position_bin::bind_position_bins;
 use crate::record_batch_decoding::decode_record_batches;
 use crate::{GenomicInterval, GnomadV4VariantListEntry, ParquetDataset};
-
-/// Directory `posbin=b` holds positions `b * POSITION_BIN_SIZE + 1 ..= (b + 1) * POSITION_BIN_SIZE`.
-const POSITION_BIN_SIZE: i32 = 1_000_000;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum GnomadV4Subset {
@@ -264,25 +261,6 @@ fn collect_variant_sort_keys(batch: &RecordBatch) -> Result<Vec<ArrayRef>> {
     Ok(vec![Arc::clone(position), reference, alternate])
 }
 
-const fn position_bin(position: i32) -> i32 {
-    position.saturating_sub(1).saturating_div(POSITION_BIN_SIZE)
-}
-
-fn collect_position_bins(intervals: &[GenomicInterval]) -> BTreeSet<i32> {
-    intervals
-        .iter()
-        .flat_map(|interval| position_bin(interval.start())..=position_bin(interval.stop()))
-        .collect()
-}
-
-fn bind_position_bins(intervals: &[GenomicInterval], parameters: &mut Vec<ScalarValue>) -> String {
-    collect_position_bins(intervals)
-        .into_iter()
-        .map(|bin| bind_parameter(parameters, ScalarValue::Utf8(Some(bin.to_string()))))
-        .collect::<Vec<_>>()
-        .join(", ")
-}
-
 /// Rebuild `variant_id`, `locus` and `alleles`, which the export dropped, in the shape of the
 /// Elasticsearch documents the API already shapes. Of the annotation's consequences keep the first
 /// (the pipeline sorts the most relevant first; the API displays it) and later ones with a `LoF`
@@ -395,8 +373,7 @@ mod tests {
     use datafusion::arrow::util::display::array_value_to_string;
     use datafusion::prelude::SessionContext;
 
-    use super::{collect_position_bins, ensure_sorted_by_variant};
-    use crate::GenomicInterval;
+    use super::ensure_sorted_by_variant;
 
     /// One batch per call, in the `locus`/`alleles` shape the gene query returns.
     async fn variant_batch(rows: &str) -> Vec<RecordBatch> {
@@ -422,40 +399,6 @@ mod tests {
                     .collect::<Vec<_>>()
             })
             .collect()
-    }
-
-    fn bins(intervals: &[(i32, i32)]) -> Vec<i32> {
-        let intervals: Vec<_> = intervals
-            .iter()
-            .map(|&(start, stop)| GenomicInterval::new("17", start, stop).expect("valid interval"))
-            .collect();
-        collect_position_bins(&intervals).into_iter().collect()
-    }
-
-    #[test]
-    fn places_each_megabase_boundary_in_the_lower_bin() {
-        assert_eq!(bins(&[(1, 1)]), [0]);
-        assert_eq!(bins(&[(1_000_000, 1_000_000)]), [0]);
-        assert_eq!(bins(&[(1_000_001, 1_000_001)]), [1]);
-        assert_eq!(bins(&[(16_000_000, 16_000_000)]), [15]);
-    }
-
-    #[test]
-    fn covers_every_bin_an_interval_spans() {
-        assert_eq!(bins(&[(15_999_709, 16_000_457)]), [15, 16]);
-        assert_eq!(bins(&[(999_999, 3_000_001)]), [0, 1, 2, 3]);
-    }
-
-    #[test]
-    fn lists_each_bin_once_across_intervals() {
-        assert_eq!(
-            bins(&[(16_044_428, 16_044_627), (16_001_840, 16_002_100)]),
-            [16]
-        );
-        assert_eq!(
-            bins(&[(5_000_000, 5_000_001), (5_500_000, 5_500_000)]),
-            [4, 5]
-        );
     }
 
     #[tokio::test]
