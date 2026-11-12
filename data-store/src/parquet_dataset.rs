@@ -34,12 +34,11 @@ impl ParquetDataset {
     #[must_use]
     pub fn partition_columns(self) -> Vec<(String, DataType)> {
         match self {
-            Self::ClinvarVariantsGrch38 => vec![chromosome_partition()],
-            Self::GeneModelsGrch38 => Vec::new(),
-            Self::GnomadVariantsV4 => vec![
+            Self::ClinvarVariantsGrch38 | Self::GnomadVariantsV4 => vec![
                 chromosome_partition(),
                 ("posbin".to_owned(), DataType::Utf8),
             ],
+            Self::GeneModelsGrch38 => Vec::new(),
         }
     }
 

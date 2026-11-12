@@ -78,12 +78,12 @@ async fn decodes_populated_details_in_supplied_order() -> Result<()> {
             "conditions": [{ "name": "Condition C", "medgen_id": "C0000003" }]
         }
     ]);
-    row["gnomad.exome.ac"] = json!(3);
-    row["gnomad.exome.an"] = json!(1000);
-    row["gnomad.exome.filters"] = json!(["AS_VQSR"]);
-    row["gnomad.genome.ac"] = json!(5);
-    row["gnomad.genome.an"] = json!(2000);
-    row["gnomad.genome.filters"] = json!(["AC0", "RF"]);
+    row["gnomad"]["exome"]["ac"] = json!(3);
+    row["gnomad"]["exome"]["an"] = json!(1000);
+    row["gnomad"]["exome"]["filters"] = json!(["AS_VQSR"]);
+    row["gnomad"]["genome"]["ac"] = json!(5);
+    row["gnomad"]["genome"]["an"] = json!(2000);
+    row["gnomad"]["genome"]["filters"] = json!(["AC0", "RF"]);
     let reader = clinvar::create_reader_from_rows(&[row.clone()]).await?;
 
     let variant = reader
@@ -141,10 +141,10 @@ async fn decodes_populated_details_in_supplied_order() -> Result<()> {
 async fn decodes_empty_collections_and_exome_only_gnomad_data() -> Result<()> {
     let mut row = clinvar::read_annotated_row_at("1-100-A-G").await?;
     row["submissions"] = json!([]);
-    row["gnomad.exome.filters"] = json!([]);
-    row["gnomad.genome.ac"] = Value::Null;
-    row["gnomad.genome.an"] = Value::Null;
-    row["gnomad.genome.filters"] = Value::Null;
+    row["gnomad"]["exome"]["filters"] = json!([]);
+    row["gnomad"]["genome"]["ac"] = Value::Null;
+    row["gnomad"]["genome"]["an"] = Value::Null;
+    row["gnomad"]["genome"]["filters"] = Value::Null;
     let reader = clinvar::create_reader_from_rows(&[row]).await?;
 
     let variant = reader

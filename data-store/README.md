@@ -54,8 +54,9 @@ Readers take a root directory containing one subdirectory per dataset:
 ```
 <DATA_ROOT>
 ├── clinvar_variants_grch38
-│   ├── chrom=1/*.parquet
-│   └── chrom=2/*.parquet
+│   └── chrom=17
+│       ├── posbin=15/*.parquet
+│       └── posbin=16/*.parquet
 ├── gene_models_grch38
 │   └── data.parquet
 └── gnomad_variants_v4
@@ -71,7 +72,7 @@ Gene lookups by ID are fast only if `gene_models_grch38` is sorted by `gene_id` 
 small row groups (4,096 rows), small pages and a page index, so a lookup reads a few pages rather
 than the whole file. A file with default writer settings returns the same genes, more slowly.
 
-gnomAD v4 is also split into 1 Mb position bins: `posbin=b` holds positions
+ClinVar and gnomAD v4 are also split into 1 Mb position bins: `posbin=b` holds positions
 `b * 1,000,000 + 1` to `(b + 1) * 1,000,000`, so a variant at exactly 16,000,000 is in
 `posbin=15`. Queries compute the bins they need and skip every other directory.
 

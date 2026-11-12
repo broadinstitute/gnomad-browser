@@ -8,9 +8,12 @@ use super::{create_datafusion_context_from_json_rows, read_fixture_rows_as_json}
 pub const ANNOTATED_VARIANT_ID: &str = "1-69134-A-G";
 
 pub async fn read_variant_row(variant_id: &str) -> Result<Value> {
+    let [chromosome, position, reference, alternate] = split_variant_id(variant_id);
     let mut rows = read_fixture_rows_as_json(
         ParquetDataset::ClinvarVariantsGrch38,
-        &format!("variant_id = '{variant_id}'"),
+        &format!(
+            "chrom = '{chromosome}' AND pos = {position} AND ref = '{reference}' AND alt = '{alternate}'"
+        ),
     )
     .await?;
     assert_eq!(
@@ -21,37 +24,31 @@ pub async fn read_variant_row(variant_id: &str) -> Result<Value> {
     Ok(rows.remove(0))
 }
 
+fn split_variant_id(variant_id: &str) -> [&str; 4] {
+    let parts: Vec<&str> = variant_id.split('-').collect();
+    parts
+        .try_into()
+        .unwrap_or_else(|_| panic!("{variant_id:?} is not chrom-pos-ref-alt"))
+}
+
 /// Copy `row` to `variant_id`, rewriting every column that encodes the position or alleles.
 pub fn place_variant_row(row: &Value, variant_id: &str) -> Value {
-    let parts: Vec<&str> = variant_id.split('-').collect();
-    let [chromosome, position, reference, alternate] = parts.as_slice() else {
-        panic!("{variant_id:?} is not chrom-pos-ref-alt");
-    };
+    let [chromosome, position, reference, alternate] = split_variant_id(variant_id);
     let position: i32 = position.parse().expect("numeric position");
+    let position_bin = position.saturating_sub(1).saturating_div(1_000_000);
 
     let mut row = row.clone();
-    row["variant_id"] = json!(variant_id);
     row["chrom"] = json!(chromosome);
+    row["posbin"] = json!(position_bin.to_string());
     row["pos"] = json!(position);
     row["ref"] = json!(reference);
     row["alt"] = json!(alternate);
-    row["locus.contig"] = json!(format!("chr{chromosome}"));
-    row["locus.position"] = json!(position);
-    row["alleles"] = json!([reference, alternate]);
     row
 }
 
 pub fn clear_gnomad_data(row: &mut Value) {
-    for column in [
-        "gnomad.exome.ac",
-        "gnomad.exome.an",
-        "gnomad.exome.filters",
-        "gnomad.genome.ac",
-        "gnomad.genome.an",
-        "gnomad.genome.filters",
-    ] {
-        row[column] = Value::Null;
-    }
+    let no_data = json!({ "filters": null, "ac": null, "an": null });
+    row["gnomad"] = json!({ "exome": no_data, "genome": no_data });
 }
 
 pub async fn read_annotated_row_at(variant_id: &str) -> Result<Value> {

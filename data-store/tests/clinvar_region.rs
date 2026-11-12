@@ -152,12 +152,12 @@ async fn selects_the_first_ensembl_consequence_and_decodes_gnomad_data() -> Resu
     ensembl_consequence["hgvsp"] = json!("p.Met1Val");
     row["transcript_consequences"] = json!([refseq_consequence, ensembl_consequence]);
     row["in_gnomad"] = json!(true);
-    row["gnomad.exome.ac"] = json!(3);
-    row["gnomad.exome.an"] = json!(1000);
-    row["gnomad.exome.filters"] = json!(["AS_VQSR"]);
-    row["gnomad.genome.ac"] = json!(5);
-    row["gnomad.genome.an"] = json!(2000);
-    row["gnomad.genome.filters"] = json!([]);
+    row["gnomad"]["exome"]["ac"] = json!(3);
+    row["gnomad"]["exome"]["an"] = json!(1000);
+    row["gnomad"]["exome"]["filters"] = json!(["AS_VQSR"]);
+    row["gnomad"]["genome"]["ac"] = json!(5);
+    row["gnomad"]["genome"]["an"] = json!(2000);
+    row["gnomad"]["genome"]["filters"] = json!([]);
     let reader = clinvar::create_reader_from_rows(&[row]).await?;
 
     let variants = reader
