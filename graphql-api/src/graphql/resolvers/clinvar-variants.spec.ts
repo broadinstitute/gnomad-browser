@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals'
 import type {
   ClinvarStore,
+  CoverageStore,
   ClinvarVariant,
   ClinvarVariantListEntry,
   GeneStore,
@@ -101,6 +102,7 @@ const createContext = (store: ClinvarStore | null): GraphQLContext => ({
       : {
           clinvarGrch38: store,
           geneModelsGrch38: unusedGeneStore,
+          gnomadV4ExomeCoverage: {} as CoverageStore,
           gnomadVariantsV4: unusedGnomadV4Store,
         },
   requestId: null,

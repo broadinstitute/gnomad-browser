@@ -1,5 +1,8 @@
+import type { CoverageHistogram, CoverageStore } from '@gnomad/data-store'
+
 import { withCache } from '../cache'
 import { UserVisibleError } from '../errors'
+import { resolveParquetOnlyStub } from '../parquet-only-stubs'
 
 import { extendRegions, mergeOverlappingRegions, totalRegionSize } from './helpers/region-helpers'
 
@@ -232,6 +235,96 @@ export const fetchCoverageForGene = withCache(
   (_: any, datasetId: any, gene: any) => `coverage:${datasetId}:gene:${gene.gene_id}`,
   { expiration: 604800 }
 )
+
+export const PARQUET_EXOME_COVERAGE_DATASETS: ReadonlySet<string> = new Set([
+  'gnomad_r4',
+  'gnomad_cnv_r4',
+])
+
+const EMPTY_COVERAGE_AVERAGES: CoverageAverages = {
+  mean: null,
+  median: null,
+  over_1: null,
+  over_5: null,
+  over_10: null,
+  over_15: null,
+  over_20: null,
+  over_25: null,
+  over_30: null,
+  over_50: null,
+  over_100: null,
+}
+
+// Elasticsearch histograms also return the empty buckets between the first and last bucket, which
+// the browser draws as zero coverage. Improvement point: their count scales with the gene's span,
+// not its exons (ENST00000648276 needs ~67k buckets), so fill only within the padded exons once the
+// coverage track draws the gaps between intervals itself.
+const fillEmptyCoverageBuckets = ({ bucket_size: bucketSize, buckets }: CoverageHistogram) => {
+  const bins: ReturnType<typeof shapeCoverageBin>[] = []
+  buckets.forEach((bucket) => {
+    const previousBin = bins[bins.length - 1]
+    if (previousBin) {
+      for (let pos = previousBin.pos + bucketSize; pos < bucket.bucket_start; pos += bucketSize) {
+        bins.push(shapeCoverageBin(pos, EMPTY_COVERAGE_AVERAGES))
+      }
+    }
+    bins.push(shapeCoverageBin(bucket.bucket_start, bucket))
+  })
+  return bins
+}
+
+const fetchGenomeCoverageForGene = (
+  esClient: any,
+  datasetId: string,
+  gene: any,
+  { isParquetOnly }: { isParquetOnly: boolean }
+) => {
+  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+  const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
+  if (!genomeCoverageIndex) {
+    return []
+  }
+  if (isParquetOnly) {
+    return resolveParquetOnlyStub('GeneCoverage.genome')
+  }
+
+  const { mergedExons, bucketSize } = prepareExonCoverageQuery(gene.exons)
+  return fetchCoverage(esClient, {
+    index: genomeCoverageIndex,
+    contig: `chr${gene.chrom}`,
+    regions: mergedExons,
+    bucketSize,
+  })
+}
+
+export const fetchCoverageForGeneFromParquet = async (
+  esClient: any,
+  exomeCoverageStore: CoverageStore,
+  datasetId: string,
+  gene: any,
+  { isParquetOnly }: { isParquetOnly: boolean }
+) => {
+  assertDatasetAndReferenceGenomeMatch(datasetId, gene.reference_genome)
+
+  const exons = gene.exons.map(({ start, stop }: any) => ({ start, stop }))
+  const exomeCoveragePromise = exomeCoverageStore
+    .fetchCoverageInGene(gene.gene_id, gene.chrom, exons)
+    .then(fillEmptyCoverageBuckets)
+
+  const genomeCoveragePromise = fetchGenomeCoverageForGene(esClient, datasetId, gene, {
+    isParquetOnly,
+  })
+
+  const [exomeCoverage, genomeCoverage] = await Promise.all([
+    exomeCoveragePromise,
+    genomeCoveragePromise,
+  ])
+
+  return {
+    exome: exomeCoverage,
+    genome: genomeCoverage,
+  }
+}
 
 // ================================================================================================
 // Transcript query
