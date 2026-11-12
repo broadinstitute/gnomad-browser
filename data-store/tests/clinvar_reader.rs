@@ -137,9 +137,13 @@ async fn matches_the_exact_variant_id_without_interpreting_sql_in_input() -> Res
         .expect("supplied variant should exist");
     assert_eq!(variant.alternate_allele, "T");
 
-    for variant_id in ["1-100-A-C", "1-100-A", "1-100-A-G' OR TRUE --"] {
-        assert!(reader.fetch_single_variant(variant_id).await?.is_none());
-    }
+    assert!(reader.fetch_single_variant("1-100-A-C").await?.is_none());
+    assert!(
+        reader
+            .fetch_single_variant("1-100-A-G' OR TRUE --")
+            .await
+            .is_err()
+    );
     Ok(())
 }
 
@@ -269,16 +273,54 @@ async fn reports_decode_errors_with_the_requested_variant_id() -> Result<()> {
 }
 
 #[tokio::test]
-async fn returns_none_without_querying_for_an_id_lacking_a_chromosome_and_position() -> Result<()> {
+async fn rejects_ids_not_in_chrom_pos_ref_alt_form_without_querying() {
     let reader_without_tables = ClinvarReader::new(SessionContext::new());
 
-    for variant_id in ["", "1", "1-", "1-abc-A-G", "1-100.5-A-G"] {
+    for variant_id in [
+        "",
+        "1",
+        "1-100-A",
+        "1-100-A-G-T",
+        "1-abc-A-G",
+        "1-100.5-A-G",
+        "1-+100-A-G",
+        "1-3000000000-A-G",
+        "0-100-A-G",
+        "23-100-A-G",
+        "chr1-100-A-G",
+        "1-100-a-g",
+        "1-100--G",
+        "1-100-A-R",
+        "rs123",
+    ] {
+        let error = reader_without_tables
+            .fetch_single_variant(variant_id)
+            .await
+            .expect_err("malformed ID must be rejected");
         assert!(
-            reader_without_tables
-                .fetch_single_variant(variant_id)
-                .await?
-                .is_none(),
-            "{variant_id:?} must not be queried"
+            error.to_string().contains("Invalid ClinVar variant ID"),
+            "{variant_id:?} must fail validation, not the query: {error}"
+        );
+    }
+}
+
+#[tokio::test]
+async fn accepts_every_form_the_api_normalizer_produces() -> Result<()> {
+    let reader = create_synthetic_reader("VALUES ('1-100-A-G', '1', 100, 'A', 'G')").await?;
+
+    for variant_id in [
+        "1-100-A-C",
+        "22-5-ACGT-T",
+        "X-1000-A-G",
+        "Y-1-C-T",
+        "M-100-A-G",
+        "MT-100-A-G",
+        "1-0-A-G",
+        "1-100-N-A",
+    ] {
+        assert!(
+            reader.fetch_single_variant(variant_id).await?.is_none(),
+            "{variant_id:?} is well-formed and absent"
         );
     }
     Ok(())

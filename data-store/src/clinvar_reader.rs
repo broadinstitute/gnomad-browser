@@ -1,17 +1,48 @@
 use crate::record_batch_decoding::{at_most_one, decode_record_batches};
 use crate::{ClinvarVariant, ParquetDataset};
 use datafusion::common::ScalarValue;
+use datafusion::error::DataFusionError;
 use datafusion::prelude::SessionContext;
 
 pub struct ClinvarReader {
     context: SessionContext,
 }
 
-fn parse_chromosome_and_position(variant_id: &str) -> Option<(&str, i32)> {
-    let mut parts = variant_id.splitn(3, '-');
-    let chromosome = parts.next()?;
-    let position = parts.next()?.parse().ok()?;
-    Some((chromosome, position))
+/// Accept the `chrom-pos-ref-alt` form the API's `normalizeVariantId` produces, which keeps `MT`
+/// and allows position 0.
+fn parse_variant_id(variant_id: &str) -> datafusion::error::Result<(&str, i32)> {
+    let invalid = || {
+        DataFusionError::Plan(format!(
+            "Invalid ClinVar variant ID {variant_id:?}: expected chrom-pos-ref-alt"
+        ))
+    };
+    let mut parts = variant_id.split('-');
+    let (Some(chromosome), Some(position), Some(reference), Some(alternate), None) = (
+        parts.next(),
+        parts.next(),
+        parts.next(),
+        parts.next(),
+        parts.next(),
+    ) else {
+        return Err(invalid());
+    };
+    let is_digits = |text: &str| !text.is_empty() && text.bytes().all(|byte| byte.is_ascii_digit());
+    let is_allele =
+        |allele: &str| !allele.is_empty() && allele.bytes().all(|byte| b"ACGTN".contains(&byte));
+    let is_chromosome = matches!(chromosome, "X" | "Y" | "M" | "MT")
+        || (is_digits(chromosome)
+            && chromosome
+                .parse::<u8>()
+                .is_ok_and(|number| (1..=22).contains(&number)));
+    let position = is_digits(position)
+        .then(|| position.parse::<i32>().ok())
+        .flatten();
+    match position {
+        Some(position) if is_chromosome && is_allele(reference) && is_allele(alternate) => {
+            Ok((chromosome, position))
+        }
+        _ => Err(invalid()),
+    }
 }
 
 impl ClinvarReader {
@@ -20,15 +51,16 @@ impl ClinvarReader {
         Self { context }
     }
 
+    /// Return `None` for a well-formed ID that is not in `ClinVar`.
+    ///
     /// # Errors
-    /// Returns an error if query execution or result decoding fails, or multiple records match.
+    /// Returns an error for an ID not in `chrom-pos-ref-alt` form, if query execution or result
+    /// decoding fails, or if multiple records match.
     pub async fn fetch_single_variant(
         &self,
         variant_id: &str,
     ) -> datafusion::error::Result<Option<ClinvarVariant>> {
-        let Some((chromosome, position)) = parse_chromosome_and_position(variant_id) else {
-            return Ok(None);
-        };
+        let (chromosome, position) = parse_variant_id(variant_id)?;
         let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
         let dataframe = self
             .context
