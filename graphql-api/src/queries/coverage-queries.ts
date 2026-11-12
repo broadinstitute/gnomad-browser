@@ -32,6 +32,39 @@ const COVERAGE_INDICES = {
 // Base query
 // ================================================================================================
 
+const COVERAGE_OVER_X_FIELDS = [
+  'over_1',
+  'over_5',
+  'over_10',
+  'over_15',
+  'over_20',
+  'over_25',
+  'over_30',
+  'over_50',
+  'over_100',
+] as const
+
+type CoverageAverages = Record<
+  'mean' | 'median' | (typeof COVERAGE_OVER_X_FIELDS)[number],
+  number | null | undefined
+>
+
+const shapeCoverageBin = (pos: number, averages: CoverageAverages) => ({
+  pos,
+  mean: averages.mean || 0,
+  median: averages.median || 0,
+  over_x: COVERAGE_OVER_X_FIELDS.map((field) => Math.ceil((averages[field] || 0) * 100) / 100),
+})
+
+const prepareExonCoverageQuery = (exons: any) => {
+  const paddedExons = extendRegions(75, exons)
+  const mergedExons = mergeOverlappingRegions(
+    paddedExons.sort((a: any, b: any) => a.start - b.start)
+  )
+  const bucketSize = Math.max(Math.floor(totalRegionSize(mergedExons) / 500), 1)
+  return { mergedExons, bucketSize }
+}
+
 const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize }: any) => {
   try {
     const response = await esClient.search({
@@ -77,23 +110,21 @@ const fetchCoverage = async (esClient: any, { index, contig, regions, bucketSize
       },
     })
 
-    return response.body.aggregations.coverage.buckets.map((bucket: any) => ({
-      pos: bucket.key,
-      mean: bucket.mean.value || 0,
-      median: bucket.median.value || 0,
-
-      over_x: [
-        Math.ceil((bucket.over_1.value || 0) * 100) / 100,
-        Math.ceil((bucket.over_5.value || 0) * 100) / 100,
-        Math.ceil((bucket.over_10.value || 0) * 100) / 100,
-        Math.ceil((bucket.over_15.value || 0) * 100) / 100,
-        Math.ceil((bucket.over_20.value || 0) * 100) / 100,
-        Math.ceil((bucket.over_25.value || 0) * 100) / 100,
-        Math.ceil((bucket.over_30.value || 0) * 100) / 100,
-        Math.ceil((bucket.over_50.value || 0) * 100) / 100,
-        Math.ceil((bucket.over_100.value || 0) * 100) / 100,
-      ],
-    }))
+    return response.body.aggregations.coverage.buckets.map((bucket: any) =>
+      shapeCoverageBin(bucket.key, {
+        mean: bucket.mean.value,
+        median: bucket.median.value,
+        over_1: bucket.over_1.value,
+        over_5: bucket.over_5.value,
+        over_10: bucket.over_10.value,
+        over_15: bucket.over_15.value,
+        over_20: bucket.over_20.value,
+        over_25: bucket.over_25.value,
+        over_30: bucket.over_30.value,
+        over_50: bucket.over_50.value,
+        over_100: bucket.over_100.value,
+      })
+    )
   } catch (error) {
     if (error instanceof UserVisibleError) {
       throw error
@@ -162,12 +193,7 @@ export const _fetchCoverageForGene = async (esClient: any, datasetId: any, gene:
     throw new UserVisibleError('Coverage is not available for subsets')
   }
 
-  const paddedExons = extendRegions(75, gene.exons)
-  const mergedExons = mergeOverlappingRegions(
-    paddedExons.sort((a: any, b: any) => a.start - b.start)
-  )
-  const totalIntervalSize = totalRegionSize(mergedExons)
-  const bucketSize = Math.max(Math.floor(totalIntervalSize / 500), 1)
+  const { mergedExons, bucketSize } = prepareExonCoverageQuery(gene.exons)
 
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   const exomeCoverageIndex = COVERAGE_INDICES[datasetId].exome
@@ -218,12 +244,7 @@ const _fetchCoverageForTranscript = async (esClient: any, datasetId: any, transc
     throw new UserVisibleError('Coverage is not available for subsets')
   }
 
-  const paddedExons = extendRegions(75, transcript.exons)
-  const mergedExons = mergeOverlappingRegions(
-    paddedExons.sort((a: any, b: any) => a.start - b.start)
-  )
-  const totalIntervalSize = totalRegionSize(mergedExons)
-  const bucketSize = Math.max(Math.floor(totalIntervalSize / 500), 1)
+  const { mergedExons, bucketSize } = prepareExonCoverageQuery(transcript.exons)
 
   // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
   const exomeCoverageIndex = COVERAGE_INDICES[datasetId].exome
