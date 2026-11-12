@@ -165,6 +165,7 @@ describe('Gene.variants', () => {
         : {
             clinvarGrch38: {} as ClinvarStore,
             geneModelsGrch38: {} as GeneStore,
+            gnomadV3GenomeCoverage: {} as CoverageStore,
             gnomadV4ExomeCoverage: {} as CoverageStore,
             gnomadVariantsV4: store,
           },

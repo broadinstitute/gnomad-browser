@@ -1,8 +1,8 @@
-import type { CoverageHistogram, CoverageStore } from '@gnomad/data-store'
+import type { CoverageHistogram } from '@gnomad/data-store'
 
 import { withCache } from '../cache'
 import { UserVisibleError } from '../errors'
-import { resolveParquetOnlyStub } from '../parquet-only-stubs'
+import type { ParquetDataStore } from '../parquet-data-store'
 
 import { extendRegions, mergeOverlappingRegions, totalRegionSize } from './helpers/region-helpers'
 
@@ -236,10 +236,18 @@ export const fetchCoverageForGene = withCache(
   { expiration: 604800 }
 )
 
-export const PARQUET_EXOME_COVERAGE_DATASETS: ReadonlySet<string> = new Set([
-  'gnomad_r4',
-  'gnomad_cnv_r4',
+type ParquetCoverageStoreName = 'gnomadV3GenomeCoverage' | 'gnomadV4ExomeCoverage'
+
+const PARQUET_COVERAGE_STORES = new Map<
+  string,
+  { exome: ParquetCoverageStoreName | null; genome: ParquetCoverageStoreName | null }
+>([
+  ['gnomad_r4', { exome: 'gnomadV4ExomeCoverage', genome: 'gnomadV3GenomeCoverage' }],
+  ['gnomad_cnv_r4', { exome: 'gnomadV4ExomeCoverage', genome: null }],
+  ['gnomad_r3', { exome: null, genome: 'gnomadV3GenomeCoverage' }],
 ])
+
+export const hasParquetCoverage = (datasetId: string) => PARQUET_COVERAGE_STORES.has(datasetId)
 
 const EMPTY_COVERAGE_AVERAGES: CoverageAverages = {
   mean: null,
@@ -273,51 +281,34 @@ const fillEmptyCoverageBuckets = ({ bucket_size: bucketSize, buckets }: Coverage
   return bins
 }
 
-const fetchGenomeCoverageForGene = (
-  esClient: any,
-  datasetId: string,
-  gene: any,
-  { isParquetOnly }: { isParquetOnly: boolean }
-) => {
-  // @ts-expect-error TS(7053) FIXME: Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-  const genomeCoverageIndex = COVERAGE_INDICES[datasetId].genome
-  if (!genomeCoverageIndex) {
-    return []
-  }
-  if (isParquetOnly) {
-    return resolveParquetOnlyStub('GeneCoverage.genome')
-  }
-
-  const { mergedExons, bucketSize } = prepareExonCoverageQuery(gene.exons)
-  return fetchCoverage(esClient, {
-    index: genomeCoverageIndex,
-    contig: `chr${gene.chrom}`,
-    regions: mergedExons,
-    bucketSize,
-  })
-}
-
 export const fetchCoverageForGeneFromParquet = async (
-  esClient: any,
-  exomeCoverageStore: CoverageStore,
+  parquetDataStore: Pick<ParquetDataStore, ParquetCoverageStoreName>,
   datasetId: string,
-  gene: any,
-  { isParquetOnly }: { isParquetOnly: boolean }
+  gene: any
 ) => {
   assertDatasetAndReferenceGenomeMatch(datasetId, gene.reference_genome)
 
-  const exons = gene.exons.map(({ start, stop }: any) => ({ start, stop }))
-  const exomeCoveragePromise = exomeCoverageStore
-    .fetchCoverageInGene(gene.gene_id, gene.chrom, exons)
-    .then(fillEmptyCoverageBuckets)
+  const storeNames = PARQUET_COVERAGE_STORES.get(datasetId)
+  if (!storeNames) {
+    throw new Error(`Coverage for ${datasetId} is not read from Parquet`)
+  }
 
-  const genomeCoveragePromise = fetchGenomeCoverageForGene(esClient, datasetId, gene, {
-    isParquetOnly,
-  })
+  const exons = gene.exons.map(({ start, stop }: any) => ({ start, stop }))
+  const fetchCoverageFromStore = async (storeName: ParquetCoverageStoreName | null) => {
+    if (storeName === null) {
+      return []
+    }
+    const histogram = await parquetDataStore[storeName].fetchCoverageInGene(
+      gene.gene_id,
+      gene.chrom,
+      exons
+    )
+    return fillEmptyCoverageBuckets(histogram)
+  }
 
   const [exomeCoverage, genomeCoverage] = await Promise.all([
-    exomeCoveragePromise,
-    genomeCoveragePromise,
+    fetchCoverageFromStore(storeNames.exome),
+    fetchCoverageFromStore(storeNames.genome),
   ])
 
   return {

@@ -1,12 +1,11 @@
-import config from '../../config'
 import { UserVisibleError } from '../../errors'
 import {
-  PARQUET_EXOME_COVERAGE_DATASETS,
   fetchExomeCoverageForRegion,
   fetchGenomeCoverageForRegion,
   fetchCoverageForGene,
   fetchCoverageForGeneFromParquet,
   fetchCoverageForTranscript,
+  hasParquetCoverage,
 } from '../../queries/coverage-queries'
 import type { GraphQLContext } from '../context'
 
@@ -39,14 +38,8 @@ const resolveGenomeCoverageInRegion = async (obj: any, _args: any, ctx: any) => 
 const resolveCoverageInGene = async (obj: any, args: any, ctx: GraphQLContext) => {
   const { parquetDataStore } = ctx
   const coverage =
-    parquetDataStore !== null && PARQUET_EXOME_COVERAGE_DATASETS.has(args.dataset)
-      ? await fetchCoverageForGeneFromParquet(
-          ctx.esClient,
-          parquetDataStore.gnomadV4ExomeCoverage,
-          args.dataset,
-          obj,
-          { isParquetOnly: config.PARQUET_ONLY }
-        )
+    parquetDataStore !== null && hasParquetCoverage(args.dataset)
+      ? await fetchCoverageForGeneFromParquet(parquetDataStore, args.dataset, obj)
       : await fetchCoverageForGene(ctx.esClient, args.dataset, obj)
 
   return {

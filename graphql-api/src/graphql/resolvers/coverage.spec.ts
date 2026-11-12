@@ -7,14 +7,10 @@ import type {
   GnomadV4Store,
 } from '@gnomad/data-store'
 
-import config from '../../config'
-import logger from '../../logger'
 import type { GraphQLContext } from '../context'
 
 import resolvers from './coverage'
 
-jest.mock('../../config', () => ({ PARQUET_ONLY: false }))
-jest.mock('../../logger', () => ({ warn: jest.fn() }))
 jest.mock('../../cache', () => ({
   withCache: <QueryFunction>(query: QueryFunction) => query,
 }))
@@ -85,6 +81,8 @@ const createCoverageStore = (bucketSize: number, buckets: CoverageBucket[]) => (
     .mockResolvedValue({ bucket_size: bucketSize, buckets }),
 })
 
+type TestCoverageStore = ReturnType<typeof createCoverageStore>
+
 const emptyElasticsearchCoverage = { body: { aggregations: { coverage: { buckets: [] } } } }
 
 const createEsClient = () => ({
@@ -93,46 +91,63 @@ const createEsClient = () => ({
 
 const createContext = (
   esClient: ReturnType<typeof createEsClient>,
-  coverageStore: CoverageStore | null
+  coverageStores: { exome: TestCoverageStore; genome: TestCoverageStore } | null
 ): GraphQLContext => ({
   esClient: esClient as unknown as GraphQLContext['esClient'],
   parquetDataStore:
-    coverageStore === null
+    coverageStores === null
       ? null
       : {
           clinvarGrch38: {} as ClinvarStore,
           geneModelsGrch38: {} as GeneStore,
-          gnomadV4ExomeCoverage: coverageStore,
+          gnomadV3GenomeCoverage: coverageStores.genome,
+          gnomadV4ExomeCoverage: coverageStores.exome,
           gnomadVariantsV4: {} as GnomadV4Store,
         },
   requestId: null,
 })
 
-const resolveGeneCoverage = (dataset: string, context: GraphQLContext): Promise<any> =>
-  resolvers.Gene.coverage(gene, { dataset }, context)
+const resolveGeneCoverage = (
+  dataset: string,
+  context: GraphQLContext,
+  geneObj: object = gene
+): Promise<any> => resolvers.Gene.coverage(geneObj, { dataset }, context)
 
 beforeEach(() => {
   jest.clearAllMocks()
-  config.PARQUET_ONLY = false
 })
 
 describe('Gene.coverage with the Parquet data store', () => {
-  test('reads gnomad_r4 exome coverage from Parquet over every exon, unpadded', async () => {
-    const store = createCoverageStore(14, [createBucket(15999784)])
+  test('reads gnomad_r4 exome and genome coverage from Parquet over every exon, unpadded', async () => {
+    const esClient = createEsClient()
+    const exome = createCoverageStore(14, [createBucket(14)])
+    const genome = createCoverageStore(14, [createBucket(28)])
 
-    await resolveGeneCoverage('gnomad_r4', createContext(createEsClient(), store))
+    const coverage = await resolveGeneCoverage(
+      'gnomad_r4',
+      createContext(esClient, { exome, genome })
+    )
 
-    expect(store.fetchCoverageInGene).toHaveBeenCalledWith('ENSG00000011295', '17', [
+    const unpaddedExons = [
       { start: 15999784, stop: 16000032 },
       { start: 15999824, stop: 15999848 },
       { start: 16001915, stop: 16002025 },
-    ])
+    ]
+    expect(exome.fetchCoverageInGene).toHaveBeenCalledWith('ENSG00000011295', '17', unpaddedExons)
+    expect(genome.fetchCoverageInGene).toHaveBeenCalledWith('ENSG00000011295', '17', unpaddedExons)
+    expect(coverage.exome.map((bin: { pos: number }) => bin.pos)).toEqual([14])
+    expect(coverage.genome.map((bin: { pos: number }) => bin.pos)).toEqual([28])
+    expect(esClient.search).not.toHaveBeenCalled()
   })
 
   test('fills the empty buckets between Parquet buckets with zeros, as Elasticsearch did', async () => {
-    const store = createCoverageStore(14, [createBucket(14), createBucket(56)])
+    const exome = createCoverageStore(14, [createBucket(14), createBucket(56)])
+    const genome = createCoverageStore(14, [])
 
-    const coverage = await resolveGeneCoverage('gnomad_r4', createContext(createEsClient(), store))
+    const coverage = await resolveGeneCoverage(
+      'gnomad_r4',
+      createContext(createEsClient(), { exome, genome })
+    )
 
     expect(coverage.exome.map((bin: { pos: number }) => bin.pos)).toEqual([14, 28, 42, 56])
     expect(coverage.exome[1]).toEqual(zeroBin(28))
@@ -140,12 +155,16 @@ describe('Gene.coverage with the Parquet data store', () => {
   })
 
   test('shapes Parquet buckets like Elasticsearch buckets', async () => {
-    const store = createCoverageStore(1, [
+    const exome = createCoverageStore(1, [
       createBucket(100),
       createBucket(101, { mean: null, median: null, over_1: null }),
     ])
+    const genome = createCoverageStore(1, [])
 
-    const coverage = await resolveGeneCoverage('gnomad_r4', createContext(createEsClient(), store))
+    const coverage = await resolveGeneCoverage(
+      'gnomad_r4',
+      createContext(createEsClient(), { exome, genome })
+    )
 
     expect(coverage.exome).toEqual([
       {
@@ -166,64 +185,60 @@ describe('Gene.coverage with the Parquet data store', () => {
     ])
   })
 
-  test('returns no exome bins when Parquet has no coverage', async () => {
-    const store = createCoverageStore(14, [])
+  test('returns no bins when Parquet has no coverage', async () => {
+    const exome = createCoverageStore(14, [])
+    const genome = createCoverageStore(14, [])
 
-    const coverage = await resolveGeneCoverage('gnomad_r4', createContext(createEsClient(), store))
+    const coverage = await resolveGeneCoverage(
+      'gnomad_r4',
+      createContext(createEsClient(), { exome, genome })
+    )
+
+    expect(coverage).toEqual({ exome: [], genome: [] })
+  })
+
+  test('reads only exome coverage for gnomad_cnv_r4', async () => {
+    const exome = createCoverageStore(14, [createBucket(14)])
+    const genome = createCoverageStore(14, [createBucket(14)])
+
+    const coverage = await resolveGeneCoverage(
+      'gnomad_cnv_r4',
+      createContext(createEsClient(), { exome, genome })
+    )
+
+    expect(coverage.exome).toHaveLength(1)
+    expect(coverage.genome).toEqual([])
+    expect(genome.fetchCoverageInGene).not.toHaveBeenCalled()
+  })
+
+  test('reads only genome coverage for gnomad_r3', async () => {
+    const exome = createCoverageStore(14, [createBucket(14)])
+    const genome = createCoverageStore(14, [createBucket(14)])
+
+    const coverage = await resolveGeneCoverage(
+      'gnomad_r3',
+      createContext(createEsClient(), { exome, genome })
+    )
 
     expect(coverage.exome).toEqual([])
-  })
-
-  test('reads gnomad_r4 genome coverage from Elasticsearch outside PARQUET_ONLY mode', async () => {
-    const esClient = createEsClient()
-    const store = createCoverageStore(14, [])
-
-    await resolveGeneCoverage('gnomad_r4', createContext(esClient, store))
-
-    expect(esClient.search).toHaveBeenCalledTimes(1)
-    expect(esClient.search).toHaveBeenCalledWith(
-      expect.objectContaining({ index: 'gnomad_v3_genome_coverage' })
-    )
-    const [request] = esClient.search.mock.calls[0]
-    expect(request.body.query.bool.filter[0]).toEqual({ term: { 'locus.contig': 'chr17' } })
-  })
-
-  test('stubs gnomad_r4 genome coverage and warns in PARQUET_ONLY mode', async () => {
-    config.PARQUET_ONLY = true
-    const esClient = createEsClient()
-    const store = createCoverageStore(14, [createBucket(14)])
-
-    const coverage = await resolveGeneCoverage('gnomad_r4', createContext(esClient, store))
-
-    expect(coverage.genome).toEqual([])
-    expect(esClient.search).not.toHaveBeenCalled()
-    expect(logger.warn).toHaveBeenCalledWith(
-      expect.objectContaining({ event: 'parquetOnlyStub', field: 'GeneCoverage.genome' })
-    )
-  })
-
-  test('returns no genome coverage for gnomad_cnv_r4, which has none, without a stub', async () => {
-    config.PARQUET_ONLY = true
-    const esClient = createEsClient()
-    const store = createCoverageStore(14, [createBucket(14)])
-
-    const coverage = await resolveGeneCoverage('gnomad_cnv_r4', createContext(esClient, store))
-
-    expect(store.fetchCoverageInGene).toHaveBeenCalled()
-    expect(coverage.genome).toEqual([])
-    expect(esClient.search).not.toHaveBeenCalled()
-    expect(logger.warn).not.toHaveBeenCalled()
+    expect(coverage.genome).toHaveLength(1)
+    expect(exome.fetchCoverageInGene).not.toHaveBeenCalled()
   })
 
   test('reads datasets without Parquet coverage from Elasticsearch', async () => {
     const esClient = createEsClient()
-    const store = createCoverageStore(14, [])
+    const exome = createCoverageStore(14, [])
+    const genome = createCoverageStore(14, [])
 
-    await resolveGeneCoverage('gnomad_r3', createContext(esClient, store))
+    await resolveGeneCoverage('exac', createContext(esClient, { exome, genome }), {
+      ...gene,
+      reference_genome: 'GRCh37',
+    })
 
-    expect(store.fetchCoverageInGene).not.toHaveBeenCalled()
+    expect(exome.fetchCoverageInGene).not.toHaveBeenCalled()
+    expect(genome.fetchCoverageInGene).not.toHaveBeenCalled()
     expect(esClient.search).toHaveBeenCalledWith(
-      expect.objectContaining({ index: 'gnomad_v3_genome_coverage' })
+      expect.objectContaining({ index: 'exac_exome_coverage' })
     )
   })
 })

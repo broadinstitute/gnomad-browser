@@ -47,6 +47,7 @@ const createContext = (geneStore: GeneStore | null): GraphQLContext => ({
       : {
           clinvarGrch38: unusedClinvarStore,
           geneModelsGrch38: geneStore,
+          gnomadV3GenomeCoverage: {} as CoverageStore,
           gnomadV4ExomeCoverage: {} as CoverageStore,
           gnomadVariantsV4: unusedGnomadV4Store,
         },
