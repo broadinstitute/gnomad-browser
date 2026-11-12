@@ -12,6 +12,7 @@ const TARGET_BUCKET_COUNT: i64 = 500;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum CoverageDataset {
+    GnomadV3Genome,
     GnomadV4Exome,
 }
 
@@ -19,6 +20,7 @@ impl CoverageDataset {
     #[must_use]
     pub const fn parquet_dataset(self) -> ParquetDataset {
         match self {
+            Self::GnomadV3Genome => ParquetDataset::GnomadV3GenomeCoverage,
             Self::GnomadV4Exome => ParquetDataset::GnomadV4ExomeCoverage,
         }
     }

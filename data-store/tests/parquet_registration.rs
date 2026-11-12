@@ -223,6 +223,7 @@ async fn one_file_schema_matches_inference_over_every_file() -> Result<()> {
     for dataset in [
         ParquetDataset::ClinvarVariantsGrch38,
         ParquetDataset::GeneModelsGrch38,
+        ParquetDataset::GnomadV3GenomeCoverage,
         ParquetDataset::GnomadV4ExomeCoverage,
         ParquetDataset::GnomadVariantsV4,
     ] {

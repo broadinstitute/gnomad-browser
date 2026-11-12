@@ -57,9 +57,21 @@ describe('coverage store', () => {
     assert.deepStrictEqual(histogram.buckets, [])
   })
 
+  test('reads gnomAD v3 genome coverage', async () => {
+    const store = await openCoverageStore(FIXTURE_ROOT, 'gnomad_v3_genome')
+
+    const histogram = await store.fetchCoverageInGene(TTC19, CHROMOSOME, [
+      { start: 16044503, stop: 16044503 },
+    ])
+
+    assert.strictEqual(histogram.bucket_size, 1)
+    assert.strictEqual(histogram.buckets.length, 151)
+    assert.ok(histogram.buckets.every((bucket) => typeof bucket.over_20 === 'number'))
+  })
+
   test('rejects an unknown dataset', async () => {
-    await assert.rejects(openCoverageStore(FIXTURE_ROOT, 'gnomad_v3_genome'), {
-      message: /Invalid coverage dataset: gnomad_v3_genome/,
+    await assert.rejects(openCoverageStore(FIXTURE_ROOT, 'gnomad_v2_exome'), {
+      message: /Invalid coverage dataset: gnomad_v2_exome/,
     })
   })
 

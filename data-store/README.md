@@ -59,6 +59,10 @@ Readers take a root directory containing one subdirectory per dataset:
 │       └── posbin=16/*.parquet
 ├── gene_models_grch38
 │   └── data.parquet
+├── gnomad_v3_genome_coverage
+│   └── chrom=17
+│       ├── posbin=15/*.parquet
+│       └── posbin=16/*.parquet
 ├── gnomad_v4_exome_coverage
 │   └── chrom=17
 │       ├── posbin=15/*.parquet
@@ -90,6 +94,7 @@ cargo run --release --example read_gene -- <DATA_ROOT> ENSG00000169174
 cargo run --release --example read_gene_search -- <DATA_ROOT> PCSK
 cargo run --release --example read_gnomad_v4_variants_in_exons -- <DATA_ROOT> gene ENSG00000011295 all 17 15999784:16000032 16000118:16000382
 cargo run --release --example read_coverage_in_gene -- <DATA_ROOT> gnomad_v4_exome ENSG00000011295 17 15999824:16000460 16001915:16002025
+cargo run --release --example read_coverage_in_gene -- <DATA_ROOT> gnomad_v3_genome ENSG00000011295 17 15999824:16000460 16001915:16002025
 ```
 
 Against the fixtures:
