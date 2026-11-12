@@ -20,7 +20,7 @@ jest.mock(
   '@gnomad/data-store',
   () => ({
     openClinvarStore: jest.fn(async () => ({ dataset: 'clinvar' })),
-    openCoverageStore: jest.fn(async () => ({ dataset: 'gnomad_v4_exome_coverage' })),
+    openCoverageStore: jest.fn(),
     openGeneStore: jest.fn(async () => ({ dataset: 'genes' })),
     openGnomadV4Store: jest.fn(async () => ({ dataset: 'gnomad_v4' })),
   }),
@@ -29,6 +29,9 @@ jest.mock(
 
 beforeEach(() => {
   jest.clearAllMocks()
+  jest
+    .mocked(openCoverageStore)
+    .mockImplementation(async (_root, dataset) => ({ dataset } as never))
   config.PARQUET_DATA_STORE_ENABLED = true
   config.PARQUET_DATA_ROOT = '/test/parquet'
 })
@@ -39,12 +42,14 @@ describe('Parquet data store initialization', () => {
 
     expect(openClinvarStore).toHaveBeenCalledWith('/test/parquet')
     expect(openGeneStore).toHaveBeenCalledWith('/test/parquet')
+    expect(openCoverageStore).toHaveBeenCalledWith('/test/parquet', 'gnomad_v3_genome')
     expect(openCoverageStore).toHaveBeenCalledWith('/test/parquet', 'gnomad_v4_exome')
     expect(openGnomadV4Store).toHaveBeenCalledWith('/test/parquet')
     expect(store).toEqual({
       clinvarGrch38: { dataset: 'clinvar' },
       geneModelsGrch38: { dataset: 'genes' },
-      gnomadV4ExomeCoverage: { dataset: 'gnomad_v4_exome_coverage' },
+      gnomadV3GenomeCoverage: { dataset: 'gnomad_v3_genome' },
+      gnomadV4ExomeCoverage: { dataset: 'gnomad_v4_exome' },
       gnomadVariantsV4: { dataset: 'gnomad_v4' },
     })
     expect(logger.info).toHaveBeenCalledWith({
@@ -52,6 +57,7 @@ describe('Parquet data store initialization', () => {
       datasets: [
         'clinvar_variants_grch38',
         'gene_models_grch38',
+        'gnomad_v3_genome_coverage',
         'gnomad_v4_exome_coverage',
         'gnomad_variants_v4',
       ],
@@ -104,11 +110,18 @@ describe('Parquet data store initialization', () => {
     expect(logger.info).not.toHaveBeenCalled()
   })
 
-  test('fails to start when the gnomAD v4 exome coverage dataset cannot be opened', async () => {
-    const error = new Error('gnomad_v4_exome_coverage is missing')
-    jest.mocked(openCoverageStore).mockRejectedValueOnce(error)
+  test.each(['gnomad_v3_genome', 'gnomad_v4_exome'])(
+    'fails to start when the %s coverage dataset cannot be opened',
+    async (missingDataset) => {
+      const error = new Error(`${missingDataset} coverage is missing`)
+      jest
+        .mocked(openCoverageStore)
+        .mockImplementation(async (_root, dataset) =>
+          dataset === missingDataset ? Promise.reject(error) : ({ dataset } as never)
+        )
 
-    await expect(initializeParquetDataStoreIfEnabled()).rejects.toBe(error)
-    expect(logger.info).not.toHaveBeenCalled()
-  })
+      await expect(initializeParquetDataStoreIfEnabled()).rejects.toBe(error)
+      expect(logger.info).not.toHaveBeenCalled()
+    }
+  )
 })
