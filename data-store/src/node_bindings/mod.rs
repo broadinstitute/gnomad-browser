@@ -1,4 +1,5 @@
 mod clinvar;
+mod coverage;
 mod gene;
 mod gnomad_v4;
 
