@@ -34,6 +34,17 @@ export declare class ClinvarStore {
   fetchVariantsInRegion(chromosome: string, start: number, stop: number, limit: number): Promise<Array<ClinvarVariantListEntry>>
 }
 
+export declare class CoverageStore {
+  /**
+   * Average coverage per bucket over `exons` padded by 75 bases; pass every exon feature type,
+   * unpadded.
+   *
+   * # Errors
+   * Rejects invalid chromosomes or bounds and propagates padding and query errors.
+   */
+  fetchCoverageInGene(geneId: string, chromosome: string, exons: Array<GenomicIntervalBounds>): Promise<CoverageHistogram>
+}
+
 export declare class GeneStore {
   /**
    * # Errors
@@ -132,6 +143,31 @@ export interface ClinvarVariantListEntry {
   in_gnomad: boolean
   gnomad: ClinvarGnomadData
   transcript_consequence: ClinvarTranscriptConsequence | null
+}
+
+export interface CoverageBucket {
+  /** A multiple of `bucket_size`. */
+  bucket_start: number
+  mean: number | null
+  median: number | null
+  over_1: number | null
+  over_5: number | null
+  over_10: number | null
+  over_15: number | null
+  over_20: number | null
+  over_25: number | null
+  over_30: number | null
+  over_50: number | null
+  over_100: number | null
+}
+
+export interface CoverageHistogram {
+  bucket_size: number
+  /**
+   * Only buckets containing a covered position, in ascending order; Elasticsearch histograms
+   * also returned the empty buckets between them.
+   */
+  buckets: Array<CoverageBucket>
 }
 
 export interface Gene {
@@ -277,6 +313,14 @@ export interface GenomicIntervalBounds {
  * Returns an error if the configured Parquet dataset cannot be registered.
  */
 export declare function openClinvarStore(parquetRoot: string): Promise<ClinvarStore>
+
+/**
+ * `dataset` is `gnomad_v4_exome`.
+ *
+ * # Errors
+ * Rejects an unknown dataset and returns an error if its Parquet dataset cannot be registered.
+ */
+export declare function openCoverageStore(parquetRoot: string, dataset: string): Promise<CoverageStore>
 
 /**
  * # Errors
