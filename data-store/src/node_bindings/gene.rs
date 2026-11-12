@@ -492,10 +492,7 @@ fn checked_js_integer(value: i64, field: &str) -> napi::Result<i64> {
     Ok(value)
 }
 
-pub(super) fn into_nullable_js_integer(
-    value: Option<i64>,
-    field: &str,
-) -> napi::Result<Either<i64, Null>> {
+fn into_nullable_js_integer(value: Option<i64>, field: &str) -> napi::Result<Either<i64, Null>> {
     Ok(into_nullable(
         value
             .map(|value| checked_js_integer(value, field))

@@ -1,10 +1,5 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals'
-import type {
-  ClinvarStore,
-  GeneStore,
-  GnomadV4Store,
-  GnomadV4VariantListEntry,
-} from '@gnomad/data-store'
+import type { ClinvarStore, GeneStore, GnomadV4Store } from '@gnomad/data-store'
 
 import config from '../../config'
 import logger from '../../logger'
@@ -98,25 +93,26 @@ describe('Gene.variants', () => {
     faf99_max_gen_anc: null,
   }
 
-  const createSourceVariant = (position: number, acRaw: number): GnomadV4VariantListEntry => ({
+  // A Record rather than a precise type, so a test can swap the exome subset key.
+  const createSourceVariant = (position: number, acRaw: number): Record<string, any> => ({
     variant_id: `17-${position}-G-A`,
     locus: { contig: 'chr17', position },
     alleles: ['G', 'A'],
     rsids: null,
     flags: null,
     exome: {
-      freq: { all: createFrequency(acRaw), non_ukb: null },
+      freq: { all: createFrequency(acRaw) },
       filters: [],
       flags: [],
       fafmax: { gnomad: noFilteringAlleleFrequency, non_ukb: noFilteringAlleleFrequency },
     },
     genome: {
-      freq: { all: { ...createFrequency(0), ac_raw: null, ac: null }, non_ukb: null },
+      freq: { all: { ...createFrequency(0), ac_raw: null, ac: null } },
       filters: null,
       flags: null,
     },
     joint: {
-      freq: { all: createFrequency(acRaw), non_ukb: null },
+      freq: { all: createFrequency(acRaw) },
       filters: null,
       fafmax: noFilteringAlleleFrequency,
     },
@@ -154,11 +150,11 @@ describe('Gene.variants', () => {
     },
   })
 
-  const createNativeStore = (variants: GnomadV4VariantListEntry[]) => ({
-    fetchVariantsInGene: jest
-      .fn<GnomadV4Store['fetchVariantsInGene']>()
-      .mockResolvedValue(variants),
-    fetchVariantsInTranscript: jest.fn<GnomadV4Store['fetchVariantsInTranscript']>(),
+  const createNativeStore = (variants: Record<string, any>[]) => ({
+    fetchVariantsInGeneJson: jest
+      .fn<GnomadV4Store['fetchVariantsInGeneJson']>()
+      .mockResolvedValue(JSON.stringify(variants)),
+    fetchVariantsInTranscriptJson: jest.fn<GnomadV4Store['fetchVariantsInTranscriptJson']>(),
   })
 
   const createContext = (store: GnomadV4Store | null): GraphQLContext => ({
@@ -188,7 +184,7 @@ describe('Gene.variants', () => {
 
     const variants = await resolveGeneVariants('gnomad_r4', createContext(store))
 
-    expect(store.fetchVariantsInGene).toHaveBeenCalledWith(
+    expect(store.fetchVariantsInGeneJson).toHaveBeenCalledWith(
       'ENSG00000011295',
       '17',
       [
@@ -214,12 +210,12 @@ describe('Gene.variants', () => {
 
   test('asks for the non_ukb exome subset for gnomad_r4_non_ukb', async () => {
     const sourceVariant = createSourceVariant(15999800, 3)
-    sourceVariant.exome.freq = { all: null, non_ukb: createFrequency(2) }
+    sourceVariant.exome.freq = { non_ukb: createFrequency(2) }
     const store = createNativeStore([sourceVariant])
 
     const variants = await resolveGeneVariants('gnomad_r4_non_ukb', createContext(store))
 
-    expect(store.fetchVariantsInGene).toHaveBeenCalledWith(
+    expect(store.fetchVariantsInGeneJson).toHaveBeenCalledWith(
       'ENSG00000011295',
       '17',
       expect.any(Array),
@@ -272,7 +268,7 @@ describe('Gene.variants', () => {
     expect(() => resolveGeneVariants('gnomad_r4', createContext(store), grch37Gene)).toThrow(
       'not available on reference genome GRCh37'
     )
-    expect(store.fetchVariantsInGene).not.toHaveBeenCalled()
+    expect(store.fetchVariantsInGeneJson).not.toHaveBeenCalled()
   })
 
   test('uses Elasticsearch for datasets other than gnomAD v4', async () => {
@@ -281,7 +277,7 @@ describe('Gene.variants', () => {
     await resolveGeneVariants('gnomad_r3', createContext(store))
 
     expect(fetchVariantsByGene).toHaveBeenCalledWith(expect.anything(), 'gnomad_r3', gene)
-    expect(store.fetchVariantsInGene).not.toHaveBeenCalled()
+    expect(store.fetchVariantsInGeneJson).not.toHaveBeenCalled()
   })
 
   test('uses Elasticsearch when the native data store is disabled', async () => {

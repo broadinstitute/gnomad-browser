@@ -152,7 +152,7 @@ pub struct GnomadV4InSilicoPredictors {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub revel_max: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub spliceai_ds_max: Option<f32>,
+    pub spliceai_ds_max: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub pangolin_largest_ds: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -166,7 +166,7 @@ pub struct GnomadV4InSilicoPredictors {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct GnomadV4Cadd {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub phred: Option<f32>,
+    pub phred: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub raw_score: Option<f32>,
+    pub raw_score: Option<f64>,
 }
