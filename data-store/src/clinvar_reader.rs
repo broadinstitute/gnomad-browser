@@ -203,10 +203,13 @@ impl ClinvarReader {
         );
         let chromosome_parameter = bind_parameter(
             &mut parameters,
-            ScalarValue::Utf8(Some(exon_query.chromosome.as_str().to_owned())),
+            ScalarValue::Utf8(Some(exon_query.padded_exons.chromosome.as_str().to_owned())),
         );
-        let bin_parameters = bind_position_bins(&exon_query.padded_intervals, &mut parameters);
-        let position_predicate = exon_query.bind_position_predicate(&mut parameters);
+        let bin_parameters =
+            bind_position_bins(&exon_query.padded_exons.intervals, &mut parameters);
+        let position_predicate = exon_query
+            .padded_exons
+            .bind_position_predicate(&mut parameters);
         let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
         let query = format!(
             r"
