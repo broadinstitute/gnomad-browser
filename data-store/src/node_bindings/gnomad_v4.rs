@@ -64,7 +64,8 @@ fn convert_variants(
 #[napi]
 impl GnomadV4Store {
     /// Pad each interval by 75 bases; `subset` is `all` or `non_ukb` and selects the exome
-    /// frequencies.
+    /// frequencies. Each variant keeps only this gene's consequences and the ancestry groups not
+    /// split by sex.
     ///
     /// # Errors
     /// Rejects invalid subsets, chromosomes or bounds, and propagates annotation, padding, query
@@ -88,7 +89,8 @@ impl GnomadV4Store {
     }
 
     /// Pad each interval by 75 bases; `subset` is `all` or `non_ukb` and selects the exome
-    /// frequencies.
+    /// frequencies. Each variant keeps only this transcript's consequence and the ancestry groups
+    /// not split by sex.
     ///
     /// # Errors
     /// Rejects invalid subsets, chromosomes or bounds, and propagates annotation, padding, query

@@ -8,8 +8,8 @@ use std::path::Path;
 
 use datafusion::error::{DataFusionError, Result};
 use gnomad_data_store::{
-    GenomicInterval, GnomadV4Reader, GnomadV4Subset, GnomadV4VariantListEntry, ParquetDataset,
-    create_datafusion_context_from_root,
+    GenomicInterval, GnomadV4Frequency, GnomadV4Reader, GnomadV4Subset, GnomadV4VariantListEntry,
+    ParquetDataset, create_datafusion_context_from_root,
 };
 use tempfile::tempdir;
 
@@ -67,6 +67,33 @@ fn collect_variant_ids(variants: &[GnomadV4VariantListEntry]) -> Vec<&str> {
         .iter()
         .map(|variant| variant.variant_id.as_str())
         .collect()
+}
+
+fn collect_transcript_ids(variant: &GnomadV4VariantListEntry) -> Vec<Option<&str>> {
+    variant
+        .transcript_consequences
+        .iter()
+        .map(|consequence| consequence.transcript_id.as_deref())
+        .collect()
+}
+
+fn collect_ancestry_group_ids(frequency: Option<&GnomadV4Frequency>) -> Vec<&str> {
+    frequency
+        .and_then(|frequency| frequency.ancestry_groups.as_deref())
+        .unwrap_or_default()
+        .iter()
+        .map(|group| group.id.as_str())
+        .collect()
+}
+
+fn find_variant<'a>(
+    variants: &'a [GnomadV4VariantListEntry],
+    variant_id: &str,
+) -> Result<&'a GnomadV4VariantListEntry> {
+    variants
+        .iter()
+        .find(|variant| variant.variant_id == variant_id)
+        .ok_or_else(|| DataFusionError::Execution(format!("{variant_id} missing from results")))
 }
 
 async fn fetch_ttc19_variants(
@@ -146,6 +173,11 @@ async fn transcript_query_requires_a_consequence_for_that_transcript() -> Result
     assert_eq!(
         collect_variant_ids(&short_transcript_variants),
         ["17-15999784-C-A"]
+    );
+    let variant = find_variant(&short_transcript_variants, "17-15999784-C-A")?;
+    assert_eq!(
+        collect_transcript_ids(variant),
+        [Some(TTC19_SHORT_TRANSCRIPT)]
     );
     assert!(
         mane_select_variants.is_empty(),
@@ -241,7 +273,6 @@ async fn rebuilds_identity_fields_and_decodes_a_real_record() -> Result<()> {
     );
     assert!(variant.joint.fafmax.faf95_max.is_some());
     assert!(variant.in_silico_predictors.cadd.phred.is_some());
-    assert_eq!(variant.transcript_consequences.len(), 11);
     let mane_select = variant
         .transcript_consequences
         .iter()
@@ -277,6 +308,100 @@ async fn genome_only_variant_keeps_missing_exome_values_missing() -> Result<()> 
             .as_ref()
             .and_then(|frequency| frequency.ac_raw),
         Some(1)
+    );
+    Ok(())
+}
+
+#[tokio::test]
+async fn gene_query_keeps_only_that_genes_consequences_in_source_order() -> Result<()> {
+    let reader = create_reader(&fixtures::root_directory()).await?;
+
+    let variants =
+        fetch_ttc19_variants(&reader, &[(16_000_457, 16_000_457)], GnomadV4Subset::All).await?;
+
+    // The source row also has five RefSeq consequences, under gene ID 54902.
+    let variant = find_variant(&variants, "17-16000457-T-C")?;
+    assert_eq!(
+        collect_transcript_ids(variant),
+        [
+            Some(TTC19_MANE_SELECT),
+            Some("ENST00000583704"),
+            Some(TTC19_SHORT_TRANSCRIPT),
+            Some("ENST00000470399"),
+            Some("ENST00000475723"),
+            Some("ENST00000497842"),
+        ]
+    );
+    assert!(
+        variant
+            .transcript_consequences
+            .iter()
+            .all(|consequence| consequence.gene_id.as_deref() == Some(TTC19))
+    );
+    Ok(())
+}
+
+#[tokio::test]
+async fn ancestry_groups_split_by_sex_are_dropped_in_source_order() -> Result<()> {
+    let reader = create_reader(&fixtures::root_directory()).await?;
+    let interval = [(16_000_457, 16_000_457)];
+
+    let all = fetch_ttc19_variants(&reader, &interval, GnomadV4Subset::All).await?;
+    let non_ukb = fetch_ttc19_variants(&reader, &interval, GnomadV4Subset::NonUkb).await?;
+
+    let exome_groups = [
+        "remaining",
+        "amr",
+        "fin",
+        "mid",
+        "nfe",
+        "sas",
+        "asj",
+        "eas",
+        "afr",
+    ];
+    let genome_groups = [
+        "remaining",
+        "amr",
+        "fin",
+        "ami",
+        "eas",
+        "mid",
+        "sas",
+        "asj",
+        "afr",
+        "nfe",
+    ];
+    let all = find_variant(&all, "17-16000457-T-C")?;
+    let non_ukb = find_variant(&non_ukb, "17-16000457-T-C")?;
+    assert_eq!(
+        collect_ancestry_group_ids(all.exome.freq.all.as_ref()),
+        exome_groups
+    );
+    assert_eq!(
+        collect_ancestry_group_ids(non_ukb.exome.freq.non_ukb.as_ref()),
+        exome_groups
+    );
+    assert_eq!(
+        collect_ancestry_group_ids(all.genome.freq.all.as_ref()),
+        genome_groups
+    );
+    // The source's joint list has an entry with an empty ID; the API keeps it, so it stays.
+    assert_eq!(
+        collect_ancestry_group_ids(all.joint.freq.all.as_ref()),
+        [
+            "remaining",
+            "amr",
+            "fin",
+            "ami",
+            "eas",
+            "mid",
+            "sas",
+            "asj",
+            "afr",
+            "nfe",
+            "",
+        ]
     );
     Ok(())
 }

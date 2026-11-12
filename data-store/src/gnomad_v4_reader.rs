@@ -37,6 +37,7 @@ impl GnomadV4Reader {
     }
 
     /// Pad `intervals` by 75 bases; pass them unpadded. Leave frequency filtering to the API.
+    /// Each variant keeps only this gene's consequences and the ancestry groups not split by sex.
     ///
     /// # Errors
     /// Returns an error for an empty gene ID, intervals on more than one chromosome,
@@ -52,6 +53,8 @@ impl GnomadV4Reader {
     }
 
     /// Pad `intervals` by 75 bases; pass them unpadded. Leave frequency filtering to the API.
+    /// Each variant keeps only this transcript's consequence and the ancestry groups not split by
+    /// sex.
     ///
     /// # Errors
     /// Returns an error for an empty transcript ID, intervals on more than one chromosome,
@@ -93,7 +96,7 @@ impl GnomadV4Reader {
         );
         let bin_parameters = bind_position_bins(&exon_query.padded_intervals, &mut parameters);
         let position_predicate = exon_query.bind_position_predicate(&mut parameters);
-        let fields = select_list_entry_fields(subset);
+        let fields = select_list_entry_fields(subset, annotation_field, &annotation_parameter);
         let table_name = ParquetDataset::GnomadVariantsV4.name();
         // DataFusion prunes directories only with conjuncts that reference partition columns alone.
         let query = format!(
@@ -144,8 +147,13 @@ fn bind_position_bins(intervals: &[GenomicInterval], parameters: &mut Vec<Scalar
 }
 
 /// Rebuild `variant_id`, `locus` and `alleles`, which the export dropped, in the shape of the
-/// Elasticsearch documents the API already shapes.
-fn select_list_entry_fields(subset: GnomadV4Subset) -> String {
+/// Elasticsearch documents the API already shapes. Drop consequences for other annotations and
+/// ancestry groups split by sex: the API's list shaping never reads them.
+fn select_list_entry_fields(
+    subset: GnomadV4Subset,
+    annotation_field: &str,
+    annotation_parameter: &str,
+) -> String {
     let exome_subset = subset.frequency_field();
     let exome_frequency = select_frequency(&format!("exome.freq.{exome_subset}"));
     let genome_frequency = select_frequency("genome.freq.all");
@@ -177,7 +185,10 @@ fn select_list_entry_fields(subset: GnomadV4Subset) -> String {
             'filters', CAST(NULL AS VARCHAR[]),
             'fafmax', {joint_fafmax}
         ) AS joint,
-        transcript_consequences,
+        array_filter(
+            transcript_consequences,
+            consequence -> consequence['{annotation_field}'] = {annotation_parameter}
+        ) AS transcript_consequences,
         in_silico_predictors
         "
     )
@@ -194,7 +205,12 @@ fn select_frequency(path: &str) -> String {
             'an', {path}.an,
             'hemizygote_count', {path}.hemizygote_count,
             'homozygote_count', {path}.homozygote_count,
-            'ancestry_groups', {path}.ancestry_groups
+            'ancestry_groups', array_filter(
+                {path}.ancestry_groups,
+                ancestry_group -> NOT (
+                    strpos(ancestry_group['id'], '_') > 0 OR ancestry_group['id'] IN ('XX', 'XY')
+                )
+            )
         )"
     )
 }
