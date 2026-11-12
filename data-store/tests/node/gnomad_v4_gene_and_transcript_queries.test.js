@@ -24,6 +24,12 @@ const TTC19_CDS = [
   { start: 16044503, stop: 16044552 },
 ]
 
+const fetchGeneVariants = async (store, geneId, chromosome, intervals, subset) =>
+  JSON.parse(await store.fetchVariantsInGeneJson(geneId, chromosome, intervals, subset))
+
+const fetchTranscriptVariants = async (store, transcriptId, chromosome, intervals, subset) =>
+  JSON.parse(await store.fetchVariantsInTranscriptJson(transcriptId, chromosome, intervals, subset))
+
 const findVariant = (variants, variantId) => {
   const variant = variants.find((candidate) => candidate.variant_id === variantId)
   assert.ok(variant, `${variantId} missing from ${variants.map((v) => v.variant_id)}`)
@@ -34,7 +40,7 @@ describe('gnomAD v4 gene and transcript queries', () => {
   test('returns the gene variants in position order', async () => {
     const store = await openGnomadV4Store(FIXTURE_ROOT)
 
-    const variants = await store.fetchVariantsInGene(TTC19, CHROMOSOME, TTC19_CDS, 'all')
+    const variants = await fetchGeneVariants(store, TTC19, CHROMOSOME, TTC19_CDS, 'all')
 
     assert.deepStrictEqual(
       variants.map((variant) => variant.variant_id),
@@ -52,10 +58,11 @@ describe('gnomAD v4 gene and transcript queries', () => {
     )
   })
 
-  test('returns snake_case plain objects with missing values as null', async () => {
+  test('returns snake_case JSON with missing values as explicit nulls', async () => {
     const store = await openGnomadV4Store(FIXTURE_ROOT)
 
-    const variants = await store.fetchVariantsInGene(
+    const variants = await fetchGeneVariants(
+      store,
       TTC19,
       CHROMOSOME,
       [{ start: 16000457, stop: 16000457 }],
@@ -72,7 +79,7 @@ describe('gnomAD v4 gene and transcript queries', () => {
     assert.strictEqual(variant.exome.freq.all.ac_raw, 31)
     assert.strictEqual(variant.exome.freq.all.an, 1220484)
     assert.strictEqual(typeof variant.exome.freq.all.homozygote_count, 'number')
-    assert.strictEqual(variant.exome.freq.non_ukb, null)
+    assert.ok(!('non_ukb' in variant.exome.freq))
     assert.strictEqual(variant.genome.freq.all.an, 152214)
     assert.strictEqual(variant.joint.freq.all.an, 1372698)
     assert.strictEqual(typeof variant.joint.fafmax.faf95_max, 'number')
@@ -104,7 +111,8 @@ describe('gnomAD v4 gene and transcript queries', () => {
   test('selects the non_ukb exome frequencies when asked', async () => {
     const store = await openGnomadV4Store(FIXTURE_ROOT)
 
-    const variants = await store.fetchVariantsInGene(
+    const variants = await fetchGeneVariants(
+      store,
       TTC19,
       CHROMOSOME,
       [{ start: 16000457, stop: 16000457 }],
@@ -112,7 +120,7 @@ describe('gnomAD v4 gene and transcript queries', () => {
     )
     const variant = findVariant(variants, '17-16000457-T-C')
 
-    assert.strictEqual(variant.exome.freq.all, null)
+    assert.ok(!('all' in variant.exome.freq))
     assert.strictEqual(variant.exome.freq.non_ukb.ac_raw, 9)
     assert.strictEqual(variant.exome.freq.non_ukb.ac, 8)
   })
@@ -121,13 +129,15 @@ describe('gnomAD v4 gene and transcript queries', () => {
     const store = await openGnomadV4Store(FIXTURE_ROOT)
     const intervals = [{ start: 15999784, stop: 15999784 }]
 
-    const shortTranscript = await store.fetchVariantsInTranscript(
+    const shortTranscript = await fetchTranscriptVariants(
+      store,
       TTC19_SHORT_TRANSCRIPT,
       CHROMOSOME,
       intervals,
       'all'
     )
-    const maneSelect = await store.fetchVariantsInTranscript(
+    const maneSelect = await fetchTranscriptVariants(
+      store,
       TTC19_MANE_SELECT,
       CHROMOSOME,
       intervals,
@@ -148,9 +158,9 @@ describe('gnomAD v4 gene and transcript queries', () => {
   test('returns an empty array when no intervals are supplied', async () => {
     const store = await openGnomadV4Store(FIXTURE_ROOT)
 
-    assert.deepStrictEqual(await store.fetchVariantsInGene(TTC19, CHROMOSOME, [], 'all'), [])
+    assert.deepStrictEqual(await fetchGeneVariants(store, TTC19, CHROMOSOME, [], 'all'), [])
     assert.deepStrictEqual(
-      await store.fetchVariantsInTranscript(TTC19_MANE_SELECT, CHROMOSOME, [], 'all'),
+      await fetchTranscriptVariants(store, TTC19_MANE_SELECT, CHROMOSOME, [], 'all'),
       []
     )
   })
@@ -158,17 +168,22 @@ describe('gnomAD v4 gene and transcript queries', () => {
   test('rejects invalid subsets, chromosomes, bounds and IDs', async () => {
     const store = await openGnomadV4Store(FIXTURE_ROOT)
 
-    await assert.rejects(() => store.fetchVariantsInGene(TTC19, CHROMOSOME, TTC19_CDS, 'ukb'), {
+    await assert.rejects(() => store.fetchVariantsInGeneJson(TTC19, CHROMOSOME, TTC19_CDS, 'ukb'), {
       message: /Invalid gnomAD v4 subset: ukb/,
     })
-    await assert.rejects(() => store.fetchVariantsInGene(TTC19, '23', TTC19_CDS, 'all'))
+    await assert.rejects(() => store.fetchVariantsInGeneJson(TTC19, '23', TTC19_CDS, 'all'))
     await assert.rejects(() =>
-      store.fetchVariantsInGene(TTC19, CHROMOSOME, [{ start: 0, stop: 1 }], 'all')
+      store.fetchVariantsInGeneJson(TTC19, CHROMOSOME, [{ start: 0, stop: 1 }], 'all')
     )
     await assert.rejects(() =>
-      store.fetchVariantsInTranscript(TTC19_MANE_SELECT, CHROMOSOME, [{ start: 2, stop: 1 }], 'all')
+      store.fetchVariantsInTranscriptJson(
+        TTC19_MANE_SELECT,
+        CHROMOSOME,
+        [{ start: 2, stop: 1 }],
+        'all'
+      )
     )
-    await assert.rejects(() => store.fetchVariantsInGene('', CHROMOSOME, TTC19_CDS, 'all'))
+    await assert.rejects(() => store.fetchVariantsInGeneJson('', CHROMOSOME, TTC19_CDS, 'all'))
   })
 })
 

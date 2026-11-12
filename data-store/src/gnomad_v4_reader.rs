@@ -1,5 +1,6 @@
 use std::collections::BTreeSet;
 
+use datafusion::arrow::record_batch::RecordBatch;
 use datafusion::common::ScalarValue;
 use datafusion::error::Result;
 use datafusion::prelude::SessionContext;
@@ -36,20 +37,59 @@ impl GnomadV4Reader {
         Self { context }
     }
 
-    /// Pad `intervals` by 75 bases; pass them unpadded. Leave frequency filtering to the API.
-    /// Each variant keeps only this gene's consequences and the ancestry groups not split by sex.
+    /// Decoded form of [`Self::fetch_variant_batches_in_gene`].
     ///
     /// # Errors
-    /// Returns an error for an empty gene ID, intervals on more than one chromosome,
-    /// padding overflow, query failure, or result decoding failure.
+    /// As [`Self::fetch_variant_batches_in_gene`], or if decoding fails.
     pub async fn fetch_variants_in_gene(
         &self,
         gene_id: &str,
         intervals: &[GenomicInterval],
         subset: GnomadV4Subset,
     ) -> Result<Vec<GnomadV4VariantListEntry>> {
-        self.fetch_variants_in_exons(VariantAnnotationFilter::Gene(gene_id), intervals, subset)
-            .await
+        let batches = self
+            .fetch_variant_batches_in_gene(gene_id, intervals, subset)
+            .await?;
+        decode_record_batches(&batches, format_args!("gnomAD v4 results for {gene_id}"))
+    }
+
+    /// Decoded form of [`Self::fetch_variant_batches_in_transcript`].
+    ///
+    /// # Errors
+    /// As [`Self::fetch_variant_batches_in_transcript`], or if decoding fails.
+    pub async fn fetch_variants_in_transcript(
+        &self,
+        transcript_id: &str,
+        intervals: &[GenomicInterval],
+        subset: GnomadV4Subset,
+    ) -> Result<Vec<GnomadV4VariantListEntry>> {
+        let batches = self
+            .fetch_variant_batches_in_transcript(transcript_id, intervals, subset)
+            .await?;
+        decode_record_batches(
+            &batches,
+            format_args!("gnomAD v4 results for {transcript_id}"),
+        )
+    }
+
+    /// Pad `intervals` by 75 bases; pass them unpadded. Leave frequency filtering to the API.
+    /// Each variant keeps only this gene's consequences and the ancestry groups not split by sex.
+    ///
+    /// # Errors
+    /// Returns an error for an empty gene ID, intervals on more than one chromosome,
+    /// padding overflow, or query failure.
+    pub async fn fetch_variant_batches_in_gene(
+        &self,
+        gene_id: &str,
+        intervals: &[GenomicInterval],
+        subset: GnomadV4Subset,
+    ) -> Result<Vec<RecordBatch>> {
+        self.fetch_variant_batches_in_exons(
+            VariantAnnotationFilter::Gene(gene_id),
+            intervals,
+            subset,
+        )
+        .await
     }
 
     /// Pad `intervals` by 75 bases; pass them unpadded. Leave frequency filtering to the API.
@@ -58,14 +98,14 @@ impl GnomadV4Reader {
     ///
     /// # Errors
     /// Returns an error for an empty transcript ID, intervals on more than one chromosome,
-    /// padding overflow, query failure, or result decoding failure.
-    pub async fn fetch_variants_in_transcript(
+    /// padding overflow, or query failure.
+    pub async fn fetch_variant_batches_in_transcript(
         &self,
         transcript_id: &str,
         intervals: &[GenomicInterval],
         subset: GnomadV4Subset,
-    ) -> Result<Vec<GnomadV4VariantListEntry>> {
-        self.fetch_variants_in_exons(
+    ) -> Result<Vec<RecordBatch>> {
+        self.fetch_variant_batches_in_exons(
             VariantAnnotationFilter::Transcript(transcript_id),
             intervals,
             subset,
@@ -73,12 +113,12 @@ impl GnomadV4Reader {
         .await
     }
 
-    async fn fetch_variants_in_exons(
+    async fn fetch_variant_batches_in_exons(
         &self,
         annotation_filter: VariantAnnotationFilter<'_>,
         intervals: &[GenomicInterval],
         subset: GnomadV4Subset,
-    ) -> Result<Vec<GnomadV4VariantListEntry>> {
+    ) -> Result<Vec<RecordBatch>> {
         let Some(exon_query) = ExonQuery::prepare(annotation_filter, intervals)? else {
             return Ok(Vec::new());
         };
@@ -113,17 +153,12 @@ impl GnomadV4Reader {
             ORDER BY pos, ref, alt
             "
         );
-        let batches = self
-            .context
+        self.context
             .sql(&query)
             .await?
             .with_param_values(parameters)?
             .collect()
-            .await?;
-        decode_record_batches(
-            &batches,
-            format_args!("gnomAD v4 results for {annotation_field}={annotation_id}"),
-        )
+            .await
     }
 }
 
@@ -162,6 +197,8 @@ fn select_list_entry_fields(
     let exome_non_ukb_fafmax = select_filtering_allele_frequency("exome.fafmax.non_ukb");
     let joint_fafmax = select_filtering_allele_frequency("joint.fafmax");
     // This export has no variant-level flags or joint filters; do not infer empty lists.
+    // Widen the float32 scores: JSON prints float32 at its shortest, which rounds differently in the
+    // API's three-significant-digit display than the widened values it received before.
     format!(
         r"
         concat(chrom, '-', CAST(pos AS VARCHAR), '-', ref, '-', alt) AS variant_id,
@@ -189,7 +226,18 @@ fn select_list_entry_fields(
             transcript_consequences,
             consequence -> consequence['{annotation_field}'] = {annotation_parameter}
         ) AS transcript_consequences,
-        in_silico_predictors
+        named_struct(
+            'cadd', named_struct(
+                'phred', CAST(in_silico_predictors.cadd.phred AS DOUBLE),
+                'raw_score', CAST(in_silico_predictors.cadd.raw_score AS DOUBLE)
+            ),
+            'revel_max', in_silico_predictors.revel_max,
+            'spliceai_ds_max', CAST(in_silico_predictors.spliceai_ds_max AS DOUBLE),
+            'pangolin_largest_ds', in_silico_predictors.pangolin_largest_ds,
+            'phylop', in_silico_predictors.phylop,
+            'sift_max', in_silico_predictors.sift_max,
+            'polyphen_max', in_silico_predictors.polyphen_max
+        ) AS in_silico_predictors
         "
     )
 }

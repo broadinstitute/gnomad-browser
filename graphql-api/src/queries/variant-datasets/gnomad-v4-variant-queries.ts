@@ -519,11 +519,8 @@ const fetchVariantsByGeneFromParquet = async (
   const exonIntervals = getFilteredRegions<Exon & GenomicIntervalBounds>(gene.exons).map(
     ({ start, stop }) => ({ start, stop })
   )
-  const sourceVariants = await store.fetchVariantsInGene(
-    gene.gene_id,
-    gene.chrom,
-    exonIntervals,
-    subset
+  const sourceVariants: any[] = JSON.parse(
+    await store.fetchVariantsInGeneJson(gene.gene_id, gene.chrom, exonIntervals, subset)
   )
   const variants = sourceVariants
     .filter((variant) => hasPositiveAC(variant, subset))
