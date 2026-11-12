@@ -53,6 +53,7 @@ describe('gnomAD v4 gene and transcript queries', () => {
         '17-16000457-T-G',
         '17-16000457-TGTCAAG-T',
         '17-16002100-T-G',
+        '17-16025088-TC-T',
         '17-16044627-T-A',
       ]
     )
@@ -87,14 +88,7 @@ describe('gnomAD v4 gene and transcript queries', () => {
     assert.strictEqual(variant.in_silico_predictors.revel_max, null)
     assert.deepStrictEqual(
       variant.transcript_consequences.map((consequence) => consequence.transcript_id),
-      [
-        TTC19_MANE_SELECT,
-        'ENST00000583704',
-        TTC19_SHORT_TRANSCRIPT,
-        'ENST00000470399',
-        'ENST00000475723',
-        'ENST00000497842',
-      ]
+      [TTC19_MANE_SELECT]
     )
     assert.deepStrictEqual(
       variant.exome.freq.all.ancestry_groups.map((group) => group.id),
@@ -106,6 +100,30 @@ describe('gnomAD v4 gene and transcript queries', () => {
     assert.strictEqual(maneSelect.is_mane_select, true)
     assert.strictEqual(maneSelect.hgvsc, 'c.312+212T>C')
     assert.strictEqual(maneSelect.hgvsp, null)
+  })
+
+  test('keeps the first consequence and later ones with a LoF annotation', async () => {
+    const store = await openGnomadV4Store(FIXTURE_ROOT)
+
+    const variants = await fetchGeneVariants(
+      store,
+      TTC19,
+      CHROMOSOME,
+      [{ start: 16025088, stop: 16025088 }],
+      'all'
+    )
+    const variant = findVariant(variants, '17-16025088-TC-T')
+
+    assert.deepStrictEqual(
+      variant.transcript_consequences.map((consequence) => [
+        consequence.transcript_id,
+        consequence.lof,
+      ]),
+      [
+        [TTC19_MANE_SELECT, 'HC'],
+        ['ENST00000470649', 'HC'],
+      ]
+    )
   })
 
   test('selects the non_ukb exome frequencies when asked', async () => {
