@@ -1,8 +1,14 @@
 use std::collections::BTreeSet;
+use std::sync::Arc;
 
+use datafusion::arrow::array::{Array, ArrayRef, AsArray, UInt32Array};
+use datafusion::arrow::compute::{
+    SortColumn, concat_batches, lexsort_to_indices, take, take_record_batch,
+};
 use datafusion::arrow::record_batch::RecordBatch;
+use datafusion::arrow::row::{OwnedRow, RowConverter, SortField};
 use datafusion::common::ScalarValue;
-use datafusion::error::Result;
+use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::SessionContext;
 
 use crate::exon_query::{ExonQuery, VariantAnnotationFilter, bind_parameter};
@@ -154,13 +160,108 @@ impl GnomadV4Reader {
             ORDER BY pos, ref, alt
             "
         );
-        self.context
+        let batches = self
+            .context
             .sql(&query)
             .await?
             .with_param_values(parameters)?
             .collect()
-            .await
+            .await?;
+        ensure_sorted_by_variant(batches, &format!("{annotation_field}={annotation_id}"))
     }
+}
+
+/// Return `batches` unchanged when rows are in `(position, ref, alt)` order. Otherwise warn and sort:
+/// the query relies on the export's declared file order instead of sorting.
+fn ensure_sorted_by_variant(
+    batches: Vec<RecordBatch>,
+    description: &str,
+) -> Result<Vec<RecordBatch>> {
+    if is_sorted_by_variant(&batches)? {
+        return Ok(batches);
+    }
+    eprintln!(
+        "gnomAD v4 results for {description} were not in (position, ref, alt) order and were \
+         sorted after the query; the export's files should be sorted by pos, ref, alt"
+    );
+    let Some(schema) = batches.first().map(RecordBatch::schema) else {
+        return Ok(batches);
+    };
+    let combined = concat_batches(&schema, &batches)?;
+    let sort_columns = collect_variant_sort_keys(&combined)?
+        .into_iter()
+        .map(|values| SortColumn {
+            values,
+            options: None,
+        })
+        .collect::<Vec<_>>();
+    let indices = lexsort_to_indices(&sort_columns, None)?;
+    Ok(vec![take_record_batch(&combined, &indices)?])
+}
+
+fn is_sorted_by_variant(batches: &[RecordBatch]) -> Result<bool> {
+    let keys_per_batch = batches
+        .iter()
+        .filter(|batch| batch.num_rows() > 0)
+        .map(collect_variant_sort_keys)
+        .collect::<Result<Vec<_>>>()?;
+    let Some(first_keys) = keys_per_batch.first() else {
+        return Ok(true);
+    };
+    let converter = RowConverter::new(
+        first_keys
+            .iter()
+            .map(|key| SortField::new(key.data_type().clone()))
+            .collect(),
+    )?;
+    let mut previous = None;
+    for keys in &keys_per_batch {
+        let rows = converter.convert_columns(keys)?;
+        for row in &rows {
+            if previous
+                .as_ref()
+                .is_some_and(|previous: &OwnedRow| previous.row() > row)
+            {
+                return Ok(false);
+            }
+            previous = Some(row.owned());
+        }
+    }
+    Ok(true)
+}
+
+/// Position, reference allele and alternate allele, from the `locus` and `alleles` columns.
+fn collect_variant_sort_keys(batch: &RecordBatch) -> Result<Vec<ArrayRef>> {
+    let missing = |column: &str| {
+        DataFusionError::Internal(format!("gnomAD v4 results have no usable {column} column"))
+    };
+    let position = batch
+        .column_by_name("locus")
+        .and_then(|locus| locus.as_struct_opt())
+        .and_then(|locus| locus.column_by_name("position"))
+        .ok_or_else(|| missing("locus.position"))?;
+    let alleles = batch
+        .column_by_name("alleles")
+        .and_then(|alleles| alleles.as_list_opt::<i32>())
+        .ok_or_else(|| missing("alleles"))?;
+    let mut reference_indices = Vec::with_capacity(alleles.len());
+    let mut alternate_indices = Vec::with_capacity(alleles.len());
+    for start in alleles.offsets().iter().take(alleles.len()) {
+        let start = u32::try_from(*start).map_err(|_| missing("alleles"))?;
+        reference_indices.push(start);
+        alternate_indices.push(start.checked_add(1).ok_or_else(|| missing("alleles"))?);
+    }
+    let reference = take(
+        alleles.values(),
+        &UInt32Array::from(reference_indices),
+        None,
+    )?;
+    let alternate = take(
+        alleles.values(),
+        &UInt32Array::from(alternate_indices),
+        None,
+    )?;
+    Ok(vec![Arc::clone(position), reference, alternate])
 }
 
 const fn position_bin(position: i32) -> i32 {
@@ -290,8 +391,38 @@ fn select_filtering_allele_frequency(path: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::collect_position_bins;
+    use datafusion::arrow::record_batch::RecordBatch;
+    use datafusion::arrow::util::display::array_value_to_string;
+    use datafusion::prelude::SessionContext;
+
+    use super::{collect_position_bins, ensure_sorted_by_variant};
     use crate::GenomicInterval;
+
+    /// One batch per call, in the `locus`/`alleles` shape the gene query returns.
+    async fn variant_batch(rows: &str) -> Vec<RecordBatch> {
+        SessionContext::new()
+            .sql(&format!(
+                "SELECT id, named_struct('contig', 'chr1', 'position', CAST(position AS INT)) AS locus,
+                        [reference, alternate] AS alleles
+                 FROM (VALUES {rows}) AS v(id, position, reference, alternate)"
+            ))
+            .await
+            .expect("valid query")
+            .collect()
+            .await
+            .expect("query runs")
+    }
+
+    fn collect_ids(batches: &[RecordBatch]) -> Vec<String> {
+        batches
+            .iter()
+            .flat_map(|batch| {
+                (0..batch.num_rows())
+                    .map(|row| array_value_to_string(batch.column(0), row).expect("printable id"))
+                    .collect::<Vec<_>>()
+            })
+            .collect()
+    }
 
     fn bins(intervals: &[(i32, i32)]) -> Vec<i32> {
         let intervals: Vec<_> = intervals
@@ -325,5 +456,47 @@ mod tests {
             bins(&[(5_000_000, 5_000_001), (5_500_000, 5_500_000)]),
             [4, 5]
         );
+    }
+
+    #[tokio::test]
+    async fn sorted_rows_across_batches_are_returned_unchanged() {
+        let mut batches = variant_batch("('a', 5, 'A', 'C'), ('b', 5, 'A', 'T')").await;
+        batches.extend(variant_batch("('c', 5, 'C', 'T'), ('d', 10, 'A', 'G')").await);
+
+        let sorted = ensure_sorted_by_variant(batches, "test").expect("sorts");
+
+        assert_eq!(sorted.len(), 2);
+        assert_eq!(collect_ids(&sorted), ["a", "b", "c", "d"]);
+    }
+
+    #[tokio::test]
+    async fn unsorted_rows_are_sorted_by_position_then_ref_then_alt() {
+        let batches = variant_batch(
+            "('d', 10, 'A', 'G'), ('c', 5, 'C', 'T'), ('b', 5, 'A', 'T'), ('a', 5, 'A', 'C')",
+        )
+        .await;
+
+        let sorted = ensure_sorted_by_variant(batches, "test").expect("sorts");
+
+        assert_eq!(collect_ids(&sorted), ["a", "b", "c", "d"]);
+    }
+
+    #[tokio::test]
+    async fn rows_out_of_order_across_a_batch_boundary_are_sorted() {
+        let mut batches = variant_batch("('c', 7, 'A', 'G'), ('d', 8, 'A', 'G')").await;
+        batches.extend(variant_batch("('a', 2, 'A', 'G'), ('b', 3, 'A', 'G')").await);
+
+        let sorted = ensure_sorted_by_variant(batches, "test").expect("sorts");
+
+        assert_eq!(collect_ids(&sorted), ["a", "b", "c", "d"]);
+    }
+
+    #[tokio::test]
+    async fn positions_compare_as_numbers() {
+        let batches = variant_batch("('b', 100, 'A', 'G'), ('a', 99, 'A', 'G')").await;
+
+        let sorted = ensure_sorted_by_variant(batches, "test").expect("sorts");
+
+        assert_eq!(collect_ids(&sorted), ["a", "b"]);
     }
 }
