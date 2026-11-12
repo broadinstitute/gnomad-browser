@@ -78,7 +78,21 @@ describe('gnomAD v4 gene and transcript queries', () => {
     assert.strictEqual(typeof variant.joint.fafmax.faf95_max, 'number')
     assert.strictEqual(typeof variant.in_silico_predictors.cadd.phred, 'number')
     assert.strictEqual(variant.in_silico_predictors.revel_max, null)
-    assert.strictEqual(variant.transcript_consequences.length, 11)
+    assert.deepStrictEqual(
+      variant.transcript_consequences.map((consequence) => consequence.transcript_id),
+      [
+        TTC19_MANE_SELECT,
+        'ENST00000583704',
+        TTC19_SHORT_TRANSCRIPT,
+        'ENST00000470399',
+        'ENST00000475723',
+        'ENST00000497842',
+      ]
+    )
+    assert.deepStrictEqual(
+      variant.exome.freq.all.ancestry_groups.map((group) => group.id),
+      ['remaining', 'amr', 'fin', 'mid', 'nfe', 'sas', 'asj', 'eas', 'afr']
+    )
     const maneSelect = variant.transcript_consequences.find(
       (consequence) => consequence.transcript_id === TTC19_MANE_SELECT
     )
@@ -123,6 +137,10 @@ describe('gnomAD v4 gene and transcript queries', () => {
     assert.deepStrictEqual(
       shortTranscript.map((variant) => variant.variant_id),
       ['17-15999784-C-A']
+    )
+    assert.deepStrictEqual(
+      shortTranscript[0].transcript_consequences.map((consequence) => consequence.transcript_id),
+      [TTC19_SHORT_TRANSCRIPT]
     )
     assert.deepStrictEqual(maneSelect, [])
   })
