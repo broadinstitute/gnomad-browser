@@ -34,7 +34,7 @@ const TTC19_CDS: [(i32, i32); 12] = [
     (16_044_503, 16_044_552),
 ];
 
-const TTC19_PADDED_CDS_VARIANT_IDS: [&str; 9] = [
+const TTC19_PADDED_CDS_VARIANT_IDS: [&str; 10] = [
     "17-15999784-C-A",
     "17-16000000-G-A",
     "17-16000000-G-T",
@@ -43,6 +43,7 @@ const TTC19_PADDED_CDS_VARIANT_IDS: [&str; 9] = [
     "17-16000457-T-G",
     "17-16000457-TGTCAAG-T",
     "17-16002100-T-G",
+    "17-16025088-TC-T",
     "17-16044627-T-A",
 ];
 
@@ -313,30 +314,34 @@ async fn genome_only_variant_keeps_missing_exome_values_missing() -> Result<()> 
 }
 
 #[tokio::test]
-async fn gene_query_keeps_only_that_genes_consequences_in_source_order() -> Result<()> {
+async fn gene_query_keeps_the_first_consequence_and_later_lof_ones() -> Result<()> {
     let reader = create_reader(&fixtures::root_directory()).await?;
 
-    let variants =
-        fetch_ttc19_variants(&reader, &[(16_000_457, 16_000_457)], GnomadV4Subset::All).await?;
+    let variants = fetch_ttc19_variants(
+        &reader,
+        &[(16_000_457, 16_000_457), (16_025_088, 16_025_088)],
+        GnomadV4Subset::All,
+    )
+    .await?;
 
-    // The source row also has five RefSeq consequences, under gene ID 54902.
-    let variant = find_variant(&variants, "17-16000457-T-C")?;
+    // Six TTC19 consequences (and five RefSeq ones), none with a LoF annotation.
+    let without_lof = find_variant(&variants, "17-16000457-T-C")?;
     assert_eq!(
-        collect_transcript_ids(variant),
-        [
-            Some(TTC19_MANE_SELECT),
-            Some("ENST00000583704"),
-            Some(TTC19_SHORT_TRANSCRIPT),
-            Some("ENST00000470399"),
-            Some("ENST00000475723"),
-            Some("ENST00000497842"),
-        ]
+        collect_transcript_ids(without_lof),
+        [Some(TTC19_MANE_SELECT)]
+    );
+    // TTC19 consequences HC, HC, then four without LoF, with RefSeq ones in between.
+    let with_lof = find_variant(&variants, "17-16025088-TC-T")?;
+    assert_eq!(
+        collect_transcript_ids(with_lof),
+        [Some(TTC19_MANE_SELECT), Some("ENST00000470649")]
     );
     assert!(
-        variant
+        with_lof
             .transcript_consequences
             .iter()
-            .all(|consequence| consequence.gene_id.as_deref() == Some(TTC19))
+            .all(|consequence| consequence.gene_id.as_deref() == Some(TTC19)
+                && consequence.lof.as_deref() == Some("HC"))
     );
     Ok(())
 }

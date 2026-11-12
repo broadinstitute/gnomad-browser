@@ -73,7 +73,8 @@ impl GnomadV4Reader {
     }
 
     /// Pad `intervals` by 75 bases; pass them unpadded. Leave frequency filtering to the API.
-    /// Each variant keeps only this gene's consequences and the ancestry groups not split by sex.
+    /// Each variant keeps this gene's first consequence, its later consequences with a `LoF`
+    /// annotation, and the ancestry groups not split by sex.
     ///
     /// # Errors
     /// Returns an error for an empty gene ID, intervals on more than one chromosome,
@@ -182,8 +183,10 @@ fn bind_position_bins(intervals: &[GenomicInterval], parameters: &mut Vec<Scalar
 }
 
 /// Rebuild `variant_id`, `locus` and `alleles`, which the export dropped, in the shape of the
-/// Elasticsearch documents the API already shapes. Drop consequences for other annotations and
-/// ancestry groups split by sex: the API's list shaping never reads them.
+/// Elasticsearch documents the API already shapes. Of the annotation's consequences keep the first
+/// (the pipeline sorts the most relevant first; the API displays it) and later ones with a `LoF`
+/// annotation (the API's LOFTEE flags read them); drop ancestry groups split by sex. The API's list
+/// shaping reads nothing else.
 fn select_list_entry_fields(
     subset: GnomadV4Subset,
     annotation_field: &str,
@@ -196,6 +199,10 @@ fn select_list_entry_fields(
     let exome_gnomad_fafmax = select_filtering_allele_frequency("exome.fafmax.gnomad");
     let exome_non_ukb_fafmax = select_filtering_allele_frequency("exome.fafmax.non_ukb");
     let joint_fafmax = select_filtering_allele_frequency("joint.fafmax");
+    let annotation_consequences = format!(
+        "array_filter(transcript_consequences, \
+         consequence -> consequence['{annotation_field}'] = {annotation_parameter})"
+    );
     // This export has no variant-level flags or joint filters; do not infer empty lists.
     // Widen the float32 scores: JSON prints float32 at its shortest, which rounds differently in the
     // API's three-significant-digit display than the widened values it received before.
@@ -222,9 +229,16 @@ fn select_list_entry_fields(
             'filters', CAST(NULL AS VARCHAR[]),
             'fafmax', {joint_fafmax}
         ) AS joint,
-        array_filter(
-            transcript_consequences,
-            consequence -> consequence['{annotation_field}'] = {annotation_parameter}
+        array_concat(
+            array_slice({annotation_consequences}, 1, 1),
+            array_filter(
+                array_slice(
+                    {annotation_consequences},
+                    2,
+                    CAST(cardinality(transcript_consequences) AS BIGINT)
+                ),
+                consequence -> consequence['lof'] IS NOT NULL
+            )
         ) AS transcript_consequences,
         named_struct(
             'cadd', named_struct(

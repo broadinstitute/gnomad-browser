@@ -48,7 +48,8 @@ export declare class GnomadV4Store {
   /**
    * Return a JSON array of variant objects with `snake_case` fields and explicit nulls. Pad each
    * interval by 75 bases; `subset` is `all` or `non_ukb` and selects the exome frequencies.
-   * Each variant keeps only this gene's consequences and the ancestry groups not split by sex.
+   * Each variant keeps this gene's first consequence, its later consequences with a `LoF`
+   * annotation, and the ancestry groups not split by sex.
    *
    * # Errors
    * Rejects invalid subsets, chromosomes or bounds, and propagates annotation, padding, query
