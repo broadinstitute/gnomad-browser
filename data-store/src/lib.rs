@@ -12,6 +12,7 @@ mod gnomad_v4_reader;
 mod gnomad_v4_variant_list_entry;
 mod node_bindings;
 mod parquet_dataset;
+mod position_bin;
 mod record_batch_decoding;
 
 pub use clinvar_reader::ClinvarReader;
