@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals'
-import { openClinvarStore, openGeneStore, openGnomadV4Store } from '@gnomad/data-store'
+import {
+  openClinvarStore,
+  openCoverageStore,
+  openGeneStore,
+  openGnomadV4Store,
+} from '@gnomad/data-store'
 
 import config from './config'
 import logger from './logger'
@@ -15,6 +20,7 @@ jest.mock(
   '@gnomad/data-store',
   () => ({
     openClinvarStore: jest.fn(async () => ({ dataset: 'clinvar' })),
+    openCoverageStore: jest.fn(async () => ({ dataset: 'gnomad_v4_exome_coverage' })),
     openGeneStore: jest.fn(async () => ({ dataset: 'genes' })),
     openGnomadV4Store: jest.fn(async () => ({ dataset: 'gnomad_v4' })),
   }),
@@ -33,15 +39,22 @@ describe('Parquet data store initialization', () => {
 
     expect(openClinvarStore).toHaveBeenCalledWith('/test/parquet')
     expect(openGeneStore).toHaveBeenCalledWith('/test/parquet')
+    expect(openCoverageStore).toHaveBeenCalledWith('/test/parquet', 'gnomad_v4_exome')
     expect(openGnomadV4Store).toHaveBeenCalledWith('/test/parquet')
     expect(store).toEqual({
       clinvarGrch38: { dataset: 'clinvar' },
       geneModelsGrch38: { dataset: 'genes' },
+      gnomadV4ExomeCoverage: { dataset: 'gnomad_v4_exome_coverage' },
       gnomadVariantsV4: { dataset: 'gnomad_v4' },
     })
     expect(logger.info).toHaveBeenCalledWith({
       event: 'parquetDataStoreInitialized',
-      datasets: ['clinvar_variants_grch38', 'gene_models_grch38', 'gnomad_variants_v4'],
+      datasets: [
+        'clinvar_variants_grch38',
+        'gene_models_grch38',
+        'gnomad_v4_exome_coverage',
+        'gnomad_variants_v4',
+      ],
     })
   })
 
@@ -51,6 +64,7 @@ describe('Parquet data store initialization', () => {
     expect(await initializeParquetDataStoreIfEnabled()).toBeNull()
     expect(openClinvarStore).not.toHaveBeenCalled()
     expect(openGeneStore).not.toHaveBeenCalled()
+    expect(openCoverageStore).not.toHaveBeenCalled()
     expect(openGnomadV4Store).not.toHaveBeenCalled()
   })
 
@@ -62,6 +76,7 @@ describe('Parquet data store initialization', () => {
     )
     expect(openClinvarStore).not.toHaveBeenCalled()
     expect(openGeneStore).not.toHaveBeenCalled()
+    expect(openCoverageStore).not.toHaveBeenCalled()
     expect(openGnomadV4Store).not.toHaveBeenCalled()
   })
 
@@ -84,6 +99,14 @@ describe('Parquet data store initialization', () => {
   test('fails to start when the gnomAD v4 dataset cannot be opened', async () => {
     const error = new Error('gnomad_variants_v4 is missing')
     jest.mocked(openGnomadV4Store).mockRejectedValueOnce(error)
+
+    await expect(initializeParquetDataStoreIfEnabled()).rejects.toBe(error)
+    expect(logger.info).not.toHaveBeenCalled()
+  })
+
+  test('fails to start when the gnomAD v4 exome coverage dataset cannot be opened', async () => {
+    const error = new Error('gnomad_v4_exome_coverage is missing')
+    jest.mocked(openCoverageStore).mockRejectedValueOnce(error)
 
     await expect(initializeParquetDataStoreIfEnabled()).rejects.toBe(error)
     expect(logger.info).not.toHaveBeenCalled()

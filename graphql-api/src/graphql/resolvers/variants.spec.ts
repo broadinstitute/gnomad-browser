@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals'
-import type { ClinvarStore, GeneStore, GnomadV4Store } from '@gnomad/data-store'
+import type { ClinvarStore, CoverageStore, GeneStore, GnomadV4Store } from '@gnomad/data-store'
 
 import config from '../../config'
 import logger from '../../logger'
@@ -165,6 +165,7 @@ describe('Gene.variants', () => {
         : {
             clinvarGrch38: {} as ClinvarStore,
             geneModelsGrch38: {} as GeneStore,
+            gnomadV4ExomeCoverage: {} as CoverageStore,
             gnomadVariantsV4: store,
           },
     requestId: null,
