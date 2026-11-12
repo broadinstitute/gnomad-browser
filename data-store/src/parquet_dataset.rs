@@ -13,6 +13,7 @@ use datafusion::prelude::{ParquetReadOptions, SessionContext, col};
 pub enum ParquetDataset {
     ClinvarVariantsGrch38,
     GeneModelsGrch38,
+    GnomadV4ExomeCoverage,
     GnomadVariantsV4,
 }
 
@@ -26,6 +27,7 @@ impl ParquetDataset {
         match self {
             Self::ClinvarVariantsGrch38 => "clinvar_variants_grch38",
             Self::GeneModelsGrch38 => "gene_models_grch38",
+            Self::GnomadV4ExomeCoverage => "gnomad_v4_exome_coverage",
             Self::GnomadVariantsV4 => "gnomad_variants_v4",
         }
     }
@@ -34,10 +36,12 @@ impl ParquetDataset {
     #[must_use]
     pub fn partition_columns(self) -> Vec<(String, DataType)> {
         match self {
-            Self::ClinvarVariantsGrch38 | Self::GnomadVariantsV4 => vec![
-                chromosome_partition(),
-                ("posbin".to_owned(), DataType::Utf8),
-            ],
+            Self::ClinvarVariantsGrch38 | Self::GnomadV4ExomeCoverage | Self::GnomadVariantsV4 => {
+                vec![
+                    chromosome_partition(),
+                    ("posbin".to_owned(), DataType::Utf8),
+                ]
+            }
             Self::GeneModelsGrch38 => Vec::new(),
         }
     }
@@ -50,7 +54,9 @@ impl ParquetDataset {
                 .into_iter()
                 .map(|column| col(column).sort(true, false))
                 .collect(),
-            Self::ClinvarVariantsGrch38 | Self::GeneModelsGrch38 => Vec::new(),
+            Self::ClinvarVariantsGrch38 | Self::GeneModelsGrch38 | Self::GnomadV4ExomeCoverage => {
+                Vec::new()
+            }
         }
     }
 

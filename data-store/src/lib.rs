@@ -2,6 +2,7 @@
 
 mod clinvar_reader;
 mod clinvar_variant;
+mod coverage_reader;
 mod datafusion_context;
 mod exon_query;
 mod gene;
@@ -20,6 +21,7 @@ pub use clinvar_variant::{
     ClinvarCondition, ClinvarGnomadData, ClinvarGnomadSequencingData, ClinvarSubmission,
     ClinvarTranscriptConsequence, ClinvarVariant, ClinvarVariantListEntry,
 };
+pub use coverage_reader::{CoverageBucket, CoverageDataset, CoverageHistogram, CoverageReader};
 pub use datafusion_context::create_datafusion_context_from_root;
 pub use gene::{
     Gene, GeneExon, GeneGnomadConstraint, GeneInterval, GeneLocus, GeneManeSelectTranscript,
