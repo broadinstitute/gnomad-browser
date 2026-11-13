@@ -1,5 +1,8 @@
 use crate::record_batch_decoding::{at_most_one, decode_record_batches};
-use crate::{ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset};
+use crate::{
+    ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset,
+    pad_and_merge_intervals,
+};
 use datafusion::common::ScalarValue;
 use datafusion::error::DataFusionError;
 use datafusion::prelude::SessionContext;
@@ -37,6 +40,14 @@ const CLINVAR_LIST_ENTRY_FIELDS: &str = r#"
         END
     ) AS gnomad
 "#;
+
+const CLINVAR_EXON_PADDING: u32 = 75;
+
+#[derive(Clone, Copy)]
+enum ClinvarAnnotationFilter<'a> {
+    Gene(&'a str),
+    Transcript(&'a str),
+}
 
 pub struct ClinvarReader {
     context: SessionContext,
@@ -87,6 +98,11 @@ fn region_parameters(interval: &GenomicInterval) -> Vec<ScalarValue> {
     ]
 }
 
+fn bind_parameter(parameters: &mut Vec<ScalarValue>, value: ScalarValue) -> String {
+    parameters.push(value);
+    format!("${}", parameters.len())
+}
+
 impl ClinvarReader {
     #[must_use]
     pub const fn new(context: SessionContext) -> Self {
@@ -132,6 +148,112 @@ impl ClinvarReader {
         at_most_one(variants, || {
             format!("Multiple ClinVar records found for variant ID: {variant_id}")
         })
+    }
+
+    /// Pad `intervals` by `CLINVAR_EXON_PADDING` bases; pass them unpadded.
+    ///
+    /// # Errors
+    /// Returns an error for an empty gene ID, intervals on more than one chromosome,
+    /// padding overflow, query failure, or result decoding failure.
+    pub async fn fetch_variants_in_gene(
+        &self,
+        gene_id: &str,
+        intervals: &[GenomicInterval],
+    ) -> datafusion::error::Result<Vec<ClinvarVariantListEntry>> {
+        self.fetch_variants_in_exons(ClinvarAnnotationFilter::Gene(gene_id), intervals)
+            .await
+    }
+
+    /// Pad `intervals` by `CLINVAR_EXON_PADDING` bases; pass them unpadded.
+    ///
+    /// # Errors
+    /// Returns an error for an empty transcript ID, intervals on more than one chromosome,
+    /// padding overflow, query failure, or result decoding failure.
+    pub async fn fetch_variants_in_transcript(
+        &self,
+        transcript_id: &str,
+        intervals: &[GenomicInterval],
+    ) -> datafusion::error::Result<Vec<ClinvarVariantListEntry>> {
+        self.fetch_variants_in_exons(
+            ClinvarAnnotationFilter::Transcript(transcript_id),
+            intervals,
+        )
+        .await
+    }
+
+    async fn fetch_variants_in_exons(
+        &self,
+        annotation_filter: ClinvarAnnotationFilter<'_>,
+        intervals: &[GenomicInterval],
+    ) -> datafusion::error::Result<Vec<ClinvarVariantListEntry>> {
+        let (annotation_field, annotation_id) = match annotation_filter {
+            ClinvarAnnotationFilter::Gene(id) => ("gene_id", id),
+            ClinvarAnnotationFilter::Transcript(id) => ("transcript_id", id),
+        };
+        if annotation_id.trim().is_empty() {
+            return Err(DataFusionError::Plan(format!(
+                "{annotation_field} must not be empty"
+            )));
+        }
+
+        let intervals =
+            pad_and_merge_intervals(intervals, CLINVAR_EXON_PADDING).map_err(|error| {
+                DataFusionError::Plan(format!(
+                    "Invalid padded exon intervals for {annotation_id}: {error}"
+                ))
+            })?;
+        let Some(chromosome) = intervals.first().map(GenomicInterval::chromosome) else {
+            return Ok(Vec::new());
+        };
+        if intervals
+            .iter()
+            .any(|interval| interval.chromosome() != chromosome)
+        {
+            return Err(DataFusionError::Plan(format!(
+                "Exon intervals for {annotation_id} span more than one chromosome"
+            )));
+        }
+
+        let mut parameters = Vec::new();
+        let annotation_parameter = bind_parameter(
+            &mut parameters,
+            ScalarValue::Utf8(Some(annotation_id.to_owned())),
+        );
+        let chromosome_parameter = bind_parameter(
+            &mut parameters,
+            ScalarValue::Utf8(Some(chromosome.as_str().to_owned())),
+        );
+        let mut position_predicates = Vec::with_capacity(intervals.len());
+        for interval in &intervals {
+            let start = bind_parameter(&mut parameters, ScalarValue::Int32(Some(interval.start())));
+            let stop = bind_parameter(&mut parameters, ScalarValue::Int32(Some(interval.stop())));
+            position_predicates.push(format!("pos BETWEEN {start} AND {stop}"));
+        }
+        let position_predicate = position_predicates.join(" OR ");
+        let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
+        let query = format!(
+            r"
+            WITH candidates AS (
+                SELECT {CLINVAR_LIST_ENTRY_FIELDS},
+                    array_first(
+                        transcript_consequences,
+                        consequence -> consequence['{annotation_field}'] = {annotation_parameter}
+                    ) AS transcript_consequence
+                FROM {table_name}
+                WHERE chrom = {chromosome_parameter}
+                  AND ({position_predicate})
+            )
+            SELECT * FROM candidates
+            WHERE transcript_consequence IS NOT NULL
+            ORDER BY position, variant_id
+            "
+        );
+        let dataframe = self.context.sql(&query).await?;
+        let batches = dataframe.with_param_values(parameters)?.collect().await?;
+        decode_record_batches(
+            &batches,
+            format_args!("ClinVar results for {annotation_field}={annotation_id}"),
+        )
     }
 
     /// # Errors

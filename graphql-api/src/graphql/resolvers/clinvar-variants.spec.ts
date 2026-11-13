@@ -6,7 +6,9 @@ import { client as esClient } from '../../elasticsearch'
 import {
   countClinvarVariantsInRegion,
   fetchClinvarVariantById,
+  fetchClinvarVariantsByGene,
   fetchClinvarVariantsByRegion,
+  fetchClinvarVariantsByTranscript,
 } from '../../queries/clinvar-variant-queries'
 import { UserVisibleError } from '../../errors'
 
@@ -63,6 +65,12 @@ const createNativeStore = () => ({
   countVariantsInRegion: jest.fn<ClinvarStore['countVariantsInRegion']>().mockResolvedValue(1),
   fetchVariantsInRegion: jest
     .fn<ClinvarStore['fetchVariantsInRegion']>()
+    .mockResolvedValue([listEntry]),
+  fetchVariantsInGene: jest
+    .fn<ClinvarStore['fetchVariantsInGene']>()
+    .mockResolvedValue([listEntry]),
+  fetchVariantsInTranscript: jest
+    .fn<ClinvarStore['fetchVariantsInTranscript']>()
     .mockResolvedValue([listEntry]),
 })
 
@@ -188,5 +196,116 @@ describe('Region.clinvar_variants', () => {
       'native failure'
     )
     expect(countClinvarVariantsInRegion).not.toHaveBeenCalled()
+  })
+})
+
+describe('Gene.clinvar_variants', () => {
+  const gene = {
+    gene_id: 'ENSG001',
+    chrom: '1',
+    reference_genome: 'GRCh38',
+    exons: [
+      { feature_type: 'exon', start: 100, stop: 400 },
+      { feature_type: 'UTR', start: 80, stop: 99 },
+      { feature_type: 'CDS', start: 300, stop: 310 },
+      { feature_type: 'CDS', start: 130, stop: 140 },
+    ],
+  }
+
+  test('routes GRCh38 to the native store with only unpadded CDS intervals', async () => {
+    const store = createNativeStore()
+
+    const variants = await resolvers.Gene.clinvar_variants(gene, {}, createContext(store))
+
+    expect(variants).toEqual([listEntry])
+    expect(store.fetchVariantsInGene).toHaveBeenCalledWith('ENSG001', '1', [
+      { start: 300, stop: 310 },
+      { start: 130, stop: 140 },
+    ])
+    expect(fetchClinvarVariantsByGene).not.toHaveBeenCalled()
+  })
+
+  test('uses Elasticsearch when the native data store is disabled', async () => {
+    await resolvers.Gene.clinvar_variants(gene, {}, createContext(null))
+
+    expect(fetchClinvarVariantsByGene).toHaveBeenCalledWith(esClient, 'GRCh38', gene)
+  })
+
+  test('keeps GRCh37 genes on Elasticsearch', async () => {
+    const store = createNativeStore()
+    const grch37Gene = { ...gene, reference_genome: 'GRCh37' }
+
+    await resolvers.Gene.clinvar_variants(grch37Gene, {}, createContext(store))
+
+    expect(store.fetchVariantsInGene).not.toHaveBeenCalled()
+    expect(fetchClinvarVariantsByGene).toHaveBeenCalledWith(esClient, 'GRCh37', grch37Gene)
+  })
+
+  test('rejects native failures instead of falling back to Elasticsearch', async () => {
+    const store = createNativeStore()
+    store.fetchVariantsInGene.mockRejectedValueOnce(new Error('native failure'))
+
+    await expect(resolvers.Gene.clinvar_variants(gene, {}, createContext(store))).rejects.toThrow(
+      'native failure'
+    )
+    expect(fetchClinvarVariantsByGene).not.toHaveBeenCalled()
+  })
+})
+
+describe('Transcript.clinvar_variants', () => {
+  const transcript = {
+    transcript_id: 'ENST001',
+    chrom: '1',
+    reference_genome: 'GRCh38',
+    exons: [
+      { feature_type: 'UTR', start: 1, stop: 99 },
+      { feature_type: 'exon', start: 100, stop: 200 },
+      { feature_type: 'exon', start: 300, stop: 400 },
+    ],
+  }
+
+  test('routes GRCh38 to the native store with unpadded exons when CDS is absent', async () => {
+    const store = createNativeStore()
+
+    const variants = await resolvers.Transcript.clinvar_variants(
+      transcript,
+      {},
+      createContext(store)
+    )
+
+    expect(variants).toEqual([listEntry])
+    expect(store.fetchVariantsInTranscript).toHaveBeenCalledWith('ENST001', '1', [
+      { start: 100, stop: 200 },
+      { start: 300, stop: 400 },
+    ])
+    expect(fetchClinvarVariantsByTranscript).not.toHaveBeenCalled()
+  })
+
+  test('keeps GRCh37 transcripts on Elasticsearch', async () => {
+    const store = createNativeStore()
+    const grch37Transcript = { ...transcript, reference_genome: 'GRCh37' }
+
+    await resolvers.Transcript.clinvar_variants(grch37Transcript, {}, createContext(store))
+
+    expect(store.fetchVariantsInTranscript).not.toHaveBeenCalled()
+    expect(fetchClinvarVariantsByTranscript).toHaveBeenCalledWith(
+      esClient,
+      'GRCh37',
+      grch37Transcript
+    )
+  })
+
+  test('returns an empty native result without asking Elasticsearch', async () => {
+    const store = createNativeStore()
+    store.fetchVariantsInTranscript.mockResolvedValueOnce([])
+
+    const variants = await resolvers.Transcript.clinvar_variants(
+      transcript,
+      {},
+      createContext(store)
+    )
+
+    expect(variants).toEqual([])
+    expect(fetchClinvarVariantsByTranscript).not.toHaveBeenCalled()
   })
 })

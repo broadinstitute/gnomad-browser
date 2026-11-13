@@ -14,5 +14,7 @@ pub use clinvar_variant::{
     ClinvarTranscriptConsequence, ClinvarVariant, ClinvarVariantListEntry,
 };
 pub use datafusion_context::create_datafusion_context_from_root;
-pub use genomic_interval::{Chromosome, GenomicInterval, GenomicIntervalError};
+pub use genomic_interval::{
+    Chromosome, GenomicInterval, GenomicIntervalError, pad_and_merge_intervals,
+};
 pub use parquet_dataset::ParquetDataset;
