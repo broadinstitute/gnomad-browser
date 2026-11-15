@@ -58,6 +58,9 @@ const config: Record<string, any> = {
   PARQUET_DATA_ROOT: env.PARQUET_DATA_ROOT,
 
   PARQUET_ONLY: env.PARQUET_ONLY === 'true' || false,
+
+  // Stored gene page responses, read only
+  STATIC_RESPONSE_DIR: env.STATIC_RESPONSE_DIR,
 }
 
 if (config.PARQUET_ONLY && !config.PARQUET_DATA_STORE_ENABLED) {

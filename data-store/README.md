@@ -163,3 +163,18 @@ from Parquet so far; the other fields of a gene (coverage and so on) still come 
 ClinVar release date is the placeholder `unavailable in Parquet-only mode` (each logged as a
 `parquetOnlyStub` warning), so gene pages can load; every other query returns an error saying it isn't
 supported by the Parquet client yet.
+
+## Serve stored gene page responses (experimental)
+
+The API can answer the gene page's `Gene`, `VariantsInGene` and `GeneCoverage` requests from response
+files written ahead of time, skipping GraphQL, this crate and Elasticsearch. Set `STATIC_RESPONSE_DIR`
+to their directory, for example `<DATA_ROOT>/static_responses`. The API only reads it.
+
+A file answers a request only when the operation, the exact query text and the variables match:
+`<STATIC_RESPONSE_DIR>/<operationName>/<query hash>/<gene>.<dataset>.<variables hash>.json.gz`. Files are
+gzip-compressed and sent as they are (`Content-Encoding: gzip`) to clients that accept gzip, so nothing
+compresses them per request. Hits carry the header `X-Static-Response: hit` and are logged as
+`staticResponseHit`; every other request, or a file that cannot be read, goes to GraphQL as before.
+
+Stored responses are not rate limited, and they keep whatever the API returned when they were written:
+write them again after a data release, a ClinVar update or a change to how the gene page is shaped.
