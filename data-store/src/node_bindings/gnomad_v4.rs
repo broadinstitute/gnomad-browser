@@ -4,11 +4,12 @@
 )]
 
 use datafusion::arrow::json::WriterBuilder;
-use datafusion::arrow::json::writer::JsonArray;
+use datafusion::arrow::json::writer::{JsonArray, LineDelimited};
 use datafusion::arrow::record_batch::RecordBatch;
+use napi::bindgen_prelude::{Either, Null};
 use napi_derive::napi;
 
-use super::{GenomicIntervalBounds, into_napi_error, parse_genomic_intervals};
+use super::{GenomicIntervalBounds, into_napi_error, into_nullable, parse_genomic_intervals};
 use crate::{GnomadV4Reader, GnomadV4Subset, ParquetDataset, create_datafusion_context_from_root};
 
 #[napi]
@@ -62,8 +63,47 @@ fn write_json_array(batches: &[RecordBatch]) -> napi::Result<String> {
     String::from_utf8(json).map_err(|error| into_napi_error(&error))
 }
 
+// At most one row: a JSON object, not an array.
+fn write_json_object(batches: &[RecordBatch]) -> napi::Result<Option<String>> {
+    let mut json = Vec::new();
+    let mut writer = WriterBuilder::new()
+        .with_explicit_nulls(true)
+        .build::<_, LineDelimited>(&mut json);
+    for batch in batches {
+        writer
+            .write(batch)
+            .map_err(|error| into_napi_error(&error))?;
+    }
+    writer.finish().map_err(|error| into_napi_error(&error))?;
+    drop(writer);
+    if json.is_empty() {
+        return Ok(None);
+    }
+    let object = String::from_utf8(json).map_err(|error| into_napi_error(&error))?;
+    Ok(Some(object.trim_end().to_owned()))
+}
+
 #[napi]
 impl GnomadV4Store {
+    /// Return the variant as a JSON object with `snake_case` fields and explicit nulls, or null if
+    /// the dataset has no such variant. Subset filtering and shaping are left to the API.
+    ///
+    /// # Errors
+    /// Rejects IDs not in `chrom-pos-ref-alt` form and propagates query, duplicate-record and
+    /// serialization errors.
+    #[napi]
+    pub async fn fetch_single_variant_json(
+        &self,
+        variant_id: String,
+    ) -> napi::Result<Either<String, Null>> {
+        let batches = self
+            .reader
+            .fetch_single_variant_batches(&variant_id)
+            .await
+            .map_err(|error| into_napi_error(&error))?;
+        Ok(into_nullable(write_json_object(&batches)?))
+    }
+
     /// Return a JSON array of variant objects with `snake_case` fields and explicit nulls. Pad each
     /// interval by 75 bases; `subset` is `all` or `non_ukb` and selects the exome frequencies.
     /// Each variant keeps this gene's first consequence, its later consequences with a `LoF`
