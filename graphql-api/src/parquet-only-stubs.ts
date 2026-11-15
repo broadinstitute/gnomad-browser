@@ -10,6 +10,9 @@ export const PARQUET_ONLY_STUBS = {
   'Query.liftover': [],
   'Region.short_tandem_repeats': [],
   'Variant.lof_curation': null,
+  'VariantDetails.lof_curations': null,
+  'VariantDetails.non_coding_constraint': null,
+  'VariantDetailsSequencingTypeData.local_ancestry_populations': null,
 } as const
 
 export type ParquetOnlyStubbedField = keyof typeof PARQUET_ONLY_STUBS

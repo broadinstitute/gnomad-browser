@@ -284,6 +284,29 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   )
 }
 
+const PARQUET_ONLY_VARIANT_DETAILS_ENRICHMENT: VariantDetailsEnrichment = {
+  fetchLofCurationResults: async () => resolveParquetOnlyStub('VariantDetails.lof_curations'),
+  fetchLocalAncestryPopulations: async () =>
+    resolveParquetOnlyStub('VariantDetailsSequencingTypeData.local_ancestry_populations'),
+}
+
+const fetchVariantByIdFromParquet = async (
+  esClient: any,
+  store: GnomadV4Store,
+  variantId: string,
+  subset: Subset,
+  { isParquetOnly }: { isParquetOnly: boolean }
+) => {
+  const variantJson = await store.fetchSingleVariantJson(variantId)
+  if (variantJson === null) {
+    throw new UserVisibleError('Variant not found')
+  }
+  const enrichment = isParquetOnly
+    ? PARQUET_ONLY_VARIANT_DETAILS_ENRICHMENT
+    : fetchVariantDetailsEnrichmentFromElasticsearch(esClient)
+  return shapeVariantDetails(JSON.parse(variantJson), subset, enrichment)
+}
+
 // ================================================================================================
 // Shared functions
 // ================================================================================================
@@ -730,6 +753,7 @@ const fetchMatchingVariants = async (
 const gnomadV4VariantQueries = {
   countVariantsInRegion,
   fetchVariantById,
+  fetchVariantByIdFromParquet,
   fetchVariantsByGene,
   fetchVariantsByGeneFromParquet,
   fetchVariantsByRegion,

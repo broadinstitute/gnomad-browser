@@ -1,0 +1,1036 @@
+{
+  "variant_id": "17-16000457-T-C",
+  "locus": { "contig": "chr17", "position": 16000457 },
+  "alleles": ["T", "C"],
+  "rsids": ["rs960724070"],
+  "exome": {
+    "colocated_variants": {
+      "all": ["17-16000457-T-G", "17-16000457-TGTCAAG-T"],
+      "non_ukb": ["17-16000457-T-G"]
+    },
+    "subsets": ["non_ukb"],
+    "flags": [],
+    "freq": {
+      "all": {
+        "ac": 30,
+        "ac_raw": 31,
+        "an": 1220484,
+        "hemizygote_count": 0,
+        "homozygote_count": 1,
+        "ancestry_groups": [
+          { "id": "remaining", "ac": 0, "an": 50564, "hemizygote_count": 0, "homozygote_count": 0 },
+          {
+            "id": "remaining_XX",
+            "ac": 0,
+            "an": 27230,
+            "hemizygote_count": 0,
+            "homozygote_count": 0
+          },
+          {
+            "id": "remaining_XY",
+            "ac": 0,
+            "an": 23334,
+            "hemizygote_count": 0,
+            "homozygote_count": 0
+          },
+          { "id": "amr", "ac": 0, "an": 18712, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "amr_XX", "ac": 0, "an": 10200, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "amr_XY", "ac": 0, "an": 8512, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin", "ac": 0, "an": 27928, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin_XX", "ac": 0, "an": 14954, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin_XY", "ac": 0, "an": 12974, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "mid", "ac": 2, "an": 3394, "hemizygote_count": 0, "homozygote_count": 1 },
+          { "id": "mid_XX", "ac": 2, "an": 1356, "hemizygote_count": 0, "homozygote_count": 1 },
+          { "id": "mid_XY", "ac": 0, "an": 2038, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe", "ac": 28, "an": 983254, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe_XX", "ac": 19, "an": 518480, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe_XY", "ac": 9, "an": 464774, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas", "ac": 0, "an": 60618, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas_XX", "ac": 0, "an": 16380, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas_XY", "ac": 0, "an": 44238, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj", "ac": 0, "an": 17886, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj_XX", "ac": 0, "an": 8672, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj_XY", "ac": 0, "an": 9214, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas", "ac": 0, "an": 31600, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas_XX", "ac": 0, "an": 16706, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas_XY", "ac": 0, "an": 14894, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr", "ac": 0, "an": 26528, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr_XX", "ac": 0, "an": 15110, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr_XY", "ac": 0, "an": 11418, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "XX", "ac": 21, "an": 629088, "hemizygote_count": 0, "homozygote_count": 1 },
+          { "id": "XY", "ac": 9, "an": 591396, "hemizygote_count": 0, "homozygote_count": 0 }
+        ]
+      },
+      "non_ukb": {
+        "ac": 8,
+        "ac_raw": 9,
+        "an": 417358,
+        "hemizygote_count": 0,
+        "homozygote_count": 0,
+        "ancestry_groups": [
+          { "id": "remaining", "ac": 0, "an": 24288, "hemizygote_count": 0, "homozygote_count": 0 },
+          {
+            "id": "remaining_XX",
+            "ac": 0,
+            "an": 12770,
+            "hemizygote_count": 0,
+            "homozygote_count": 0
+          },
+          {
+            "id": "remaining_XY",
+            "ac": 0,
+            "an": 11518,
+            "hemizygote_count": 0,
+            "homozygote_count": 0
+          },
+          { "id": "amr", "ac": 0, "an": 17744, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "amr_XX", "ac": 0, "an": 9564, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "amr_XY", "ac": 0, "an": 8180, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin", "ac": 0, "an": 27660, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin_XX", "ac": 0, "an": 14712, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin_XY", "ac": 0, "an": 12948, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "mid", "ac": 0, "an": 1826, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "mid_XX", "ac": 0, "an": 788, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "mid_XY", "ac": 0, "an": 1038, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe", "ac": 8, "an": 248636, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe_XX", "ac": 5, "an": 123630, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe_XY", "ac": 3, "an": 125006, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas", "ac": 0, "an": 44784, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas_XX", "ac": 0, "an": 9158, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas_XY", "ac": 0, "an": 35626, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj", "ac": 0, "an": 12930, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj_XX", "ac": 0, "an": 5984, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj_XY", "ac": 0, "an": 6946, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas", "ac": 0, "an": 28134, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas_XX", "ac": 0, "an": 14406, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas_XY", "ac": 0, "an": 13728, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr", "ac": 0, "an": 11356, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr_XX", "ac": 0, "an": 6426, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr_XY", "ac": 0, "an": 4930, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "XX", "ac": 5, "an": 197438, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "XY", "ac": 3, "an": 219920, "hemizygote_count": 0, "homozygote_count": 0 }
+        ]
+      }
+    },
+    "faf95": { "grpmax": 0.00010427999999999998, "grpmax_gen_anc": "mid" },
+    "faf99": { "grpmax": 0.00004281999999999998, "grpmax_gen_anc": "mid" },
+    "fafmax": {
+      "gnomad": {
+        "faf95_max": 0.00010427999999999998,
+        "faf95_max_gen_anc": "mid",
+        "faf99_max": 0.00004281999999999998,
+        "faf99_max_gen_anc": "mid"
+      },
+      "non_ukb": {
+        "faf95_max": 0.00001582,
+        "faf95_max_gen_anc": "nfe",
+        "faf99_max": 0.00001099,
+        "faf99_max_gen_anc": "nfe"
+      }
+    },
+    "age_distribution": {
+      "het": {
+        "bin_edges": [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80],
+        "bin_freq": [1, 0, 2, 2, 7, 2, 5, 3, 0, 0],
+        "n_smaller": 0,
+        "n_larger": 0
+      },
+      "hom": {
+        "bin_edges": [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80],
+        "bin_freq": [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        "n_smaller": 0,
+        "n_larger": 0
+      }
+    },
+    "filters": [],
+    "quality_metrics": {
+      "allele_balance": {
+        "alt_adj": {
+          "bin_edges": [
+            0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75,
+            0.8, 0.85, 0.9, 0.95, 1
+          ],
+          "bin_freq": [0, 0, 0, 0, 1, 0, 0, 2, 4, 3, 10, 0, 5, 2, 0, 1, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "alt_raw": {
+          "bin_edges": [
+            0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75,
+            0.8, 0.85, 0.9, 0.95, 1
+          ],
+          "bin_freq": [0, 0, 0, 0, 1, 0, 0, 2, 5, 3, 10, 0, 5, 2, 0, 1, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      },
+      "genotype_depth": {
+        "all_adj": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            0, 0, 110421, 160727, 149205, 81410, 79737, 26880, 1703, 78, 13, 10, 7, 13, 13, 4, 5, 4,
+            0, 2
+          ],
+          "n_smaller": 0,
+          "n_larger": 10
+        },
+        "all_raw": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            53692, 58710, 113454, 164785, 149274, 81510, 79739, 26881, 1703, 78, 13, 10, 7, 13, 13,
+            4, 5, 4, 0, 2
+          ],
+          "n_smaller": 0,
+          "n_larger": 10
+        },
+        "alt_adj": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 5, 11, 5, 6, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "alt_raw": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 1, 5, 11, 5, 6, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      },
+      "genotype_quality": {
+        "all_adj": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            0, 0, 0, 0, 34968, 0, 143416, 0, 236182, 3, 81055, 1, 114586, 1, 0, 1, 1, 0, 0, 28
+          ],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "all_raw": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            95175, 0, 8667, 0, 50789, 0, 143416, 0, 236182, 3, 81055, 1, 114586, 1, 0, 2, 1, 1, 0,
+            28
+          ],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "alt_adj": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 26],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "alt_raw": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 26],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      },
+      "site_quality_metrics": [
+        { "metric": "SiteQuality", "value": 12925 },
+        { "metric": "inbreeding_coeff", "value": 0.06449626306587808 },
+        { "metric": "AS_MQ", "value": 60 },
+        { "metric": "AS_FS", "value": 3.4242268082220617 },
+        { "metric": "AS_MQRankSum", "value": 0 },
+        { "metric": "AS_pab_max", "value": 1 },
+        { "metric": "AS_QUALapprox", "value": 11457 },
+        { "metric": "AS_QD", "value": 14.821474773609314 },
+        { "metric": "AS_ReadPosRankSum", "value": 0.238 },
+        { "metric": "AS_SOR", "value": 0.15909626411129496 },
+        { "metric": "AS_VarDP", "value": 773 },
+        { "metric": "AS_VQSLOD", "value": 5.4822 }
+      ]
+    }
+  },
+  "genome": {
+    "colocated_variants": { "hgdp": [], "tgp": [], "all": [] },
+    "subsets": [],
+    "flags": [],
+    "freq": {
+      "hgdp": {
+        "ac": 0,
+        "ac_raw": 0,
+        "an": 1560,
+        "hemizygote_count": 0,
+        "homozygote_count": 0,
+        "ancestry_groups": []
+      },
+      "tgp": {
+        "ac": 0,
+        "ac_raw": 0,
+        "an": 5000,
+        "hemizygote_count": 0,
+        "homozygote_count": 0,
+        "ancestry_groups": []
+      },
+      "all": {
+        "ac": 2,
+        "ac_raw": 2,
+        "an": 152214,
+        "hemizygote_count": 0,
+        "homozygote_count": 0,
+        "ancestry_groups": [
+          { "id": "remaining", "ac": 0, "an": 2090, "hemizygote_count": 0, "homozygote_count": 0 },
+          {
+            "id": "remaining_XX",
+            "ac": 0,
+            "an": 1030,
+            "hemizygote_count": 0,
+            "homozygote_count": 0
+          },
+          {
+            "id": "remaining_XY",
+            "ac": 0,
+            "an": 1060,
+            "hemizygote_count": 0,
+            "homozygote_count": 0
+          },
+          { "id": "amr", "ac": 0, "an": 15290, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "amr_XX", "ac": 0, "an": 6790, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "amr_XY", "ac": 0, "an": 8500, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin", "ac": 0, "an": 10622, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin_XX", "ac": 0, "an": 2574, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin_XY", "ac": 0, "an": 8048, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "ami", "ac": 0, "an": 910, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "ami_XX", "ac": 0, "an": 470, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "ami_XY", "ac": 0, "an": 440, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas", "ac": 0, "an": 5196, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas_XX", "ac": 0, "an": 2278, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas_XY", "ac": 0, "an": 2918, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "mid", "ac": 0, "an": 316, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "mid_XX", "ac": 0, "an": 164, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "mid_XY", "ac": 0, "an": 152, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas", "ac": 0, "an": 4832, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas_XX", "ac": 0, "an": 1164, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas_XY", "ac": 0, "an": 3668, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj", "ac": 0, "an": 3468, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj_XX", "ac": 0, "an": 1868, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj_XY", "ac": 0, "an": 1600, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr", "ac": 0, "an": 41452, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr_XX", "ac": 0, "an": 22154, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr_XY", "ac": 0, "an": 19298, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe", "ac": 2, "an": 68038, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe_XX", "ac": 1, "an": 39364, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe_XY", "ac": 1, "an": 28674, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "XX", "ac": 1, "an": 77856, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "XY", "ac": 1, "an": 74358, "hemizygote_count": 0, "homozygote_count": 0 }
+        ]
+      }
+    },
+    "faf95": { "grpmax": 0.00000488, "grpmax_gen_anc": "nfe" },
+    "faf99": { "grpmax": 0.00000183, "grpmax_gen_anc": "nfe" },
+    "fafmax": {
+      "faf95_max": 0.00000488,
+      "faf95_max_gen_anc": "nfe",
+      "faf99_max": 0.00000183,
+      "faf99_max_gen_anc": "nfe"
+    },
+    "age_distribution": {
+      "het": {
+        "bin_edges": [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80],
+        "bin_freq": [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        "n_smaller": 0,
+        "n_larger": 0
+      },
+      "hom": {
+        "bin_edges": [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80],
+        "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "n_smaller": 0,
+        "n_larger": 0
+      }
+    },
+    "filters": [],
+    "quality_metrics": {
+      "allele_balance": {
+        "alt_adj": {
+          "bin_edges": [
+            0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75,
+            0.8, 0.85, 0.9, 0.95, 1
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "alt_raw": {
+          "bin_edges": [
+            0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75,
+            0.8, 0.85, 0.9, 0.95, 1
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      },
+      "genotype_depth": {
+        "all_adj": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            0, 0, 145, 1744, 6927, 13660, 32303, 18172, 2182, 441, 231, 144, 68, 31, 24, 15, 9, 4,
+            1, 4
+          ],
+          "n_smaller": 0,
+          "n_larger": 2
+        },
+        "all_raw": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            0, 8, 151, 1756, 6934, 13667, 32304, 18172, 2182, 441, 231, 144, 68, 31, 24, 15, 9, 4,
+            1, 4
+          ],
+          "n_smaller": 0,
+          "n_larger": 2
+        },
+        "alt_adj": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "alt_raw": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      },
+      "genotype_quality": {
+        "all_adj": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            0, 0, 0, 0, 21155, 14634, 10265, 7131, 7130, 4804, 3379, 2809, 1659, 1097, 781, 416,
+            279, 197, 130, 241
+          ],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "all_raw": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            2, 6, 11, 16, 21161, 14634, 10265, 7131, 7130, 4804, 3379, 2809, 1659, 1097, 781, 416,
+            279, 197, 130, 241
+          ],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "alt_adj": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "alt_raw": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      },
+      "site_quality_metrics": [
+        { "metric": "SiteQuality", "value": 3576 },
+        { "metric": "inbreeding_coeff", "value": -0.000013132493729139938 },
+        { "metric": "AS_MQ", "value": 60 },
+        { "metric": "AS_FS", "value": 5.248499464905242 },
+        { "metric": "AS_MQRankSum", "value": 0.306 },
+        { "metric": "AS_pab_max", "value": 1 },
+        { "metric": "AS_QUALapprox", "value": 3576 },
+        { "metric": "AS_QD", "value": 18.4329891204834 },
+        { "metric": "AS_ReadPosRankSum", "value": 0.19 },
+        { "metric": "AS_SOR", "value": 0.4315161482027801 },
+        { "metric": "AS_VarDP", "value": 194 },
+        { "metric": "AS_VQSLOD", "value": 4.8207 }
+      ]
+    }
+  },
+  "joint": {
+    "freq": {
+      "all": {
+        "ac": 32,
+        "ac_raw": 33,
+        "an": 1372698,
+        "hemizygote_count": 0,
+        "homozygote_count": 1,
+        "ancestry_groups": [
+          { "id": "remaining", "ac": 0, "an": 52654, "hemizygote_count": 0, "homozygote_count": 0 },
+          {
+            "id": "remaining_XX",
+            "ac": 0,
+            "an": 28260,
+            "hemizygote_count": 0,
+            "homozygote_count": 0
+          },
+          {
+            "id": "remaining_XY",
+            "ac": 0,
+            "an": 24394,
+            "hemizygote_count": 0,
+            "homozygote_count": 0
+          },
+          { "id": "amr", "ac": 0, "an": 34002, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "amr_XX", "ac": 0, "an": 16990, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "amr_XY", "ac": 0, "an": 17012, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin", "ac": 0, "an": 38550, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin_XX", "ac": 0, "an": 17528, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "fin_XY", "ac": 0, "an": 21022, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "ami", "ac": 0, "an": 910, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "ami_XX", "ac": 0, "an": 470, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "ami_XY", "ac": 0, "an": 440, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas", "ac": 0, "an": 36796, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas_XX", "ac": 0, "an": 18984, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "eas_XY", "ac": 0, "an": 17812, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "mid", "ac": 2, "an": 3710, "hemizygote_count": 0, "homozygote_count": 1 },
+          { "id": "mid_XX", "ac": 2, "an": 1520, "hemizygote_count": 0, "homozygote_count": 1 },
+          { "id": "mid_XY", "ac": 0, "an": 2190, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas", "ac": 0, "an": 65450, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas_XX", "ac": 0, "an": 17544, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "sas_XY", "ac": 0, "an": 47906, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj", "ac": 0, "an": 21354, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj_XX", "ac": 0, "an": 10540, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "asj_XY", "ac": 0, "an": 10814, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr", "ac": 0, "an": 67980, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr_XX", "ac": 0, "an": 37264, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "afr_XY", "ac": 0, "an": 30716, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe", "ac": 30, "an": 1051292, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe_XX", "ac": 20, "an": 557844, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "nfe_XY", "ac": 10, "an": 493448, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "", "ac": 32, "an": 1372698, "hemizygote_count": 0, "homozygote_count": 1 },
+          { "id": "XX", "ac": 22, "an": 706944, "hemizygote_count": 0, "homozygote_count": 1 },
+          { "id": "XY", "ac": 10, "an": 665754, "hemizygote_count": 0, "homozygote_count": 0 },
+          { "id": "XX", "ac": 22, "an": 706944, "hemizygote_count": 0, "homozygote_count": 1 },
+          { "id": "XY", "ac": 10, "an": 665754, "hemizygote_count": 0, "homozygote_count": 0 }
+        ]
+      }
+    },
+    "faf": [
+      { "faf95": 0.00001687, "faf99": 0.00001444 },
+      { "faf95": 0.00002024, "faf99": 0.00001757 },
+      { "faf95": 0.00009515999999999998, "faf99": 0.00003979999999999998 },
+      { "faf95": 0, "faf99": 0 },
+      { "faf95": 0, "faf99": 0 },
+      { "faf95": 0, "faf99": 0 },
+      { "faf95": 0, "faf99": 0 },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null },
+      { "faf95": null, "faf99": null }
+    ],
+    "fafmax": {
+      "faf95_max": 0.00009515999999999998,
+      "faf95_max_gen_anc": "mid",
+      "faf99_max": 0.00003979999999999998,
+      "faf99_max_gen_anc": "mid"
+    },
+    "grpmax": {
+      "AC": 2,
+      "AF": 0.0005390835579514825,
+      "AN": 3710,
+      "homozygote_count": 1,
+      "gen_anc": "mid"
+    },
+    "histograms": {
+      "qual_hists": {
+        "gq_hist_all": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            0, 0, 0, 0, 56123, 14634, 153681, 7131, 243312, 4807, 84434, 2810, 116245, 1098, 781,
+            417, 280, 197, 130, 269
+          ],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "dp_hist_all": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            0, 0, 110566, 162471, 156132, 95070, 112040, 45052, 3885, 519, 244, 154, 75, 44, 37, 19,
+            14, 8, 1, 6
+          ],
+          "n_smaller": 0,
+          "n_larger": 12
+        },
+        "gq_hist_alt": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 28],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "dp_hist_alt": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 5, 11, 5, 6, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "ab_hist_alt": {
+          "bin_edges": [
+            0, 0.05, 0.1, 0.15000000000000002, 0.2, 0.25, 0.30000000000000004, 0.35000000000000003,
+            0.4, 0.45, 0.5, 0.55, 0.6000000000000001, 0.65, 0.7000000000000001, 0.75, 0.8,
+            0.8500000000000001, 0.9, 0.9500000000000001, 1
+          ],
+          "bin_freq": [0, 0, 0, 0, 1, 0, 0, 2, 5, 3, 11, 0, 5, 2, 0, 1, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      },
+      "raw_qual_hists": {
+        "gq_hist_all": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            95177, 6, 8678, 16, 71950, 14634, 153681, 7131, 243312, 4807, 84434, 2810, 116245, 1098,
+            781, 418, 280, 198, 130, 269
+          ],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "dp_hist_all": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [
+            53692, 58718, 113605, 166541, 156208, 95177, 112043, 45053, 3885, 519, 244, 154, 75, 44,
+            37, 19, 14, 8, 1, 6
+          ],
+          "n_smaller": 0,
+          "n_larger": 12
+        },
+        "gq_hist_alt": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 28],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "dp_hist_alt": {
+          "bin_edges": [
+            0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100
+          ],
+          "bin_freq": [0, 1, 5, 11, 5, 6, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "ab_hist_alt": {
+          "bin_edges": [
+            0, 0.05, 0.1, 0.15000000000000002, 0.2, 0.25, 0.30000000000000004, 0.35000000000000003,
+            0.4, 0.45, 0.5, 0.55, 0.6000000000000001, 0.65, 0.7000000000000001, 0.75, 0.8,
+            0.8500000000000001, 0.9, 0.9500000000000001, 1
+          ],
+          "bin_freq": [0, 0, 0, 0, 1, 0, 0, 2, 6, 3, 11, 0, 5, 2, 0, 1, 0, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      },
+      "age_hists": {
+        "age_hist_het": {
+          "bin_edges": [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80],
+          "bin_freq": [1, 0, 2, 3, 7, 2, 5, 3, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        },
+        "age_hist_hom": {
+          "bin_edges": [30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80],
+          "bin_freq": [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+          "n_smaller": 0,
+          "n_larger": 0
+        }
+      }
+    },
+    "flags": [],
+    "faf95_joint": { "grpmax": 0.00009515999999999998, "grpmax_gen_anc": "mid" },
+    "faf99_joint": { "grpmax": 0.00003979999999999998, "grpmax_gen_anc": "mid" },
+    "freq_comparison_stats": {
+      "contingency_table_test": [
+        { "p_value": 0.5738217384896339, "odds_ratio": 0.5345418256086819 },
+        { "p_value": 0.7656604014316751, "odds_ratio": 0.6184149137963316 },
+        { "p_value": 1.0000000000000002, "odds_ratio": 1.0322625533677703 },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": 1, "odds_ratio": 0 },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": 0.5042772519152727, "odds_ratio": 0.38476121657234097 },
+        { "p_value": 1.0000000000000002, "odds_ratio": 0.8836900370387514 },
+        { "p_value": 0.9999999999999998, "odds_ratio": 0.6932085414481943 },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": 1, "odds_ratio": 0 },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": 0.4504567509761194, "odds_ratio": 1.801011891905957 },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null },
+        { "p_value": null, "odds_ratio": null }
+      ],
+      "cochran_mantel_haenszel_test": {
+        "p_value": 0.7822476154749126,
+        "chisq": 0.07639209506969255
+      },
+      "stat_union": {
+        "p_value": 0.7822476154749126,
+        "stat_test_name": "cochran_mantel_haenszel_test",
+        "gen_ancs": ["mid", "nfe"]
+      }
+    }
+  },
+  "in_silico_predictors": {
+    "cadd": { "phred": 9.723999977111816, "raw_score": 0.8328329920768738 },
+    "revel_max": null,
+    "spliceai_ds_max": 0,
+    "pangolin_largest_ds": 0,
+    "phylop": 0.186,
+    "sift_max": null,
+    "polyphen_max": null
+  },
+  "colocated_variants": {
+    "all": ["17-16000457-T-G", "17-16000457-TGTCAAG-T"],
+    "non_ukb": ["17-16000457-T-G"],
+    "hgdp": [],
+    "tgp": []
+  },
+  "coverage": {
+    "exome": {
+      "mean": 18.952673723265846,
+      "median_approx": 19,
+      "total_DP": 13853400,
+      "over_1": 0.9968410842372977,
+      "over_5": 0.9251217940562038,
+      "over_10": 0.844801333065188,
+      "over_15": 0.6895862490714101,
+      "over_20": 0.46414582726244175,
+      "over_25": 0.25992582225523875,
+      "over_30": 0.14841294922887707,
+      "over_50": 0.0001108151480203079,
+      "over_100": 0.000013680882471642952
+    },
+    "genome": {
+      "mean": 31.440699004211876,
+      "median_approx": 32,
+      "total_DP": 2254361,
+      "over_1": 0.99990237,
+      "over_5": 0.99990237,
+      "over_10": 0.99983263,
+      "over_15": 0.9980475,
+      "over_20": 0.975719,
+      "over_25": 0.8795431,
+      "over_30": 0.6932722,
+      "over_50": 0.006401495,
+      "over_100": 0.000041839838
+    }
+  },
+  "transcript_consequences": [
+    {
+      "biotype": "protein_coding",
+      "consequence_terms": ["intron_variant"],
+      "domains": null,
+      "gene_id": "ENSG00000011295",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.312+212T>C",
+      "hgvsp": null,
+      "is_canonical": true,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "ENST00000261647",
+      "transcript_version": "10",
+      "gene_version": "16",
+      "is_mane_select": true,
+      "is_mane_select_version": true,
+      "refseq_id": "NM_017775",
+      "refseq_version": "4"
+    },
+    {
+      "biotype": "protein_coding",
+      "consequence_terms": ["intron_variant"],
+      "domains": null,
+      "gene_id": "54902",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.312+212T>C",
+      "hgvsp": null,
+      "is_canonical": true,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "NM_017775.4",
+      "transcript_version": null,
+      "gene_version": null,
+      "is_mane_select": null,
+      "is_mane_select_version": null,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "protein_coding",
+      "consequence_terms": ["intron_variant"],
+      "domains": null,
+      "gene_id": "54902",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.-10+75T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "NM_001271420.2",
+      "transcript_version": null,
+      "gene_version": null,
+      "is_mane_select": null,
+      "is_mane_select_version": null,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "protein_coding",
+      "consequence_terms": ["intron_variant"],
+      "domains": null,
+      "gene_id": "54902",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.312+212T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "XM_017024801.2",
+      "transcript_version": null,
+      "gene_version": null,
+      "is_mane_select": null,
+      "is_mane_select_version": null,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "protein_coding",
+      "consequence_terms": ["intron_variant"],
+      "domains": null,
+      "gene_id": "54902",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.312+212T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "XM_017024802.2",
+      "transcript_version": null,
+      "gene_version": null,
+      "is_mane_select": null,
+      "is_mane_select_version": null,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "protein_coding",
+      "consequence_terms": ["intron_variant"],
+      "domains": null,
+      "gene_id": "54902",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.312+212T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "XM_024450814.1",
+      "transcript_version": null,
+      "gene_version": null,
+      "is_mane_select": null,
+      "is_mane_select_version": null,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "retained_intron",
+      "consequence_terms": ["non_coding_transcript_exon_variant"],
+      "domains": null,
+      "gene_id": "ENSG00000011295",
+      "gene_symbol": "TTC19",
+      "hgvsc": "n.549T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "non_coding_transcript_exon_variant",
+      "transcript_id": "ENST00000583704",
+      "transcript_version": "1",
+      "gene_version": "16",
+      "is_mane_select": false,
+      "is_mane_select_version": false,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "nonsense_mediated_decay",
+      "consequence_terms": ["intron_variant", "NMD_transcript_variant"],
+      "domains": null,
+      "gene_id": "ENSG00000011295",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.514+75T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "ENST00000466729",
+      "transcript_version": "5",
+      "gene_version": "16",
+      "is_mane_select": false,
+      "is_mane_select_version": false,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "nonsense_mediated_decay",
+      "consequence_terms": ["intron_variant", "NMD_transcript_variant"],
+      "domains": null,
+      "gene_id": "ENSG00000011295",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.327+212T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "ENST00000470399",
+      "transcript_version": "1",
+      "gene_version": "16",
+      "is_mane_select": false,
+      "is_mane_select_version": false,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "nonsense_mediated_decay",
+      "consequence_terms": ["intron_variant", "NMD_transcript_variant"],
+      "domains": null,
+      "gene_id": "ENSG00000011295",
+      "gene_symbol": "TTC19",
+      "hgvsc": "c.496+75T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "ENST00000475723",
+      "transcript_version": "5",
+      "gene_version": "16",
+      "is_mane_select": false,
+      "is_mane_select_version": false,
+      "refseq_id": null,
+      "refseq_version": null
+    },
+    {
+      "biotype": "processed_transcript",
+      "consequence_terms": ["intron_variant", "non_coding_transcript_variant"],
+      "domains": null,
+      "gene_id": "ENSG00000011295",
+      "gene_symbol": "TTC19",
+      "hgvsc": "n.422+212T>C",
+      "hgvsp": null,
+      "is_canonical": null,
+      "lof_filter": null,
+      "lof_flags": null,
+      "lof": null,
+      "major_consequence": "intron_variant",
+      "transcript_id": "ENST00000497842",
+      "transcript_version": "6",
+      "gene_version": "16",
+      "is_mane_select": false,
+      "is_mane_select_version": false,
+      "refseq_id": null,
+      "refseq_version": null
+    }
+  ],
+  "caid": "CA726478728",
+  "vrs": {
+    "ref": {
+      "allele_id": "ga4gh:VA.XrB7sMt5u_2ZGhkcu_Gp5MrcsXfp0Hrj",
+      "start": 16000456,
+      "end": 16000457,
+      "state": "T",
+      "length": 1,
+      "repeat_subunit_lengths": 1
+    },
+    "alt": {
+      "allele_id": "ga4gh:VA.ShATa4wwmsRcfEfMxh9MXFWWdy9_yQNf",
+      "start": 16000456,
+      "end": 16000457,
+      "state": "C",
+      "length": null,
+      "repeat_subunit_lengths": null
+    }
+  }
+}

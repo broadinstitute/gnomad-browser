@@ -1,10 +1,17 @@
 import { beforeEach, describe, expect, jest, test } from '@jest/globals'
+import { readFileSync } from 'fs'
+import path from 'path'
 import type { ClinvarStore, CoverageStore, GeneStore, GnomadV4Store } from '@gnomad/data-store'
 
 import config from '../../config'
 import logger from '../../logger'
-import { fetchLofCurationResultsByGene } from '../../queries/lof-curation-result-queries'
-import { fetchVariantsByGene } from '../../queries/variant-queries'
+import { fetchNccConstraintRegionById } from '../../queries/genomic-constraint-queries'
+import { fetchLocalAncestryPopulationsByVariant } from '../../queries/local-ancestry-queries'
+import {
+  fetchLofCurationResultsByGene,
+  fetchLofCurationResultsByVariant,
+} from '../../queries/lof-curation-result-queries'
+import { fetchVariantById, fetchVariantsByGene } from '../../queries/variant-queries'
 import type { GraphQLContext } from '../context'
 import resolvers from './variants'
 
@@ -22,10 +29,20 @@ jest.mock('../../logger', () => ({ warn: jest.fn() }))
 
 jest.mock('../../queries/lof-curation-result-queries', () => ({
   fetchLofCurationResultsByGene: jest.fn(),
+  fetchLofCurationResultsByVariant: jest.fn(),
+}))
+
+jest.mock('../../queries/local-ancestry-queries', () => ({
+  fetchLocalAncestryPopulationsByVariant: jest.fn(),
+}))
+
+jest.mock('../../queries/genomic-constraint-queries', () => ({
+  fetchNccConstraintRegionById: jest.fn(),
 }))
 
 jest.mock('../../queries/variant-queries', () => ({
   ...jest.requireActual<object>('../../queries/variant-queries'),
+  fetchVariantById: jest.fn(),
   fetchVariantsByGene: jest.fn(),
 }))
 
@@ -287,5 +304,186 @@ describe('Gene.variants', () => {
     await resolveGeneVariants('gnomad_r4', createContext(null))
 
     expect(fetchVariantsByGene).toHaveBeenCalledWith(expect.anything(), 'gnomad_r4', gene)
+  })
+})
+
+describe('Query.variant', () => {
+  // Read from the data-store test fixture through GnomadV4Store.fetchSingleVariantJson.
+  const sourceVariantJson = readFileSync(
+    path.join(__dirname, '__fixtures__/gnomad-v4-variant-17-16000457-T-C.json'),
+    'utf8'
+  )
+
+  const createNativeStore = (variantJson: string | null) => ({
+    fetchVariantsInGeneJson: jest.fn<GnomadV4Store['fetchVariantsInGeneJson']>(),
+    fetchVariantsInTranscriptJson: jest.fn<GnomadV4Store['fetchVariantsInTranscriptJson']>(),
+    fetchSingleVariantJson: jest
+      .fn<GnomadV4Store['fetchSingleVariantJson']>()
+      .mockResolvedValue(variantJson),
+  })
+
+  const createContext = (store: GnomadV4Store | null): GraphQLContext => ({
+    esClient: {} as GraphQLContext['esClient'],
+    parquetDataStore:
+      store === null
+        ? null
+        : {
+            clinvarGrch38: {} as ClinvarStore,
+            geneModelsGrch38: {} as GeneStore,
+            gnomadV3GenomeCoverage: {} as CoverageStore,
+            gnomadV4ExomeCoverage: {} as CoverageStore,
+            gnomadVariantsV4: store,
+          },
+    requestId: null,
+  })
+
+  const resolveVariant = (args: Record<string, string>, context: GraphQLContext): Promise<any> =>
+    resolvers.Query.variant({}, args, context)
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    config.PARQUET_ONLY = false
+    jest.mocked(fetchLofCurationResultsByVariant).mockResolvedValue([])
+    jest.mocked(fetchLocalAncestryPopulationsByVariant).mockResolvedValue({ genome: [] })
+    jest.mocked(fetchNccConstraintRegionById).mockResolvedValue(null)
+  })
+
+  test('reads a gnomad_r4 variant from Parquet and shapes it', async () => {
+    const store = createNativeStore(sourceVariantJson)
+
+    const variant = await resolveVariant(
+      { variantId: '17-16000457-t-c', dataset: 'gnomad_r4' },
+      createContext(store)
+    )
+
+    expect(store.fetchSingleVariantJson).toHaveBeenCalledWith('17-16000457-T-C')
+    expect(fetchVariantById).not.toHaveBeenCalled()
+    expect(variant).toMatchObject({
+      variant_id: '17-16000457-T-C',
+      reference_genome: 'GRCh38',
+      chrom: '17',
+      pos: 16000457,
+      ref: 'T',
+      alt: 'C',
+      caid: 'CA726478728',
+      colocated_variants: ['17-16000457-T-G', '17-16000457-TGTCAAG-T'],
+      exome: { ac: 30, an: 1220484, filters: [] },
+      genome: { ac: 2, an: 152214, filters: [] },
+      joint: { ac: 32, an: 1372698 },
+      coverage: { exome: { mean: 18.952673723265846, median_approx: 19 } },
+    })
+  })
+
+  test('uses the non_ukb exome subset for gnomad_r4_non_ukb', async () => {
+    const store = createNativeStore(sourceVariantJson)
+    const source = JSON.parse(sourceVariantJson)
+
+    const variant = await resolveVariant(
+      { variantId: '17-16000457-T-C', dataset: 'gnomad_r4_non_ukb' },
+      createContext(store)
+    )
+
+    expect(variant.exome.ac).toBe(source.exome.freq.non_ukb.ac)
+    expect(variant.colocated_variants).toEqual(source.colocated_variants.non_ukb)
+  })
+
+  test('returns no exome data for a variant only in genomes', async () => {
+    const source = JSON.parse(sourceVariantJson)
+    source.exome.freq.all = { ...source.exome.freq.all, ac: null, ac_raw: null, an: null }
+    const store = createNativeStore(JSON.stringify(source))
+
+    const variant = await resolveVariant(
+      { variantId: '17-16000457-T-C', dataset: 'gnomad_r4' },
+      createContext(store)
+    )
+
+    expect(variant.exome).toBeNull()
+    expect(variant.genome).toMatchObject({ ac: 2 })
+  })
+
+  test('reports a variant missing from Parquet as not found', async () => {
+    const store = createNativeStore(null)
+
+    await expect(
+      resolveVariant({ variantId: '17-16000457-T-A', dataset: 'gnomad_r4' }, createContext(store))
+    ).rejects.toThrow('Variant not found')
+  })
+
+  test('adds LoF curations, local ancestry and NCC from Elasticsearch outside PARQUET_ONLY mode', async () => {
+    const store = createNativeStore(sourceVariantJson)
+    jest.mocked(fetchNccConstraintRegionById).mockResolvedValue({ start: 16000001 })
+
+    const variant = await resolveVariant(
+      { variantId: '17-16000457-T-C', dataset: 'gnomad_r4' },
+      createContext(store)
+    )
+
+    expect(fetchLofCurationResultsByVariant).toHaveBeenCalledWith(
+      expect.anything(),
+      'v4',
+      '17-16000457-T-C'
+    )
+    expect(fetchLocalAncestryPopulationsByVariant).toHaveBeenCalledWith(
+      expect.anything(),
+      'gnomad_r3',
+      '17-16000457-T-C'
+    )
+    expect(fetchNccConstraintRegionById).toHaveBeenCalledWith(
+      expect.anything(),
+      'chr17-16000000-16001000'
+    )
+    expect(variant.lof_curations).toEqual([])
+    expect(variant.genome.local_ancestry_populations).toEqual([])
+    expect(variant.non_coding_constraint).toEqual({ start: 16000001 })
+  })
+
+  test('stubs LoF curations, local ancestry and NCC in PARQUET_ONLY mode', async () => {
+    config.PARQUET_ONLY = true
+    const store = createNativeStore(sourceVariantJson)
+
+    const variant = await resolveVariant(
+      { variantId: '17-16000457-T-C', dataset: 'gnomad_r4' },
+      createContext(store)
+    )
+
+    expect(variant.lof_curations).toBeNull()
+    expect(variant.genome.local_ancestry_populations).toBeNull()
+    expect(variant.non_coding_constraint).toBeNull()
+    expect(fetchLofCurationResultsByVariant).not.toHaveBeenCalled()
+    expect(fetchLocalAncestryPopulationsByVariant).not.toHaveBeenCalled()
+    expect(fetchNccConstraintRegionById).not.toHaveBeenCalled()
+    for (const field of [
+      'VariantDetails.lof_curations',
+      'VariantDetailsSequencingTypeData.local_ancestry_populations',
+      'VariantDetails.non_coding_constraint',
+    ]) {
+      expect(logger.warn).toHaveBeenCalledWith(
+        expect.objectContaining({ event: 'parquetOnlyStub', field })
+      )
+    }
+  })
+
+  test.each([
+    ['an rsID', { rsid: 'rs960724070', dataset: 'gnomad_r4' }],
+    ['another dataset', { variantId: '17-16000457-T-C', dataset: 'gnomad_r3' }],
+  ])('reads %s from Elasticsearch', async (_label, args) => {
+    const store = createNativeStore(sourceVariantJson)
+    jest.mocked(fetchVariantById).mockResolvedValue({ chrom: '17', pos: 16000457 })
+
+    await resolveVariant(args, createContext(store))
+
+    expect(store.fetchSingleVariantJson).not.toHaveBeenCalled()
+    expect(fetchVariantById).toHaveBeenCalled()
+  })
+
+  test('reads from Elasticsearch when the native data store is disabled', async () => {
+    jest.mocked(fetchVariantById).mockResolvedValue({ chrom: '17', pos: 16000457 })
+
+    await resolveVariant(
+      { variantId: '17-16000457-T-C', dataset: 'gnomad_r4' },
+      createContext(null)
+    )
+
+    expect(fetchVariantById).toHaveBeenCalledWith(expect.anything(), 'gnomad_r4', '17-16000457-T-C')
   })
 })
