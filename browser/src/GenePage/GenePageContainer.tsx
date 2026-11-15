@@ -1,16 +1,13 @@
 import React from 'react'
 
-import {
-  DatasetId,
-  referenceGenome,
-  hasShortTandemRepeats,
-} from '@gnomad/dataset-metadata/metadata'
+import { DatasetId } from '@gnomad/dataset-metadata/metadata'
 import Delayed from '../Delayed'
 import DocumentTitle from '../DocumentTitle'
 import { BaseQuery } from '../Query'
 import StatusMessage from '../StatusMessage'
 
 import GeneNotFound from './GeneNotFound'
+import { buildGeneVariables, geneOperationName, geneQuery } from './genePageQueries'
 import GenePage, { Gene } from './GenePage'
 import {
   HeterozygousVariantCooccurrenceSeverity,
@@ -22,181 +19,6 @@ import {
   HomozygousVariantCooccurrenceCountsPerSeverityAndAf,
   HomozygousCountCellSchema,
 } from './VariantCooccurrenceCountsTable'
-
-const operationName = 'Gene'
-
-const query = `
-query ${operationName}($geneId: String, $geneSymbol: String, $referenceGenome: ReferenceGenomeId!, $shortTandemRepeatDatasetId: DatasetId!, $includeShortTandemRepeats: Boolean!) {
-  gene(gene_id: $geneId, gene_symbol: $geneSymbol, reference_genome: $referenceGenome) {
-    reference_genome
-    gene_id
-    gene_version
-    symbol
-    gencode_symbol
-    name
-    canonical_transcript_id
-    mane_select_transcript {
-      ensembl_id
-      ensembl_version
-      refseq_id
-      refseq_version
-    }
-    hgnc_id
-    ncbi_id
-    omim_id
-    chrom
-    start
-    stop
-    strand
-    exons {
-      feature_type
-      start
-      stop
-    }
-    flags
-    gnomad_constraint {
-      exp_lof
-      exp_mis
-      exp_syn
-      obs_lof
-      obs_mis
-      obs_syn
-      oe_lof
-      oe_lof_lower
-      oe_lof_upper
-      oe_lof_percentile
-      oe_mis
-      oe_mis_lower
-      oe_mis_upper
-      oe_syn
-      oe_syn_lower
-      oe_syn_upper
-      lof_z
-      mis_z
-      syn_z
-      pLI
-      flags
-    }
-    exac_constraint {
-      exp_syn
-      obs_syn
-      syn_z
-      exp_mis
-      obs_mis
-      mis_z
-      exp_lof
-      obs_lof
-      lof_z
-      pLI
-    }
-    transcripts {
-      transcript_id
-      transcript_version
-      strand
-      exons {
-        feature_type
-        start
-        stop
-      }
-      gtex_tissue_expression {
-        tissue
-        value
-      }
-    }
-    pext {
-      regions {
-        start
-        stop
-        mean
-        tissues {
-          tissue
-          value
-        }
-      }
-      flags
-    }
-    exac_regional_missense_constraint_regions {
-      start
-      stop
-      obs_mis
-      exp_mis
-      obs_exp
-      chisq_diff_null
-    }
-    gnomad_v2_regional_missense_constraint {
-      passed_qc
-      has_no_rmc_evidence
-      regions {
-        chrom
-        start
-        stop
-        aa_start
-        aa_stop
-        obs_mis
-        exp_mis
-        obs_exp
-        chisq_diff_null
-        p_value
-      }
-    }
-    short_tandem_repeats(dataset: $shortTandemRepeatDatasetId) @include(if: $includeShortTandemRepeats) {
-      id
-    }
-    heterozygous_variant_cooccurrence_counts {
-      csq
-      af_cutoff
-      data {
-        two_het_total
-	in_cis
-	in_trans
-	unphased
-      }
-    }
-    homozygous_variant_cooccurrence_counts {
-      csq
-      af_cutoff
-      data {
-	hom_total
-      }
-    }
-    mitochondrial_constraint {
-      ...on ProteinMitochondrialGeneConstraint {
-        exp_lof
-        exp_mis
-        exp_syn
-        obs_lof
-        obs_mis
-        obs_syn
-        oe_lof
-        oe_lof_lower
-        oe_lof_upper
-        oe_mis
-        oe_mis_lower
-        oe_mis_upper
-        oe_syn
-        oe_syn_lower
-        oe_syn_upper
-      }
-
-      ...on RNAMitochondrialGeneConstraint {
-        observed
-        expected
-        oe
-        oe_upper
-        oe_lower
-      }
-    }
-
-    mitochondrial_missense_constraint_regions{
-      start
-      stop
-      oe
-      oe_upper
-      oe_lower
-    }
-  }
-}
-`
 
 type Props = {
   datasetId: DatasetId
@@ -253,15 +75,12 @@ const rollUpVariantCooccurrenceCounts = (
 }
 
 const GenePageContainer = ({ datasetId, geneIdOrSymbol }: Props) => {
-  const variables = {
-    [geneIdOrSymbol.startsWith('ENSG') ? 'geneId' : 'geneSymbol']: geneIdOrSymbol,
-    referenceGenome: referenceGenome(datasetId),
-    shortTandemRepeatDatasetId: 'gnomad_r3',
-    includeShortTandemRepeats: hasShortTandemRepeats(datasetId),
-  }
-
   return (
-    <BaseQuery operationName={operationName} query={query} variables={variables}>
+    <BaseQuery
+      operationName={geneOperationName}
+      query={geneQuery}
+      variables={buildGeneVariables(datasetId, geneIdOrSymbol)}
+    >
       {({ data, error, graphQLErrors, loading }: any) => {
         if (loading) {
           return (
