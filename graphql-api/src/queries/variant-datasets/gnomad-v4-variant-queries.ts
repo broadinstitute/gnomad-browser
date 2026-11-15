@@ -80,7 +80,7 @@ const chooseIdField = (variantId: string) => {
   return 'variant_id'
 }
 
-const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) => {
+const fetchVariantSourceById = async (esClient: any, variantId: any) => {
   const idField = chooseIdField(variantId)
   const response = await esClient.search({
     index: GNOMAD_V4_VARIANT_INDEX,
@@ -103,8 +103,19 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
     throw new UserVisibleError('Multiple variants found, query using variant ID to select one.')
   }
 
-  const variant = response.body.hits.hits[0]._source.value
+  return response.body.hits.hits[0]._source.value
+}
 
+type VariantDetailsEnrichment = {
+  fetchLofCurationResults: (variantId: string) => Promise<any>
+  fetchLocalAncestryPopulations: (variantId: string) => Promise<any>
+}
+
+const shapeVariantDetails = async (
+  variant: any,
+  subset: Subset,
+  { fetchLofCurationResults, fetchLocalAncestryPopulations }: VariantDetailsEnrichment
+) => {
   const subsetGenomeFreq = variant.genome.freq.all || {}
   const subsetJointFreq = variant.joint.freq[subset] || {}
 
@@ -129,11 +140,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
 
   const { variantFlags, exomeFlags, genomeFlags } = getFlagsForContext({ type: 'region' }, variant)
 
-  const lofCurationResults = await fetchLofCurationResultsByVariant(
-    esClient,
-    'v4',
-    variant.variant_id
-  )
+  const lofCurationResults = await fetchLofCurationResults(variant.variant_id)
 
   let genome_ancestry_groups = subsetGenomeFreq.ancestry_groups || []
   // Include HGDP and 1KG populations with gnomAD subsets
@@ -158,11 +165,7 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
 
   const inSilicoPredictorsList = createInSilicoPredictorsList(variant)
 
-  const localAncestryPopulations = await fetchLocalAncestryPopulationsByVariant(
-    esClient,
-    'gnomad_r3',
-    variant.variant_id
-  )
+  const localAncestryPopulations = await fetchLocalAncestryPopulations(variant.variant_id)
 
   const shapedVariant = {
     ...variant,
@@ -262,6 +265,23 @@ const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) =
   }
 
   return shapedVariant
+}
+
+const fetchVariantDetailsEnrichmentFromElasticsearch = (
+  esClient: any
+): VariantDetailsEnrichment => ({
+  fetchLofCurationResults: (id) => fetchLofCurationResultsByVariant(esClient, 'v4', id),
+  fetchLocalAncestryPopulations: (id) =>
+    fetchLocalAncestryPopulationsByVariant(esClient, 'gnomad_r3', id),
+})
+
+const fetchVariantById = async (esClient: any, variantId: any, subset: Subset) => {
+  const variant = await fetchVariantSourceById(esClient, variantId)
+  return shapeVariantDetails(
+    variant,
+    subset,
+    fetchVariantDetailsEnrichmentFromElasticsearch(esClient)
+  )
 }
 
 // ================================================================================================
