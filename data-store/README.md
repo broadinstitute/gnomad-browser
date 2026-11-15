@@ -93,6 +93,7 @@ cargo run --release --example read_clinvar_exons -- <DATA_ROOT> transcript ENST0
 cargo run --release --example read_gene -- <DATA_ROOT> ENSG00000169174
 cargo run --release --example read_gene_search -- <DATA_ROOT> PCSK
 cargo run --release --example read_gnomad_v4_variants_in_exons -- <DATA_ROOT> gene ENSG00000011295 all 17 15999784:16000032 16000118:16000382
+cargo run --release --example read_gnomad_v4_variant -- <DATA_ROOT> 17-16000457-T-C
 cargo run --release --example read_coverage_in_gene -- <DATA_ROOT> gnomad_v4_exome ENSG00000011295 17 15999824:16000460 16001915:16002025
 cargo run --release --example read_coverage_in_gene -- <DATA_ROOT> gnomad_v3_genome ENSG00000011295 17 15999824:16000460 16001915:16002025
 ```

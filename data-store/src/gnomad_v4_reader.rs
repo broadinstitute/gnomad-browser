@@ -11,8 +11,9 @@ use datafusion::error::{DataFusionError, Result};
 use datafusion::prelude::SessionContext;
 
 use crate::exon_query::{ExonQuery, VariantAnnotationFilter, bind_parameter};
-use crate::position_bin::bind_position_bins;
+use crate::position_bin::{bind_position_bins, position_bin};
 use crate::record_batch_decoding::decode_record_batches;
+use crate::variant_id::parse_variant_id;
 use crate::{GenomicInterval, GnomadV4VariantListEntry, ParquetDataset};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -115,6 +116,48 @@ impl GnomadV4Reader {
             subset,
         )
         .await
+    }
+
+    /// Return no rows, or one: the whole record without the `vep115` annotations, which the API
+    /// does not read. Leave subset checks and shaping to the API.
+    ///
+    /// # Errors
+    /// Returns an error for an ID not in `chrom-pos-ref-alt` form, query failure, or more than one
+    /// matching record.
+    pub async fn fetch_single_variant_batches(&self, variant_id: &str) -> Result<Vec<RecordBatch>> {
+        let parsed = parse_variant_id(variant_id, "gnomAD v4")?;
+        let fields = select_single_variant_fields();
+        let table_name = ParquetDataset::GnomadVariantsV4.name();
+        let batches = self
+            .context
+            .sql(&format!(
+                "
+                SELECT {fields}
+                FROM {table_name}
+                WHERE chrom = $1
+                  AND posbin = $2
+                  AND pos = $3
+                  AND ref = $4
+                  AND alt = $5
+                LIMIT 2
+                "
+            ))
+            .await?
+            .with_param_values(vec![
+                ScalarValue::Utf8(Some(parsed.chromosome.to_owned())),
+                ScalarValue::Utf8(Some(position_bin(parsed.position).to_string())),
+                ScalarValue::Int32(Some(parsed.position)),
+                ScalarValue::Utf8(Some(parsed.reference_allele.to_owned())),
+                ScalarValue::Utf8(Some(parsed.alternate_allele.to_owned())),
+            ])?
+            .collect()
+            .await?;
+        if batches.iter().map(RecordBatch::num_rows).sum::<usize>() > 1 {
+            return Err(DataFusionError::Execution(format!(
+                "Multiple gnomAD v4 records found for variant ID: {variant_id}"
+            )));
+        }
+        Ok(batches)
     }
 
     async fn fetch_variant_batches_in_exons(
@@ -280,6 +323,47 @@ const IN_SILICO_PREDICTORS_FIELD: &str = r"
             'polyphen_max', in_silico_predictors.polyphen_max
         ) AS in_silico_predictors
 ";
+
+/// Rebuild `variant_id`, `locus` and `alleles`, as the list query does, around every other column.
+fn select_single_variant_fields() -> String {
+    let exome = select_sequencing_type_without_vep("exome");
+    let genome = select_sequencing_type_without_vep("genome");
+    format!(
+        r"
+        concat(chrom, '-', CAST(pos AS VARCHAR), '-', ref, '-', alt) AS variant_id,
+        named_struct('contig', concat('chr', chrom), 'position', pos) AS locus,
+        [ref, alt] AS alleles,
+        rsids,
+        {exome} AS exome,
+        {genome} AS genome,
+        joint,
+        {IN_SILICO_PREDICTORS_FIELD},
+        colocated_variants,
+        coverage,
+        transcript_consequences,
+        caid,
+        vrs
+        "
+    )
+}
+
+fn select_sequencing_type_without_vep(sequencing_type: &str) -> String {
+    let fields = [
+        "colocated_variants",
+        "subsets",
+        "flags",
+        "freq",
+        "faf95",
+        "faf99",
+        "fafmax",
+        "age_distribution",
+        "filters",
+        "quality_metrics",
+    ]
+    .map(|field| format!("'{field}', {sequencing_type}.{field}"))
+    .join(", ");
+    format!("named_struct({fields})")
+}
 
 /// Rebuild `variant_id`, `locus` and `alleles`, which the export dropped, in the shape of the
 /// Elasticsearch documents the API already shapes. Of the annotation's consequences keep the first
