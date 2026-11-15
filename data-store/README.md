@@ -178,3 +178,19 @@ compresses them per request. Hits carry the header `X-Static-Response: hit` and 
 
 Stored responses are not rate limited, and they keep whatever the API returned when they were written:
 write them again after a data release, a ClinVar update or a change to how the gene page is shaped.
+
+Write the files with a separate process, against an API that does **not** have `STATIC_RESPONSE_DIR` set
+(from the repository root):
+
+```bash
+pnpm ts-node graphql-api/scripts/write-static-gene-responses.ts \
+  --api-url http://localhost:8010/api/ --output <DATA_ROOT>/static_responses \
+  --dataset gnomad_r4 ENSG00000012048
+```
+
+It sends the gene page's exact requests (query text and variables come from
+`browser/src/GenePage/genePageQueries.ts`), skips responses with GraphQL errors, and writes the rest
+gzip-compressed under their keys. Each query directory gets a `query.graphql` with the query text, and
+`MANIFEST.tsv` lists every file with its gene ID, symbol, dataset and sizes. `--dataset` may repeat;
+`--genes-file` reads one gene per line. A gene given by symbol also stores the `Gene` response for
+`/gene/SYMBOL` URLs.
