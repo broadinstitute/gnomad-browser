@@ -12,6 +12,7 @@ import { closeCache } from './cache'
 import { loadWhitelist } from './whitelist'
 import type { GraphQLContext } from './graphql/context'
 import initializeParquetDataStoreIfEnabled from './parquet-data-store'
+import { createStaticResponseMiddleware } from './static-responses'
 
 // Extract the original trace ID from the request for Node's logs.
 // NGINX independently extracts the same ID for its own logs, so both logs
@@ -153,6 +154,10 @@ const startServer = async (): Promise<void> => {
     requestId: requestStore.getStore()?.requestId ?? null,
   }
 
+  if (config.STATIC_RESPONSE_DIR) {
+    logger.info({ event: 'staticResponsesEnabled', directory: config.STATIC_RESPONSE_DIR })
+    app.use('/api/', createStaticResponseMiddleware(config.STATIC_RESPONSE_DIR))
+  }
   app.use('/api/', graphQLApi({ context }))
 
   // On shutdown (SIGTERM/SIGINT) or fatal error (uncaughtException/unhandledRejection), stop accepting
