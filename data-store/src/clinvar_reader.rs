@@ -1,9 +1,9 @@
 use crate::exon_query::{ExonQuery, VariantAnnotationFilter, bind_parameter};
 use crate::position_bin::{bind_position_bins, position_bin};
 use crate::record_batch_decoding::{at_most_one, decode_record_batches};
+use crate::variant_id::parse_variant_id;
 use crate::{ClinvarVariant, ClinvarVariantListEntry, GenomicInterval, ParquetDataset};
 use datafusion::common::ScalarValue;
-use datafusion::error::DataFusionError;
 use datafusion::prelude::SessionContext;
 
 const CLINVAR_LIST_ENTRY_FIELDS: &str = r"
@@ -44,55 +44,6 @@ pub struct ClinvarReader {
     context: SessionContext,
 }
 
-struct ParsedVariantId<'a> {
-    chromosome: &'a str,
-    position: i32,
-    reference_allele: &'a str,
-    alternate_allele: &'a str,
-}
-
-/// Accept the `chrom-pos-ref-alt` form the API's `normalizeVariantId` produces, which keeps `MT`
-/// and allows position 0.
-fn parse_variant_id(variant_id: &str) -> datafusion::error::Result<ParsedVariantId<'_>> {
-    let invalid = || {
-        DataFusionError::Plan(format!(
-            "Invalid ClinVar variant ID {variant_id:?}: expected chrom-pos-ref-alt"
-        ))
-    };
-    let mut parts = variant_id.split('-');
-    let (Some(chromosome), Some(position), Some(reference), Some(alternate), None) = (
-        parts.next(),
-        parts.next(),
-        parts.next(),
-        parts.next(),
-        parts.next(),
-    ) else {
-        return Err(invalid());
-    };
-    let is_digits = |text: &str| !text.is_empty() && text.bytes().all(|byte| byte.is_ascii_digit());
-    let is_allele =
-        |allele: &str| !allele.is_empty() && allele.bytes().all(|byte| b"ACGTN".contains(&byte));
-    let is_chromosome = matches!(chromosome, "X" | "Y" | "M" | "MT")
-        || (is_digits(chromosome)
-            && chromosome
-                .parse::<u8>()
-                .is_ok_and(|number| (1..=22).contains(&number)));
-    let position = is_digits(position)
-        .then(|| position.parse::<i32>().ok())
-        .flatten();
-    match position {
-        Some(position) if is_chromosome && is_allele(reference) && is_allele(alternate) => {
-            Ok(ParsedVariantId {
-                chromosome,
-                position,
-                reference_allele: reference,
-                alternate_allele: alternate,
-            })
-        }
-        _ => Err(invalid()),
-    }
-}
-
 /// Bind `$1` chromosome, `$2` start, `$3` stop and the interval's bins; return the bin parameters.
 fn bind_region_parameters(interval: &GenomicInterval, parameters: &mut Vec<ScalarValue>) -> String {
     parameters.extend([
@@ -118,7 +69,7 @@ impl ClinvarReader {
         &self,
         variant_id: &str,
     ) -> datafusion::error::Result<Option<ClinvarVariant>> {
-        let parsed = parse_variant_id(variant_id)?;
+        let parsed = parse_variant_id(variant_id, "ClinVar")?;
         let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
         let dataframe = self
             .context
