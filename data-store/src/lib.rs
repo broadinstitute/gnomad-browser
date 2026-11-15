@@ -15,6 +15,7 @@ mod node_bindings;
 mod parquet_dataset;
 mod position_bin;
 mod record_batch_decoding;
+mod variant_id;
 
 pub use clinvar_reader::ClinvarReader;
 pub use clinvar_variant::{
