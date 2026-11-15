@@ -264,6 +264,23 @@ fn collect_variant_sort_keys(batch: &RecordBatch) -> Result<Vec<ArrayRef>> {
     Ok(vec![Arc::clone(position), reference, alternate])
 }
 
+// Widen the float32 scores: JSON prints float32 at its shortest, which rounds differently in the
+// API's three-significant-digit display than the widened values it received before.
+const IN_SILICO_PREDICTORS_FIELD: &str = r"
+        named_struct(
+            'cadd', named_struct(
+                'phred', CAST(in_silico_predictors.cadd.phred AS DOUBLE),
+                'raw_score', CAST(in_silico_predictors.cadd.raw_score AS DOUBLE)
+            ),
+            'revel_max', in_silico_predictors.revel_max,
+            'spliceai_ds_max', CAST(in_silico_predictors.spliceai_ds_max AS DOUBLE),
+            'pangolin_largest_ds', in_silico_predictors.pangolin_largest_ds,
+            'phylop', in_silico_predictors.phylop,
+            'sift_max', in_silico_predictors.sift_max,
+            'polyphen_max', in_silico_predictors.polyphen_max
+        ) AS in_silico_predictors
+";
+
 /// Rebuild `variant_id`, `locus` and `alleles`, which the export dropped, in the shape of the
 /// Elasticsearch documents the API already shapes. Of the annotation's consequences keep the first
 /// (the pipeline sorts the most relevant first; the API displays it) and later ones with a `LoF`
@@ -286,8 +303,6 @@ fn select_list_entry_fields(
          consequence -> consequence['{annotation_field}'] = {annotation_parameter})"
     );
     // This export has no variant-level flags or joint filters; do not infer empty lists.
-    // Widen the float32 scores: JSON prints float32 at its shortest, which rounds differently in the
-    // API's three-significant-digit display than the widened values it received before.
     format!(
         r"
         concat(chrom, '-', CAST(pos AS VARCHAR), '-', ref, '-', alt) AS variant_id,
@@ -322,18 +337,7 @@ fn select_list_entry_fields(
                 consequence -> consequence['lof'] IS NOT NULL
             )
         ) AS transcript_consequences,
-        named_struct(
-            'cadd', named_struct(
-                'phred', CAST(in_silico_predictors.cadd.phred AS DOUBLE),
-                'raw_score', CAST(in_silico_predictors.cadd.raw_score AS DOUBLE)
-            ),
-            'revel_max', in_silico_predictors.revel_max,
-            'spliceai_ds_max', CAST(in_silico_predictors.spliceai_ds_max AS DOUBLE),
-            'pangolin_largest_ds', in_silico_predictors.pangolin_largest_ds,
-            'phylop', in_silico_predictors.phylop,
-            'sift_max', in_silico_predictors.sift_max,
-            'polyphen_max', in_silico_predictors.polyphen_max
-        ) AS in_silico_predictors
+        {IN_SILICO_PREDICTORS_FIELD}
         "
     )
 }
