@@ -57,6 +57,15 @@ export declare class GeneStore {
 
 export declare class GnomadV4Store {
   /**
+   * Return the variant as a JSON object with `snake_case` fields and explicit nulls, or null if
+   * the dataset has no such variant. Subset filtering and shaping are left to the API.
+   *
+   * # Errors
+   * Rejects IDs not in `chrom-pos-ref-alt` form and propagates query, duplicate-record and
+   * serialization errors.
+   */
+  fetchSingleVariantJson(variantId: string): Promise<string | null>
+  /**
    * Return a JSON array of variant objects with `snake_case` fields and explicit nulls. Pad each
    * interval by 75 bases; `subset` is `all` or `non_ukb` and selects the exome frequencies.
    * Each variant keeps this gene's first consequence, its later consequences with a `LoF`

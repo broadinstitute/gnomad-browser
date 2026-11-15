@@ -155,6 +155,7 @@ describe('Gene.variants', () => {
       .fn<GnomadV4Store['fetchVariantsInGeneJson']>()
       .mockResolvedValue(JSON.stringify(variants)),
     fetchVariantsInTranscriptJson: jest.fn<GnomadV4Store['fetchVariantsInTranscriptJson']>(),
+    fetchSingleVariantJson: jest.fn<GnomadV4Store['fetchSingleVariantJson']>(),
   })
 
   const createContext = (store: GnomadV4Store | null): GraphQLContext => ({
