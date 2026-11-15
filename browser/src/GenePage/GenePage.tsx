@@ -15,8 +15,6 @@ import MitochondrialRegionConstraintTrack, {
 
 import {
   DatasetId,
-  genesHaveExomeCoverage,
-  genesHaveGenomeCoverage,
   labelForDataset,
   hasStructuralVariants,
   ReferenceGenome,
@@ -47,6 +45,7 @@ import { TrackPage, TrackPageSection } from '../TrackPage'
 import { useWindowSize } from '../windowSize'
 
 import GeneCoverageTrack from './GeneCoverageTrack'
+import { geneCoverageFlags } from './genePageQueries'
 import GeneFlags from './GeneFlags'
 import GeneInfo from './GeneInfo'
 import GeneTranscriptsTrack from './GeneTranscriptsTrack'
@@ -489,8 +488,7 @@ const GenePage = ({ datasetId, gene, geneId }: Props) => {
               <GeneCoverageTrack
                 datasetId={datasetId}
                 geneId={geneId}
-                includeExomeCoverage={genesHaveExomeCoverage(datasetId)}
-                includeGenomeCoverage={genesHaveGenomeCoverage(datasetId)}
+                {...geneCoverageFlags(datasetId)}
               />
             )}
 

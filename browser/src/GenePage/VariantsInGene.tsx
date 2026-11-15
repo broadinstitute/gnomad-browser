@@ -9,6 +9,11 @@ import Query from '../Query'
 import useLinkedVariantSelection from '../VariantList/useLinkedVariantSelection'
 import annotateVariantsWithClinvar from '../VariantList/annotateVariantsWithClinvar'
 import Variants from '../VariantList/Variants'
+import {
+  buildVariantsInGeneVariables,
+  variantsInGeneOperationName,
+  variantsInGeneQuery,
+} from './genePageQueries'
 import { ClinvarVariant } from '../VariantPage/VariantPage'
 import { Gene } from './GenePage'
 
@@ -175,135 +180,6 @@ VariantsInGene.defaultProps = {
   zoomRegion: null,
 }
 
-const operationName = 'VariantsInGene'
-const query = `
-query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!) {
-  meta {
-    clinvar_release_date
-  }
-  gene(gene_id: $geneId, reference_genome: $referenceGenome) {
-    clinvar_variants {
-      clinical_significance
-      clinvar_variation_id
-      gnomad {
-        exome {
-          ac
-          an
-          filters
-        }
-        genome {
-          ac
-          an
-          filters
-        }
-      }
-      gold_stars
-      hgvsc
-      hgvsp
-      in_gnomad
-      major_consequence
-      pos
-      review_status
-      transcript_id
-      variant_id
-    }
-    variants(dataset: $datasetId) {
-      consequence
-      flags
-      hgvs
-      hgvsc
-      hgvsp
-      lof
-      lof_filter
-      lof_flags
-      pos
-      rsids
-      transcript_id
-      transcript_version
-      variant_id
-      faf95_joint {
-        popmax
-        popmax_population
-      }
-      exome {
-        ac
-        ac_hemi
-        ac_hom
-        faf95 {
-          popmax
-          popmax_population
-        }
-        an
-        af
-        filters
-        populations {
-          id
-          ac
-          an
-          ac_hemi
-          ac_hom
-        }
-        fafmax {
-          faf95_max
-          faf95_max_gen_anc
-          faf99_max
-          faf99_max_gen_anc
-        }
-	flags
-      }
-      genome {
-        ac
-        ac_hemi
-        ac_hom
-        faf95 {
-          popmax
-          popmax_population
-        }
-        an
-        af
-        filters
-        populations {
-          id
-          ac
-          an
-          ac_hemi
-          ac_hom
-        }
-	flags
-      }
-      joint {
-        ac
-        hemizygote_count
-        homozygote_count
-        fafmax {
-          faf95_max
-          faf95_max_gen_anc
-          faf99_max
-          faf99_max_gen_anc
-        }
-        an
-        filters
-        populations {
-          id
-          ac
-          an
-          homozygote_count
-          hemizygote_count
-        }
-      }
-      in_silico_predictors {
-        id
-        value
-        flags
-      }
-      lof_curation {
-        verdict
-        flags
-      }
-    }
-  }
-}`
-
 const annotateVariantsWithPext = (variants: any, pext: any) => {
   const pextRegions = [...pext.regions]
   let currentPextRegion = pextRegions.shift()
@@ -337,13 +213,9 @@ const ConnectedVariantsInGene = ({
 }: ConnectedVariantsInGeneProps) => {
   return (
     <Query
-      operationName={operationName}
-      query={query}
-      variables={{
-        datasetId,
-        geneId: gene.gene_id,
-        referenceGenome: referenceGenome(datasetId),
-      }}
+      operationName={variantsInGeneOperationName}
+      query={variantsInGeneQuery}
+      variables={buildVariantsInGeneVariables(datasetId, gene.gene_id)}
       loadingMessage="Loading variants"
       errorMessage="Unable to load variants"
       success={(data: any) => data.gene && data.gene.variants}

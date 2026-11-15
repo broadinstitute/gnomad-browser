@@ -1,47 +1,15 @@
 import React from 'react'
 
-import { referenceGenome, isExac, coverageDatasetId } from '@gnomad/dataset-metadata/metadata'
+import { isExac } from '@gnomad/dataset-metadata/metadata'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
+import {
+  buildGeneCoverageVariables,
+  geneCoverageOperationName,
+  geneCoverageQuery,
+} from './genePageQueries'
 
-const operationName = 'GeneCoverage'
-const coverageQuery = `
-query ${operationName}($geneId: String!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExomeCoverage: Boolean!, $includeGenomeCoverage: Boolean!) {
-  gene(gene_id: $geneId, reference_genome: $referenceGenome) {
-    coverage(dataset: $datasetId) {
-      exome @include(if: $includeExomeCoverage) {
-        pos
-        mean
-        median
-        over_1
-        over_5
-        over_10
-        over_15
-        over_20
-        over_25
-        over_30
-        over_50
-        over_100
-      }
-      genome @include(if: $includeGenomeCoverage) {
-        pos
-        mean
-        median
-        over_1
-        over_5
-        over_10
-        over_15
-        over_20
-        over_25
-        over_30
-        over_50
-        over_100
-      }
-    }
-  }
-}
-`
 type OwnProps = {
   datasetId: string
   geneId: string
@@ -61,15 +29,12 @@ const GeneCoverageTrack = ({
 }: Props) => {
   return (
     <Query
-      operationName={operationName}
-      query={coverageQuery}
-      variables={{
-        geneId,
-        datasetId: coverageDatasetId(datasetId),
-        referenceGenome: referenceGenome(coverageDatasetId(datasetId)),
+      operationName={geneCoverageOperationName}
+      query={geneCoverageQuery}
+      variables={buildGeneCoverageVariables(datasetId, geneId, {
         includeExomeCoverage,
         includeGenomeCoverage,
-      }}
+      })}
       loadingMessage="Loading coverage"
       loadingPlaceholderHeight={220}
       errorMessage="Unable to load coverage"
