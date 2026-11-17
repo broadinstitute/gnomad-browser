@@ -1,10 +1,11 @@
 import config from './config'
 
-import type { ClinvarStore } from '@gnomad/data-store'
+import type { ClinvarStore, GeneStore } from '@gnomad/data-store'
 import logger from './logger'
 
 export interface ParquetDataStore {
   clinvarGrch38: ClinvarStore
+  geneModelsGrch38: GeneStore
 }
 
 type NativeDataStoreAddon = typeof import('@gnomad/data-store')
@@ -40,14 +41,17 @@ const initializeParquetDataStoreIfEnabled = async (): Promise<ParquetDataStore |
   }
 
   const addon = loadNativeDataStoreAddon()
-  const clinvarGrch38 = await addon.openClinvarStore(parquetRoot)
+  const [clinvarGrch38, geneModelsGrch38] = await Promise.all([
+    addon.openClinvarStore(parquetRoot),
+    addon.openGeneStore(parquetRoot),
+  ])
 
   logger.info({
     event: 'parquetDataStoreInitialized',
-    datasets: ['clinvar_variants_grch38'],
+    datasets: ['clinvar_variants_grch38', 'gene_models_grch38'],
   })
 
-  return { clinvarGrch38 }
+  return { clinvarGrch38, geneModelsGrch38 }
 }
 
 export default initializeParquetDataStoreIfEnabled
