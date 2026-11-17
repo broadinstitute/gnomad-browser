@@ -1,8 +1,6 @@
 #![allow(clippy::panic_in_result_fn)]
 
-use datafusion::common::config::Dialect;
 use datafusion::error::Result;
-use datafusion::prelude::{SessionConfig, SessionContext};
 use gnomad_data_store::{
     ClinvarReader, ClinvarVariantListEntry, GenomicInterval, ParquetDataset,
     create_datafusion_context_from_root,
@@ -10,52 +8,7 @@ use gnomad_data_store::{
 
 mod fixtures;
 
-/// Supply one SQL row per consequence as (`variant_id`, `chromosome`, `position`,
-/// `gene_id`, `transcript_id`, `consequence_order`).
-async fn create_synthetic_reader(variant_annotations: &str) -> Result<ClinvarReader> {
-    let mut config = SessionConfig::new();
-    config.options_mut().sql_parser.dialect = Dialect::DuckDB;
-    let context = SessionContext::new_with_config(config);
-    let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
-    let query = format!(
-        r#"
-        CREATE TABLE {table_name} AS
-        SELECT
-            variant_id,
-            chromosome AS chrom,
-            CAST(position AS INT) AS pos,
-            'A' AS ref,
-            'G' AS alt,
-            'GRCh38' AS reference_genome,
-            'synthetic' AS clinvar_variation_id,
-            'Uncertain significance' AS clinical_significance,
-            'criteria provided, single submitter' AS review_status,
-            CAST(1 AS INT) AS gold_stars,
-            false AS in_gnomad,
-            CAST(NULL AS INT) AS "gnomad.exome.ac",
-            CAST(NULL AS INT) AS "gnomad.exome.an",
-            CAST(NULL AS VARCHAR[]) AS "gnomad.exome.filters",
-            CAST(NULL AS INT) AS "gnomad.genome.ac",
-            CAST(NULL AS INT) AS "gnomad.genome.an",
-            CAST(NULL AS VARCHAR[]) AS "gnomad.genome.filters",
-            array_agg(
-                named_struct(
-                    'gene_id', gene_id,
-                    'transcript_id', transcript_id,
-                    'major_consequence', 'missense_variant',
-                    'hgvsc', concat('c.', CAST(position AS VARCHAR), 'A>G'),
-                    'hgvsp', CAST(NULL AS VARCHAR)
-                ) ORDER BY consequence_order
-            ) AS transcript_consequences
-        FROM ({variant_annotations}) AS annotations(
-            variant_id, chromosome, position, gene_id, transcript_id, consequence_order
-        )
-        GROUP BY variant_id, chromosome, position
-        "#
-    );
-    context.sql(&query).await?.collect().await?;
-    Ok(ClinvarReader::new(context))
-}
+use fixtures::clinvar;
 
 async fn create_parquet_reader() -> Result<ClinvarReader> {
     let context = create_datafusion_context_from_root(
@@ -75,13 +28,11 @@ fn collect_variant_ids(variants: &[ClinvarVariantListEntry]) -> Vec<&str> {
 
 #[tokio::test]
 async fn gene_query_pads_disjoint_intervals_and_excludes_gap_records() -> Result<()> {
-    let reader = create_synthetic_reader(
-        r"VALUES
-            ('1-125-A-G', '1', 125, 'ENSG001', 'ENST001', 1),
-            ('1-350-A-G', '1', 350, 'ENSG001', 'ENST001', 1),
-            ('1-500-A-G', '1', 500, 'ENSG001', 'ENST001', 1)
-        ",
-    )
+    let reader = clinvar::create_reader_with_consequences(&[
+        ("1-125-A-G", "ENSG001", "ENST001"),
+        ("1-350-A-G", "ENSG001", "ENST001"),
+        ("1-500-A-G", "ENSG001", "ENST001"),
+    ])
     .await?;
     let intervals = [
         GenomicInterval::new("1", 500, 500).expect("valid interval"),
@@ -102,12 +53,10 @@ async fn gene_query_pads_disjoint_intervals_and_excludes_gap_records() -> Result
 
 #[tokio::test]
 async fn gene_query_includes_padded_start_but_not_preceding_base() -> Result<()> {
-    let reader = create_synthetic_reader(
-        r"VALUES
-            ('1-124-A-G', '1', 124, 'ENSG001', 'ENST001', 1),
-            ('1-125-A-G', '1', 125, 'ENSG001', 'ENST001', 1)
-        ",
-    )
+    let reader = clinvar::create_reader_with_consequences(&[
+        ("1-124-A-G", "ENSG001", "ENST001"),
+        ("1-125-A-G", "ENSG001", "ENST001"),
+    ])
     .await?;
     let intervals = [GenomicInterval::new("1", 200, 225).expect("valid interval")];
 
@@ -125,12 +74,10 @@ async fn gene_query_includes_padded_start_but_not_preceding_base() -> Result<()>
 
 #[tokio::test]
 async fn gene_query_excludes_variants_annotated_to_another_gene() -> Result<()> {
-    let reader = create_synthetic_reader(
-        r"VALUES
-            ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1),
-            ('1-110-A-G', '1', 110, 'ENSG002', 'ENST002', 1)
-        ",
-    )
+    let reader = clinvar::create_reader_with_consequences(&[
+        ("1-100-A-G", "ENSG001", "ENST001"),
+        ("1-110-A-G", "ENSG002", "ENST002"),
+    ])
     .await?;
     let intervals = [GenomicInterval::new("1", 100, 110).expect("valid interval")];
 
@@ -148,12 +95,10 @@ async fn gene_query_excludes_variants_annotated_to_another_gene() -> Result<()> 
 
 #[tokio::test]
 async fn gene_query_selects_requested_gene_instead_of_first_ensembl_consequence() -> Result<()> {
-    let reader = create_synthetic_reader(
-        r"VALUES
-            ('1-100-A-G', '1', 100, 'ENSG002', 'ENST002', 1),
-            ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 2)
-        ",
-    )
+    let reader = clinvar::create_reader_with_consequences(&[
+        ("1-100-A-G", "ENSG002", "ENST002"),
+        ("1-100-A-G", "ENSG001", "ENST001"),
+    ])
     .await?;
     let intervals = [GenomicInterval::new("1", 100, 100).expect("valid interval")];
 
@@ -175,13 +120,11 @@ async fn gene_query_selects_requested_gene_instead_of_first_ensembl_consequence(
 
 #[tokio::test]
 async fn transcript_query_requires_and_selects_the_requested_transcript() -> Result<()> {
-    let reader = create_synthetic_reader(
-        r"VALUES
-            ('1-100-A-G', '1', 100, 'ENSG001', 'ENST002', 1),
-            ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 2),
-            ('1-110-A-G', '1', 110, 'ENSG001', 'ENST002', 1)
-        ",
-    )
+    let reader = clinvar::create_reader_with_consequences(&[
+        ("1-100-A-G", "ENSG001", "ENST002"),
+        ("1-100-A-G", "ENSG001", "ENST001"),
+        ("1-110-A-G", "ENSG001", "ENST002"),
+    ])
     .await?;
     let intervals = [GenomicInterval::new("1", 100, 110).expect("valid interval")];
 
@@ -211,13 +154,11 @@ async fn transcript_query_requires_and_selects_the_requested_transcript() -> Res
 
 #[tokio::test]
 async fn transcript_query_uses_multiple_padded_intervals() -> Result<()> {
-    let reader = create_synthetic_reader(
-        r"VALUES
-            ('1-200-A-G', '1', 200, 'ENSG001', 'ENST001', 1),
-            ('1-350-A-G', '1', 350, 'ENSG001', 'ENST001', 1),
-            ('1-500-A-G', '1', 500, 'ENSG001', 'ENST001', 1)
-        ",
-    )
+    let reader = clinvar::create_reader_with_consequences(&[
+        ("1-200-A-G", "ENSG001", "ENST001"),
+        ("1-350-A-G", "ENSG001", "ENST001"),
+        ("1-500-A-G", "ENSG001", "ENST001"),
+    ])
     .await?;
     let intervals = [
         GenomicInterval::new("1", 200, 200).expect("valid interval"),
@@ -240,12 +181,10 @@ async fn transcript_query_uses_multiple_padded_intervals() -> Result<()> {
 
 #[tokio::test]
 async fn overlapping_exons_do_not_duplicate_variant_records() -> Result<()> {
-    let reader = create_synthetic_reader(
-        r"VALUES
-            ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1),
-            ('1-110-A-G', '1', 110, 'ENSG001', 'ENST001', 1)
-        ",
-    )
+    let reader = clinvar::create_reader_with_consequences(&[
+        ("1-100-A-G", "ENSG001", "ENST001"),
+        ("1-110-A-G", "ENSG001", "ENST001"),
+    ])
     .await?;
     let intervals = [
         GenomicInterval::new("1", 100, 100).expect("valid interval"),
@@ -260,12 +199,10 @@ async fn overlapping_exons_do_not_duplicate_variant_records() -> Result<()> {
 
 #[tokio::test]
 async fn annotation_membership_does_not_bypass_chromosome_filtering() -> Result<()> {
-    let reader = create_synthetic_reader(
-        r"VALUES
-            ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1),
-            ('2-100-A-G', '2', 100, 'ENSG001', 'ENST001', 1)
-        ",
-    )
+    let reader = clinvar::create_reader_with_consequences(&[
+        ("1-100-A-G", "ENSG001", "ENST001"),
+        ("2-100-A-G", "ENSG001", "ENST001"),
+    ])
     .await?;
     let intervals = [GenomicInterval::new("1", 100, 100).expect("valid interval")];
 
@@ -284,7 +221,7 @@ async fn annotation_membership_does_not_bypass_chromosome_filtering() -> Result<
 #[tokio::test]
 async fn empty_exon_input_returns_no_variants() -> Result<()> {
     let reader =
-        create_synthetic_reader(r"VALUES ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1)").await?;
+        clinvar::create_reader_with_consequences(&[("1-100-A-G", "ENSG001", "ENST001")]).await?;
 
     let variants = reader.fetch_variants_in_gene("ENSG001", &[]).await?;
     let variant_ids = collect_variant_ids(&variants);
@@ -300,7 +237,7 @@ async fn empty_exon_input_returns_no_variants() -> Result<()> {
 #[tokio::test]
 async fn unknown_transcript_returns_no_variants() -> Result<()> {
     let reader =
-        create_synthetic_reader(r"VALUES ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1)").await?;
+        clinvar::create_reader_with_consequences(&[("1-100-A-G", "ENSG001", "ENST001")]).await?;
     let intervals = [GenomicInterval::new("1", 100, 100).expect("valid interval")];
 
     let variants = reader
@@ -319,7 +256,7 @@ async fn unknown_transcript_returns_no_variants() -> Result<()> {
 #[tokio::test]
 async fn intervals_without_records_return_no_variants() -> Result<()> {
     let reader =
-        create_synthetic_reader(r"VALUES ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1)").await?;
+        clinvar::create_reader_with_consequences(&[("1-100-A-G", "ENSG001", "ENST001")]).await?;
     let intervals = [GenomicInterval::new("1", 500, 500).expect("valid interval")];
 
     let variants = reader.fetch_variants_in_gene("ENSG001", &intervals).await?;
@@ -337,7 +274,7 @@ async fn intervals_without_records_return_no_variants() -> Result<()> {
 #[tokio::test]
 async fn padding_overflow_is_reported_as_an_error() -> Result<()> {
     let reader =
-        create_synthetic_reader(r"VALUES ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1)").await?;
+        clinvar::create_reader_with_consequences(&[("1-100-A-G", "ENSG001", "ENST001")]).await?;
     let intervals = [GenomicInterval::new("1", i32::MAX, i32::MAX).expect("valid interval")];
 
     let error = reader
@@ -355,7 +292,7 @@ async fn padding_overflow_is_reported_as_an_error() -> Result<()> {
 #[tokio::test]
 async fn intervals_on_more_than_one_chromosome_are_rejected() -> Result<()> {
     let reader =
-        create_synthetic_reader(r"VALUES ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1)").await?;
+        clinvar::create_reader_with_consequences(&[("1-100-A-G", "ENSG001", "ENST001")]).await?;
     let intervals = [
         GenomicInterval::new("1", 100, 100).expect("valid interval"),
         GenomicInterval::new("2", 100, 100).expect("valid interval"),
@@ -376,7 +313,7 @@ async fn intervals_on_more_than_one_chromosome_are_rejected() -> Result<()> {
 #[tokio::test]
 async fn empty_annotation_id_is_rejected() -> Result<()> {
     let reader =
-        create_synthetic_reader(r"VALUES ('1-100-A-G', '1', 100, 'ENSG001', 'ENST001', 1)").await?;
+        clinvar::create_reader_with_consequences(&[("1-100-A-G", "ENSG001", "ENST001")]).await?;
     let intervals = [GenomicInterval::new("1", 100, 100).expect("valid interval")];
 
     let error = reader

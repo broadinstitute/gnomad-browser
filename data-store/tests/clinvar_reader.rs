@@ -3,106 +3,18 @@
     reason = "Test assertions must fail the test; Result propagates setup errors."
 )]
 
-use datafusion::common::config::Dialect;
 use datafusion::error::Result;
-use datafusion::prelude::{SessionConfig, SessionContext};
+use datafusion::prelude::SessionContext;
 use gnomad_data_store::{ClinvarReader, ParquetDataset, create_datafusion_context_from_root};
+use serde_json::{Value, json};
 
 mod fixtures;
 
-/// Derive every detail column from `annotation_state`: `populated` fills each field and
-/// collection, `empty` leaves collections empty with exome-only gnomAD data, and `null` leaves
-/// optional fields and gnomAD data absent.
-const SYNTHETIC_DETAIL_COLUMNS: &str = r#"
-    'GRCh38' AS reference_genome,
-    concat('variation-', CAST(position AS VARCHAR)) AS clinvar_variation_id,
-    'Pathogenic' AS clinical_significance,
-    'reviewed by expert panel' AS review_status,
-    CAST(3 AS INT) AS gold_stars,
-    annotation_state = 'populated' AS in_gnomad,
-    CASE WHEN annotation_state <> 'null' THEN '2024-01-31' END AS last_evaluated,
-    CASE WHEN annotation_state <> 'null' THEN 'rs123' END AS rsid,
-    CASE WHEN annotation_state = 'populated' THEN [
-        named_struct(
-            'clinical_significance', 'Pathogenic',
-            'last_evaluated', '2024-01-31',
-            'review_status', 'reviewed by expert panel',
-            'submitter_name', 'Submitter A',
-            'conditions', [
-                named_struct('name', 'Condition A', 'medgen_id', 'C0000001'),
-                named_struct('name', 'Condition B', 'medgen_id', CAST(NULL AS VARCHAR))
-            ]
-        ),
-        named_struct(
-            'clinical_significance', CAST(NULL AS VARCHAR),
-            'last_evaluated', CAST(NULL AS VARCHAR),
-            'review_status', 'no assertion criteria provided',
-            'submitter_name', 'Submitter B',
-            'conditions', [named_struct('name', 'Condition C', 'medgen_id', 'C0000003')]
-        )
-    ] ELSE [] END AS submissions,
-    CASE WHEN annotation_state <> 'null' THEN CAST(3 AS INT) END AS "gnomad.exome.ac",
-    CASE WHEN annotation_state <> 'null' THEN CAST(1000 AS INT) END AS "gnomad.exome.an",
-    CASE
-        WHEN annotation_state = 'populated' THEN ['AS_VQSR']
-        WHEN annotation_state = 'empty' THEN []
-    END AS "gnomad.exome.filters",
-    CASE WHEN annotation_state = 'populated' THEN CAST(5 AS INT) END AS "gnomad.genome.ac",
-    CASE WHEN annotation_state = 'populated' THEN CAST(2000 AS INT) END AS "gnomad.genome.an",
-    CASE WHEN annotation_state = 'populated' THEN ['AC0', 'RF'] END AS "gnomad.genome.filters"
-"#;
-
-async fn create_reader_from_rows(supplied_rows: &str) -> Result<ClinvarReader> {
-    let mut config = SessionConfig::new();
-    config.options_mut().sql_parser.dialect = Dialect::DuckDB;
-    let context = SessionContext::new_with_config(config);
-    let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
-    let query = format!(
-        r"
-        CREATE TABLE {table_name} AS
-        SELECT
-            variant_id,
-            chromosome AS chrom,
-            CAST(position AS INT) AS pos,
-            reference_allele AS ref,
-            alternate_allele AS alt,
-            {SYNTHETIC_DETAIL_COLUMNS}
-        FROM ({supplied_rows})
-        "
-    );
-    context.sql(&query).await?.collect().await?;
-    Ok(ClinvarReader::new(context))
-}
-
-/// Supply rows as (`variant_id`, `chromosome`, `position`, `reference_allele`, `alternate_allele`).
-async fn create_synthetic_reader(variant_rows: &str) -> Result<ClinvarReader> {
-    create_reader_from_rows(&format!(
-        "SELECT *, 'populated' AS annotation_state
-        FROM ({variant_rows}) AS supplied(
-            variant_id, chromosome, position, reference_allele, alternate_allele
-        )"
-    ))
-    .await
-}
-
-/// Supply rows as (`variant_id`, `annotation_state`).
-async fn create_synthetic_detail_reader(detail_rows: &str) -> Result<ClinvarReader> {
-    create_reader_from_rows(&format!(
-        "SELECT variant_id, '1' AS chromosome, 100 AS position,
-            'A' AS reference_allele, 'G' AS alternate_allele, annotation_state
-        FROM ({detail_rows}) AS supplied(variant_id, annotation_state)"
-    ))
-    .await
-}
+use fixtures::clinvar;
 
 #[tokio::test]
 async fn maps_source_columns() -> Result<()> {
-    let reader = create_synthetic_reader(
-        "VALUES
-            ('1-100-AG-A', '1', 100, 'AG', 'A'),
-            ('X-200-C-T', 'X', 200, 'C', 'T')",
-    )
-    .await?;
+    let reader = clinvar::create_reader_with_variants(&["1-100-AG-A", "X-200-C-T"]).await?;
 
     let autosomal = reader
         .fetch_single_variant("1-100-AG-A")
@@ -124,12 +36,7 @@ async fn maps_source_columns() -> Result<()> {
 
 #[tokio::test]
 async fn matches_the_exact_variant_id_without_interpreting_sql_in_input() -> Result<()> {
-    let reader = create_synthetic_reader(
-        "VALUES
-            ('1-100-A-G', '1', 100, 'A', 'G'),
-            ('1-100-A-T', '1', 100, 'A', 'T')",
-    )
-    .await?;
+    let reader = clinvar::create_reader_with_variants(&["1-100-A-G", "1-100-A-T"]).await?;
 
     let variant = reader
         .fetch_single_variant("1-100-A-T")
@@ -149,21 +56,52 @@ async fn matches_the_exact_variant_id_without_interpreting_sql_in_input() -> Res
 
 #[tokio::test]
 async fn decodes_populated_details_in_supplied_order() -> Result<()> {
-    let reader = create_synthetic_detail_reader("VALUES ('1-100-A-G', 'populated')").await?;
+    let mut row = clinvar::read_annotated_row_at("1-100-A-G").await?;
+    row["submissions"] = json!([
+        {
+            "id": "SCV000000001",
+            "submitter_name": "Submitter A",
+            "clinical_significance": "Pathogenic",
+            "last_evaluated": "2024-01-31",
+            "review_status": "reviewed by expert panel",
+            "conditions": [
+                { "name": "Condition A", "medgen_id": "C0000001" },
+                { "name": "Condition B", "medgen_id": null }
+            ]
+        },
+        {
+            "id": "SCV000000002",
+            "submitter_name": "Submitter B",
+            "clinical_significance": null,
+            "last_evaluated": null,
+            "review_status": "no assertion criteria provided",
+            "conditions": [{ "name": "Condition C", "medgen_id": "C0000003" }]
+        }
+    ]);
+    row["gnomad.exome.ac"] = json!(3);
+    row["gnomad.exome.an"] = json!(1000);
+    row["gnomad.exome.filters"] = json!(["AS_VQSR"]);
+    row["gnomad.genome.ac"] = json!(5);
+    row["gnomad.genome.an"] = json!(2000);
+    row["gnomad.genome.filters"] = json!(["AC0", "RF"]);
+    let reader = clinvar::create_reader_from_rows(&[row.clone()]).await?;
 
     let variant = reader
         .fetch_single_variant("1-100-A-G")
         .await?
         .expect("supplied variant should exist");
 
-    assert_eq!(variant.reference_genome, "GRCh38");
-    assert_eq!(variant.clinvar_variation_id, "variation-100");
-    assert_eq!(variant.clinical_significance, "Pathogenic");
-    assert_eq!(variant.review_status, "reviewed by expert panel");
-    assert_eq!(variant.gold_stars, 3);
-    assert!(variant.in_gnomad);
-    assert_eq!(variant.last_evaluated.as_deref(), Some("2024-01-31"));
-    assert_eq!(variant.rsid.as_deref(), Some("rs123"));
+    assert_eq!(row["reference_genome"], variant.reference_genome);
+    assert_eq!(row["clinvar_variation_id"], variant.clinvar_variation_id);
+    assert_eq!(row["clinical_significance"], variant.clinical_significance);
+    assert_eq!(row["review_status"], variant.review_status);
+    assert_eq!(row["gold_stars"], variant.gold_stars);
+    assert_eq!(row["in_gnomad"], variant.in_gnomad);
+    assert_eq!(
+        row["last_evaluated"].as_str(),
+        variant.last_evaluated.as_deref()
+    );
+    assert_eq!(row["rsid"].as_str(), variant.rsid.as_deref());
 
     let submitters: Vec<&str> = variant
         .submissions
@@ -201,7 +139,13 @@ async fn decodes_populated_details_in_supplied_order() -> Result<()> {
 
 #[tokio::test]
 async fn decodes_empty_collections_and_exome_only_gnomad_data() -> Result<()> {
-    let reader = create_synthetic_detail_reader("VALUES ('1-100-A-G', 'empty')").await?;
+    let mut row = clinvar::read_annotated_row_at("1-100-A-G").await?;
+    row["submissions"] = json!([]);
+    row["gnomad.exome.filters"] = json!([]);
+    row["gnomad.genome.ac"] = Value::Null;
+    row["gnomad.genome.an"] = Value::Null;
+    row["gnomad.genome.filters"] = Value::Null;
+    let reader = clinvar::create_reader_from_rows(&[row]).await?;
 
     let variant = reader
         .fetch_single_variant("1-100-A-G")
@@ -217,7 +161,13 @@ async fn decodes_empty_collections_and_exome_only_gnomad_data() -> Result<()> {
 
 #[tokio::test]
 async fn decodes_missing_optional_fields_and_gnomad_data_as_absent() -> Result<()> {
-    let reader = create_synthetic_detail_reader("VALUES ('1-100-A-G', 'null')").await?;
+    let mut row = clinvar::read_annotated_row_at("1-100-A-G").await?;
+    row["in_gnomad"] = json!(false);
+    row["last_evaluated"] = Value::Null;
+    row["rsid"] = Value::Null;
+    row["submissions"] = json!([]);
+    clinvar::clear_gnomad_data(&mut row);
+    let reader = clinvar::create_reader_from_rows(&[row]).await?;
 
     let variant = reader
         .fetch_single_variant("1-100-A-G")
@@ -235,12 +185,7 @@ async fn decodes_missing_optional_fields_and_gnomad_data_as_absent() -> Result<(
 
 #[tokio::test]
 async fn rejects_duplicate_ids_instead_of_selecting_an_arbitrary_record() -> Result<()> {
-    let reader = create_synthetic_reader(
-        "VALUES
-            ('1-100-A-G', '1', 100, 'A', 'G'),
-            ('1-100-A-G', '1', 100, 'A', 'G')",
-    )
-    .await?;
+    let reader = clinvar::create_reader_with_variants(&["1-100-A-G", "1-100-A-G"]).await?;
 
     let error = reader
         .fetch_single_variant("1-100-A-G")
@@ -254,14 +199,14 @@ async fn rejects_duplicate_ids_instead_of_selecting_an_arbitrary_record() -> Res
 
 #[tokio::test]
 async fn reports_decode_errors_with_the_requested_variant_id() -> Result<()> {
-    let reader =
-        create_synthetic_reader("VALUES ('1-100-A-G', '1', 100, CAST(NULL AS VARCHAR), 'G')")
-            .await?;
+    let mut row = clinvar::read_annotated_row_at("1-100-A-G").await?;
+    row["reference_genome"] = Value::Null;
+    let reader = clinvar::create_reader_from_rows(&[row]).await?;
 
     let error = reader
         .fetch_single_variant("1-100-A-G")
         .await
-        .expect_err("missing reference allele must fail decoding");
+        .expect_err("missing reference genome must fail decoding");
 
     assert!(
         error
@@ -306,7 +251,7 @@ async fn rejects_ids_not_in_chrom_pos_ref_alt_form_without_querying() {
 
 #[tokio::test]
 async fn accepts_every_form_the_api_normalizer_produces() -> Result<()> {
-    let reader = create_synthetic_reader("VALUES ('1-100-A-G', '1', 100, 'A', 'G')").await?;
+    let reader = clinvar::create_reader_with_variants(&["1-100-A-G"]).await?;
 
     for variant_id in [
         "1-100-A-C",

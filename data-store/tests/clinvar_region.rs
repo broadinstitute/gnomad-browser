@@ -3,69 +3,19 @@
     reason = "Test assertions must fail the test; Result propagates setup errors."
 )]
 
-use datafusion::common::config::Dialect;
 use datafusion::error::Result;
-use datafusion::prelude::{SessionConfig, SessionContext};
+use datafusion::prelude::SessionContext;
 use gnomad_data_store::{
     ClinvarReader, ClinvarVariantListEntry, GenomicInterval, ParquetDataset,
     create_datafusion_context_from_root,
 };
+use serde_json::json;
 
 mod fixtures;
 
-const NO_LIMIT: usize = 1_000;
+use fixtures::clinvar;
 
-/// Supply rows as (`variant_id`, `chromosome`, `position`, `annotation_state`). A `populated`
-/// variant has gnomAD data and a non-Ensembl consequence before an Ensembl one; an `empty`
-/// variant has neither gnomAD data nor consequences.
-async fn create_synthetic_reader(variant_rows: &str) -> Result<ClinvarReader> {
-    let mut config = SessionConfig::new();
-    config.options_mut().sql_parser.dialect = Dialect::DuckDB;
-    let context = SessionContext::new_with_config(config);
-    let table_name = ParquetDataset::ClinvarVariantsGrch38.name();
-    let query = format!(
-        r#"
-        CREATE TABLE {table_name} AS
-        SELECT
-            variant_id,
-            'GRCh38' AS reference_genome,
-            chromosome AS chrom,
-            CAST(position AS INT) AS pos,
-            'A' AS ref,
-            'G' AS alt,
-            concat('variation-', variant_id) AS clinvar_variation_id,
-            'Pathogenic' AS clinical_significance,
-            'reviewed by expert panel' AS review_status,
-            CAST(3 AS INT) AS gold_stars,
-            annotation_state = 'populated' AS in_gnomad,
-            CASE WHEN annotation_state = 'populated' THEN CAST(3 AS INT) END AS "gnomad.exome.ac",
-            CASE WHEN annotation_state = 'populated' THEN CAST(1000 AS INT) END AS "gnomad.exome.an",
-            CASE WHEN annotation_state = 'populated' THEN ['AS_VQSR'] END AS "gnomad.exome.filters",
-            CASE WHEN annotation_state = 'populated' THEN CAST(5 AS INT) END AS "gnomad.genome.ac",
-            CASE WHEN annotation_state = 'populated' THEN CAST(2000 AS INT) END AS "gnomad.genome.an",
-            CASE WHEN annotation_state = 'populated' THEN [] END AS "gnomad.genome.filters",
-            CASE WHEN annotation_state = 'populated' THEN [
-                named_struct(
-                    'gene_id', '1234',
-                    'transcript_id', 'NM_000001.1',
-                    'major_consequence', 'intron_variant',
-                    'hgvsc', CAST(NULL AS VARCHAR),
-                    'hgvsp', CAST(NULL AS VARCHAR)
-                ),
-                named_struct(
-                    'gene_id', 'ENSG00000000001',
-                    'transcript_id', 'ENST00000000001',
-                    'major_consequence', 'missense_variant',
-                    'hgvsc', 'c.1A>G',
-                    'hgvsp', 'p.Met1Val'
-                )
-            ] ELSE [] END AS transcript_consequences
-        FROM ({variant_rows}) AS supplied(variant_id, chromosome, position, annotation_state)
-        "#
-    );
-    context.sql(&query).await?.collect().await?;
-    Ok(ClinvarReader::new(context))
-}
+const NO_LIMIT: usize = 1_000;
 
 fn variant_ids(variants: &[ClinvarVariantListEntry]) -> Vec<&str> {
     variants
@@ -76,14 +26,13 @@ fn variant_ids(variants: &[ClinvarVariantListEntry]) -> Vec<&str> {
 
 #[tokio::test]
 async fn includes_both_boundaries_and_excludes_positions_outside() -> Result<()> {
-    let reader = create_synthetic_reader(
-        "VALUES
-            ('1-99-A-G', '1', 99, 'empty'),
-            ('1-100-A-G', '1', 100, 'empty'),
-            ('1-150-A-G', '1', 150, 'empty'),
-            ('1-200-A-G', '1', 200, 'empty'),
-            ('1-201-A-G', '1', 201, 'empty')",
-    )
+    let reader = clinvar::create_reader_with_variants(&[
+        "1-99-A-G",
+        "1-100-A-G",
+        "1-150-A-G",
+        "1-200-A-G",
+        "1-201-A-G",
+    ])
     .await?;
 
     let variants = reader
@@ -102,12 +51,7 @@ async fn includes_both_boundaries_and_excludes_positions_outside() -> Result<()>
 
 #[tokio::test]
 async fn excludes_other_chromosomes() -> Result<()> {
-    let reader = create_synthetic_reader(
-        "VALUES
-            ('1-100-A-G', '1', 100, 'empty'),
-            ('2-100-A-G', '2', 100, 'empty')",
-    )
-    .await?;
+    let reader = clinvar::create_reader_with_variants(&["1-100-A-G", "2-100-A-G"]).await?;
 
     let variants = reader
         .fetch_variants_in_region(
@@ -126,14 +70,9 @@ async fn excludes_other_chromosomes() -> Result<()> {
 
 #[tokio::test]
 async fn orders_by_position_then_variant_id() -> Result<()> {
-    let reader = create_synthetic_reader(
-        "VALUES
-            ('1-300-A-G', '1', 300, 'empty'),
-            ('1-100-A-T', '1', 100, 'empty'),
-            ('1-100-A-C', '1', 100, 'empty'),
-            ('1-200-A-G', '1', 200, 'empty')",
-    )
-    .await?;
+    let reader =
+        clinvar::create_reader_with_variants(&["1-300-A-G", "1-100-A-T", "1-100-A-C", "1-200-A-G"])
+            .await?;
 
     let variants = reader
         .fetch_variants_in_region(
@@ -151,13 +90,8 @@ async fn orders_by_position_then_variant_id() -> Result<()> {
 
 #[tokio::test]
 async fn returns_at_most_the_limit_in_order() -> Result<()> {
-    let reader = create_synthetic_reader(
-        "VALUES
-            ('1-300-A-G', '1', 300, 'empty'),
-            ('1-100-A-G', '1', 100, 'empty'),
-            ('1-200-A-G', '1', 200, 'empty')",
-    )
-    .await?;
+    let reader =
+        clinvar::create_reader_with_variants(&["1-300-A-G", "1-100-A-G", "1-200-A-G"]).await?;
 
     let variants = reader
         .fetch_variants_in_region(
@@ -172,14 +106,13 @@ async fn returns_at_most_the_limit_in_order() -> Result<()> {
 
 #[tokio::test]
 async fn counts_every_variant_in_the_interval_on_its_chromosome() -> Result<()> {
-    let reader = create_synthetic_reader(
-        "VALUES
-            ('1-99-A-G', '1', 99, 'empty'),
-            ('1-100-A-G', '1', 100, 'empty'),
-            ('1-200-A-G', '1', 200, 'populated'),
-            ('1-201-A-G', '1', 201, 'empty'),
-            ('2-150-A-G', '2', 150, 'empty')",
-    )
+    let reader = clinvar::create_reader_with_variants(&[
+        "1-99-A-G",
+        "1-100-A-G",
+        "1-200-A-G",
+        "1-201-A-G",
+        "2-150-A-G",
+    ])
     .await?;
 
     let count = reader
@@ -192,7 +125,7 @@ async fn counts_every_variant_in_the_interval_on_its_chromosome() -> Result<()> 
 
 #[tokio::test]
 async fn returns_no_variants_for_an_empty_interval() -> Result<()> {
-    let reader = create_synthetic_reader("VALUES ('1-100-A-G', '1', 100, 'empty')").await?;
+    let reader = clinvar::create_reader_with_variants(&["1-100-A-G"]).await?;
 
     let variants = reader
         .fetch_variants_in_region(
@@ -207,7 +140,25 @@ async fn returns_no_variants_for_an_empty_interval() -> Result<()> {
 
 #[tokio::test]
 async fn selects_the_first_ensembl_consequence_and_decodes_gnomad_data() -> Result<()> {
-    let reader = create_synthetic_reader("VALUES ('1-100-A-G', '1', 100, 'populated')").await?;
+    let mut row = clinvar::read_annotated_row_at("1-100-A-G").await?;
+    let mut refseq_consequence = row["transcript_consequences"][0].clone();
+    refseq_consequence["gene_id"] = json!("1234");
+    refseq_consequence["transcript_id"] = json!("NM_000001.1");
+    let mut ensembl_consequence = refseq_consequence.clone();
+    ensembl_consequence["gene_id"] = json!("ENSG00000000001");
+    ensembl_consequence["transcript_id"] = json!("ENST00000000001");
+    ensembl_consequence["major_consequence"] = json!("missense_variant");
+    ensembl_consequence["hgvsc"] = json!("c.1A>G");
+    ensembl_consequence["hgvsp"] = json!("p.Met1Val");
+    row["transcript_consequences"] = json!([refseq_consequence, ensembl_consequence]);
+    row["in_gnomad"] = json!(true);
+    row["gnomad.exome.ac"] = json!(3);
+    row["gnomad.exome.an"] = json!(1000);
+    row["gnomad.exome.filters"] = json!(["AS_VQSR"]);
+    row["gnomad.genome.ac"] = json!(5);
+    row["gnomad.genome.an"] = json!(2000);
+    row["gnomad.genome.filters"] = json!([]);
+    let reader = clinvar::create_reader_from_rows(&[row]).await?;
 
     let variants = reader
         .fetch_variants_in_region(
@@ -252,7 +203,11 @@ async fn selects_the_first_ensembl_consequence_and_decodes_gnomad_data() -> Resu
 
 #[tokio::test]
 async fn decodes_variants_without_consequences_or_gnomad_data() -> Result<()> {
-    let reader = create_synthetic_reader("VALUES ('1-100-A-G', '1', 100, 'empty')").await?;
+    let mut row = clinvar::read_annotated_row_at("1-100-A-G").await?;
+    row["transcript_consequences"] = json!([]);
+    row["in_gnomad"] = json!(false);
+    clinvar::clear_gnomad_data(&mut row);
+    let reader = clinvar::create_reader_from_rows(&[row]).await?;
 
     let variants = reader
         .fetch_variants_in_region(
