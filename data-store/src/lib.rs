@@ -3,6 +3,8 @@
 mod clinvar_reader;
 mod clinvar_variant;
 mod datafusion_context;
+mod gene;
+mod gene_reader;
 mod genomic_interval;
 mod node_bindings;
 mod parquet_dataset;
@@ -16,6 +18,11 @@ pub use clinvar_variant::{
 pub use datafusion_context::{
     create_datafusion_context_from_root, create_datafusion_context_without_datasets,
 };
+pub use gene::{
+    Gene, GeneExon, GeneGnomadConstraint, GeneInterval, GeneLocus, GeneManeSelectTranscript,
+    GenePext, GenePextRegion, GeneTissueExpression, GeneTranscript,
+};
+pub use gene_reader::GeneReader;
 pub use genomic_interval::{
     Chromosome, GenomicInterval, GenomicIntervalError, pad_and_merge_intervals,
 };

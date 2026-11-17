@@ -53,13 +53,19 @@ Readers take a root directory containing one subdirectory per dataset:
 
 ```
 <DATA_ROOT>
-└── clinvar_variants_grch38
-    ├── chrom=1/*.parquet
-    └── chrom=2/*.parquet
+├── clinvar_variants_grch38
+│   ├── chrom=1/*.parquet
+│   └── chrom=2/*.parquet
+└── gene_models_grch38
+    └── data.parquet
 ```
 
 The `chrom=` directory names are read as the `chrom` column, and queries filter on it to skip
 other chromosomes' files; the files themselves need no chromosome column.
+
+Gene lookups by ID are fast only if `gene_models_grch38` is sorted by `gene_id` and written with
+small row groups (4,096 rows), small pages and a page index, so a lookup reads a few pages rather
+than the whole file. A file with default writer settings returns the same genes, more slowly.
 
 `tests/fixtures/` follows this layout. A full copy of the data lives at
 `gs://gnomad-v4-data-pipeline/output/parquet/demo-mirror/2026-11-02`; with the right
@@ -71,6 +77,7 @@ permissions, copy its `parquet` directory to your machine to use as `<DATA_ROOT>
 cargo run --release --example read_clinvar_variant -- <DATA_ROOT> 1-66926-AG-A
 cargo run --release --example read_clinvar_region -- <DATA_ROOT> 1 926026 1477343
 cargo run --release --example read_clinvar_exons -- <DATA_ROOT> transcript ENST00000423320 2 1453500:1477400
+cargo run --release --example read_gene -- <DATA_ROOT> ENSG00000169174
 ```
 
 Against the fixtures:
@@ -90,8 +97,8 @@ ITERATIONS=100 cargo run --release --example read_clinvar_variant -- <DATA_ROOT>
 
 ## Run a local graphql-api on Parquet (experimental)
 
-The API can serve GRCh38 ClinVar variants (single variants, regions, genes and transcripts) from this
-crate instead of Elasticsearch.
+The API can serve GRCh38 ClinVar variants (single variants, regions, genes and transcripts) and GRCh38
+gene models by Ensembl ID from this crate instead of Elasticsearch.
 
 1. Build the bindings in release mode:
 
@@ -109,11 +116,11 @@ crate instead of Elasticsearch.
    ./start.sh
    ```
 
-   | Variable                     | Effect                                                                                  |
-   | ---------------------------- | --------------------------------------------------------------------------------------- |
-   | `PARQUET_DATA_STORE_ENABLED` | Load the addon and route supported queries to it. Without it the API behaves as before. |
-   | `PARQUET_ONLY`               | Never contact Elasticsearch; skips the IP whitelist load. Requires the flag above.      |
-   | `PARQUET_DATA_ROOT`          | Parquet root directory. Required when the store is enabled.                             |
+   | Variable                     | Effect                                                                                                  |
+   | ---------------------------- | ------------------------------------------------------------------------------------------------------- |
+   | `PARQUET_DATA_STORE_ENABLED` | Load the addon and route supported queries to it. Without it the API behaves as before.                 |
+   | `PARQUET_ONLY`               | Never contact Elasticsearch; skips the IP whitelist load. Requires the flag above.                      |
+   | `PARQUET_DATA_ROOT`          | Root containing `clinvar_variants_grch38` and `gene_models_grch38`. Required when the store is enabled. |
 
    `PARQUET_ONLY` refuses to start if `REDIS_HOST`, `JSON_CACHE_ENABLE_ALL` or `JSON_CACHE_LARGE_GENES`
    is set. To use Parquet alongside a real Elasticsearch cluster, leave out `PARQUET_ONLY` and set the
@@ -131,5 +138,6 @@ crate instead of Elasticsearch.
    }'
    ```
 
-Only GRCh38 ClinVar variants are served from Parquet so far. In `PARQUET_ONLY` mode every other query
-returns an error saying it isn't supported by the Parquet client yet.
+Only GRCh38 ClinVar variants and `gene(gene_id:)` are served from Parquet so far; the other fields of
+a gene (variants, coverage and so on) still come from Elasticsearch. In `PARQUET_ONLY` mode every other
+query returns an error saying it isn't supported by the Parquet client yet.
