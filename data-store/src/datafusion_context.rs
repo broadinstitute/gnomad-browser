@@ -10,6 +10,9 @@ pub fn create_datafusion_context_without_datasets() -> SessionContext {
     let mut config = SessionConfig::new();
     // DuckDB syntax supports the lambdas used to select transcript consequences.
     config.options_mut().sql_parser.dialect = Dialect::DuckDB;
+    // Off by default: filter while decoding, skipping the other columns of non-matching rows.
+    config.options_mut().execution.parquet.pushdown_filters = true;
+    config.options_mut().execution.parquet.reorder_filters = true;
     SessionContext::new_with_config(config)
 }
 
