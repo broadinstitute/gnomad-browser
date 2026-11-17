@@ -11,6 +11,7 @@
 )]
 
 pub mod clinvar;
+pub mod genes;
 
 use std::path::PathBuf;
 use std::sync::Arc;

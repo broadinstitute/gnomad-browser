@@ -9,6 +9,7 @@ use datafusion::prelude::{ParquetReadOptions, SessionContext};
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ParquetDataset {
     ClinvarVariantsGrch38,
+    GeneModelsGrch38,
 }
 
 fn chromosome_partition() -> (String, DataType) {
@@ -20,6 +21,7 @@ impl ParquetDataset {
     pub const fn name(self) -> &'static str {
         match self {
             Self::ClinvarVariantsGrch38 => "clinvar_variants_grch38",
+            Self::GeneModelsGrch38 => "gene_models_grch38",
         }
     }
 
@@ -28,6 +30,7 @@ impl ParquetDataset {
     pub fn partition_columns(self) -> Vec<(String, DataType)> {
         match self {
             Self::ClinvarVariantsGrch38 => vec![chromosome_partition()],
+            Self::GeneModelsGrch38 => Vec::new(),
         }
     }
 
