@@ -29,7 +29,8 @@ from data_pipeline.pipelines.gnomad_v4_variants import pipeline as gnomad_v4_var
 from data_pipeline.pipelines.gnomad_v4_coverage import pipeline as gnomad_v4_coverage_pipeline
 from data_pipeline.pipelines.gnomad_v4_cnvs import pipeline as gnomad_v4_cnvs_pipeline
 from data_pipeline.pipelines.gnomad_v4_lof_curation_results import pipeline as gnomad_v4_lof_curation_results_pipeline
-from data_pipeline.data_types.variant import compressed_variant_id
+from data_pipeline.data_types.locus import chunk_by_contig
+from data_pipeline.data_types.variant import compressed_variant_id, annotate_parquet_variant_location
 
 
 # Implement this for development/testing purposes
@@ -103,6 +104,9 @@ DATASETS_CONFIG = {
         "get_table": lambda: subset_table(
             add_variant_document_id(hl.read_table(gnomad_v4_variants_pipeline.get_output("variants").get_output_path()))
         ),
+        "get_table_for_parquet": lambda: annotate_parquet_variant_location(
+            hl.read_table(gnomad_v4_variants_pipeline.get_output("variants").get_output_path())
+        ),
         "args": {
             "index": "gnomad_v4_variants",
             "index_fields": [
@@ -118,6 +122,14 @@ DATASETS_CONFIG = {
             "id_field": "document_id",
             "num_shards": 48,
             "block_size": 1_000,
+        },
+        "parquet_args": {
+            "output_name": "gnomad_variants_v4",
+            "drop": ["locus", "alleles", "variant_id"],
+            "chunk_by": chunk_by_contig,
+            "partition_count": 100,
+            "partition_fields": ["chrom", "posbin"],
+            "sort_by": ["pos", "ref", "alt"],
         },
     },
     "gnomad_v4_exome_coverage": {
@@ -394,7 +406,8 @@ DATASETS_CONFIG = {
             "block_size": 2_000,
         },
         "parquet_args": {
-            "partition_count": 100,
+            "output_name": "clinvar_variants_grch38",
+            "partition_count": 25,
             "partition_fields": ["chrom"],
         },
     },
@@ -417,7 +430,7 @@ DATASETS_CONFIG = {
             "block_size": 2_000,
         },
         "parquet_args": {
-            "partition_count": 100,
+            "partition_count": 25,
             "partition_fields": ["chrom"],
         },
     },
