@@ -49,5 +49,6 @@ type Transcript {
   clinvar_variants: [ClinVarVariant!] @cost(value: 10)
 
   coverage(dataset: DatasetId): FeatureCoverage! @cost(value: 5)
+  allele_number(dataset: DatasetId): FeatureAlleleNumber! @cost(value: 5)
   mitochondrial_coverage(dataset: DatasetId!): [MitochondrialCoverageBin!] @cost(value: 5)
 }
