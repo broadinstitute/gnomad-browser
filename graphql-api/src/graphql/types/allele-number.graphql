@@ -1,0 +1,10 @@
+type AlleleNumberBin {
+  pos: Int!
+  an: Float
+  an_percent: Float
+}
+
+type FeatureAlleleNumber {
+  exome: [AlleleNumberBin!]!
+  genome: [AlleleNumberBin!]!
+}
