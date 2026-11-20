@@ -16,6 +16,11 @@ import {
 import { fetchNccConstraintRegionById } from '../../queries/genomic-constraint-queries'
 
 import { hasVRSData } from '../../../../dataset-metadata/metadata'
+import complexRegions from '../../queries/helpers/complex-regions'
+import logger from '../../logger'
+import { getRequestContext } from '../../request-context'
+
+const DEFAULT_REGION_VARIANT_LIMIT = 30000
 
 const resolveVariant = async (_obj: any, args: any, ctx: any) => {
   // These are all "variant IDs" of one kind or another but `variantId` here
@@ -85,7 +90,39 @@ const resolveVariantsInRegion = async (obj: any, args: any, ctx: any) => {
   }
 
   const numVariantsInRegion = await countVariantsInRegion(ctx.esClient, dataset, obj)
-  if (numVariantsInRegion > 30000) {
+  const matchingComplexRegions = complexRegions.filter(
+    (rule) =>
+      rule.datasets.includes(dataset) &&
+      rule.referenceGenome === obj.reference_genome &&
+      rule.chrom === obj.chrom &&
+      obj.start <= rule.stop &&
+      obj.stop >= rule.start
+  )
+  const maxVariants = Math.min(
+    DEFAULT_REGION_VARIANT_LIMIT,
+    ...matchingComplexRegions.map((rule) => rule.maxVariants)
+  )
+
+  if (numVariantsInRegion > maxVariants && maxVariants < DEFAULT_REGION_VARIANT_LIMIT) {
+    logger.warn({
+      event: 'complexRegionQueryRejected',
+      requestId: getRequestContext()?.requestId,
+      dataset,
+      referenceGenome: obj.reference_genome,
+      chrom: obj.chrom,
+      start: obj.start,
+      stop: obj.stop,
+      ruleIds: matchingComplexRegions.map((rule) => rule.id),
+      geneSymbols: matchingComplexRegions.map((rule) => rule.geneSymbol),
+      numVariants: numVariantsInRegion,
+      maxVariants,
+    })
+    throw new UserVisibleError(
+      'This region overlaps an annotation-heavy locus and has too many variants to display. Select a smaller region to view variants.'
+    )
+  }
+
+  if (numVariantsInRegion > maxVariants) {
     throw new UserVisibleError(
       'This region has too many variants to display. Select a smaller region to view variants.'
     )
