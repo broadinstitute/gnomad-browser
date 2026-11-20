@@ -1,77 +1,63 @@
-import datetime
+import logging
+
 import hail as hl
+
+logger = logging.getLogger("gnomad_data_pipeline")
 
 
 def export_table_to_parquet(
     table,
     output_path,
+    *,
+    drop=None,
+    rename=None,
+    chunk_by=None,
     partition_count=0,
-    partition_fields=[],
+    partition_fields=None,
+    sort_by=None,
     compression="snappy",
+    overwrite=False,
 ):
-    export_time = datetime.datetime.now(datetime.timezone.utc)
+    drop = drop or []
+    rename = rename or {}
+    partition_fields = partition_fields or []
+    sort_by = sort_by or []
 
-    table = table.select_globals(
-        exported_at=export_time.isoformat(timespec="seconds"),
-        table_globals=table.globals,
-    )
-    table = table.key_by()
+    # Validate the config and build the chunks before deleting the existing output.
+    fields_to_export = table.key_by().drop(*drop).rename(rename).row.dtype.fields
+    missing = (set(partition_fields) | set(sort_by)) - set(fields_to_export)
+    if missing:
+        raise ValueError(f"There are partition or sort fields not in fields to export: {sorted(missing)}")
 
-    current_partitions = table.n_partitions()
+    output_exists = hl.hadoop_exists(output_path)
+    if output_exists and not overwrite:
+        raise FileExistsError(f"{output_path} already exists; rerun with --overwrite to replace it")
 
-    if partition_count > 0 and current_partitions > partition_count:
-        # Reduce partitions without a full shuffle
-        table = table.naive_coalesce(partition_count)
+    chunks = chunk_by(table) if chunk_by else [("full table", table)]
 
-    elif partition_count > 0 and current_partitions < partition_count:
-        # Increase partitions with a shuffle
-        table = table.repartition(partition_count, shuffle=True)
+    if output_exists:
+        hl.current_backend().fs.rmtree(output_path)
 
-    # Preserve nested struct fields instead of flattening them.
-    spark_df = table.to_spark(flatten=False)
+    for label, chunk in chunks:
+        logger.info("exporting %s to %s", label, output_path)
 
-    spark_df.printSchema()
+        if partition_count > 0:
+            current_partitions = chunk.n_partitions()
+            if current_partitions > partition_count:
+                chunk = chunk.naive_coalesce(partition_count)
+            elif current_partitions < partition_count:
+                chunk = chunk.repartition(partition_count, shuffle=True)
 
-    spark_df.write.parquet(
-        output_path,
-        compression=compression,
-        mode="overwrite",
-        partitionBy=partition_fields,
-    )
+        chunk = chunk.key_by().drop(*drop).rename(rename)
 
+        df = chunk.to_spark(flatten=False)
+        if sort_by:
+            # Sorting by partition_fields first means Spark doesn't add its own sort before writing.
+            df = df.sortWithinPartitions(*partition_fields, *sort_by)
 
-def export_variants_to_parquet(
-    table,
-    output_path,
-    compression="snappy",
-):
-    export_time = datetime.datetime.now(datetime.timezone.utc)
-
-    table = table.select_globals(
-        exported_at=export_time.isoformat(timespec="seconds"),
-        table_globals=table.globals,
-    )
-    table = table.key_by()
-
-    # Get chromosome/contig names directly from Hail.
-    chromosomes = table.aggregate(hl.agg.collect_as_set(table.locus.contig))
-
-    chromosomes = sorted(chromosomes)
-
-    print(f"Found {len(chromosomes)} chromosomes: {chromosomes}")
-
-    for chrom in chromosomes:
-        print(f"Exporting chromosome {chrom}")
-
-        # Filter Hail Table before converting to Spark.
-        chrom_table = table.filter(table.locus.contig == chrom)
-
-        # Convert only this chromosome to Spark.
-        chrom_df = chrom_table.to_spark(flatten=False)
-
-        # Export chromosome.
-        chrom_df.write.mode("overwrite").option("compression", compression).parquet(
-            f"{output_path}/locus.contig={chrom}"
+        df.write.parquet(
+            output_path,
+            mode="append",
+            compression=compression,
+            partitionBy=partition_fields or None,
         )
-
-        print(f"Finished chromosome {chrom}")
