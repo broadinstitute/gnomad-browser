@@ -7,6 +7,7 @@ import { AxisLeft } from '@visx/axis'
 import { Track } from '@gnomad/region-viewer'
 import { Button, Select } from '@gnomad/ui'
 import { DatasetId, isV4 } from '@gnomad/dataset-metadata/metadata'
+import InfoButton from './help/InfoButton'
 
 const TopPanel = styled.div`
   display: flex;
@@ -85,19 +86,58 @@ export enum MetricOptions {
   over_30 = 'over_30',
   over_50 = 'over_50',
   over_100 = 'over_100',
+  an_percent = 'an_percent',
+}
+
+/** Metrics read from the allele number series rather than the coverage series. */
+export const isAlleleNumberMetric = (metric: MetricOptions) => metric === MetricOptions.an_percent
+
+/** The metric to show when there is no call rate and the caller named none. */
+export const defaultCoverageMetric = (datasetId: DatasetId) =>
+  isV4(datasetId) ? MetricOptions.over_20 : MetricOptions.mean
+
+export const trackTitleForMetric = (metric: MetricOptions) => {
+  if (isAlleleNumberMetric(metric)) {
+    return 'Call rate (AN%)'
+  }
+  if (metric === MetricOptions.mean || metric === MetricOptions.median) {
+    return `Per-base ${metric} depth of coverage`
+  }
+  return `Fraction of individuals with coverage over ${metric.slice('over_'.length)}`
+}
+
+/** The y-axis extent for a metric: a percentage, a read depth, or a fraction. */
+export const domainForMetric = (metric: MetricOptions, maxCoverage: number): [number, number] => {
+  if (isAlleleNumberMetric(metric)) {
+    return [0, 100]
+  }
+  if (metric === MetricOptions.mean || metric === MetricOptions.median) {
+    return [0, maxCoverage]
+  }
+  return [0, 1]
+}
+
+const formatPercentTick = (value: any) => `${value}%`
+
+export const tickFormatForMetric = (metric: MetricOptions) =>
+  isAlleleNumberMetric(metric) ? formatPercentTick : undefined
+
+type CoverageTrackDataset = {
+  buckets: {
+    pos: number
+    mean?: number
+    median?: number
+    an_percent?: number
+  }[]
+  color: string
+  name: string
+  opacity?: number
 }
 
 type OwnCoverageTrackProps = {
-  datasets: {
-    buckets: {
-      pos: number
-      mean?: number
-      median?: number
-    }[]
-    color: string
-    name: string
-    opacity?: number
-  }[]
+  datasets: CoverageTrackDataset[]
+  alleleNumberDatasets?: CoverageTrackDataset[]
+  isAlleleNumberLoading?: boolean
   coverageOverThresholds?: number[]
   filenameForExport?: (...args: any[]) => any
   height?: number
@@ -110,6 +150,18 @@ type CoverageTrackState = { selectedMetric: MetricOptions }
 
 type CoverageTrackProps = OwnCoverageTrackProps & typeof CoverageTrack.defaultProps
 
+const offersAlleleNumber = (props: CoverageTrackProps) =>
+  Boolean(props.isAlleleNumberLoading || props.alleleNumberDatasets?.length)
+
+const initialMetric = (props: CoverageTrackProps) => {
+  if (props.metric) {
+    return props.metric
+  }
+  return offersAlleleNumber(props)
+    ? MetricOptions.an_percent
+    : defaultCoverageMetric(props.datasetId)
+}
+
 class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   static defaultProps = {
     filenameForExport: () => 'coverage',
@@ -121,13 +173,33 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
 
   constructor(props: CoverageTrackProps) {
     super(props)
-    if (this.props.metric) {
-      this.state = { selectedMetric: this.props.metric }
-    } else if (isV4(this.props.datasetId)) {
-      this.state = { selectedMetric: MetricOptions.over_20 }
-    } else {
-      this.state = { selectedMetric: MetricOptions.mean }
+    this.state = { selectedMetric: initialMetric(props) }
+  }
+
+  componentDidUpdate(prevProps: CoverageTrackProps) {
+    // An allele number request that settles with nothing leaves the reader
+    // looking at an empty call rate plot, so fall back to a coverage metric.
+    // Guarded on a transition between props, so it cannot loop, and it leaves
+    // a metric the reader chose for themselves alone.
+    const wasOffered = offersAlleleNumber(prevProps)
+    const isOffered = offersAlleleNumber(this.props)
+
+    if (wasOffered && !isOffered && isAlleleNumberMetric(this.state.selectedMetric)) {
+      this.setState({ selectedMetric: defaultCoverageMetric(this.props.datasetId) })
     }
+  }
+
+  /** The series to draw: the allele number series under a call rate metric. */
+  activeDatasets = () => {
+    const { alleleNumberDatasets, datasets } = this.props
+    return isAlleleNumberMetric(this.state.selectedMetric) && alleleNumberDatasets?.length
+      ? alleleNumberDatasets
+      : datasets
+  }
+
+  metricValue = (bucket: any) => {
+    const value = bucket[this.state.selectedMetric]
+    return value === undefined ? null : value
   }
 
   plotRef = (el: any) => {
@@ -157,14 +229,17 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   }
 
   renderArea({ scaleCoverageMetric, scalePosition }: any) {
-    const { datasets, height } = this.props
-    const { selectedMetric } = this.state
+    const { height } = this.props
+    const datasets = this.activeDatasets()
 
     const pathGenerator = area()
+      // Buckets without a value for this metric break the path rather than
+      // being drawn at zero, which would put a callability cliff in the plot
+      // that is not in the data.
+      .defined((bucket) => this.metricValue(bucket) !== null)
       .x((bucket) => scalePosition((bucket as any).pos))
       .y0(height)
-      // @ts-expect-error TS(7015) FIXME: Element implicitly has an 'any' type because index... Remove this comment to see the full error message
-      .y1((bucket) => scaleCoverageMetric(bucket[selectedMetric]))
+      .y1((bucket) => scaleCoverageMetric(this.metricValue(bucket)))
 
     return datasets.map((dataset) => (
       <g key={dataset.name}>
@@ -179,8 +254,8 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   }
 
   renderBars({ isPositionDefined, scaleCoverageMetric, scalePosition, totalBases, width }: any) {
-    const { datasets, height } = this.props
-    const { selectedMetric } = this.state
+    const { height } = this.props
+    const datasets = this.activeDatasets()
 
     const barWidth = width / totalBases - 1
 
@@ -188,13 +263,10 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
       <g key={dataset.name}>
         {dataset.buckets
           .filter(
-            (bucket: any) =>
-              bucket[selectedMetric] !== undefined &&
-              bucket[selectedMetric] !== null &&
-              isPositionDefined(bucket.pos)
+            (bucket: any) => this.metricValue(bucket) !== null && isPositionDefined(bucket.pos)
           )
           .map((bucket: any) => {
-            const barHeight = height - scaleCoverageMetric(bucket[selectedMetric])
+            const barHeight = height - scaleCoverageMetric(this.metricValue(bucket))
             const x = scalePosition(bucket.pos)
             return (
               <rect
@@ -236,17 +308,27 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
   }
 
   render() {
-    const { coverageOverThresholds, datasets, height, maxCoverage } = this.props
+    const { coverageOverThresholds, height, maxCoverage } = this.props
     const { selectedMetric } = this.state
+    const datasets = this.activeDatasets()
 
-    const trackTitle =
-      selectedMetric === 'mean' || selectedMetric === 'median'
-        ? `Per-base ${selectedMetric} depth of coverage`
-        : `Fraction of individuals with coverage over ${selectedMetric.slice(5)}`
+    const trackTitle = trackTitleForMetric(selectedMetric)
 
     return (
       <Track
-        renderLeftPanel={() => <TitlePanel>{trackTitle}</TitlePanel>}
+        renderLeftPanel={() => (
+          <TitlePanel>
+            {isAlleleNumberMetric(selectedMetric) ? (
+              // Call rate is the only metric with a help topic. The title panel
+              // is a column, so the title and the button need a row of their own.
+              <span>
+                {trackTitle} <InfoButton topic="call-rate" />
+              </span>
+            ) : (
+              trackTitle
+            )}
+          </TitlePanel>
+        )}
         renderTopPanel={() => (
           <TopPanel>
             <Legend datasets={datasets} />
@@ -273,6 +355,11 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
                     ))}
                   </optgroup>
                 )}
+                {offersAlleleNumber(this.props) && (
+                  <optgroup label="Allele number">
+                    <option value={MetricOptions.an_percent}>Call rate</option>
+                  </optgroup>
+                )}
               </Select>
             </label>
             <Button style={{ marginLeft: '1em' }} onClick={() => this.exportPlot()}>
@@ -283,9 +370,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
       >
         {({ isPositionDefined, regions, scalePosition, width }: any) => {
           const scaleCoverageMetric = scaleLinear()
-            .domain(
-              selectedMetric === 'mean' || selectedMetric === 'median' ? [0, maxCoverage] : [0, 1]
-            )
+            .domain(domainForMetric(selectedMetric, maxCoverage))
             .range([height, 7])
 
           const axisWidth = 60
@@ -302,6 +387,7 @@ class CoverageTrack extends Component<CoverageTrackProps, CoverageTrackState> {
                     fontSize: 10,
                     textAnchor: 'end',
                   })}
+                  tickFormat={tickFormatForMetric(selectedMetric)}
                   scale={scaleCoverageMetric}
                   stroke="#333"
                 />

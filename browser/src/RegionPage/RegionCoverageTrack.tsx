@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { referenceGenome, coverageDatasetId } from '@gnomad/dataset-metadata/metadata'
+import { referenceGenome, coverageDatasetId, isExac } from '@gnomad/dataset-metadata/metadata'
+import AlleleNumberQuery from '../AlleleNumberQuery'
 import { coverageConfigClassic, coverageConfigNew } from '../coverageStyles'
 import CoverageTrack from '../CoverageTrack'
 import Query from '../Query'
@@ -43,6 +44,24 @@ query ${operationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: D
 }
 `
 
+const alleleNumberOperationName = 'RegionAlleleNumber'
+const alleleNumberQuery = `
+query ${alleleNumberOperationName}($chrom: String!, $start: Int!, $stop: Int!, $datasetId: DatasetId!, $referenceGenome: ReferenceGenomeId!, $includeExome: Boolean!, $includeGenome: Boolean!) {
+  feature: region(chrom: $chrom, start: $start, stop: $stop, reference_genome: $referenceGenome) {
+    allele_number(dataset: $datasetId) {
+      exome @include(if: $includeExome) {
+        pos
+        an_percent
+      }
+      genome @include(if: $includeGenome) {
+        pos
+        an_percent
+      }
+    }
+  }
+}
+`
+
 type OwnProps = {
   datasetId: string
   chrom: string
@@ -65,50 +84,65 @@ const RegionCoverageTrack = ({
   includeGenomeCoverage,
 }: Props) => {
   return (
-    <Query
-      operationName={operationName}
-      query={coverageQuery}
+    <AlleleNumberQuery
+      datasetId={datasetId}
+      operationName={alleleNumberOperationName}
+      query={alleleNumberQuery}
       variables={{
         chrom,
         start,
         stop,
-        datasetId: coverageDatasetId(datasetId),
-        referenceGenome: referenceGenome(coverageDatasetId(datasetId)),
-        includeExomeCoverage,
-        includeGenomeCoverage,
-      }}
-      loadingMessage="Loading coverage"
-      loadingPlaceholderHeight={220}
-      errorMessage="Unable to load coverage"
-      success={(data: any) => {
-        if (!data.region || !data.region.coverage) {
-          return false
-        }
-        const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : true
-        const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : true
-        return exomeCoverage || genomeCoverage
+        includeExome: includeExomeCoverage,
+        includeGenome: includeGenomeCoverage,
       }}
     >
-      {({ data }: any) => {
-        const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : null
-        const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : null
+      {(alleleNumber) => (
+        <Query
+          operationName={operationName}
+          query={coverageQuery}
+          variables={{
+            chrom,
+            start,
+            stop,
+            datasetId: coverageDatasetId(datasetId),
+            referenceGenome: referenceGenome(coverageDatasetId(datasetId)),
+            includeExomeCoverage,
+            includeGenomeCoverage,
+          }}
+          loadingMessage="Loading coverage"
+          loadingPlaceholderHeight={220}
+          errorMessage="Unable to load coverage"
+          success={(data: any) => {
+            if (!data.region || !data.region.coverage) {
+              return false
+            }
+            const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : true
+            const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : true
+            return exomeCoverage || genomeCoverage
+          }}
+        >
+          {({ data }: any) => {
+            const exomeCoverage = includeExomeCoverage ? data.region.coverage.exome : null
+            const genomeCoverage = includeGenomeCoverage ? data.region.coverage.genome : null
 
-        const coverageConfig =
-          datasetId === 'exac'
-            ? coverageConfigClassic(exomeCoverage, genomeCoverage)
-            : coverageConfigNew(exomeCoverage, genomeCoverage)
+            const coverageConfig = isExac(datasetId)
+              ? coverageConfigClassic(exomeCoverage, genomeCoverage)
+              : coverageConfigNew(exomeCoverage, genomeCoverage)
 
-        return (
-          <CoverageTrack
-            coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
-            filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}
-            datasets={coverageConfig}
-            height={200}
-            datasetId={datasetId}
-          />
-        )
-      }}
-    </Query>
+            return (
+              <CoverageTrack
+                coverageOverThresholds={[1, 5, 10, 15, 20, 25, 30, 50, 100]}
+                filenameForExport={() => `${chrom}-${start}-${stop}_coverage`}
+                datasets={coverageConfig}
+                {...alleleNumber}
+                height={200}
+                datasetId={datasetId}
+              />
+            )
+          }}
+        </Query>
+      )}
+    </AlleleNumberQuery>
   )
 }
 
