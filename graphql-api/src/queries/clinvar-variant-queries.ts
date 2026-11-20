@@ -1,4 +1,4 @@
-import { omit, throttle } from 'lodash'
+import { throttle } from 'lodash'
 
 import { withCache } from '../cache'
 import logger from '../logger'
@@ -151,8 +151,12 @@ const shapeVariantSummary = (context: any) => {
   return (variant: any) => {
     const transcriptConsequence = getConsequence(variant) || {}
 
+    // Destructure to drop fields we don't want to cache. Cheaper than lodash.omit, which adds
+    // per-call overhead (path parsing, copying every key then deleting the omitted ones).
+    const { transcript_consequences: _tc, ...variantRest } = variant
+
     return {
-      ...omit(variant, 'transcript_consequences'), // Omit full transcript consequences list to avoid caching it
+      ...variantRest, // Omit full transcript consequences list to avoid caching it
       transcript_consequence: transcriptConsequence,
     }
   }
