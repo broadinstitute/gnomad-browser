@@ -127,9 +127,17 @@ DATASETS_CONFIG = {
             "output_name": "gnomad_variants_v4",
             "drop": ["locus", "alleles", "variant_id"],
             "chunk_by": chunk_by_contig,
-            "partition_count": 100,
             "partition_fields": ["chrom", "posbin"],
             "sort_by": ["pos", "ref", "alt"],
+            # Readers open every file in a posbin directory; more files only add footers to read.
+            "one_file_per_partition": True,
+            "compression": "zstd",
+            "write_options": {
+                "parquet.compression.codec.zstd.level": 1,
+                "parquet.block.size": 16 * 1024 * 1024,
+                "parquet.page.size": 64 * 1024,
+                "parquet.page.row.count.limit": 1_024,
+            },
         },
     },
     "gnomad_v4_exome_coverage": {
