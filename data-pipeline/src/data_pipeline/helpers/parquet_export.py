@@ -15,13 +15,19 @@ def export_table_to_parquet(
     partition_count=0,
     partition_fields=None,
     sort_by=None,
+    one_file_per_partition=False,
     compression="snappy",
+    write_options=None,
     overwrite=False,
 ):
     drop = drop or []
     rename = rename or {}
     partition_fields = partition_fields or []
     sort_by = sort_by or []
+    write_options = write_options or {}
+
+    if one_file_per_partition and not partition_fields:
+        raise ValueError("one_file_per_partition requires partition_fields")
 
     # Validate the config and build the chunks before deleting the existing output.
     fields_to_export = table.key_by().drop(*drop).rename(rename).row.dtype.fields
@@ -51,11 +57,20 @@ def export_table_to_parquet(
         chunk = chunk.key_by().drop(*drop).rename(rename)
 
         df = chunk.to_spark(flatten=False)
+
+        if one_file_per_partition:
+            # Spark writes one file per task for each output directory it has rows for.
+            df = df.repartition(*partition_fields)
+
         if sort_by:
             # Sorting by partition_fields first means Spark doesn't add its own sort before writing.
             df = df.sortWithinPartitions(*partition_fields, *sort_by)
 
-        df.write.parquet(
+        writer = df.write
+        for key, value in write_options.items():
+            writer = writer.option(key, value)
+
+        writer.parquet(
             output_path,
             mode="append",
             compression=compression,
