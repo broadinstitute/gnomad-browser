@@ -1,5 +1,7 @@
 import hail as hl
 
+from data_pipeline.data_types.locus import normalized_contig, posbin
+
 
 def annotate_variants(variants_path, exome_coverage_path=None, genome_coverage_path=None):
     ds = hl.read_table(variants_path)
@@ -13,6 +15,16 @@ def annotate_variants(variants_path, exome_coverage_path=None, genome_coverage_p
         ds = ds.annotate(coverage=ds.coverage.annotate(genome=genome_coverage[ds.locus]))
 
     return ds
+
+
+def annotate_parquet_variant_location(ds):
+    return ds.annotate(
+        chrom=normalized_contig(ds.locus.contig),
+        pos=ds.locus.position,
+        ref=ds.alleles[0],
+        alt=ds.alleles[1],
+        posbin=posbin(ds.locus.position),
+    )
 
 
 def annotate_caids(variants_path, caids_path=None):

@@ -1,5 +1,7 @@
 import hail as hl
 
+POSBIN_SIZE = 1_000_000
+
 
 def normalized_contig(contig: hl.expr.StringExpression) -> hl.expr.StringExpression:
     return hl.rbind(hl.str(contig).replace("^chr", ""), lambda c: hl.if_else(c == "MT", "M", c))
@@ -16,3 +18,17 @@ def contig_number(contig: hl.expr.StringExpression) -> hl.expr.Int32Expression:
 
 def x_position(locus: hl.expr.LocusExpression) -> hl.expr.Int64Expression:
     return hl.int64(contig_number(locus.contig)) * 1_000_000_000 + locus.position
+
+
+def posbin(position: hl.expr.Int32Expression) -> hl.expr.Int64Expression:
+    return (hl.int64(position) - 1) // POSBIN_SIZE
+
+
+def chunk_by_contig(ds: hl.Table):
+    contigs = sorted(ds.aggregate(hl.agg.collect_as_set(ds.locus.contig)))
+
+    chunks = []
+    for contig in contigs:
+        chunks.append((contig, ds.filter(ds.locus.contig == contig)))
+
+    return chunks
